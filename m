@@ -1,134 +1,250 @@
-Return-Path: <linux-acpi+bounces-18007-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18008-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7069EBF21AA
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 17:30:04 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3CDBF22E8
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 17:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3720F4FAD8C
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:26:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 848F434DCF0
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FC5257458;
-	Mon, 20 Oct 2025 15:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="XSngMUTo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAC526F2BB;
+	Mon, 20 Oct 2025 15:45:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73B1217704
-	for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 15:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9C26CE07;
+	Mon, 20 Oct 2025 15:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760973972; cv=none; b=p/NNIXMRHNPgseGiOixSGuCmdHxpdCuYLabJBVa/2hbXKIuiUVDQKXImTgmTYJjSOmUL4AdYrnWCgW58KWi5QvLRM7d2mvU9FB1RkbI+mU3mO9YoqSPaSIb+qby+Lc/ZhBDkTnWsFpRxTEaGGhs0zKdUxaVyemx1mUHnL9VKwdU=
+	t=1760975102; cv=none; b=aJAO4N+xkysv/sYTHGTdjWM+3SJezK9a+2n9e7yD8s1bM5sRoiIo+JJvfaxvfv7cvMRSpGZjM6tA4McC+W7CocE1CL9V9vE276Dj7ApvZECRL7IVskxeN2pCqH7s80aHOnePdbdkFuo1k5dWro5dqfrJQx1RHkw7KMc66sNWhj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760973972; c=relaxed/simple;
-	bh=a9ZMjyfDA31yDaba7Y56UnAcVJ4HbdeHmZr/qEpxu9o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qAPjniHQkek0VYtZgQm9tJ833vm+zdvYhK2gt8DEvJooTW2yyzkCYATEOpwWvHb32NbnLI84rxEtbt4f7RyVLT8Jaovn5EP5nT3cw7QjshJsLKYCwAFYeSNp7ijASPt58iZyZx0l6nLGT4Le0hHFCSVTG2XYMqTd1VVa6otAt1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=XSngMUTo; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-57edfeaa05aso5150153e87.0
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 08:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1760973969; x=1761578769; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vq0Ngsa6W3+xLONQxcuO1N5EPGipkieRFHNCPkJXdK4=;
-        b=XSngMUTofG2mnCVOQxRJBpGFtJ1tlrC3GImdXbm6lvRj79vsP2dpgJDjaGzPc1Ce0z
-         NBgevDgJZRciHPviT5qkrpgYizL6RYBUNe98n00P5U9wd5LCZUqiA1gCh8VTF0O+gkjM
-         FciREUDLHn2arlh6ILcCC+CfBLeENadCE8grkAf9I8leaD1R3ZAVpIrJGPTLncUqMSiY
-         2ItqRkYN+/4VkrXaQA2kWDpUQHwklevRsj/YnM8zlhVJtpO4D/dJLSMHYsdTh/AweUnL
-         j91i+N0/ec4XF0Ea9Z9u3iIwt66Tv28Ys6WS+XrTpimfnLeBF62ZlMU0MnkYleFWwDmU
-         rmVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760973969; x=1761578769;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vq0Ngsa6W3+xLONQxcuO1N5EPGipkieRFHNCPkJXdK4=;
-        b=IpoQX/kyq+S25JucVskktYojalbAVYHfrm0Fa+kTh8IxhUoO7qyST08GZa60+mqC4G
-         VZZSpaZXeMzNpCPz0XC3/XyqvBexwvAKaJP1bFAkZuyCZGR7ZCRK2Y22lq1KlSoyuGJP
-         ywXJffCZKS3wJ5+PmIU1uZlUa9F46W1ISv3HAnpQLbaSrHhhDCZ+aTNAS6v8J6Mq/SsZ
-         BXB0W6SyNUH89vb2mNtofhgC716H7ey1TwryFNfHiaLFqV3H1uP8elp55iNn0Iq2Lnwm
-         0Bg4QQ7mq1b6Wzk/B+vIFWbNYwWnY6RxZih1S7peB7Aa9tWJ051jaxH6X1MI9LPKBmZm
-         /rMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWD6P9DCBxsGN1hN0ba09ng+apxPCP6Jcl+8fXKdkKfAof7QZjzIZ3V3sFKhVHQSMqCiD7tKagtV7Jp@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOZQVR5aSADbqrRlN1Tqol91CRuv04oh5u3TTDouOUp0LAmrLw
-	hLyHBRaoGgUwHT94R90JN9i4r+Og4vji6EpTYV1Qak8XFGbk9i6rNKww5wnA3ojYoQ86xzjm+Mq
-	XesU2EUYsP2fXW9eVGlgjlkJoRvvJtyeIWYWwD8I00A==
-X-Gm-Gg: ASbGncvpxFOCBxqRH5zIXsWDQrEiMSYtb0cMpyRQbpCkEjGCtbeR0+o8LMDo2VOKQMy
-	hgXb74zqber5SFMEEw6/HpNlGAYfzx0qCqr6i1j/Yftf4wr0QczAg0a76KP2M5lZ7gIZQGBRt3M
-	5rO1MwKYDlbSv3GLnEMADLK+8i5NT/zDlB1jXCSGFmMqReI864PDMC28RHV1UpWd4vU40HL9Hw2
-	bosFRhYgepTW+E1Fz0Xc9wo91hjryReIAzwcuB+PcrlaMPIE9aX8gIL8mb1Bm/8RkSIaXqBOPBT
-	ZULx7lEU60+4fSd0yMu+VhvxZ/U=
-X-Google-Smtp-Source: AGHT+IGll3AO5pddldZvdf8aT3o18197wF1OauftFBj0SwG5yVH2Ck3XNplXu499kdviIVNDW5wL3ULwaxU1vYqiW0E=
-X-Received: by 2002:a05:6512:6c9:b0:591:d7e1:7859 with SMTP id
- 2adb3069b0e04-591d8577432mr4474281e87.56.1760973968664; Mon, 20 Oct 2025
- 08:26:08 -0700 (PDT)
+	s=arc-20240116; t=1760975102; c=relaxed/simple;
+	bh=voD0On4zBw2oN5+HZfXccXNNIrl1M1fB5bmFjN9Eipk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RbcsXut1Zsq7yTJm88NqO8bC1gBDQq6na2PUsHJI6xL18GQuNfQqTHBkFsNUtqaBoAMKv/hqNXnKsziXCjK+NyFTNRv23Y0Aoyt94ffRs7OWIZBsogRT/Y3KJzrDkKn/6EzNxxnuRrDNVmyhg3lqcNH2PHPyrsj2OFa+71EIsUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0E8C1063;
+	Mon, 20 Oct 2025 08:44:51 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 14E4B3F66E;
+	Mon, 20 Oct 2025 08:44:54 -0700 (PDT)
+Message-ID: <40dd0187-230b-470c-a875-c324df1dedce@arm.com>
+Date: Mon, 20 Oct 2025 16:44:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
- <20251006-reset-gpios-swnodes-v1-7-6d3325b9af42@linaro.org> <95bbec130437846d4b902ce4161ccf0f33c26c59.camel@pengutronix.de>
-In-Reply-To: <95bbec130437846d4b902ce4161ccf0f33c26c59.camel@pengutronix.de>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 20 Oct 2025 17:25:55 +0200
-X-Gm-Features: AS18NWAjCt18PuLE0qD-eSmCj5bEgp_luJDnH9x9exFUGhDFJ5w2jrnK3EKU3zo
-Message-ID: <CAMRc=Md_-mO=HqfncD-vJS6XzPJ+aTcBjSjtkxLH_h1=pNjCcg@mail.gmail.com>
-Subject: Re: [PATCH 7/9] reset: make the provider of reset-gpios the parent of
- the reset device
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/29] arm_mpam: Add probe/remove for mpam msc driver
+ and kbuild boiler plate
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-8-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20251017185645.26604-8-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 6, 2025 at 5:19=E2=80=AFPM Philipp Zabel <p.zabel@pengutronix.d=
-e> wrote:
->
-> >       if (!label_tmp)
-> >               return -EINVAL;
-> > @@ -919,6 +915,11 @@ static int __reset_add_reset_gpio_device(const str=
-uct of_phandle_args *args)
-> >       if (args->args_count !=3D 2)
-> >               return -ENOENT;
-> >
-> > +     struct gpio_device *gdev __free(gpio_device_put) =3D
-> > +             gpio_device_find_by_fwnode(of_fwnode_handle(args->np));
->
-> We are mixing cleanup helpers with gotos in this function, which the
-> documentation in cleanup.h explicitly advises against.
->
-> I know the current code is already guilty, but could you take this
-> opportunity to prepend a patch that splits the part under guard() into
-> a separate function?
->
+Hi James,
 
-If I'm being honest, I'd just make everything else use __free() as
-well. Except for IDA, it's possible.
+On 10/17/25 19:56, James Morse wrote:
+> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
+> only be accessible from those CPUs, and they may not be online.
+> Touching the hardware early is pointless as MPAM can't be used until
+> the system-wide common values for num_partid and num_pmg have been
+> discovered.
+> 
+> Start with driver probe/remove and mapping the MSC.
+> 
+> CC: Carl Worth <carl@os.amperecomputing.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v2:
+>  * Comment in Kconfig about why EXPERT.
+>  * Dropped duplicate depends.
+>  * Fixed duplicate return statement.
+>  * Restructured driver probe to have a do_ function to allow breaks to be
+>    return instead...
+>  * Removed resctrl.h include, added spinlock.h
+>  * Removed stray DT function prototype
+>  * Removed stray PCC variables in struct mpam_msc.
+>  * Used ccflags not cflags for debug define.
+>  * Moved srcu header include to internal.h
+>  * Moved mpam_msc_destroy() into this patch.
+> 
+> Changes since v1:
+>  * Avoid selecting driver on other architectrues.
+>  * Removed PCC support stub.
+>  * Use for_each_available_child_of_node_scoped() and of_property_read_reg()
+>  * Clarified a comment.
+>  * Stopped using mpam_num_msc as an id,a and made it atomic.
+>  * Size of -1 returned from cache_of_calculate_id()
+>  * Renamed some struct members.
+>  * Made a bunch of pr_err() dev_err_ocne().
+>  * Used more cleanup magic.
+>  * Inlined a print message.
+>  * Fixed error propagation from mpam_dt_parse_resources().
+>  * Moved cache accessibility checks earlier.
+>  * Change cleanup macro to use IS_ERR_OR_NULL().
+> 
+> Changes since RFC:
+>  * Check for status=broken DT devices.
+>  * Moved all the files around.
+>  * Made Kconfig symbols depend on EXPERT
+> ---
+>  arch/arm64/Kconfig              |   1 +
+>  drivers/Kconfig                 |   2 +
+>  drivers/Makefile                |   1 +
+>  drivers/acpi/arm64/mpam.c       |   7 ++
+>  drivers/resctrl/Kconfig         |  13 +++
+>  drivers/resctrl/Makefile        |   4 +
+>  drivers/resctrl/mpam_devices.c  | 190 ++++++++++++++++++++++++++++++++
+>  drivers/resctrl/mpam_internal.h |  52 +++++++++
+>  include/linux/acpi.h            |   2 +-
+>  9 files changed, 271 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/resctrl/Kconfig
+>  create mode 100644 drivers/resctrl/Makefile
+>  create mode 100644 drivers/resctrl/mpam_devices.c
+>  create mode 100644 drivers/resctrl/mpam_internal.h
+> 
+[snip]
+> +static struct mpam_msc *do_mpam_msc_drv_probe(struct platform_device *pdev)
+> +{
+> +	int err;
+> +	u32 tmp;
+> +	struct mpam_msc *msc;
+> +	struct resource *msc_res;
+> +	struct device *dev = &pdev->dev;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
+> +	if (!msc)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	mutex_init(&msc->probe_lock);
+> +	mutex_init(&msc->part_sel_lock);
+> +	msc->id = pdev->id;
+> +	msc->pdev = pdev;
+> +	INIT_LIST_HEAD_RCU(&msc->all_msc_list);
+> +	INIT_LIST_HEAD_RCU(&msc->ris);
+> +
+> +	err = update_msc_accessibility(msc);
+> +	if (err)
+> +		return ERR_PTR(err);
+> +	if (cpumask_empty(&msc->accessibility)) {
+> +		dev_err_once(dev, "MSC is not accessible from any CPU!");
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	if (device_property_read_u32(&pdev->dev, "pcc-channel", &tmp))
+> +		msc->iface = MPAM_IFACE_MMIO;
+> +	else
+> +		msc->iface = MPAM_IFACE_PCC;
 
-That being said: I have another thing in the works, namely converting
-the OF code to fwnode in reset core. I may address this there as I'll
-be moving stuff around. Does this make sense?
+As there is no PCC support in this series should this return
+ERR_PTR(-ENOTSUPP) when the firmware doesn't advertise a MMIO interface?
 
-> I'd also move this block after the lockdep_assert_not_held() below.
->
+> +
+> +	if (msc->iface == MPAM_IFACE_MMIO) {
+> +		void __iomem *io;
+> +
+> +		io = devm_platform_get_and_ioremap_resource(pdev, 0,
+> +							    &msc_res);
+> +		if (IS_ERR(io)) {
+> +			dev_err_once(dev, "Failed to map MSC base address\n");
+> +			return (void *)io;
+> +		}
+> +		msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
+> +		msc->mapped_hwpage = io;
+> +	}
+> +
+> +	list_add_rcu(&msc->all_msc_list, &mpam_all_msc);
+> +	platform_set_drvdata(pdev, msc);
+> +
+> +	return msc;
+> +}
+> +
+> +static int mpam_msc_drv_probe(struct platform_device *pdev)
+> +{
+> +	int err;
+> +	struct mpam_msc *msc = NULL;
+> +	void *plat_data = pdev->dev.platform_data;
+> +
+> +	mutex_lock(&mpam_list_lock);
+> +	msc = do_mpam_msc_drv_probe(pdev);
+> +	mutex_unlock(&mpam_list_lock);
+> +	if (!IS_ERR(msc)) {
+> +		/* Create RIS entries described by firmware */
+> +		err = acpi_mpam_parse_resources(msc, plat_data);
+> +		if (err)
+> +			mpam_msc_drv_remove(pdev);
+> +	} else {
+> +		err = PTR_ERR(msc);
+> +	}
+> +
+> +	if (!err && atomic_add_return(1, &mpam_num_msc) == fw_num_msc)
+> +		pr_info("Discovered all MSC\n");
+> +
+> +	return err;
+> +}
+> +
+> +static struct platform_driver mpam_msc_driver = {
+> +	.driver = {
+> +		.name = "mpam_msc",
+> +	},
+> +	.probe = mpam_msc_drv_probe,
+> +	.remove = mpam_msc_drv_remove,
+> +};
+> +
+> +static int __init mpam_msc_driver_init(void)
+> +{
+> +	if (!system_supports_mpam())
+> +		return -EOPNOTSUPP;
+> +
+> +	init_srcu_struct(&mpam_srcu);
+> +
+> +	fw_num_msc = acpi_mpam_count_msc();
+> +
+> +	if (fw_num_msc <= 0) {
+> +		pr_err("No MSC devices found in firmware\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return platform_driver_register(&mpam_msc_driver);
+> +}
+> +subsys_initcall(mpam_msc_driver_init);
+-- 
+Thanks,
 
-Yeah lockdep asserts should be at the top of the function.
+Ben
 
-Bart
 
