@@ -1,140 +1,159 @@
-Return-Path: <linux-acpi+bounces-18005-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18006-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCA3BF2047
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 17:11:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEEABF20BC
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 17:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6879534C680
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:11:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6EDC44F73CB
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A67B23A58B;
-	Mon, 20 Oct 2025 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9BF255F3F;
+	Mon, 20 Oct 2025 15:15:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275DA229B2A;
-	Mon, 20 Oct 2025 15:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4F624BD1A;
+	Mon, 20 Oct 2025 15:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760973092; cv=none; b=sd0z/ObiUGX3/G6Gp73b2TqfbQl2InwZkUMAU+UScu+hqKJMjvcKEm42MjUzuSlFZQkZrVt+GuqhzrnWptvVQCfBp+IRn7omz+4vDmY8e+4GyZQzw0HoamamjDvyBZKtoSPkTcPTzgNm8lnITbael9s/AjJenvFll2yyZIq9KeI=
+	t=1760973305; cv=none; b=T0sRvy92XA+Sew8uxfpR4dppGVFmyrX1zu1Q0N0o7PYFIWf0GmsQDmHt0vzggrtaBxnNZdKG1iifQeQg4VMNK205yvSruSHn49ndIurERDQvNaZ1g0NPIbZ3F+M9vte//uXeBaxmrvrlcFoCSzduQ7YvINPpiKtvPN+V6aPamd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760973092; c=relaxed/simple;
-	bh=DPphK7EalUc/OEqUgMMfPzehoXv3BpiJffqmHDfOpHc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bDFIOn3O5fvQB6vaWWs2rgMpx9pfgDH1DPwsyPMOue65phbY8nWRUEbm+AWiP9qJjO+XdxkWGBsvb1VNgTJAdHIcBYbkNSyB5vGBh8WfxqpFITO2W04g38Kzmjl47odl4TQ8vkmAXn+z5iKn484C5Wd1sXtEQQqVYCFr0WNRQ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cqzLs6Ndmz6M5CH;
-	Mon, 20 Oct 2025 23:07:49 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0692814038F;
-	Mon, 20 Oct 2025 23:11:27 +0800 (CST)
-Received: from localhost (10.48.157.75) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Oct
- 2025 16:11:26 +0100
-Date: Mon, 20 Oct 2025 16:11:22 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Linux ACPI <linux-acpi@vger.kernel.org>, Linux PM
-	<linux-pm@vger.kernel.org>, Takashi Iwai <tiwai@suse.de>, LKML
-	<linux-kernel@vger.kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>, Frank
- Li <Frank.Li@nxp.com>, Dhruva Gole <d-gole@ti.com>, Mika Westerberg
-	<mika.westerberg@linux.intel.com>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 2/2] ACPI: TAD: Improve runtime PM using guard macros
-Message-ID: <20251020161122.00006179@huawei.com>
-In-Reply-To: <22877917.EfDdHjke4D@rafael.j.wysocki>
-References: <8599731.T7Z3S40VBb@rafael.j.wysocki>
-	<22877917.EfDdHjke4D@rafael.j.wysocki>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1760973305; c=relaxed/simple;
+	bh=lpAJKs5aEfXOBaNfgX43lajmP/dejGOz35JJ3WbL3fg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AjYicODAEFeA7yZzwQF3a5CBZm6MMMqAPdhAaYON2uoCfp4s7UmLA2xuLhnoBrsy83addf0Ol8cCVzy5ByWZXRWdU21n26Gun899x54/sF3lnCnpEz2MfHF3ISCJLkxn/zr3ZN99e3spJmILz1WMKZ0Ewk7suKGBDDRqcsUbz/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 629F91063;
+	Mon, 20 Oct 2025 08:14:48 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABB853F66E;
+	Mon, 20 Oct 2025 08:14:51 -0700 (PDT)
+Message-ID: <0d620641-6142-432d-9c25-a35b37f8bde6@arm.com>
+Date: Mon, 20 Oct 2025 16:14:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 17/29] arm_mpam: Extend reset logic to allow devices to
+ be reset any time
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-18-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20251017185645.26604-18-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Sat, 18 Oct 2025 14:24:42 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hi James,
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 10/17/25 19:56, James Morse wrote:
+> cpuhp callbacks aren't the only time the MSC configuration may need to
+> be reset. Resctrl has an API call to reset a class.
+> If an MPAM error interrupt arrives it indicates the driver has
+> misprogrammed an MSC. The safest thing to do is reset all the MSCs
+> and disable MPAM.
 > 
-> Use guard pm_runtime_active_try to simplify runtime PM cleanup and
-> implement runtime resume error handling in multiple places.
+> Add a helper to reset RIS via their class. Call this from mpam_disable(),
+> which can be scheduled from the error interrupt handler.
 > 
-> Also use guard pm_runtime_noresume to simplify acpi_tad_remove().
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 > ---
->  drivers/acpi/acpi_tad.c |   57 +++++++++++++++++++++---------------------------
->  1 file changed, 25 insertions(+), 32 deletions(-)
+> Changes since v2:
+>  * Reduced the scop of arguments in mpam_reset_component_locked().
 > 
-> --- a/drivers/acpi/acpi_tad.c
-> +++ b/drivers/acpi/acpi_tad.c
-
-> @@ -111,12 +110,11 @@ static int acpi_tad_get_real_time(struct
->  	acpi_status status;
->  	int ret = -EIO;
+> Changes since v1:
+>  * more complete use of _srcu helpers.
+>  * Use guard macro for srcu.
+>  * Dropped a might_sleep() - something else will bark.
+> ---
+>  drivers/resctrl/mpam_devices.c | 58 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 55 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index ec089593acad..545482e112b7 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -802,15 +802,13 @@ static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
 >  
-> -	pm_runtime_get_sync(dev);
-> +	ACQUIRE(pm_runtime_active_try, pm)(dev);
-> +	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-> +		return -ENXIO;
+>  /*
+>   * Called via smp_call_on_cpu() to prevent migration, while still being
+> - * pre-emptible.
+> + * pre-emptible. Caller must hold mpam_srcu.
+>   */
+>  static int mpam_reset_ris(void *arg)
+>  {
+>  	u16 partid, partid_max;
+>  	struct mpam_msc_ris *ris = arg;
 >  
->  	status = acpi_evaluate_object(handle, "_GRT", NULL, &output);
+> -	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
 > -
-> -	pm_runtime_put_sync(dev);
-> -
->  	if (ACPI_FAILURE(status))
-
-Whilst it isn't actually a bug, this does run up against the guidance
-in cleanup.h to avoid mixing gotos and cleanup.h usage in a single function.
-That's partly a simplification to avoid having to explain the issues with
-jumping past inline declarations.
-
-If you want to follow that guidance, either you'd need to add a helper along the
-lines of:
-
-DEFINE_FREE(acpi_buffer, void *m ACPI_FREE(_T));
-void *acpi_eval_grt(acpi_handle handle, struct acpi_buffer *output)
-{
-	acpi_status status = acpi_evaluate_object(handle, "_GRT", NULL, &output);
-
-	if (ACPI_FAILURE(status)) {
-		ACPI_FREE(output.pointer);
-		return ERR_PTR(-EIO); //whatever error makse sense.
-	}
-
-	return output.pointer;
-}
-
-void *out_obj __free(acpi_buffer) = acpi_eval_grt(handle, &output);
-
-Then can return directly at all error paths.  Not the nicest bit of
-code though.
-
-Or, factor out everthing after that allocation down
-to the label as helper function and have direct returns in that.
-
-or leave it all as is and hope Linus doesn't get grumpy about mix
-and match (which lead to that guidance being so general in the first place!)
-
-The rest look good to me.
-
-Jonathan
-
-
-
->  		goto out_free;
+>  	if (ris->in_reset_state)
+>  		return 0;
 >  
+> @@ -1328,8 +1326,56 @@ static void mpam_enable_once(void)
+>  	       mpam_partid_max + 1, mpam_pmg_max + 1);
+>  }
+>  
+> +static void mpam_reset_component_locked(struct mpam_component *comp)
+> +{
+> +
+
+Nit: Extra blank line.
+
+> +	struct mpam_vmsc *vmsc;
+> +
+> +	lockdep_assert_cpus_held();
+> +
+> +	guard(srcu)(&mpam_srcu);
+> +	list_for_each_entry_srcu(vmsc, &comp->vmsc, comp_list,
+> +				 srcu_read_lock_held(&mpam_srcu)) {
+> +		struct mpam_msc *msc = vmsc->msc;
+> +		struct mpam_msc_ris *ris;
+> +
+> +		list_for_each_entry_srcu(ris, &vmsc->ris, vmsc_list,
+> +					 srcu_read_lock_held(&mpam_srcu)) {
+> +			if (!ris->in_reset_state)
+> +				mpam_touch_msc(msc, mpam_reset_ris, ris);
+> +			ris->in_reset_state = true;
+> +		}
+> +	}
+> +}
+> +
+
+-- 
+Thanks,
+
+Ben
+
 
