@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-17981-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17982-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F190FBF12F4
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:30:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DEFBF1302
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9EBCE34C2B8
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:30:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9523A4F4C05
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71353191AE;
-	Mon, 20 Oct 2025 12:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786D531986F;
+	Mon, 20 Oct 2025 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OppaTkzb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oup1IVIo"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19BB318133;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296313191D7;
 	Mon, 20 Oct 2025 12:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963411; cv=none; b=ZF6x2hFlNk0CDZUNcSCur7xnGbJgGcMeSG0awB7w6hzM8E4cfctNLl8MpgsBcLOWRojNon2p4nXR6Lu51fd4S8gBjT/PMYqr3kPBsqeZR+EYYvVUWAER5bXxpOXt+c41NVh5B8iqh+52O548rvYCQ+RQQWIvExTaGtYSChIGE0U=
+	t=1760963412; cv=none; b=CUaNf/LjEiaBJDSjFUhrYuSoKnM5gWrgSUjZrdwl+jF6kuNZPkznkh8X0kYf86Edm08vZ5X7ARXRVlEuk1zaQt1DOg3GNHipRK+TJvvjIp6uJBzlzDISTVzSOj3TpXM52XMCSeyeDUlQD1QY0BP0CRaAbVVBRO5uCYJRYCFs94c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963411; c=relaxed/simple;
-	bh=vRe08IshBVZgH66zAsJxgYD+sZIV9HYsJFPIPT5JdzI=;
+	s=arc-20240116; t=1760963412; c=relaxed/simple;
+	bh=WQ1KbYH73pkv7difN/iSChS2f39lIQHsS0IK9hv/d9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PU6wOe5Xb5Q9j6IpmI9akdTnaKgds+niEDuF0fyBN2DQfQ/WjQErng5wCCnTafrfbT5tQRojRU/YP/jd51TGv5UA68oUh0aY9wJqwr0oCiwTbziqN6sNVI9sPnuBgY1VehoywzTZt/fuyp05bvjniP3aSO5vuEcGwxUAPRYQrso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OppaTkzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B37C16AAE;
+	 MIME-Version; b=anXUqJb56mokR/4p6pVW0At4bq0+bPTn1XY71YNmh6Uy4ra9HDpbOIT+gN+QAZhnmUmRfjWJ8ZUZviX9vArJb6zF42EOh4YHRBVwLNrKvczNblwjBWdw9XcU85qpVsN81Tdz2rppxC1idvsTEN1xpBZS5+4eTrgFHvly19j2WPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oup1IVIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32A2C116B1;
 	Mon, 20 Oct 2025 12:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1760963411;
-	bh=vRe08IshBVZgH66zAsJxgYD+sZIV9HYsJFPIPT5JdzI=;
+	bh=WQ1KbYH73pkv7difN/iSChS2f39lIQHsS0IK9hv/d9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OppaTkzbaK9k6VlRvv3ZEudUZgk4TK/G+tW6ol5mfvMzbkkUnU5L/3eGUCEiiY4pv
-	 5b3dpqA/kn0FG+Tjqgcp51DZXvi3GRo2R0eOQ1hCtPr+gvubXkfPh8/ac8tUwc06Oz
-	 Gq8+wxx8FIKvakr4Cx3hPO3w2rl249ExtZBC9k/0JfNYOTO02VybTJ8usb8S4MDT4M
-	 teLAePD7YreTLYxIW3fL3ZGRpQtZNchiG5kfS6UWyb0VtV6HgxyuGI2SwXT/RtZ1lY
-	 MnRGIqILNOKPwucnc+d0ynQ1wtqs5sZltUcutuDOybc34f14xGmiPcYpks5zkUI7vg
-	 He+kUOe5VcCIQ==
+	b=Oup1IVIom8Usan9IszwBgDXvWPjVMOoABwyZ6Fg32uCyEX2c0gzWwLlh69ASMVifs
+	 yOow+zoKOocgvVTv/e8iyGsZK+FhRvS+9cFdZHW6+TEf9ZSn4eFIY/EMeGa///RM4U
+	 y7bT6wM1aOylbKHPyJqGeg1wpjuhTPCOaHxeW6lRSX5Ek9f6go16YHfgHrAm6CrQL9
+	 xgDGKLBlGo8WpcM/L4/duob7XRmGLNoc8p2zKPTbpQNIA6IN3+Rn4sMzhn1YNt0pPn
+	 OKo85Z9D0ilpSiLmICSGJHKKZU3cbTfOnwtRdLosrchQQes/8eqMgV7RFyLWz1hd8U
+	 1kznQfrSB4P9g==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vAp1d-0000000FUu2-2a1v;
-	Mon, 20 Oct 2025 12:30:09 +0000
+	id 1vAp1d-0000000FUu2-3utc;
+	Mon, 20 Oct 2025 12:30:10 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -65,9 +65,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Alexandru Elisei <alexandru.elisei@arm.com>
-Subject: [PATCH v4 08/26] perf: arm_pmu: Convert to new IRQ affinity retrieval API
-Date: Mon, 20 Oct 2025 13:29:25 +0100
-Message-ID: <20251020122944.3074811-9-maz@kernel.org>
+Subject: [PATCH v4 09/26] perf: arm_spe_pmu: Convert to new IRQ affinity retrieval API
+Date: Mon, 20 Oct 2025 13:29:26 +0100
+Message-ID: <20251020122944.3074811-10-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251020122944.3074811-1-maz@kernel.org>
 References: <20251020122944.3074811-1-maz@kernel.org>
@@ -85,53 +85,43 @@ X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to 
 
 Now that the relevant interrupt controllers are equipped with
 a callback returning the affinity of per-CPU interrupts, switch
-the OF side of the ARM PMU driver over to this new method.
+the ARM SPE driver over to this new method.
 
 Reviewed-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Tested-by: Will Deacon <will@kernel.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/perf/arm_pmu_platform.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/perf/arm_spe_pmu.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/perf/arm_pmu_platform.c b/drivers/perf/arm_pmu_platform.c
-index 118170a5cedef..9c0494d8a867a 100644
---- a/drivers/perf/arm_pmu_platform.c
-+++ b/drivers/perf/arm_pmu_platform.c
-@@ -42,14 +42,13 @@ static int probe_current_pmu(struct arm_pmu *pmu,
- 	return ret;
- }
- 
--static int pmu_parse_percpu_irq(struct arm_pmu *pmu, int irq)
-+static int pmu_parse_percpu_irq(struct arm_pmu *pmu, int irq,
-+				const struct cpumask *affinity)
+diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+index fa50645feddad..1460b02d20e8b 100644
+--- a/drivers/perf/arm_spe_pmu.c
++++ b/drivers/perf/arm_spe_pmu.c
+@@ -1287,8 +1287,10 @@ static void arm_spe_pmu_dev_teardown(struct arm_spe_pmu *spe_pmu)
+ static int arm_spe_pmu_irq_probe(struct arm_spe_pmu *spe_pmu)
  {
--	int cpu, ret;
- 	struct pmu_hw_events __percpu *hw_events = pmu->hw_events;
-+	int cpu;
+ 	struct platform_device *pdev = spe_pmu->pdev;
+-	int irq = platform_get_irq(pdev, 0);
++	const struct cpumask *affinity;
++	int irq;
  
--	ret = irq_get_percpu_devid_partition(irq, &pmu->supported_cpus);
--	if (ret)
--		return ret;
-+	cpumask_copy(&pmu->supported_cpus, affinity);
++	irq = platform_get_irq_affinity(pdev, 0, &affinity);
+ 	if (irq < 0)
+ 		return -ENXIO;
  
- 	for_each_cpu(cpu, &pmu->supported_cpus)
- 		per_cpu(hw_events->irq, cpu) = irq;
-@@ -115,9 +114,12 @@ static int pmu_parse_irqs(struct arm_pmu *pmu)
+@@ -1297,10 +1299,7 @@ static int arm_spe_pmu_irq_probe(struct arm_spe_pmu *spe_pmu)
+ 		return -EINVAL;
  	}
  
- 	if (num_irqs == 1) {
--		int irq = platform_get_irq(pdev, 0);
-+		const struct cpumask *affinity;
-+		int irq;
-+
-+		irq = platform_get_irq_affinity(pdev, 0, &affinity);
- 		if ((irq > 0) && irq_is_percpu_devid(irq))
--			return pmu_parse_percpu_irq(pmu, irq);
-+			return pmu_parse_percpu_irq(pmu, irq, affinity);
- 	}
+-	if (irq_get_percpu_devid_partition(irq, &spe_pmu->supported_cpus)) {
+-		dev_err(&pdev->dev, "failed to get PPI partition (%d)\n", irq);
+-		return -EINVAL;
+-	}
++	cpumask_copy(&spe_pmu->supported_cpus, affinity);
  
- 	if (nr_cpu_ids != 1 && !pmu_has_irq_affinity(dev->of_node))
+ 	spe_pmu->irq = irq;
+ 	return 0;
 -- 
 2.47.3
 
