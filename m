@@ -1,83 +1,104 @@
-Return-Path: <linux-acpi+bounces-18003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D09BF180A
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:18:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A06EBF1858
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A03644EB68D
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 13:17:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD4C189A782
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 13:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FC825A655;
-	Mon, 20 Oct 2025 13:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A523164AF;
+	Mon, 20 Oct 2025 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hoc0m9d1"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="q0esaEKR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EBC1C84C0;
-	Mon, 20 Oct 2025 13:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812193043B2;
+	Mon, 20 Oct 2025 13:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760966272; cv=none; b=jEZv9eww5kEZEKL7tKlawOHovPCsSOWw5GT1Fd8w3Zx5j782P7Y36i2vZGDeIeiMe5ypKWIzGewH1p2Yy0bxILA25AFjD3LkamLnMZVuqLzZcFvw17Ly+Oja7eQ/MbeBPwfwXLSxAyaXM7DyFExg3lIJKKP5cMDb0iqzb/avBwI=
+	t=1760966591; cv=none; b=iXmjvQeqTgPVv8vxa0rQqJaEfIMxO+1KVZbDRQQHyfWjeOiatMbwdYWwwtubNr8KyKZ+bnYn7FAWxYnHPHckBy2a1S8981PA4vC8xE7Im3LCj29jpJtshsz/pMB4hUNvqX1mXqKV1tl47sBwmAZRLzaBzwHMTx4Lgpj3YKwENsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760966272; c=relaxed/simple;
-	bh=Q6dPfppUAtQSvlACVICBfe5BTPuVHrT+7T4aQpJcxuU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fS8+7NQsjE74/PF4hNpOsGAXXquiGSSJklpwvSDSh8Fy1J6IUbpK52h607051UPT2YUCMOCRUfm9d/FEIkSetkVYC4ZqkOgf2QkrwmlNsjrJvzSzNaqQy2qShBq0S8vnPXwnandY4XTEMFeg8WYeZgPKhRiZF6OIH9W/cmcNXLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hoc0m9d1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C2FC4CEF9;
-	Mon, 20 Oct 2025 13:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760966272;
-	bh=Q6dPfppUAtQSvlACVICBfe5BTPuVHrT+7T4aQpJcxuU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hoc0m9d1RygVWbxA9Y0wLLqp+m1sE2SA/CqmeMee8wHNwJmMdACxTiRigwBFG8Zu0
-	 claO0kx2MULA3JNoz9beXVExGYd+TeHJ/pd2w7xLXe6cbloPx7tNMUNVs2EAAN/Vpa
-	 P2/7Fh8RDeuqd5F+D6ZnOo295eQUuoUBxO7455v+PkaQyTGH8+hrt/HeBBJJlUPEfb
-	 7hnlaZA5hqOPIN+zTb1llaaKsBaEwC2y/iJBpOFO7Hw8MdD2in83qdwEBmzvw5t/vQ
-	 Djt7zVTNisj6ODTSh1BqSGnqw9DW1xxXjWb6YMb3cImv6XNBFEi6Sjs0TPg/1MyW/k
-	 9iNDOcF4awXUQ==
-Message-ID: <e86af6ea-5991-4246-a725-ff5bf45b13b8@kernel.org>
-Date: Mon, 20 Oct 2025 15:17:47 +0200
+	s=arc-20240116; t=1760966591; c=relaxed/simple;
+	bh=SURrorlpKK042jse7CSvgXqPnvcIIlPNTlkrxpLT6JU=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kkdhq7GjsNeZ8FFnmggBDDXVHwLX2R16mWXlK6fes4SDmBIKWLhRckdQ/4gDAAYHUKLf6gtLuZGXxulDH7iOAIi8nsepeBXSNz6g8Tizgb1lEzD14lIojHixYVjLTozWkrXSAFmD/uKkOAUUL6KhcIbtydaIIrrmptZBHT7+QMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=q0esaEKR; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=twNLkyeYrri2OQLBbsN6MguTa49g239UQ7T7I0pqboU=;
+	b=q0esaEKRzsgQyVtjbId7vCmivLssOJarA7Lwm00G4h7svBRHJQI11IcqQ/LO6irUo79QoNVgc
+	D30hKwakE6+ZLkMCOIqaf6x2ELJKOeeOZTZaG4whpCxgazv794kVWrHRWhOBNeEVop1OCNUx1+u
+	AXcu4waFqByuNzzyhZSOl+A=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cqx1b39hyz1prLM;
+	Mon, 20 Oct 2025 21:22:43 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 485761402DA;
+	Mon, 20 Oct 2025 21:23:07 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Oct 2025 21:23:06 +0800
+Subject: Re: [PATCH v4] ACPI: AGDI: Add interrupt signaling mode support
+To: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Ilkka Koskinen <ilkka@os.amperecomputing.com>, Will Deacon
+	<will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>
+References: <20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <a93e845a-b084-a680-7158-68363c492b75@huawei.com>
+Date: Mon, 20 Oct 2025 21:23:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with
- `pin_init::zeroed`
-To: Siyuan Huang <huangsiyuan@kylinos.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, linux-acpi@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On 10/20/25 5:12 AM, Siyuan Huang wrote:
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
+On 2025/10/17 15:39, Kazuhiro Abe wrote:
+> AGDI has two types of signaling modes: SDEI and interrupt.
+> Currently, the AGDI driver only supports SDEI.
+> Therefore, add support for interrupt signaling mode
+> The interrupt vector is retrieved from the AGDI table, and call panic
+> function when an interrupt occurs.
 > 
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
+> Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+> Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+> ---
+> Hanjun, I have addressed all your comments.
+> Please review them.
 > 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
+> v3->v4
+>   - Add a comment to the flags member.
+>   - Fix agdi_interrupt_probe.
+>   - Fix agdi_interrupt_remove.
+>   - Add space in struct initializsation.
+>   - Delete curly braces.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Looks good to me,
 
-Siyuan, there are more such cases, e.g. in OF, debugfs and a few others in case
-you're interested in fixing up those as well. :)
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+
+Thanks
+Hanjun
 
