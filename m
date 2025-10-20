@@ -1,222 +1,184 @@
-Return-Path: <linux-acpi+bounces-17962-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17963-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B65BEF8C8
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 08:57:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D56DBEFCB7
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0601888027
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 06:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3FE3BBE10
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 08:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BADE2DAFBA;
-	Mon, 20 Oct 2025 06:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68DB2DECAA;
+	Mon, 20 Oct 2025 08:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6AmWEWZD"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ChvmfHxP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3279E2D9494;
-	Mon, 20 Oct 2025 06:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171EF1FE471
+	for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 08:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760943464; cv=none; b=NaIOSUbjmHQo8EjUaPNAD/BOBKwjTieCZMk57IygPtxjnjSNHJnNKWlfJsWAN0Ht9c9CJePbrjL7IUHNUTbyKhiyUTOQXdxUI/qEV5QcxUDOs0tyVDs3G13a7cps0W0WWsqpxIusl5PrilaDVLGbHEZzZE1tO67KZsKnqZY8XpE=
+	t=1760947618; cv=none; b=G5pwVvEa/HwKvyX2/WmeK0At1USrCVLir+Hnh5ketJBHtEbNaYHRmjKNZUe4oVmR91Uo4N1l5pyA7N/fIWveqtiIOmQuCaPvhb9Rv2Qv36vxb3rbtp3lQLHpySZELtieApIAyt2yOAiCcMQb0O+ZyWIsJR7Y6rBuUJ98NL4SgDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760943464; c=relaxed/simple;
-	bh=1cmrYO5YSDcm5nA1LZYXoyvgBCQdesIMpsSK0ghqDws=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=L8IxTNqPE97P6yLDSRz5Q3RoHMEoce4FHqvnfSau+iUS0MWjXmCytFHosMHkg9IKlrPWybBc4ROO7C0Lag95MDMz9OR/ldcDROESQfUIgt24egBuwJ2PfIj5U1r7ODB08cXr4Gc7pg5nmV1rGzQAZ/OJ5/z1D2d5xkEztb7dIrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6AmWEWZD; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=GOddeF4CmeQdoAneSYg3qKOAfjZnCurbFZKwrmWO7Wk=;
-	b=6AmWEWZDDRnn5UyfKveUzHV4h+LumJnl6lEA+NJTGFTcVzF9o37u4jLl/ljs1KNqP+VqWMnTW
-	jPLmWAJ2+/99CsIABgpC+hYZSAbpcqKdI1DY1hUtwCpaZ7GHP4TU/oP5LsMtz43Ld8EC/zMW8yv
-	QVYWBdteLf6HBHFiLBrWgxA=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4cqmSq0TzpzRhsG;
-	Mon, 20 Oct 2025 14:57:15 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 962A5140257;
-	Mon, 20 Oct 2025 14:57:38 +0800 (CST)
-Received: from kwepemn100008.china.huawei.com (7.202.194.111) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Oct 2025 14:57:38 +0800
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemn100008.china.huawei.com (7.202.194.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Oct 2025 14:57:37 +0800
-From: Yushan Wang <wangyushan12@huawei.com>
-To: <wangyushan12@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
-	<james.morse@arm.com>, <linux-cxl@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, Will Deacon
-	<will@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso
-	<dave@stgolabs.net>, "H . Peter  Anvin" <hpa@zytor.com>, Peter Zijlstra
-	<peterz@infradead.org>
-Subject: [PATCH v3 0/8] Cache coherency management subsystem
-Date: Mon, 20 Oct 2025 14:57:37 +0800
-Message-ID: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.33.0
-X-UIDL: 286386
-X-Mozilla-Status: 0001
-X-Mozilla-Keys: $label3                                                                         
-Received: from kwepemn200008.china.huawei.com (7.202.194.131) by  kwepemn100008.china.huawei.com (7.202.194.111) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.2.1544.11 via Mailbox Transport; Wed, 20 Aug 2025 18:29:54 +0800
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by  kwepemn200008.china.huawei.com (7.202.194.131) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.2.1544.11; Wed, 20 Aug 2025 18:29:54 +0800
-Received: from SecurePC-101-06.huawei.com (10.122.19.247) by  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.1.2507.39; Wed, 20 Aug 2025 12:29:51 +0200
-X-Mailer: git-send-email 2.48.1
-Content-Type: text/plain
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To  frapeml500008.china.huawei.com (7.182.85.71)
-X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.7121070
-X-MS-Exchange-Processed-By-BccFoldering: 15.02.1544.011
+	s=arc-20240116; t=1760947618; c=relaxed/simple;
+	bh=2N4OGTa3rtpVqsCUmLw1+yGLYM1aVUWodNNb5rGn3LU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jlwo8PuB/sf35OUnppP+RNDLR8MkD9Iy9qqB1OfEjQr5Y74EattR4HlVJ9Xa92nc+dqyCN2ghdtmyaE5doMV4jV+hha4UBtbpKIKKEHq751XeBHVDLOLAAPlJS8cfbECbj4Pc3IfaPXB5drVinOTbWnBnIYYvUzziaHbo2F56i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ChvmfHxP; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-57e03279bfeso4633477e87.0
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 01:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1760947615; x=1761552415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mkm6279T3HUfgpQGhHQv/L3gfBoclYPQErPb1Lc1rZ0=;
+        b=ChvmfHxPcsr5oqTyaxzEOErFjKsRbpf09iwv6M+YbNAHO4edqM0U6qkbAkUwnZZjKU
+         8cQvj2pILIh2k9xopW6vPOWlItutE2bletpShfdMLoFofqlREKbTn/p5Apd5gyAwQgPd
+         yDl0EKvnZ92QivHTJATl0ay1X+UQclLSgTEQv8FWL7IKjQsUAukDS63ZjXQQ3Q+xxbOQ
+         c3lYSMi4BPMQO8+omYkoJ0VV1hdAyPwnBIZpD3p4zP2upW1QT+mxomFglSFH1oCLdAB2
+         xIlW8AauyZvUQ9+HZ/9RlRIE/UXoPUyj7h3t5UEOzK2V383s1k9U1KQD5/LrdEpisnd9
+         bQMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760947615; x=1761552415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mkm6279T3HUfgpQGhHQv/L3gfBoclYPQErPb1Lc1rZ0=;
+        b=p0W6fj9me6DdkYi4LjHSoxjjkeQqVJSJgNK//ZGTtkAoO4TGe91qtmLgJnPcBF7pWL
+         H21ehZWNnrlMXNlj7xek3o7qF4pGnXDnwIoWgb6K/0rLiXWao6pMxwpNk0QaqafWwdSQ
+         uERhx6leQtNKLYiYYJeSuElr9qRd0nQQFLCiCGW1RBQLWGFWL/TCm3bLHRAPUGsjZD8h
+         Q0I2x6ZWGo/FwBaMLC+XvmLThehez6ksxqqZ+a/LbMsy1XcRJRh1q5SffgKe0nm3FiG0
+         Z43QLKUwhUIdw4f7TbcoHroLnW7pFExSid+Au4EyaWh+VOd4Nj7bKAbZU33qZgSN+20o
+         hadA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPyBPirLAMMk7FHF/gxlUb+Ys/N/o7QanKwJRtJLUEwhpFvnbQTZGoRZaf35pj2fpLCSuBF7lE/05R@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuvCGEUyW42o1SBTL0GcssZZn8hLiR2vbCHDkE9j9dERFjiSlQ
+	zKK36jgtD7sAt3eWcb9VRt91M7g+arnVHZoX1yn4LKAvAF9zOQBqy8sQxFGOQNyqtqYsdF0ioAq
+	4mbOcqV/aLzg17xcRc9SYD38UhI//dY38YY5ySKJsyA==
+X-Gm-Gg: ASbGnctXdktjSfqUqzP2rcGFhF8AHCQo3gsfl4oE9hqccGAuYorBdarnIsuNrhhygJC
+	zZOvvMbpibb66cVh85ecQsBckHrbbSGDKe+0SWCM4x6KIZKHmzXW0IYF6WAV9yK3L4XY4l1KjFV
+	4H47ibp3p76Z7qXQbRuRYbwsTYWii0uFzIxSUDP7WWqvjrdZV2trpnvoDiQxyYgKogktNkL9aNU
+	BISk3Cl+poGQZuYJy/Jyugcu1YSBkxTiAAlXSiuQ6kgmwHgx3opa4fjPgEEggUJB12mWlrP61XG
+	JiXngDiiwvVNIGpT/gPsCKD+F/k=
+X-Google-Smtp-Source: AGHT+IEnXnRGs3SMCxArSB4fSMudVmkeEhYn3XsDaW2U3rT4w958z2/aG9YTzEXKt0OOPBNno6cCif5OzOylxpizFcw=
+X-Received: by 2002:a05:6512:10cf:b0:57d:cdb4:5b94 with SMTP id
+ 2adb3069b0e04-591d0b42497mr5006809e87.11.1760947614999; Mon, 20 Oct 2025
+ 01:06:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+ <20251006-reset-gpios-swnodes-v1-3-6d3325b9af42@linaro.org> <aO1dBgPZfDJTsPfE@smile.fi.intel.com>
+In-Reply-To: <aO1dBgPZfDJTsPfE@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 20 Oct 2025 10:06:43 +0200
+X-Gm-Features: AS18NWAY7ksNch0utlYlmtfhIIguLjMNDdOQUCfuHVJCcKTUxj14rMyFhjwQYVM
+Message-ID: <CAMRc=MfOoHn+mLRpQBEsC3g5sM=VZBgVffsm68CAXJBHffPxdA@mail.gmail.com>
+Subject: Re: [PATCH 3/9] software node: allow referencing firmware nodes
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemn100008.china.huawei.com (7.202.194.111)
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>=0D
+On Sat, Oct 18, 2025 at 7:34=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Oct 06, 2025 at 03:00:18PM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > At the moment software nodes can only reference other software nodes.
+> > This is a limitation for devices created, for instance, on the auxiliar=
+y
+> > bus with a dynamic software node attached which cannot reference device=
+s
+> > the firmware node of which is "real" (as an OF node or otherwise).
+> >
+> > Make it possible for a software node to reference all firmware nodes in
+> > addition to static software nodes. To that end: use a union of differen=
+t
+> > pointers in struct software_node_ref_args and add an enum indicating
+> > what kind of reference given instance of it is. Rework the helper macro=
+s
+> > and deprecate the existing ones whose names don't indicate the referenc=
+e
+> > type.
+> >
+> > Software node graphs remain the same, as in: the remote endpoints still
+> > have to be software nodes.
+>
+> ...
+>
+> > +enum software_node_ref_type {
+> > +     /* References a software node. */
+> > +     SOFTWARE_NODE_REF_SWNODE =3D 0,
+>
+>
+> I don't see why we need an explicit value here.
+>
 
-Support system level interfaces for cache maintenance as found on some=0D
-ARM64 systems. This is needed for correct functionality during various=0D
-forms of memory hotplug (e.g. CXL). Typical hardware has MMIO interface=0D
-found via ACPI DSDT.=0D
-=0D
-Includes parameter changes to cpu_cache_invalidate_memregion() but no=0D
-functional changes for architectures that already support this call.=0D
-=0D
-v3:=0D
-  - Squash the layers by moving all the management code into=0D
-    lib/cache_maint.c that architectures can opt into via=0D
-    GENERIC_CPU_CACHE_MAINTENANCE (Dan).  I added entries to Conor's=0D
-    drivers/cache MAINTAINERS entry to include this lib/ code but if=0D
-    preferred I can add a separate entry for it.=0D
-  - Add a new patch 1 that drops the old IODESC_RES_ parameter as it never=
-=0D
-    did anything other than document intent.  With the addition of a=0D
-    flushing range, we would have to check the range and resource type=0D
-    matched. Simpler to just drop the parameter. (Dan)=0D
-  - Minor fixes and renames as per reviews.=0D
-  - Even if all else looks good, I fully expect some discussion of the=0D
-    naming as I'm not particularly happy with it.=0D
-  - Open question on whether is acceptable for the answer to whether=0D
-    cpu_cache_invalidate_memregion() is supported to change as drivers=0D
-    register (potentially after initial boot).  Could design a firmware=0D
-    table solution to this, but will take a while - not sure if it is=0D
-    necessary.=0D
-  - Switch to a fwctl style allocation function that makes the container=0D
-    nature of the allocation explicit.=0D
-=0D
-On current ARM64 systems (and likely other architectures) the=0D
-implementation of cache flushing need for actions such as CXL memory=0D
-hotplug e.g. cpu_cache_invalidate_memregion(), is performed by system=0D
-components outside of the CPU, controlled via either firmware or MMIO=0D
-interfaces.=0D
-=0D
-These control units run the necessary coherency protocol operations to=0D
-cause the write backs and cache flushes to occur asynchronously. The allow=
-=0D
-filtering by PA range to reduce disruption to the system. Systems=0D
-supporting this interface must be designed to ensure that, when complete,=0D
-all cache lines in the range are in invalid state or clean state=0D
-(prefetches may have raced with the invalidation). This must include=0D
-memory-side caches and other non architectural caches beyond the Point=0D
-of Coherence (ARM terminology) such that writes will reach memory even=0D
-after OS programmable address decoders are modified (for CXL this is=0D
-any HDM decoders that aren't locked). Software will guarantee that no=0D
-writes to these memory ranges race with this operation. Whilst this is=0D
-subtly different from write backs must reach the physical memory that=0D
-difference probably doesn't matter to those reading this series.=0D
-=0D
-The possible distributed nature of the relevant coherency management=0D
-units (e.g. due to interleaving) requires the appropriate commands to be=0D
-issued to multiple (potentially heterogeneous) units. To enable this a=0D
-registration framework is provided to which drivers may register a set=0D
-of callbacks. Upon a request for a cache maintenance operation the=0D
-framework iterates over all registered callback sets, calling first a=0D
-command to write back and invalidate, and then optionally a command to wait=
-=0D
-for completion. Filtering on relevance is left to the individual drivers.=0D
-=0D
-Two drivers are included. This HiSilicon Hydra Home Agent driver which=0D
-controls hardware found on some of our relevant server SoCs and,=0D
-mostly to show that the approach is general, a driver based on a firmware=0D
-interface that was in a public PSCI specification alpha version=0D
-(now dropped - don't merge that!)=0D
-=0D
-QEMU emulation code at=0D
-http://gitlab.com/jic23/qemu cxl-2025-03-20 =0D
-=0D
-Remaining opens:=0D
-- Naming.  All suggestions welcome!=0D
-- I don't particularly like defining 'generic' infrastructure with so few=0D
-  implementations. If anyone can point me at docs for another one or two,=0D
-  or confirm that they think this is fine that would be great!=0D
-- I made up the ACPI spec - it's not documented, non official and honestly=
-=0D
-  needs work. I would however like to get feedback on whether it is=0D
-  something we want to try and get through the ACPI Working group as a much=
-=0D
-  improved code first proposal?  The potential justification being to avoid=
-=0D
-  the need for lots trivial drivers where maybe a bit of DSDT interpreted=0D
-  code does the job better. (Currently I'm not hearing much demand for this=
-=0D
-  so will probably drop in a future version).=0D
-=0D
-Thanks to all who engaged in the discussion so far.=0D
-=0D
-Jonathan=0D
-=0D
-Jonathan Cameron (5):=0D
-  memregion: Drop unused IORES_DESC_* parameter from=0D
-    cpu_cache_invalidate_memregion()=0D
-  MAINTAINERS: Add Jonathan Cameron to drivers/cache=0D
-  arm64: Select GENERIC_CPU_CACHE_MAINTENANCE and=0D
-    ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION=0D
-  acpi: PoC of Cache control via ACPI0019 and _DSM=0D
-  Hack: Pretend we have PSCI 1.2=0D
-=0D
-Yicong Yang (2):=0D
-  memregion: Support fine grained invalidate by=0D
-    cpu_cache_invalidate_memregion()=0D
-  lib: Support ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION=0D
-=0D
-Yushan Wang (1):=0D
-  cache: Support cache maintenance for HiSilicon SoC Hydra Home Agent=0D
-=0D
- MAINTAINERS                        |   3 +=0D
- arch/arm64/Kconfig                 |   2 +=0D
- arch/x86/mm/pat/set_memory.c       |   2 +-=0D
- drivers/cache/Kconfig              |  22 ++++=0D
- drivers/cache/Makefile             |   3 +=0D
- drivers/cache/acpi_cache_control.c | 153 +++++++++++++++++++++++=0D
- drivers/cache/hisi_soc_hha.c       | 187 +++++++++++++++++++++++++++++=0D
- drivers/cxl/core/region.c          |   5 +-=0D
- drivers/firmware/psci/psci.c       |   2 +=0D
- drivers/nvdimm/region.c            |   2 +-=0D
- drivers/nvdimm/region_devs.c       |   2 +-=0D
- include/linux/cache_coherency.h    |  57 +++++++++=0D
- include/linux/memregion.h          |  10 +-=0D
- lib/Kconfig                        |   3 +=0D
- lib/Makefile                       |   2 +=0D
- lib/cache_maint.c                  | 128 ++++++++++++++++++++=0D
- 16 files changed, 575 insertions(+), 8 deletions(-)=0D
- create mode 100644 drivers/cache/acpi_cache_control.c=0D
- create mode 100644 drivers/cache/hisi_soc_hha.c=0D
- create mode 100644 include/linux/cache_coherency.h=0D
- create mode 100644 lib/cache_maint.c=0D
-=0D
--- =0D
-2.48.1=0D
-=0D
+It was to make it clear, this is the default value and it's the one
+used in older code with the legacy macros. I can drop it, it's no big
+deal.
+
+> > +     /* References a firmware node. */
+> > +     SOFTWARE_NODE_REF_FWNODE,
+> > +};
+>
+> ...
+>
+> >  /**
+> >   * struct software_node_ref_args - Reference property with additional =
+arguments
+> > - * @node: Reference to a software node
+> > + * @swnode: Reference to a software node
+> > + * @fwnode: Alternative reference to a firmware node handle
+> >   * @nargs: Number of elements in @args array
+> >   * @args: Integer arguments
+> >   */
+> >  struct software_node_ref_args {
+> > -     const struct software_node *node;
+> > +     enum software_node_ref_type type;
+> > +     union {
+> > +             const struct software_node *swnode;
+> > +             struct fwnode_handle *fwnode;
+> > +     };
+>
+> Can't we always have an fwnode reference?
+>
+
+Unfortunately no. A const struct software_node is not yet a full
+fwnode, it's just a template that becomes an actual firmware node when
+it's registered with the swnode framework. However in order to allow
+creating a graph of software nodes before we register them, we need a
+way to reference those templates and then look them up internally in
+swnode code.
+
+Bart
+
+> >       unsigned int nargs;
+> >       u64 args[NR_FWNODE_REFERENCE_ARGS];
+> >  };
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
+>
 
