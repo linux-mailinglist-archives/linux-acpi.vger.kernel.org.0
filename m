@@ -1,164 +1,222 @@
-Return-Path: <linux-acpi+bounces-17965-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17966-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E501BF06BC
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072ABBF0906
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C28644F0C11
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:08:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DF5CD4F24B8
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7162F6566;
-	Mon, 20 Oct 2025 10:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ahVq1qNZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6345C2ECEA7;
+	Mon, 20 Oct 2025 10:34:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8512F5A0B;
-	Mon, 20 Oct 2025 10:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F42724167A;
+	Mon, 20 Oct 2025 10:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760954755; cv=none; b=oAgq5zJim/Pk3beGa4fVYRcpMfaIOKBtfN3XBLoea1eFd7IjRFDOHWWkgeowW8jJgR4k5X5oKJaxnBSvvFeuUvB5US2OtYocOhf/dq8rBGn5Av+cwLZOtWM7rSSi1N88aWLANoiaKqmvFkcznj/jiF/9F0iTy4YzGcI1ctCzeAw=
+	t=1760956487; cv=none; b=IL44IIg78QK+pAJM/zpZweXkdPUutWu8UpNQA8u2d0qiGpXsiihcbJ1YshIRMYGcHmFtWU+Po9SQGTGVyeMx2htQ5yocMPleF02ncxCcFMsIjv8hhBlxY88Lkol+Y/QGB+Ae9qsqAeAQsBzF2qYkZImBGCuWEC0UMkHemTCTStw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760954755; c=relaxed/simple;
-	bh=nEmUKNUCmJh39T+JKitYAUPYb5fVZOB6UXkFYmlmPFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lrwovK6e+h7lXTCVO4NvMhYHXBoVDvj9RD5gwj7WXYxbAsiPbmVRYGttM1EIGIOLMhtaVS9sog5S7yv9DEGUhU49DZCrPTue8kpU4qSFaXZVcYG2TEIrHJplxmcsQaX7f4CbA1uIrzm9WBsNswFAGu19HJ+PguASvHnI73mIkSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ahVq1qNZ; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760954754; x=1792490754;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=nEmUKNUCmJh39T+JKitYAUPYb5fVZOB6UXkFYmlmPFI=;
-  b=ahVq1qNZsJ0Ve2czSV8zFATAEjuH5i5yyOFZR69iWK3OQHnR5E1unN+x
-   F1MOFRAChfGMCfdmIbQGcND9rdVU27rQRkQQMb8COs8yEWLwoAB2RPlTr
-   IeL5AvCuRr8S3vClZXFfklf0j7xwglBsm0SIGQsGVJ2hHRpzYcTqtA8D4
-   l67X1mr5ySWxO0DwbCBIwOwYMDzXWoAjAzUZ8qEqxNzuNZfp4pUnipzV2
-   oTEhH9ofWoeLHWlcg+UK2KNUW9kjAmW3IxrHp0EC5sp0YWbNrRw/FlFok
-   26TQiP97KzoTc7z1PJKU7BNPnAf6rT8+DicP/zxTvg+XjHZIfWpUQSeWR
-   A==;
-X-CSE-ConnectionGUID: xZ5IN7mPSSmZVhtzSQtKVg==
-X-CSE-MsgGUID: hzY28RJJToy1hBx9zZs3Lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11587"; a="63164800"
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
-   d="scan'208";a="63164800"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 03:05:53 -0700
-X-CSE-ConnectionGUID: 1a7cDbxTTG6g0oJTFKlwpg==
-X-CSE-MsgGUID: AkSw/isoQBG/lGi5VdZh3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
-   d="scan'208";a="183309468"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.6])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 03:05:49 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vAmlu-00000001Gnk-1nYO;
-	Mon, 20 Oct 2025 13:05:46 +0300
-Date: Mon, 20 Oct 2025 13:05:46 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 3/9] software node: allow referencing firmware nodes
-Message-ID: <aPYJeqFY_9YV9AQn@ashevche-desk.local>
-References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
- <20251006-reset-gpios-swnodes-v1-3-6d3325b9af42@linaro.org>
- <aO1dBgPZfDJTsPfE@smile.fi.intel.com>
- <CAMRc=MfOoHn+mLRpQBEsC3g5sM=VZBgVffsm68CAXJBHffPxdA@mail.gmail.com>
+	s=arc-20240116; t=1760956487; c=relaxed/simple;
+	bh=c2OU16wGnrVpMzoppH1IWuhNPGGBG4O+QaZbd3WqpPw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GHYjr1mOtoZSFJiwbxttV8+J9iei85bF+ZObk6BBAtra+ul7+NAysK/JZkJNai5bMRO0r4ZTaE3m78zeIq6tEzY/k6zjIlmMFTYAkkM9Ome5fKU5X2gzrekqwcHinK9y+nXkNiTgFKYHRl0oI9WDYV4otbgSvvRb+BJL75DT3M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C2AC1063;
+	Mon, 20 Oct 2025 03:34:37 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BA783F63F;
+	Mon, 20 Oct 2025 03:34:40 -0700 (PDT)
+Message-ID: <baea7e2b-7f09-4054-a1fc-31cbd349e65e@arm.com>
+Date: Mon, 20 Oct 2025 11:34:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MfOoHn+mLRpQBEsC3g5sM=VZBgVffsm68CAXJBHffPxdA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/29] ACPI / PPTT: Find cache level by cache-id
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-4-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20251017185645.26604-4-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 20, 2025 at 10:06:43AM +0200, Bartosz Golaszewski wrote:
-> On Sat, Oct 18, 2025 at 7:34 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Mon, Oct 06, 2025 at 03:00:18PM +0200, Bartosz Golaszewski wrote:
+Hi James,
 
-...
-
-> > > +enum software_node_ref_type {
-> > > +     /* References a software node. */
-> > > +     SOFTWARE_NODE_REF_SWNODE = 0,
-> >
-> > I don't see why we need an explicit value here.
+On 10/17/25 19:56, James Morse wrote:
+> The MPAM table identifies caches by id. The MPAM driver also wants to know
+> the cache level to determine if the platform is of the shape that can be
+> managed via resctrl. Cacheinfo has this information, but only for CPUs that
+> are online.
 > 
-> It was to make it clear, this is the default value and it's the one
-> used in older code with the legacy macros. I can drop it, it's no big
-> deal.
-
-Usually when we assign a default value(s) in enum, it should be justified.
-The common mistake here (not this case) is to use autoincrement feature
-with some of the values explicitly defined for the enums that reflect the
-HW bits / states, which obviously makes code fragile and easy to break.
-
-> > > +     /* References a firmware node. */
-> > > +     SOFTWARE_NODE_REF_FWNODE,
-> > > +};
-
-...
-
-> > >  /**
-> > >   * struct software_node_ref_args - Reference property with additional arguments
-> > > - * @node: Reference to a software node
-> > > + * @swnode: Reference to a software node
-> > > + * @fwnode: Alternative reference to a firmware node handle
-> > >   * @nargs: Number of elements in @args array
-> > >   * @args: Integer arguments
-> > >   */
-> > >  struct software_node_ref_args {
-> > > -     const struct software_node *node;
-> > > +     enum software_node_ref_type type;
-> > > +     union {
-> > > +             const struct software_node *swnode;
-> > > +             struct fwnode_handle *fwnode;
-> > > +     };
-> >
-> > Can't we always have an fwnode reference?
+> Waiting for all CPUs to come online is a problem for platforms where
+> CPUs are brought online late by user-space.
 > 
-> Unfortunately no. A const struct software_node is not yet a full
-> fwnode, it's just a template that becomes an actual firmware node when
-> it's registered with the swnode framework. However in order to allow
-> creating a graph of software nodes before we register them, we need a
-> way to reference those templates and then look them up internally in
-> swnode code.
+> Add a helper that walks every possible cache, until it finds the one
+> identified by cache-id, then return the level.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> ---
+> Changes sinec v2:
+>  * Search all caches, not just unified caches. This removes the need to count
+>    the caches first, but means a failure to find the table walks the table
+>    three times for different cache types.
+>  * Fixed return value of the no-acpi stub.
+>  * Punctuation typo in a comment,
+>  * Keep trying to parse the table even if a bogus CPU is encountered.
+>  * Specified CPUs share caches with other CPUs.
+> 
+> Changes since v1:
+>  * Droppeed the cleanup based table freeing, use acpi_get_pptt() instead.
+>  * Removed a confusing comment.
+>  * Clarified the kernel doc.
+> 
+> Changes since RFC:
+>  * acpi_count_levels() now returns a value.
+>  * Converted the table-get stuff to use Jonathan's cleanup helper.
+>  * Dropped Sudeep's Review tag due to the cleanup change.
+> ---
+>  drivers/acpi/pptt.c  | 82 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/acpi.h |  5 +++
+>  2 files changed, 87 insertions(+)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 63c3a344c075..50c8f2a3c927 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -350,6 +350,27 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
+>  	return found;
+>  }
+>  
+> +static struct acpi_pptt_cache *
+> +acpi_find_any_type_cache_node(struct acpi_table_header *table_hdr,
+> +			      u32 acpi_cpu_id, unsigned int level,
+> +			      struct acpi_pptt_processor **node)
+> +{
+> +	struct acpi_pptt_cache *cache;
+> +
+> +	cache = acpi_find_cache_node(table_hdr, acpi_cpu_id, CACHE_TYPE_UNIFIED,
+> +				     level, node);
+> +	if (cache)
+> +		return cache;
+> +
+> +	cache = acpi_find_cache_node(table_hdr, acpi_cpu_id, CACHE_TYPE_DATA,
+> +				     level, node);
+> +	if (cache)
+> +		return cache;
+> +
+> +	return acpi_find_cache_node(table_hdr, acpi_cpu_id, CACHE_TYPE_INST,
+> +				    level, node);
+> +}
+> +
+>  /**
+>   * update_cache_properties() - Update cacheinfo for the given processor
+>   * @this_leaf: Kernel cache info structure being updated
+> @@ -903,3 +924,64 @@ void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
+>  				     entry->length);
+>  	}
+>  }
+> +
+> +/*
+> + * find_acpi_cache_level_from_id() - Get the level of the specified cache
+> + * @cache_id: The id field of the cache
+> + *
+> + * Determine the level relative to any CPU for the cache identified by
+> + * cache_id. This allows the property to be found even if the CPUs are offline.
+> + *
+> + * The returned level can be used to group caches that are peers.
+> + *
+> + * The PPTT table must be rev 3 or later.
+> + *
+> + * If one CPU's L2 is shared with another CPU as L3, this function will return
+> + * an unpredictable value.
+> + *
+> + * Return: -ENOENT if the PPTT doesn't exist, the revision isn't supported or
+> + * the cache cannot be found.
+> + * Otherwise returns a value which represents the level of the specified cache.
+> + */
+> +int find_acpi_cache_level_from_id(u32 cache_id)
+> +{
+> +	int level, cpu;
+> +	u32 acpi_cpu_id;
+> +	struct acpi_pptt_cache *cache;
+> +	struct acpi_table_header *table;
+> +	struct acpi_pptt_cache_v1 *cache_v1;
+> +	struct acpi_pptt_processor *cpu_node;
+> +
+> +	table = acpi_get_pptt();
+> +	if (!table)
+> +		return -ENOENT;
+> +
+> +	if (table->revision < 3)
+> +		return -ENOENT;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+> +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+> +		if (!cpu_node)
+> +			continue;
+> +
+> +		/* Start at 1 for L1 */
+> +		level = 1;
+> +		cache = acpi_find_any_type_cache_node(table, acpi_cpu_id, level,
+> +						      &cpu_node);
+> +		while (cache) {
+> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> +						cache, sizeof(*cache));
+> +
+> +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
+> +			    cache_v1->cache_id == cache_id)
+> +				return level;
+> +
+> +			level++;
 
-Strange that you need this way. The IPU3 bridge driver (that creates a graph of
-fwnodes at run-time for being consumed by the respective parts of v4l2
-framework) IIRC has no such issue. Why your case is different?
+If there is more than one type of cache at a given level only one is
+checked. For example, if there is an L1 data cache and an L1 instruction
+cache then the L1 instruction cache will never be considered.
 
-> > >       unsigned int nargs;
-> > >       u64 args[NR_FWNODE_REFERENCE_ARGS];
-> > >  };
+> +			cache = acpi_find_any_type_cache_node(table, acpi_cpu_id,
+> +							      level, &cpu_node);
+> +		}
+> +	}
+> +
+> +	return -ENOENT;
+> +}
+Thanks,
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+Ben
 
 
