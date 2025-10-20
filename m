@@ -1,40 +1,65 @@
-Return-Path: <linux-acpi+bounces-18011-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18012-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3BFBF26EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 18:30:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58495BF2782
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 18:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEDF3A9661
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 16:28:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4EA364E4D75
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 16:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3DF289E13;
-	Mon, 20 Oct 2025 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04EB1DB15F;
+	Mon, 20 Oct 2025 16:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="as/MNCVJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AD0F4FA;
-	Mon, 20 Oct 2025 16:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D338B22172E;
+	Mon, 20 Oct 2025 16:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977707; cv=none; b=fvTgpb9twBBKYKEhT24sXR7X/s/En5RqbLoTZcOl6fqGN1TBh1o5D6dhKo9Y4LuS8Kr+OJ+vFFaRY9mGxNFH1NQIFPSwBZJv2WvDfo4hK7d73Tin+qEGf0Mfx0nEIFWsUMS0qWlyKTpIAbrU1z1IH3cUyZNokiXVKIQByDyQk9s=
+	t=1760978250; cv=none; b=V9ArlMP+nGHZgAfGJT5AoCG0DOCplbZ4a/bbnahQ3AS0xmlQ6P6CInoNtwYRyQYM/bs9igQvLSwbAfWxteJ5e5Wm9PUXF4XqO/GwKBSnOu522/fpTodLssEhxzuAXEeUlKBW0BWLQMGJ9arJdIhL3xWddH8/eEDv4UY0JWGe3HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977707; c=relaxed/simple;
-	bh=AOuKbHm4cIrK27uOxuqdzZxdGEgZkIlRzauZRokpYUY=;
+	s=arc-20240116; t=1760978250; c=relaxed/simple;
+	bh=+qZlyl7YWbY2lLgbuJo2hAw91ag2rew7u58FOPhtmUc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RWucl+E443Vm1vYyCr3nJROMLTAjvZgzoJ02h9Ma14eJ++H5HO9epdBv8urB+B0LEXNF/x4Ge8pDyESn+26FM+eCr2Vmr/TQ9mcg2uupEY0XtcOdI2zdMAenFTa483+fhCn9cv8oXaL5sY41psHn/PxTeVmZbh5I6EQhOgBDWaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00A241063;
-	Mon, 20 Oct 2025 09:28:13 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49B283F63F;
-	Mon, 20 Oct 2025 09:28:16 -0700 (PDT)
-Message-ID: <7ac2abe6-7311-4b20-b1fb-566ed7516315@arm.com>
-Date: Mon, 20 Oct 2025 17:28:14 +0100
+	 In-Reply-To:Content-Type; b=Vur5FNfifWmpQRJldMSCd4mVByB8/aX8XiPr6Vzj8+wkRyzm+WR4iLAP56NuKUF05zsK+UZXsgO8Bmy/i9bPduIo4glSiBrxf9ygM95GuDlm7Yztk6hWNbjrQPPWdymwMhxVYaulyyj79mvaXTrspF373q/6HTySmm+K2qixi30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=as/MNCVJ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760978249; x=1792514249;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+qZlyl7YWbY2lLgbuJo2hAw91ag2rew7u58FOPhtmUc=;
+  b=as/MNCVJcrzmNh+0bn6hh1WJNoRzwygBr6cr8DU3pvqEtXW6zHouvebC
+   WpODTllRf00Rg6p3B1Sx9TKjnP3cZdhfW1BJN7IjKyODEhUw1DO7coUzw
+   SX7AeEfBSNwxsDYHw4dEZ9XcQ0ZwWTgEOBEVERMxGnX8I7yFU7/4VZPWB
+   LZxH8WtBjGgEW8D1y7JcCPN+AO3vWXtbwpJ5cJwX2Xc6JCu+Dc8rkxEc/
+   hxxVIjqmbp4Utz/dLKh1EJD/iwQLLs40BFC7uA7gv/NQD0GIdpAxjfDWW
+   KRH4IfDBkJ7KIYvy9n21OEnHPNkUwsV2SnXmcBYtZ5WTMIZWy8qffMhRs
+   Q==;
+X-CSE-ConnectionGUID: McZZEvecSS2YqWEVpaigCQ==
+X-CSE-MsgGUID: CMrSmZBjRpOfNm+xecXq1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62128784"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="62128784"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 09:37:28 -0700
+X-CSE-ConnectionGUID: +UyQQ5tfSKWNT1m4Aaq+lw==
+X-CSE-MsgGUID: MUZlesziQx6BDxCrg5eraA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="183385703"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.108.103]) ([10.125.108.103])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 09:37:25 -0700
+Message-ID: <ca6e8c5f-4420-4efa-93fc-0c79774e8a96@intel.com>
+Date: Mon, 20 Oct 2025 09:37:24 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,97 +67,165 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/29] arm_mpam: Use a static key to indicate when mpam
- is enabled
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Gavin Shan <gshan@redhat.com>
-References: <20251017185645.26604-1-james.morse@arm.com>
- <20251017185645.26604-20-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
+Subject: Re: [PATCH 5/6 v5] acpi/ghes: Add helper to copy CXL protocol error
+ info to work struct
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ linux-cxl@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+References: <20251017133357.1150982-1-fabio.m.de.francesco@linux.intel.com>
+ <20251017133357.1150982-6-fabio.m.de.francesco@linux.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
 Content-Language: en-US
-In-Reply-To: <20251017185645.26604-20-james.morse@arm.com>
+In-Reply-To: <20251017133357.1150982-6-fabio.m.de.francesco@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi James,
 
-On 10/17/25 19:56, James Morse wrote:
-> Once all the MSC have been probed, the system wide usable number of
-> PARTID is known and the configuration arrays can be allocated.
+
+On 10/17/25 6:30 AM, Fabio M. De Francesco wrote:
+> Make a helper out of cxl_cper_post_prot_err() that checks the CXL agent
+> type and copy the CPER CXL protocol errors information to a work data
+> structure.
 > 
-> After this point, checking all the MSC have been probed is pointless,
-> and the cpuhp callbacks should restore the configuration, instead of
-> just resetting the MSC.
-> 
-> Add a static key to enable this behaviour. This will also allow MPAM
-> to be disabled in response to an error, and the architecture code to
-> enable/disable the context switch of the MPAM system registers.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 > ---
-> Changes since v2:
->  * Removed the word 'TODO'.
->  * Fixed a typo in the commit message.
-> ---
-[..]
-> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-> index a04b09abd814..d492df9a1735 100644
-> --- a/drivers/resctrl/mpam_internal.h
-> +++ b/drivers/resctrl/mpam_internal.h
-> @@ -9,6 +9,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/cpumask.h>
->  #include <linux/io.h>
-> +#include <linux/jump_label.h>
->  #include <linux/llist.h>
->  #include <linux/mailbox_client.h>
->  #include <linux/mutex.h>
-> @@ -19,8 +20,16 @@
+>  drivers/acpi/apei/ghes.c | 42 ++++++++++++++++++++++++++--------------
+>  include/cxl/event.h      | 10 ++++++++++
+>  2 files changed, 37 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index e69ae864f43d3..e0f8b8ed2b7c4 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -734,20 +734,12 @@ int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+>  }
+>  EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
 >  
->  #define MPAM_MSC_MAX_NUM_RIS	16
->  
-> +
+> -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> -				   int severity)
+> +int cxl_cper_sec_prot_err_copy_to_wd(struct cxl_cper_prot_err_work_data *wd,
 
-nit: stray whitespace change
+Function name a bit awkward. Maybe cxl_cper_setup_error_work_data()?
 
->  struct platform_device;
+> +				     struct cxl_cper_sec_prot_err *prot_err,
+> +				     int severity)
+>  {
+> -	struct cxl_cper_prot_err_work_data wd;
+>  	u8 *dvsec_start, *cap_start;
 >  
-> +DECLARE_STATIC_KEY_FALSE(mpam_enabled);
-> +
-> +static inline bool mpam_is_enabled(void)
-> +{
-> +	return static_branch_likely(&mpam_enabled);
+> -	if (cxl_cper_sec_prot_err_valid(prot_err))
+> -		return;
+> -
+> -	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+> -
+> -	if (!cxl_cper_prot_err_work)
+> -		return;
+> -
+>  	switch (prot_err->agent_type) {
+>  	case RCD:
+>  	case DEVICE:
+> @@ -756,20 +748,40 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+>  	case RP:
+>  	case DSP:
+>  	case USP:
+> -		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
+> +		memcpy(wd->prot_err, prot_err, sizeof(wd->prot_err));
+>  
+>  		dvsec_start = (u8 *)(prot_err + 1);
+>  		cap_start = dvsec_start + prot_err->dvsec_len;
+>  
+> -		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
+> -		wd.severity = cper_severity_to_aer(severity);
+> +		memcpy(wd->ras_cap, cap_start, sizeof(wd->ras_cap));
+> +		wd->severity = cper_severity_to_aer(severity);
+>  		break;
+>  	default:
+>  		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
+>  				   prot_err->agent_type);
+> -		return;
+> +		return -EINVAL;
+>  	}
+>  
+> +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_copy_to_wd);
 > +
->  /*
->   * Structures protected by SRCU may not be freed for a surprising amount of
->   * time (especially if perf is running). To ensure the MPAM error interrupt can
+> +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> +				   int severity)
+> +{
+> +	struct cxl_cper_prot_err_work_data wd;
+> +
+> +	if (cxl_cper_sec_prot_err_valid(prot_err))
+> +		return;
+> +
+> +	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+> +
+> +	if (!cxl_cper_prot_err_work)
+> +		return;
+> +
+> +	if (cxl_cper_sec_prot_err_copy_to_wd(&wd, prot_err, severity))
+> +		return;
+> +
+>  	if (!kfifo_put(&cxl_cper_prot_err_fifo, wd)) {
+>  		pr_err_ratelimited("CXL CPER kfifo overflow\n");
+>  		return;
+> diff --git a/include/cxl/event.h b/include/cxl/event.h
+> index e1deb66c2197e..5f06cea5d6005 100644
+> --- a/include/cxl/event.h
+> +++ b/include/cxl/event.h
+> @@ -322,12 +322,22 @@ static inline int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data
+>  
+>  #ifdef CONFIG_ACPI_APEI_PCIEAER
+>  int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err);
+> +int cxl_cper_sec_prot_err_copy_to_wd(struct cxl_cper_prot_err_work_data *wd,
+> +				     struct cxl_cper_sec_prot_err *prot_err,
+> +				     int severity);
+>  #else
+>  static inline int
+>  cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+>  {
+>  	return -EINVAL;
+>  }
+> +static inline int
+> +cxl_cper_sec_prot_err_copy_to_wd(struct cxl_cper_prot_err_work_data *wd,
+> +				 struct cxl_cper_sec_prot_err *prot_err,
+> +				 int severity)
+> +{
+> +	return -EINVAL;
 
--- 
-Thanks,
+-EOPNOTSUPP
 
-Ben
+> +}
+>  #endif
+>  
+>  #endif /* _LINUX_CXL_EVENT_H */
 
 
