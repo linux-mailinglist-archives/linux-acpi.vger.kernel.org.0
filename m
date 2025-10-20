@@ -1,224 +1,201 @@
-Return-Path: <linux-acpi+bounces-17972-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17974-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727F9BF1380
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0758BF13AD
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81E1A422E6C
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A2D423D8B
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E084C3054FB;
-	Mon, 20 Oct 2025 12:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A2F3148B4;
+	Mon, 20 Oct 2025 12:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOYeQEiH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8222ED16B;
-	Mon, 20 Oct 2025 12:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F2313E0A;
+	Mon, 20 Oct 2025 12:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963358; cv=none; b=WFo08vuBC4r0+IIW0Do2Ro6xy32+PPN8b5KKzBl0ZQwBSFuSO53Wq8UJUuorZT3IypdI5sffOueFvUeuJeS21nUgGe/xX5voAhVwE+p48M/u38RhOflVKR8h4dOuhCGB0/UABGRvLfzTYYBQmq+iKdE1Hw+tB1+wYhh3IGWlNzQ=
+	t=1760963409; cv=none; b=tIijLkmB0mJK/qr0Eq8ab6Ed3OW+9ywKYaC4Yxq4UfCiF6J48Gve2QKWefq7M1l45sUCKr+QNbj5vA0T3dA480opYjJe8+vmD9BqfEb5F+aouSxZqEUwBzo3zmg4cSgA05LCLsovv3PDtcvHL84S9dMUfJ16MOt4O6LNQUVY5sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963358; c=relaxed/simple;
-	bh=Of4rlV32zj+QFPPASCk3lKgL4l+mocSZNTzS1jezpVI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VebHp4OsGxSEMfsoWKEhXEkmjjzL2q5MXeKuWyIcDY0dQRjWnLdvFEDMKMweVCvVID9hLdsOxfAYSGzwRF3+16Pp8a0mpsRO6gyEtkDXdq9c5ennMAd5uzn/u52MS+/FlG1wVp2BJr3YL9cXRFSRV2BoZ5ZRR1oWinAXpkbXtP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24B991007;
-	Mon, 20 Oct 2025 05:29:08 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 711553F63F;
-	Mon, 20 Oct 2025 05:29:11 -0700 (PDT)
-Message-ID: <b0369cf6-229d-458b-9f42-a78e4cf3be94@arm.com>
-Date: Mon, 20 Oct 2025 13:29:10 +0100
+	s=arc-20240116; t=1760963409; c=relaxed/simple;
+	bh=xb/lnXZ7cyeI2Kiq/oDJcO0yuGXr40YVwbGy347cEi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ExWIbYc9oOwOW0TQPFPuXhlif20jZkgglpfAaAdlIpFFHk2kRLRaSG8jZtRS2jCv+5uGA6J2ahz5CIYuC5cBh4fDYaVJBPEkoAI4o6+iur7VLipntQJaR8hiMkyi3xnTlgffFqL6bTu515JEcK3wZE8+0C+rTLnvRv0snxX1dpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOYeQEiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB9FC113D0;
+	Mon, 20 Oct 2025 12:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760963409;
+	bh=xb/lnXZ7cyeI2Kiq/oDJcO0yuGXr40YVwbGy347cEi0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VOYeQEiHx1SU+kMdzV43TDLpRb/1X2OAi6PQIFcfwGAIFzadoDTyFta0UEI4rXH4B
+	 hgYtCS6UuWatHtdKWWUu7+S4kkQiJqELiJ2w0+yM2qQ+EL2j96Vu7x8hjZL286TyRD
+	 oupHx1nr1ArXNaWDVYP96bm8K8/p7xgEJ3vy2h5Sumy0YYnz5MnKiXS+dtb4Ke/ML/
+	 Z/T303aL37zQp64TDGGeTQCM/8nU5Y62V85iuTKZeDgy0V2SIupCOjH0FzJgXBEUUf
+	 Lee3TSVSAcnNkPXozbjR20EDn5K1Xk1bE6AUn3m1G5hgbGffesvFS0yr9qvac2kOx2
+	 zkra8w+VY7joQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vAp1b-0000000FUu2-0E4m;
+	Mon, 20 Oct 2025 12:30:07 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>
+Subject: [PATCH v4 00/26] genirq: Add support for percpu_devid IRQ affinity
+Date: Mon, 20 Oct 2025 13:29:17 +0100
+Message-ID: <20251020122944.3074811-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/29] ACPI / MPAM: Parse the MPAM table
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Gavin Shan <gshan@redhat.com>
-References: <20251017185645.26604-1-james.morse@arm.com>
- <20251017185645.26604-7-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20251017185645.26604-7-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com, ruanjinjie@huawei.com, alexandru.elisei@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi James,
+This is the fourth version of this series, originally posted at [1],
+which aims at allowing percpu_devid interrupt requests on the basis of
+an affinity mask. See the original submission for the details of why
+this is a desirable outcome.
 
-On 10/17/25 19:56, James Morse wrote:
-> Add code to parse the arm64 specific MPAM table, looking up the cache
-> level from the PPTT and feeding the end result into the MPAM driver.
-> 
-> This happens in two stages. Platform devices are created first for the
-> MSC devices. Once the driver probes it calls acpi_mpam_parse_resources()
-> to discover the RIS entries the MSC contains.
-> 
-> For now the MPAM hook mpam_ris_create() is stubbed out, but will update
-> the MPAM driver with optional discovered data about the RIS entries.
-> 
-> CC: Carl Worth <carl@os.amperecomputing.com>
-> Link: https://developer.arm.com/documentation/den0065/3-0bet/?lang=en
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> 
-> ---
-> Changes since v2:
->  * Expanded commit message.
->  * Moved explicit memset() to array initialisation.
->  * Added comments on the sizing of arrays.
->  * Moved MSC table entry parsing to a helper to allow use of a platform-device
->    cleanup rune, result int more returns and fewer breaks.
->  * Changed pre-processor macros for table bits.
->  * Discover unsupported PPI partitions purely from the table to make gicv5
->    easier, which also simplifies acpi_mpam_parse_irqs()
->  * Gave interface type numbers pre-processor names.
->  * Clarified some comments.
->  * Fixed the WARN_ON comparison in acpi_mpam_parse_msc().
->  * Made buffer over-run noisier.
->  * Print an error condition as %d not %u.
->  * Print a debug message when bad NUMA nodes are found.
-> 
-[...]
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index a9dbacabdf89..9d66421f68ff 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -8,6 +8,7 @@
->  #ifndef _LINUX_ACPI_H
->  #define _LINUX_ACPI_H
->  
-> +#include <linux/cleanup.h>
->  #include <linux/errno.h>
->  #include <linux/ioport.h>	/* for struct resource */
->  #include <linux/resource_ext.h>
-> @@ -221,6 +222,17 @@ void acpi_reserve_initial_tables (void);
->  void acpi_table_init_complete (void);
->  int acpi_table_init (void);
->  
-> +static inline struct acpi_table_header *acpi_get_table_ret(char *signature, u32 instance)
-> +{
-> +	struct acpi_table_header *table;
-> +	int status = acpi_get_table(signature, instance, &table);
-> +
-> +	if (ACPI_FAILURE(status))
-> +		return ERR_PTR(-ENOENT);
-> +	return table;
-> +}
-> +DEFINE_FREE(acpi_table, struct acpi_table_header *, if (!IS_ERR(_T)) acpi_put_table(_T))
+From v3, we have some additional tidying up, thanks to Jonathan's
+review, and a bunch of tags -- see changelog for details.
 
-Any reason to not change this to !IS_ERR_OR_NULL(_T) as Jonathan
-suggested in his v2 review.
+FWIW, I've pushed a branch at [0].
 
-> +
->  int acpi_table_parse(char *id, acpi_tbl_table_handler handler);
->  int __init_or_acpilib acpi_table_parse_entries(char *id,
->  		unsigned long table_size, int entry_id,
-> diff --git a/include/linux/arm_mpam.h b/include/linux/arm_mpam.h
-> new file mode 100644
-> index 000000000000..3d6c39c667c3
-> --- /dev/null
-> +++ b/include/linux/arm_mpam.h
-> @@ -0,0 +1,48 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* Copyright (C) 2025 Arm Ltd. */
-> +
-> +#ifndef __LINUX_ARM_MPAM_H
-> +#define __LINUX_ARM_MPAM_H
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/types.h>
-> +
-> +#define GLOBAL_AFFINITY		~0
-> +
-> +struct mpam_msc;
-> +
-> +enum mpam_msc_iface {
-> +	MPAM_IFACE_MMIO,	/* a real MPAM MSC */
-> +	MPAM_IFACE_PCC,		/* a fake MPAM MSC */
-> +};
-> +
-> +enum mpam_class_types {
-> +	MPAM_CLASS_CACHE,       /* Well known caches, e.g. L2 */
-> +	MPAM_CLASS_MEMORY,      /* Main memory */
-> +	MPAM_CLASS_UNKNOWN,     /* Everything else, e.g. SMMU */
-> +};
-> +
-> +#ifdef CONFIG_ACPI_MPAM
-> +/* Parse the ACPI description of resources entries for this MSC. */
-> +int acpi_mpam_parse_resources(struct mpam_msc *msc,
-> +			      struct acpi_mpam_msc_node *tbl_msc);
-> +
-> +int acpi_mpam_count_msc(void);
-> +#else
-> +static inline int acpi_mpam_parse_resources(struct mpam_msc *msc,
-> +					    struct acpi_mpam_msc_node *tbl_msc)
-> +{
-> +	return -EINVAL;
-> +}
-> +
-> +static inline int acpi_mpam_count_msc(void) { return -EINVAL; }
-> +#endif
-> +
-> +static inline int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
-> +				  enum mpam_class_types type, u8 class_id,
-> +				  int component_id)
-> +{
-> +	return -EINVAL;
-> +}
-> +
-> +#endif /* __LINUX_ARM_MPAM_H */
-> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-> index 074754c23d33..23a30ada2d4c 100644
-> --- a/include/linux/platform_device.h
-> +++ b/include/linux/platform_device.h
-> @@ -232,6 +232,7 @@ extern int platform_device_add_data(struct platform_device *pdev,
->  extern int platform_device_add(struct platform_device *pdev);
->  extern void platform_device_del(struct platform_device *pdev);
->  extern void platform_device_put(struct platform_device *pdev);
-> +DEFINE_FREE(platform_device_put, struct platform_device *, if (_T) platform_device_put(_T))
+* From v3 [3]:
 
-Significant enough to be mentioned in the commit message?
+  - Additional cleanups in of_irq_get_affinity() (Jonathan)
 
-This DEFINE_FREE is named after the free-ing function,
-platform_device_put, whereas the previous DEFINE_FREE in this patch is
-named after the struct, acpi_table. On grepping I see both naming
-schemes - not sure if there is a recommendation for new code.
+  - Rebased on 6.18-rc2
 
->  
->  struct platform_driver {
->  	int (*probe)(struct platform_device *);
+  - Collected Abs, Rbs and Tbs, with thanks (Raphael, Jonathan,
+    Jinjie, Suzuki, Sven, Will)
 
-Thanks,
+* From v2 [2]:
 
-Ben
+  - Turned of_node_to_fwnode() usage to of_fwnode_handle() (Jonathan)
+
+  - Added a patch to finally kill of_node_to_fwnode()
+
+  - Tidied-up documentation, comments and formatting (Jonathan)
+
+  - Collected ABs and Rbs, with thanks (Jonathan, Suzuki, Sven)
+
+* From v1 [1]:
+
+  - Fixed NMI handling by getting rid of the NMI-specific flow
+    handler, which was pretty useless anyway (Will)
+
+  - As a result, killed a metric buttload worth of GICv3 code
+
+  - Moved irq_fwspec out of irq_fwspec_info, and passed it as a
+    parameter to irq_get_fwspec_info(), renamed from irq_get_info(),
+    and applied some generous sanitisation of the structure (Thomas)
+
+  - Dropped the rather useless fwspec validity flag (Thomas)
+
+  - Rejigged the PMU per-CPU handling to better deal with the DT/ACPI
+    differences, and drop some now useless patches (Will)
+
+  - Plenty of cosmetic rework (Raphael, Thomas)
+
+[0] git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git irq/ppi-affinity
+[1] https://lore.kernel.org/r/20250908163127.2462948-1-maz@kernel.org
+[2] https://lore.kernel.org/r/20250915085702.519996-1-maz@kernel.org
+[3] https://lore.kernel.org/r/20250922082833.2038905-1-maz@kernel.org
+
+Marc Zyngier (25):
+  irqdomain: Add firmware info reporting interface
+  ACPI: irq: Add IRQ affinity reporting interface
+  of/irq: Add IRQ affinity reporting interface
+  platform: Add firmware-agnostic irq and affinity retrieval interface
+  irqchip/gic-v3: Add FW info retrieval support
+  irqchip/apple-aic: Add FW info retrieval support
+  coresight: trbe: Convert to new IRQ affinity retrieval API
+  perf: arm_pmu: Convert to new IRQ affinity retrieval API
+  perf: arm_spe_pmu: Convert to new IRQ affinity retrieval API
+  irqchip/gic-v3: Switch high priority PPIs over to
+    handle_percpu_devid_irq()
+  genirq: Kill handle_percpu_devid_fasteoi_nmi()
+  genirq: Merge irqaction::{dev_id,percpu_dev_id}
+  genirq: Factor-in percpu irqaction creation
+  genirq: Add affinity to percpu_devid interrupt requests
+  genirq: Update request_percpu_nmi() to take an affinity
+  genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
+  genirq: Add request_percpu_irq_affinity() helper
+  perf: arm_spe_pmu: Request specific affinities for percpu IRQ
+  coresight: trbe: Request specific affinities for percpu IRQ
+  irqchip/gic-v3: Drop support for custom PPI partitions
+  irqchip/apple-aic: Drop support for custom PMU irq partitions
+  irqchip: Kill irq-partition-percpu
+  genirq: Kill irq_{g,s}et_percpu_devid_partition()
+  irqdomain: Kill of_node_to_fwnode() helper
+  perf: arm_pmu: Kill last use of per-CPU cpu_armpmu pointer
+
+Will Deacon (1):
+  perf: arm_pmu: Request specific affinities for percpu NMI/IRQ
+
+ arch/arm64/kernel/smp.c                      |   2 +-
+ drivers/acpi/irq.c                           |  19 ++
+ drivers/base/platform.c                      |  60 ++++-
+ drivers/hwtracing/coresight/coresight-trbe.c |   9 +-
+ drivers/irqchip/Kconfig                      |   4 -
+ drivers/irqchip/Makefile                     |   1 -
+ drivers/irqchip/irq-apple-aic.c              |  56 +++--
+ drivers/irqchip/irq-gic-v3.c                 | 224 +++++------------
+ drivers/irqchip/irq-partition-percpu.c       | 241 -------------------
+ drivers/of/irq.c                             |  20 ++
+ drivers/perf/arm_pmu.c                       |  49 ++--
+ drivers/perf/arm_pmu_acpi.c                  |   2 +-
+ drivers/perf/arm_pmu_platform.c              |  20 +-
+ drivers/perf/arm_pmuv3.c                     |   2 +-
+ drivers/perf/arm_spe_pmu.c                   |  13 +-
+ include/linux/acpi.h                         |   7 +
+ include/linux/interrupt.h                    |  24 +-
+ include/linux/irq.h                          |   5 -
+ include/linux/irqchip/irq-partition-percpu.h |  53 ----
+ include/linux/irqdesc.h                      |   1 -
+ include/linux/irqdomain.h                    |  33 ++-
+ include/linux/of_irq.h                       |   7 +
+ include/linux/perf/arm_pmu.h                 |   6 +-
+ include/linux/platform_device.h              |   2 +
+ kernel/irq/chip.c                            |  33 +--
+ kernel/irq/irqdesc.c                         |  24 +-
+ kernel/irq/irqdomain.c                       |  32 ++-
+ kernel/irq/manage.c                          | 125 +++++++---
+ 28 files changed, 419 insertions(+), 655 deletions(-)
+ delete mode 100644 drivers/irqchip/irq-partition-percpu.c
+ delete mode 100644 include/linux/irqchip/irq-partition-percpu.h
+
+-- 
+2.47.3
 
 
