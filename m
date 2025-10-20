@@ -1,51 +1,51 @@
-Return-Path: <linux-acpi+bounces-17982-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17984-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DEFBF1302
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABF6BF13AA
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 14:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9523A4F4C05
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2FE420BA6
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786D531986F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD57031A576;
 	Mon, 20 Oct 2025 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oup1IVIo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4/OrMQp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296313191D7;
-	Mon, 20 Oct 2025 12:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893CE230996;
+	Mon, 20 Oct 2025 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963412; cv=none; b=CUaNf/LjEiaBJDSjFUhrYuSoKnM5gWrgSUjZrdwl+jF6kuNZPkznkh8X0kYf86Edm08vZ5X7ARXRVlEuk1zaQt1DOg3GNHipRK+TJvvjIp6uJBzlzDISTVzSOj3TpXM52XMCSeyeDUlQD1QY0BP0CRaAbVVBRO5uCYJRYCFs94c=
+	t=1760963412; cv=none; b=i5uGlipfKQ/WQOzHm4xBKx6KeGzgwpBvYsYOMzGl4DQWGhL0T21d1L31O/znd4HMTc85tXjutpsWyblmpgk4B+7UHf3zCwQaAhWjFW4VPrjEDeTNC5MJYRliIHpDwOK7tedoycnK9/2tHo3BTYCBpvjeHAvBOuzXDnJAR77WR1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760963412; c=relaxed/simple;
-	bh=WQ1KbYH73pkv7difN/iSChS2f39lIQHsS0IK9hv/d9w=;
+	bh=NdsJ0/5jFp68eUG2zA5xcbbdbGYt8W71X/7TRQqfH4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anXUqJb56mokR/4p6pVW0At4bq0+bPTn1XY71YNmh6Uy4ra9HDpbOIT+gN+QAZhnmUmRfjWJ8ZUZviX9vArJb6zF42EOh4YHRBVwLNrKvczNblwjBWdw9XcU85qpVsN81Tdz2rppxC1idvsTEN1xpBZS5+4eTrgFHvly19j2WPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oup1IVIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32A2C116B1;
-	Mon, 20 Oct 2025 12:30:11 +0000 (UTC)
+	 MIME-Version; b=BYy+lYyhVitb9libk7ZTeZADaClXFrqWVJE4SbMpGrqjQcB1aJzOkgWQ0TYWH7Ex22TYxz3mQuREip7GkSkk5N6zrrU7jUPwiALZAMSj1NWA0WDgl1PKbMPmh8EeYlWOS8rImW9AHkrg2AnuPz4M+OoGAbd15bwQoKp4JRUkm3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4/OrMQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE0EC116D0;
+	Mon, 20 Oct 2025 12:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760963411;
-	bh=WQ1KbYH73pkv7difN/iSChS2f39lIQHsS0IK9hv/d9w=;
+	s=k20201202; t=1760963412;
+	bh=NdsJ0/5jFp68eUG2zA5xcbbdbGYt8W71X/7TRQqfH4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oup1IVIom8Usan9IszwBgDXvWPjVMOoABwyZ6Fg32uCyEX2c0gzWwLlh69ASMVifs
-	 yOow+zoKOocgvVTv/e8iyGsZK+FhRvS+9cFdZHW6+TEf9ZSn4eFIY/EMeGa///RM4U
-	 y7bT6wM1aOylbKHPyJqGeg1wpjuhTPCOaHxeW6lRSX5Ek9f6go16YHfgHrAm6CrQL9
-	 xgDGKLBlGo8WpcM/L4/duob7XRmGLNoc8p2zKPTbpQNIA6IN3+Rn4sMzhn1YNt0pPn
-	 OKo85Z9D0ilpSiLmICSGJHKKZU3cbTfOnwtRdLosrchQQes/8eqMgV7RFyLWz1hd8U
-	 1kznQfrSB4P9g==
+	b=k4/OrMQpERFhX7s9y836KmhhWWPN7VQv+4Ez7o2ar87qbEZwF2HUHJhWIKTxv8COO
+	 mORU/ULMldeBE9wyuDgHxZ5Sp3BKaLjpephmd5HB1p5n7FwgtU6vpPVPgKnnVVWpsi
+	 clfxxV4/ZRQRx6INLf7ndNIPqSmauDy1MXQFECa0xNo/BB8yWJ0aiFt/ag5ymmmy7i
+	 PgG1+gchpg5VSw8C9pBrpQ/hoSbhBclfxJj4nsfgTHMzmGDz92DU8iUZ2sTTnozBmk
+	 c7euD6vTSEUmyfhshFXjIz6EYN0SWCV1NHOCF6Ee2MZkwd347FHvO2k+gqA6G0dJUq
+	 nRe/cXUXrASAA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vAp1d-0000000FUu2-3utc;
+	id 1vAp1e-0000000FUu2-0zRC;
 	Mon, 20 Oct 2025 12:30:10 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Alexandru Elisei <alexandru.elisei@arm.com>
-Subject: [PATCH v4 09/26] perf: arm_spe_pmu: Convert to new IRQ affinity retrieval API
-Date: Mon, 20 Oct 2025 13:29:26 +0100
-Message-ID: <20251020122944.3074811-10-maz@kernel.org>
+Subject: [PATCH v4 10/26] irqchip/gic-v3: Switch high priority PPIs over to handle_percpu_devid_irq()
+Date: Mon, 20 Oct 2025 13:29:27 +0100
+Message-ID: <20251020122944.3074811-11-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251020122944.3074811-1-maz@kernel.org>
 References: <20251020122944.3074811-1-maz@kernel.org>
@@ -83,45 +83,118 @@ X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradea
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Now that the relevant interrupt controllers are equipped with
-a callback returning the affinity of per-CPU interrupts, switch
-the ARM SPE driver over to this new method.
+It so appears that handle_percpu_devid_irq() is extremely similar to
+handle_percpu_devid_fasteoi_nmi(), and that the differences do no
+justify the horrid machinery we have in the GICv3 driver to handle
+the flow handler switch.
 
-Reviewed-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Let's stick with the standard flow handler, even for NMIs.
+
+Suggested-by: Will Deacon <will@kernel.org>
 Tested-by: Will Deacon <will@kernel.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/perf/arm_spe_pmu.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-gic-v3.c | 54 ++----------------------------------
+ 1 file changed, 2 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index fa50645feddad..1460b02d20e8b 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -1287,8 +1287,10 @@ static void arm_spe_pmu_dev_teardown(struct arm_spe_pmu *spe_pmu)
- static int arm_spe_pmu_irq_probe(struct arm_spe_pmu *spe_pmu)
- {
- 	struct platform_device *pdev = spe_pmu->pdev;
--	int irq = platform_get_irq(pdev, 0);
-+	const struct cpumask *affinity;
-+	int irq;
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index cf0ba83c6eda6..dd2d6d722fc5e 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -230,9 +230,6 @@ static void __init gic_prio_init(void)
+ 		!cpus_have_group0);
+ }
  
-+	irq = platform_get_irq_affinity(pdev, 0, &affinity);
- 	if (irq < 0)
- 		return -ENXIO;
+-/* rdist_nmi_refs[n] == number of cpus having the rdist interrupt n set as NMI */
+-static refcount_t *rdist_nmi_refs;
+-
+ static struct gic_kvm_info gic_v3_kvm_info __initdata;
+ static DEFINE_PER_CPU(bool, has_rss);
  
-@@ -1297,10 +1299,7 @@ static int arm_spe_pmu_irq_probe(struct arm_spe_pmu *spe_pmu)
- 		return -EINVAL;
+@@ -608,24 +605,6 @@ static u32 __gic_get_ppi_index(irq_hw_number_t hwirq)
  	}
+ }
  
--	if (irq_get_percpu_devid_partition(irq, &spe_pmu->supported_cpus)) {
--		dev_err(&pdev->dev, "failed to get PPI partition (%d)\n", irq);
--		return -EINVAL;
+-static u32 __gic_get_rdist_index(irq_hw_number_t hwirq)
+-{
+-	switch (__get_intid_range(hwirq)) {
+-	case SGI_RANGE:
+-	case PPI_RANGE:
+-		return hwirq;
+-	case EPPI_RANGE:
+-		return hwirq - EPPI_BASE_INTID + 32;
+-	default:
+-		unreachable();
 -	}
-+	cpumask_copy(&spe_pmu->supported_cpus, affinity);
+-}
+-
+-static u32 gic_get_rdist_index(struct irq_data *d)
+-{
+-	return __gic_get_rdist_index(d->hwirq);
+-}
+-
+ static int gic_irq_nmi_setup(struct irq_data *d)
+ {
+ 	struct irq_desc *desc = irq_to_desc(d->irq);
+@@ -646,20 +625,8 @@ static int gic_irq_nmi_setup(struct irq_data *d)
+ 		return -EINVAL;
  
- 	spe_pmu->irq = irq;
- 	return 0;
+ 	/* desc lock should already be held */
+-	if (gic_irq_in_rdist(d)) {
+-		u32 idx = gic_get_rdist_index(d);
+-
+-		/*
+-		 * Setting up a percpu interrupt as NMI, only switch handler
+-		 * for first NMI
+-		 */
+-		if (!refcount_inc_not_zero(&rdist_nmi_refs[idx])) {
+-			refcount_set(&rdist_nmi_refs[idx], 1);
+-			desc->handle_irq = handle_percpu_devid_fasteoi_nmi;
+-		}
+-	} else {
++	if (!gic_irq_in_rdist(d))
+ 		desc->handle_irq = handle_fasteoi_nmi;
+-	}
+ 
+ 	gic_irq_set_prio(d, dist_prio_nmi);
+ 
+@@ -686,15 +653,8 @@ static void gic_irq_nmi_teardown(struct irq_data *d)
+ 		return;
+ 
+ 	/* desc lock should already be held */
+-	if (gic_irq_in_rdist(d)) {
+-		u32 idx = gic_get_rdist_index(d);
+-
+-		/* Tearing down NMI, only switch handler for last NMI */
+-		if (refcount_dec_and_test(&rdist_nmi_refs[idx]))
+-			desc->handle_irq = handle_percpu_devid_irq;
+-	} else {
++	if (!gic_irq_in_rdist(d))
+ 		desc->handle_irq = handle_fasteoi_irq;
+-	}
+ 
+ 	gic_irq_set_prio(d, dist_prio_irq);
+ }
+@@ -2080,19 +2040,9 @@ static const struct gic_quirk gic_quirks[] = {
+ 
+ static void gic_enable_nmi_support(void)
+ {
+-	int i;
+-
+ 	if (!gic_prio_masking_enabled() || nmi_support_forbidden)
+ 		return;
+ 
+-	rdist_nmi_refs = kcalloc(gic_data.ppi_nr + SGI_NR,
+-				 sizeof(*rdist_nmi_refs), GFP_KERNEL);
+-	if (!rdist_nmi_refs)
+-		return;
+-
+-	for (i = 0; i < gic_data.ppi_nr + SGI_NR; i++)
+-		refcount_set(&rdist_nmi_refs[i], 0);
+-
+ 	pr_info("Pseudo-NMIs enabled using %s ICC_PMR_EL1 synchronisation\n",
+ 		gic_has_relaxed_pmr_sync() ? "relaxed" : "forced");
+ 
 -- 
 2.47.3
 
