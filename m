@@ -1,154 +1,115 @@
-Return-Path: <linux-acpi+bounces-17969-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17970-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB57BF0A71
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1731BF0D23
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 13:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD3718900D2
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C57C18A29EB
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 11:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B9324DCE9;
-	Mon, 20 Oct 2025 10:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EB42F616F;
+	Mon, 20 Oct 2025 11:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5wXs9Ur"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhwKQZH4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E052A24BBEE;
-	Mon, 20 Oct 2025 10:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B1B2F5A32
+	for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 11:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760957230; cv=none; b=l42WA6D5po8kRxid5T8f+kLhDJhEu2K3+xWw9qcy9X66jujs27JdQH76+W/bCkGqtQDeTw0MmRDF89GDWQTpZOWFIPjLjOi4m1DkWGuGo4qoGykiHRZUx71KVPASVTaOECiz6Y3K13jq44T6Ygaedxh/O2xo/numNy9ZPBcgqew=
+	t=1760959570; cv=none; b=uK5sXMzJDbzVoWQAcKv/VvBRneIEfOWroJJFcgJ81yllyhkHYhi73Cb1Y8fBtyrUDyzrnSsyx+rcnbqFZszZBvHTqZITODZAzxVcI5r7WsuMksZz/0JzFjtWUgGeZNBFgSf/YpZCHDXkaXOHwRAse7+kTRd4rPMlrwlSh9e7MZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760957230; c=relaxed/simple;
-	bh=aRCKuRMfy54t4bXfC91JSBbnFrkYdLdzDBFthyWBges=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SPhAThBDoG+6CeCP/gECG3c4LpV+S5KWDX4J53RUyoE/FD8IuaijauPKIN8EwTeLgPQk4AdGU8ffFXrGZl/pZ9aokxzjNRJBvmrfBApkCiQ318f/eu0+sYFppEljvDtXJ+SzAf7uDvHWLDVG4xJHs4x2e0jgWpaYqYgcNQNMDH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5wXs9Ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EF9C4CEF9;
-	Mon, 20 Oct 2025 10:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760957227;
-	bh=aRCKuRMfy54t4bXfC91JSBbnFrkYdLdzDBFthyWBges=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=C5wXs9UrwAszdToIyQFZOKA+qjfH1I2yEPkUwkzif5j4NUpLKHFN+GMhrhIqgexug
-	 RION/AebVZepdsmtOasBwAWiACN37Gehlt1tI8qJg7HtryTMMo10HtKPrCYnzR4mqe
-	 4+PULhz1P29UQ7xi9xpd6H5FBB+GABK10UO1niUyk/RDp0/kyX2pLnbML9flNDcQzL
-	 aYW2fXSJMZ3lR3hb360j2riGA3jr36dSUWNgOK7M5tcBXGGa9PTP6H75+SqYahWyFO
-	 kMCmQhwDcBIhvdGNxp8m1U8ycZ8ibkyN4OjbXeseDCjOCx9Rphnry3738s2aUJRn3N
-	 wCconD0AwTHAg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vAnPt-0000000FSul-0I6N;
-	Mon, 20 Oct 2025 10:47:05 +0000
-Date: Mon, 20 Oct 2025 11:47:04 +0100
-Message-ID: <86plahx32v.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Mark\
- Rutland" <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J.\
- Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	"Saravana\
- Kannan" <saravanak@google.com>,
-	Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau
-	<j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark
-	<james.clark@linaro.org>
-Subject: Re: [PATCH v3 03/26] of/irq: Add IRQ affinity reporting interface
-In-Reply-To: <20251009174959.00001b05@huawei.com>
-References: <20250922082833.2038905-1-maz@kernel.org>
-	<20250922082833.2038905-4-maz@kernel.org>
-	<20251009174959.00001b05@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1760959570; c=relaxed/simple;
+	bh=hgOColYtjypJYFmtghZDQhWFnff6Vuq/Pns/rc/RTxY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PzaYhSQN6WwMPKOiiE1ddNa/4ibai3MHbNb6QiV54Kmbmec26DFskVsSZY3SXOjxUFdFqYdwVvvcUOeBHdNF6umSxt0Hrql4pUnuAlK9vY7ERbN42qAlrgizueSfs95JoEvg/bdEXtRBZitW6BPapJ1/FTiwSibtWQdqz2cAI3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhwKQZH4; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2699ef1b4e3so7493275ad.0
+        for <linux-acpi@vger.kernel.org>; Mon, 20 Oct 2025 04:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760959568; x=1761564368; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hgOColYtjypJYFmtghZDQhWFnff6Vuq/Pns/rc/RTxY=;
+        b=OhwKQZH4XCkNBxqdgYf8t4PRIoL0R7vfzMjrnIsRVCinoMnJNGTYlU79n7qlW8wfpa
+         zNOeNBYKYP6/eYxWB/2sc9DemE26+rxb53oellKA91Nvv7rHQG0wJZCIgVDmJQ+2XEw1
+         dEm6GoPgvuxODr7HArd+jLce17R43kU8183W8FwR/u1CVZTaZDg9vg818DlpOWT/z/1p
+         k0dzpsWGEn5ROTH33AbNQbPizHs684iy59JSAW6NdXdsN2bxSG0/7KdSUIHh8JcgxNE6
+         I3Hz76xnKnwdypq8mtZNQp2XGIGK2gn+JoMRHkY7nKIjO1OAXExZEZtqPbwJKVTae6vD
+         9y1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760959568; x=1761564368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hgOColYtjypJYFmtghZDQhWFnff6Vuq/Pns/rc/RTxY=;
+        b=RtM5Pa9Onol3thM2keVFHbc3vnB7TyASwxBLyqQujY3O5lUc7CGSnIhZm0VdXyuHLX
+         udwCfwV/nu1EpFMs+YLle8/vq2Ijpqaq3gg9KNKkDzzZ7q/tAJi6NrMKSAkq9A/Kf7ZZ
+         kiDSgqHQZnqDbi/8jvNa076SMOwkHvVSNV/z5Ka1Syw28FTIHrz2XY8Xvi4pBsjd1ES5
+         HuSdhCHQcXQZYxYv686Vi5H6rvOE2z8FsyixdmE+d6jS2X357CZtgJdFGiJEX+Y1jsAU
+         rhmluVa4qLXK3Mcisl5m+4muJiLttUbj8WcgOlT+UwE1yHZhYBfMiBcDa1v/+B6KdgpQ
+         1snw==
+X-Forwarded-Encrypted: i=1; AJvYcCWmDg7CsvWrcNbg+GwQ5MsSIKFdRVZ5/YXNmnLOLNfr2JK5TGDxgC8QOQResjIGEnTkUmHGdfiUMC4W@vger.kernel.org
+X-Gm-Message-State: AOJu0YySYHXaZur+eXmJK179XTw1mXcVCPbD4+fegzQk4LioKIcSrGNd
+	SDZhhDJwxAoSwH6Hkz1/MfkfDh7L/kp1Dep8ctRuwB35CJIsBcKrGNqJgNirRwqou2g4iP22Fvs
+	QvWsOxcLCwtUDb5osXz3pLBEANyhZFwXxX3gb
+X-Gm-Gg: ASbGncs49acy/oEhVN6FQl7gBIou+6MuczSjQmr94bJ1M/LTL5IQkszIvSPtbpqSUUJ
+	IFYZhwFFxBi70OLbLlFkXkLDhiWaf9t7bc0h85uuZLa3v0r3gq7W40oFRosDDkTfJpEgZIEMd0X
+	bbSKL+g1gnOf72H2ydf+n7+nA79xbZ/uilrOqeQrFjMM2tp1Jcd8Ohd/Yv85tYIr/LSOgLaUHjT
+	wbdS8/e1uNjgqx9ApW5shca3rP7VMjDUXonLDSlCAw2iUgR9CWAd++TOOuDkOPxa+oIlffZAFnS
+	k1pysflRVSdBiYWntwlX5v33D5ifdVX+fK9zugTR/npDLNgO33dxmDVY0eY4TXH1cn/NfD9DLGY
+	pMJEGvVEKr6+SkTAY4+7Yb1e8
+X-Google-Smtp-Source: AGHT+IEKwZbSy/N18wL4YfpzGb1pRy6ao0FR9zqJgT5EVU+s2mj3AZEqw0jAcF02AG4TQ9WpRH8/nfLRy1ytZSe20ms=
+X-Received: by 2002:a17:903:40ca:b0:290:55ba:d70a with SMTP id
+ d9443c01a7336-290c9cf3306mr86594545ad.2.1760959568266; Mon, 20 Oct 2025
+ 04:26:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jonathan.cameron@huawei.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+In-Reply-To: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 20 Oct 2025 13:25:55 +0200
+X-Gm-Features: AS18NWDO0ydrU_D3vxY3mykKLDQk63GF017mZ_6ZLZcYagnPF_Cv3D8Dk6e5NHQ
+Message-ID: <CANiq72=9=W_j_o=oT+AdghQbEFbEmqT+Gx6q8oK8-yVwcrnDXQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
+To: Siyuan Huang <huangsiyuan@kylinos.cn>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 09 Oct 2025 17:49:59 +0100,
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> 
-> On Mon, 22 Sep 2025 09:28:10 +0100
-> Marc Zyngier <maz@kernel.org> wrote:
-> 
-> > Plug the irq_populate_fwspec_info() helper into the OF layer
-> > to offer an IRQ affinity reporting function.
-> > 
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Trivial comment inline but I don't care that much.
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> 
-> > ---
-> >  drivers/of/irq.c       | 20 ++++++++++++++++++++
-> >  include/linux/of_irq.h |  7 +++++++
-> >  2 files changed, 27 insertions(+)
-> > 
-> > diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-> > index 74aaea61de13c..9a205cb033bda 100644
-> > --- a/drivers/of/irq.c
-> > +++ b/drivers/of/irq.c
-> > @@ -479,6 +479,26 @@ int of_irq_get(struct device_node *dev, int index)
-> >  }
-> >  EXPORT_SYMBOL_GPL(of_irq_get);
-> >  
-> > +const struct cpumask *of_irq_get_affinity(struct device_node *dev, int index)
-> > +{
-> > +	struct of_phandle_args oirq;
-> > +	struct irq_fwspec_info info;
-> > +	struct irq_fwspec fwspec;
-> > +	int rc;
-> > +
-> > +	rc = of_irq_parse_one(dev, index, &oirq);
-> > +	if (rc)
-> > +		return NULL;
-> > +
-> > +	of_phandle_args_to_fwspec(oirq.np, oirq.args, oirq.args_count,
-> > +				  &fwspec);
-> > +
-> > +	if (!irq_populate_fwspec_info(&fwspec, &info))
-> > +		return info.affinity;
-> My slightly picky mental consistency filter suggests that this would look
-> more like the ACPI version as
-> 
-> 	if (irq_populate_fwspec_info(&fwspec, &info))
-> 		return NULL;
-> 
-> 	return info.affinity;
-> 
-> But I don't really care.
+On Mon, Oct 20, 2025 at 5:12=E2=80=AFAM Siyuan Huang <huangsiyuan@kylinos.c=
+n> wrote:
+>
+> All types in `bindings` implement `Zeroable` if they can, so use
+> `pin_init::zeroed` instead of relying on `unsafe` code.
+>
+> If this ends up not compiling in the future, something in bindgen or on
+> the C side changed and is most likely incorrect.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
 
-Consistency doesn't hurt. I've applied this.
+Rafael: I guess you will take this; otherwise, please let me know -- thanks=
+!
 
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Cheers,
+Miguel
 
