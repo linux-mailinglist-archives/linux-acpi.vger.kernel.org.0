@@ -1,114 +1,202 @@
-Return-Path: <linux-acpi+bounces-18038-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18039-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678C0BF6ED8
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 15:58:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12C8BF6F9C
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 16:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35601188E39F
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 13:59:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 24D245053F0
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 14:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793C32ED3B;
-	Tue, 21 Oct 2025 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FD833A01D;
+	Tue, 21 Oct 2025 14:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQFAGRhr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COd4ZwD/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324FB2F39C1
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 13:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C30339B4B;
+	Tue, 21 Oct 2025 14:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055117; cv=none; b=jVOrYdAIHYzmHhwc/F3gvDF5Vws4Fc4I6CXxCpfWDW18Ts4AUBdzu6qrNai4b6YgOtmumph8NfUz/Dzzjh+upn/bfhNXe67JPNkQeOADP180+oR3UXAeKVYsOzxF7cRTTrkPmtcWtUsAnsd/4FlG9B34aQ/GWxpGJDTn6/Da3N4=
+	t=1761055673; cv=none; b=ODBoVaHzjR4jugungenKZwQX6F1Tt2b/zV2AfV+x+6jO9oKKlFSpYMPt/oRyLv/ZWWxHlxpkt11ZccxHWZSro5XdWMtUCitF0VzGKKj+p91O0vsJbivfGU1PJ5QkgUlmnwJjvT+qs7Q5P1gDhhsSIcdf7J9tAIoNbT23hjw2EHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055117; c=relaxed/simple;
-	bh=CdojtTN+pQLJgp8yGLxiE7SSiy8Ar2Cuu8Ic6z9m7+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F5scBxu/pHNrFKr73k/+1qiAc/0dI5iGefzfAETgQIxkGwsGB6NUnPr7XzmqwCeWbrF86GTcqtjfit94H8HW0ZezzWDmzByq8IKiWfWBLRaoeksqNaRW+QlzbDEw89PWx+CMYEVuUOh/GmZrTPiI6Ob2em+mYisIH7Uj7/MzQQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQFAGRhr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00278C16AAE
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 13:58:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761055117;
-	bh=CdojtTN+pQLJgp8yGLxiE7SSiy8Ar2Cuu8Ic6z9m7+w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eQFAGRhrfOkaLX2hKX+any7/bBGJeqpHea13K4kIHoGWLE80yVFgcr74ucLSWrzAo
-	 6rIOE/RCcXkTBZEPjfmpVQKbd2CSNo1PGZFjo50HQFQ8BACgJ3S8/yZzyCaURhtMXM
-	 PfOJcIGvcSfB6UkICy23S2RBVc25l7WloNLYITfYvA59pS9tz+AWvjn1eGTvqzUsY/
-	 bGZ1/NzHlw2iN0JnCpwW3gmWa9JvQq1c+L5ihYgnjCp7+QpIlaR0WBN6wO+xzlBvqH
-	 fGKlpOc6y/z9VTZtRVVXETI9CTOkH1o+/a89479vH5qS7Fal6gewBcducLbJ0sQ3R/
-	 S4GgMVAHLcdyA==
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-43f715b18caso2741565b6e.2
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 06:58:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXd5084mZjUwvOLxQ41Vzw2vpmGjLuhgQXpgTKJkzwQP1dGqgqBbpSBRORkGElc07gpzxa4tf5a2/2m@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAxqotCTyZxAtXWbgie+Ysl8MPwtaO26RSuT2SJFpFL3r7ak6S
-	/V8tMYqXIyy4xGRQTzTYvquDqhqpe4CYn6xZo9dIRuXhg0M3qO0RRe0nQ9p5fyHk1kups/cQKgU
-	dFmzaL08Qje2TllWu1jX4ePlPYyQq+Dc=
-X-Google-Smtp-Source: AGHT+IEju+8vNOgn/fUgmczapKzdRcaHFm+HGNYKbaf7IKu5Vg14gPckhbBdVx1M5JO2WiX9xYP7+xfojA+Job4vxKM=
-X-Received: by 2002:a05:6808:1795:b0:43f:2791:12c6 with SMTP id
- 5614622812f47-443a2ee2822mr7513783b6e.2.1761055116300; Tue, 21 Oct 2025
- 06:58:36 -0700 (PDT)
+	s=arc-20240116; t=1761055673; c=relaxed/simple;
+	bh=MLoAqGWmWG0tS39BHCw04giIQ56RcWiSSu/4KePK/yY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgmGlrKUdb4tksrHQsZ1HcjDvoKlG0Kh70mbQ0CCMcREOXY6c5yPSlsnUz3WslxCc7HQagKPneHaMhv7rcPcg8yhev8MuwPWxF6PfhwPEelNH4lkPTFC93dOGqIJpO72OgBcXakJxEuqunPYxXWscmxcAd8brb9ez0CQl8X+6BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COd4ZwD/; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761055671; x=1792591671;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MLoAqGWmWG0tS39BHCw04giIQ56RcWiSSu/4KePK/yY=;
+  b=COd4ZwD/UvEs7tmxenfEITc1kFvq/9VVf2748orKc9eEky4SF+Skqk8O
+   t4WVJ8jyg/v1Qur6lvugsLGVFcSEX6y9fbdPogNgOFSS4oUxeGiPV6B68
+   aWhWngrml6SKQdM/HtmaVCyuQXic+iRKOEctS/HJE7WswZEO0dgRHaEh8
+   /fcTHQzdAdC4J7Flf4Gk5E9TIZRuBTjFlhVdHvyih+DssVZUmGPX0PH5x
+   fR+Of66GBQoX/TZ5sAlmvKIg7H+dyvJLJVrpqpFMxjPPVxsKbj4Qaca5+
+   R6M/c9+CbshllIuABBawbgQYi42jNfOeCv2tbTGyFpTxLQ4FxLptEjYCi
+   Q==;
+X-CSE-ConnectionGUID: oJTT6URlQIi3BtwyR79hig==
+X-CSE-MsgGUID: YUZFebCiQHSJzRYuFTV9Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73788480"
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="73788480"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:07:50 -0700
+X-CSE-ConnectionGUID: OIuqUSuiRNiNI7aTyE6D3g==
+X-CSE-MsgGUID: pogwMQpnS7K/l603s2LfBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="184081155"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.148])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:07:39 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vBD1S-00000001VzY-2SRO;
+	Tue, 21 Oct 2025 17:07:34 +0300
+Date: Tue, 21 Oct 2025 17:07:34 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 06/29] bus: Introduce simple-platorm-bus
+Message-ID: <aPeTppUgRC1wWQU9@smile.fi.intel.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-7-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021092825.822007-1-xry111@xry111.site> <CAJZ5v0iy8wChaPYGmc=mWJRrA+uXnGF2Ar7aMCMRoUqS6877aQ@mail.gmail.com>
- <c29fcf14b87c0c0bfa1ba304c89fe8c410aac03b.camel@xry111.site>
-In-Reply-To: <c29fcf14b87c0c0bfa1ba304c89fe8c410aac03b.camel@xry111.site>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 21 Oct 2025 15:58:24 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jBEQXDSH7ufBcwwYy8c2=89=LkLZGTZtTe53Fvht8dFQ@mail.gmail.com>
-X-Gm-Features: AS18NWBFj7up5hYTovE9VG2SHAqp39AegNpfQLHEIWlNUW3HqCMj6ruy6axZ8h0
-Message-ID: <CAJZ5v0jBEQXDSH7ufBcwwYy8c2=89=LkLZGTZtTe53Fvht8dFQ@mail.gmail.com>
-Subject: Re: [PATCH] acpica: Work around bogus -Wstringop-overread warning
- since GCC 11
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, loongarch@lists.linux.dev, 
-	Mingcong Bai <jeffbai@aosc.io>, Guenter Roeck <linux@roeck-us.net>, 
-	Saket Dumbre <saket.dumbre@intel.com>, Robert Moore <robert.moore@intel.com>, 
-	Len Brown <lenb@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <linux-acpi@vger.kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <acpica-devel@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015071420.1173068-7-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 21, 2025 at 3:43=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
-e:
->
-> On Tue, 2025-10-21 at 15:35 +0200, Rafael J. Wysocki wrote:
-> > On Tue, Oct 21, 2025 at 11:28=E2=80=AFAM Xi Ruoyao <xry111@xry111.site>=
- wrote:
-> > >
-> > > When ACPI_MISALIGNMENT_NOT_SUPPORTED, GCC can produce a bogus
-> > > -Wstringop-overread warning, see https://gcc.gnu.org/PR122073.
-> > >
-> > > To me it's very clear that we have a compiler bug here, thus just
-> > > disable the warning.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT=
-_ALIGN enabled")
-> > > Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2ae=
-d@roeck-us.net/
-> > > Link: https://github.com/acpica/acpica/commit/abf5b573
->
-> /* snip */
->
-> > Please submit ACPICA changes to the upstream ACPICA project on GitHub
-> > as pull requests (PRs).  After a given PR has been merged upstream, a
-> > corresponding Linux patch can be submitted with a Link: tag pointing
-> > to the upstream commit, but note that upstream ACPICA material is
-> > automatically transferred to Linux, so it should not be necessary to
-> > do so unless timing is important.
->
-> The Link: tag is above.  The issue here is this bug is preventing
-> automatic test of arch/loongarch (see another Link: tag).
+On Wed, Oct 15, 2025 at 09:13:53AM +0200, Herve Codina wrote:
+> The simple-pm-bus driver handles several simple busses. When it is used
+> with busses other than a compatible "simple-pm-bus", it doesn't populate
+> its child devices during its probe.
+> 
+> This confuses fw_devlink and results in wrong or missing devlinks.
+> 
+> Once a driver is bound to a device and the probe() has been called,
+> device_links_driver_bound() is called.
+> 
+> This function performs operation based on the following assumption:
+>     If a child firmware node of the bound device is not added as a
+>     device, it will never be added.
+> 
+> Among operations done on fw_devlinks of those "never be added" devices,
+> device_links_driver_bound() changes their supplier.
+> 
+> With devices attached to a simple-bus compatible device, this change
+> leads to wrong devlinks where supplier of devices points to the device
+> parent (i.e. simple-bus compatible device) instead of the device itself
+> (i.e. simple-bus child).
+> 
+> When the device attached to the simple-bus is removed, because devlinks
+> are not correct, its consumers are not removed first.
+> 
+> In order to have correct devlinks created, make the simple-bus driver
+> compliant with the devlink assumption and create its child devices
+> during its probe.
+> 
+> Doing that leads to other issues due to the fact that simple-bus is
+> closely related to of_platform_populate().
+> 
+> Indeed, of_platform_populate() can probe child devices if a simple-bus
+> compatible node is detected. This behavior is expected by some drivers
+> such as some MFD drivers. Those drivers perform some operations in their
+> probe() but rely on the core (simple-mfd, simple-bus compatible) to
+> populate child devices [1].
+> 
+> Avoiding recursive probing in of_platform_populate() and let the
+> simple-bus driver probe its child devices will break some system.
+> 
+> For this reason, keep the current behavior of the simple-bus driver and
+> of_platform_populate() as they are and introduce simple-platform-bus
+> driver.
+> 
+> This driver doesn't interfere with of_platform_populate() and populates
+> child devices during its probe() as expected by fw_devlink.
+> 
+> [1] https://lore.kernel.org/all/20250715095201.1bcb4ab7@bootlin.com/
 
-OK, applied as 6.18-rc material with slightly edited subject and
-changelog, thanks!
+Link tag?
+
+...
+
+The below is simply wrong. The luck that you got no errors is due to CONFIG_OF
+being bool and not tristate in Kconfig. I dunno if this driver ever gets the
+'m' capability, but currently it uses tons of dead code (such as MODULE_*()
+macros). Disregard of that, the proposed change should go to the separate
+compilation unit at bare minimum.
+
+...
+
+>  module_platform_driver(simple_pm_bus_driver);
+
+> +module_platform_driver(simple_platform_bus_driver);
+
+^^^ WRONG!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
