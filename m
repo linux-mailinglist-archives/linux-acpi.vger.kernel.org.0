@@ -1,131 +1,147 @@
-Return-Path: <linux-acpi+bounces-18043-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18044-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314EABF740E
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 17:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5F6BF74DA
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 17:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D14C74FB4EF
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 15:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2C9E46773E
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD41342CA3;
-	Tue, 21 Oct 2025 15:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB6342C81;
+	Tue, 21 Oct 2025 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aYknvFXf"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="EWkGTyCn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E417342C96;
-	Tue, 21 Oct 2025 15:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F389933F8C7
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 15:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761059174; cv=none; b=tbcyDxclxIYAr8Jj/NPmkg1fnSmJnMv7KnkRnG1GIx57lYBU6rlONYHVrYXjy5ErliK7oeUA9FZ9zUTFgDfIH9N7lRY+2mGXRjwmawPkIS1k4SkPTKpqFi4face+z0RBg2NBeWTIpFxqdlDFZGSYnAz9FhkTNJS58oE0x19X550=
+	t=1761060228; cv=none; b=bMDmCXufy6UR9CoEjovyf85kl7FE2t6XJBOujQ5SihdPIhYrR2XnOZAWdeptldQvvQvtb1iGlas/XHYaZyaQxLBvZdepuTh4SXQ1kRQCFupn1KjZhi0Vdu7gKzqS5mvYJZleo86fAdwxS3f5/UwAx2svd+5VtqDq8NvOCpOFeHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761059174; c=relaxed/simple;
-	bh=XvTwGNFuSfbqy6vW3WT4GVwL8451owX3V6vI14/b4+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xt+n7FO6hg2vPRfZXbJ6bFFcvxBFD1aMSd2EM7qHYYD1LIFlHHQlLqL8TgZe6GXznZ0Ps3VsDAyF32k4s1pnuikJolnhnn+hhc0iF8Bnhj7h+Og+eh08Baxjvwr/PnxQk6aVPxSQXoFS0rV1DKV/9/I/qb9D9VhpAN7fh7CGObI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aYknvFXf; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761059173; x=1792595173;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XvTwGNFuSfbqy6vW3WT4GVwL8451owX3V6vI14/b4+M=;
-  b=aYknvFXf3KxFpfpYo5p/QXXge8C+31gS7jsGXW/0Rh6Od7mSyD043Tvk
-   uZ/NgqNVJw9zZPhbB35Aws4t3kyY/dOl4tCvh9hg9o8OznH8tCowieG5X
-   X8pOaQLHjF6F40qqWtAemuR/h52XwmMcN+7LvmcqMyLbb5bFhd9/nE41H
-   gmpmVbME+4rmu78EbKIe8NV9LRk6OV1LWEs2IPzIjgRKY+zrjiRiOAsZl
-   8NG2onoAiNq5VihSSKX8s4jF2bKrXY/hfptyFSHy6tvSCApdkF6ZhuMlD
-   V4WxPKL102VoXsD+5Pil/Mu3/VquiK+HZARFOESimmBG05h+KhZbqk9AK
-   A==;
-X-CSE-ConnectionGUID: sVK8fyeVSQm2D7yjB7pshA==
-X-CSE-MsgGUID: t/FL3wN9TTuq7sUpiJJLVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63096641"
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="63096641"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:06:12 -0700
-X-CSE-ConnectionGUID: hPdaPEAhRSSL3lr8QNk2Bw==
-X-CSE-MsgGUID: 5dPLaha8S0Obp9mkoJFipA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
-   d="scan'208";a="188016523"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.108.169]) ([10.125.108.169])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 08:06:10 -0700
-Message-ID: <2ee6c734-7a6e-4888-b00f-17de1c0f5e5a@intel.com>
-Date: Tue, 21 Oct 2025 08:06:09 -0700
+	s=arc-20240116; t=1761060228; c=relaxed/simple;
+	bh=LranUERPcQFVX4C3LPo4yvi6i4EnvwENiJ5DOAMZJo4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hSHdQW3PPQRqx0m30vu/zpuuRPoPUbqE1nsK4anug70RKW5rDj17DdI1YGP5nczkBCusQSszTDWQQMVJxwqnCCEVaMDTD25L7CeuciW2Qp5z083osdr2T1J3DUAycIeG99FxqBmnGDQ/aTDuH4ZkFL1CJCEP7vf7pRv0K8jOYNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=EWkGTyCn; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-36453927ffaso50851591fa.2
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 08:23:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761060225; x=1761665025; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LranUERPcQFVX4C3LPo4yvi6i4EnvwENiJ5DOAMZJo4=;
+        b=EWkGTyCn6lVnAVAl5gMahiqmt0QU9adOiznVYX4MZed7J6op4KygdkGeZ9kbt55rKu
+         QaLNRJ1b7+RBmZblY93o+ZIB2E1gVS5K6mA8RXI66wQeeJAqWpsM74OR79qC80p1It+i
+         9Eolzy65Bn4vQ0zf+EYtFOkq0sSep6IoNgKgUcXeq9P/RfbcEDCEg/i4ae9GXZLvzc74
+         wctnGjw4GT8hXGUPOsPApN4c9QMODYvbvzpqDE9jgo9lfmH4dTEcgDYygXlCTyA0Ervm
+         Ut910gGBRTu0r1HXcLyDUJEtnmOuvj0I9LqlsqmwOSg+9sc47iLAAmx445MMsxKpwdx9
+         Z6Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761060225; x=1761665025;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LranUERPcQFVX4C3LPo4yvi6i4EnvwENiJ5DOAMZJo4=;
+        b=T2ESIiw4ZOgu3bRj89zIWC/uCRfaFCXe+PHlikCdaAfpO3yrXQmQ5XuEfvMdM/Fthj
+         kBWsHGOphWUQ4nI/ZgXa6GRLrx5VNmeUg4gJ2X6ZFWLS+R+v/wppY/DPgkuIfvfogzq6
+         I411JBKFkpIIKMG1+kjUvoOd/PHU30yej8pouE840wZaiz8l3X1wetX4j34Q79AmtOsh
+         /ax2AiiyFRLxVGriT94s2EjqjnvP3lqTToa4rP3MhTqrYKbypO5q/lIcmVeVS8zsxULB
+         BYY21LhHDONI8W9gT2PjarMEOilzKEih6CGfnSoLnDRauJLUolPUgcGE5Jma7V0d82DO
+         2VRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV3YlYo49xc77Z/54jh8yWE8eRIaTW4ECmEFnlV8gpsR8/b5LprtcS5v3KrQK8ue4ax/K0LhEU5Y7Ct@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUeNwE1zA/cgVF5rfqpZZjG7Yk2QK/5H4QnLzUDj3WZHlCfXE8
+	PGv84Gtvq+crtgDGPXbo9Zqjn3cvTOuwLBv5VNh/Eif1RqdKL/s02JBo0KkGPK9t0qnsbx3NPhg
+	GckhudOArv7VHj8EG2I2EUSVaJUO1ub6fmV/v5zKkZQ==
+X-Gm-Gg: ASbGncthCW1MhjXvnj2Cyw0ezc5lXXvAZMDq8PsuG/pVxnEoMBEsT0hSeHa9TwgCSna
+	eSLlWOOs8gAVhqIPWlDRs/mO8/vZVmqv9I79oXS63iwWEg0GSpdUGkBZ280IB1M4lwVW/Yg581u
+	JRqk8LRu7bILV/W17pGXE/Wz7dQ5lS0bbkI2u/9Ez6xdBngvSEGJ/3FFBBzcoIK9l94l32tjRl9
+	bnlTSThHEi3Zsyp6LvoI3kdD/pTF6tn8LhnUZLS3h3SyVai7Cz7tBtCx6j0xpSs8WuxAeBbS2gk
+	8fEMTZWduSGmVlD/lL60wyKnkn0=
+X-Google-Smtp-Source: AGHT+IGgc9KeMCqsp0M9361FU4xtXnSdpuEq/15+MfSP4MmOYfHv0qjJU2f6NUqRnqHECXUrME8KkqIWvVWDw8pMiGQ=
+X-Received: by 2002:a2e:b914:0:b0:356:839:56f with SMTP id 38308e7fff4ca-377979419dfmr34052621fa.20.1761060225159;
+ Tue, 21 Oct 2025 08:23:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] acpi,srat: Fix incorrect device handle check for
- Generic Initiator
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: lenb@kernel.org, robert.moore@intel.com, andrew@kernel.org,
- bfaccini@nvidia.com, eahariha@linux.microsoft.com, dan.j.williams@intel.com,
- thorsten.blum@linux.dev, gourry@gourry.net,
- nunodasneves@linux.microsoft.com, wangyuquan1236@phytium.com.cn,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- acpica-devel@lists.linux.dev,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>
-References: <20250913023224.39281-1-xueshuai@linux.alibaba.com>
- <20250915093549.00006109@huawei.com>
- <45d5e6a9-d561-4df9-96d4-285f2ca12888@linux.alibaba.com>
- <CAJZ5v0grihVDor12BXU3-tAiQ5WH6rK+AZK8aTtaUa3cq1i0jA@mail.gmail.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <CAJZ5v0grihVDor12BXU3-tAiQ5WH6rK+AZK8aTtaUa3cq1i0jA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+ <20251006-reset-gpios-swnodes-v1-7-6d3325b9af42@linaro.org>
+ <95bbec130437846d4b902ce4161ccf0f33c26c59.camel@pengutronix.de>
+ <CAMRc=Md_-mO=HqfncD-vJS6XzPJ+aTcBjSjtkxLH_h1=pNjCcg@mail.gmail.com>
+ <075a4511a6ae4b047599757d41b559c6b7cf9d0f.camel@pengutronix.de>
+ <CAMRc=Md4DUSuwv07EuBVDJbY1Uzezq+TONxyCvLtOHD=iFXrcQ@mail.gmail.com>
+ <050d74d7619bdfdf5ca81d8914a2a8836a0d4e2e.camel@pengutronix.de>
+ <CAMRc=MfPqRLFHPW988oMry7vVoTgtQHrxxND4=nr_40dOa5owg@mail.gmail.com>
+ <aPeexuA1nu-7Asws@smile.fi.intel.com> <aPegyVyONkPWRgi9@smile.fi.intel.com>
+In-Reply-To: <aPegyVyONkPWRgi9@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 21 Oct 2025 17:23:33 +0200
+X-Gm-Features: AS18NWBXrVCB06tyTpBmVdEBjowWLVzdXt71bqZY_QqEoblKCiav8MRbM9cW_iY
+Message-ID: <CAMRc=McPpFEmg7dpfiYWJaPR4yMynOaU5Hp37E7rTzWSCNxBuA@mail.gmail.com>
+Subject: Re: [PATCH 7/9] reset: make the provider of reset-gpios the parent of
+ the reset device
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 21, 2025 at 5:03=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Oct 21, 2025 at 05:55:02PM +0300, Andy Shevchenko wrote:
+> > On Tue, Oct 21, 2025 at 11:39:41AM +0200, Bartosz Golaszewski wrote:
+> > > On Tue, Oct 21, 2025 at 11:31=E2=80=AFAM Philipp Zabel <p.zabel@pengu=
+tronix.de> wrote:
+> > > > On Di, 2025-10-21 at 11:27 +0200, Bartosz Golaszewski wrote:
+>
+> [...]
+>
+> > > > No need to convert all existing drivers right away, but I'd like to=
+ see
+> > > > a user that benefits from the conversion.
+> > > >
+> > >
+> > > The first obvious user will be the reset-gpio driver which will see
+> > > its core code simplified as we won't need to cast between OF and
+> > > fwnodes.
+> >
+> > +1 to Bart's work. reset-gpio in current form is useless in all my case=
+s
+> > (it's OF-centric in 2025! We should not do that in a new code).
+> >
+> > More over, conversion to reset-gpio from open coded GPIO APIs is a clea=
+r
+> > regression and I want to NAK all those changes (if any already done) fo=
+r
+> > the discrete components that may be used outside of certainly OF-only n=
+iche of
+> > the platforms.
+>
+> To be clear, the conversion that's done while reset-gpio is kept OF-centr=
+ic.
+> I'm in favour of using it, but we need to make it agnostic.
+>
 
+As of now, the whole reset framework is completely OF-centric, I don't
+know what good blocking any such conversions would bring? I intend to
+convert the reset core but not individual drivers.
 
-On 10/21/25 6:30 AM, Rafael J. Wysocki wrote:
-> On Tue, Oct 21, 2025 at 8:55 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>
->>
->>
->> 在 2025/9/15 16:35, Jonathan Cameron 写道:
->>> On Sat, 13 Sep 2025 10:32:24 +0800
->>> Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>>
->>>> The Generic Initiator Affinity Structure in SRAT table uses device
->>>> handle type field to indicate the device type. According to ACPI
->>>> specification, the device handle type value of 1 represents PCI device,
->>>> not 0.
->>>>
->>>> Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
->>>> Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
->>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->>>
->>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
->>>
->>> Thanks!
->>>
->>>> ---
->>>> changes since v1: drop changes in actbl3.h to make it easy to progress per Jonathan
->>>> ---
->>
->>
->> Hi, Rafael,
->>
->> Gentle ping.
->>
->> Are you happy to pick this bugfix up in this cycle?
-> 
-> drives/acpi/numa/ is maintained by Dave.
-
-Applied to cxl/fixes
-7c3643f204edf1
-
+Bart
 
