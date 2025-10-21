@@ -1,158 +1,160 @@
-Return-Path: <linux-acpi+bounces-18018-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18019-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8792BF4F92
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 09:33:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A3DBF5694
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 11:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9EFF4633EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 07:32:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F3764E3FA2
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 09:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB88121CC60;
-	Tue, 21 Oct 2025 07:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF9D328B75;
+	Tue, 21 Oct 2025 09:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/OsHNjx"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tfU4V0m0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A99246762
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 07:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0A4303A39
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 09:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761031928; cv=none; b=koCDDy9u0I+Uj6OeXZXVS1mZNFTkYxaEzjZ9GUQnUhsXM3dG+R0Usd7uuQpIS6zxEl45pTIDX5qopOnc4cMagyqqSK5qYA5TixkvZ+N8TvR4a6jGHT4f9YuCA7zrZ/MSvMU4lT7XhFyqMMcf72Y8CMpVU7ZvjdUv8DxooNAL7ck=
+	t=1761037601; cv=none; b=ZTMZNQsoROeWbzWmdM1fvRk3Mf4RI3Ya5/TDEKLO7HIZtlHCXJimiHmsaM02NlbhuZTj/zVlJIIpEJquHF+pyH+Ehsibc1Cks63Z+tBWTeUxeCDJyMJ6DyJsluuxy9AYE0XhfSPlecxec/dFtALeWgYtdXkz+rTlPkCwH374Eg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761031928; c=relaxed/simple;
-	bh=MZ9jjV6RD/JyPApchpDTq6E8TDeTqu1FHrxJ0c/RcWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nzertOrVy0d8hwGgQW52Ttbo2CIkgombSL1ndpQ7lmZBN5ZorFJQAZnk2T/brVx0RlTuaPK2itjrfkz22C3FeRNVjzVvcScbleO/6RsCfYR3fRP62N0+8I1yFfojwYS0W/yHYtEL68y3QP5ynnUbJr28v6AMaF8vX1sZy3gC/bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/OsHNjx; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7848f763982so35140457b3.1
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 00:32:07 -0700 (PDT)
+	s=arc-20240116; t=1761037601; c=relaxed/simple;
+	bh=Kw8PWnwgX+EVahNAArZWM7gjO7i4Jria4MYBSb58vsE=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bm0jA0/s0oAKMRg0+YA0XrIvPa8z1wkN03zUZ9RUoYak3sml72b9U1GQcDPZen7ce0zn2hYWCnngCJ5XNQMXL6fpG33c7Jhayj8pz2cY4gfJgf1LFPeb38qkpUGvOldqlW3HAcn165eiE+s9/rDFbLrG6iczKPEiM3vLT0QDpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tfU4V0m0; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59093250aabso6695915e87.2
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 02:06:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761031926; x=1761636726; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=80GPaLt8RJEs0Dy2pPxjPW4aTwa88xJPXSCXcH5OIhw=;
-        b=g/OsHNjxss6+9UgGKxyXGq16wMIlM+4Wc7CIyL+OtbSL4T+qdrRwrZuFZgesVkfMBA
-         Cjo6W3EIJOspqFZc0dbdxnPzHktI39zekqBVCWHjCbFEpni7kKXtI+hbtoGtzVNJqXRU
-         L+Z2gd8MGc8GPcudo5+o9c7ucqRK6cfGTQY/zRlVP4qaDpTPFyw0xfuoak7QkHwLSIcp
-         ll8uhrWIkuWRFlp4VYc0TExrUP6JT0KUNp6v7HbziZ4VrTQSQ4stX2AlVu96CWyrEGDG
-         xzdH4X5/5N8fMpPrTfgNMM76rWYoQcXb08cUs7EOK66mpck25gAng1LG8rBZn9d8PE/u
-         4sPA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761037598; x=1761642398; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:references
+         :mime-version:in-reply-to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qPpFx6ykYRuQv3SA/HXCy/3dmgOcOpqVjX/aVsVTlzA=;
+        b=tfU4V0m0q57ZNx37L4RF0azZHlUDduWeeC9bYeHb9rdfOA1mum134AYF39DYXOiIYT
+         I+vn8/fKOQ3Ss5jnpxMfjeBiJZwPTYfWw1x9lkaDZe1m/NrbyWflzd7trjvmr1779Ray
+         9eEEMaR6jYRnSD+DofE1YJA1MdBqwlmNIGHyHXZd1tOaKo6SjNT05obwLiRhc17s4FMv
+         ZDwKw6yKfo43zpGAPgutaBmavQSgpkqo09ByL/tp6OUwwpAoNfIj72EPsVofw5KNKlsK
+         JpTM6dOj5kfVxvDAw0O81/YwmJDN3zMPEp4ff98oisA8xQkaEFiQnGQICDaEAZKJWSFZ
+         1tww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761031926; x=1761636726;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=80GPaLt8RJEs0Dy2pPxjPW4aTwa88xJPXSCXcH5OIhw=;
-        b=Y15xeEDPvRL+Kr4bwsaWihAZAms703ZDn21o9QeH16A9hDIaIR96zoDiETenXu6aS7
-         qxwkds1sCiR7/6hPctVSgMIV5uhz1X53s7bAkNsL+KuDJTN/9IdCW5f6Npk/VokXEJte
-         SUyebEb50UBJV8Bivw7u0cp00Frb5WRMqhYnDsuA6jSDv27UCEoAWtPiDL+QsDVc3dur
-         ck2bU/uD3AdrTGfjlfaIDagOhOzR/x3ksF/wAj+mnS+WQrsYlYeYH6mE54z0OE+jom4Q
-         FTPDo3vwQp1950lM4Zc+GgOlRugWV29zX780Dt8YsxfLe7LLV6HDbdo4TJfwx2xMniwo
-         CCPg==
-X-Gm-Message-State: AOJu0Yw2aIe7S1ckuNqDvplHdSh7Gf1ygpclhQbj3ZRJvtilDC86CEPg
-	ZbeMdBCniEDYZJoqqdJeMcBUODQj+qNi4uR962AOX/okij5GpflFtAWz8rZJ0pjidYaueyJcIsU
-	+gl6Gl17dciH/oG/pyiuOraaV87yabLI=
-X-Gm-Gg: ASbGncuzzqMejp+cZXsOfxcrNbI9OujY/tsJ2eXDmatk0KXQFiZW3GsgBi85+njL0iV
-	w4CZcnaCLiJEjLSgTztenYgL75LFDkzYprmWi2/B2B39XOdQX+JMRWRcbrBud05haFmOu1bARVY
-	NBv1edKuzwO+K4ZHv2zK88afk5P9zd26riw5AQT/P6Q6hwd3FXmd6pr/VMJ6xFl7fhT8GGSFjOk
-	MtIkplMeLmQDew0f/2eCnPVVWkjU/pP4q7TZgU0fpCSyAlRHLYsW8szN9s/yHMR8X24NQ==
-X-Google-Smtp-Source: AGHT+IEeY3YShWt8oQCpP032A+WkeipcrqXc6vIfLRMS0m9QP581SH/H95Dh3/RFp9umvNag6LF1irbP4LG4duUXxzw=
-X-Received: by 2002:a05:690e:1484:b0:63e:3a34:7bb3 with SMTP id
- 956f58d0204a3-63e3a34914bmr4567917d50.14.1761031926185; Tue, 21 Oct 2025
- 00:32:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761037598; x=1761642398;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:references
+         :mime-version:in-reply-to:from:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qPpFx6ykYRuQv3SA/HXCy/3dmgOcOpqVjX/aVsVTlzA=;
+        b=SJfX+/RS/zW+cbo6aqHeuN7IIpgYZLqkG963g0gdd9WU025wBhjuDNVWtJvmZC2zsC
+         Q6eN0FojZmu3vKCWFnXVQMkwCsBFOdzpqzu9JR/LZnPQmYKkOwI1mWjP6MgFAEONM/9E
+         mEq3s8KBlD4iJ1ZZJOTNexplAK6i7cnJn85McwKOsUkJUk+867u1g66mGOh07NTi5nuV
+         ncrmwGkpZtf56ZhzceOIorOlYyroBLv7Vg2XNRyvRybTr8QejkBr2Oj7HPfOuRABDAwl
+         ge28vbxxp4fqX3vHkd5wDgjNV0Nz6udTfPapL9f1gH/qjdXqoMh9ck8xeHCcsviwzqKJ
+         2ufw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtVsFEuT6l1LaguIeLul7feghcO0P9Px2tMWg1EnNaAPyzgNWfR2Urw/AbIyaJBa+406LSgDXh/77s@vger.kernel.org
+X-Gm-Message-State: AOJu0YypeetMg7yEGa27SR3A0pHgT7asN7S5sohpvM//Esb3IMagdKYW
+	IzJVQGXn2PFsfrCbsqkxOn2qUfKEwkfBmR2inHJsUwnYD22HwMdWbNmXnvrqFikj9ksyY9gwBir
+	bqhvwOaroAFe6tHwpqm3fBGPF40On86DMmmvoUEINqQ==
+X-Gm-Gg: ASbGncsCFWDYxUSNmWeu4SaaFMY67xXltbrWWP69Oyxo0GpifExN5cW15a8d7ob5Pj9
+	hIb3m4obYjT17fT2QACk6CRr5ThIJlTqm/jh7neDFxm9rLZ/DTWwkL3FDeRrlqbrURH7ysbe0L5
+	FIJ1V/5vpUyMyA60G1dRH0jG3MoOdD6mmm7RZ87fzZfsX/LJ5wQ9cZDABFIJqd+FWkoP6bqxr+s
+	uAs1p54B5zCq2AX8PwLUyuD1jVxpjN07EQgomSPA+cPNJ+zSN7bUAnadV0zJKvvDHtD0jgsFx74
+	bvelTg1AUFlaEIT/8sysbwYgB/0=
+X-Google-Smtp-Source: AGHT+IE3YtmLtzMdziyNQ1IevYP+jbdpiGOkpNCybV2U1useYtB1KfMzt3wyojS9vR+rFcn0fnnKKJYLP3lPJrg2WpI=
+X-Received: by 2002:a05:6512:68d:b0:57d:a8e6:6574 with SMTP id
+ 2adb3069b0e04-591d8506e95mr4737920e87.20.1761037597726; Tue, 21 Oct 2025
+ 02:06:37 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Oct 2025 02:06:36 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Oct 2025 02:06:36 -0700
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <aPcuHpYCM22NZ7S_@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <48d0fb45-096c-4caa-b51c-753c2f17f018@gmail.com> <aPPthnO3bKFhTN3A@ashevche-desk.local>
-In-Reply-To: <aPPthnO3bKFhTN3A@ashevche-desk.local>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Tue, 21 Oct 2025 09:31:54 +0200
-X-Gm-Features: AS18NWB8jumT2LroU3IjoKum0Y2-hjLmxFjf2_tNlaFYPpDTPqRv8Y1Mji-zvMk
-Message-ID: <CAOiHx=npyRdxvN7EywuXTvOMPYQ2FE_T7eVVJtZzh3Di05hxJQ@mail.gmail.com>
-Subject: Re: i2c-mux ACPI parent device references in example
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+ <20251006-reset-gpios-swnodes-v1-3-6d3325b9af42@linaro.org>
+ <aO1dBgPZfDJTsPfE@smile.fi.intel.com> <CAMRc=MfOoHn+mLRpQBEsC3g5sM=VZBgVffsm68CAXJBHffPxdA@mail.gmail.com>
+ <aPYJeqFY_9YV9AQn@ashevche-desk.local> <CAMRc=McBTgnQXkPoOUYC=PDDwFXuVqfMFuiwZTW7ODb6owJbeg@mail.gmail.com>
+ <aPcuHpYCM22NZ7S_@kekkonen.localdomain>
+Date: Tue, 21 Oct 2025 02:06:36 -0700
+X-Gm-Features: AS18NWBfQzQ4G0TaM5lf1nYCqc0Xona873xRGvt4LqOC2I4vW3KZIjQXa4Az2P0
+Message-ID: <CAMRc=Me0YyBK5DtyJO4ZZvfvnhdtJx92_ktQA_eVhqFEkh=Bqg@mail.gmail.com>
+Subject: Re: [PATCH 3/9] software node: allow referencing firmware nodes
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On Sat, Oct 18, 2025 at 9:42=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Tue, 21 Oct 2025 08:54:22 +0200, Sakari Ailus
+<sakari.ailus@linux.intel.com> said:
+> Hi Bartosz, Andy,
 >
-> On Wed, Oct 08, 2025 at 11:14:37AM +0200, Jonas Gorski wrote:
-> > Hi,
-> >
-> > I'm currently trying to wrap my head around describing devices via SSDT=
-.
-> >
-> > While reading Documentation/firmware-guide/acpi/i2c-muxes.rst, the
-> > references used for the devices behind the mux confuse me a bit.
-> >
-> > The tree from the example is:
-> >
-> >     Device (SMB1)
-> >     {
-> >         Device (MUX0)
-> >         {
-> >             Device (CH00)
-> >             {
-> >                 Device (CLIA)
-> >                 {
-> >                     Name (_CRS, ResourceTemplate () {
-> >                         I2cSerialBus (0x50, ControllerInitiated, I2C_SP=
-EED,
-> >                                     AddressingMode7Bit, "\\_SB.SMB1.CH0=
-0", 0x00,
-> >                                     ResourceConsumer,,)
-> >                     }
-> >                 }
-> >             }
-> >
-> >             Device (CH01)
-> >             {
-> >                 Device (CLIB)
-> >                 {
-> >                     Name (_CRS, ResourceTemplate () {
-> >                         I2cSerialBus (0x50, ControllerInitiated, I2C_SP=
-EED,
-> >                                     AddressingMode7Bit, "\\_SB.SMB1.CH0=
-1", 0x00,
-> >                                     ResourceConsumer,,)
-> >                     }
-> >                 }
-> >             }
-> >         }
-> >     }
-> >
-> >
-> > Is there a ".MUX0" missing in the references, or is it correct that it =
-is not
-> > present?
-> >
-> > E.g. should it be "\\_SB.SMB1.MUX0.CH00" instead of "\\_SB.SMB1.CH00"?
-> >
-> > FWIW, the references were changed from relative to absolute in e65cb011=
-349e
-> > ("Documentation: ACPI: Fix parent device references").
+> On Mon, Oct 20, 2025 at 01:26:59PM +0200, Bartosz Golaszewski wrote:
+>> On Mon, Oct 20, 2025 at 12:05=E2=80=AFPM Andy Shevchenko
+>> <andriy.shevchenko@linux.intel.com> wrote:
+>> >
+>> > > >
+>> > > > Can't we always have an fwnode reference?
+>> > >
+>> > > Unfortunately no. A const struct software_node is not yet a full
+>> > > fwnode, it's just a template that becomes an actual firmware node wh=
+en
+>> > > it's registered with the swnode framework. However in order to allow
+>> > > creating a graph of software nodes before we register them, we need =
+a
+>> > > way to reference those templates and then look them up internally in
+>> > > swnode code.
+>> >
+>> > Strange that you need this way. The IPU3 bridge driver (that creates a=
+ graph of
+>> > fwnodes at run-time for being consumed by the respective parts of v4l2
+>> > framework) IIRC has no such issue. Why your case is different?
+>> >
+>>
+>> From what I can tell the ipu-bridge driver only references software
+>> nodes (as struct software_node) from other software nodes. I need to
+>> reference ANY implementation of firmware node from a software node.
 >
-> Oh, seems to me like a miss from my side. Thanks for a good catch!
-> Can you send a formal fix patch?
+> Yes, the IPU bridge only references software nodes.
+>
+> I might use two distinct pointers instead of an union and an integer fiel=
+d
+> that tells which type is the right one. I don't expect more such cases
+> here; it's either a software node or an fwnode handle (ACPI or OF node).
+>
 
-Was my plan until my internet connection went down yesterday. Will
-send it out once it's back.
+Like:
 
-Best regards,
-Jonas
+struct software_node_ref_args {
+	const struct software_node *swnode;
+	struct fwnode_handle *fwnode;
+	unsigned int nargs;
+	u64 args[NR_FWNODE_REFERENCE_ARGS];
+};
+
+And then if swnode is NULL then assume fwnode must not be?
+
+I'm not sure if it's necessarily better but I don't have a strong opinion o=
+n
+this either.
+
+Bartosz
 
