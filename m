@@ -1,269 +1,256 @@
-Return-Path: <linux-acpi+bounces-18030-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18031-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECD1BF5C48
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 12:24:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4FEBF5D20
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 12:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C1AA3A57FE
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 10:24:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA18422973
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 10:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5B732D0EA;
-	Tue, 21 Oct 2025 10:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDEE32E138;
+	Tue, 21 Oct 2025 10:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OE9yzX6H"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fVVVHy8s"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011009.outbound.protection.outlook.com [52.101.57.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37E21F1538;
-	Tue, 21 Oct 2025 10:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761042232; cv=fail; b=cZIULg43tCS+xq3w6LkIahF5RFovWL8CWyc1+kVifqfsOQ0AJUonb7vpyyLYQStJihEMTXZpVNL2nYWDW8C8IloCDxmxMuUkjXu68HiYRTiNm73X/kooLQCHI70Z530s3oI6jnlPWvGkhmomcTxrxJgyr2Nxkw/sqafNYP3BZ5A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761042232; c=relaxed/simple;
-	bh=LzgaMOcTIWM3oUW0zpIOPL8nXPUP7jXgYlesc4Mi4L0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjuOm3R/ssSUPX9HM1A7zj6MjbizmuUAFdNghQ3agG0tbK5oQ9L5S9x2SYNSPuxJprltdRlsBA4VNgm5rOhK83VQdcTQpuDRqKJk7USlVApQH/NJ5k/1Hf5zKfxZaJuAVSuPPvVZ7dakH1PxojeI9eF+39h4jNhej1TmOA7HdUA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OE9yzX6H; arc=fail smtp.client-ip=52.101.57.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tjUp9nhFTQjyOOsjhj3N9hNT+gmLTTLkcTMfwdpYiivMqy/eFf0qiiahdASaw7O+D04SCEJac+NZnyTzJ8mfm/FruGxmWKQYElldJTxz2lAqk2vO5jVxsvuxU5R9Z6BFxHm6kqGvvfuqvfPWCXxVFmJeSZtzswyFmuEqm+00/viSyUCJEBx/pBaWGuODsRcfrtwXBkEBIpsKnr0/CrEcNWFT2s3I8Bz7pID7OSpK35nd96+U+tb5nTGSLXSESd/cin2vBOwM7wNt1uFoXdBU0+G8sxHvZirSNePXV9KvoEFaNLL9yDZkpPwVhldSxBFWcFR4isvuenlzR7Ug5gSm2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9oKtb1iXwKRocnqdIx51ArX2eBBUyzUz7T8BWIx8k4Y=;
- b=Q6+S6407hRCKLGvcY8AhPujc3MvGJLqX9Ax+QovIxgqiShjxWqX+nu9m9Mjfbq3n/5HEklzqFGDa1ZeR0nUuE0o2IP5A0dmJnA3W2GoFX5nkH1X5AGhdz7bT4PJ+aG4KUddcPS20g3HNE6RfW1Xy+ZdGGe/GJjCRQTWQ61eC5VMB6Be66plkDlE4+LIPP/j4Jtjfd/IAR+enwpfA9WtGRRjNC95dkcJP6Y6hy0depEHhbbs3fZ1+GqJyEHd0iXGQ4/en5D9AOg03r/MQx7ccO5iQhNHp3bUCWx30LP2SPw1a7bBKdtOCW5ZnS7OiIzR5P7dSofk1yJbtsncA3MRXHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9oKtb1iXwKRocnqdIx51ArX2eBBUyzUz7T8BWIx8k4Y=;
- b=OE9yzX6H45im90HomscAW9p0qFG5UYpFStdPJtdZLyI6u009Yqc9fx9LqbqVLt6Qn/DJzep46q/IU+m/IRCeUO/mcdrQZExdD+5+UUE+S9O1aJN4xLhNRghOztVSOm3GeFKrYo6ANB3IPiXcm0TuW5HY2VlXsP8BEbQO3VyPBsckmaB7zhglpMG+dlzaX5oUoChqUMvtM9w3wLSzinvGhMFbFX6qroyQINjvOHhcnMI6aK1EN56dXMTtyQvzRPSYik1u+zlP09MX2IMFD7/rBcy2oATph4wxI/V04HfACVaTZvZyHSKJxbMHY+TLFPqmMVqJnt2cayUY0L4M3Qw6DQ==
-Received: from SA9PR13CA0017.namprd13.prod.outlook.com (2603:10b6:806:21::22)
- by DM4PR12MB6112.namprd12.prod.outlook.com (2603:10b6:8:aa::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.12; Tue, 21 Oct 2025 10:23:45 +0000
-Received: from SA2PEPF00003F62.namprd04.prod.outlook.com
- (2603:10b6:806:21:cafe::f7) by SA9PR13CA0017.outlook.office365.com
- (2603:10b6:806:21::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.10 via Frontend Transport; Tue,
- 21 Oct 2025 10:23:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SA2PEPF00003F62.mail.protection.outlook.com (10.167.248.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.7 via Frontend Transport; Tue, 21 Oct 2025 10:23:45 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 21 Oct
- 2025 03:23:34 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 21 Oct 2025 03:23:33 -0700
-Received: from localhost.nvidia.com (10.127.8.12) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 21 Oct 2025 03:23:33 -0700
-From: <ankita@nvidia.com>
-To: <ankita@nvidia.com>, <aniketa@nvidia.com>, <vsethi@nvidia.com>,
-	<jgg@nvidia.com>, <mochs@nvidia.com>, <skolothumtho@nvidia.com>,
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
-	<guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
-	<kevin.tian@intel.com>, <alex@shazbot.org>
-CC: <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<zhiw@nvidia.com>, <dnigam@nvidia.com>, <kjaju@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-edac@vger.kernel.org>, <Jonathan.Cameron@huawei.com>,
-	<ira.weiny@intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
-	<u.kleine-koenig@baylibre.com>, <peterz@infradead.org>,
-	<linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v3 3/3] vfio/nvgrace-gpu: register device memory for poison handling
-Date: Tue, 21 Oct 2025 10:23:27 +0000
-Message-ID: <20251021102327.199099-4-ankita@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251021102327.199099-1-ankita@nvidia.com>
-References: <20251021102327.199099-1-ankita@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA8A2F0669
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 10:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761043038; cv=none; b=CJGra8hvRZnk3Am8wp3kk5agwoYgsUnZ/N5cY3RuCsxzQBLWsT2BGd1lQ/78NFVfNRANV+bZnKottqCENRYmwQilL9WugG9+r8yt33ByE6mjgVuxDC4aO3beg6WfzT3cP2G6aIT9zprCYyMF/NCLJ9q4aLzHSynyGOyZLi725MQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761043038; c=relaxed/simple;
+	bh=q2nB0DwM2YccZrwzAwnGe8JbGMPoOZkWXyOBvo6HqOU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ns7dF8I4NbjXj8VZSLjS8cJMOrraRw6jawXHD/rgLJwTtIC5Iz2ufyb0Z8vUMX2+d5ItYIiGL0ngPZXxLChBKXcd6l/qo7IkoZdf/PnLWY47k1i/uh2GK8YrouRQxfmqr43UvVjE7J6zJ+Y696QiNuCpNImUitIm15mndO4S+X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fVVVHy8s; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-78487b0960bso31078147b3.2
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 03:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761043034; x=1761647834; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ph/ecut6A6hic5K1NGZ8Pu7nJ7zUO/n0Ty1uOi3Gzxk=;
+        b=fVVVHy8sLoQob27t0rEA0gaFAsTwrvZWMtiHra06oGlAgVvBRbCvi9Q0R5PsssM2VP
+         3opZzsj2yjl4mZN0m0fQOUCFaPGUlU0hdJQVEOAICP/F9edy4PeFxMDNRgqqE+vWlBwq
+         gRo4WOltCc2x1w7tzNmnsiUe7DLW4Wk385fOAjvx4xAjIy6N//5jx7kmheOrtwD7tWpE
+         2Ptn2+1PdgjD7SRm8u6GwWspp5Qow93y+PUJ1zdNcZ+cXFL0Hl9twy5pncYwDDJCM4IE
+         DPQhhySXv3aD4ZgJwdVFZNuZDXb8ihiBpVJW+A5z81zJ6Ce1m/3ygAE/YqYBEV2Yts0D
+         y4xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761043034; x=1761647834;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ph/ecut6A6hic5K1NGZ8Pu7nJ7zUO/n0Ty1uOi3Gzxk=;
+        b=Bb2tQFtkRa7LrDNJSbOVpRxLZOm+YW38AmBBgKs5M7bhisArg4I1lSgTGv9ABm1pfD
+         hMaLd0zPrlRlCXUkXI6yKRmFhe7kNK4a70Dy/reHKBEhSj1+daeGHBp27kkqxdPlEN83
+         iBmissABDmVM+hM56ZA492T0pAQscfljQQLCAH4j/OHgPK02WH2vOqzsvuAt5oOObiT/
+         SW24ypbA1ZEj/vOaCxOLKz/LfEZsD4AbDNoGJc1dV052Tve2b+IeqtoI/dhMfkmv09T1
+         jB7Ub5QYJSAz4BBwP5SRZ0dMb1906D/cqu7bksmNLrDdPvi46ggjUqLa5h8D1D25nGlQ
+         nskg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWy8rfzkUraxKh0whFWbYqaQv/cly/GPoQ58nugeDAwgANfRrUts0IZhSHw7GBWC4MMB53h4TxyoYw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+8aoQDh+mx+PYxvsy56bygIDB75hX3Bp8PSREs+OWRhoRKifj
+	+/dDQjAXuCVI7QujR8LT5hbTGcZlOrMlYFA5D0513BIFTiEjWDNa1eWy/Qyuoqwbr1sfZvAbhMQ
+	Jp2T8gSVhJsr5wm5GxUDuHP3QCgenjzKatlpTRWf4fA==
+X-Gm-Gg: ASbGncsTU5h4xqcFYO1iID+7xLsmtNx8krqnurGbI3nMxmZRMHDHQ5nsX9yEm9dbk3R
+	/3PjJYJhFquAuXrjKAH0u86jRaqiVoJbq0qmLNli+gORskUo2Ug4SoDj6BnDf+Gr4lQP0VKUlre
+	JO+CyCc7crej6EWcVXyYJ/0eI8IxbgyANOhIyNciBQzRT+SBii39yWg8P2kr1LFplHqvl0HESZi
+	f7V7W9UIG410kIzLpXbmBCVaMbM824vO/3oKR78jRJN/gPtKLeIOJDupBRMRztqX4YRK2XF
+X-Google-Smtp-Source: AGHT+IFNWe0p4ctoYWfajWc50aGmHTb0xLSf46n4ozIzG6IhVoLkeVF1uvz+zd4LTY4qziEKltpM47W2yp2BVV5LtGg=
+X-Received: by 2002:a05:690e:1c1d:b0:63f:2123:f966 with SMTP id
+ 956f58d0204a3-63f2123f9b3mr679700d50.69.1761043034054; Tue, 21 Oct 2025
+ 03:37:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F62:EE_|DM4PR12MB6112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0cfb499c-64ff-4ed0-73e0-08de108beac8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013|13003099007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?j/dneHJWhhoGuK4Mckfd6RboyCWwshlGXcZY0aLGhS9KcX49qNSrgsdJYlBP?=
- =?us-ascii?Q?RGbh3e6mxJcF95/pCkGi98aRJ4UHdBk8KgFLcnplmH8f82zeQ+GXSPyiBqCc?=
- =?us-ascii?Q?2jA3UasyWJgfgMKS4iCqouIrB0ksCIZ/BJWud6YXWjBVDl1xFgZ2cPyCEs4r?=
- =?us-ascii?Q?Ai8kTHNsN/xNeOXasVG2wtfewTi8ZG2jOTcOtVeTxuaSRCoc1x9ciFWzn3ux?=
- =?us-ascii?Q?Q5tUIw7oLVQMbnSEB6X3jPzW5pS+a/PCmvElzJ4PI1GnQ87ubVjP7rf4RqZt?=
- =?us-ascii?Q?6sPPw2T57zq+9VAtZzKWYgrekIMVOs6coVJr4wKaNVyzweCoiqjMExtAxXcK?=
- =?us-ascii?Q?6OcL52GUvj4U6ToahOmDRy/iID7B+MNniWIM5c6xl3HNVcalabfXzY2WDd+A?=
- =?us-ascii?Q?clqJgTc4KbuADax/rnZC3MzISHfY79ucaJQh9+d6Q8zRGIIr0bjXxAsFXzV+?=
- =?us-ascii?Q?XE13m8zIhj9fpRm/sV4StI5SHhxA9iNf4+wRCFAuLd7T9ynvX0rd5Rlx4VFr?=
- =?us-ascii?Q?ghy5xWpCKHgfR4XWOAZXIm4XEbogmbqHpv7f6zXMmxKjnuHsLBHDI6mL2svO?=
- =?us-ascii?Q?o5h05jDVNfrZ27EK9qQrQxwRge2ZN1MgTQO7sDaWbBT0gRVXEenWULnlrbUO?=
- =?us-ascii?Q?klU2ZCMbIJiLE8sTr8miro78KuPRBDJDiKi1FyxAf0UfDNzEKvfVfeW4Lpyi?=
- =?us-ascii?Q?pKoJhFUNskR0Y5DI70ODBsH1xrN1ltdoS0lvXlgMP6e0m9DATHmA1ue9HYHH?=
- =?us-ascii?Q?Wabgu/Ea9EBnfMna1BbKnB0WYJ+3Ui79iNqgIfm9vZxX2yyMin548Sb6p7nx?=
- =?us-ascii?Q?WEEE1vHfqY6tzCffDPlggBQ8CGDELWFwnp1/b90uhvzqvmOpqr+xUU5cwR89?=
- =?us-ascii?Q?uQqBDZ5IPD1AqX+NIE0W6tTV3CaZm3CVXd7M2qsw0wH4sP/xgon4nDSx+zep?=
- =?us-ascii?Q?ekoNkIbW2ArOvuM3aHLGI+f3rPRncooPfdHtuwKVvB+ncy9XO3RNkUfhua5Y?=
- =?us-ascii?Q?awLVARu/lmKpvXTefKSevOvVCC17rW1CfJCEv+dQGTTouKVXuONVBpcP8TjN?=
- =?us-ascii?Q?w015zlo2xhcv7Xdk0bJYVSOhtvVPUtQpZPBwCXLCr2fUKJXMvvoKVGxNq4ju?=
- =?us-ascii?Q?IoB2R1PdXqd9TgCPzeBdSSwV2a2qTJK8/R7SWULMiixFdHb3yxwSC4bw2zfd?=
- =?us-ascii?Q?50XXsDIziiz1f49seCCL9p5kdsmPkN/snoQVCAQu9SZHhl9+hwUbSt8qqDfr?=
- =?us-ascii?Q?azAZXPEUu3BsocUb+7/+tNhZJVI8hPBKS/ab9ewbs2CzStGu/uSaarhYXINA?=
- =?us-ascii?Q?sN62vb/6sEcuz39ac55VG4eDYFcI0GE1Hg7haDaDIgQfYkuuex+LUe8eyQmo?=
- =?us-ascii?Q?H2i5ahNki3Fpk8Cjn9crpXK1DvyuKsCAQdo8Cx0wmoKJg/CtnGI8rLWvgB52?=
- =?us-ascii?Q?Ne7v3HwU9Zyf1kkRsQ+PvMlvG4zFHRV4WUcm7uWnIpUFe2faGO15gBxlcPGE?=
- =?us-ascii?Q?LhnI5Q/yyDuLW4lyR6cp5wDVAQaaTYpCFCRcM8G4FC5h43GTLUDATbjiuPMG?=
- =?us-ascii?Q?BU90w0Hf2KCEEdiT5kik4ogMTX6f7zak4egi7Fye?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013)(13003099007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 10:23:45.8158
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cfb499c-64ff-4ed0-73e0-08de108beac8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F62.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6112
+References: <20251015071420.1173068-1-herve.codina@bootlin.com> <20251015071420.1173068-3-herve.codina@bootlin.com>
+In-Reply-To: <20251015071420.1173068-3-herve.codina@bootlin.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 21 Oct 2025 12:36:38 +0200
+X-Gm-Features: AS18NWAASdG0xF_SzF3JiceFgjGSp70iEL12-_KJqlp8PTGQyhYi7YmRbNtNg04
+Message-ID: <CAPDyKFqKfCTab2OcY9Sj9xS949o+y5PpJvO0CP80eV2qr-0sdg@mail.gmail.com>
+Subject: Re: [PATCH v4 02/29] driver core: Rename get_dev_from_fwnode()
+ wrapper to get_device_from_fwnode()
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ankit Agrawal <ankita@nvidia.com>
+On Wed, 15 Oct 2025 at 09:16, Herve Codina <herve.codina@bootlin.com> wrote:
+>
+> get_dev_from_fwnode() calls get_device() and so it acquires a reference
+> on the device returned.
+>
+> In order to be more obvious that this wrapper is a get_device() variant,
+> rename it to get_device_from_fwnode().
+>
+> Suggested-by: Mark Brown <broonie@kernel.org>
+> Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Saravana Kannan <saravanak@google.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-The nvgrace-gpu-vfio-pci module [1] maps the device memory to the user VA
-(Qemu) using remap_pfn_range() without adding the memory to the kernel.
-The device memory pages are not backed by struct page. Patches 1-2
-implements the mechanism to handle ECC/poison on memory page without
-struct page. This new mechanism is being used here.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-The module registers its memory region and the address_space with the
-kernel MM for ECC handling using the register_pfn_address_space()
-registration API exposed by the kernel.
+Kind regards
+Uffe
 
-Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.com/ [1]
 
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
----
- drivers/vfio/pci/nvgrace-gpu/main.c | 45 ++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index d95761dcdd58..80b3ed63c682 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -8,6 +8,10 @@
- #include <linux/delay.h>
- #include <linux/jiffies.h>
- 
-+#ifdef CONFIG_MEMORY_FAILURE
-+#include <linux/memory-failure.h>
-+#endif
-+
- /*
-  * The device memory usable to the workloads running in the VM is cached
-  * and showcased as a 64b device BAR (comprising of BAR4 and BAR5 region)
-@@ -47,6 +51,9 @@ struct mem_region {
- 		void *memaddr;
- 		void __iomem *ioaddr;
- 	};                      /* Base virtual address of the region */
-+#ifdef CONFIG_MEMORY_FAILURE
-+	struct pfn_address_space pfn_address_space;
-+#endif
- };
- 
- struct nvgrace_gpu_pci_core_device {
-@@ -60,6 +67,28 @@ struct nvgrace_gpu_pci_core_device {
- 	bool has_mig_hw_bug;
- };
- 
-+#ifdef CONFIG_MEMORY_FAILURE
-+
-+static int
-+nvgrace_gpu_vfio_pci_register_pfn_range(struct mem_region *region,
-+					struct vm_area_struct *vma)
-+{
-+	unsigned long nr_pages;
-+	int ret = 0;
-+
-+	nr_pages = region->memlength >> PAGE_SHIFT;
-+
-+	region->pfn_address_space.node.start = vma->vm_pgoff;
-+	region->pfn_address_space.node.last = vma->vm_pgoff + nr_pages - 1;
-+	region->pfn_address_space.mapping = vma->vm_file->f_mapping;
-+
-+	ret = register_pfn_address_space(&region->pfn_address_space);
-+
-+	return ret;
-+}
-+
-+#endif
-+
- static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
- {
- 	struct nvgrace_gpu_pci_core_device *nvdev =
-@@ -127,6 +156,13 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
- 
- 	mutex_destroy(&nvdev->remap_lock);
- 
-+#ifdef CONFIG_MEMORY_FAILURE
-+	if (nvdev->resmem.memlength)
-+		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
-+
-+	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
-+#endif
-+
- 	vfio_pci_core_close_device(core_vdev);
- }
- 
-@@ -202,7 +238,14 @@ static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
- 
- 	vma->vm_pgoff = start_pfn;
- 
--	return 0;
-+#ifdef CONFIG_MEMORY_FAILURE
-+	if (nvdev->resmem.memlength && index == VFIO_PCI_BAR2_REGION_INDEX)
-+		ret = nvgrace_gpu_vfio_pci_register_pfn_range(&nvdev->resmem, vma);
-+	else if (index == VFIO_PCI_BAR4_REGION_INDEX)
-+		ret = nvgrace_gpu_vfio_pci_register_pfn_range(&nvdev->usemem, vma);
-+#endif
-+
-+	return ret;
- }
- 
- static long
--- 
-2.34.1
-
+> ---
+>  drivers/base/core.c     | 18 +++++++++---------
+>  drivers/pmdomain/core.c |  4 ++--
+>  include/linux/device.h  |  2 +-
+>  3 files changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 3c533dab8fa5..334f5a4fbb9e 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -1888,7 +1888,7 @@ static bool fwnode_init_without_drv(struct fwnode_handle *fwnode)
+>         if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
+>                 return false;
+>
+> -       dev = get_dev_from_fwnode(fwnode);
+> +       dev = get_device_from_fwnode(fwnode);
+>         ret = !dev || dev->links.status == DL_DEV_NO_DRIVER;
+>         put_device(dev);
+>
+> @@ -1957,7 +1957,7 @@ static struct device *fwnode_get_next_parent_dev(const struct fwnode_handle *fwn
+>         struct device *dev;
+>
+>         fwnode_for_each_parent_node(fwnode, parent) {
+> -               dev = get_dev_from_fwnode(parent);
+> +               dev = get_device_from_fwnode(parent);
+>                 if (dev) {
+>                         fwnode_handle_put(parent);
+>                         return dev;
+> @@ -2013,8 +2013,8 @@ static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
+>                 goto out;
+>         }
+>
+> -       sup_dev = get_dev_from_fwnode(sup_handle);
+> -       con_dev = get_dev_from_fwnode(con_handle);
+> +       sup_dev = get_device_from_fwnode(sup_handle);
+> +       con_dev = get_device_from_fwnode(con_handle);
+>         /*
+>          * If sup_dev is bound to a driver and @con hasn't started binding to a
+>          * driver, sup_dev can't be a consumer of @con. So, no need to check
+> @@ -2153,7 +2153,7 @@ static int fw_devlink_create_devlink(struct device *con,
+>         if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
+>                 sup_dev = fwnode_get_next_parent_dev(sup_handle);
+>         else
+> -               sup_dev = get_dev_from_fwnode(sup_handle);
+> +               sup_dev = get_device_from_fwnode(sup_handle);
+>
+>         if (sup_dev) {
+>                 /*
+> @@ -2222,7 +2222,7 @@ static void __fw_devlink_link_to_consumers(struct device *dev)
+>                 bool own_link = true;
+>                 int ret;
+>
+> -               con_dev = get_dev_from_fwnode(link->consumer);
+> +               con_dev = get_device_from_fwnode(link->consumer);
+>                 /*
+>                  * If consumer device is not available yet, make a "proxy"
+>                  * SYNC_STATE_ONLY link from the consumer's parent device to
+> @@ -5279,7 +5279,7 @@ void device_set_node(struct device *dev, struct fwnode_handle *fwnode)
+>  EXPORT_SYMBOL_GPL(device_set_node);
+>
+>  /**
+> - * get_dev_from_fwnode - Obtain a reference count of the struct device the
+> + * get_device_from_fwnode - Obtain a reference count of the struct device the
+>   * struct fwnode_handle is associated with.
+>   * @fwnode: The pointer to the struct fwnode_handle to obtain the struct device
+>   * reference count of.
+> @@ -5297,11 +5297,11 @@ EXPORT_SYMBOL_GPL(device_set_node);
+>   * This is possible since struct fwnode_handle has its own reference count and
+>   * hence can out-live the struct device it is associated with.
+>   */
+> -struct device *get_dev_from_fwnode(struct fwnode_handle *fwnode)
+> +struct device *get_device_from_fwnode(struct fwnode_handle *fwnode)
+>  {
+>         return get_device((fwnode)->dev);
+>  }
+> -EXPORT_SYMBOL_GPL(get_dev_from_fwnode);
+> +EXPORT_SYMBOL_GPL(get_device_from_fwnode);
+>
+>  int device_match_name(struct device *dev, const void *name)
+>  {
+> diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+> index 61c2277c9ce3..5a7822de5d8a 100644
+> --- a/drivers/pmdomain/core.c
+> +++ b/drivers/pmdomain/core.c
+> @@ -2678,7 +2678,7 @@ int of_genpd_add_provider_simple(struct device_node *np,
+>         genpd->dev.of_node = np;
+>
+>         fwnode = of_fwnode_handle(np);
+> -       dev = get_dev_from_fwnode(fwnode);
+> +       dev = get_device_from_fwnode(fwnode);
+>         if (!dev && !genpd_is_no_sync_state(genpd)) {
+>                 genpd->sync_state = GENPD_SYNC_STATE_SIMPLE;
+>                 device_set_node(&genpd->dev, fwnode);
+> @@ -2753,7 +2753,7 @@ int of_genpd_add_provider_onecell(struct device_node *np,
+>                 data->xlate = genpd_xlate_onecell;
+>
+>         fwnode = of_fwnode_handle(np);
+> -       dev = get_dev_from_fwnode(fwnode);
+> +       dev = get_device_from_fwnode(fwnode);
+>         if (!dev)
+>                 sync_state = true;
+>         else
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index b031ff71a5bd..d8906136c086 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -1090,7 +1090,7 @@ void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+>  int device_add_of_node(struct device *dev, struct device_node *of_node);
+>  void device_remove_of_node(struct device *dev);
+>  void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
+> -struct device *get_dev_from_fwnode(struct fwnode_handle *fwnode);
+> +struct device *get_device_from_fwnode(struct fwnode_handle *fwnode);
+>
+>  static inline struct device_node *dev_of_node(struct device *dev)
+>  {
+> --
+> 2.51.0
+>
 
