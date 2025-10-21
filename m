@@ -1,131 +1,116 @@
-Return-Path: <linux-acpi+bounces-18034-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18035-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD50EBF6646
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 14:18:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EC2BF6C79
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 15:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F27DD502E7D
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 12:16:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95DE19A3215
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Oct 2025 13:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590DF2F7ADE;
-	Tue, 21 Oct 2025 12:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF798337116;
+	Tue, 21 Oct 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzFOPIPe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hp1PBvV4"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A4F221FDA
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 12:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C59334C00
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761048967; cv=none; b=uiRIc8hZcCiygOvOIuO+1x7HiP5NXv2wHcV0AehkzevaFlZfWuCOk6+krZu6d34soBS0lBl2l/JQD+iXr38I2WEpEmCJwv90M46Qq3/w5USSjxD8aCdarZPNpYGviInfgJnX1GKZxJExSRd1qRDWVOyHNKRJl9Jnmwzzxxi9B80=
+	t=1761053442; cv=none; b=laUE+7dELpXPMGBsBLMZ0oFLpCSdyJGyCkK0wvHQkofAMsDUbBBLMnrR/9sjjxsyVLYiCqYca5LquR0YJhtHPWn00bKgR61z5/IkmNf6XuQjV5J3uFlpwb50iAhfvGc1SGT9JmYXApaeSo8Ex3Irig0C75FwmDOWi/wLMftgnu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761048967; c=relaxed/simple;
-	bh=afZ9LYjd3nXPgO7A1CJ8B6ceDU96mc91oikI4RgUCjE=;
+	s=arc-20240116; t=1761053442; c=relaxed/simple;
+	bh=ay0dkHqOFJnTOzLrDz4wmOz05b8apRwAqDk0W+FLKTU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=guaR0EitosMxkPYtBN5DNu3Iyx/a35KjC3Y2q36rumM1RF5vI7jybvsxMCCYMsWIrldVig66CfSEk0xE60Ll1DA8A/LiJc1u+3E0da3mFm0kBTtV01LxDCaG3sxXCVIVPA6vFur+UmOCsUmsuHz+8jBRpF1HeiXTAY6NxdUNVGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzFOPIPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75A7C19424
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 12:16:06 +0000 (UTC)
+	 To:Cc:Content-Type; b=esPuSFSvCOwA/NR/Pdqo0/pjxykwhU7RJWUUbAgHax28KSkdzitQ0mKYNk61RjUp8jFZh8JZeeeO2K7m0Voi62xjptnoj2v+dMQV4ibQjKNNAGNXo2cZ3heh29hhgnY+9CrVKirDyFof7Lg/CVYzkt9vKMWHZ8DQrmNitoCJZQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hp1PBvV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492E9C116C6
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 13:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761048966;
-	bh=afZ9LYjd3nXPgO7A1CJ8B6ceDU96mc91oikI4RgUCjE=;
+	s=k20201202; t=1761053442;
+	bh=ay0dkHqOFJnTOzLrDz4wmOz05b8apRwAqDk0W+FLKTU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZzFOPIPe/CIJyCZzZS5xDCOU6fb9z5+niTUJu2f8nz3yhyIuvbfquK4urojZ6W7RK
-	 QI61caoK/RX3VirzOJ975dczZ65ziZVmC+yyPjsoPBE5iYBfWFKHbQHN3zs4IO7R5s
-	 ZLt2HMJ2uYxOq//IBo6TRnQratgTnDvrfaviDON5U9nb8Z/y6K2f8o648lEGTX11X2
-	 rxsYOU2RFX8YkazroUHdo7g4fmAS9fFqU7SkdZJ0JIy3UpzQrp2rjgogt0LXDPPWkx
-	 HtYrpl3MftltAZmMXxsQL5Sxn/zSsdNyYdHCx9qXuLBVEBaKxVGjqetnM9CfTqcffJ
-	 yImIwoc6dhvmA==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so8915664a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 05:16:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUYS96vNSaVClzGBaH00GBuf8kbPm1B8Lxm1DnvmQeHgtShQoL5Mepf7g0hbsInUzWTz9MQ2qORGagr@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJhS6bW2bwzt5+ZqMranZa573amQgDsD7oGht7j0RuOu3Qsp1u
-	VpPQL4Go7s3ZlB/o6gS+yQ3OgER1LqvPTowWD4qVKGNlvkfOGWdDDjDS+pDlpv9YoyOuZaZju0n
-	QVYCQjsoBiNNb+d1IgL+1Wz7FV/L3bQk=
-X-Google-Smtp-Source: AGHT+IEehxa0VVriHcp2h3pPnTDlb8T/F5FMqzRVzT7FPHkMVaKDIi/rjGcv9KvbFvUKwGOelOx0U0eBViPra1u4cao=
-X-Received: by 2002:a05:6402:440f:b0:63b:fbd9:3d9c with SMTP id
- 4fb4d7f45d1cf-63c1f66c82dmr15228151a12.15.1761048965319; Tue, 21 Oct 2025
- 05:16:05 -0700 (PDT)
+	b=hp1PBvV4+tq046FEMR5dgEMKjgabfxyXWSw1BEEpNXDJmVz6MpRxct5ivoccBU2c7
+	 dS1CtDQFrw4KBarF1mUxo1delfbLDI5h4F3uiHpQ27YGihoYOHeoJp7NkqPpaqBB7T
+	 JedZWJG2BjIpGj5wCqnePBRYqj3S+Ild0pdRIOjz7xU/NV/MIsAkkcIAe0CLW1IpTk
+	 nGYfrKHLrC2wTkYATf0YvFQX/aNgTBfeIXTrvI7G14vCC2u9YpPAbssB0IkSSe1gc6
+	 mWfsDA2dIeN3pbAy5oqn3g7+QS9C9hqvcF8vlk3DBud3PCjFcV8D1Ie0MU8ayMczRK
+	 ujrSid2vJIF4g==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7c2846c961fso2869095a34.2
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Oct 2025 06:30:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWMlCgU7xXsAoJcyqxir6ozYvELJujCDTkytUcwYRNCYAkD7i3ZgWT26LtZuBvL0j+FYV+zfztZX97s@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKb7WmrrSbKv5SIhpS87pEqpvl0M9NkgzBXDyIqYQNlVXq6HzJ
+	gn4qEvsRHr95FD4fNpde1TUDflbgrxbxGr5YV3VfOVTPaGIxDaeUQzlPLAcpace7ryIyyp/Umsl
+	he+O48DqENv5spKVQs7yag99frtAbgYA=
+X-Google-Smtp-Source: AGHT+IGFhGzPHkp7KHrtFrf46EU6VcCHGco92a8d17NVHe5Iy2VfivAqQSu+O7l6C7wxe0BCu6GsLwBmi9WDsPKls2I=
+X-Received: by 2002:a05:6808:1383:b0:43f:5b28:f0a6 with SMTP id
+ 5614622812f47-443a2ee46d2mr7110230b6e.1.1761053441631; Tue, 21 Oct 2025
+ 06:30:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021092825.822007-1-xry111@xry111.site>
-In-Reply-To: <20251021092825.822007-1-xry111@xry111.site>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 21 Oct 2025 20:15:53 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5e-U+nxHkSjE_3_PcoOuaHTqJWnYm9OZXVwuWvh3N5ZQ@mail.gmail.com>
-X-Gm-Features: AS18NWBcCXTydL281tEwc29bBx_Sgj2MfqdSDFPAw33oyAwgRfjsz5gyo8nMyNs
-Message-ID: <CAAhV-H5e-U+nxHkSjE_3_PcoOuaHTqJWnYm9OZXVwuWvh3N5ZQ@mail.gmail.com>
-Subject: Re: [PATCH] acpica: Work around bogus -Wstringop-overread warning
- since GCC 11
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, loongarch@lists.linux.dev, 
-	Mingcong Bai <jeffbai@aosc.io>, Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org, 
-	Saket Dumbre <saket.dumbre@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Len Brown <lenb@kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <linux-acpi@vger.kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <acpica-devel@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
+References: <20250913023224.39281-1-xueshuai@linux.alibaba.com>
+ <20250915093549.00006109@huawei.com> <45d5e6a9-d561-4df9-96d4-285f2ca12888@linux.alibaba.com>
+In-Reply-To: <45d5e6a9-d561-4df9-96d4-285f2ca12888@linux.alibaba.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 21 Oct 2025 15:30:30 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0grihVDor12BXU3-tAiQ5WH6rK+AZK8aTtaUa3cq1i0jA@mail.gmail.com>
+X-Gm-Features: AS18NWD0-ds4ABTfWcbmmDfPfj8D2z4ySeNwPPcVfbR-MR_mvQUUJz_X2TJ-HPw
+Message-ID: <CAJZ5v0grihVDor12BXU3-tAiQ5WH6rK+AZK8aTtaUa3cq1i0jA@mail.gmail.com>
+Subject: Re: [PATCH v2] acpi,srat: Fix incorrect device handle check for
+ Generic Initiator
+To: Shuai Xue <xueshuai@linux.alibaba.com>, Dave Jiang <dave.jiang@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, robert.moore@intel.com, 
+	andrew@kernel.org, bfaccini@nvidia.com, eahariha@linux.microsoft.com, 
+	dan.j.williams@intel.com, thorsten.blum@linux.dev, gourry@gourry.net, 
+	nunodasneves@linux.microsoft.com, wangyuquan1236@phytium.com.cn, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 5:28=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
-e:
+On Tue, Oct 21, 2025 at 8:55=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
+om> wrote:
 >
-> When ACPI_MISALIGNMENT_NOT_SUPPORTED, GCC can produce a bogus
-> -Wstringop-overread warning, see https://gcc.gnu.org/PR122073.
 >
-> To me it's very clear that we have a compiler bug here, thus just
-> disable the warning.
 >
-> Cc: stable@vger.kernel.org
-> Fixes: a9d13433fe17 ("LoongArch: Align ACPI structures if ARCH_STRICT_ALI=
-GN enabled")
-> Link: https://lore.kernel.org/all/899f2dec-e8b9-44f4-ab8d-001e160a2aed@ro=
-eck-us.net/
-> Link: https://github.com/acpica/acpica/commit/abf5b573
-> Co-developed-by: Saket Dumbre <saket.dumbre@intel.com>
-> Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
-> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+> =E5=9C=A8 2025/9/15 16:35, Jonathan Cameron =E5=86=99=E9=81=93:
+> > On Sat, 13 Sep 2025 10:32:24 +0800
+> > Shuai Xue <xueshuai@linux.alibaba.com> wrote:
+> >
+> >> The Generic Initiator Affinity Structure in SRAT table uses device
+> >> handle type field to indicate the device type. According to ACPI
+> >> specification, the device handle type value of 1 represents PCI device=
+,
+> >> not 0.
+> >>
+> >> Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
+> >> Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
+> >> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> >
+> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> >
+> > Thanks!
+> >
+> >> ---
+> >> changes since v1: drop changes in actbl3.h to make it easy to progress=
+ per Jonathan
+> >> ---
+>
+>
+> Hi, Rafael,
+>
+> Gentle ping.
+>
+> Are you happy to pick this bugfix up in this cycle?
 
-> ---
->  drivers/acpi/acpica/tbprint.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/acpica/tbprint.c b/drivers/acpi/acpica/tbprint.=
-c
-> index 049f6c2f1e32..e5631027f7f1 100644
-> --- a/drivers/acpi/acpica/tbprint.c
-> +++ b/drivers/acpi/acpica/tbprint.c
-> @@ -95,6 +95,11 @@ acpi_tb_print_table_header(acpi_physical_address addre=
-ss,
->  {
->         struct acpi_table_header local_header;
->
-> +#pragma GCC diagnostic push
-> +#if defined(__GNUC__) && __GNUC__ >=3D 11
-> +#pragma GCC diagnostic ignored "-Wstringop-overread"
-> +#endif
-> +
->         if (ACPI_COMPARE_NAMESEG(header->signature, ACPI_SIG_FACS)) {
->
->                 /* FACS only has signature and length fields */
-> @@ -143,4 +148,5 @@ acpi_tb_print_table_header(acpi_physical_address addr=
-ess,
->                            local_header.asl_compiler_id,
->                            local_header.asl_compiler_revision));
->         }
-> +#pragma GCC diagnostic pop
->  }
-> --
-> 2.51.1
->
+drives/acpi/numa/ is maintained by Dave.
 
