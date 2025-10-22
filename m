@@ -1,77 +1,76 @@
-Return-Path: <linux-acpi+bounces-18112-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18113-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF62BFD7C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 19:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42318BFDDD9
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 20:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3C47A4FC075
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 17:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F19A93A2C7A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5361272E63;
-	Wed, 22 Oct 2025 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B1F3491DA;
+	Wed, 22 Oct 2025 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRlhloua"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epRDjPKR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7EC270551
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2723321DB
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761152570; cv=none; b=c9hFXeA6UO33QqFQ1cn4lsQsKXL+gyL9kRM5WGfQch1DZkCdGjmLSjVT/TFFCRimu26eiAddDQs7JdL0huBgUuUshSkGQL3DMdQam708+ebUO8Q1a0DCnncV1HKtIbOGO++RBWUpsr7OlBErS3CFCMsgO07y+rFzh1m2jXM56gQ=
+	t=1761158035; cv=none; b=SsYaIKrTjkV9M/54ZqNXmJ3ABpepiyQDHaFmW1r6pKuQxGd2neIotZFjDu5N3aN2oMlNGK9gGnATmn/sgUAjJ8XZhDqWPCDW6L8/E3oS9rKrQrxorO1Z0nQHYAIhkQzJc4nNUbFhY3S4deV5dKpOLBTNX3Z1Z4lV1zANkNPUoHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761152570; c=relaxed/simple;
-	bh=uQ64JgFOmAzJd+mPkZtVG+ihpVKVYP1nw4V7fBIcKF4=;
+	s=arc-20240116; t=1761158035; c=relaxed/simple;
+	bh=HnMd6ESDOQPNkHtYkXXBggLVB+O/NgfKnQ0epXgTK1g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ay1/PAfp1CFwybC2s+l0b4t8BTtgB614FWT0AxOpTuPMkSZVPsBA65QIl2nFbX6Gx9jUWJOhqelLWUsZIrCGTSls8tosZ3fNfnnYc4deuHCeeeueye41421LFMikOXrmx0Y+UQaH/Jy3kKWY9WwwjSPAco0iKndQS8A2gEqOqoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRlhloua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE23C113D0
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 17:02:50 +0000 (UTC)
+	 To:Cc:Content-Type; b=gnMJgOrFs+ZshPhS+F4aObxEMDAjuQ1KXo/o8JKqFZ/xxz5diejX/1tJ3jD+514DDVJMrdrPLLSu8KpCfB6LqLuacz2Bb92Y2UlJlt6UwJUtCZcuX0SbwB8ucxxKod/QBgs9cwgpjicCJ0PJmeApdfy7LDh/3/8AX2/FK0xwpC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epRDjPKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B44C4CEFD
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 18:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761152570;
-	bh=uQ64JgFOmAzJd+mPkZtVG+ihpVKVYP1nw4V7fBIcKF4=;
+	s=k20201202; t=1761158035;
+	bh=HnMd6ESDOQPNkHtYkXXBggLVB+O/NgfKnQ0epXgTK1g=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sRlhlouas6aCSesmJCpwCgMhuTYNTUv7lLIogOIis+naR8orH2qBwGRtTp6L6Ym66
-	 RbcQ7kgKTBSTA+jqhjHc3DQQ1YbldHrndwPhqSaMfrG050duDP5+xUoknxXHlTR3mU
-	 Y0dgMGREzd843297p5wlSOff3M2Mu3mv9Z2ETUSuhXNudblRQlCxwmeCSJufh2i6N3
-	 P+udSZiF6AFs2XTUVollvSIgeXqIEBQ3hM0cAsWlwqkq0b6WcnRTqrggySzQPibwcZ
-	 fsg3g0A4uEOsnYjqUcU2O+GgQXs4AlT00CfvPE3IzWq/bCWbTP4AqZRrcbmzWpTlSy
-	 Jt+0iQQIs/nRw==
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c0e357ab51so5867808a34.2
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 10:02:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVYSKG1K8edaQMeWizi+2D85h3yGUfNISr5IbLzjs0nakqlMdE8xNObGruKnAWim54xzqYTbF2DMWEz@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2wMr7Tm0VQJJKavAMbcAVyyhKapXOmynR0zubUlpv90eEdqaW
-	AFWOQsc2hjOh2oCtVRP6kcSJxQwsb4ypurOEJqZWXbHB/1WJ3Ay8TFS/86ozx4jtzaT2YNxGiAf
-	A1huzL4rQBTK1wi9yGKvDfJcpXoDl5io=
-X-Google-Smtp-Source: AGHT+IFsSLkS4AfOy5xcoE1SIc1rw+OhHunu+bX6yReuGG38wf86nNthgdGGvrwVmspSg8ngis0UUdzl53ovX1AjJdc=
-X-Received: by 2002:a05:6808:14c8:b0:43f:75f0:3894 with SMTP id
- 5614622812f47-443a2e90865mr8908912b6e.22.1761152569474; Wed, 22 Oct 2025
- 10:02:49 -0700 (PDT)
+	b=epRDjPKRCa9BxTAl/maqOnCFs1ZYsOn5Ff45yfJ8lt1ez+NhK+IabdLZgpqlmCD/D
+	 zKSPA79zjPYg5yekdsOjQ0emuKANc7+dkt8QMV1HiV2dCnWf5wt/F9TYgDgE/BzzIN
+	 qMw5WfzLodb+7FVfka4Zbn2HgXDA/5cC3d275udo+xYHRvAVZLxAGQEo5zmRS354sw
+	 Gf3SWH+ogk8qvUI4z3DknXeoTAamqgaPaGPSG3lBsJEpDoIs6CWOc1umdqPYaKJtRn
+	 6DbXVb2OmddqGQ92VRQiEA7mnzX1I+R5lWYMmb45opBxbR2CA+FxZ5fzJfA6xd3X8R
+	 ZazyqYsMwdaRw==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-443a7490a54so3554775b6e.1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 11:33:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXoBOPmHXl8pkoSxKk9FHjl8lPyesbegd2yT4DE6qiQiL7IiXsXGTKmTRqimwkZrInGMSKb//IQZZAw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7riix/tbK4JoOMRGiGrDn2yCeY28WyebZbB0sxrZiJ1McsadU
+	G4N0tXqH4XtpP54KW+BQtRfHEUW4Ck+XaDre9jySeYqaVaQXexh5LFTJC0SDbtK5w4dYZRGo6zT
+	ZD1C3XQsERhNkfB+I19w1hxXzCDgVKWM=
+X-Google-Smtp-Source: AGHT+IH1IqVM6euAMndvLHW5UlV1j14MYMhRCeJ6OM2UaHr7gpeL9K3LN5TVDVQPxH3fDyMM2m8mNxGtYP3Yupx2W1o=
+X-Received: by 2002:a05:6808:3442:b0:441:8f74:fbb with SMTP id
+ 5614622812f47-443a3186027mr9639045b6e.56.1761158034616; Wed, 22 Oct 2025
+ 11:33:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251002113404.3117429-1-srosek@google.com>
-In-Reply-To: <20251002113404.3117429-1-srosek@google.com>
+References: <20251002113404.3117429-1-srosek@google.com> <20251002113404.3117429-2-srosek@google.com>
+In-Reply-To: <20251002113404.3117429-2-srosek@google.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Oct 2025 19:02:38 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hO3+eznWztqO2B78wpLXr3EZ+Nj0yOxqesfpb20ykOYQ@mail.gmail.com>
-X-Gm-Features: AS18NWBlxJkUSv4HdoHV9K7LgQY0Hep2BdtAsCZ074SA2uAIDpGbEU_yqZ8QlaI
-Message-ID: <CAJZ5v0hO3+eznWztqO2B78wpLXr3EZ+Nj0yOxqesfpb20ykOYQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] ACPI: DPTF: Move INT340X enumeration from DPTF
- core to thermal drivers
-To: Slawomir Rosek <srosek@google.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>, 
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, AceLan Kao <acelan.kao@canonical.com>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Tomasz Nowicki <tnowicki@google.com>, 
+Date: Wed, 22 Oct 2025 20:33:41 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ho8MhU8jj=YMyDKdTQWZt24LjoCaoEgJRsdi3YykkBBQ@mail.gmail.com>
+X-Gm-Features: AS18NWAQt62Xl-VqxhnNXIPFUkqK65I3ztD52Ptw3B2aZq-oo8JKqxO0ZlzYWTc
+Message-ID: <CAJZ5v0ho8MhU8jj=YMyDKdTQWZt24LjoCaoEgJRsdi3YykkBBQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] ACPI: DPTF: Ignore SoC DTS thermal while scanning
+To: Slawomir Rosek <srosek@google.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
+	AceLan Kao <acelan.kao@canonical.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Tomasz Nowicki <tnowicki@google.com>, 
 	Stanislaw Kardach <skardach@google.com>, Michal Krawczyk <mikrawczyk@google.com>, 
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
 	platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org
@@ -81,70 +80,91 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Oct 2, 2025 at 1:34=E2=80=AFPM Slawomir Rosek <srosek@google.com> w=
 rote:
 >
-> The Intel Dynamic Platform and Thermal Framework (DPTF) relies on
-> the INT340X ACPI device objects. The temperature information and
-> cooling ability are exposed to the userspace via those objects.
->
-> Since kernel v3.17 the ACPI bus scan handler is introduced to prevent
-> enumeration of INT340X ACPI device objects on the platform bus unless
-> related thermal drivers are enabled. However, using the IS_ENABLED()
-> macro in the ACPI scan handler forces the kernel to be recompiled
-> when thermal drivers are enabled or disabled, which is a significant
-> limitation of its modularity. The IS_ENABLED() macro is particularly
-> problematic for the Android Generic Kernel Image (GKI) project which
-> uses unified core kernel while SoC/board support is moved to loadable
-> vendor modules.
->
-> This patch set moves enumeration of INT340X ACPI device objects on
-> the platform bus from DPTF core to thermal drivers. It starts with
-> some code cleanup and reorganization to eventually remove IS_ENABLED()
-> macro from the ACPI bus scan handler. Brief list of changes is listed
-> below:
->
-> 1) Remove SOC DTS thermal driver case from the ACPI scan handler
->    since its dependency on INT340X driver is unrelated to DPTF
-> 2) Move all INT340X ACPI device ids to the common header and update
->    the DPTF core and thermal drivers accordingly
-> 3) Move dynamic enumeration of ACPI device objects on the platform bus
->    from the intel-hid and intel-vbtn drivers to the ACPI platform core
-> 4) Move enumeration of INT340X ACPI device objects on the platform bus
->    from DPTF core to thermal drivers using ACPI platform core methods
->
-> Link to v1: https://lore.kernel.org/all/20250830053404.763995-1-srosek@go=
-ogle.com/
-> Link to v2: https://lore.kernel.org/all/20250917120719.2390847-1-srosek@g=
-oogle.com/
->
-> In v3 the SoC DTS thermal explicitly depends on X86_64.
->
-> Slawomir Rosek (6):
->   ACPI: DPTF: Ignore SoC DTS thermal while scanning
->   ACPI: DPTF: Move INT340X device IDs to header
->   ACPI: DPTF: Move PCH FIVR device IDs to header
->   ACPI: DPTF: Remove not supported INT340X IDs
->   ACPI: platform: Add macro for acpi platform driver
->   ACPI: DPTF: Move INT340X enumeration to modules
->
->  drivers/acpi/acpi_platform.c                  | 27 +++++++
->  drivers/acpi/dptf/dptf_pch_fivr.c             | 10 +--
->  drivers/acpi/dptf/dptf_power.c                | 20 +----
->  drivers/acpi/dptf/int340x_thermal.c           | 76 ++++---------------
->  drivers/acpi/fan.h                            | 10 +--
->  drivers/acpi/fan_core.c                       |  2 +-
->  drivers/acpi/int340x_thermal.h                | 76 +++++++++++++++++++
->  drivers/platform/x86/intel/hid.c              | 33 +-------
->  drivers/platform/x86/intel/vbtn.c             | 30 +-------
->  drivers/thermal/intel/Kconfig                 |  3 +-
->  .../intel/int340x_thermal/int3400_thermal.c   | 12 +--
->  .../intel/int340x_thermal/int3401_thermal.c   |  5 +-
->  .../intel/int340x_thermal/int3402_thermal.c   |  5 +-
->  .../intel/int340x_thermal/int3403_thermal.c   | 12 +--
->  .../intel/int340x_thermal/int3406_thermal.c   |  5 +-
->  include/linux/platform_device.h               | 17 +++++
->  16 files changed, 164 insertions(+), 179 deletions(-)
->  create mode 100644 drivers/acpi/int340x_thermal.h
->
-> --
+> The Intel SoC DTS thermal driver on Baytrail platform uses IRQ 86 for
+> critical overheating notification. The IRQ 86 is described in the _CRS
+> control method of INT3401 device, thus Intel SoC DTS thermal driver
+> requires INT3401 device to be enumerated.
 
-Srinivas, do you have any input on this series?
+I don't think that the specific interrupt number is relevant here.  It
+would be sufficient to say something like "The IRQ used by the Intel
+SoC DTS thermal device for critical overheating notification is listed
+in _CRS of device INT3401 which therefore needs to be enumerated for
+Intel SoC DTS thermal to work."
+
+> Since dependency on INT3401 device is unrelated to DPTF the IS_ENABLE()
+> macro is removed from ACPI DPTF INT340X scan handler, instead Kconfig
+> is updated to ensure proper enumeration of INT3401 device.
+
+It is not entirely clear what happens in this patch after reading the
+above paragraph.
+
+I would rather continue the previous thought by saying that the
+enumeration happens by binding the int3401_thermal driver to the
+INT3401 platform device.  Thus CONFIG_INT340X_THERMAL is in fact
+necessary for enumerating it, so checking CONFIG_INTEL_SOC_DTS_THERMAL
+in int340x_thermal_handler_attach() is pointless and INT340X_THERMAL
+may as well be selected by INTEL_SOC_DTS_THERMAL.
+
+> Fixes: 014d9d5d0cc1 ("ACPI/int340x_thermal: enumerate INT3401 for Intel S=
+oC DTS thermal driver")
+
+Why do you want this tag to be added?
+
+> Signed-off-by: Slawomir Rosek <srosek@google.com>
+> ---
+>  drivers/acpi/dptf/int340x_thermal.c | 7 +------
+>  drivers/thermal/intel/Kconfig       | 3 ++-
+>  2 files changed, 3 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int3=
+40x_thermal.c
+> index a222df059a16..947fe50c2ef6 100644
+> --- a/drivers/acpi/dptf/int340x_thermal.c
+> +++ b/drivers/acpi/dptf/int340x_thermal.c
+> @@ -11,10 +11,9 @@
+>
+>  #include "../internal.h"
+>
+> -#define INT3401_DEVICE 0X01
+>  static const struct acpi_device_id int340x_thermal_device_ids[] =3D {
+>         {"INT3400"},
+> -       {"INT3401", INT3401_DEVICE},
+> +       {"INT3401"},
+>         {"INT3402"},
+>         {"INT3403"},
+>         {"INT3404"},
+> @@ -76,10 +75,6 @@ static int int340x_thermal_handler_attach(struct acpi_=
+device *adev,
+>  {
+>         if (IS_ENABLED(CONFIG_INT340X_THERMAL))
+>                 acpi_create_platform_device(adev, NULL);
+> -       /* Intel SoC DTS thermal driver needs INT3401 to set IRQ descript=
+or */
+> -       else if (IS_ENABLED(CONFIG_INTEL_SOC_DTS_THERMAL) &&
+> -                id->driver_data =3D=3D INT3401_DEVICE)
+> -               acpi_create_platform_device(adev, NULL);
+>         return 1;
+>  }
+>
+> diff --git a/drivers/thermal/intel/Kconfig b/drivers/thermal/intel/Kconfi=
+g
+> index e0268fac7093..f9e275538e29 100644
+> --- a/drivers/thermal/intel/Kconfig
+> +++ b/drivers/thermal/intel/Kconfig
+> @@ -44,7 +44,8 @@ config INTEL_SOC_DTS_IOSF_CORE
+>
+>  config INTEL_SOC_DTS_THERMAL
+>         tristate "Intel SoCs DTS thermal driver"
+> -       depends on X86 && PCI && ACPI
+> +       depends on X86_64 && PCI && ACPI
+
+AFAICS NET needs to be added to the dependency list above or selecting
+INT340X_THERMAL below may not actually cause it to be built.
+
+> +       select INT340X_THERMAL
+>         select INTEL_SOC_DTS_IOSF_CORE
+>         help
+>           Enable this to register Intel SoCs (e.g. Bay Trail) platform di=
+gital
+> --
 
