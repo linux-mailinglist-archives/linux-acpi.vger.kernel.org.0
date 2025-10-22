@@ -1,417 +1,203 @@
-Return-Path: <linux-acpi+bounces-18106-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18107-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248D6BFCFE0
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:00:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57DABFD40A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F2F534B5DB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 16:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1913E1888C58
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 16:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF3B26C385;
-	Wed, 22 Oct 2025 16:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AB435B149;
+	Wed, 22 Oct 2025 16:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLwv1VdS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KtRD/+oP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821D26C384
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 16:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179AB35B148;
+	Wed, 22 Oct 2025 16:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761148830; cv=none; b=qMaGy1u8J6np3lMBaJHR8RE8rZ0PYIK6/gGnQbxZ/AskqyP8ud16F1cGnDyaj6FsHk/MNQtdQD452hPKffo7URzjXweQ70Vdp1zUphA/mXV/JHtT5HMZVRGcRyQ4JOC+tWUKty7ZqW/F1P+5GLJreDW5O9dZa8YPtaqvssMSico=
+	t=1761149529; cv=none; b=XHsCYC71t3jfV9o1OT1ZvmWpI86VSxQy+c7x2+RCI9meL9GkxWFrCHK37+qqYUYVQYGouMx6piTXFjqN/1srs1rlmUalAu8ZGw3NSlXTd8RGQJohA1i8R8EPlWmmxW0VYNx8Z6SSVYcO3nTzX7dYxBVo6Hhqjk+hs+mPNB4GMlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761148830; c=relaxed/simple;
-	bh=aqh+eIb/pAJr1faQbjM3BAw0kdTESmg5XgtIC+w7U7o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fI9oUFBnnHo9tYAxo3AklKKytRsb2AdMcyrriJf9vcWE2eBl4JUndShPK9AjQ2q7C2fobW+6FgvwHDZqd6aTdwO4AaWmtX5ZENGexgojOs+hLWK2mmfDMI8WAIziYRRw5trE1RrNdCKaobo5CEDbBr8S+cq32qY3V8mst7hfSA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLwv1VdS; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-471005e2ba9so68265e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 09:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761148826; x=1761753626; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
-        b=oLwv1VdS+JpHpiamz7188I1SWjVkvlQk1bIGBDB2pKKFigqWA98TBo7EDAzHsQ16Mg
-         R/xzzbhorKqaYw0ZCXeiw2eR9hrP5u+LbL1tdeLU5Q8bvIFIeyTQshFbLL3kHlKDzBUC
-         4Baxgmth/hz8AsJUkqaqUYwmX1Yb/X+QCK0qyEHqTxdEcwzUdbTr6itZJrr0xNUBkwaX
-         rDidT4rcKadIMMfejfS0qQTUhEKjQWbFhRecyxMQ+4andv8rzmb9uwslxUlmGOsEVHrS
-         ng4AFUTqUCqK1Kp76kp+8nqOSUEIsPBOZ/1BtVuhvyHwa2AYVorY3q/Ba/oEV+HVQlnQ
-         ucKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761148826; x=1761753626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
-        b=ayphlzfwbncbMiPTbuSk6BB6IZzpmBmCj6gZZLmTZQXMiDGAfP9MdD/DUZ4MJFxjgP
-         UNTxFVOc+VFUgZ/efezpYY+VqoyLkEZkq67f+MJ+IZntApN+fBaJ7b0jqbte7RBqcUsd
-         A6EWCBYbhqFCaSIC68Eo422dcad7YdVfG99po1FDujF/GGPrjY3tYAwXpDM+gettvkE3
-         E4pHYB2VUqbJoJg8zCLQZc0NnNBL5ToalrV3JNlsWWRtQ0pJkcADenS/6J7kil6U53h/
-         gOaj5bJjONT3ew7ABJdINd3TFcIaHJBez+Uu0K/wy08NectVASYMdp/hCZkrAIHJQ4lI
-         hMaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOtCnLphypdKXFyYHzujitzfF6FS2EQNC2cMOGbvsBeuzZTpprMrGyuB5ocsIt0geE6Yj75WSUvkgF@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV2C/yLc7X/HB7Q28c93P8/vnwSplqkq+AZa/+3O4HSyULmVcL
-	XO77EMDCQtC6gXxC5yF7FhQkO15VzNgrKn9cXpiPhD7W4nr4ufHdqfao0ZQMe/LKr6jD79bdXaX
-	8CKdkSLjG4bbVqGfii7DfvZ+huZhhkS5/zgPFsBBT
-X-Gm-Gg: ASbGncutJcMuLC7ov7FQq9uQyg4H7sS1k5GNBISIIBYfILfJfN+FMcqvwQ+Av7hqY2c
-	3zEcGNkwA/PnVFKDPpM2fnWqBxszZEBPlKCVS+R2Yq0lb8Qvty0fhpty49hZ0AZolXGxBH8u5Uu
-	tB9cuE6RRSCpbaKjQfV+bR4Q0ox+/cfAQMODetKnzgco5wIArXX42Uk5G0/UMz4g/JRtkhkifFw
-	t0vU5CbwGu/sEx4yA7oVJLqo1yyCAOPbE7pKhUYV5XLeCqs3pLLqh44gmeJ3xKbIgrYzKbpLMvt
-	+J0gvLNvXqLZvDIYLw==
-X-Google-Smtp-Source: AGHT+IGQ5urEAQ9m57T3Tr0rBInJl1kxrVgo9aZA5J1ni84q+HbgDwPfJxL7EgSHQYRd3sVOQI4JW1ylUbWl3BXuheM=
-X-Received: by 2002:a05:600c:c04b:10b0:46f:c587:df17 with SMTP id
- 5b1f17b1804b1-475c5138edbmr772405e9.1.1761148826010; Wed, 22 Oct 2025
- 09:00:26 -0700 (PDT)
+	s=arc-20240116; t=1761149529; c=relaxed/simple;
+	bh=IaRshFLfVcx/emGoPV1f+QYE4VS3CjYShnZJTxeFLog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V0ZAgARK1vHcTp+6uZdHzZqkJiUaRv84osn3GTnbLBLfwP7WTjL2DEFJtLMprsUeQVO0fOlW5EFSX4X92+eGTGsGINzuLoL01gi4mMIwq+HnwR1XoW9I3iTYFIRLCU3TKuOaRtCeyR09zkuCwQuWWg3oPtv/pv4lisHO7NxlaQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KtRD/+oP; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761149527; x=1792685527;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IaRshFLfVcx/emGoPV1f+QYE4VS3CjYShnZJTxeFLog=;
+  b=KtRD/+oPEX6e4H8O4aXKy7N/UwmwDK7/moUSkmezbYXHQbWqnlgqgvLT
+   rimkXun03rEnKarcaYCQIc3TFmjRKI0uGtQ1ktCTRtkgfpbwvDh7xKQhS
+   cOJmXlIwVOJypEtK8JciLglShc5iKgI0k9Zv6yHs+R6w2UB7SGLTRbfm1
+   rM5yCFD2mo6qOsmwbgSXyLRrBv8iQJbiyqaVLrHFHg8j5Vi8Z92qwA9J6
+   X8NjuqogJWbazATVdWd96Abm2vJY8HIEg1tYSmI44BnUiP4/uHey69+il
+   z14Ojf4rF1KDOw4hIthguBW1BeBLj1axmBu+4sbuqHdu8a3/dy8v9CDBq
+   A==;
+X-CSE-ConnectionGUID: c3u/WTaoQx2Hwph3C8ym3g==
+X-CSE-MsgGUID: u3jPCo/DSKaKjSvAorJckA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63211270"
+X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
+   d="scan'208";a="63211270"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 09:12:05 -0700
+X-CSE-ConnectionGUID: aYLLBjbMSyuYEeaxbXLYaw==
+X-CSE-MsgGUID: +gVc5kqQSNWrVGu6XV4sMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
+   d="scan'208";a="183962211"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.83])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 09:12:02 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vBbRO-00000001jnj-2bzi;
+	Wed, 22 Oct 2025 19:11:58 +0300
+Date: Wed, 22 Oct 2025 19:11:58 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 7/9] reset: make the provider of reset-gpios the parent
+ of the reset device
+Message-ID: <aPkCTgaqPHaTsFDH@smile.fi.intel.com>
+References: <075a4511a6ae4b047599757d41b559c6b7cf9d0f.camel@pengutronix.de>
+ <CAMRc=Md4DUSuwv07EuBVDJbY1Uzezq+TONxyCvLtOHD=iFXrcQ@mail.gmail.com>
+ <050d74d7619bdfdf5ca81d8914a2a8836a0d4e2e.camel@pengutronix.de>
+ <CAMRc=MfPqRLFHPW988oMry7vVoTgtQHrxxND4=nr_40dOa5owg@mail.gmail.com>
+ <aPeexuA1nu-7Asws@smile.fi.intel.com>
+ <aPegyVyONkPWRgi9@smile.fi.intel.com>
+ <CAMRc=McPpFEmg7dpfiYWJaPR4yMynOaU5Hp37E7rTzWSCNxBuA@mail.gmail.com>
+ <aPerDcMFdbWecGEv@smile.fi.intel.com>
+ <804b4b8cf23444fe5dc9400ac1de3a738a77e09e.camel@pengutronix.de>
+ <CAMRc=Md-KuNp1o6GLA0WTbknbN-qtt8YJqy5fJs0P0EyE7KY3Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021102327.199099-1-ankita@nvidia.com> <20251021102327.199099-2-ankita@nvidia.com>
-In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Wed, 22 Oct 2025 09:00:13 -0700
-X-Gm-Features: AS18NWCpMHMP31ZSlN1pMxGifJCs7kl9OgsJ-oSyN2IYIPEyac80DDLNqIbtKlQ
-Message-ID: <CACw3F5036Kfs_j8np+_+YejC02ADeLoCNYaQVhmBRzQF32NAgA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
-To: ankita@nvidia.com
-Cc: aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com, 
-	skolothumtho@nvidia.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
-	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, tony.luck@intel.com, bp@alien8.de, rafael@kernel.org, 
-	guohanjun@huawei.com, mchehab@kernel.org, lenb@kernel.org, 
-	kevin.tian@intel.com, alex@shazbot.org, cjia@nvidia.com, kwankhede@nvidia.com, 
-	targupta@nvidia.com, zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-edac@vger.kernel.org, 
-	Jonathan.Cameron@huawei.com, ira.weiny@intel.com, 
-	Smita.KoralahalliChannabasappa@amd.com, u.kleine-koenig@baylibre.com, 
-	peterz@infradead.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Md-KuNp1o6GLA0WTbknbN-qtt8YJqy5fJs0P0EyE7KY3Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 21, 2025 at 3:23=E2=80=AFAM <ankita@nvidia.com> wrote:
->
-> From: Ankit Agrawal <ankita@nvidia.com>
->
-> The kernel MM currently does not handle ECC errors / poison on a memory
-> region that is not backed by struct pages. If a memory region mapped
-> using remap_pfn_range() for example, but not added to the kernel, MM
-> will not have associated struct pages. Add a new mechanism to handle
-> memory failure on such memory.
->
-> Make kernel MM expose a function to allow modules managing the device
-> memory to register the device memory SPA and the address space associated
-> it. MM maintains this information as an interval tree. On poison, MM can
-> search for the range that the poisoned PFN belong and use the address_spa=
-ce
-> to determine the mapping VMA.
->
-> In this implementation, kernel MM follows the following sequence that is
-> largely similar to the memory_failure() handler for struct page backed
-> memory:
-> 1. memory_failure() is triggered on reception of a poison error. An
-> absence of struct page is detected and consequently memory_failure_pfn()
-> is executed.
-> 2. memory_failure_pfn() collects the processes mapped to the PFN.
-> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
-> poisoned PFN using kill_procs().
->
-> Note that there is one primary difference versus the handling of the
-> poison on struct pages, which is to skip unmapping to the faulty PFN.
-> This is done to handle the huge PFNMAP support added recently [1] that
-> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
-> to a PFN would need breaking the PMD mapping into PTEs to unmap only
-> the poisoned PFN. This will have a major performance impact.
->
-> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.=
-com/ [1]
->
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  MAINTAINERS                    |   1 +
->  include/linux/memory-failure.h |  17 +++++
->  include/linux/mm.h             |   1 +
->  include/ras/ras_event.h        |   1 +
->  mm/Kconfig                     |   1 +
->  mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
->  6 files changed, 148 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/memory-failure.h
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 520fb4e379a3..463d062d0386 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11359,6 +11359,7 @@ M:      Miaohe Lin <linmiaohe@huawei.com>
->  R:     Naoya Horiguchi <nao.horiguchi@gmail.com>
->  L:     linux-mm@kvack.org
->  S:     Maintained
-> +F:     include/linux/memory-failure.h
->  F:     mm/hwpoison-inject.c
->  F:     mm/memory-failure.c
->
-> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failur=
-e.h
-> new file mode 100644
-> index 000000000000..bc326503d2d2
-> --- /dev/null
-> +++ b/include/linux/memory-failure.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_MEMORY_FAILURE_H
-> +#define _LINUX_MEMORY_FAILURE_H
-> +
-> +#include <linux/interval_tree.h>
-> +
-> +struct pfn_address_space;
-> +
-> +struct pfn_address_space {
-> +       struct interval_tree_node node;
-> +       struct address_space *mapping;
-> +};
-> +
-> +int register_pfn_address_space(struct pfn_address_space *pfn_space);
-> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space);
-> +
-> +#endif /* _LINUX_MEMORY_FAILURE_H */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 1ae97a0b8ec7..0ab4ea82ce9e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4006,6 +4006,7 @@ enum mf_action_page_type {
->         MF_MSG_DAX,
->         MF_MSG_UNSPLIT_THP,
->         MF_MSG_ALREADY_POISONED,
-> +       MF_MSG_PFN_MAP,
->         MF_MSG_UNKNOWN,
->  };
->
-> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-> index c8cd0f00c845..fecfeb7c8be7 100644
-> --- a/include/ras/ras_event.h
-> +++ b/include/ras/ras_event.h
-> @@ -375,6 +375,7 @@ TRACE_EVENT(aer_event,
->         EM ( MF_MSG_DAX, "dax page" )                                   \
->         EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )                        \
->         EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )              \
-> +       EM ( MF_MSG_PFN_MAP, "non struct page pfn" )                    \
->         EMe ( MF_MSG_UNKNOWN, "unknown page" )
->
->  /*
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index e443fe8cd6cf..0b07219390b9 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -777,6 +777,7 @@ config MEMORY_FAILURE
->         depends on ARCH_SUPPORTS_MEMORY_FAILURE
->         bool "Enable recovery from hardware memory errors"
->         select MEMORY_ISOLATION
-> +       select INTERVAL_TREE
->         select RAS
->         help
->           Enables code to recover from some memory failures on systems
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index df6ee59527dd..acfe5a9bde1d 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -38,6 +38,7 @@
->
->  #include <linux/kernel.h>
->  #include <linux/mm.h>
-> +#include <linux/memory-failure.h>
->  #include <linux/page-flags.h>
->  #include <linux/sched/signal.h>
->  #include <linux/sched/task.h>
-> @@ -154,6 +155,10 @@ static const struct ctl_table memory_failure_table[]=
- =3D {
->         }
->  };
->
-> +static struct rb_root_cached pfn_space_itree =3D RB_ROOT_CACHED;
-> +
-> +static DEFINE_MUTEX(pfn_space_lock);
-> +
->  /*
->   * Return values:
->   *   1:   the page is dissolved (if needed) and taken off from buddy,
-> @@ -957,6 +962,7 @@ static const char * const action_page_types[] =3D {
->         [MF_MSG_DAX]                    =3D "dax page",
->         [MF_MSG_UNSPLIT_THP]            =3D "unsplit thp",
->         [MF_MSG_ALREADY_POISONED]       =3D "already poisoned page",
-> +       [MF_MSG_PFN_MAP]                =3D "non struct page pfn",
->         [MF_MSG_UNKNOWN]                =3D "unknown page",
->  };
->
-> @@ -1349,7 +1355,7 @@ static int action_result(unsigned long pfn, enum mf=
-_action_page_type type,
->  {
->         trace_memory_failure_event(pfn, type, result);
->
-> -       if (type !=3D MF_MSG_ALREADY_POISONED) {
-> +       if (type !=3D MF_MSG_ALREADY_POISONED && type !=3D MF_MSG_PFN_MAP=
-) {
->                 num_poisoned_pages_inc(pfn);
->                 update_per_node_mf_stats(pfn, result);
->         }
-> @@ -2216,6 +2222,121 @@ static void kill_procs_now(struct page *p, unsign=
-ed long pfn, int flags,
->         kill_procs(&tokill, true, pfn, flags);
->  }
->
-> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
-> +{
-> +       if (!pfn_space)
-> +               return -EINVAL;
-> +
-> +       mutex_lock(&pfn_space_lock);
-> +
-> +       if (interval_tree_iter_first(&pfn_space_itree,
-> +                                    pfn_space->node.start,
-> +                                    pfn_space->node.last)) {
-> +               mutex_unlock(&pfn_space_lock);
-> +               return -EBUSY;
-> +       }
-> +
-> +       interval_tree_insert(&pfn_space->node, &pfn_space_itree);
-> +       mutex_unlock(&pfn_space_lock);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(register_pfn_address_space);
-> +
-> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space)
-> +{
-> +       if (!pfn_space)
-> +               return;
-> +
-> +       mutex_lock(&pfn_space_lock);
-> +       interval_tree_remove(&pfn_space->node, &pfn_space_itree);
+On Wed, Oct 22, 2025 at 02:17:53PM +0200, Bartosz Golaszewski wrote:
+> On Wed, Oct 22, 2025 at 10:39 AM Philipp Zabel <p.zabel@pengutronix.de> wrote:
+> > On Di, 2025-10-21 at 18:47 +0300, Andy Shevchenko wrote:
+> > > On Tue, Oct 21, 2025 at 05:23:33PM +0200, Bartosz Golaszewski wrote:
+> > > > On Tue, Oct 21, 2025 at 5:03 PM Andy Shevchenko
+> > > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > > On Tue, Oct 21, 2025 at 05:55:02PM +0300, Andy Shevchenko wrote:
+> > > > > > On Tue, Oct 21, 2025 at 11:39:41AM +0200, Bartosz Golaszewski wrote:
+> > > > > > > On Tue, Oct 21, 2025 at 11:31 AM Philipp Zabel <p.zabel@pengutronix.de> wrote:
+> > > > > > > > On Di, 2025-10-21 at 11:27 +0200, Bartosz Golaszewski wrote:
 
-IIRC removing something not in interval tree will panic kernel. If I
-am not mistaken, should here do something like
-interval_tree_iter_first before interval_tree_remove, to avoid
-driver's ill behavior crash the system?
+[...]
 
-> +       mutex_unlock(&pfn_space_lock);
-> +}
-> +EXPORT_SYMBOL_GPL(unregister_pfn_address_space);
-> +
-> +static void add_to_kill_pfn(struct task_struct *tsk,
-> +                           struct vm_area_struct *vma,
-> +                           struct list_head *to_kill,
-> +                           unsigned long pfn)
-> +{
-> +       struct to_kill *tk;
-> +
-> +       tk =3D kmalloc(sizeof(*tk), GFP_ATOMIC);
-> +       if (!tk)
-> +               return;
-> +
-> +       /* Check for pgoff not backed by struct page */
-> +       tk->addr =3D vma_address(vma, pfn, 1);
-> +       tk->size_shift =3D PAGE_SHIFT;
-> +
-> +       if (tk->addr =3D=3D -EFAULT)
-> +               pr_info("Unable to find address %lx in %s\n",
-> +                       pfn, tsk->comm);
-> +
-> +       get_task_struct(tsk);
-> +       tk->tsk =3D tsk;
-> +       list_add_tail(&tk->nd, to_kill);
-> +}
-> +
-> +/*
-> + * Collect processes when the error hit a PFN not backed by struct page.
-> + */
-> +static void collect_procs_pfn(struct address_space *mapping,
-> +                             unsigned long pfn, struct list_head *to_kil=
-l)
-> +{
-> +       struct vm_area_struct *vma;
-> +       struct task_struct *tsk;
-> +
-> +       i_mmap_lock_read(mapping);
-> +       rcu_read_lock();
-> +       for_each_process(tsk) {
-> +               struct task_struct *t =3D tsk;
-> +
-> +               t =3D task_early_kill(tsk, true);
-> +               if (!t)
-> +                       continue;
-> +               vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn=
-) {
-> +                       if (vma->vm_mm =3D=3D t->mm)
-> +                               add_to_kill_pfn(t, vma, to_kill, pfn);
-> +               }
-> +       }
-> +       rcu_read_unlock();
-> +       i_mmap_unlock_read(mapping);
-> +}
-> +
-> +static int memory_failure_pfn(unsigned long pfn, int flags)
-> +{
-> +       struct interval_tree_node *node;
-> +       LIST_HEAD(tokill);
-> +
-> +       mutex_lock(&pfn_space_lock);
-> +       /*
-> +        * Modules registers with MM the address space mapping to the dev=
-ice memory they
-> +        * manage. Iterate to identify exactly which address space has ma=
-pped to this
-> +        * failing PFN.
-> +        */
-> +       for (node =3D interval_tree_iter_first(&pfn_space_itree, pfn, pfn=
-); node;
-> +            node =3D interval_tree_iter_next(node, pfn, pfn)) {
-> +               struct pfn_address_space *pfn_space =3D
-> +                       container_of(node, struct pfn_address_space, node=
-);
-> +
-> +               collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
-> +       }
-> +       mutex_unlock(&pfn_space_lock);
-> +
-> +       /*
-> +        * Unlike System-RAM there is no possibility to swap in a differe=
-nt
-> +        * physical page at a given virtual address, so all userspace
-> +        * consumption of direct PFN memory necessitates SIGBUS (i.e.
-> +        * MF_MUST_KILL)
-> +        */
-> +       flags |=3D MF_ACTION_REQUIRED | MF_MUST_KILL;
-> +
-> +       kill_procs(&tokill, true, pfn, flags);
-> +
-> +       return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
-> +}
-> +
->  /**
->   * memory_failure - Handle memory failure of a page.
->   * @pfn: Page Number of the corrupted page
-> @@ -2259,6 +2380,11 @@ int memory_failure(unsigned long pfn, int flags)
->         if (!(flags & MF_SW_SIMULATED))
->                 hw_memory_failure =3D true;
->
-> +       if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
-> +               res =3D memory_failure_pfn(pfn, flags);
-> +               goto unlock_mutex;
-> +       }
-> +
->         p =3D pfn_to_online_page(pfn);
->         if (!p) {
->                 res =3D arch_memory_failure(pfn, flags);
-> --
-> 2.34.1
->
->
+> > > > > > > > No need to convert all existing drivers right away, but I'd like to see
+> > > > > > > > a user that benefits from the conversion.
+> > > > > > > >
+> > > > > > >
+> > > > > > > The first obvious user will be the reset-gpio driver which will see
+> > > > > > > its core code simplified as we won't need to cast between OF and
+> > > > > > > fwnodes.
+> > > > > >
+> > > > > > +1 to Bart's work. reset-gpio in current form is useless in all my cases
+> > > > > > (it's OF-centric in 2025! We should not do that in a new code).
+> > > > > >
+> > > > > > More over, conversion to reset-gpio from open coded GPIO APIs is a clear
+> > > > > > regression and I want to NAK all those changes (if any already done) for
+> > > > > > the discrete components that may be used outside of certainly OF-only niche of
+> > > > > > the platforms.
+> > > > >
+> > > > > To be clear, the conversion that's done while reset-gpio is kept OF-centric.
+> > > > > I'm in favour of using it, but we need to make it agnostic.
+> > > >
+> > > > As of now, the whole reset framework is completely OF-centric, I don't
+> > > > know what good blocking any such conversions would bring? I intend to
+> > > > convert the reset core but not individual drivers.
+> > >
+> > > Blocking making new regressions?
+> > >
+> > > Otherwise as long as reset framework and reset-gpio are agnostic, I'm pretty
+> > > much fine with the idea and conversion.
+> >
+> > I think we might be talking about different "conversions" and different
+> > "blocking" here?
+> >
+> > 1) Conversion of the reset core from of_node to fwnode.
+> > 2) Conversion of reset controller drivers from of_node to fwnode.
+> > 3) Conversion of consumer drivers from gpiod to reset_control API.
+> >
+> > My understanding is:
+> >
+> > Bartosz would like to convert the reset core to fwnode (1) but not
+> > convert all the individual reset controller drivers (2). He doesn't
+> > like blocking (1) - this statement was partially in reaction to me
+> > bringing up a previous attempt that didn't go through.
+> >
+> > Andy would like to block consumer driver conversions from gpiod to
+> > reset_control API (3) while the reset-gpio driver only works on OF
+> > platforms.
+> >
+> > Please correct me if and where I misunderstood.
+> 
+> I think Andy is afraid that people will convert drivers that are used
+> in the fwnode world to reset-gpio which only works with OF. I don't
+> think that anyone's trying to do it though.
+
+You are both right about my worries and there is of course the case.
+https://patch.msgid.link/1720009575-11677-1-git-send-email-shengjiu.wang@nxp.com
+
+The mentioned change should be reverted.
+
+And this was just found by a couple of minutes of `git log --grep`. I am pretty
+sure there are handful of a such wrong patches.
+
+Compare to https://patch.msgid.link/20250815172353.2430981-3-mohammad.rafi.shaik@oss.qualcomm.com
+which is done correctly (it doesn't  break old functionality on non-OF platforms).
+
+> > I think fwnode conversion of the reset controller framework core is a
+> > good idea, I'd just like to see a use case accompanying the conversion.
+> > It seems like enabling the reset-gpio driver to be used on non-OF
+> > platforms could be that. Andy, do you have an actual case in mind?
+> 
+> I'd say converting the reset core to fwnode has merits on its own. We
+> should typically use the highest available abstraction layer (which is
+> fwnode in this case) unless we absolutely have no choice (for
+> instance: using some very OF-specific APIs).
+> 
+> That being said: the reset-gpio driver will be able to work with any
+> firmware node once we do the conversion which is a good first
+> use-case.
+
++1, as I already mentioned I am in favour of this change.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
