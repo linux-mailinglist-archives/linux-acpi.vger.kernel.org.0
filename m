@@ -1,354 +1,124 @@
-Return-Path: <linux-acpi+bounces-18098-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18099-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF3EBFC540
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 15:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D444BBFC48F
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 15:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3B5D6543704
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 13:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4B861A05502
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 13:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4176034D4E6;
-	Wed, 22 Oct 2025 13:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7B2348454;
+	Wed, 22 Oct 2025 13:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="QlFkgtWQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHaW3NDe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F1A34D4C2
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 13:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A934845D
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 13:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761140493; cv=none; b=skCrINcfeZO2JQ8SDF3ex0N2oQA5uWMZH9YXe39o3lurpAqQf74MWc9cq8iXonTJ1C065rhMEf7cvIz6mJ7NDLxFxiyWK2gxltjdo9qnEGEx0uafzYh0kMxVKTIBt+VvieUFALyR1OPGhc4MEs+ohw+x9Q8igDAitdJo+RRik0Y=
+	t=1761140897; cv=none; b=Uif/crxLpDVR55iQEI55XGRzh1nxw1es9HPujbx0hWYhgolqF/gPSI44KTfEYLerffitCa0tIABVhGk04XQZ83B/9Uh37S90UkkAZuTSNPqMHak5sMliZU1aMM9kvoRfm9M9aP+Kxx2pqirARbcdAPRIjiPVjlT8Z8zYW6Y6XxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761140493; c=relaxed/simple;
-	bh=kmXAtSE3HnrhoN6jQo1dJ1cDI3xe1YoDYFqyP0G5bLM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HXmPT8CHCuCeh3ve18UxiIdqQMIEh0xUw6msCDl0TCiKTVHwj8yBMqvZ6J3jCmDvTlY59foKqPTEpqhCKJN8MTFBi4FmanBVvtTq85AhfJ4Ni8v/HASZIAks00HvERDXsv7Zh7gf2f6MydmWuDSrHvnySflCF5tlsMRKcQ2b7cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=QlFkgtWQ; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-471075c0a18so72664515e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 06:41:30 -0700 (PDT)
+	s=arc-20240116; t=1761140897; c=relaxed/simple;
+	bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=goaQROeKmsnFBzgUwQCM6NI7aDHU7CNTKvy29VsHXmCEo0mdq59NZIwXhnPpZNqVNtODiv3Q/TURpwoAkMUq2rU2umrtYQtkNYMd8Znk0LDs3/eRSJTZUZUJwWi7fPdgfdiQG1m92aJiP+FWUi4buPXKLahjlHRIYanRAph4T7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHaW3NDe; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63e11cfb4a9so2863569a12.2
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 06:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761140489; x=1761745289; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SfExIwUemKJ5MA3EQ5p1dELGI8YLjDgxSK0E7YT4mrQ=;
-        b=QlFkgtWQ8TulI+HF1rimjT3uZh9Cd7tKnUZzESmeKxI6uYyTRK8xnaSRfJs2PJOVbL
-         94dHZ+CEMvVQnlFeDVz+Y8UZdgjTpgbvBKOz6bcFb/SWct6W/wMnO6Qlcg7fqRY1YCF2
-         tQalEY4dBDnDpEqwab4R8SCr40oPvPjN5D5gLtDCmN5T0uY13LQM2KDZDHuC0CyM2IFm
-         AKu8iCdaIQd/dBFjjKxL5M8oYK400XD5Yz7DQW5NdI5u7gvp09jXp8MpKO/duR+S5SFE
-         SchivIeR688jMMbDYDUTKt+753Bd32NYPeDX+k9hQjfzjxT7zqh5J91V9xTdBtKP2gtQ
-         wMVw==
+        d=gmail.com; s=20230601; t=1761140892; x=1761745692; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
+        b=DHaW3NDev1RDSphTbDxQD251qxiDChfS61xdvO0IDpC1JxWRGuCTmbqFPp7bRlTEbH
+         J0c92Q/jB1nKojacP1C/x0eyPH1ZyQaBKZUJmEJ9a7MEo2s5RWJVhw77mkAKrh5liwtV
+         PJJ+pGcGVv5y1LXkUjTPCOl1fl3FWrdghLdrW80WSGYvUqaP6kcYoevWjNXw9dtraHER
+         Z+Dmp5l+6/7jaS4xCLH9WfHPJgOQiyoIqPrzCeO5s0Ve3TBooRJBIVHS3y5kybHdA+7A
+         8L4DWh25aYfB0aoQv5HR25kGnZFsw7uPlHHj9KRRtqfVEK1E10Xh7CcZRsZYKxQ9Tcbv
+         tdMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761140489; x=1761745289;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1761140892; x=1761745692;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SfExIwUemKJ5MA3EQ5p1dELGI8YLjDgxSK0E7YT4mrQ=;
-        b=lu4YhoaglsaT7x7+c4crBhy47cU4hSQvqvG+kBAusBrS1a6Uriidy9P5y8rdfRXcgh
-         LMfOdK1xYZUenC3qKWJW8ta6PW6rMBRw4psAQ/nX1uuznfv257QhZ6YkE8P8xtG1P9EJ
-         iV4jsX+zF9uV4txanMgcTmNGNDOzeAv9l7qEDE911YeLVjd9N9JmgYdUXD5o8+Xtxzs8
-         JtbmkpIC0TlKl2DoilID+40xBleJgXcy5nmN1c1HbgeRey9z3jXF9LctBxMx7tF99/HT
-         QmrWoBMB+PXtlACFOwq0kQqZRPYbSWvLagajxtp7vTZck+iHMxX6FFt21JiPTBKOBopA
-         rNpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbQg5ZQ6j9N9GnXyvQjYJ083ZYwEkfzqd3JwI+tXqonATthRzoc43Wq37RdIhGmnmo+iTGV/96jdSY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzk3v4cLs6oZ1kqrmFUNOV8mjMyMT/x+s5D0BJNERjmt9xDTex2
-	cBB/wYRNPvqWL9ZDoBF/1dom0tNqNR8rMqnqGQoIwfM4lBqzBDwx0FL2+nyvE4piIrk=
-X-Gm-Gg: ASbGncs81EGoAAfdVAEjaGqftqEmXsIx0ghisHzFdAblwdp6Ri3CnIsBjVeIki6FZuH
-	4Er30gEbVcKtj7xVUnoPoq0dTTsGYeNhbLxSwFfu9U/m7jHNKNBD0HPXd+MYNbKWF9jS10LKOxt
-	d8KQHk0rpwGXKBmWBw8vcTdhvAcyvyMQwPaB0REm0XOa60IzPjBmPeGJ8llXsvHaeWUrGL/JUvL
-	b8s64uvUVqgmJxlpCwviDVM/zKB8VguF3Pk7DQgHaFW4a9iOMIOeuQ/qDSvdoiCpiwIKZIDTL2J
-	KCjGKSUYE9dpEi0ipJGdDM6qaz5K9b/BJCucQCX0fMxvsWHB5KhYc6VQUnZ+DZpTB5nPy3GyHoP
-	7bODMDpyNj3o5hw0vJ6zypRoaD2JRILucmzdc4ZRTSY4QWQKulq6g/yjJNzop81LWu/+OpOY=
-X-Google-Smtp-Source: AGHT+IEPEOA7RggYEmPoDIO0+E2RmnVfpYLMBEbq6FywxOG4KxPHzSHzjlI3TZkyFbZBEIQnBiWT3A==
-X-Received: by 2002:a05:6000:25c8:b0:428:3d75:b0e8 with SMTP id ffacd0b85a97d-4283d75c950mr11436344f8f.62.1761140489390;
-        Wed, 22 Oct 2025 06:41:29 -0700 (PDT)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:69df:73af:f16a:eada])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00b97f8sm24863066f8f.36.2025.10.22.06.41.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 06:41:28 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 22 Oct 2025 15:41:08 +0200
-Subject: [PATCH v2 9/9] reset: gpio: use software nodes to setup the GPIO
- lookup
+        bh=aYT6Os1q2Rohj9KWPycuJw6XL0ogAAvatT1CGliGFF8=;
+        b=RNZhS+gA8fgiP+Ahuf+B+c1v51/A33dtz7rJLYzOFxkw2xwWnh6ZvehxZBlTykBKKC
+         1monAaYn3T2/zNn59BHDAPTaPqOEeJh30dNCGCzLTJIT52Sq1FBvGTi5YIpf96+vuyAR
+         YUyU7dLjFszDoWq9pwjD9osnT1QDfQD0+MFfeiOo8VuaV9AwI7Hod0CJGMBTTZ8VrAn6
+         QjFa/ClHu+AGDrDsPsKyPgn/X7uMmXw4s63FWK4lrIupv6wp5VK5JxIEEAL743p94rXv
+         tiWo4OEgVKB1DR3+hoaJ693zK8GRoCPZac8DpOBCSDxjDM304grb6+98go/rifRdfLgK
+         2Jiw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWspJCVNZ4rm9jFW0DqdsKeBD8EbxZcv0aSU6j+IsswnFemAc29dGwv8jEC6OmUFbB8mliRnRMnW6r@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0yGkOAHNeCsSj/q9gKrjxUMGqCWX0JaiiMsXVuYAUXxpU/Ye9
+	6QD1b+miMhDW/7fHqxQxFBJJdSXaJaqlaB8/uH1s+hJe5F/fY3XzgtnKtEepoHBe+/gL3/RwM3P
+	q6WLnFg24+m1m+SH7aG9OIPMtbgT4wcs=
+X-Gm-Gg: ASbGncsEbO5eP2+1BUy60PxjzNzhlSFqwFVZEGlsP5kNomJ5BB/5KKB4wbQxgokctE3
+	vXTMwCN4F4k77YWs9D9TxeMdCXClgvcYOFHk9G7NISNKwbO0PfKwPCGiHtEzgdJnSR38Be4w35/
+	BxsfnCDO7fXEMTxYK6Fcdpthl+Az+7wkZTlwBqsAnXDi5/QJ1KOdS/CP19/JQfGBX3qSgRZcvS1
+	INQIUx801CP3tH9nOvgjNEHg1NBdvvXOByk7xccDRZoSqotWKGrPN6DO8Unkr2XhtWfyMP/
+X-Google-Smtp-Source: AGHT+IEuV7ok09UjY4sSyg8xFKgHnnOuV/JfYn1sZVkbPUVR5FFRF22mq8r+kNUqlJQt2/5X3tjoeoegXNFBatkKhxo=
+X-Received: by 2002:a17:907:72d3:b0:b3b:4e6:46e6 with SMTP id
+ a640c23a62f3a-b6472c6191dmr2347267866b.1.1761140892136; Wed, 22 Oct 2025
+ 06:48:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251022-reset-gpios-swnodes-v2-9-69088530291b@linaro.org>
-References: <20251022-reset-gpios-swnodes-v2-0-69088530291b@linaro.org>
-In-Reply-To: <20251022-reset-gpios-swnodes-v2-0-69088530291b@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-acpi@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7182;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=GpqWfoRVxSyb5DxpZnAD2OmXLWj91GbiRae7HNISm60=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBo+N70O1r3YA0TWjKCf0+bm/mCXjIsUNvLh8W+3
- J5Ki2AlLESJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaPje9AAKCRARpy6gFHHX
- cjkjEACIIOMqMkMMhSh7gXtXg69x48pRB8KTsR3Yxzk4wWwJ3Q9RkxfvTniioGQKgiFgNnTxYaB
- 0ZJX3otVkm1XsxqWQboShGoMAbOTRg5Ztpo966I88p8oS7Y3gTbo5FUROnMQm6KH0t3O6M3Lwzu
- QOx2STBaRZwM9E/ev7srtjthqMAjZsksjLnUexE66XIhUkxGtmTAgrADh/1vj/8zQ0SrbDQigOQ
- 2HDAl+zgcSx5bs9kZRY7e3F7Bc4B3uLv+aSf1t7Mwsbav2tMF1AcB2iS2+A69+4l7NnMJqlOcfs
- oSXOSLKwt6G/B8jdZ3kMFvqehFofq/gUTDBqpYLHfNPfht2Wo0zL8agaEYJeDyN0ToGwtN88wdN
- t+FgLKShzNp/dKxzv3U6SNg9MRLM0+gaxNy5rmms64kmFo1Iippo1UKm6wsb9QNPNwr585CDbkw
- qhdDuGav/eGtT4jl8W9SXtln9d5qOtk7vO3+IX4urill/whCP6nhfecIVOGZJB6zY7HhkcYpOiM
- kPZcf/24w89KuqXfclgdcVCrQE2D+fzGBivmvFJdTvvIifn0aekF0KWNA8enpTV2nwcQeQg8B+M
- vyQWOw5mwbBDvlRUSutJAy2cLDSpgnHggPSUBeL5qXi1StdrCS4w4FTi3F3Z5ujl8RB0fdTBNEW
- qv4RIgsyrgYbm1A==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+References: <20251022133715.331241-1-hansg@kernel.org> <20251022133715.331241-2-hansg@kernel.org>
+In-Reply-To: <20251022133715.331241-2-hansg@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 22 Oct 2025 16:47:34 +0300
+X-Gm-Features: AS18NWBj2gBYFMQcocMtRK0flD8nTDu1ZgBmGY1rHhMmb1QfH--tXoq-ijJYeDk
+Message-ID: <CAHp75VcDmafp4fiOH7LqhPqtTX5BEp1w0eA5UMk13U=2_tHsyA@mail.gmail.com>
+Subject: Re: [REGRESSION FIX resend 1/1] gpiolib: acpi: Make set debounce
+ errors non fatal
+To: Hans de Goede <hansg@kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andy@kernel.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org, 
+	Mario Limonciello <superm1@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Wed, Oct 22, 2025 at 4:37=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
+ote:
+>
+> Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
+> adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
+> acpi_find_gpio() fail if this fails.
+>
+> But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
+> since not all debounce values are supported on all GPIO/pinctrl chips.
+>
+> Making this an error for example break getting the card-detect GPIO for
+> the micro-sd slot found on many Bay Trail tablets, breaking support for
+> the micro-sd slot on these tablets.
+>
+> acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
+> failures as non-fatal, just warning about them.
+>
+> Add a acpi_gpio_set_debounce_timeout() helper which wraps
+> gpio_set_debounce_timeout() and warns on failures and replace both existi=
+ng
+> gpio_set_debounce_timeout() calls with the helper.
+>
+> Since the helper only warns on failures this fixes the card-detect issue.
 
-GPIO machine lookup is a nice mechanism for associating GPIOs with
-consumers if we don't know what kind of device the GPIO provider is or
-when it will become available. However in the case of the reset-gpio, we
-are already holding a reference to the device and so can reference its
-firmware node. Let's setup a software node that references the relevant
-GPIO and attach it to the auxiliary device we're creating.
+Acked-by: Andy Shevchenko <andy@kernel.org>
+if Bart wants to take this directly.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/reset/core.c | 131 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 77 insertions(+), 54 deletions(-)
-
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index c9f13020ca3a7b9273488497a7d4240d0af762b0..20378de4b813ab79a103ea81cf2cbcd2b76c0ccf 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -14,6 +14,7 @@
- #include <linux/export.h>
- #include <linux/gpio/driver.h>
- #include <linux/gpio/machine.h>
-+#include <linux/gpio/property.h>
- #include <linux/idr.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-@@ -77,10 +78,12 @@ struct reset_control_array {
- /**
-  * struct reset_gpio_lookup - lookup key for ad-hoc created reset-gpio devices
-  * @of_args: phandle to the reset controller with all the args like GPIO number
-+ * @swnode: Software node containing the reference to the GPIO provider
-  * @list: list entry for the reset_gpio_lookup_list
-  */
- struct reset_gpio_lookup {
- 	struct of_phandle_args of_args;
-+	struct fwnode_handle *swnode;
- 	struct list_head list;
- };
- 
-@@ -849,52 +852,45 @@ static void __reset_control_put_internal(struct reset_control *rstc)
- 	kref_put(&rstc->refcnt, __reset_control_release);
- }
- 
--static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int id,
--					 struct device_node *np,
--					 unsigned int gpio,
--					 unsigned int of_flags)
-+static void reset_gpio_aux_device_release(struct device *dev)
- {
--	unsigned int lookup_flags;
--	const char *label_tmp;
-+	struct auxiliary_device *adev = to_auxiliary_dev(dev);
- 
--	/*
--	 * Later we map GPIO flags between OF and Linux, however not all
--	 * constants from include/dt-bindings/gpio/gpio.h and
--	 * include/linux/gpio/machine.h match each other.
--	 */
--	if (of_flags > GPIO_ACTIVE_LOW) {
--		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
--		       of_flags, gpio);
--		return -EINVAL;
-+	kfree(adev);
-+}
-+
-+static int reset_add_gpio_aux_device(struct device *parent,
-+				     struct fwnode_handle *swnode,
-+				     int id, void *pdata)
-+{
-+	struct auxiliary_device *adev;
-+	int ret;
-+
-+	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
-+	if (!adev)
-+		return -ENOMEM;
-+
-+	adev->id = id;
-+	adev->name = "gpio";
-+	adev->dev.parent = parent;
-+	adev->dev.platform_data = pdata;
-+	adev->dev.release = reset_gpio_aux_device_release;
-+	device_set_node(&adev->dev, swnode);
-+
-+	ret = auxiliary_device_init(adev);
-+	if (ret) {
-+		kfree(adev);
-+		return ret;
- 	}
- 
--	label_tmp = gpio_device_get_label(gdev);
--	if (!label_tmp)
--		return -EINVAL;
-+	ret = __auxiliary_device_add(adev, "reset");
-+	if (ret) {
-+		auxiliary_device_uninit(adev);
-+		kfree(adev);
-+		return ret;
-+	}
- 
--	char *label __free(kfree) = kstrdup(label_tmp, GFP_KERNEL);
--	if (!label)
--		return -ENOMEM;
--
--	/* Size: one lookup entry plus sentinel */
--	struct gpiod_lookup_table *lookup __free(kfree) = kzalloc(struct_size(lookup, table, 2),
--								  GFP_KERNEL);
--	if (!lookup)
--		return -ENOMEM;
--
--	lookup->dev_id = kasprintf(GFP_KERNEL, "reset.gpio.%d", id);
--	if (!lookup->dev_id)
--		return -ENOMEM;
--
--	lookup_flags = GPIO_PERSISTENT;
--	lookup_flags |= of_flags & GPIO_ACTIVE_LOW;
--	lookup->table[0] = GPIO_LOOKUP(no_free_ptr(label), gpio, "reset",
--				       lookup_flags);
--
--	/* Not freed on success, because it is persisent subsystem data. */
--	gpiod_add_lookup_table(no_free_ptr(lookup));
--
--	return 0;
-+	return ret;
- }
- 
- /*
-@@ -902,9 +898,11 @@ static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int id,
-  */
- static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- {
-+	struct property_entry properties[] = { {}, {} };
- 	struct reset_gpio_lookup *rgpio_dev;
--	struct auxiliary_device *adev;
--	int id, ret;
-+	unsigned int offset, of_flags;
-+	struct device *parent;
-+	int id, ret, lflags;
- 
- 	/*
- 	 * Currently only #gpio-cells=2 is supported with the meaning of:
-@@ -915,11 +913,30 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 	if (args->args_count != 2)
- 		return -ENOENT;
- 
-+	offset = args->args[0];
-+	of_flags = args->args[1];
-+
-+	/*
-+	 * Later we map GPIO flags between OF and Linux, however not all
-+	 * constants from include/dt-bindings/gpio/gpio.h and
-+	 * include/linux/gpio/machine.h match each other.
-+	 *
-+	 * FIXME: Find a better way of translating OF flags to GPIO lookup
-+	 * flags.
-+	 */
-+	if (of_flags > GPIO_ACTIVE_LOW) {
-+		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
-+		       of_flags, offset);
-+		return -EINVAL;
-+	}
-+
- 	struct gpio_device *gdev __free(gpio_device_put) =
- 		gpio_device_find_by_fwnode(of_fwnode_handle(args->np));
- 	if (!gdev)
- 		return -EPROBE_DEFER;
- 
-+	parent = gpio_device_to_device(gdev);
-+
- 	/*
- 	 * Registering reset-gpio device might cause immediate
- 	 * bind, resulting in its probe() registering new reset controller thus
-@@ -936,6 +953,12 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 		}
- 	}
- 
-+	lflags = GPIO_PERSISTENT | (of_flags & GPIO_ACTIVE_LOW);
-+
-+	properties[0] = PROPERTY_ENTRY_GPIO_FWNODE("reset-gpios",
-+						   parent->fwnode,
-+						   offset, lflags);
-+
- 	id = ida_alloc(&reset_gpio_ida, GFP_KERNEL);
- 	if (id < 0)
- 		return id;
-@@ -947,11 +970,6 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 		goto err_ida_free;
- 	}
- 
--	ret = __reset_add_reset_gpio_lookup(gdev, id, args->np, args->args[0],
--					    args->args[1]);
--	if (ret < 0)
--		goto err_kfree;
--
- 	rgpio_dev->of_args = *args;
- 	/*
- 	 * We keep the device_node reference, but of_args.np is put at the end
-@@ -959,19 +977,24 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 	 * Hold reference as long as rgpio_dev memory is valid.
- 	 */
- 	of_node_get(rgpio_dev->of_args.np);
--	adev = auxiliary_device_create(gpio_device_to_device(gdev), "reset",
--				       "gpio", &rgpio_dev->of_args, id);
--	ret = PTR_ERR_OR_ZERO(adev);
-+
-+	rgpio_dev->swnode = fwnode_create_software_node(properties, NULL);
-+	if (IS_ERR(rgpio_dev->swnode))
-+		goto err_put_of_node;
-+
-+	ret = reset_add_gpio_aux_device(parent, rgpio_dev->swnode, id,
-+					&rgpio_dev->of_args);
- 	if (ret)
--		goto err_put;
-+		goto err_del_swnode;
- 
- 	list_add(&rgpio_dev->list, &reset_gpio_lookup_list);
- 
- 	return 0;
- 
--err_put:
-+err_del_swnode:
-+	fwnode_remove_software_node(rgpio_dev->swnode);
-+err_put_of_node:
- 	of_node_put(rgpio_dev->of_args.np);
--err_kfree:
- 	kfree(rgpio_dev);
- err_ida_free:
- 	ida_free(&reset_gpio_ida, id);
-
--- 
-2.48.1
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
