@@ -1,293 +1,417 @@
-Return-Path: <linux-acpi+bounces-18105-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18106-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AF0BFCBDC
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 17:02:23 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248D6BFCFE0
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9BC504E2825
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 15:02:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9F2F534B5DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 16:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313C231A7FE;
-	Wed, 22 Oct 2025 15:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF3B26C385;
+	Wed, 22 Oct 2025 16:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AT4hh7XA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLwv1VdS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8D634C12E;
-	Wed, 22 Oct 2025 15:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761145306; cv=fail; b=gqfDJ404hDvfK/j7m0xLuE+j83RNfkZlulrM9z7P+l5wy34LnIBsLiZAdjr+Hrcw88DczOkwbYl4fPqLaAYw2PWdy9Nc5XhnHlaakKx4NkIU4foHL3HLkzU7ej9D2RyW+7TU3Zyg9BGLV2GWPtFs9wBLCfftO93P3zXJvxUDEQ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761145306; c=relaxed/simple;
-	bh=jF00L81K1SJ+FYz6CRePmWFEfnGgtNIDdHe83iUpoXI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SxH89fbSAzIzt6vofMhquMZKOxW4aXFNU6C8ivlsezGQvKQNse5kSqCXeRtJNqMnUjUUah2l8zOxJriOntrraP70WWgZMOXAkxqvdK4L6h1uq6YTbDlQ9r8rkLUa7kyUIKTuqFTnOuvME+koZhb1qIrgJ3RinFdivrs7dNxrCEM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AT4hh7XA; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761145305; x=1792681305;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=jF00L81K1SJ+FYz6CRePmWFEfnGgtNIDdHe83iUpoXI=;
-  b=AT4hh7XA0CcmGetvgq0wdk7W19MhDPJ8HlF7f6B8o0uTkmouLDRdd4Lk
-   N+dnA1yLv9Y6hosn9pg5oZfkTDO/g7VoQgx10aWdRZYzK43+Wkw+TyckZ
-   pFN4VHBPFY9vcdmcXPMABVYmxc+dmTAIk3n6LrhKCsCYUwzZ12sQDnkwt
-   9xIfm9BO78lYu16TfSwQte03t8jsed+o9suzCP+CSGOk2I7keyCB/RzIt
-   vcxNZ71mYAEQcmLmoJdaj6PLxVUnkUGGcww0rxdGDvPn9PTW7m+Vt48/5
-   8ojUQWax4nODxExVKIMeQ4DXjt3m7/g4LoGHM9t8goMqIVABSnsr+EN+E
-   A==;
-X-CSE-ConnectionGUID: IxJNYGasT76gZlCKARFjfw==
-X-CSE-MsgGUID: lmSQ1azuQyevfGqVNdWLiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="85919949"
-X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="85919949"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 08:01:44 -0700
-X-CSE-ConnectionGUID: JF+coCS1QqiXw/5ZEqpNRw==
-X-CSE-MsgGUID: sb5GJbxYRCamye1fHopXDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="184377482"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 08:01:41 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 22 Oct 2025 08:01:41 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 22 Oct 2025 08:01:41 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.37)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 22 Oct 2025 08:01:40 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cxaldX7uJpoaGqC5urtF8eaJ9oaywEPzAWwnDbkLx203ndY/Mq86XjgOwkIoeLRtvA8iQGte3b+m6E80jPxyyIMsn7flzKy2ydOkWppYcFXjUqolTHd7sB3tJ5oLOU31Gq9gkuWZZWRNKF1lBGBOo/AiPQeku6bQjntb+EmSnUWOhJCeE1M3UvHCxZLka1y16ifKu/tkMrA6bTqp/eBwasknxQ05AOE2kP/LKNFD8C5bSBynVB8iPxrCOZ3nP3+A8Y/inlXg8UR1thu3Eh33ucOM640VriF2jQLv4B4FCAzSir5ZCfNkMXBRO0NeGP4c62+G+brxFBeXoRkb8Y72jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MYEqg2Wv5EZ9JNUp7vig0HhYdBOuCJKK4Gho9ptdyXU=;
- b=dFLIo9gNXY24PNQ+c6fJJM4kLVruTs1TkhO1nDEkZO44NRYpVe6y94BP9xzw8I6yxsfq5edL8aKMaIldfu676Ij+JWPQC9uB5h6duV7jPsl2R140FhyKAbU8EU5IJdyrgZ1r4r1exv314DDW/w49Ku02mahysqJgMWBc1JKAE0+ADQzVU3EC5N7y0pN14D4WgatmFHJI/nDWI7Sv/asx0YJKLzeRX2xCa8uaEnAFXP6DjF++OgKkckFSsGq1z9PNJzri5/rD05tGW6/jAt+zMzKixc45mPBlkDt/GQ5kF9sEEE1ZSt6pnQuqRZ2uhCSTfoVufGfZi4yQ3iQm+QawrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c) by SJ2PR11MB7647.namprd11.prod.outlook.com
- (2603:10b6:a03:4c3::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Wed, 22 Oct
- 2025 15:01:36 +0000
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::8289:cecc:ea5b:f0c]) by PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::8289:cecc:ea5b:f0c%8]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 15:01:36 +0000
-Date: Wed, 22 Oct 2025 10:03:48 -0500
-From: Ira Weiny <ira.weiny@intel.com>
-To: Shuai Xue <xueshuai@linux.alibaba.com>, "Luck, Tony"
-	<tony.luck@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"ankita@nvidia.com" <ankita@nvidia.com>, "aniketa@nvidia.com"
-	<aniketa@nvidia.com>, "Sethi, Vikram" <vsethi@nvidia.com>, "jgg@nvidia.com"
-	<jgg@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
-	"skolothumtho@nvidia.com" <skolothumtho@nvidia.com>, "linmiaohe@huawei.com"
-	<linmiaohe@huawei.com>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@redhat.com"
-	<david@redhat.com>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "Liam.Howlett@oracle.com"
-	<Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
-	"rafael@kernel.org" <rafael@kernel.org>, "guohanjun@huawei.com"
-	<guohanjun@huawei.com>, "mchehab@kernel.org" <mchehab@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "Tian, Kevin" <kevin.tian@intel.com>,
-	"alex@shazbot.org" <alex@shazbot.org>
-CC: "cjia@nvidia.com" <cjia@nvidia.com>, "kwankhede@nvidia.com"
-	<kwankhede@nvidia.com>, "targupta@nvidia.com" <targupta@nvidia.com>,
-	"zhiw@nvidia.com" <zhiw@nvidia.com>, "dnigam@nvidia.com" <dnigam@nvidia.com>,
-	"kjaju@nvidia.com" <kjaju@nvidia.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"Smita.KoralahalliChannabasappa@amd.com"
-	<Smita.KoralahalliChannabasappa@amd.com>, "u.kleine-koenig@baylibre.com"
-	<u.kleine-koenig@baylibre.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] mm: Change ghes code to allow poison of
- non-struct pfn
-Message-ID: <68f8f254b53dc_17217e10069@iweiny-mobl.notmuch>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <20251021102327.199099-3-ankita@nvidia.com>
- <68f7bf2d6d591_1668f310061@iweiny-mobl.notmuch>
- <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <81b1f1c6-4308-41bb-9f65-f158d30f27bd@linux.alibaba.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <81b1f1c6-4308-41bb-9f65-f158d30f27bd@linux.alibaba.com>
-X-ClientProxiedBy: SJ0PR03CA0380.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::25) To PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821D26C384
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 16:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761148830; cv=none; b=qMaGy1u8J6np3lMBaJHR8RE8rZ0PYIK6/gGnQbxZ/AskqyP8ud16F1cGnDyaj6FsHk/MNQtdQD452hPKffo7URzjXweQ70Vdp1zUphA/mXV/JHtT5HMZVRGcRyQ4JOC+tWUKty7ZqW/F1P+5GLJreDW5O9dZa8YPtaqvssMSico=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761148830; c=relaxed/simple;
+	bh=aqh+eIb/pAJr1faQbjM3BAw0kdTESmg5XgtIC+w7U7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fI9oUFBnnHo9tYAxo3AklKKytRsb2AdMcyrriJf9vcWE2eBl4JUndShPK9AjQ2q7C2fobW+6FgvwHDZqd6aTdwO4AaWmtX5ZENGexgojOs+hLWK2mmfDMI8WAIziYRRw5trE1RrNdCKaobo5CEDbBr8S+cq32qY3V8mst7hfSA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLwv1VdS; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-471005e2ba9so68265e9.1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 09:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761148826; x=1761753626; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
+        b=oLwv1VdS+JpHpiamz7188I1SWjVkvlQk1bIGBDB2pKKFigqWA98TBo7EDAzHsQ16Mg
+         R/xzzbhorKqaYw0ZCXeiw2eR9hrP5u+LbL1tdeLU5Q8bvIFIeyTQshFbLL3kHlKDzBUC
+         4Baxgmth/hz8AsJUkqaqUYwmX1Yb/X+QCK0qyEHqTxdEcwzUdbTr6itZJrr0xNUBkwaX
+         rDidT4rcKadIMMfejfS0qQTUhEKjQWbFhRecyxMQ+4andv8rzmb9uwslxUlmGOsEVHrS
+         ng4AFUTqUCqK1Kp76kp+8nqOSUEIsPBOZ/1BtVuhvyHwa2AYVorY3q/Ba/oEV+HVQlnQ
+         ucKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761148826; x=1761753626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
+        b=ayphlzfwbncbMiPTbuSk6BB6IZzpmBmCj6gZZLmTZQXMiDGAfP9MdD/DUZ4MJFxjgP
+         UNTxFVOc+VFUgZ/efezpYY+VqoyLkEZkq67f+MJ+IZntApN+fBaJ7b0jqbte7RBqcUsd
+         A6EWCBYbhqFCaSIC68Eo422dcad7YdVfG99po1FDujF/GGPrjY3tYAwXpDM+gettvkE3
+         E4pHYB2VUqbJoJg8zCLQZc0NnNBL5ToalrV3JNlsWWRtQ0pJkcADenS/6J7kil6U53h/
+         gOaj5bJjONT3ew7ABJdINd3TFcIaHJBez+Uu0K/wy08NectVASYMdp/hCZkrAIHJQ4lI
+         hMaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOtCnLphypdKXFyYHzujitzfF6FS2EQNC2cMOGbvsBeuzZTpprMrGyuB5ocsIt0geE6Yj75WSUvkgF@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV2C/yLc7X/HB7Q28c93P8/vnwSplqkq+AZa/+3O4HSyULmVcL
+	XO77EMDCQtC6gXxC5yF7FhQkO15VzNgrKn9cXpiPhD7W4nr4ufHdqfao0ZQMe/LKr6jD79bdXaX
+	8CKdkSLjG4bbVqGfii7DfvZ+huZhhkS5/zgPFsBBT
+X-Gm-Gg: ASbGncutJcMuLC7ov7FQq9uQyg4H7sS1k5GNBISIIBYfILfJfN+FMcqvwQ+Av7hqY2c
+	3zEcGNkwA/PnVFKDPpM2fnWqBxszZEBPlKCVS+R2Yq0lb8Qvty0fhpty49hZ0AZolXGxBH8u5Uu
+	tB9cuE6RRSCpbaKjQfV+bR4Q0ox+/cfAQMODetKnzgco5wIArXX42Uk5G0/UMz4g/JRtkhkifFw
+	t0vU5CbwGu/sEx4yA7oVJLqo1yyCAOPbE7pKhUYV5XLeCqs3pLLqh44gmeJ3xKbIgrYzKbpLMvt
+	+J0gvLNvXqLZvDIYLw==
+X-Google-Smtp-Source: AGHT+IGQ5urEAQ9m57T3Tr0rBInJl1kxrVgo9aZA5J1ni84q+HbgDwPfJxL7EgSHQYRd3sVOQI4JW1ylUbWl3BXuheM=
+X-Received: by 2002:a05:600c:c04b:10b0:46f:c587:df17 with SMTP id
+ 5b1f17b1804b1-475c5138edbmr772405e9.1.1761148826010; Wed, 22 Oct 2025
+ 09:00:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH3PPF9E162731D:EE_|SJ2PR11MB7647:EE_
-X-MS-Office365-Filtering-Correlation-Id: acb54449-f3d1-4206-0266-08de117be549
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?U0JZakhlVVA0SXFvUTc2aFp3MXJXV1ErVC9QNjdTc2Zwd2RBSVJoQ0FLMFVy?=
- =?utf-8?B?NmpSaVZBZjlqUXBMdWI2TktlS2VXaktmT2J4dW1UME5DVC8vR1RFaHRIK2pS?=
- =?utf-8?B?VVAwUVo3Qnd1cVk5a0lxNVdHSWczN0Rhb0s4eHprWm9CVi9HRVgxK0V1OUxD?=
- =?utf-8?B?TDdYTVU1UUQyZ3ozeVZjUzlJWjZxZXdlMWR3OThBd0YzQlRySm1GQ05RT1JP?=
- =?utf-8?B?akVXV2J5aVJlZHVFMUZjSE9rclMxaU9wM3B0cHRQbkNJNWdVZWRyM3J1Mm5x?=
- =?utf-8?B?YXZnVWRSRjdJYktONmJUZG9mcC9uZzBvUVk2WWwrRGNLWmxzUVhQU3R6WndU?=
- =?utf-8?B?ZkJKblhWK0R1N3FOQlBQOHJBWDdFbUVZVERrcS9FeTBPQ2loYjNnMEd1VWJm?=
- =?utf-8?B?VVBlUXVUdnBubGFDcUNCY3NoN3dWT1FxeGVoTlFrN01EdVpQOVJHOUFxOXli?=
- =?utf-8?B?R3hYNE1nVmlpdkN5dGkzYy84NWU4dTdlOU9WOExxTmkrRTdHMHRUQzM4OE91?=
- =?utf-8?B?bmhvYVRLQ3l1UVN5VDREM0tsZXNKZ3hmaXhvUTRuQUVxVitDZXpWcjFHT3NE?=
- =?utf-8?B?MU9vWExWbkdzWmNpRFZ0YTQ1anFxZGF5TWVURG1yRXFGU015Nm5qNXVwNVVL?=
- =?utf-8?B?Q0FrNGgwYnRyUkJhemJYaUgxMFJncWJkUlcvc0lOQXhYVkUyTFFxOEZzUElt?=
- =?utf-8?B?emZVWEtKd0hKL0ptKzhPU2RQZHRZWjIzY2JjeGxQODllRUtlOG9BdEdpM2lL?=
- =?utf-8?B?Y2VLZkppeU9YVUZkbWp0b0xWbm5rWTlKOTJVcHhualc3RWJHL3NibVRjb2c2?=
- =?utf-8?B?cTZlY1d6YzRGN2d6dDREVTJqajZFNzQ5L3ZmMnhjSGRYVnB2SHlub1pKc25F?=
- =?utf-8?B?V25rUS9PSE50cHJ5VFIyejZrdHhIeWJNcjRmVFlYRk1SN3grWE4xVXNKUHBo?=
- =?utf-8?B?QkN6U2FmZTEzdVFrT3g4TDd5YlNJME4wNGUydU1DcldsdHNZYTBja25RWU9R?=
- =?utf-8?B?K1k4K1pnZkZ1bHo5LzRJQ0pWOGk4SVQya0ZPZ2dNbHZTRkdScXNyNjBaY0hq?=
- =?utf-8?B?cGdSY2swSy9rek5WTHArQ0JCT2NFWk5ycmlkSjQzQ21kYS9iTDFsd3dPNXhU?=
- =?utf-8?B?NG52bzFlTmVjVGhMWldxcjJRY1VqazBkVlNKVkdlMzc0TWVDajQ4ZGkzZ1Bt?=
- =?utf-8?B?RThvUHY0eFlLUjQxQWF0K3p2QlJvRnh0SVMxdERPMm1YdVVEL1NKZmM2aUxu?=
- =?utf-8?B?d2JndllkRFJUQTBkdGZBNG1ZYzAxMFBKRHNseXRRVjBNZWM5cW15S1FJSWJl?=
- =?utf-8?B?SUhSU2RPZzFOL2xvQkFSRFpNVGJBRlJKUG96d1VPSk5vb1p2VGpXaEVpeTI5?=
- =?utf-8?B?L2FoVkYvUVF4aVNKUzNQWWVLRmV4Snc0ZXZCWFlFZE1OOGhzR3hQWlNtbUJQ?=
- =?utf-8?B?RUY5UnZBZ0xQVkVLQzNpTEtoc2hHOWtidlF5WkY2U0FIeXErZ0RWdi9LUVhM?=
- =?utf-8?B?d3BUTU52M0RBaHRCZktzd2RTSklYbEJiM0VTSUpDSGZSMHVaUnBtTHZOY05t?=
- =?utf-8?B?cEZMUGVHTmluQjdzSmNXYytlcHRLOXlmeElFSVM4VXlWelR6cjUvbCtqVS96?=
- =?utf-8?B?U1lTMHl4R1F3WVBNTE5jV0NXeWVKakdVTnpyV0hBR3hCUXJvL2NRZk50dHds?=
- =?utf-8?B?aVIxZlgrclBGUnZEcG1KZllPd3dXazEzNTZkbjNOM3VjREo3cVA0ejhqVWN2?=
- =?utf-8?B?MXViS0pEMDNhbExmQU1ab1lVNHF5M2FicUlPNTU3RUpkU0lnUDJCRVYwbFBK?=
- =?utf-8?B?UTRxT1o0aGt0RzUwNkljWHV0cXBxUURWVXdnZ2VwODZXYW9WMXZnUWpaZUNL?=
- =?utf-8?B?aEFLMCtOSU1CVnUyQmlQYzZIUmZzR0Q2NHV1clovWXgrdmg3YUUyd0srOS9M?=
- =?utf-8?B?VDZCMzZLZy9JcmZNOHdKM0Z6OTNzaTJKR3h0VitWZzlWMm9oVlFJYkJLRzk1?=
- =?utf-8?Q?QfKpbAPfHkqAl4WdC45BcVlfCPsS8I=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH3PPF9E162731D.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N2pYWXE1c3RLZEdnTWdrSzJ3Y3A3bnZpZ24weXR4YTVkSUFZNG5JZVNxZ0w4?=
- =?utf-8?B?eHdCODdYejRmT09DNnVObDdIM05yYjk4TnlFR3RPVTVSY2V0T1ZZZWlnVzVa?=
- =?utf-8?B?V1R6d1l3YytnZ2RqV01abWNoZlNYanZNK3ZKRXV3T1VRZHBoTWw3cGlIdXpE?=
- =?utf-8?B?WE54a3Yrb0E4eVVhQTNPSDRUK0U2YlVGSlU2ZWd6dEs0OWVsU0ZwZzBKYVBj?=
- =?utf-8?B?Qjc0U01jK2E2VnNyN2ZONHdTOG5IOUlmZHJhU1BscitvRHN5RFdQT0JMaUFx?=
- =?utf-8?B?bks1YTNuL3Ftb3BTTENaemZGcmRIMUpJL25yaHlqeThuL20zcjlheHl4WkJY?=
- =?utf-8?B?UFdnelppbHJsNnk4WngzQUcwM3k4elhMTThraFVFMjB5UjM2Q1lrN1BqVENm?=
- =?utf-8?B?eGw4cUIzbFRTTDVlZW1TbHd1dXhJeDl4NnkxWkx1elFRaXNyTXJDRG1qWk1N?=
- =?utf-8?B?MndqOEk0RlRrTmo0UjVKaVNFT3pvQnVwMGNab090UG1Fb0tPeTRrRlV3RDRh?=
- =?utf-8?B?TWF0cmU4dHVkODRzS0JCM05iVGdUNXpvM3dXM1VabitkN2s2VjNrTjlpanM0?=
- =?utf-8?B?YzhyN0doRFczV2xDWlAxMmdZazN4RlNHbGhDeFdsemFWcEcxTUhHL0xQUStu?=
- =?utf-8?B?RUN6MUdmM2JqdWp2WjFJTEJRUDVkMU9xZjB4eE01SU5jV2NWV0RHVnYzY1Ax?=
- =?utf-8?B?ZzZsSXIvQW5rUU50QnVkQmswUTNDUUJET3plQ3dOckNHa1VGZnhNVEIwOFIz?=
- =?utf-8?B?TDJhMHgreXhGNHl4cStpaGk0T2JMUlRGNSs0a1VUNFg4by96WnQxT3F6UHRE?=
- =?utf-8?B?SmVING94WExZTXVocmt6cEVGUjQyV0JXL28xMHBWdGVUeEpiMlM0QWdCRkFO?=
- =?utf-8?B?eE4wbFpWbHovQ0RicjdpMUVYajZOZ08xNTVUMmFidlcvQ2FiZWNxMDI0eFB5?=
- =?utf-8?B?WXIvWkRYTWtmZEI5bHA5dFg2T0tmaURHOTFkdTk1RlRoOGxYRkhYMDFNcEx3?=
- =?utf-8?B?YkpIRFBla0lWQW1IRU9IU1QydU5WM0RDZkYrdzl6TEdoMDZwOFV5N0phVlAy?=
- =?utf-8?B?WUl6MXZZMnlkZGQ0eWdBMjArM3kxT2doWHE3d21FYWJyOFR4QmVSeVgzbmcy?=
- =?utf-8?B?MEE1eWFRNm1mV1cyeTEyTjBDQjk0YWZWcFh0eDBpNzkrRFByQ1N5eVc3YjdM?=
- =?utf-8?B?Z3lmY2pJdGEzQUdHRzV0cEZvRzFSdFZMRHZXQU9wVGE5NW9kWTdFMk4rTU9C?=
- =?utf-8?B?dC85dzQ5dHQvZEVLdUo2Nk9IUTdvQXc3UG5ZR3IrZm1jTERaTVFVODBYK1Rv?=
- =?utf-8?B?dytqNlNRZVBCcjI2U3pKcTNyUVYwSER6SndKc1M2eG54V0tXZEhlVS9LbWIv?=
- =?utf-8?B?ZUY2S1dmaithdDY4SFBLM3lkNWdDTGY2dm16ZHNLcTNuRExKcHNTS3NiWUJm?=
- =?utf-8?B?Q2locXptTHcvZG44dXVORFVZMnROeXFDVlZtV3dEL3RScXBwdkRtR1FKREor?=
- =?utf-8?B?MmpDdUxScjlhZ01laGNuVGZIWVZPTXByby95Qlh0MDdya05WdnViVk9PTDV2?=
- =?utf-8?B?c0ZsZTd4TTJWclpSWXVUSkhyMVhNNDc3aWI3NFRhRXM5clFGVUI5Z01LaDdH?=
- =?utf-8?B?aFdiRUJxd3k4ZHNFeGtqZHVEQUVtNHprYmFqbzZ6T2JVTk1ZVFJKMXZrcHZh?=
- =?utf-8?B?WTExb1hlaVFBVzBqNzVTZFMrdG5JeDlrd05QN0lPUXlIWWI1WTlGVkp4WnZ5?=
- =?utf-8?B?V1JscDM5UG83TmNhcFZrSnZYQjRHUzNGQy9mNmFEcUlFeTVBUC9SVm5lV2du?=
- =?utf-8?B?dlhEQkpMTUpIUTBnSlhaSmpFUGY5anMwUitvOEtTSW5kbzkzTjIzY05qaDV6?=
- =?utf-8?B?NG5TS3hWSDhIT3B0ZjFZaGRXR01DTzdJaEhFaWJGanBveVF0ZU5oNmx6bWpk?=
- =?utf-8?B?V3owZldWZ1paWmwyV2piK0RSUHlISUwvY1VldWhPZktPWWEzeTFVWFlIZlV4?=
- =?utf-8?B?WVlKYjJmamxZeWZURkk4UHpLci9Ma3RrYXlmNVhBR1EzNTdscjdOa3o0dTZq?=
- =?utf-8?B?dXZSeWg4VlhuQ2VqaDZ6T0xuTWd3eDRpWjRiTkF0OHhvVjFyU3BnYkQwYWJs?=
- =?utf-8?Q?boka/+XchOhQm83uu9B0IhWvr?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: acb54449-f3d1-4206-0266-08de117be549
-X-MS-Exchange-CrossTenant-AuthSource: PH3PPF9E162731D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 15:01:36.2457
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IjesaeycTuNySXMtiomSCXnaO1J7LHDm3MtcjSnBIiFaVxByUm/8OepeOtqP0pEvHMP087AX0hkQBqQ95fO0bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7647
-X-OriginatorOrg: intel.com
+References: <20251021102327.199099-1-ankita@nvidia.com> <20251021102327.199099-2-ankita@nvidia.com>
+In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Wed, 22 Oct 2025 09:00:13 -0700
+X-Gm-Features: AS18NWCpMHMP31ZSlN1pMxGifJCs7kl9OgsJ-oSyN2IYIPEyac80DDLNqIbtKlQ
+Message-ID: <CACw3F5036Kfs_j8np+_+YejC02ADeLoCNYaQVhmBRzQF32NAgA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
+To: ankita@nvidia.com
+Cc: aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com, 
+	skolothumtho@nvidia.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, tony.luck@intel.com, bp@alien8.de, rafael@kernel.org, 
+	guohanjun@huawei.com, mchehab@kernel.org, lenb@kernel.org, 
+	kevin.tian@intel.com, alex@shazbot.org, cjia@nvidia.com, kwankhede@nvidia.com, 
+	targupta@nvidia.com, zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-edac@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, ira.weiny@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, u.kleine-koenig@baylibre.com, 
+	peterz@infradead.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Shuai Xue wrote:
-> 
-> 
-> 在 2025/10/22 01:19, Luck, Tony 写道:
-> >>>      pfn = PHYS_PFN(physical_addr);
-> >>> -   if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
-> >>
-> >> Tony,
-> >>
-> >> I'm not an SGX expert but does this break SGX by removing
-> >> arch_is_platform_page()?
-> >>
-> >> See:
-> >>
-> >> 40e0e7843e23 ("x86/sgx: Add infrastructure to identify SGX EPC pages")
-> >> Cc: Tony Luck <tony.luck@intel.com>
-> >>
-> > Ira,
-> > 
-> > I think this deletion makes the GHES code always call memory_failure()
-> > instead of bailing out here on "bad" page frame numbers.
-> > 
-> > That centralizes the checks for different types of memory into
-> > memory_failure().
-> > 
-> > -Tony
-> 
-> Hi, Tony, Ankit and Ira,
-> 
-> Finally, we're seeing other use cases that need to handle errors for
-> non-struct page PFNs :)
-> 
-> IMHO, non-struct page PFNs are common in production environments.
-> Besides NVIDIA Grace GPU device memory, we also use reserved DRAM memory
-> managed by a separate VMEM allocator.
-
-Can you elaborate on this more?
-
-Ira
-
+On Tue, Oct 21, 2025 at 3:23=E2=80=AFAM <ankita@nvidia.com> wrote:
 >
-> This VMEM allocator is designed
-> for virtual machine memory allocation, significantly reducing kernel
-> memory management overhead by minimizing page table maintenance.
-> 
-> To enable hardware error isolation for these memory pages, we've already
-> removed this sanity check internally. This change makes memory_failure()
-> the central point for handling all memory types, which is a much cleaner
-> architecture.
-> 
-> Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> 
-> Thanks.
-> Shuai
+> From: Ankit Agrawal <ankita@nvidia.com>
+>
+> The kernel MM currently does not handle ECC errors / poison on a memory
+> region that is not backed by struct pages. If a memory region mapped
+> using remap_pfn_range() for example, but not added to the kernel, MM
+> will not have associated struct pages. Add a new mechanism to handle
+> memory failure on such memory.
+>
+> Make kernel MM expose a function to allow modules managing the device
+> memory to register the device memory SPA and the address space associated
+> it. MM maintains this information as an interval tree. On poison, MM can
+> search for the range that the poisoned PFN belong and use the address_spa=
+ce
+> to determine the mapping VMA.
+>
+> In this implementation, kernel MM follows the following sequence that is
+> largely similar to the memory_failure() handler for struct page backed
+> memory:
+> 1. memory_failure() is triggered on reception of a poison error. An
+> absence of struct page is detected and consequently memory_failure_pfn()
+> is executed.
+> 2. memory_failure_pfn() collects the processes mapped to the PFN.
+> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
+> poisoned PFN using kill_procs().
+>
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
+> to a PFN would need breaking the PMD mapping into PTEs to unmap only
+> the poisoned PFN. This will have a major performance impact.
+>
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.=
+com/ [1]
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  MAINTAINERS                    |   1 +
+>  include/linux/memory-failure.h |  17 +++++
+>  include/linux/mm.h             |   1 +
+>  include/ras/ras_event.h        |   1 +
+>  mm/Kconfig                     |   1 +
+>  mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
+>  6 files changed, 148 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/memory-failure.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 520fb4e379a3..463d062d0386 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11359,6 +11359,7 @@ M:      Miaohe Lin <linmiaohe@huawei.com>
+>  R:     Naoya Horiguchi <nao.horiguchi@gmail.com>
+>  L:     linux-mm@kvack.org
+>  S:     Maintained
+> +F:     include/linux/memory-failure.h
+>  F:     mm/hwpoison-inject.c
+>  F:     mm/memory-failure.c
+>
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failur=
+e.h
+> new file mode 100644
+> index 000000000000..bc326503d2d2
+> --- /dev/null
+> +++ b/include/linux/memory-failure.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_FAILURE_H
+> +#define _LINUX_MEMORY_FAILURE_H
+> +
+> +#include <linux/interval_tree.h>
+> +
+> +struct pfn_address_space;
+> +
+> +struct pfn_address_space {
+> +       struct interval_tree_node node;
+> +       struct address_space *mapping;
+> +};
+> +
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space);
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space);
+> +
+> +#endif /* _LINUX_MEMORY_FAILURE_H */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..0ab4ea82ce9e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4006,6 +4006,7 @@ enum mf_action_page_type {
+>         MF_MSG_DAX,
+>         MF_MSG_UNSPLIT_THP,
+>         MF_MSG_ALREADY_POISONED,
+> +       MF_MSG_PFN_MAP,
+>         MF_MSG_UNKNOWN,
+>  };
+>
+> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+> index c8cd0f00c845..fecfeb7c8be7 100644
+> --- a/include/ras/ras_event.h
+> +++ b/include/ras/ras_event.h
+> @@ -375,6 +375,7 @@ TRACE_EVENT(aer_event,
+>         EM ( MF_MSG_DAX, "dax page" )                                   \
+>         EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )                        \
+>         EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )              \
+> +       EM ( MF_MSG_PFN_MAP, "non struct page pfn" )                    \
+>         EMe ( MF_MSG_UNKNOWN, "unknown page" )
+>
+>  /*
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e443fe8cd6cf..0b07219390b9 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -777,6 +777,7 @@ config MEMORY_FAILURE
+>         depends on ARCH_SUPPORTS_MEMORY_FAILURE
+>         bool "Enable recovery from hardware memory errors"
+>         select MEMORY_ISOLATION
+> +       select INTERVAL_TREE
+>         select RAS
+>         help
+>           Enables code to recover from some memory failures on systems
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..acfe5a9bde1d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -38,6 +38,7 @@
+>
+>  #include <linux/kernel.h>
+>  #include <linux/mm.h>
+> +#include <linux/memory-failure.h>
+>  #include <linux/page-flags.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+> @@ -154,6 +155,10 @@ static const struct ctl_table memory_failure_table[]=
+ =3D {
+>         }
+>  };
+>
+> +static struct rb_root_cached pfn_space_itree =3D RB_ROOT_CACHED;
+> +
+> +static DEFINE_MUTEX(pfn_space_lock);
+> +
+>  /*
+>   * Return values:
+>   *   1:   the page is dissolved (if needed) and taken off from buddy,
+> @@ -957,6 +962,7 @@ static const char * const action_page_types[] =3D {
+>         [MF_MSG_DAX]                    =3D "dax page",
+>         [MF_MSG_UNSPLIT_THP]            =3D "unsplit thp",
+>         [MF_MSG_ALREADY_POISONED]       =3D "already poisoned page",
+> +       [MF_MSG_PFN_MAP]                =3D "non struct page pfn",
+>         [MF_MSG_UNKNOWN]                =3D "unknown page",
+>  };
+>
+> @@ -1349,7 +1355,7 @@ static int action_result(unsigned long pfn, enum mf=
+_action_page_type type,
+>  {
+>         trace_memory_failure_event(pfn, type, result);
+>
+> -       if (type !=3D MF_MSG_ALREADY_POISONED) {
+> +       if (type !=3D MF_MSG_ALREADY_POISONED && type !=3D MF_MSG_PFN_MAP=
+) {
+>                 num_poisoned_pages_inc(pfn);
+>                 update_per_node_mf_stats(pfn, result);
+>         }
+> @@ -2216,6 +2222,121 @@ static void kill_procs_now(struct page *p, unsign=
+ed long pfn, int flags,
+>         kill_procs(&tokill, true, pfn, flags);
+>  }
+>
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
+> +{
+> +       if (!pfn_space)
+> +               return -EINVAL;
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +
+> +       if (interval_tree_iter_first(&pfn_space_itree,
+> +                                    pfn_space->node.start,
+> +                                    pfn_space->node.last)) {
+> +               mutex_unlock(&pfn_space_lock);
+> +               return -EBUSY;
+> +       }
+> +
+> +       interval_tree_insert(&pfn_space->node, &pfn_space_itree);
+> +       mutex_unlock(&pfn_space_lock);
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(register_pfn_address_space);
+> +
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space)
+> +{
+> +       if (!pfn_space)
+> +               return;
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +       interval_tree_remove(&pfn_space->node, &pfn_space_itree);
 
+IIRC removing something not in interval tree will panic kernel. If I
+am not mistaken, should here do something like
+interval_tree_iter_first before interval_tree_remove, to avoid
+driver's ill behavior crash the system?
 
+> +       mutex_unlock(&pfn_space_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(unregister_pfn_address_space);
+> +
+> +static void add_to_kill_pfn(struct task_struct *tsk,
+> +                           struct vm_area_struct *vma,
+> +                           struct list_head *to_kill,
+> +                           unsigned long pfn)
+> +{
+> +       struct to_kill *tk;
+> +
+> +       tk =3D kmalloc(sizeof(*tk), GFP_ATOMIC);
+> +       if (!tk)
+> +               return;
+> +
+> +       /* Check for pgoff not backed by struct page */
+> +       tk->addr =3D vma_address(vma, pfn, 1);
+> +       tk->size_shift =3D PAGE_SHIFT;
+> +
+> +       if (tk->addr =3D=3D -EFAULT)
+> +               pr_info("Unable to find address %lx in %s\n",
+> +                       pfn, tsk->comm);
+> +
+> +       get_task_struct(tsk);
+> +       tk->tsk =3D tsk;
+> +       list_add_tail(&tk->nd, to_kill);
+> +}
+> +
+> +/*
+> + * Collect processes when the error hit a PFN not backed by struct page.
+> + */
+> +static void collect_procs_pfn(struct address_space *mapping,
+> +                             unsigned long pfn, struct list_head *to_kil=
+l)
+> +{
+> +       struct vm_area_struct *vma;
+> +       struct task_struct *tsk;
+> +
+> +       i_mmap_lock_read(mapping);
+> +       rcu_read_lock();
+> +       for_each_process(tsk) {
+> +               struct task_struct *t =3D tsk;
+> +
+> +               t =3D task_early_kill(tsk, true);
+> +               if (!t)
+> +                       continue;
+> +               vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn=
+) {
+> +                       if (vma->vm_mm =3D=3D t->mm)
+> +                               add_to_kill_pfn(t, vma, to_kill, pfn);
+> +               }
+> +       }
+> +       rcu_read_unlock();
+> +       i_mmap_unlock_read(mapping);
+> +}
+> +
+> +static int memory_failure_pfn(unsigned long pfn, int flags)
+> +{
+> +       struct interval_tree_node *node;
+> +       LIST_HEAD(tokill);
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +       /*
+> +        * Modules registers with MM the address space mapping to the dev=
+ice memory they
+> +        * manage. Iterate to identify exactly which address space has ma=
+pped to this
+> +        * failing PFN.
+> +        */
+> +       for (node =3D interval_tree_iter_first(&pfn_space_itree, pfn, pfn=
+); node;
+> +            node =3D interval_tree_iter_next(node, pfn, pfn)) {
+> +               struct pfn_address_space *pfn_space =3D
+> +                       container_of(node, struct pfn_address_space, node=
+);
+> +
+> +               collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
+> +       }
+> +       mutex_unlock(&pfn_space_lock);
+> +
+> +       /*
+> +        * Unlike System-RAM there is no possibility to swap in a differe=
+nt
+> +        * physical page at a given virtual address, so all userspace
+> +        * consumption of direct PFN memory necessitates SIGBUS (i.e.
+> +        * MF_MUST_KILL)
+> +        */
+> +       flags |=3D MF_ACTION_REQUIRED | MF_MUST_KILL;
+> +
+> +       kill_procs(&tokill, true, pfn, flags);
+> +
+> +       return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
+> +}
+> +
+>  /**
+>   * memory_failure - Handle memory failure of a page.
+>   * @pfn: Page Number of the corrupted page
+> @@ -2259,6 +2380,11 @@ int memory_failure(unsigned long pfn, int flags)
+>         if (!(flags & MF_SW_SIMULATED))
+>                 hw_memory_failure =3D true;
+>
+> +       if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
+> +               res =3D memory_failure_pfn(pfn, flags);
+> +               goto unlock_mutex;
+> +       }
+> +
+>         p =3D pfn_to_online_page(pfn);
+>         if (!p) {
+>                 res =3D arch_memory_failure(pfn, flags);
+> --
+> 2.34.1
+>
+>
 
