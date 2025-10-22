@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-18114-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18115-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19437BFDDF8
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 20:38:34 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266EBBFDEA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 20:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A0A34FCFA7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:38:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CE33356FE5
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 18:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D212534D4E1;
-	Wed, 22 Oct 2025 18:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CEB34E761;
+	Wed, 22 Oct 2025 18:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GBq8bRXv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LTto7CpE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C764C272E51;
-	Wed, 22 Oct 2025 18:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE3A34D93A;
+	Wed, 22 Oct 2025 18:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761158292; cv=none; b=fecj/r5d0W6q0mxazJuWE+XtCma0xe8J1nPaOpcBfuIQCVHtpMhrb3qdIYgF60CeBvsHMa8YokNnJ9Z+3vzjralu7ajWBk4m8C6fLcVchcjM6bZcR4/k4yrw/asuZenyi1RGWk8crRiKPqptSWMPxIcMDoWtMdjAmBXc2418JcA=
+	t=1761158678; cv=none; b=gn2gydPR9gNorQTMR9zyn9BGn0/q/YCV3N4thDa/hOl6h/EHvxnwS9D/BuaO4euTZ91s21gZwOiPfDFKh0KMzuacSHsNEMzDX6mIowVTN3zMt4LAjIVPuH/hlMzCbrtOHgYHF2JlUYXCkQwQu4uUFG0xeTn89JGvng0hYEigPb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761158292; c=relaxed/simple;
-	bh=w2dSx6r+qMl9C3M0KrUR4k84EpNHWAxVhPzJNvx00UQ=;
+	s=arc-20240116; t=1761158678; c=relaxed/simple;
+	bh=QwwtWpy3QSLzBXAJcPsDhpKT2HlCArvX9fz+YfxbgSU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GB2IkW8kViFYoEP7C+D/BaoYx1S9B1gAH2W8ofHdQN6xQgeeQJlAX4APugnIf/s0DFxnJg8mn8fRMQbT/SF7eBXY9M8yeEl03I+95uOU0+PCUK1yombJc7didzOrFjpkOrYV7vvfY87fHhXeoa0qjZyvKvbdOvwZyew1fiy0oUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GBq8bRXv; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=nq2H20q+99vEUoxKSmQWRMjqOjHzT4rX78psFNRikfEEsZCHIHb/cVe9SFkm9VUszGmfQSVn/PqPAjWp2FkOcZqvA97y6pm8imd7RmsDZ1UlLswkWSrLDTeI9hk18KiDHVcmCsP6Foj5OS7iWU861o/boV7yhsQgT1XhVysJkVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LTto7CpE; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761158291; x=1792694291;
+  t=1761158676; x=1792694676;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=w2dSx6r+qMl9C3M0KrUR4k84EpNHWAxVhPzJNvx00UQ=;
-  b=GBq8bRXvaZO09wjrN8QsUyVZPsUrP5jYD1XUCspDdXDhHbGMxlXQDP2V
-   S8pPMYHrcf1kiJrPi9rChsPlOkwkHbAPQlq7TF3+yspdBBo2HRgsVNrL8
-   FYbPUQVqfRVV1iXfxXBs9+ft0LU9Xm2ztGZWalmJPC2IEySwhOVf/OZU9
-   CHtva4l4I7H1rACP1AhpTgBEKhyVP8h3lsvThBbuK99EGTl8CfWBvMulH
-   xrlXE8Zz/+VJYQlAATY6vGZHJwLXoM/qKkQHGx36bS/6UtZ6jiE5vYrhA
-   i7OIRafqgmYRLA3n8qrG1UIlwTpEruNg5QIuyF4UkFnu7r0ZxZy9RccCI
+  bh=QwwtWpy3QSLzBXAJcPsDhpKT2HlCArvX9fz+YfxbgSU=;
+  b=LTto7CpEqIMsNTycBp5DxvmowOe34M6m5moyB9jMr1HsksKwBIEsx3Cw
+   VajidfQ7uiJer8kUUa058oCVuishlB5Q9SDgLVi8frb1Oeq7OykPdlVZm
+   DVaUNlJqGqfzTN+dmm4ciuNfBWDEznkge1eu2LBdvEcEJkrlFnChlrPtJ
+   F6LFY5IXDvGJ8sBJYGbMOuFNP+cNhNJguMk3pKTliMFVfrMeulXCZEV+7
+   OzTfy7mVUUX+f9KQoVNYx3RZd33CPE1J7HwW+HJcFyo0JCJDj6O6sNpJ3
+   3oqxfDdn82TTldKAXyRHj2Ystcm6GSUgygE08SVulCp1G6nbc47jLsoU2
    w==;
-X-CSE-ConnectionGUID: sWKUPTspThOKTX5+MljlUg==
-X-CSE-MsgGUID: FNuAOUoQQneYqwewTQkAXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74435732"
+X-CSE-ConnectionGUID: haEABsddRpifzNuCzn2zSQ==
+X-CSE-MsgGUID: skyAlNBWQNijMDz7Iqg6KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="88784637"
 X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="74435732"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 11:38:10 -0700
-X-CSE-ConnectionGUID: G+1ZlxXbRvOCdw5OqQaIzg==
-X-CSE-MsgGUID: YGVNBTVkQ9Who4zzjcGIZA==
+   d="scan'208";a="88784637"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 11:44:35 -0700
+X-CSE-ConnectionGUID: JJHfiBNIRQOnAJqQ8IIRWg==
+X-CSE-MsgGUID: khceAgKZSfmLeR8hpdgxTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="183652058"
+   d="scan'208";a="183843979"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.83])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 11:38:07 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 11:44:32 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vBdim-00000001ldm-1xFU;
-	Wed, 22 Oct 2025 21:38:04 +0300
-Date: Wed, 22 Oct 2025 21:38:04 +0300
+	id 1vBdoz-00000001lgl-1nLp;
+	Wed, 22 Oct 2025 21:44:29 +0300
+Date: Wed, 22 Oct 2025 21:44:29 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -76,11 +76,11 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2 8/9] reset: gpio: convert the driver to using the
- auxiliary bus
-Message-ID: <aPkkjBa5B84N2Xz9@smile.fi.intel.com>
+Subject: Re: [PATCH v2 4/9] gpio: swnode: don't use the swnode's name as the
+ key for GPIO lookup
+Message-ID: <aPkmDWJEKrjlMPnD@smile.fi.intel.com>
 References: <20251022-reset-gpios-swnodes-v2-0-69088530291b@linaro.org>
- <20251022-reset-gpios-swnodes-v2-8-69088530291b@linaro.org>
+ <20251022-reset-gpios-swnodes-v2-4-69088530291b@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -89,27 +89,41 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022-reset-gpios-swnodes-v2-8-69088530291b@linaro.org>
+In-Reply-To: <20251022-reset-gpios-swnodes-v2-4-69088530291b@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Oct 22, 2025 at 03:41:07PM +0200, Bartosz Golaszewski wrote:
+On Wed, Oct 22, 2025 at 03:41:03PM +0200, Bartosz Golaszewski wrote:
 > 
-> As the reset-gpio devices are purely virtual and never instantiated from
-> real firmware nodes, let's convert the driver to using the - more
-> fitting - auxiliary bus.
+> Looking up a GPIO controller by label that is the name of the software
+> node is wonky at best - the GPIO controller driver is free to set
+> a different label than the name of its firmware node. We're already being
+> passed a firmware node handle attached to the GPIO device to
+> swnode_get_gpio_device() so use it instead for a more precise lookup.
 
 ...
 
-> -static const struct platform_device_id reset_gpio_ids[] = {
-> -	{ .name = "reset-gpio", },
-> +static const struct auxiliary_device_id reset_gpio_ids[] = {
-> +	{ .name = "reset.gpio", },
+>  static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+>  {
+> +	struct gpio_device *gdev __free(gpio_device_put) =
+> +					gpio_device_find_by_fwnode(fwnode);
+> +	if (!gdev)
+> +		return ERR_PTR(-EPROBE_DEFER);
+>  
+>  	/*
+>  	 * Check for a special node that identifies undefined GPIOs, this is
+>  	 * primarily used as a key for internal chip selects in SPI bindings.
+>  	 */
+>  	if (IS_ENABLED(CONFIG_GPIO_SWNODE_UNDEFINED) &&
+> +	    !strcmp(fwnode_get_name(fwnode), GPIOLIB_SWNODE_UNDEFINED_NAME))
+>  		return ERR_PTR(-ENOENT);
 
-While at it, the inner comma may be dropped for good.
+Now we might get EPROBE_DEREF for the cases when previously it was ENOENT.
+Why is this not a problem? (I haven't found the answer neither in the comment
+above, nor in the commit message)
 
->  	{}
->  };
+> +	return no_free_ptr(gdev);
+>  }
 
 -- 
 With Best Regards,
