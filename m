@@ -1,62 +1,67 @@
-Return-Path: <linux-acpi+bounces-18088-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18100-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14E2BFC3E7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 15:46:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0271BFC5C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 16:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 75045540E58
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 13:38:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4BA34FABE0
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 13:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD8E30ACE3;
-	Wed, 22 Oct 2025 13:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5Ajyn6i"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694E7347BDE;
+	Wed, 22 Oct 2025 13:58:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17B726ED2A;
-	Wed, 22 Oct 2025 13:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF03126ED20;
+	Wed, 22 Oct 2025 13:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761140242; cv=none; b=s6Sw5zMupV3fB/UHPOo/tSOfBamdOKazZCIXLtKoTr8oQM/3Kf5qMYhAee67p/o/QTh6WPAGz/vLGuMVCISBqaLYVB/FDPT5/VWM5tBkVivZqKWFRDbaZT1+jgCinboIbqTJcLmCZLtNNgjjflETUEwHf230t59QvdWMBPv9TS8=
+	t=1761141485; cv=none; b=GpyYm78O1vNxiPTG/lXysOy5+ysp44NpGXowAH6avtqfOrxTl7pjTUwjXOep2zHDldUkhITsoDYP5FP2VgXvmED7fnZVD+fyGTWIY7GjznfVUj2/i77Pxcq5pw5AZjVH0WvUMkaDdFylbEjaiHU7pKnShtLB7chXQkQeIMDDAiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761140242; c=relaxed/simple;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0gfJvjN4iGrcyLi43PLmQ5rXMfQMYw3OA6ZBH906DqbjskomSuhiNThPSPW41UDmJT4EdPMoSIEuQot3QwJxkYLVwGg/T2sTWXuhV9WLnIwY7MBFEW7pf5ps/UitVZrXGMO9u7OeJlTVDuRfO4O86PpmCeac5hAFPUrp3U1vzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5Ajyn6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6E8C4CEFF;
-	Wed, 22 Oct 2025 13:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761140241;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5Ajyn6iWyJIJYkujtYJ74t7yoFj24fi7EU1MpKPhkjmxN28Zs+MpXR7zqi5v8XiL
-	 S1bvo42iRe/ZHt/eXS/4SNtq/4XUYNJf1Hbx8syyrFTUtWp9xDqVV/7Xg2gfuganaJ
-	 GFK48pAgWzxqGYwPezTwrX9rZaWTMio4hloWs5q9OpOCfNFsJbxPqx/o8jTOeOQUvA
-	 bZQWNgGn1ahuiJTUX5rGWGDBOSurvNR6PX7LmKGOmgpSaRZ+W5W1yBxPAuXxpS38w9
-	 aAhdUKTSP3tqY2IPxQaYXMKJoZ9D61JgmypQgUcnMOne8pcEY3jlKBAnSlWKBPO3E3
-	 p7wz8Jfq9pp/g==
-From: Hans de Goede <hansg@kernel.org>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Subject: [REGRESSION FIX resend 1/1] gpiolib: acpi: Make set debounce errors non fatal
-Date: Wed, 22 Oct 2025 15:37:15 +0200
-Message-ID: <20251022133715.331241-2-hansg@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251022133715.331241-1-hansg@kernel.org>
-References: <20251022133715.331241-1-hansg@kernel.org>
+	s=arc-20240116; t=1761141485; c=relaxed/simple;
+	bh=JT5aKwM0EBYZEgnaxnSZYP8/pGxWk8u1Z6pbRgS/E+0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CbXNaLWjQa24ygD7ezBySPGnkDTar8jh3NsA8GvCyoLH4Yr2OF5UVVkSIGK4T2OcDcBSKBpuglRd3TxtwgU/bzL8flhGkVPhgO3cHi19LLqALMk1BIm/AoSdVz81gK8WOhZ/pNPEYgJpQhoCLaV+pgVYNQ8ajJohWq1euDfeQ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cs9BD26RTzJsbZ;
+	Wed, 22 Oct 2025 21:34:28 +0800 (CST)
+Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
+	by mail.maildlp.com (Postfix) with ESMTPS id CDDD018006C;
+	Wed, 22 Oct 2025 21:39:19 +0800 (CST)
+Received: from huawei.com (10.50.87.109) by kwepemf100008.china.huawei.com
+ (7.202.181.222) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 22 Oct
+ 2025 21:39:18 +0800
+From: Zeng Heng <zengheng4@huawei.com>
+To: <james.morse@arm.com>
+CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
+	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
+	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
+	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
+	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
+	<guohanjun@huawei.com>, <jeremy.linton@arm.com>,
+	<jonathan.cameron@huawei.com>, <kobak@nvidia.com>, <lcherian@marvell.com>,
+	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>, <zengheng4@huawei.com>,
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH mpam mpam/snapshot/v6.14-rc1] arm64/mpam: Fix MBWU monitor overflow handling
+Date: Wed, 22 Oct 2025 21:39:13 +0800
+Message-ID: <20251022133913.629859-1-zengheng4@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251017185645.26604-25-james.morse@arm.com>
+References: <20251017185645.26604-25-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,100 +69,54 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemf100008.china.huawei.com (7.202.181.222)
 
-Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-acpi_find_gpio() fail if this fails.
+Bandwidth counters need to run continuously to correctly reflect the
+bandwidth. When reading the previously configured MSMON_CFG_MBWU_CTL,
+software must recognize that the MSMON_CFG_x_CTL_OFLOW_STATUS bit may
+have been set by hardware because of the counter overflow.
 
-But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-since not all debounce values are supported on all GPIO/pinctrl chips.
+The existing logic incorrectly treats this bit as an indication that the
+monitor configuration has been changed and consequently zeros the MBWU
+statistics by mistake.
 
-Making this an error for example break getting the card-detect GPIO for
-the micro-sd slot found on many Bay Trail tablets, breaking support for
-the micro-sd slot on these tablets.
+Also fix the handling of overflow amount calculation. There's no need to
+subtract mbwu_state->prev_val when calculating overflow_val.
 
-acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-failures as non-fatal, just warning about them.
-
-Add a acpi_gpio_set_debounce_timeout() helper which wraps
-gpio_set_debounce_timeout() and warns on failures and replace both existing
-gpio_set_debounce_timeout() calls with the helper.
-
-Since the helper only warns on failures this fixes the card-detect issue.
-
-Fixes: 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <superm1@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
 ---
- drivers/gpio/gpiolib-acpi-core.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/resctrl/mpam_devices.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 284e762d92c4..67c4c38afb86 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -291,6 +291,19 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
- 	return GPIOD_ASIS;
- }
+diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+index 0dd048279e02..06f3ec9887d2 100644
+--- a/drivers/resctrl/mpam_devices.c
++++ b/drivers/resctrl/mpam_devices.c
+@@ -1101,7 +1101,8 @@ static void __ris_msmon_read(void *arg)
+ 	clean_msmon_ctl_val(&cur_ctl);
+ 	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+ 	config_mismatch = cur_flt != flt_val ||
+-			  cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
++			 (cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS) !=
++			 (ctl_val | MSMON_CFG_x_CTL_EN);
  
-+static void acpi_gpio_set_debounce_timeout(struct gpio_desc *desc,
-+					   unsigned int acpi_debounce)
-+{
-+	int ret;
-+
-+	/* ACPI uses hundredths of milliseconds units */
-+	acpi_debounce *= 10;
-+	ret = gpio_set_debounce_timeout(desc, acpi_debounce);
-+	if (ret)
-+		gpiod_warn(desc, "Failed to set debounce-timeout %u: %d\n",
-+			   acpi_debounce, ret);
-+}
-+
- static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 						struct acpi_resource_gpio *agpio,
- 						unsigned int index,
-@@ -300,18 +313,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
- 	unsigned int pin = agpio->pin_table[index];
- 	struct gpio_desc *desc;
--	int ret;
+ 	if (config_mismatch || reset_on_next_read)
+ 		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
+@@ -1138,8 +1139,9 @@ static void __ris_msmon_read(void *arg)
+ 		mbwu_state = &ris->mbwu_state[ctx->mon];
  
- 	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
- 	if (IS_ERR(desc))
- 		return desc;
+ 		/* Add any pre-overflow value to the mbwu_state->val */
+-		if (mbwu_state->prev_val > now)
+-			overflow_val = mpam_msmon_overflow_val(m->type) - mbwu_state->prev_val;
++		if (mbwu_state->prev_val > now &&
++		   (cur_ctl & MSMON_CFG_x_CTL_OFLOW_STATUS))
++			overflow_val = mpam_msmon_overflow_val(ris);
  
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
--	if (ret)
--		dev_warn(chip->parent,
--			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
--			 pin, ret);
-+	acpi_gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
- 
- 	return desc;
- }
-@@ -944,7 +951,6 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
- 	struct acpi_gpio_info info = {};
- 	struct gpio_desc *desc;
--	int ret;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
- 	if (IS_ERR(desc))
-@@ -959,10 +965,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	acpi_gpio_update_gpiod_flags(dflags, &info);
- 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
- 
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
--	if (ret)
--		return ERR_PTR(ret);
-+	acpi_gpio_set_debounce_timeout(desc, info.debounce);
- 
- 	return desc;
- }
+ 		mbwu_state->prev_val = now;
+ 		mbwu_state->correction += overflow_val;
 -- 
-2.51.0
+2.25.1
 
 
