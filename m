@@ -1,191 +1,196 @@
-Return-Path: <linux-acpi+bounces-18126-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18127-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D063BFE20A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 22:10:30 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F44BFE232
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 22:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A9B19C8202
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 20:10:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB5DD4EDE27
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 20:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42622F8BFF;
-	Wed, 22 Oct 2025 20:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCB62F9DB1;
+	Wed, 22 Oct 2025 20:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJtg2ADQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APPwvYzV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4E72F83D8
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 20:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582242F9C23
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 20:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761163827; cv=none; b=rvKJ4Te3IvzJgHXtjGceMBEl0GuDHNHrzLQdo7q/VKUunPIHQrHvWGS/KWjFpR1m5fMu4ZUO1T+wjKaY0CtusEJ0DyzdvMDruTf4YmjDsAkOupOJQH7tfNmSiMhvzA7ixII2VQdKKjzVBauvqC2yu1tuUiCRs1oeG8QSboUmUxE=
+	t=1761164250; cv=none; b=VvURp/AlTP70nASXtTZRiECYBseNn5tP/+1IEsKmxenayvMph9jj4sIg/6k28QavWq0rZ5EVStlCMYHxqLkuX+4RE1RFLMUmC5uMxQEvAh75mZkphMATcnN6oP7Ux1q5Z4BMt55f7wE6cfGMlQUeM7a4lvZMlqLiRJ429H9AYkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761163827; c=relaxed/simple;
-	bh=Ek3haOYmPyu4dgOa5C0zgHctdofHHVO9EUyqAYNfa2g=;
+	s=arc-20240116; t=1761164250; c=relaxed/simple;
+	bh=JGMbXTZdrtIxOb4jaBk69OdjiE1euFv+M7ETeX5T0g0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oyBkTgLj8dstboonyrtnddJ/DafwQNZFI0DwpdjQJXieh484N/9XDW8F6SM8BmSkQPmo1rzOdQtMv7Ov0PK3eqZMF7hKnng3SxqGCaGVK6QVdw1XtU4cCGexkhdyq36k8CnfEFt+tM5KVN8VXGJtxBQzZ21ImmBsV65vo659bwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJtg2ADQ; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-932c3aa32f3so1708608241.2
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 13:10:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761163825; x=1761768625; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tn5VKrdn1aznBkaeIAwzuNTcwHsl29o2bnaUn9NgWHw=;
-        b=dJtg2ADQlG39P/7E15ZCN14M1JcnfeGwn8Jh5dVPvJ9O/kq75zKSJkxJfrC3sJAr4o
-         +VWwO1l0Lxx9DzzAARu5Rs2c+2xXmC3SHPY7FpEypfGSNND3HOQ+03gndGGTe03K3SiQ
-         IEuM8Emo6TVAaTC0GETRGviXvh76X2Hwytua6kTTf5szKjFpoHS7wYdpROBGXEBW3V2x
-         ZFcNmQmSJ7v+MHIq1cchaBOekrFfXxZf3srpXHbD9XKVZp56jXAdAFDS79yeRoNrNpHi
-         APpdAHD8/pxbnjx2WuladnFsEDc96LfmDnKpn1KQdZQlZe9M3/v3ytYSXzMVBW4ry7bV
-         E4pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761163825; x=1761768625;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tn5VKrdn1aznBkaeIAwzuNTcwHsl29o2bnaUn9NgWHw=;
-        b=bXy3N7pNiX+4K/+8IWJJeNTEtIyHMe/73A634cQ63ZV/TTj4JE5m8O3r5I7vqDHrqV
-         fZMdz+XSzwpt5BWDnb7G7pBc4gzLXb/W6fX+fEK0NXAO1wbxs+Rbd4bHD7+wjm7HTr/w
-         Fs3pvPP6JCSJYETYP2BT2lqtHXbgvgwanEscm+7Ukv7m3vL0T/GEoRCDfNDZDjVnFI3r
-         lZUlYo+Y4+2cW1M32Oar2NVIf6+xF5QMPu1dB4HNXnYOleHcw96gGtpg2FFUbzt4tDtS
-         ToC25XK0dh9LU7y9SnuiSW/Ml9SQ5CqiumixrGa1UZvUvU8sLnWcE+XrifdVSb7FPNvr
-         vIIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXseVyuFymU3DIfo51TRkDAWtwUtKuTS2l2fa72bopSzVRjS3mT2XYrF+NTvGdRV9yxUGWB1HTQH9EB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHNWfG0QFudR/Sih9Bs4YC9H0YX6ckZEdqgH2lSFG6c4bIGceh
-	Kbv89nUZ4xAOcSJz+MXiNe37X/eIfWdDy/fOb16QOC3tl2a3TL5bpCwLTD6JpxI8P0tdDS+GUFD
-	xFWvZ0jFdy6XlNeEqnx+fyV8pZGgBrRM=
-X-Gm-Gg: ASbGncthmedu/f8ot8iUVq5yMxv+7APn0jaNvnyWvqnNfPVFIWYOk8ny55Dtgm8ZO3U
-	WtpvFc+sE/VQNvrgC6gO2BfDbLH+EhLJdykCL2wNKyyWme4UdiJB9Od59f2xMiF0i2KMwrtsnRS
-	rVos9PaH3G7SgAwNMKAoz7Qn7v3/cY1HsysJCw5cjx1ym0riuQoz2dEzEo7IYIVM5WncJ1Ly0wf
-	BjcNPSM9NROCIsgl70KHsYcu1KoBqT2QKrLLv+12wIOnfDRNQH+DibJPohKt+QIhdpPn/jV49bT
-	V8f6hJ+T5jItA+LD5aYrw/k+/A==
-X-Google-Smtp-Source: AGHT+IEAmpCYQ3I3CaF01f4rD5k8jsO3VFkaaCggeAPNetgcdL42bDO5ziQu0Y8LVdLou4hTbEHf9n0KaVc/TOKWEY4=
-X-Received: by 2002:a05:6102:c48:b0:5d5:f6ae:74b4 with SMTP id
- ada2fe7eead31-5d7dd62a873mr7028676137.40.1761163824525; Wed, 22 Oct 2025
- 13:10:24 -0700 (PDT)
+	 To:Cc:Content-Type; b=cIdEVR2W87/aSXH8+O+1Ld13elaiyDoHdIQcjd8a2B8mUIDvkU4NECwYysWwLJsDHRA7jLe7RmsMm6SCKsEK8zcj0L1LYm9GwNbczqJ43T3cio/IVp06QVg2S7G8yksAuModvsbu3g9Ye0pu17iX1juqwY6VtfWD2iu1JuiESXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APPwvYzV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5090AC4CEE7
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 20:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761164249;
+	bh=JGMbXTZdrtIxOb4jaBk69OdjiE1euFv+M7ETeX5T0g0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=APPwvYzVKDjVmdvn2uKo4m+S7cSnxOpscuzHomvITvMbGREmV9vWWDvHH7tR2bnQo
+	 N7aUvpbTgdj7beUhvujKZ16/qdABvc6L5/HLA01XC2XW5i0AuA6UXp3fhXJ9DOkG0v
+	 XJqd+dQ6gPdrXsUrwo30fA/SIQsUQIn/9tP6Txs7B4slEiEo3HpqlPdUZyFtQ73SnZ
+	 501Vky0yJkPCtaikrKjxzPbvSMhK2ckpZ0W9tlBCxEecn6sW3Od6LYBlFyxbtKxxQF
+	 IS9/Eb4iYfHBQ9f4Rfz3fBqiZIwkwlFyUHDrR7BxV89hhlNjm4QLrkQwa7DdtCWZ8W
+	 5YzBu0bvngVJg==
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-442003b80d0so4293b6e.1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 13:17:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVWBxXb1KuNTE/a30vCvoiY1RXz6JWnNjG8EsilSvophCly5d7zcRty2AYB+T/HC3h0sOxudsc4aGIk@vger.kernel.org
+X-Gm-Message-State: AOJu0YzymuZzB42yD/xqNNF+vKIBFvsidCpQStr5ge6VqYtLWIMt0ZgQ
+	0Fu5LaOMpQfmY7HpEFjhMA41ky8OBZPW/WcqjitFhwVv7gJUIJo29IzoGBJKf/+hUr20MetwU0U
+	MV57JL4j+L4knsjAt6q7vVGM/CuLx4rw=
+X-Google-Smtp-Source: AGHT+IH+CNkVthHlovh/E8dHwiFqzD17c0+wpBTUJF/HRI2S6F0jYBrCtYhuLx+6NI87pOACS8nCibAdN+28ltbBvUU=
+X-Received: by 2002:a05:6808:2117:b0:40b:a4ca:f7cb with SMTP id
+ 5614622812f47-44964379933mr2114946b6e.15.1761164248601; Wed, 22 Oct 2025
+ 13:17:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022042514.2167599-1-danisjiang@gmail.com> <cf501c1e-94eb-4855-b3ad-e0b8c68d1a74@kernel.org>
-In-Reply-To: <cf501c1e-94eb-4855-b3ad-e0b8c68d1a74@kernel.org>
-From: Yuhao Jiang <danisjiang@gmail.com>
-Date: Wed, 22 Oct 2025 15:10:12 -0500
-X-Gm-Features: AWmQ_blNULWk3f3C_pQvJ7TQXzRfUECTP0SyTqgDO42bYPywBEVt3wfIIpRq2Ys
-Message-ID: <CAHYQsXRpG9LL5cL9w_UPWpZpR-TiOp2QZzF5k69NiEzT8+oOFg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
-To: Hans de Goede <hansg@kernel.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251007102237.1015610-1-kaushlendra.kumar@intel.com>
+ <CAJZ5v0jr4yNxGD8Zhcotqy+6acmh5MeNwVQWYzaWSxKMsP0fzg@mail.gmail.com> <aPk3URcrjx_KjkJ7@agluck-desk3>
+In-Reply-To: <aPk3URcrjx_KjkJ7@agluck-desk3>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 22 Oct 2025 22:17:17 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j6_d6mGMWVY_49t-y0D+sO-e6N5w7-WejPYHLb8QjnKQ@mail.gmail.com>
+X-Gm-Features: AS18NWBeCuXJx62D5Evht34Wj8uGbeZj7yL7NGAhAna4KaPliYC1DF7bj3PXY9A
+Message-ID: <CAJZ5v0j6_d6mGMWVY_49t-y0D+sO-e6N5w7-WejPYHLb8QjnKQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: mrrm: Fix memory leaks and improve error handling
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Kaushlendra Kumar <kaushlendra.kumar@intel.com>, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Hans,
-
-Thanks for the feedback! I've submitted it in patch v3:
-https://lore.kernel.org/all/20251022200704.2655507-1-danisjiang@gmail.com/.
-
-Best regards,
-Yuhao
-
-On Wed, Oct 22, 2025 at 4:28=E2=80=AFAM Hans de Goede <hansg@kernel.org> wr=
+On Wed, Oct 22, 2025 at 9:58=E2=80=AFPM Luck, Tony <tony.luck@intel.com> wr=
 ote:
 >
-> Hi Yuhao,
->
-> On 22-Oct-25 6:25 AM, Yuhao Jiang wrote:
-> > The switch_brightness_work delayed work accesses device->brightness
-> > and device->backlight, which are freed by
-> > acpi_video_dev_unregister_backlight() during device removal.
+> On Wed, Oct 22, 2025 at 09:31:29PM +0200, Rafael J. Wysocki wrote:
+> > On Tue, Oct 7, 2025 at 12:24=E2=80=AFPM Kaushlendra Kumar
+> > <kaushlendra.kumar@intel.com> wrote:
+> > >
+> > > Add proper error handling and resource cleanup to prevent memory leak=
+s
+> > > in add_boot_memory_ranges(). The function now checks for NULL return
+> > > from kobject_create_and_add(), frees allocated names after use, and
+> > > implements a cleanup path that removes previously created sysfs group=
+s
+> > > and kobjects on failure.
+> > >
+> > > This prevents resource leaks when kobject creation or sysfs group
+> > > creation fails during boot memory range initialization.
+> > >
+> > > Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+> > > ---
+> > >  drivers/acpi/acpi_mrrm.c | 33 +++++++++++++++++++++++++++++----
+> > >  1 file changed, 29 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
+> > > index 47ea3ccc2142..6ec42eb48783 100644
+> > > --- a/drivers/acpi/acpi_mrrm.c
+> > > +++ b/drivers/acpi/acpi_mrrm.c
+> > > @@ -152,23 +152,48 @@ static __init int add_boot_memory_ranges(void)
+> > >         struct kobject *pkobj, *kobj;
+> > >         int ret =3D -EINVAL;
+> > >         char *name;
+> > > +       int i;
+> > >
+> > >         pkobj =3D kobject_create_and_add("memory_ranges", acpi_kobj);
+> > > +       if (!pkobj)
+> > > +               return -ENOMEM;
+> > >
+> > > -       for (int i =3D 0; i < mrrm_mem_entry_num; i++) {
 > >
-> > If the work executes after acpi_video_bus_unregister_backlight()
-> > frees these resources, it causes a use-after-free when
-> > acpi_video_switch_brightness() dereferences device->brightness or
-> > device->backlight.
+> > Yes, i should be declared in the preamble.
 > >
-> > Fix this by calling cancel_delayed_work_sync() for each device's
-> > switch_brightness_work before unregistering its backlight resources.
-> > This ensures the work completes before the memory is freed.
+> > > +       for (i =3D 0; i < mrrm_mem_entry_num; i++) {
+> > >                 name =3D kasprintf(GFP_KERNEL, "range%d", i);
+> > >                 if (!name) {
+> > >                         ret =3D -ENOMEM;
+> > > -                       break;
+> > > +                       goto cleanup;
+> > >                 }
+> > >
+> > >                 kobj =3D kobject_create_and_add(name, pkobj);
+> > > +               kfree(name);
 > >
-> > Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a =
-brightness up/down keypress")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+> > OK, this fixes a memory leak.
 >
-> Thank you for your patch, this is a good catch.
+> I didn't realize that kobject_create_and_add() made its own copy of
+> the "name" parameter.  Maybe the code should avoid the alloc/free by
+> making "name" a local variable?
 >
-> > ---
-> > Changes in v2:
-> > - Move cancel_delayed_work_sync() to acpi_video_bus_unregister_backligh=
-t()
-> >   instead of acpi_video_bus_put_devices() for better logic clarity and =
-to
-> >   prevent potential UAF of device->brightness
-> > - Correct Fixes tag to point to 8ab58e8e7e097 which introduced the dela=
-yed work
-> > - Link to v1: https://lore.kernel.org/all/20251022040859.2102914-1-dani=
-sjiang@gmail.com
-> > ---
-> >  drivers/acpi/acpi_video.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
+>         char name[16] =3D "rangeXXXXXXXXXX";
+>
+>         sprintf(&name[5], "%d", i);
+
+That'd work.
+
+> > > +               if (!kobj) {
+> > > +                       ret =3D -ENOMEM;
+> > > +                       goto cleanup;
 > >
-> > diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> > index 103f29661576..64709658bdc4 100644
-> > --- a/drivers/acpi/acpi_video.c
-> > +++ b/drivers/acpi/acpi_video.c
-> > @@ -1869,8 +1869,10 @@ static int acpi_video_bus_unregister_backlight(s=
-truct acpi_video_bus *video)
-> >       error =3D unregister_pm_notifier(&video->pm_nb);
+> > Why terminate this?  Why not continue?
+>
+> Terminating here (and below) will go to Kaushlendra's cleanup
+> code to remove all the ranges. Maybe this is better than having
+> some random subset of files appear (based on which allocations
+> succeeded/failed)?
+
+Well, I guess it can be argued both ways and either one is fine with
+me.  If that's what you prefer, let it be done, but the changelog
+needs a bit of work because the cleanup is done in error cases.
+
+> > > +               }
+> > >
+> > >                 ret =3D sysfs_create_groups(kobj, memory_range_groups=
+);
+> > > -               if (ret)
+> > > -                       return ret;
 > >
-> >       mutex_lock(&video->device_list_lock);
-> > -     list_for_each_entry(dev, &video->video_device_list, entry)
-> > +     list_for_each_entry(dev, &video->video_device_list, entry) {
-> > +             cancel_delayed_work_sync(&dev->switch_brightness_work);
-> >               acpi_video_dev_unregister_backlight(dev);
-> > +     }
-> >       mutex_unlock(&video->device_list_lock);
+> > Well, this returns already, but I'm not sure why.  Tony, wouldn't it
+> > be better to continue?
 > >
-> >       video->backlight_registered =3D false;
+> > > +               if (ret) {
+> > > +                       kobject_put(kobj);
+> > > +                       goto cleanup;
+> >
+> > I would do a "continue" instead.
+> >
+> > > +               }
+> > >         }
+> > >
+> > > +       return 0;
+> > > +
+> > > +cleanup:
+> > > +       for (int j =3D 0; j < i; j++) {
+> > > +               char cleanup_name[32];
+> > > +               struct kobject *cleanup_kobj;
+> > > +
+> > > +               snprintf(cleanup_name, sizeof(cleanup_name), "range%d=
+", j);
+> > > +               cleanup_kobj =3D kobject_get(pkobj);
+> > > +               if (cleanup_kobj) {
+> > > +                       sysfs_remove_groups(cleanup_kobj, memory_rang=
+e_groups);
+> > > +                       kobject_put(cleanup_kobj);
+> > > +               }
+> > > +       }
+> > > +       kobject_put(pkobj);
+> > >         return ret;
+> > >  }
+> > >
+> > > --
 >
-> As you mention in your changelog, the cancel_delayed_work_sync() needs
-> to happen before acpi_video_dev_unregister_backlight().
->
-> Since this needs to happen before unregistering things I think it would b=
-e
-> more logical to put the cancel_delayed_work_sync(&dev->switch_brightness_=
-work);
-> call inside acpi_video_bus_remove_notify_handler().
->
-> So do the cancel in the loop there, directly after the
-> acpi_video_dev_remove_notify_handler(dev) call which removes the handler
-> which queues the work.
->
-> E.g. make the loop inside acpi_video_bus_remove_notify_handler() look lik=
-e
-> this:
->
->         mutex_lock(&video->device_list_lock);
->         list_for_each_entry(dev, &video->video_device_list, entry) {
->                 acpi_video_dev_remove_notify_handler(dev);
->                 cancel_delayed_work_sync(&dev->switch_brightness_work);
->         }
->         mutex_unlock(&video->device_list_lock);
->
-> This cancels the work a bit earlier, but more importantly this feels
-> like the more logical place to put the cancel call.
->
-> Regards,
->
-> Hans
->
->
+> -Tony
 
