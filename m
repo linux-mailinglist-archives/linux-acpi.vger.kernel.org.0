@@ -1,166 +1,300 @@
-Return-Path: <linux-acpi+bounces-18075-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18076-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A96EBFAEFE
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 10:39:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2030BFAF40
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 10:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A14B1A032E3
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 08:40:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 892B84FCB59
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 08:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FBA30CD9F;
-	Wed, 22 Oct 2025 08:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D661A30DD19;
+	Wed, 22 Oct 2025 08:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Abo8M8cF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5306350A3F
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 08:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1AA30BF79;
+	Wed, 22 Oct 2025 08:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761122378; cv=none; b=WLMoGCaN3D5f5mz8jXWTNF1oRN6nysc5j7WxgriADclpkt401JawTMVurmbxIw7P75E8pfeL8Jc6MjFB3MHYmVDWJk9dzwFaPkimm8qazbFAZesjE9SmfHY8f7JqXn3+C63vlKEYx76gpD4g4PdlMznzlDM0KzpHH0FLky5hjhY=
+	t=1761122565; cv=none; b=pbhcwdtXGsFCQw4K37e+9k8qz9zcnl4swMRSfvMCCWV6uzyHrF29MHt/fVA1EeCeq0FDsh0N/u3pbJxrVStC1NZAyWlR1fzxhywjgJM860K6xtMNTia/0yT7dfD0HV7cXt3S3dMMOU0CIQ7y8q/QsVrPqzolXqu15+KDxeeXaOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761122378; c=relaxed/simple;
-	bh=ip9Mguraw/Sqbpw7MoyQiJGzEWgu6QV2OHUVhIabHW0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rTcRARbBfVjgMU8N9KI9Ku4fQ71yMl1D0Fxh1ZRCuQEzlcnsYdZVBB4CoH7BxV7QSxGQ4rroPxO6YvZD0yrZJxFu0z1yTi+E0/fAumY75TEsLMdHP1DtcV9zT5l/c4IrFZM6Es6HsvnHznGFdiGCr9GInhq7PUoRHk/T5vLsE8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vBUNK-0000iU-E1; Wed, 22 Oct 2025 10:39:18 +0200
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vBUNJ-004rVA-1I;
-	Wed, 22 Oct 2025 10:39:17 +0200
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vBUNJ-000000003kj-1Lpx;
-	Wed, 22 Oct 2025 10:39:17 +0200
-Message-ID: <804b4b8cf23444fe5dc9400ac1de3a738a77e09e.camel@pengutronix.de>
-Subject: Re: [PATCH 7/9] reset: make the provider of reset-gpios the parent
- of the reset device
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Bartosz Golaszewski
-	 <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Daniel Scally	
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski	 <krzk@kernel.org>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Wed, 22 Oct 2025 10:39:17 +0200
-In-Reply-To: <aPerDcMFdbWecGEv@smile.fi.intel.com>
-References: <20251006-reset-gpios-swnodes-v1-7-6d3325b9af42@linaro.org>
-	 <95bbec130437846d4b902ce4161ccf0f33c26c59.camel@pengutronix.de>
-	 <CAMRc=Md_-mO=HqfncD-vJS6XzPJ+aTcBjSjtkxLH_h1=pNjCcg@mail.gmail.com>
-	 <075a4511a6ae4b047599757d41b559c6b7cf9d0f.camel@pengutronix.de>
-	 <CAMRc=Md4DUSuwv07EuBVDJbY1Uzezq+TONxyCvLtOHD=iFXrcQ@mail.gmail.com>
-	 <050d74d7619bdfdf5ca81d8914a2a8836a0d4e2e.camel@pengutronix.de>
-	 <CAMRc=MfPqRLFHPW988oMry7vVoTgtQHrxxND4=nr_40dOa5owg@mail.gmail.com>
-	 <aPeexuA1nu-7Asws@smile.fi.intel.com> <aPegyVyONkPWRgi9@smile.fi.intel.com>
-	 <CAMRc=McPpFEmg7dpfiYWJaPR4yMynOaU5Hp37E7rTzWSCNxBuA@mail.gmail.com>
-	 <aPerDcMFdbWecGEv@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
+	s=arc-20240116; t=1761122565; c=relaxed/simple;
+	bh=1+2oT9ZBvNrEmb99lqJugm2YCtyV+ZHUEvhSAahHZks=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=oIkzNYjqnirT+HOO6/d5DmXOPDcy6Oe4J1pwlC0b9OI/Jytah16hshi8pGUFHe3tkXN5MXhfjw8LdQ88MQCUQdT2eieLN/8cORQNl6GWlohH5UfpfIg18JilBp4e28eDbLoVotrZigMljngnH9lZteZD3kKJagnh+6WGrl49vXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Abo8M8cF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761122563; x=1792658563;
+  h=date:from:to:cc:subject:message-id;
+  bh=1+2oT9ZBvNrEmb99lqJugm2YCtyV+ZHUEvhSAahHZks=;
+  b=Abo8M8cF09t8UxKVazDaUUEA3cJ6cWpr3APZoxI/MroNzX/LIf2tOZwJ
+   l9rsvgr+bCIjwtyA3bZa6Rmp2wqMCBILK+t0r4s9sdkM4uAm0tCmGppk0
+   tDZA/X5mfWXEMQCm/pz+15dEuDWvaASuwrwBdq8j/GUy24OjGNkmzD8Wx
+   C4ACPTfFZT0PhGZecxlI4dXtZ/Ok1k04lIHfnUl0fcZSvJVUpZ/BYU1F2
+   FKNfSVhuFMK3gDF4SY2Cyr8Zw5Aqw/ikx0wlZwBhQ830FzBpXxyFlY+mw
+   623BUvtuXZ8OK1tbXWHGcNLfpbjjEFVxxAnyIe7X2XYm9IyaBZqAgTQ9v
+   g==;
+X-CSE-ConnectionGUID: lyTr8ZGuR022q07xk4c8Ww==
+X-CSE-MsgGUID: c/lLgQieRNOsAg0oTDU6JQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73868751"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="73868751"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:42:42 -0700
+X-CSE-ConnectionGUID: W/KwrSKjRj6VYTOGmwzPHg==
+X-CSE-MsgGUID: SCfaICfuSUuZsnYFn+G/Ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="183852126"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 22 Oct 2025 01:42:41 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vBUQY-000CAX-2z;
+	Wed, 22 Oct 2025 08:42:38 +0000
+Date: Wed, 22 Oct 2025 16:42:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:fixes] BUILD SUCCESS
+ 8112a37e6e44319808a5817c11bec3e6e43372b5
+Message-ID: <202510221619.gQDrKCrv-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 
-On Di, 2025-10-21 at 18:47 +0300, Andy Shevchenko wrote:
-> On Tue, Oct 21, 2025 at 05:23:33PM +0200, Bartosz Golaszewski wrote:
-> > On Tue, Oct 21, 2025 at 5:03=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Tue, Oct 21, 2025 at 05:55:02PM +0300, Andy Shevchenko wrote:
-> > > > On Tue, Oct 21, 2025 at 11:39:41AM +0200, Bartosz Golaszewski wrote=
-:
-> > > > > On Tue, Oct 21, 2025 at 11:31=E2=80=AFAM Philipp Zabel <p.zabel@p=
-engutronix.de> wrote:
-> > > > > > On Di, 2025-10-21 at 11:27 +0200, Bartosz Golaszewski wrote:
->=20
-> [...]
->=20
-> > > > > > No need to convert all existing drivers right away, but I'd lik=
-e to see
-> > > > > > a user that benefits from the conversion.
-> > > > > >=20
-> > > > >=20
-> > > > > The first obvious user will be the reset-gpio driver which will s=
-ee
-> > > > > its core code simplified as we won't need to cast between OF and
-> > > > > fwnodes.
-> > > >=20
-> > > > +1 to Bart's work. reset-gpio in current form is useless in all my =
-cases
-> > > > (it's OF-centric in 2025! We should not do that in a new code).
-> > > >=20
-> > > > More over, conversion to reset-gpio from open coded GPIO APIs is a =
-clear
-> > > > regression and I want to NAK all those changes (if any already done=
-) for
-> > > > the discrete components that may be used outside of certainly OF-on=
-ly niche of
-> > > > the platforms.
-> > >=20
-> > > To be clear, the conversion that's done while reset-gpio is kept OF-c=
-entric.
-> > > I'm in favour of using it, but we need to make it agnostic.
-> >=20
-> > As of now, the whole reset framework is completely OF-centric, I don't
-> > know what good blocking any such conversions would bring? I intend to
-> > convert the reset core but not individual drivers.
->=20
-> Blocking making new regressions?
->=20
-> Otherwise as long as reset framework and reset-gpio are agnostic, I'm pre=
-tty
-> much fine with the idea and conversion.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
+branch HEAD: 8112a37e6e44319808a5817c11bec3e6e43372b5  Merge branch 'acpica' into fixes
 
-I think we might be talking about different "conversions" and different
-"blocking" here?
+elapsed time: 969m
 
-1) Conversion of the reset core from of_node to fwnode.
-2) Conversion of reset controller drivers from of_node to fwnode.
-3) Conversion of consumer drivers from gpiod to reset_control API.
+configs tested: 207
+configs skipped: 6
 
-My understanding is:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Bartosz would like to convert the reset core to fwnode (1) but not
-convert all the individual reset controller drivers (2). He doesn't
-like blocking (1) - this statement was partially in reaction to me
-bringing up a previous attempt that didn't go through.
+tested configs:
+alpha                             allnoconfig    clang-22
+alpha                            allyesconfig    clang-19
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    clang-19
+arc                               allnoconfig    clang-22
+arc                              allyesconfig    clang-19
+arc                   randconfig-001-20251022    clang-22
+arc                   randconfig-001-20251022    gcc-13.4.0
+arc                   randconfig-002-20251022    clang-22
+arc                   randconfig-002-20251022    gcc-8.5.0
+arm                              allmodconfig    clang-19
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    clang-19
+arm                   randconfig-001-20251022    clang-22
+arm                   randconfig-001-20251022    gcc-11.5.0
+arm                   randconfig-002-20251022    clang-22
+arm                   randconfig-002-20251022    gcc-10.5.0
+arm                   randconfig-003-20251022    clang-22
+arm                   randconfig-003-20251022    gcc-10.5.0
+arm                   randconfig-004-20251022    clang-22
+arm                        spear6xx_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    clang-22
+arm64                 randconfig-001-20251022    clang-22
+arm64                 randconfig-001-20251022    gcc-9.5.0
+arm64                 randconfig-002-20251022    clang-18
+arm64                 randconfig-002-20251022    clang-22
+arm64                 randconfig-003-20251022    clang-22
+arm64                 randconfig-003-20251022    gcc-10.5.0
+arm64                 randconfig-004-20251022    clang-22
+arm64                 randconfig-004-20251022    gcc-12.5.0
+csky                              allnoconfig    clang-22
+csky                  randconfig-001-20251022    clang-22
+csky                  randconfig-001-20251022    gcc-15.1.0
+csky                  randconfig-002-20251022    clang-22
+csky                  randconfig-002-20251022    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    clang-19
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-19
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20251022    clang-22
+hexagon               randconfig-002-20251022    clang-22
+i386                             allmodconfig    clang-20
+i386                              allnoconfig    clang-20
+i386                             allyesconfig    clang-20
+i386        buildonly-randconfig-001-20251022    clang-20
+i386        buildonly-randconfig-001-20251022    gcc-14
+i386        buildonly-randconfig-002-20251022    clang-20
+i386        buildonly-randconfig-002-20251022    gcc-14
+i386        buildonly-randconfig-003-20251022    gcc-14
+i386        buildonly-randconfig-004-20251022    clang-20
+i386        buildonly-randconfig-004-20251022    gcc-14
+i386        buildonly-randconfig-005-20251022    gcc-12
+i386        buildonly-randconfig-005-20251022    gcc-14
+i386        buildonly-randconfig-006-20251022    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251022    gcc-14
+i386                  randconfig-002-20251022    gcc-14
+i386                  randconfig-003-20251022    gcc-14
+i386                  randconfig-004-20251022    gcc-14
+i386                  randconfig-005-20251022    gcc-14
+i386                  randconfig-006-20251022    gcc-14
+i386                  randconfig-007-20251022    gcc-14
+i386                  randconfig-011-20251022    gcc-13
+i386                  randconfig-012-20251022    gcc-13
+i386                  randconfig-013-20251022    gcc-13
+i386                  randconfig-014-20251022    gcc-13
+i386                  randconfig-015-20251022    gcc-13
+i386                  randconfig-016-20251022    gcc-13
+i386                  randconfig-017-20251022    gcc-13
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20251022    clang-22
+loongarch             randconfig-001-20251022    gcc-12.5.0
+loongarch             randconfig-002-20251022    clang-22
+loongarch             randconfig-002-20251022    gcc-15.1.0
+m68k                             allmodconfig    clang-19
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    clang-19
+m68k                             allyesconfig    gcc-15.1.0
+m68k                          amiga_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    clang-19
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    clang-19
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                        bcm47xx_defconfig    gcc-15.1.0
+mips                       bmips_be_defconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-15.1.0
+nios2                               defconfig    gcc-15.1.0
+nios2                 randconfig-001-20251022    clang-22
+nios2                 randconfig-001-20251022    gcc-8.5.0
+nios2                 randconfig-002-20251022    clang-22
+nios2                 randconfig-002-20251022    gcc-10.5.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-14
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251022    clang-22
+parisc                randconfig-001-20251022    gcc-13.4.0
+parisc                randconfig-002-20251022    clang-22
+parisc                randconfig-002-20251022    gcc-10.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    gcc-15.1.0
+powerpc               randconfig-001-20251022    clang-22
+powerpc               randconfig-001-20251022    gcc-8.5.0
+powerpc               randconfig-002-20251022    clang-22
+powerpc               randconfig-002-20251022    gcc-8.5.0
+powerpc               randconfig-003-20251022    clang-22
+powerpc               randconfig-003-20251022    gcc-8.5.0
+powerpc64             randconfig-001-20251022    clang-22
+powerpc64             randconfig-001-20251022    gcc-8.5.0
+powerpc64             randconfig-002-20251022    clang-22
+powerpc64             randconfig-002-20251022    gcc-8.5.0
+powerpc64             randconfig-003-20251022    clang-22
+riscv                            allmodconfig    gcc-15.1.0
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    gcc-15.1.0
+riscv                               defconfig    gcc-14
+riscv                 randconfig-001-20251022    gcc-14.3.0
+riscv                 randconfig-002-20251022    clang-22
+s390                             alldefconfig    gcc-15.1.0
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    gcc-15.1.0
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    gcc-14
+s390                  randconfig-002-20251022    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-14
+sh                            hp6xx_defconfig    gcc-15.1.0
+sh                          lboxre2_defconfig    gcc-15.1.0
+sh                    randconfig-001-20251022    gcc-10.5.0
+sh                    randconfig-002-20251022    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251022    gcc-14.3.0
+sparc                 randconfig-002-20251022    gcc-14.3.0
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20251022    gcc-8.5.0
+sparc64               randconfig-002-20251022    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    clang-19
+um                               allyesconfig    gcc-14
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251022    gcc-14
+um                    randconfig-002-20251022    gcc-14
+um                           x86_64_defconfig    gcc-14
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20251022    clang-20
+x86_64      buildonly-randconfig-002-20251022    clang-20
+x86_64      buildonly-randconfig-002-20251022    gcc-14
+x86_64      buildonly-randconfig-003-20251022    clang-20
+x86_64      buildonly-randconfig-003-20251022    gcc-14
+x86_64      buildonly-randconfig-004-20251022    clang-20
+x86_64      buildonly-randconfig-005-20251022    clang-20
+x86_64      buildonly-randconfig-005-20251022    gcc-14
+x86_64      buildonly-randconfig-006-20251022    clang-20
+x86_64      buildonly-randconfig-006-20251022    gcc-14
+x86_64                              defconfig    clang-20
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251022    clang-20
+x86_64                randconfig-002-20251022    clang-20
+x86_64                randconfig-003-20251022    clang-20
+x86_64                randconfig-004-20251022    clang-20
+x86_64                randconfig-005-20251022    clang-20
+x86_64                randconfig-006-20251022    clang-20
+x86_64                randconfig-007-20251022    clang-20
+x86_64                randconfig-008-20251022    clang-20
+x86_64                randconfig-071-20251022    clang-20
+x86_64                randconfig-072-20251022    clang-20
+x86_64                randconfig-073-20251022    clang-20
+x86_64                randconfig-074-20251022    clang-20
+x86_64                randconfig-075-20251022    clang-20
+x86_64                randconfig-076-20251022    clang-20
+x86_64                randconfig-077-20251022    clang-20
+x86_64                randconfig-078-20251022    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251022    gcc-11.5.0
+xtensa                randconfig-002-20251022    gcc-9.5.0
 
-Andy would like to block consumer driver conversions from gpiod to
-reset_control API (3) while the reset-gpio driver only works on OF
-platforms.
-
-Please correct me if and where I misunderstood.
-
-I think fwnode conversion of the reset controller framework core is a
-good idea, I'd just like to see a use case accompanying the conversion.
-It seems like enabling the reset-gpio driver to be used on non-OF
-platforms could be that. Andy, do you have an actual case in mind?
-
-Certainly dropping the gpiod reset handling from consumer drivers
-should not be done while it introduces regressions.
-
-regards
-Philipp
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
