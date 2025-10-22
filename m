@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-18085-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18086-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26CEBFBDDD
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 14:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 810EDBFC153
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 15:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D0BE403B7A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 12:32:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9556A62514C
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 13:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FAC340A51;
-	Wed, 22 Oct 2025 12:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB2534D4CD;
+	Wed, 22 Oct 2025 12:58:48 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC7732E142;
-	Wed, 22 Oct 2025 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8362F34CFC4;
+	Wed, 22 Oct 2025 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761136314; cv=none; b=dNVdr69rJ+vkpto5YIYTA2k6GpQDPmUt0HcLqMsnnKiggk7GBFQj/QdKLJ7yPBqy1k2miye8QFHWLJqdrxIMIZM6qhqf9doMge2Ku+/P4SeXURdUSsDeOn9Y2Q/4v6Aqp1TaKq2Hh9jfiguhCqqdcM82llb1R1NCHVqmfLcE2UE=
+	t=1761137928; cv=none; b=ahRu4IOzwYC4hTesemkhiQhwlpaGPW6sfkdGEBIY5AzSBzdModXjigbsXKd9lHvTN5lrWLLJg4NszXoZcnoBgHPtsf1LyPSeAl+QdZr0qWlsrCEbpLBB1xCSIKLullQD5Nyvj9hTLg2uWxpP1TwezNdQfdhrrkhzg2w6xqzFD/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761136314; c=relaxed/simple;
-	bh=MteqNTWmwdipz8GKr3klzBPnQjl/Q+Wgw1Tgv4va9ao=;
+	s=arc-20240116; t=1761137928; c=relaxed/simple;
+	bh=l/bVXGTOuH/P3gATCnbv+Ywy5GgZCkt/pyPSy5TEh6A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HeRhb5fXqDN1lU+iQ1bYQDFLPzImdd5OMM0VdQLOq6RpPuC523QoXzZHbm5txV0IW7em354jjICwuj6XilGuKx543RctXaQvg69SDCIfHjRv+TNJgKObrgRnpmb2AgP9tQ1DlNZIbyhiCLVbQx4jhEXaORv3sp8KMccwvrmRhFw=
+	 In-Reply-To:Content-Type; b=VdSWeklJvfeUqWBDcI2yxvoaw52MoyXjzKalyCHg8hDxuAi6GxyujzUSEy4sK8xoytp0BHf5nLJdB2Nz4FjeeInyCLh0PMbl0kzCiUeZTAuvPa12Bu1VbITPW0ufnm86VQSa40Fym4KHLdZ1eJQP+KdPpxHIhX+mlArvkLIAUGk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7DA91063;
-	Wed, 22 Oct 2025 05:31:42 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0871B3F63F;
-	Wed, 22 Oct 2025 05:31:45 -0700 (PDT)
-Message-ID: <1a1a3522-313a-46e7-bc13-fcbbd9ccf81f@arm.com>
-Date: Wed, 22 Oct 2025 13:31:44 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D1C7E1063;
+	Wed, 22 Oct 2025 05:58:37 -0700 (PDT)
+Received: from [172.27.251.126] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A177C3F59E;
+	Wed, 22 Oct 2025 05:58:38 -0700 (PDT)
+Message-ID: <50a8cc38-810b-4bea-9a73-2463a6160b9f@arm.com>
+Date: Wed, 22 Oct 2025 07:58:36 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,7 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 26/29] arm_mpam: Use long MBWU counters if supported
+Subject: Re: [PATCH v3 04/29] ACPI / PPTT: Add a helper to fill a cpumask from
+ a cache_id
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
@@ -61,114 +62,179 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Gavin Shan <gshan@redhat.com>
+ Danilo Krummrich <dakr@kernel.org>, Gavin Shan <gshan@redhat.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
- <20251017185645.26604-27-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
+ <20251017185645.26604-5-james.morse@arm.com>
 Content-Language: en-US
-In-Reply-To: <20251017185645.26604-27-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20251017185645.26604-5-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi James,
+Hi,
 
-On 10/17/25 19:56, James Morse wrote:
-> From: Rohit Mathew <rohit.mathew@arm.com>
+This is largely looking pretty solid, but..
+
+
+On 10/17/25 1:56 PM, James Morse wrote:
+> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
 > 
-> Now that the larger counter sizes are probed, make use of them.
+> The driver needs to know which CPUs are associated with the cache.
+> The CPUs may not all be online, so cacheinfo does not have the
+> information.
 > 
-> Callers of mpam_msmon_read() may not know (or care!) about the different
-> counter sizes. Allow them to specify mpam_feat_msmon_mbwu and have the
-> driver pick the counter to use.
+> Add a helper to pull this information out of the PPTT.
 > 
-> Only 32bit accesses to the MSC are required to be supported by the
-> spec, but these registers are 64bits. The lower half may overflow
-> into the higher half between two 32bit reads. To avoid this, use
-> a helper that reads the top half multiple times to check for overflow.
-> 
-> Signed-off-by: Rohit Mathew <rohit.mathew@arm.com>
-> [morse: merged multiple patches from Rohit, added explicit counter selection ]
+> CC: Rohit Mathew <Rohit.Mathew@arm.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 > Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 > ---
 > Changes since v2:
->  * Removed mpam_feat_msmon_mbwu as a top-level bit for explicit 31bit counter
->    selection.
->  * Allow callers of mpam_msmon_read() to specify mpam_feat_msmon_mbwu and have
->    the driver pick a supported counter size.
->  * Rephrased commit message.
+>   * Removed stray cleanup useage in preference for acpi_get_pptt().
+>   * Removed WARN_ON_ONCE() for symmetry with other helpers.
+>   * Dropped restriction on unified caches.
 > 
 > Changes since v1:
->  * Only clear OFLOW_STATUS_L on MBWU counters.
+>   * Added punctuation to the commit message.
+>   * Removed a comment about an alternative implementaion.
+>   * Made the loop continue with a warning if a CPU is missing from the PPTT.
 > 
 > Changes since RFC:
->  * Commit message wrangling.
->  * Refer to 31 bit counters as opposed to 32 bit (registers).
+>   * acpi_count_levels() now returns a value.
+>   * Converted the table-get stuff to use Jonathan's cleanup helper.
+>   * Dropped Sudeep's Review tag due to the cleanup change.
 > ---
->  drivers/resctrl/mpam_devices.c | 134 ++++++++++++++++++++++++++++-----
->  1 file changed, 116 insertions(+), 18 deletions(-)
+>   drivers/acpi/pptt.c  | 64 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/linux/acpi.h |  6 +++++
+>   2 files changed, 70 insertions(+)
 > 
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index f4d07234ce10..c207a6d2832c 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -897,6 +897,48 @@ struct mon_read {
-[...]
-> +static void mpam_msc_zero_mbwu_l(struct mpam_msc *msc)
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 50c8f2a3c927..2f86f58699a6 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -985,3 +985,67 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>   
+>   	return -ENOENT;
+>   }
+> +
+> +/**
+> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+> + *					   specified cache
+> + * @cache_id: The id field of the cache
+> + * @cpus: Where to build the cpumask
+> + *
+> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+> + * to be found even if the CPUs are offline.
+> + *
+> + * The PPTT table must be rev 3 or later,
+> + *
+> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
+> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
+> + */
+> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 > +{
-> +	mpam_mon_sel_lock_held(msc);
+> +	int level, cpu;
+> +	u32 acpi_cpu_id;
+> +	struct acpi_pptt_cache *cache;
+> +	struct acpi_table_header *table;
+> +	struct acpi_pptt_cache_v1 *cache_v1;
+> +	struct acpi_pptt_processor *cpu_node;
 > +
-> +	WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz);
-> +	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
+> +	cpumask_clear(cpus);
 > +
-> +	__mpam_write_reg(msc, MSMON_MBWU_L, 0);
-> +	__mpam_write_reg(msc, MSMON_MBWU_L + 4, 0);
-> +}
+> +	table = acpi_get_pptt();
+> +	if (!table)
+> +		return -ENOENT;
 > +
-[...]
-> @@ -978,10 +1027,15 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
->  		mpam_write_monsel_reg(msc, CSU, 0);
->  		mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
->  		break;
-> -	case mpam_feat_msmon_mbwu:
-> +	case mpam_feat_msmon_mbwu_44counter:
-> +	case mpam_feat_msmon_mbwu_63counter:
-> +		mpam_msc_zero_mbwu_l(m->ris->vmsc->msc);
-> +		fallthrough;
-> +	case mpam_feat_msmon_mbwu_31counter:
->  		mpam_write_monsel_reg(msc, CFG_MBWU_FLT, flt_val);
->  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
->  		mpam_write_monsel_reg(msc, MBWU, 0);
+> +	if (table->revision < 3)
+> +		return -ENOENT;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+> +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+> +		if (!cpu_node)
+> +			continue;
+> +
+> +		/* Start at 1 for L1 */
+> +		level = 1;
+> +		cache = acpi_find_any_type_cache_node(table, acpi_cpu_id, level,
+> +						      &cpu_node);
+> +		while (cache) {
+> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> +						cache, sizeof(*cache));
 
-Already zeroed if it's a long counter.
+Is the core acpi definition in actbl2.h correct? Shouldn't it be 
+something along the lines of:
 
-> +
->  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
->  
->  		mbwu_state = &m->ris->mbwu_state[m->ctx->mon];
-[...]
-> +static enum mpam_device_features mpam_msmon_choose_counter(struct mpam_class *class)
-> +{
-> +	struct mpam_props *cprops = &class->props;
-> +
-> +	if (mpam_has_feature(mpam_feat_msmon_mbwu_44counter, cprops))
-> +		return mpam_feat_msmon_mbwu_44counter;
+struct acpi_pptt_cache_v1 {
+  struct acpi_subtable_header header;
+  u16 reservedd;
+  u32 flags;
+  u32 next_level_of_cache;
+  u32 size;
+  u32 number_of_sets;
+  u8 associativity;
+  u8 attributes;
+  u16 lines_size;
+  u32 cache_id;
+}
 
-This should check the longest counter first.
 
-> +	if (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, cprops))
-> +		return mpam_feat_msmon_mbwu_63counter;
-> +
-> +	return mpam_feat_msmon_mbwu_31counter;
-> +}
-> +
--- 
+Then that solves the detection of the additional field problem correctly 
+because the length (24 vs 28) of the subtable then tells you which 
+version your dealing with. (and goes back to why much of this is coded 
+to use ACPI_ADD_PTR rather than structure+ logic.)
+
+
 Thanks,
 
-Ben
+
+
+
+
+
+> +			if (!cache)
+> +				continue;
+> +
+> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> +						cache, sizeof(*cache));
+> +
+> +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
+> +			    cache_v1->cache_id == cache_id)
+> +				cpumask_set_cpu(cpu, cpus);
+> +
+> +			level++;
+> +			cache = acpi_find_any_type_cache_node(table, acpi_cpu_id,
+> +							      level, &cpu_node);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index be074bdfd4d1..a9dbacabdf89 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1543,6 +1543,7 @@ int find_acpi_cpu_topology_package(unsigned int cpu);
+>   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+>   void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
+>   int find_acpi_cache_level_from_id(u32 cache_id);
+> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus);
+>   #else
+>   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>   {
+> @@ -1570,6 +1571,11 @@ static inline int find_acpi_cache_level_from_id(u32 cache_id)
+>   {
+>   	return -ENOENT;
+>   }
+> +static inline int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id,
+> +						      cpumask_t *cpus)
+> +{
+> +	return -ENOENT;
+> +}
+>   #endif
+>   
+>   void acpi_arch_init(void);
 
 
