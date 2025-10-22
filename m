@@ -1,107 +1,143 @@
-Return-Path: <linux-acpi+bounces-18070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B282FBFA26C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 08:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E69BFA57E
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 08:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 244E41A010A5
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 06:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59F52189B06B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Oct 2025 06:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0BB2EAB6B;
-	Wed, 22 Oct 2025 06:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF102F2608;
+	Wed, 22 Oct 2025 06:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C9GE4h47"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FTwnnr0N"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5DB74C14
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Oct 2025 06:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FA2246BB0;
+	Wed, 22 Oct 2025 06:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761112966; cv=none; b=GcnU5wPUHI85finef68BX5Tc7GqDkFMzZEKSPjw8VUi1sJT7zM2yBBOqoBLRWu+ETlzzzOd4JvNYlWDSAyZ9hVi4fwXZQFrpLSRklyRkjGfrD3rFPxDYRy3L3E0CrDGqwypI0VxRCK6uPOnq9RhPht7EC6V0fSvpeuYnlY7KP6o=
+	t=1761116007; cv=none; b=g0/B1qe88X9apBs7tZJkGdp58z8m+xh/G1BIB6cs+VzJgYgcIWHKZXZEpuwK+GSXU/RQRoMXzlMzfuLsScVQRL1hOfiqwBGIgSjaeREa0tmI8be/FsU6rOZ5dQpQwRLUA67G7+BHS7boT1LVuc3EAlZ39VTubqUkM+039KBBBsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761112966; c=relaxed/simple;
-	bh=11qJWsQMMn3TdIr0k15HikUUDbffopUjVoEsdGswtAw=;
+	s=arc-20240116; t=1761116007; c=relaxed/simple;
+	bh=8NQWyS1IcbxGD4Id05IwMMBC7+tBGiBE2LzZjTde18A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZOCwWGhwwHC1ySfAYqZVK5vCrcBz0pPmdhjRLfxSdnu3mIjSVPgYkX2YR95C0OMDKCiVBqEYogEj+5LuD8+s5XyF0dm6OGN1jazxYip4tpNd+k9ew0nDyLrOGCoaEDVhMQz3Piyosfe/l8jxRyhHJLTPa6N8mb7HlWkx3/jmuFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C9GE4h47; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <edef2e95-d270-41cf-9ba5-390688fe2c15@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761112961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F7S0a0ENWg8lddRXks1OBpnlzn8V2G9Xj3LbzbyhYu0=;
-	b=C9GE4h47xf8eUq38Ggzjdwwp72ZeaCrXlZTaZiVAkVzJqFp3PncF7sw/X4AEQq5P5r0CVP
-	Ez68Z/O9XDhdiTfKJWR/rxGDJgjgfl0+a+OlrfUq2bX9Wzc4I1PM/2AXlSaEaQ3viwZKP1
-	XJQlDkCOJ1wXhzB5Ga/egHskbeaWNmk=
-Date: Wed, 22 Oct 2025 14:02:19 +0800
+	 In-Reply-To:Content-Type; b=Mhvuna6ZU/tLDj6VNJhGFgqFG8lsz5WPteRFAMujMZtXRe39nBKMumE1/jgEy7cCjDZGrnM/epp9ouVo1z+D3krAe3l+UuQqnASevw4gTE/IIBF6b6mgMEM3CtBWx40W4h6nGHmTvwlDmG0zISWzeL05vr+X+z0O2tMQMuEkv84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FTwnnr0N; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761115995; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=lQL6SeVGx4c1D991//YZKaa0cyRKwryW27KFK0xeilY=;
+	b=FTwnnr0N+YHQ/tBs+S2lYWBtSpcJnr6LuoLAShI4lBmq5lkFgBSl80WWxUegvi+GazI3oEmVWPqY0ko+eEjvcZkSdpmWwnY9aXHGxTY/SArSdPzcCEt2cIvWDM+GTAGmXD4vsoZEs2ktnFkTw9tyBFS/k9XFA9K3hxvIDnzbXcg=
+Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqlkw1q_1761115990 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Oct 2025 14:53:12 +0800
+Message-ID: <81b1f1c6-4308-41bb-9f65-f158d30f27bd@linux.alibaba.com>
+Date: Wed, 22 Oct 2025 14:53:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with
- `pin_init::zeroed`
-To: Siyuan Huang <huangsiyuan@kylinos.cn>, rafael@kernel.org,
- lenb@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org
-Cc: linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] mm: Change ghes code to allow poison of non-struct
+ pfn
+To: "Luck, Tony" <tony.luck@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+ "ankita@nvidia.com" <ankita@nvidia.com>,
+ "aniketa@nvidia.com" <aniketa@nvidia.com>, "Sethi, Vikram"
+ <vsethi@nvidia.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "mochs@nvidia.com" <mochs@nvidia.com>,
+ "skolothumtho@nvidia.com" <skolothumtho@nvidia.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "david@redhat.com" <david@redhat.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
+ "rafael@kernel.org" <rafael@kernel.org>,
+ "guohanjun@huawei.com" <guohanjun@huawei.com>,
+ "mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org"
+ <lenb@kernel.org>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "alex@shazbot.org" <alex@shazbot.org>
+Cc: "cjia@nvidia.com" <cjia@nvidia.com>,
+ "kwankhede@nvidia.com" <kwankhede@nvidia.com>,
+ "targupta@nvidia.com" <targupta@nvidia.com>,
+ "zhiw@nvidia.com" <zhiw@nvidia.com>, "dnigam@nvidia.com"
+ <dnigam@nvidia.com>, "kjaju@nvidia.com" <kjaju@nvidia.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "Smita.KoralahalliChannabasappa@amd.com"
+ <Smita.KoralahalliChannabasappa@amd.com>,
+ "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20251021102327.199099-1-ankita@nvidia.com>
+ <20251021102327.199099-3-ankita@nvidia.com>
+ <68f7bf2d6d591_1668f310061@iweiny-mobl.notmuch>
+ <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-
-On 10/20/25 11:12, Siyuan Huang wrote:
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
->
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
-> ---
->   rust/kernel/acpi.rs | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-> index 7ae317368b00..f9488be9249c 100644
-> --- a/rust/kernel/acpi.rs
-> +++ b/rust/kernel/acpi.rs
-> @@ -42,9 +42,7 @@ pub const fn new(id: &'static CStr) -> Self {
->               "ID exceeds 16 bytes"
->           );
->           let src = id.as_bytes_with_nul();
-> -        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
-> -        // SAFETY: FFI type is valid to be zero-initialized.
-> -        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-> +        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
->           let mut i = 0;
->           while i < src.len() {
->               acpi.id[i] = src[i];
+Content-Transfer-Encoding: 8bit
 
 
-Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
 
--- 
-Thanks,
-        Kunwu Chan.
+在 2025/10/22 01:19, Luck, Tony 写道:
+>>>      pfn = PHYS_PFN(physical_addr);
+>>> -   if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
+>>
+>> Tony,
+>>
+>> I'm not an SGX expert but does this break SGX by removing
+>> arch_is_platform_page()?
+>>
+>> See:
+>>
+>> 40e0e7843e23 ("x86/sgx: Add infrastructure to identify SGX EPC pages")
+>> Cc: Tony Luck <tony.luck@intel.com>
+>>
+> Ira,
+> 
+> I think this deletion makes the GHES code always call memory_failure()
+> instead of bailing out here on "bad" page frame numbers.
+> 
+> That centralizes the checks for different types of memory into
+> memory_failure().
+> 
+> -Tony
 
+Hi, Tony, Ankit and Ira,
+
+Finally, we're seeing other use cases that need to handle errors for
+non-struct page PFNs :)
+
+IMHO, non-struct page PFNs are common in production environments.
+Besides NVIDIA Grace GPU device memory, we also use reserved DRAM memory
+managed by a separate VMEM allocator. This VMEM allocator is designed
+for virtual machine memory allocation, significantly reducing kernel
+memory management overhead by minimizing page table maintenance.
+
+To enable hardware error isolation for these memory pages, we've already
+removed this sanity check internally. This change makes memory_failure()
+the central point for handling all memory types, which is a much cleaner
+architecture.
+
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+
+Thanks.
+Shuai
 
