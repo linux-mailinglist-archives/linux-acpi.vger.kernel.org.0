@@ -1,93 +1,76 @@
-Return-Path: <linux-acpi+bounces-18155-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18156-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AE2C01E51
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 16:50:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A92C01F84
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 17:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E29D93BBD0E
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 14:41:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11633AE57A
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 15:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025DD32E6A7;
-	Thu, 23 Oct 2025 14:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86F9332EAB;
+	Thu, 23 Oct 2025 15:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0Md1/zZu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhElHD9w"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A7232D451
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 14:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35AD225791
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 15:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761230487; cv=none; b=qn5Mllm8MNzSLiBbXFhFb17tY6r74gT6CEyvn52w9KG92rRCEB1o80dUlAbDzby7/VloR4j+qX2KpxVHEmT++W9vmLFK878VFQED7g282sEYlKFWbUD253gLc6eqcRRfXkmDZ8Ap9TZGDZex3MDaPNNZzP4wiwvrFCDeGU3Fa1c=
+	t=1761231611; cv=none; b=oL+gjxJd2rvwcQrOXyISl9NQJc0K1AWe+5gOeE2+Cfd3F9Vslo3gEcHP1f5/YLfNWKjNi58ROk4wFVCZ2jZo/dhgYXdWaG8EJqbbVcatn8K41V+hQZmdcKtxWnUViMwbfTOrhp0i5E9j5/85Z6e9tIG4EQN22WdrLsNkoKGzEDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761230487; c=relaxed/simple;
-	bh=Y9/1BzztPmNXuHFwGnjGAxY+D28zd6qccSzM/BYo1Tc=;
+	s=arc-20240116; t=1761231611; c=relaxed/simple;
+	bh=4D2jOJRxSF4dEQgBcZy8n0Oy2bxBObeKMoSrbVEDkuA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A3t7HY3HsSUK6S1xj3S993vTl3kTuy0p9sOS3HWmtLM216bnyOH+AXCP9LBhbbHwjQjLLZV++NOyh9BX5M/K5WpzH5HPryuqxMvjxjKVpY2BHVZv6B7QbtTPlMrU1P2YMD9LQUesDGs3ZU15PdwqC+g6uFs1E/4YWpNx3xQUeoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0Md1/zZu; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63c21467e5bso1624318a12.0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 07:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761230483; x=1761835283; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xaEXjkuohH+KmJn3E+dIuGaKSZVXQrhbRhs6LOkPta0=;
-        b=0Md1/zZu61Ejqbz1+JjJ0GWXiOQ51W8AM0fzGF7g5qKPFDCEZ21xskk0Z+4AXXedyN
-         jC+0FfplzpaDrmqfQhU0HDwLPbrQ7vwOnMxoBBmtUQAalKwR3Hi8bLHUDKFbNAGkO/KC
-         1SWqBuo1FElHckXULx4LZ+/Ymolk8SFr6eGWuQ9lpNssAhEs/E/6Vtt9RkSKPiz8hljt
-         EUCW8JRhkAWgELjWyK6TkSkVL80cCLKyrFQsFMKVGx9dZVOjNqdTwgtxp8Fh5TEn0VlO
-         uoqLmujy+m6tJfTxCjAao3OX+R30MJt2S+YRQBQeWdEfvesE6NHXVbuNBDg7fH55lWoF
-         /wxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761230483; x=1761835283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xaEXjkuohH+KmJn3E+dIuGaKSZVXQrhbRhs6LOkPta0=;
-        b=uAzCmiyCjXqEDjj6D4tgont6rU1B0F0HnWXYKNSTgVv3D/Ls8WPVmZGQTbvEYpNV9R
-         nPQW3z/e8waBls12PIgV6A2YQTVdUWyQEwJyT7NUwhtR1Mjvffmb0Y3NBZKwxj75uJU3
-         o6uYXG0Tw/oRMmFJoBzk4y0QFkC05BzO34kjzv82sveVKJViUCKohdcyWSFR/qRXpfP3
-         Iax780Usoh0JAlUBGttCCJYpcJ7RF71G9dKzXhisvYR1KzpbA7DziqcPaYXIFm4laUEK
-         hV4/0awcD7KQYkaf8XhqevBYYvIJY4P2opfwfZb2FTciLoAdyqQyFohzXstziI9wkvvY
-         XhiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWs42M66cmENs1+XPnBkYAc/ICTq/ZcrqBmowLK7uAb41bvXIsnruUATP+vC+W9wtyBduUTcpM1A3Ba@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvhP8QonER7VRcD4hAiAA7NnbPUVjXwT9HCTjK4sGMCJZ0LeXo
-	VsTPavLH7qem339dVYT9MKS3ZTH2Z3lGu8HWcq81c8yr6aZFGvch99AX0qAs4mGHkTU1Y6nZ6qD
-	x5R8+Y4nXa5C1zdgknXUzLsw3wCA8KVVCKSoZSOCe
-X-Gm-Gg: ASbGncv+3WcgHnCcFPlJ2A6J33tpuu350z45PDI/8Zv+hErn7dPCu5eXEV2LDBQLvMU
-	6NfI+mhcf6LclzYPQu+5x9aAssiKRXrPnH9mBypNd7OeGiTNSuh1J3Da3GunkfHuznmknCnGdRT
-	7PEYxmudOMl52v8f1SSsWWECsg3v8FTfUylo700ONiv3+ZPiGUiF79fFvj8OXnmvPnlCS8PHl4X
-	ff1aJK8hl8MCflPkXlBxWJE7ADaerWAxACfLE3YDqE58o+kI5i2lHpl2Kg66OiwC2uURI85
-X-Google-Smtp-Source: AGHT+IHmhFuczXJUmW7c3vl0wCNckC1qUDj9DOSReH7wwga8TRX10XBNkjoga3GNxG38+O/PkU4kcMH4C4EtJkwXoRw=
-X-Received: by 2002:a05:6402:2686:b0:639:fd12:65a2 with SMTP id
- 4fb4d7f45d1cf-63c1f6459b1mr25694183a12.15.1761230483142; Thu, 23 Oct 2025
- 07:41:23 -0700 (PDT)
+	 To:Cc:Content-Type; b=segfzajDGMOiXf8DLnFrRtCB++zL2IH3Zx7jR2rtjvtn8JMzeJ9CyoPiLmSOgmNylMmGYB16IFBC1AbTaIK/xV1WIuyxT3Q4EDJWcfhioMqQJo72dvYsDTjrx0xyYuL56XSBC+ndNSLpxDq1erigLZw3P6Ikw52dHNp82R8JY0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhElHD9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78593C19421
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 15:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761231611;
+	bh=4D2jOJRxSF4dEQgBcZy8n0Oy2bxBObeKMoSrbVEDkuA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZhElHD9w+eEOeLILoWpl/ROaHfan6lMyEhMOFJb+7njnsEVxNuiwnbq2+vlhbIjum
+	 Dxz2wY8NQ75RPtfc68s+M99moe/y01nbL2SweJHao0HWoXSl5aLi9tZohr/LAWw3Nl
+	 aXwau7DwJQ2MbJZzl17/PgDpunbiFjPrp7Dtz8aGfypJpCGC+sKC3BZbtvRPenkELN
+	 60U+gsLcnENM35oLmNwurzuTGMBFh6WQKjXLxNdzjCsWz5qur7HfN+bywhjfMuJ2+b
+	 ND/ejimLyV67FWEg5zB0GN41vmTpFmqvuqeUH813umtuT3hDHgPYmQtnQgy4Lg/llS
+	 L0IZK0NJJCIHQ==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-443a9ae4639so469398b6e.1
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 08:00:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXPX5pjM7LPWoVeMW5TARhzKhbRNk8gIFGsSaEsp3mJlhz9lHr/Hg3ZgOdQUoSG8gais+UObQ/sMXs9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9Zkj9l5hziWbz653Mu8gZ5NgbsPr18Oi6BK45JsBZ/w4fffDE
+	Le7ALZo+v6j/5eMM5jsOTYzxC8FsRQpmgr4aETi4UZgtDsrAG5uQZozr4twMVf8UENZsNotTF27
+	i/L1KY0X+xx4k3lBX/Y0L0a38p7lh7DM=
+X-Google-Smtp-Source: AGHT+IHa1e0HiSHmvwXRumDdY7jZn5K3wnKO4MT9rWI/sxjE/u3U28hEj9Jhooq5nM+ZxTxJW/DdLo+z7u3biFECeGs=
+X-Received: by 2002:a05:6808:6909:b0:438:37eb:62c7 with SMTP id
+ 5614622812f47-443a2e2985fmr11783735b6e.21.1761231610537; Thu, 23 Oct 2025
+ 08:00:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251002113404.3117429-1-srosek@google.com> <20251002113404.3117429-3-srosek@google.com>
- <CAJZ5v0iQToOkedruYqsowSm8=fxpnyJf86JJHB36E8+aCSZ5Hw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iQToOkedruYqsowSm8=fxpnyJf86JJHB36E8+aCSZ5Hw@mail.gmail.com>
-From: =?UTF-8?Q?S=C5=82awomir_Rosek?= <srosek@google.com>
-Date: Thu, 23 Oct 2025 16:41:12 +0200
-X-Gm-Features: AS18NWCFYP5vhu6QggBNtBcvu36fQ1kLuqVb3qOI__iGzdkkrdPRbBM5XNZN1OI
-Message-ID: <CAF3aWvFSomq+cm2sj+KjkYw=WODsrwH-VLDL=yOc6o9dqc5hWA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] ACPI: DPTF: Move INT340X device IDs to header
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>, 
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, AceLan Kao <acelan.kao@canonical.com>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Zhang Rui <rui.zhang@intel.com>, 
+References: <20251002113404.3117429-1-srosek@google.com> <20251002113404.3117429-2-srosek@google.com>
+ <CAJZ5v0ho8MhU8jj=YMyDKdTQWZt24LjoCaoEgJRsdi3YykkBBQ@mail.gmail.com> <CAF3aWvGdvHxA_fJm1EE2byL0LQUC3K2LGeDLxr3EpRzSQ=3Waw@mail.gmail.com>
+In-Reply-To: <CAF3aWvGdvHxA_fJm1EE2byL0LQUC3K2LGeDLxr3EpRzSQ=3Waw@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Oct 2025 16:59:59 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jPJqpX5xJX0j5OC21sp093O_B+jsL1mSBztR1wORV0Fg@mail.gmail.com>
+X-Gm-Features: AS18NWBXAE19BSgci90ZeQZmyqlqzpPybg5SJsR149yPoAo8jLxZSgIzaDlfpfM
+Message-ID: <CAJZ5v0jPJqpX5xJX0j5OC21sp093O_B+jsL1mSBztR1wORV0Fg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] ACPI: DPTF: Ignore SoC DTS thermal while scanning
+To: =?UTF-8?Q?S=C5=82awomir_Rosek?= <srosek@google.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
+	AceLan Kao <acelan.kao@canonical.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.com>, 
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Tomasz Nowicki <tnowicki@google.com>, 
 	Stanislaw Kardach <skardach@google.com>, Michal Krawczyk <mikrawczyk@google.com>, 
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
@@ -95,407 +78,132 @@ Cc: Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 22, 2025 at 8:46=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
+On Thu, Oct 23, 2025 at 4:36=E2=80=AFPM S=C5=82awomir Rosek <srosek@google.=
+com> wrote:
 >
-> On Thu, Oct 2, 2025 at 1:34=E2=80=AFPM Slawomir Rosek <srosek@google.com>=
- wrote:
+> On Wed, Oct 22, 2025 at 8:33=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.=
+org> wrote:
 > >
-> > The ACPI INT340X device IDs are shared between the DPTF core
-> > and thermal drivers, thus they are moved to the common header.
+> > On Thu, Oct 2, 2025 at 1:34=E2=80=AFPM Slawomir Rosek <srosek@google.co=
+m> wrote:
+> > >
+> > > The Intel SoC DTS thermal driver on Baytrail platform uses IRQ 86 for
+> > > critical overheating notification. The IRQ 86 is described in the _CR=
+S
+> > > control method of INT3401 device, thus Intel SoC DTS thermal driver
+> > > requires INT3401 device to be enumerated.
 > >
-> > Signed-off-by: Slawomir Rosek <srosek@google.com>
+> > I don't think that the specific interrupt number is relevant here.  It
+> > would be sufficient to say something like "The IRQ used by the Intel
+> > SoC DTS thermal device for critical overheating notification is listed
+> > in _CRS of device INT3401 which therefore needs to be enumerated for
+> > Intel SoC DTS thermal to work."
 >
-> I've actually started to wonder if int340x_thermal_handler is needed at a=
-ll.
+> Above text is copied from the original change which is linked below.
+> I will rephrase it as you suggested.
 >
-> It just creates a platform device if the given ACPI device ID is in
-> its list,
-
-That's true. It creates platform device for the given ACPI device ID,
-but only if CONFIG_INT340X_THERMAL is enabled.
-
-> but acpi_default_enumeration() would do that too with the
-> caveat that it would also be done for CONFIG_INT340X_THERMAL unset.
-
-Not exactly. scan handler returns ret=3D1, so device is marked as enumerate=
-d
-https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/acpi/scan.c#L2314
-
-> That should not be a problem though because if CONFIG_INT340X_THERMAL,
-> there are no drivers that will bind to those platform devices, so the
-> net outcome should be the same.
-
-If CONFIG_INT340X_THERMAL is not set and there are no drivers to attach
-to platform devices and int340x_thermal_handler is removed then you are
-right, acpi_default_enumeration() will enumerate ACPI bus anyway and
-create platform devices for all ACPI device IDs. However, for me it looks
-like it was intentional to prevent this behaviour unless INT340X drivers
-are "present" in the system (were enabled for build so should be).
-I am not sure how DPTF works and what may happen if platform devices are
-visible in sysfs while drivers are not loaded.
-
+> >
+> > > Since dependency on INT3401 device is unrelated to DPTF the IS_ENABLE=
+()
+> > > macro is removed from ACPI DPTF INT340X scan handler, instead Kconfig
+> > > is updated to ensure proper enumeration of INT3401 device.
+> >
+> > It is not entirely clear what happens in this patch after reading the
+> > above paragraph.
+> >
+> > I would rather continue the previous thought by saying that the
+> > enumeration happens by binding the int3401_thermal driver to the
+> > INT3401 platform device.  Thus CONFIG_INT340X_THERMAL is in fact
+> > necessary for enumerating it, so checking CONFIG_INTEL_SOC_DTS_THERMAL
+> > in int340x_thermal_handler_attach() is pointless and INT340X_THERMAL
+> > may as well be selected by INTEL_SOC_DTS_THERMAL.
 >
-> Thus I'm wondering if the way to go might be to drop
-> int340x_thermal_handler and simply keep the device IDs in the drivers
-> that use them for device binding.
-
-Even better. If it's not required for DPTF to prevent enumeration
-on the platform bus I can simply remove the scan handler.
-
+> Sure, I will rephrase it to clearly describe what happens here.
 >
-> > ---
-> >  drivers/acpi/dptf/dptf_power.c                | 18 +----
-> >  drivers/acpi/dptf/int340x_thermal.c           | 51 +++-----------
-> >  drivers/acpi/fan.h                            | 10 +--
-> >  drivers/acpi/int340x_thermal.h                | 68 +++++++++++++++++++
-> >  .../intel/int340x_thermal/int3400_thermal.c   | 10 +--
-> >  .../intel/int340x_thermal/int3401_thermal.c   |  3 +-
-> >  .../intel/int340x_thermal/int3402_thermal.c   |  3 +-
-> >  .../intel/int340x_thermal/int3403_thermal.c   | 10 +--
-> >  .../intel/int340x_thermal/int3406_thermal.c   |  3 +-
-> >  9 files changed, 90 insertions(+), 86 deletions(-)
-> >  create mode 100644 drivers/acpi/int340x_thermal.h
 > >
-> > diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_po=
-wer.c
-> > index 776914f31b9e..d7c59f016083 100644
-> > --- a/drivers/acpi/dptf/dptf_power.c
-> > +++ b/drivers/acpi/dptf/dptf_power.c
-> > @@ -8,6 +8,7 @@
-> >  #include <linux/module.h>
-> >  #include <linux/acpi.h>
-> >  #include <linux/platform_device.h>
-> > +#include "../int340x_thermal.h"
+> > > Fixes: 014d9d5d0cc1 ("ACPI/int340x_thermal: enumerate INT3401 for Int=
+el SoC DTS thermal driver")
 > >
-> >  /*
-> >   * Presentation of attributes which are defined for INT3407 and INT353=
-2.
-> > @@ -224,22 +225,7 @@ static void dptf_power_remove(struct platform_devi=
-ce *pdev)
-> >  }
+> > Why do you want this tag to be added?
+>
+> Just for context. The IS_ENABLE is added to the scan handler in 014d9d5d0=
+cc1
+> and this change is about to fix that. I can remove the tag if it's not ne=
+eded.
+
+I don't see a functional issue with this, it is just dead code AFAICS.
+As a rule, Fixes: tags are not added to patches removing dead code.
+
 > >
-> >  static const struct acpi_device_id int3407_device_ids[] =3D {
-> > -       {"INT3407", 0},
-> > -       {"INT3532", 0},
-> > -       {"INTC1047", 0},
-> > -       {"INTC1050", 0},
-> > -       {"INTC1060", 0},
-> > -       {"INTC1061", 0},
-> > -       {"INTC1065", 0},
-> > -       {"INTC1066", 0},
-> > -       {"INTC106C", 0},
-> > -       {"INTC106D", 0},
-> > -       {"INTC10A4", 0},
-> > -       {"INTC10A5", 0},
-> > -       {"INTC10D8", 0},
-> > -       {"INTC10D9", 0},
-> > -       {"INTC1100", 0},
-> > -       {"INTC1101", 0},
-> > +       ACPI_INT3407_DEVICE_IDS,
-> >         {"", 0},
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
-> > diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/in=
-t340x_thermal.c
-> > index 947fe50c2ef6..43afb6141b98 100644
-> > --- a/drivers/acpi/dptf/int340x_thermal.c
-> > +++ b/drivers/acpi/dptf/int340x_thermal.c
-> > @@ -9,63 +9,28 @@
-> >  #include <linux/acpi.h>
-> >  #include <linux/module.h>
+> > > Signed-off-by: Slawomir Rosek <srosek@google.com>
+> > > ---
+> > >  drivers/acpi/dptf/int340x_thermal.c | 7 +------
+> > >  drivers/thermal/intel/Kconfig       | 3 ++-
+> > >  2 files changed, 3 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/=
+int340x_thermal.c
+> > > index a222df059a16..947fe50c2ef6 100644
+> > > --- a/drivers/acpi/dptf/int340x_thermal.c
+> > > +++ b/drivers/acpi/dptf/int340x_thermal.c
+> > > @@ -11,10 +11,9 @@
+> > >
+> > >  #include "../internal.h"
+> > >
+> > > -#define INT3401_DEVICE 0X01
+> > >  static const struct acpi_device_id int340x_thermal_device_ids[] =3D =
+{
+> > >         {"INT3400"},
+> > > -       {"INT3401", INT3401_DEVICE},
+> > > +       {"INT3401"},
+> > >         {"INT3402"},
+> > >         {"INT3403"},
+> > >         {"INT3404"},
+> > > @@ -76,10 +75,6 @@ static int int340x_thermal_handler_attach(struct a=
+cpi_device *adev,
+> > >  {
+> > >         if (IS_ENABLED(CONFIG_INT340X_THERMAL))
+> > >                 acpi_create_platform_device(adev, NULL);
+> > > -       /* Intel SoC DTS thermal driver needs INT3401 to set IRQ desc=
+riptor */
+> > > -       else if (IS_ENABLED(CONFIG_INTEL_SOC_DTS_THERMAL) &&
+> > > -                id->driver_data =3D=3D INT3401_DEVICE)
+> > > -               acpi_create_platform_device(adev, NULL);
+> > >         return 1;
+> > >  }
+> > >
+> > > diff --git a/drivers/thermal/intel/Kconfig b/drivers/thermal/intel/Kc=
+onfig
+> > > index e0268fac7093..f9e275538e29 100644
+> > > --- a/drivers/thermal/intel/Kconfig
+> > > +++ b/drivers/thermal/intel/Kconfig
+> > > @@ -44,7 +44,8 @@ config INTEL_SOC_DTS_IOSF_CORE
+> > >
+> > >  config INTEL_SOC_DTS_THERMAL
+> > >         tristate "Intel SoCs DTS thermal driver"
+> > > -       depends on X86 && PCI && ACPI
+> > > +       depends on X86_64 && PCI && ACPI
 > >
-> > +#include "../int340x_thermal.h"
-> >  #include "../internal.h"
+> > AFAICS NET needs to be added to the dependency list above or selecting
+> > INT340X_THERMAL below may not actually cause it to be built.
+>
+> Right. Previously I tried to "select NET" (INTEL_SOC_DTS_THERMAL does not
+> depend on NET directly so it seemed to be more appropriate to me) but got
+> circular dependency error so I assumed it is ensured somehow. Now I check=
+ed
+> again and you are right, I was able to disable NET and get unmet dependen=
+cies.
+> I will add dependency on NET. Thanks
+
+The rule of thumb is that if you want A to select B, then they both
+need to depend on the same things.
+
 > >
-> >  static const struct acpi_device_id int340x_thermal_device_ids[] =3D {
-> > -       {"INT3400"},
-> > -       {"INT3401"},
-> > -       {"INT3402"},
-> > -       {"INT3403"},
-> > -       {"INT3404"},
-> > -       {"INT3406"},
-> > -       {"INT3407"},
-> > +       ACPI_INT3400_DEVICE_IDS,
-> > +       ACPI_INT3401_DEVICE_IDS,
-> > +       ACPI_INT3402_DEVICE_IDS,
-> > +       ACPI_INT3403_DEVICE_IDS,
-> > +       ACPI_INT3404_DEVICE_IDS,
-> > +       ACPI_INT3406_DEVICE_IDS,
-> > +       ACPI_INT3407_DEVICE_IDS,
-> >         {"INT3408"},
-> >         {"INT3409"},
-> >         {"INT340A"},
-> >         {"INT340B"},
-> > -       {"INT3532"},
-> > -       {"INTC1040"},
-> > -       {"INTC1041"},
-> > -       {"INTC1042"},
-> > -       {"INTC1043"},
-> > -       {"INTC1044"},
-> >         {"INTC1045"},
-> > -       {"INTC1046"},
-> > -       {"INTC1047"},
-> > -       {"INTC1048"},
-> >         {"INTC1049"},
-> > -       {"INTC1050"},
-> > -       {"INTC1060"},
-> > -       {"INTC1061"},
-> > -       {"INTC1062"},
-> > -       {"INTC1063"},
-> >         {"INTC1064"},
-> > -       {"INTC1065"},
-> > -       {"INTC1066"},
-> > -       {"INTC1068"},
-> > -       {"INTC1069"},
-> > -       {"INTC106A"},
-> >         {"INTC106B"},
-> > -       {"INTC106C"},
-> > -       {"INTC106D"},
-> > -       {"INTC10A0"},
-> > -       {"INTC10A1"},
-> > -       {"INTC10A2"},
-> >         {"INTC10A3"},
-> > -       {"INTC10A4"},
-> > -       {"INTC10A5"},
-> > -       {"INTC10D4"},
-> > -       {"INTC10D5"},
-> > -       {"INTC10D6"},
-> >         {"INTC10D7"},
-> > -       {"INTC10D8"},
-> > -       {"INTC10D9"},
-> > -       {"INTC10FC"},
-> > -       {"INTC10FD"},
-> > -       {"INTC10FE"},
-> >         {"INTC10FF"},
-> > -       {"INTC1100"},
-> > -       {"INTC1101"},
-> >         {"INTC1102"},
-> >         {""},
-> >  };
-> > diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> > index 8a28a72a7c6a..4015ac56c009 100644
-> > --- a/drivers/acpi/fan.h
-> > +++ b/drivers/acpi/fan.h
-> > @@ -11,16 +11,10 @@
-> >  #define _ACPI_FAN_H_
-> >
-> >  #include <linux/kconfig.h>
-> > +#include "int340x_thermal.h"
-> >
-> >  #define ACPI_FAN_DEVICE_IDS    \
-> > -       {"INT3404", }, /* Fan */ \
-> > -       {"INTC1044", }, /* Fan for Tiger Lake generation */ \
-> > -       {"INTC1048", }, /* Fan for Alder Lake generation */ \
-> > -       {"INTC1063", }, /* Fan for Meteor Lake generation */ \
-> > -       {"INTC106A", }, /* Fan for Lunar Lake generation */ \
-> > -       {"INTC10A2", }, /* Fan for Raptor Lake generation */ \
-> > -       {"INTC10D6", }, /* Fan for Panther Lake generation */ \
-> > -       {"INTC10FE", }, /* Fan for Wildcat Lake generation */ \
-> > +       ACPI_INT3404_DEVICE_IDS, \
-> >         {"PNP0C0B", } /* Generic ACPI fan */
-> >
-> >  #define ACPI_FPS_NAME_LEN      20
-> > diff --git a/drivers/acpi/int340x_thermal.h b/drivers/acpi/int340x_ther=
-mal.h
-> > new file mode 100644
-> > index 000000000000..854e4d3bb739
-> > --- /dev/null
-> > +++ b/drivers/acpi/int340x_thermal.h
-> > @@ -0,0 +1,68 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +/*
-> > + * The ACPI INT340X device IDs are shared between the DPTF core
-> > + * and thermal drivers.
-> > + */
-> > +
-> > +#ifndef _ACPI_INT340X_H_
-> > +#define _ACPI_INT340X_H_
-> > +
-> > +#define ACPI_INT3400_DEVICE_IDS        \
-> > +       {"INT3400"},    \
-> > +       {"INTC1040"},   \
-> > +       {"INTC1041"},   \
-> > +       {"INTC1042"},   \
-> > +       {"INTC1068"},   \
-> > +       {"INTC10A0"},   \
-> > +       {"INTC10D4"},   \
-> > +       {"INTC10FC"}
-> > +
-> > +#define ACPI_INT3401_DEVICE_IDS        \
-> > +       {"INT3401"}
-> > +
-> > +#define ACPI_INT3402_DEVICE_IDS        \
-> > +       {"INT3402"}
-> > +
-> > +#define ACPI_INT3403_DEVICE_IDS        \
-> > +       {"INT3403"},    \
-> > +       {"INTC1043"},   \
-> > +       {"INTC1046"},   \
-> > +       {"INTC1062"},   \
-> > +       {"INTC1069"},   \
-> > +       {"INTC10A1"},   \
-> > +       {"INTC10D5"},   \
-> > +       {"INTC10FD"}
-> > +
-> > +#define ACPI_INT3404_DEVICE_IDS        \
-> > +       {"INT3404", }, /* Fan */ \
-> > +       {"INTC1044", }, /* Fan for Tiger Lake generation */ \
-> > +       {"INTC1048", }, /* Fan for Alder Lake generation */ \
-> > +       {"INTC1063", }, /* Fan for Meteor Lake generation */ \
-> > +       {"INTC106A", }, /* Fan for Lunar Lake generation */ \
-> > +       {"INTC10A2", }, /* Fan for Raptor Lake generation */ \
-> > +       {"INTC10D6", }, /* Fan for Panther Lake generation */ \
-> > +       {"INTC10FE", } /* Fan for Wildcat Lake generation */
-> > +
-> > +#define ACPI_INT3406_DEVICE_IDS        \
-> > +       {"INT3406"}
-> > +
-> > +#define ACPI_INT3407_DEVICE_IDS        \
-> > +       {"INT3407"},    \
-> > +       {"INT3532"},    \
-> > +       {"INTC1047"},   \
-> > +       {"INTC1050"},   \
-> > +       {"INTC1060"},   \
-> > +       {"INTC1061"},   \
-> > +       {"INTC1065"},   \
-> > +       {"INTC1066"},   \
-> > +       {"INTC106C"},   \
-> > +       {"INTC106D"},   \
-> > +       {"INTC10A4"},   \
-> > +       {"INTC10A5"},   \
-> > +       {"INTC10D8"},   \
-> > +       {"INTC10D9"},   \
-> > +       {"INTC1100"},   \
-> > +       {"INTC1101"}
-> > +
-> > +#endif
-> > diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/=
-drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> > index 908cc1bf57f1..6311125c3ebd 100644
-> > --- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> > +++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/acpi.h>
-> >  #include <linux/thermal.h>
-> >  #include "acpi_thermal_rel.h"
-> > +#include "../../../../drivers/acpi/int340x_thermal.h"
-> >
-> >  #define INT3400_THERMAL_TABLE_CHANGED 0x83
-> >  #define INT3400_ODVP_CHANGED 0x88
-> > @@ -683,14 +684,7 @@ static void int3400_thermal_remove(struct platform=
-_device *pdev)
-> >  }
-> >
-> >  static const struct acpi_device_id int3400_thermal_match[] =3D {
-> > -       {"INT3400", 0},
-> > -       {"INTC1040", 0},
-> > -       {"INTC1041", 0},
-> > -       {"INTC1042", 0},
-> > -       {"INTC1068", 0},
-> > -       {"INTC10A0", 0},
-> > -       {"INTC10D4", 0},
-> > -       {"INTC10FC", 0},
-> > +       ACPI_INT3400_DEVICE_IDS,
-> >         {}
-> >  };
-> >
-> > diff --git a/drivers/thermal/intel/int340x_thermal/int3401_thermal.c b/=
-drivers/thermal/intel/int340x_thermal/int3401_thermal.c
-> > index 96d6277a5a8c..e0603f218d2e 100644
-> > --- a/drivers/thermal/intel/int340x_thermal/int3401_thermal.c
-> > +++ b/drivers/thermal/intel/int340x_thermal/int3401_thermal.c
-> > @@ -11,9 +11,10 @@
-> >
-> >  #include "int340x_thermal_zone.h"
-> >  #include "processor_thermal_device.h"
-> > +#include "../../../../drivers/acpi/int340x_thermal.h"
-> >
-> >  static const struct acpi_device_id int3401_device_ids[] =3D {
-> > -       {"INT3401", 0},
-> > +       ACPI_INT3401_DEVICE_IDS,
-> >         {"", 0},
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, int3401_device_ids);
-> > diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/=
-drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-> > index 57b90005888a..213d4535f2c1 100644
-> > --- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-> > +++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/acpi.h>
-> >  #include <linux/thermal.h>
-> >  #include "int340x_thermal_zone.h"
-> > +#include "../../../../drivers/acpi/int340x_thermal.h"
-> >
-> >  #define INT3402_PERF_CHANGED_EVENT     0x80
-> >  #define INT3402_THERMAL_EVENT          0x90
-> > @@ -84,7 +85,7 @@ static void int3402_thermal_remove(struct platform_de=
-vice *pdev)
-> >  }
-> >
-> >  static const struct acpi_device_id int3402_thermal_match[] =3D {
-> > -       {"INT3402", 0},
-> > +       ACPI_INT3402_DEVICE_IDS,
-> >         {}
-> >  };
-> >
-> > diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/=
-drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> > index ba63796761eb..d246c69d4872 100644
-> > --- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> > +++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/thermal.h>
-> >  #include <linux/platform_device.h>
-> >  #include "int340x_thermal_zone.h"
-> > +#include "../../../../drivers/acpi/int340x_thermal.h"
-> >
-> >  #define INT3403_TYPE_SENSOR            0x03
-> >  #define INT3403_TYPE_CHARGER           0x0B
-> > @@ -269,14 +270,7 @@ static void int3403_remove(struct platform_device =
-*pdev)
-> >  }
-> >
-> >  static const struct acpi_device_id int3403_device_ids[] =3D {
-> > -       {"INT3403", 0},
-> > -       {"INTC1043", 0},
-> > -       {"INTC1046", 0},
-> > -       {"INTC1062", 0},
-> > -       {"INTC1069", 0},
-> > -       {"INTC10A1", 0},
-> > -       {"INTC10D5", 0},
-> > -       {"INTC10FD", 0},
-> > +       ACPI_INT3403_DEVICE_IDS,
-> >         {"", 0},
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, int3403_device_ids);
-> > diff --git a/drivers/thermal/intel/int340x_thermal/int3406_thermal.c b/=
-drivers/thermal/intel/int340x_thermal/int3406_thermal.c
-> > index e21fcbccf4ba..d05ca8bc4061 100644
-> > --- a/drivers/thermal/intel/int340x_thermal/int3406_thermal.c
-> > +++ b/drivers/thermal/intel/int340x_thermal/int3406_thermal.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/backlight.h>
-> >  #include <linux/thermal.h>
-> >  #include <acpi/video.h>
-> > +#include "../../../../drivers/acpi/int340x_thermal.h"
-> >
-> >  #define INT3406_BRIGHTNESS_LIMITS_CHANGED      0x80
-> >
-> > @@ -187,7 +188,7 @@ static void int3406_thermal_remove(struct platform_=
-device *pdev)
-> >  }
-> >
-> >  static const struct acpi_device_id int3406_thermal_match[] =3D {
-> > -       {"INT3406", 0},
-> > +       ACPI_INT3406_DEVICE_IDS,
-> >         {}
-> >  };
-> >
-> > --
-> > 2.51.0.618.g983fd99d29-goog
-> >
-> >
+> > > +       select INT340X_THERMAL
+> > >         select INTEL_SOC_DTS_IOSF_CORE
+> > >         help
+> > >           Enable this to register Intel SoCs (e.g. Bay Trail) platfor=
+m digital
+> > > --
+>
 
