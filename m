@@ -1,116 +1,101 @@
-Return-Path: <linux-acpi+bounces-18137-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18138-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA675C005F3
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C12C0065C
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 226D13595AA
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 10:00:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 594253AAED1
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 10:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FBE30B503;
-	Thu, 23 Oct 2025 09:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6FA303C85;
+	Thu, 23 Oct 2025 10:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Krt2trI/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828C92F5A1F;
-	Thu, 23 Oct 2025 09:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B893009F0
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 10:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761213596; cv=none; b=uxa3mZcS7u1lTtZjcDKOYKqZ6X0nRRh3QQVEppjxs5t/kO04WREFl2rq7MAYn2Hq9DWwOIanuRv75gNT6nGvMUz49lTqq1/xi4iHM5Emn6y61BtTTuSGraPaZkRj4IDI4XXWbqIVCk215IRbB9nuNbG4Npm23DBhpPztm2zaXJE=
+	t=1761214051; cv=none; b=S/ie5iM49YLqshBnS0j0yGuQSpYvK7V7grykWsLSlTiQe7z7Ba7fb9nM3xMA1KKn9wFSeB4YI0F77fS9C3Jk4vghB4QeecnWFjbf9btURJ36riAzjti7J/T5otx0klNJfOOaZZ2B+AscQPBJj9S8yXazSxyhC9gOpgtiaZoGaS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761213596; c=relaxed/simple;
-	bh=9ZH0ly9d0T/MSQlVFerFTC1udKUb6QvB/Q1uo2YEAw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Bb3do73tOSFw9XoPXIrXsOmeSMMQKfz3WkPME1/5I5u1ivFXNs6sGWy0a4zcsYubkJF/oqNMnEJzHuoh5mMcDx1M7siMNrS1jg5tul9sKOAcZi8i8sGK0R1sn8J0llhRlpAHipwRI+yTgM+ZE+Rgfz6PYafFl0M/RWkLQO6n8p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cshPb0bWNz11Wrv;
-	Thu, 23 Oct 2025 18:01:07 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id D6B431401E9;
-	Thu, 23 Oct 2025 17:59:50 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 17:59:50 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
- 2025 17:59:50 +0800
-Message-ID: <5caae4ef-e259-47cc-b0b7-f383dce4a334@huawei.com>
-Date: Thu, 23 Oct 2025 17:59:49 +0800
+	s=arc-20240116; t=1761214051; c=relaxed/simple;
+	bh=B1PHNlrky4sCJBzOw3//MmXWGvDE05Rd2g/tIIXDc9g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mWP/66r+vPgqZByF5JLk1JIzOU78ukuGOKIGeCnID/5/CX1YDkAK0n9mPk1gnFrXcY2z5p/4jP5mITzqkHMZXPXl3NJ3S7ZbJcuXD4pOGij3AaZT6qmNBMJ+D+0ZqK3YQffrSOq5o912OHAQzUr0MqiTyQXqAHPVvVjPs7LLHPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Krt2trI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F5DC113D0
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 10:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761214051;
+	bh=B1PHNlrky4sCJBzOw3//MmXWGvDE05Rd2g/tIIXDc9g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Krt2trI/DhCMlTdYUss7+9FPxnAQZUWutxP8sCaRV9GwxLUpWCq75DzkGvfRvOik6
+	 vWXdbarkOPw1UQfXcj1ELN8IUyfMSYwYOSuJwmclgDdsqCzMFSErhoUsvg6Jmgk1Ir
+	 5DEjJVyKJszhxU1f6NRiJVKSXhCO/OH9fyZn+dcNmC9F5wZ0i0RLG0SpE0Uqb1EwPa
+	 zSSiGZWShsZmqoLeYjEjuAC29q5E6rXAOMkwAdCa5bbw6o+S3Zj7N3Zs/o7+cB+KM1
+	 9g3MXPt+Zgcr2hq64hOh/6ebD/JHabmu6KeoFrzPClc8vo5A1AyslTPBaTkfAtCKAw
+	 TLYMMtbKhQKJQ==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c2804d48caso1244537a34.1
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 03:07:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXeent7xHIdup2EF+NwOKCBwv+5+XU9+Q1uD9m5ir+zImuCYxQnVfXmPphLryBL22QCeShsLtzrEvQG@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpLPUhMfOdL9jEdUkWf/1lCSAtLXQpE69sobtogAG4br5CEBze
+	7bLHNG35ua9l1Bee0cBYgRHJWecJ9ijnDcYLReeaF8B8yP4fbQr8EPyTjARFcyYfLsWUen56JoU
+	jar+MyLa1sX3I3kQ/vUFtXN5NgsbZqv8=
+X-Google-Smtp-Source: AGHT+IG0ae7Qms3f1G1dE9GP3KrK4bkl4jN6bPTD+sZOvg405u8utM0JLlryffK8EiHfs9ilGOS0QPfDOwE2sixZ7jQ=
+X-Received: by 2002:a05:6808:178d:b0:441:8f74:eff with SMTP id
+ 5614622812f47-4496556aef1mr2665901b6e.28.1761214050404; Thu, 23 Oct 2025
+ 03:07:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/9] ACPI: processor: idle: Return failure when get
- lpi_state->arch_flags failed
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
 References: <20250929093754.3998136-1-lihuisong@huawei.com>
- <20250929093754.3998136-4-lihuisong@huawei.com>
- <CAJZ5v0hNj817g=rr8+YTGaeBkkfNuuU7FGuZyyb1j61BMOKTGA@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0hNj817g=rr8+YTGaeBkkfNuuU7FGuZyyb1j61BMOKTGA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+ <20250929093754.3998136-3-lihuisong@huawei.com> <CAJZ5v0ikPpwKA4WLvwon3p+e8+53fOQuudOioOr-KD-Ee-E0dA@mail.gmail.com>
+ <8c0057a7-24a2-493a-8054-904a89ca9f6d@huawei.com>
+In-Reply-To: <8c0057a7-24a2-493a-8054-904a89ca9f6d@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Oct 2025 12:07:17 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jg5RGi-+i3LtwK6U8m+_C5Rs4OuRTBLTGi6g0aRq3LBQ@mail.gmail.com>
+X-Gm-Features: AS18NWDg1bN7eNw3LoEF0h9s99kRoyakT3JZHHpUIWO0B3SwYGOYTFhXBckoMwE
+Message-ID: <CAJZ5v0jg5RGi-+i3LtwK6U8m+_C5Rs4OuRTBLTGi6g0aRq3LBQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/9] ACPI: processor: idle: Return failure if entry
+ method is not buffer or integer type
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
+	yubowen8@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-在 2025/10/22 3:36, Rafael J. Wysocki 写道:
-> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
->> The architecture specific context loss flags is important for ARM.
->> And this flag is used to control the execution of different code
->> flows in acpi_processor_ffh_lpi_enter().
->>
->> So it is better to return failure when get lpi_state->arch_flags
->> failed.
-> A failure means no idle states at all.
-Actually, I didn't know why driver should continue to do cpu idle 
-scaling if the idle state doesn't meet the developer's expectations.🙂
-> Wouldn't it be better to skip the state with invalid arch flags?
-This arch flags is important.  And acpi_processor_ffh_lpi_enter will use it.
-There is no other place to verify its validity. so here do it.
-This check is just to prevent potential issues in cpuidle scaling later.
+On Thu, Oct 23, 2025 at 11:25=E2=80=AFAM lihuisong (C) <lihuisong@huawei.co=
+m> wrote:
 >
->> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low Power Idle(LPI) states")
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   drivers/acpi/processor_idle.c | 7 +++++--
->>   1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->> index 681587f2614b..f36f9514b6c7 100644
->> --- a/drivers/acpi/processor_idle.c
->> +++ b/drivers/acpi/processor_idle.c
->> @@ -984,8 +984,11 @@ static int acpi_processor_evaluate_lpi(acpi_handle handle,
->>                  if (obj_get_integer(pkg_elem + 2, &lpi_state->flags))
->>                          lpi_state->flags = 0;
->>
->> -               if (obj_get_integer(pkg_elem + 3, &lpi_state->arch_flags))
->> -                       lpi_state->arch_flags = 0;
->> +               if (obj_get_integer(pkg_elem + 3, &lpi_state->arch_flags)) {
->> +                       pr_err("Get architecture specific context loss flags failed.\n");
->> +                       ret = -EINVAL;
->> +                       goto end;
->> +               }
->>
->>                  if (obj_get_integer(pkg_elem + 4, &lpi_state->res_cnt_freq))
->>                          lpi_state->res_cnt_freq = 1;
->> --
->> 2.33.0
->>
+>
+> =E5=9C=A8 2025/10/22 3:34, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Mon, Sep 29, 2025 at 11:38=E2=80=AFAM Huisong Li <lihuisong@huawei.c=
+om> wrote:
+> >> According to ACPI spec, entry method in LPI sub-package must be buffer
+> >> or integer. However, acpi_processor_evaluate_lpi() regeards it as succ=
+ess
+> >> and treat it as an effective LPI state.
+> > Is that the case?  AFAICS, it just gets to the next state in this case
+> > and what's wrong with that?
+> The flatten_lpi_states() would consider the state with illegal entry
+> method sub-package as a valid one
+> if the flag of this state is enabled(ACPI_LPI_STATE_FLAGS_ENABLED is set)=
+.
+> And then cpuidle governor would use it because the caller of
+> acpi_processor_ffh_lpi_probe() also don't see the return value.
+
+So the problem appears to be that lpi_state increments in every step
+of the loop, but it should only increment if the given state is valid.
 
