@@ -1,111 +1,106 @@
-Return-Path: <linux-acpi+bounces-18134-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18135-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DE2C00541
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 11:43:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3DFC005D1
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 11:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94ACB4FB01F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 09:43:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873563AB908
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 09:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EC3093AD;
-	Thu, 23 Oct 2025 09:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E22630AD02;
+	Thu, 23 Oct 2025 09:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk+Q/JB0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A4E2E040E;
-	Thu, 23 Oct 2025 09:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A56330ACFC
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761212532; cv=none; b=ecaSdUL/49tjUzKF8RiUVl4cWGsRItmPD2VHMXQ/8tM4JfPHEGmTqJs7EpUIFXF3XjW9BHFjSIqCqPwxhbHz+DYqh0lTLfnfwfodazgKPCUphRyp8Z0vnXWl1E/BmPXmbpRTSC/5/5FcPb76sC6fp9aCowRAQT0GxWgSbUvfAhk=
+	t=1761213521; cv=none; b=X5uv5l+My8ijSgJi8hQz5iPDYJNuzUGtRAAvZIan6+6pN2Na3gp40YUzmH2JBSpBVAVL57E3741jslzlsddXschxzHyBaqn2Dg6AssE18PIrWUGTVbbFi++pvgINFrnPzpU8iBckm3+McvMrnF3crfherI1HdDEpTvFSxHCJhqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761212532; c=relaxed/simple;
-	bh=XkrnJYea9B1sj1bHt99yR2CrbCN5vQSI+UvKg+XFAHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Urkwym1QfWcOwDyIMrzccnj6oE/fXjUQUW9akVbvZx7Swmt9LQpbos0d7xVeKgtDxU6n09owOXG8z5wPuA5Auk8XRHRxoGw4iVLYcO4CA8q0h12I0/F1m1v7h02u6aivL0Rsy5AWK6FC8rS2qoknao8qdoEIz9gwRTRPoko6A+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4csgWF3jkxz24jJn;
-	Thu, 23 Oct 2025 17:20:57 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7787814011B;
-	Thu, 23 Oct 2025 17:25:08 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 17:25:08 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
- 2025 17:25:07 +0800
-Message-ID: <8c0057a7-24a2-493a-8054-904a89ca9f6d@huawei.com>
-Date: Thu, 23 Oct 2025 17:25:07 +0800
+	s=arc-20240116; t=1761213521; c=relaxed/simple;
+	bh=pwjiA1Q+1S/FGP4Sxt/IPwPCyI4y5DF05SO7Pb7pvH0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G6MZIYOmsTd0zzFhMCoWQzCBa0yJk3jyvR528CDchn0lhbbQAisbjxzyaDpJTmKXXn2wG1mPxtbEe9Ye/Z8SzBUZ319qkMsBll1FKAmNX57fRaoWIeVdIyP75BgjfSBKXW5Tpy6q5x/yNm1H4uNhiu4QtATu0EGodOgoNLyQ1tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk+Q/JB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B919C4CEF7
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761213520;
+	bh=pwjiA1Q+1S/FGP4Sxt/IPwPCyI4y5DF05SO7Pb7pvH0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Zk+Q/JB0cQwUUluZ6hLANob0vWcgVYF65JEacy8XkrfyTJ5VBDQJJ5pfiUfCzBEqz
+	 SeYBHAfc6RY16lTZNhlL6FHOCFeaVTw9pRfn6SZScZ0wq+E9elgVqa1YdP/dCsa4Bt
+	 SVTIImma1hmWDiSHTSjJnRDARTsmzH+80eTMRTkB6jmXBEMQgIKN2SVyUcPxxkS3kn
+	 MGU2jKyVz1XCk90Lgi0wK0ZzhS5GxNia3Lq1kQ2YOeSH0NtWSBVeAmg+mJgldJJNqK
+	 0gL1at3Jgel1VHdbQzXYUJhDatTz/yFVS22hpycJTC8pr0qSMaOJuHXJciHrx498Z+
+	 HBlOS7jywaypg==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6505128db16so125664eaf.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 02:58:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW8tPAhdVixV20ZmGif0/mIS3tkKW7kUgmI/QvIkGJYopTx9ozX2P+xx5s7l9POoi/B0kkSuBsdgkWk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+Fmp6sXBAZwSPqev/Ngf/lXNUI5x4u5MPA6q7ckmyN6WJKNvz
+	2H0+tr0mniTpKJJciL/Hty+KdJLNtENDlYzlMse4qBmduB3UkMWgfDPX04UJ28zsAoVuViOwutZ
+	rvwkq+lPKmpFiPgBA7j+Hzx8e5j8UQbs=
+X-Google-Smtp-Source: AGHT+IF6mLk5QxDgJRgmUD2SQ+TwUZbHqxeypTmarAHulyh/ocsnGm49ajtuq2A2H6gvv4MwmBsWK0iQm2vCRyux+WY=
+X-Received: by 2002:a05:6808:2f13:b0:43f:5d93:3e3d with SMTP id
+ 5614622812f47-443a30b194dmr11083560b6e.35.1761213519920; Thu, 23 Oct 2025
+ 02:58:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/9] ACPI: processor: idle: Return failure if entry
- method is not buffer or integer type
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
-References: <20250929093754.3998136-1-lihuisong@huawei.com>
- <20250929093754.3998136-3-lihuisong@huawei.com>
- <CAJZ5v0ikPpwKA4WLvwon3p+e8+53fOQuudOioOr-KD-Ee-E0dA@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0ikPpwKA4WLvwon3p+e8+53fOQuudOioOr-KD-Ee-E0dA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+References: <20251022204523.10752-1-tony.luck@intel.com>
+In-Reply-To: <20251022204523.10752-1-tony.luck@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Oct 2025 11:58:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hhnAq-HJhXU8VTAWKNg0PJkYbeocCKEffYOurZn0U81Q@mail.gmail.com>
+X-Gm-Features: AS18NWBLqkSgQM1_EReJZN6QIt7t3F9hVfjKrizmndBRdcttE-en3UVt8DVlzpk
+Message-ID: <CAJZ5v0hhnAq-HJhXU8VTAWKNg0PJkYbeocCKEffYOurZn0U81Q@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: MRRM: Check revision of MRRM table
+To: Tony Luck <tony.luck@intel.com>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-在 2025/10/22 3:34, Rafael J. Wysocki 写道:
-> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
->> According to ACPI spec, entry method in LPI sub-package must be buffer
->> or integer. However, acpi_processor_evaluate_lpi() regeards it as success
->> and treat it as an effective LPI state.
-> Is that the case?  AFAICS, it just gets to the next state in this case
-> and what's wrong with that?
-The flatten_lpi_states() would consider the state with illegal entry 
-method sub-package as a valid one
-if the flag of this state is enabled(ACPI_LPI_STATE_FLAGS_ENABLED is set).
-And then cpuidle governor would use it because the caller of 
-acpi_processor_ffh_lpi_probe() also don't see the return value.
+On Wed, Oct 22, 2025 at 10:45=E2=80=AFPM Tony Luck <tony.luck@intel.com> wr=
+ote:
 >
->> This is unreasonable and needs to
->> return failure to prevent other problems from occurring.
->>
->> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low Power Idle(LPI) states")
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   drivers/acpi/processor_idle.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->> index 5acf12a0441f..681587f2614b 100644
->> --- a/drivers/acpi/processor_idle.c
->> +++ b/drivers/acpi/processor_idle.c
->> @@ -958,7 +958,9 @@ static int acpi_processor_evaluate_lpi(acpi_handle handle,
->>                          lpi_state->entry_method = ACPI_CSTATE_INTEGER;
->>                          lpi_state->address = obj->integer.value;
->>                  } else {
->> -                       continue;
->> +                       pr_err("Entry method in LPI sub-package must be buffer or integer.\n");
->> +                       ret = -EINVAL;
->> +                       goto end;
->>                  }
->>
->>                  /* elements[7,8] skipped for now i.e. Residency/Usage counter*/
->> --
+> Before trying to parse the MRRM table, check that the table revision
+> is the one that is expected.
+
+OK, so should there be a Fixes: tag?  Or is it just a tidy-up of the code?
+
+> Signed-off-by: Tony Luck <tony.luck@intel.com>
+> ---
+>  drivers/acpi/acpi_mrrm.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
+> index 47ea3ccc2142..a6dbf623e557 100644
+> --- a/drivers/acpi/acpi_mrrm.c
+> +++ b/drivers/acpi/acpi_mrrm.c
+> @@ -63,6 +63,9 @@ static __init int acpi_parse_mrrm(struct acpi_table_hea=
+der *table)
+>         if (!mrrm)
+>                 return -ENODEV;
+>
+> +       if (mrrm->header.revision !=3D 1)
+> +               return -EINVAL;
+> +
+>         if (mrrm->flags & ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS)
+>                 return -EOPNOTSUPP;
+>
+> --
+> 2.51.0
+>
+>
 
