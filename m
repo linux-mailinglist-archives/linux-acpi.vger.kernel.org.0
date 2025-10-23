@@ -1,109 +1,133 @@
-Return-Path: <linux-acpi+bounces-18139-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18140-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E41C00665
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:09:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D54C006AE
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ADFDB4E1B27
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 10:09:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A5654E51B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 10:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E143009F0;
-	Thu, 23 Oct 2025 10:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTzR00gE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641C72F067E;
+	Thu, 23 Oct 2025 10:17:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F97C2FB966
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 10:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAD62DC770;
+	Thu, 23 Oct 2025 10:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761214195; cv=none; b=Yh6ylyXAPc4BJSva90WzuI9Drb/QN3RBEnCNpsOIlq5L7JquiDfeuAJrlqYiiRcpEQT5lpvepk9LSfZ1b51w6cFILlNgofKNqZ+DPwB8No9WMI9ysqcgoyMxfPWbAZPtyDeFSOtK+cQ4+YKIkl/KcoAdwaHgPEpaH/jVCA8mMzA=
+	t=1761214631; cv=none; b=U3MOyMI2YLzSzwPG5AyjOycM1Pj3XPHAHt+QrM9LX3yDy4omxMfitV+Cdo1FO/7iUFobJrJFrztD+fPWcXwHsiwysXtCPjGapWIVm53jIzF9BSMHn9xwvXNENxeP9dcmWyJv5Ol81JR16T+RHw7ZYRikMejo3wyWaR5HFl2rZKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761214195; c=relaxed/simple;
-	bh=hKwNMDfmL3T5qvk1MtGjKrG7bIQZsdaNVJEQAd1doIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xu2Xc2HOinuPp/ZLKbdEJfZBvQAnML2Hf0e5iTHzRVawt7YhkRDQsr/w949GqzmMwL23n++Sev2WwISBOCwMS8vQZJLYlC01JGdKJThGj+XdvXIqRmvUy+6ugnoHrlSxeC2ubAjthxEhVp9G82aKrz46o/EhidUwusnUCXcF7AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTzR00gE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA962C116D0
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 10:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761214194;
-	bh=hKwNMDfmL3T5qvk1MtGjKrG7bIQZsdaNVJEQAd1doIU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PTzR00gEdmgnykF73hJM1gmlYCoYKGsUzPYALQyoal+wwmQzzc76oYlT5E/Afl0S2
-	 7Fh8HNwqpsxYZ8N/vQOJkXCNa7cS4IthTlDQRF0rOj8SOa+h6fKJ6UuKdrULTlf6YC
-	 HYuKlW4Kx/AYR8OyfaDyScC8tZcCG4jd9TvkNrwrvVZL1xOC41EK4PZ6vS8BBvzhJc
-	 Q6SF0Zl3AOi0AdsI/PiA/RdVz5v0SSlTMjfysub05ptiqd8SAvqfNIuXCXE4Nn6QhR
-	 p6u8ULLEqHmMkVuznzK8vrRgdldVwdcrZ0BWBPiILcfmQUpEpG54x0sapCUBtd3lUZ
-	 t9pmwbIkBw0SA==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-443ac891210so296813b6e.1
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 03:09:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVKCNjzpRtS+Wj64nvPIvnhRSkZywF+CByL/AjL2lVH8ApfqPBVgP8tQmKSVkpzI+J8Z0QRrGr+Ijfw@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS24wDGda3jpxfMcmtrS2rER0fbPw2JvR3+aUUguGhCd/alFXp
-	bm7J1r8wTdRK4ly0BJlQRAFKbmU6jK1hzUNhKN1TWPEyqfctn3x7a9Kvc/H8hdj4jq0yIHNkK81
-	tVM8RSMjJduj0cii7xNwHY7ywlqEKKw8=
-X-Google-Smtp-Source: AGHT+IEjkqOio7lYamy/gjqOExHmFZfHeTGT8KkF7QrE37Pnkk7sstV+btTyQqkstdQSOgWa2ULZG2YnXym8MucJpL0=
-X-Received: by 2002:a05:6808:4442:b0:43f:ba16:9fa1 with SMTP id
- 5614622812f47-443a2f1b95emr10628027b6e.20.1761214194042; Thu, 23 Oct 2025
- 03:09:54 -0700 (PDT)
+	s=arc-20240116; t=1761214631; c=relaxed/simple;
+	bh=JAq8jW6ujVEy5nEmF8TQ1AzqT5SLo9CcH9tLA1eLQEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sds+n8KYNQISl+5JDUD1IR4gJGB2ZA8v6cENUuvXqnKHGgwf/uDMCzkAmcIEGEXihfHCh9k8GY1r7ourntqRSOdNq66P/IU7JG2x7XdvVa+eCx3fNs75iVCub3GjPYUTCQo80JFPltv+N6UL9MIJTGlU2+dMLTNaTNGb9nqK6f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cshl31tdsznfVN;
+	Thu, 23 Oct 2025 18:16:15 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4BB8618048F;
+	Thu, 23 Oct 2025 18:17:03 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 23 Oct 2025 18:17:03 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
+ 2025 18:17:02 +0800
+Message-ID: <92b1b431-9855-43fb-8bb3-801649064438@huawei.com>
+Date: Thu, 23 Oct 2025 18:17:01 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 5/9] ACPI: processor: idle: Add the verification of
+ processor FFH LPI state
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
 References: <20250929093754.3998136-1-lihuisong@huawei.com>
- <20250929093754.3998136-4-lihuisong@huawei.com> <CAJZ5v0hNj817g=rr8+YTGaeBkkfNuuU7FGuZyyb1j61BMOKTGA@mail.gmail.com>
- <5caae4ef-e259-47cc-b0b7-f383dce4a334@huawei.com>
-In-Reply-To: <5caae4ef-e259-47cc-b0b7-f383dce4a334@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 23 Oct 2025 12:09:39 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ivydYPk8yxEUdXJe=uATq_1=__J560v3VApcXAv=f_7Q@mail.gmail.com>
-X-Gm-Features: AS18NWBnpWRfnvZFYrmE5iws7xkscuUm3xX35DJh-iGD92yxIvp_1Qf-OqMzVIE
-Message-ID: <CAJZ5v0ivydYPk8yxEUdXJe=uATq_1=__J560v3VApcXAv=f_7Q@mail.gmail.com>
-Subject: Re: [PATCH v1 3/9] ACPI: processor: idle: Return failure when get
- lpi_state->arch_flags failed
-To: "lihuisong (C)" <lihuisong@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
-	yubowen8@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20250929093754.3998136-6-lihuisong@huawei.com>
+ <CAJZ5v0iLt7rnXBaTBv=-ztKro39h1hECQS_Ov9Cn1eBcfhXDaQ@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0iLt7rnXBaTBv=-ztKro39h1hECQS_Ov9Cn1eBcfhXDaQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Thu, Oct 23, 2025 at 11:59=E2=80=AFAM lihuisong (C) <lihuisong@huawei.co=
-m> wrote:
+
+在 2025/10/22 3:42, Rafael J. Wysocki 写道:
+> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
+>> Both ARM64 and RISCV architecture would validate Entry Method of LPI
+>> state and SBI HSM or PSCI cpu suspend. Driver should return failure
+>> if FFH of LPI state are not ok.
+> First of all, I cannot parse this changelog, so I don't know the
+> motivation for the change.
+Sorry for your confusion.
+> Second, if _LPI is ever used on x86, the
+> acpi_processor_ffh_lpi_probe() in acpi_processor_get_power_info() will
+> get in the way.
+AFAICS, it's also ok if X86 platform use LPI.
 >
+> Why does the evaluation in acpi_processor_setup_cpuidle_dev() not work?
+The acpi_processor_ffh_lpi_probe does verify the validity of LPI for ARM 
+and RISCV.
+But the caller of the acpi_processor_setup_cpuidle_dev()don't verify the 
+return value.
+In addition, from the name of acpi_processor_setup_cpuidle_dev(), its 
+main purpose is to setup cpudile device rather than to verify LPI.
+So I move it to a more prominent position and redefine the 
+acpi_processor_setup_cpuidle_dev to void in patch 9/9.
 >
-> =E5=9C=A8 2025/10/22 3:36, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Mon, Sep 29, 2025 at 11:38=E2=80=AFAM Huisong Li <lihuisong@huawei.c=
-om> wrote:
-> >> The architecture specific context loss flags is important for ARM.
-> >> And this flag is used to control the execution of different code
-> >> flows in acpi_processor_ffh_lpi_enter().
-> >>
-> >> So it is better to return failure when get lpi_state->arch_flags
-> >> failed.
-> > A failure means no idle states at all.
-> Actually, I didn't know why driver should continue to do cpu idle
-> scaling if the idle state doesn't meet the developer's expectations.=F0=
-=9F=99=82
-
-There may be a firmware bug in one state description, but it doesn't
-mean that the other states are unusable, does it?
-
-> > Wouldn't it be better to skip the state with invalid arch flags?
-
-> This arch flags is important.  And acpi_processor_ffh_lpi_enter will use =
-it.
-> There is no other place to verify its validity. so here do it.
-> This check is just to prevent potential issues in cpuidle scaling later.
-
-I'm saying to treat this particular state as invalid and skip it
-without rejecting all of the other states that may be valid.
+>> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low Power Idle(LPI) states")
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/acpi/processor_idle.c | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index 5684925338b3..b0d6b51ee363 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -1264,7 +1264,7 @@ static int acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
+>>
+>>          dev->cpu = pr->id;
+>>          if (pr->flags.has_lpi)
+>> -               return acpi_processor_ffh_lpi_probe(pr->id);
+>> +               return 0;
+>>
+>>          return acpi_processor_setup_cpuidle_cx(pr, dev);
+>>   }
+>> @@ -1275,7 +1275,13 @@ static int acpi_processor_get_power_info(struct acpi_processor *pr)
+>>
+>>          ret = acpi_processor_get_lpi_info(pr);
+>>          if (ret)
+>> -               ret = acpi_processor_get_cstate_info(pr);
+>> +               return acpi_processor_get_cstate_info(pr);
+>> +
+>> +       if (pr->flags.has_lpi) {
+>> +               ret = acpi_processor_ffh_lpi_probe(pr->id);
+>> +               if (ret)
+>> +                       pr_err("Processor FFH LPI state is invalid.\n");
+>> +       }
+>>
+>>          return ret;
+>>   }
+>> --
+>> 2.33.0
+>>
 
