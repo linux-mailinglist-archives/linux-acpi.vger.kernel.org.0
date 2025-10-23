@@ -1,112 +1,154 @@
-Return-Path: <linux-acpi+bounces-18164-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18165-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDD5C031E7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 21:00:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B73C03202
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 21:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 993E53A45D1
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 18:59:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837E319C5123
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 19:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9347833B97D;
-	Thu, 23 Oct 2025 18:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98AF34B407;
+	Thu, 23 Oct 2025 19:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DsIe2nJv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBxltq1H"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A95C33C50D
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 18:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50C329A322
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 19:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761245985; cv=none; b=hdf4iEozuVO8qfxiMzsvtdGoahp+H3UrNil9kHTJ23HYNlq4p+vwfw4N7HMHc31oR113L2+KnKrs82iUi9PIrw6Q2JHRVPlbwU97S8MQMtiZ+hW0wMVfRvp3Yb2Xf80BbKv1phcCaTEDfqFNddGE6NH4pP425WuKY8KHAGFWA+o=
+	t=1761246207; cv=none; b=Vy58ArLlEdjR4QGFSM/y0xaYHWK1fPPlxW3MIP5TRJjwZcI1xRjnnaSOYMw/QEVnDZtdwLcgFbNBTpIH+fl2LPXx21+ere76JUVptk/ExtlCV/uqX7LB8BgBbNLVlmWi+BMZRbAlGvhIzVzEX10qd9t+4frxFjZ/azWRAIQu8Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761245985; c=relaxed/simple;
-	bh=vvuZKT0jV0qQFxzuTdrY2/VtK4l2cJzuGZ9tqyC51xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mOg1N2AODcHaCp1dVN37HxqmkYon3yYaAyxdrvPh6hFmlHGFvofnBnLf7jOaq6T3ZqrNsjRKMyTjcDf4tgHPqOFG+0TNM2hg9pcwgydewDdkdBBW+xsLVgsiya+en7IMKmw8G0YOwb7e6lSJt7uY647wYHt9YZJvx9uwnB37HeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DsIe2nJv; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761245984; x=1792781984;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=vvuZKT0jV0qQFxzuTdrY2/VtK4l2cJzuGZ9tqyC51xg=;
-  b=DsIe2nJvC3D2x90ndUsOYooavfnryRimsHh9FygFLQ88LxJ9KAAG43qK
-   6o821Tq73T0gghhSkKdp2WooqGCqywly/ceJ66T07IviS6QAxXaPYtArv
-   FkvURoCAfQjCOVL5WuXXCyOnXjhQMjKZQByNkjtjwPkKdRKAK8MLVnHFW
-   9YcmfCd4OTkXxpOjErnEzOFX7pP+celGS0ASjKrcUpmSAvmT2LbH+o78Y
-   vejlXiU5TMfPpf86NL+BL/TeD5+aN5qpAwdT/0k5SeRboBTCbF24DC04K
-   q68gb6GIquSNM56BDTU4c96iyOfHuaGUgut4I6KPyW3y2ta7bRhKMaeJ6
-   w==;
-X-CSE-ConnectionGUID: Y6Lh80HdTFOBpTPeo3Y4lQ==
-X-CSE-MsgGUID: dbKYnmt5RbyE1+Cl3Kt8eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67264541"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="67264541"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 11:59:43 -0700
-X-CSE-ConnectionGUID: X6AaoZhqTdeNGSecQDLhlg==
-X-CSE-MsgGUID: RNUqOfE/QcWogB9tjm137g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="188528985"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.163])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 11:59:42 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vC0XD-0000000214D-2I2w;
-	Thu, 23 Oct 2025 21:59:39 +0300
-Date: Thu, 23 Oct 2025 21:59:39 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: i2c-mux ACPI parent device references in example
-Message-ID: <aPp7GwK4Rb9XZMO6@smile.fi.intel.com>
-References: <48d0fb45-096c-4caa-b51c-753c2f17f018@gmail.com>
- <aPPthnO3bKFhTN3A@ashevche-desk.local>
- <CAOiHx=npyRdxvN7EywuXTvOMPYQ2FE_T7eVVJtZzh3Di05hxJQ@mail.gmail.com>
+	s=arc-20240116; t=1761246207; c=relaxed/simple;
+	bh=jF4QxaOOV7BenJ0JZ6Ow6uSb2fxSAcL6IJ/z1Z5H/lM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kHv8x9WmEVelGShoKmIbSUO55Ano4hg3ws1rU6fzOZhz1CO8HESXlftPHgmTGVd0mgEHQ43f86C5CwqyZFVDKa2xbfchf7cbEmpAsoErs2ZgMHiVkJnOSPk6CmFlHl1fmNo5cm2sP9Cz0SR4YjaKM79bSGn10+3bPPOWFPSKzzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBxltq1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E1DC4CEFD
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 19:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761246207;
+	bh=jF4QxaOOV7BenJ0JZ6Ow6uSb2fxSAcL6IJ/z1Z5H/lM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PBxltq1HSz7wGLkbSNpYCnm0mC9Ys8TzbXORIPbxotWACCgL9Xfj5hl+r/qHyV2ig
+	 4lnjDlB4/UtYaHs5D81RCJf+GnBmCn6F9SQV+HQ6rbtjDRM+AFVhjzojC9k8FzZMkX
+	 M+tXVAQ4btTv5M+QV5SfnVbZwgNCWjqOjHP7a2h8Fn+86/DzQzI/tJhWH69cj3XbLK
+	 5Bdqqu6VIWfcfrJf6igaZLFVlM7XWuz1iBQiUAvu6Per2ifGtaze4casXprsbZyFI1
+	 iTKWb+cgjbabU9AmJurjMLDLWC5Na0If8sPg5SGk2Lhr6mux74uJmYAbMPpeISVZ2G
+	 ZRZmZ+/OlXZEA==
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-43fb60c5f75so270383b6e.1
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 12:03:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVGUWkIKOdY8LK91KfHw3s9qARPgXf5LhU7maqni7QFH+vSFErQwq2u9PI6WmQ5+Q108v5tN6Ihm3A+@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfefTPC2I1/zJXgkuaPIiiprLuoBSgtTXs+xQHZd2WLjuUCLuf
+	67lekz++AagRPKhr6uvDJ2li270vllj62DdmlkG5fgPEWXkfPd3QOaiPAMNESSwbLz6zZyudbqj
+	aHOnaxxUVMyv4GW15DPcy8ZK/JkH1O4A=
+X-Google-Smtp-Source: AGHT+IEPRBHAjsdcilrTqwwguunsLPHTYuaz5DDb0+ikA4JiSTezczQo7UoF0rcuBIerbAUkyM7gTcWYeF4lZqFVkW8=
+X-Received: by 2002:a05:6808:4f50:b0:43f:b3e0:7959 with SMTP id
+ 5614622812f47-443a30139b7mr11630703b6e.49.1761246206614; Thu, 23 Oct 2025
+ 12:03:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiHx=npyRdxvN7EywuXTvOMPYQ2FE_T7eVVJtZzh3Di05hxJQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20251007234149.2769-1-W_Armin@gmx.de> <20251007234149.2769-4-W_Armin@gmx.de>
+In-Reply-To: <20251007234149.2769-4-W_Armin@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Oct 2025 21:03:15 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hA3eqJEmr=TCdRTQXybdpudLc31Xfre7ea72aHgzpXbw@mail.gmail.com>
+X-Gm-Features: AS18NWAa4GfxmMauVB78Bvpyahe4TIiqnrwsgYvENjy10G0GKjOiJqhjR95cR9k
+Message-ID: <CAJZ5v0hA3eqJEmr=TCdRTQXybdpudLc31Xfre7ea72aHgzpXbw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] ACPI: fan: Use platform device for devres-related actions
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025 at 09:31:54AM +0200, Jonas Gorski wrote:
-> On Sat, Oct 18, 2025 at 9:42 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Oct 08, 2025 at 11:14:37AM +0200, Jonas Gorski wrote:
+On Wed, Oct 8, 2025 at 1:42=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Device-managed resources are cleaned up when the driver unbinds from
+> the underlying device. In our case this is the platform device as this
+> driver is a platform driver. Registering device-managed resources on
+> the associated ACPI device will thus result in a resource leak when
+> this driver unbinds.
+>
+> Ensure that any device-managed resources are only registered on the
+> platform device to ensure that they are cleaned up during removal.
+>
+> Fixes: 35c50d853adc ("ACPI: fan: Add hwmon support")
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>  drivers/acpi/fan.h       | 4 ++--
+>  drivers/acpi/fan_core.c  | 2 +-
+>  drivers/acpi/fan_hwmon.c | 8 ++++----
+>  3 files changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+> index 022bc215cdbc..0d73433c3889 100644
+> --- a/drivers/acpi/fan.h
+> +++ b/drivers/acpi/fan.h
+> @@ -98,9 +98,9 @@ int acpi_fan_create_attributes(struct acpi_device *devi=
+ce);
+>  void acpi_fan_delete_attributes(struct acpi_device *device);
+>
+>  #if IS_REACHABLE(CONFIG_HWMON)
+> -int devm_acpi_fan_create_hwmon(struct acpi_device *device);
+> +int devm_acpi_fan_create_hwmon(struct device *dev);
+>  #else
+> -static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device)=
+ { return 0; };
+> +static inline int devm_acpi_fan_create_hwmon(struct device *dev) { retur=
+n 0; };
+>  #endif
+>
+>  #endif
+> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+> index ea2c646c470c..46e7fe7a506d 100644
+> --- a/drivers/acpi/fan_core.c
+> +++ b/drivers/acpi/fan_core.c
+> @@ -347,7 +347,7 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+>         }
+>
+>         if (fan->has_fst) {
+> -               result =3D devm_acpi_fan_create_hwmon(device);
+> +               result =3D devm_acpi_fan_create_hwmon(&pdev->dev);
+>                 if (result)
+>                         return result;
+>
+> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+> index 5581aa6fdfa0..47a02ef5a606 100644
+> --- a/drivers/acpi/fan_hwmon.c
+> +++ b/drivers/acpi/fan_hwmon.c
+> @@ -162,12 +162,12 @@ static const struct hwmon_chip_info acpi_fan_hwmon_=
+chip_info =3D {
+>         .info =3D acpi_fan_hwmon_info,
+>  };
+>
+> -int devm_acpi_fan_create_hwmon(struct acpi_device *device)
+> +int devm_acpi_fan_create_hwmon(struct device *dev)
+>  {
+> -       struct acpi_fan *fan =3D acpi_driver_data(device);
+> +       struct acpi_fan *fan =3D dev_get_drvdata(dev);
+>         struct device *hdev;
+>
+> -       hdev =3D devm_hwmon_device_register_with_info(&device->dev, "acpi=
+_fan", fan,
+> -                                                   &acpi_fan_hwmon_chip_=
+info, NULL);
+> +       hdev =3D devm_hwmon_device_register_with_info(dev, "acpi_fan", fa=
+n, &acpi_fan_hwmon_chip_info,
+> +                                                   NULL);
+>         return PTR_ERR_OR_ZERO(hdev);
+>  }
+> --
 
-...
-
-> > > E.g. should it be "\\_SB.SMB1.MUX0.CH00" instead of "\\_SB.SMB1.CH00"?
-> > >
-> > > FWIW, the references were changed from relative to absolute in e65cb011349e
-> > > ("Documentation: ACPI: Fix parent device references").
-> >
-> > Oh, seems to me like a miss from my side. Thanks for a good catch!
-> > Can you send a formal fix patch?
-> 
-> Was my plan until my internet connection went down yesterday. Will
-> send it out once it's back.
-
-Is it okay now? Or did I miss the patch?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Applied as 6.18-rc material, thanks!
 
