@@ -1,111 +1,200 @@
-Return-Path: <linux-acpi+bounces-18143-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18144-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BB1C0119A
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 14:24:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5ADC011C7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 14:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD54ED084
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C163A5118
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 12:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8E1313544;
-	Thu, 23 Oct 2025 12:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F03B308F3B;
+	Thu, 23 Oct 2025 12:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DBpogQtZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XL1J53yy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFDE3128BF
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 12:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1DD3009C1;
+	Thu, 23 Oct 2025 12:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761222069; cv=none; b=kYqMLqrLFEyAEYh8IhlbD2pcHVGvvsYtWWqhSVDhCth4pe6CRWbVMhPvDqL75sGLytJnbWfhm/owsNEd9Y1CjpqdHlMpYJwdmqnoOSt4JkB75DwFMTW+AAGTNDagYDjNzHkoxg7x5NypTKvFzuqv+DhOkAmXRfFEPicydpJWuG4=
+	t=1761222389; cv=none; b=YOUmtZVrpdtEEMOyALGaYcGP8Mh5rzNHo9mS4n1fA5WIaEfoYkUXz1tk89IYYWSmyuHYhCO8jqBdVJmSUFyi4dbiPbSQHAg7nUJ04Coxd1toeZnzujpf3z3QUnyVhkrGXF7xNxJB6ab3RylWgmSff2YL1Ljjdb9G/tW2FOpzPI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761222069; c=relaxed/simple;
-	bh=IsrehhMvsrqu9lFsyjvZapoUoNadoOE7Ma0wSKKAINM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJK+jNtCAYb19lK5HAxIWAjqZH6Vn35qoHxCnpwHbvfwBkCO6dTcZOyvTXi6omNdILK4lwkIHLDQ/hhJCV9q4rEdLGnb9zimAxknyV0bZuivEQQzwcmBbg9eOKDgw0etdHWfsphAS670XgWCMPLxXoSH2F/B2Muo+bWHn4Ykzys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DBpogQtZ; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3737d09d123so10192251fa.2
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 05:21:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761222064; x=1761826864; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IsrehhMvsrqu9lFsyjvZapoUoNadoOE7Ma0wSKKAINM=;
-        b=DBpogQtZSrqHb091qyZ58R0nqddiwVu0K6bdVFB6tyFArMXqjxU7Zxuz72OOg3PfsZ
-         7vIwQ0MIUj+CbbXxg5b8/9fW2aKxlcR+XGQ45WCKqa743Idcu3wKINZQHLWVFn04tHx5
-         naLgQv/WP2C8k8NF6yhb888loyOgklt6N7NoYSbrwa0zckGg2P0ve1bKzZ9SOKWTYUWM
-         exmzga/ylC2LkzetZ7GBV+jqYjgUCt5UZlgAXUobh3pUxsfbWFzPN0qF8v1iipwqNvnn
-         m6ZCXFEcKk+Z86C5ZcguSDuNmF6vWjrHf/CeBseyLpbLY6Oy70rHdnAOQtkDbgpbS/xO
-         SYwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761222064; x=1761826864;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IsrehhMvsrqu9lFsyjvZapoUoNadoOE7Ma0wSKKAINM=;
-        b=j5g4xu/0wrVjnMZlnhfKQdI8JiCZwAdg0EOsb7CsuEllEsqHcwDtddUN5CdH+9wiJu
-         d3oQHMbbSpQ5BvuCjsIRBtx9WtxCNoBNJmfUVpjzKuat/sL4Fp57o6PRkPNgQwxSndEt
-         kO7u/fFetXx7CxnYFC3zG77KlvgIMyYynrgqB1a07sClK/604BnW6/63XGkBgbxcL6b6
-         EL/ZlpBJsocAHVPOtXlcwtFz8lHgEFszyI+eHYKBR2dOyKYMSGD4FsOEbiKJQ9OvQu5U
-         GacsagA7Yu8J7Dz5GdQj43WUrR558HO5/IHWNNSOBV8D02wsPpevTQwYRmRGMu+Nq6O+
-         M4kg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrSuixTh823Cy2WQMtb6Pcs9Lb2+NwdnYzaJ7Z9816mV8LVKo5a9Y9t/vi2YQPPCLDvnfTseWGTN98@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4/sLIe/8eBOO8ad96PCleW0l2SczEHx2kgsUArEXKOaMz0iYX
-	2n5nfB2077w14Tf919niQd0QCPTuLTDgwMtiO9f3ddH4l7rEp1PlGJfZ+mxj3NXopgIA1wZBv1y
-	uyGLhT0Q1v5MI1bB7wZA2oK8rbABrfJL0DvgLmcz83g==
-X-Gm-Gg: ASbGncv/Gg8gUIn7EnhX9wRaov8vnON8CywRbMY496Fh9RDLMun799w1GAwQYaWnKgs
-	Eg3nt5tOAySNwwir9ZI+3BgwmhlLmcnuzBt8D5bKVsztCHJ5SyHh6ZoYH1ZeEOIMUnmzfWtAgKd
-	EqWY2vhoKkpHu3R/mXgAVWOkyYBLMoIGu3Y35OP8vqPhAIqjN63hTyl0717qYTnYluWrn+Lzj6Z
-	G0RnXUua9NIuCZR5q/Ys81ZOyicXdzq2O5FWY/uqJlmpLA4wzB9zgsab50BnxvFbDMGT/c=
-X-Google-Smtp-Source: AGHT+IGJDKf1Uen//0RZcCPTXktSRMtt1HNpyZJcWUOPP0zlmgwvqRWYrmfkUyl6vNlHZ5TMcW7bpMrzIgjpQW6J08I=
-X-Received: by 2002:a05:651c:1595:b0:364:f7e2:3908 with SMTP id
- 38308e7fff4ca-37797a1439bmr69500261fa.26.1761222063730; Thu, 23 Oct 2025
- 05:21:03 -0700 (PDT)
+	s=arc-20240116; t=1761222389; c=relaxed/simple;
+	bh=WkRBZU6DdRBPBvlJ2N3/YkvCzsXVTcOCM1yMrI1FnBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KXDs/mSRXdO5+MiabN87MvT9ndsy/qKOJeSdSPfuMcd2Bj6gdRs+Lt0qxWY0FtC5HeBTIaLcvxOFvw/z+oab5loDnvqp9OApWpt0L3fqG+HXxKjsAPdoSCOa8esIi3MMR0Mdj8tythvE8lb9ZP83XxqMEXU/+9m9lHiqiCgxal4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XL1J53yy; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761222388; x=1792758388;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WkRBZU6DdRBPBvlJ2N3/YkvCzsXVTcOCM1yMrI1FnBQ=;
+  b=XL1J53yy9A1x2CwuIACbnVU6be6/JKwJNpdL6cmUu4E9xgpOw3MNCQlR
+   hX4LCwRLSlbdGk6vgGkGtyNdTpJwG5o3HryefyUm4nEPTnSreQhIMHXpz
+   FqbKJmEXc9BTuj2aVDDIJLN3euddcLjPXPcpndZLAvIzZL44LCM6H1Wsd
+   DMFwoR15Npz1T8emFt8NR27rgViVW4eIPT+jr/hJT4VR4qcNOD28cGnMW
+   /DC2kue1TN9Cf6kTvXb/TBGCKiNF1kQ4YAIpLhpfiprQhifYWrGRrk7kd
+   yJgNiby4lVnPcie8J6ygQ6Yp2OPf1bBOUnx9LwM0MNygjLE4oJ90sKXtK
+   w==;
+X-CSE-ConnectionGUID: CaTSF8OJQlSLCYlHFJSMtg==
+X-CSE-MsgGUID: EO+RrIOOTXWa51nqqdr9wA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73992775"
+X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
+   d="scan'208";a="73992775"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:26:27 -0700
+X-CSE-ConnectionGUID: rbNur2/2SmyTNh2buCmzcQ==
+X-CSE-MsgGUID: Thbs1WH3RtSINmLU3Tnm6g==
+X-ExtLoop1: 1
+Received: from unknown (HELO fdefranc-mobl3.igk.intel.com) ([10.237.142.160])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:26:16 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: linux-cxl@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Guo Weikang <guoweikang.kernel@gmail.com>,
+	Xin Li <xin@zytor.com>,
+	Will Deacon <will@kernel.org>,
+	Huang Yiwei <quic_hyiwei@quicinc.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Li Ming <ming.li@zohomail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Jon Pan-Doh <pandoh@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH 0/6 v6] Make ELOG and GHES log and trace consistently
+Date: Thu, 23 Oct 2025 14:25:35 +0200
+Message-ID: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022-reset-gpios-swnodes-v2-0-69088530291b@linaro.org>
-In-Reply-To: <20251022-reset-gpios-swnodes-v2-0-69088530291b@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 23 Oct 2025 14:20:51 +0200
-X-Gm-Features: AS18NWDVMpeecJjv0cRW3F7qI1uaG9BjtPpGzNd6sonk6qBJU-hrZwRAkfMZn8E
-Message-ID: <CACRpkdbwnzLT5jNtVCLUmadNt0FBaihg8VRGECdht-Ystpqd5Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] reset: rework reset-gpios handling
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 22, 2025 at 3:41=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
+When Firmware First is enabled, BIOS handles errors first and then it
+makes them available to the kernel via the Common Platform Error Record
+(CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+via one of two similar paths, either ELOG or GHES.
 
-> This series does three things: extends the software node implementation,
-> allowing its properties to reference not only static software nodes but
-> also existing firmware nodes, updates the GPIO property interface to use
-> the reworked swnode macros and finally makes the reset-gpio code the
-> first user by converting the GPIO lookup from machine to swnode.
+Currently, ELOG and GHES show some inconsistencies in how they print to
+the kernel log as well as in how they report to userspace via trace
+events.
 
-This series as a whole look completely sound to me!
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Make the two mentioned paths act similarly for what relates to logging
+and tracing.
 
-Yours,
-Linus Walleij
+--- Changes for v6 ---
+
+	- Rename the helper that copies the CPER CXL protocol error
+	  information to work struct (Dave)
+	- Return -EOPNOTSUPP (instead of -EINVAL) from the two helpers if
+	  ACPI_APEI_PCIEAER is not defined (Dave)
+
+--- Changes for v5 ---
+
+	- Add 3/6 to select ACPI_APEI_PCIEAER for GHES
+	- Add 4,5/6 to move common code between ELOG and GHES out to new
+	  helpers use them in 6/6 (Jonathan).
+
+--- Changes for v4 ---
+
+	- Re-base on top of recent changes of the AER error logging and
+	  drop obsoleted 2/4 (Sathyanarayanan)
+	- Log with pr_warn_ratelimited() (Dave)
+	- Collect tags
+
+--- Changes for v3 ---
+
+    1/4, 2/4:
+	- collect tags; no functional changes
+    3/4:
+	- Invert logic of checks (Yazen)
+	- Select CONFIG_ACPI_APEI_PCIEAER (Yazen)
+    4/4:
+	- Check serial number only for CXL devices (Yazen)
+	- Replace "invalid" with "unknown" in the output of a pr_err()
+	  (Yazen)
+	
+--- Changes for v2 ---
+
+	- Add a patch to pass log levels to pci_print_aer() (Dan)
+	- Add a patch to trace CPER CXL Protocol Errors
+	- Rework commit messages (Dan)
+	- Use log_non_standard_event() (Bjorn)
+
+--- Changes for v1 ---
+
+	- Drop the RFC prefix and restart from PATCH v1
+	- Drop patch 3/3 because a discussion on it has not yet been
+	  settled
+	- Drop namespacing in export of pci_print_aer while() (Dan)
+	- Don't use '#ifdef' in *.c files (Dan)
+	- Drop a reference on pdev after operation is complete (Dan)
+	- Don't log an error message if pdev is NULL (Dan)
+
+Fabio M. De Francesco (6):
+  ACPI: extlog: Trace CPER Non-standard Section Body
+  ACPI: extlog: Trace CPER PCI Express Error Section
+  acpi/ghes: Make GHES select ACPI_APEI_PCIEAER
+  acpi/ghes: Add helper for CPER CXL protocol errors validity checks
+  acpi/ghes: Add helper to copy CPER CXL protocol error information to
+    work struct
+  ACPI: extlog: Trace CPER CXL Protocol Error Section
+
+ drivers/acpi/Kconfig       |  1 +
+ drivers/acpi/acpi_extlog.c | 60 ++++++++++++++++++++++++++++++++++++
+ drivers/acpi/apei/Kconfig  |  1 +
+ drivers/acpi/apei/ghes.c   | 62 +++++++++++++++++++++++++-------------
+ drivers/cxl/core/ras.c     |  6 ++++
+ drivers/pci/pcie/aer.c     |  2 +-
+ include/cxl/event.h        | 22 ++++++++++++++
+ 7 files changed, 132 insertions(+), 22 deletions(-)
+
+
+base-commit: 552c50713f273b494ac6c77052032a49bc9255e2
+-- 
+2.51.0
+
 
