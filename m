@@ -1,106 +1,107 @@
-Return-Path: <linux-acpi+bounces-18135-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18136-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3DFC005D1
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 11:58:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A2DC005EC
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 11:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873563AB908
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 09:58:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2144219C7A74
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Oct 2025 10:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E22630AD02;
-	Thu, 23 Oct 2025 09:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244BF3093B8;
+	Thu, 23 Oct 2025 09:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk+Q/JB0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRqxNR6Q"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A56330ACFC
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E7A30ACF4
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761213521; cv=none; b=X5uv5l+My8ijSgJi8hQz5iPDYJNuzUGtRAAvZIan6+6pN2Na3gp40YUzmH2JBSpBVAVL57E3741jslzlsddXschxzHyBaqn2Dg6AssE18PIrWUGTVbbFi++pvgINFrnPzpU8iBckm3+McvMrnF3crfherI1HdDEpTvFSxHCJhqA=
+	t=1761213594; cv=none; b=EyNLHMviWAQyJ38nEEXIybz/rJepFUI9f1RsNJSnZO0OrZ3LpuxWQvGcyUoCH8eFzwGydLoY2zOEUitEpPzIgasXAB6x6xN4MwnMDhDeIxVwYTY1B6biA6MHapSZIb3CrzwrVE8b/XfiLQ0FRASHvylcp8O7eURtmY744J6Owm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761213521; c=relaxed/simple;
-	bh=pwjiA1Q+1S/FGP4Sxt/IPwPCyI4y5DF05SO7Pb7pvH0=;
+	s=arc-20240116; t=1761213594; c=relaxed/simple;
+	bh=8wG6bQmFBVoMS1wCbmmfcfGyx7Yao3Jr++/jNiuVkp4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G6MZIYOmsTd0zzFhMCoWQzCBa0yJk3jyvR528CDchn0lhbbQAisbjxzyaDpJTmKXXn2wG1mPxtbEe9Ye/Z8SzBUZ319qkMsBll1FKAmNX57fRaoWIeVdIyP75BgjfSBKXW5Tpy6q5x/yNm1H4uNhiu4QtATu0EGodOgoNLyQ1tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk+Q/JB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B919C4CEF7
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:58:40 +0000 (UTC)
+	 To:Cc:Content-Type; b=AcdLLpQLzBAGfeX8HN6fEZs8AU0cPG1g80R7xE0RnfTsXx5tZnMDmbvT0yXPY7f5MXeVqcBBdwtQRWKEZZtYqSCg8M9j+vlfjuktX/nfAGNJ+KGu0pVXapc0gSr43M3v4vhXoMCxvdAtgRHQWes7UQ1Gfj0jaxbGp/DaIDGWSzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRqxNR6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0F7C4CEF7
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 09:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761213520;
-	bh=pwjiA1Q+1S/FGP4Sxt/IPwPCyI4y5DF05SO7Pb7pvH0=;
+	s=k20201202; t=1761213593;
+	bh=8wG6bQmFBVoMS1wCbmmfcfGyx7Yao3Jr++/jNiuVkp4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zk+Q/JB0cQwUUluZ6hLANob0vWcgVYF65JEacy8XkrfyTJ5VBDQJJ5pfiUfCzBEqz
-	 SeYBHAfc6RY16lTZNhlL6FHOCFeaVTw9pRfn6SZScZ0wq+E9elgVqa1YdP/dCsa4Bt
-	 SVTIImma1hmWDiSHTSjJnRDARTsmzH+80eTMRTkB6jmXBEMQgIKN2SVyUcPxxkS3kn
-	 MGU2jKyVz1XCk90Lgi0wK0ZzhS5GxNia3Lq1kQ2YOeSH0NtWSBVeAmg+mJgldJJNqK
-	 0gL1at3Jgel1VHdbQzXYUJhDatTz/yFVS22hpycJTC8pr0qSMaOJuHXJciHrx498Z+
-	 HBlOS7jywaypg==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6505128db16so125664eaf.0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 02:58:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW8tPAhdVixV20ZmGif0/mIS3tkKW7kUgmI/QvIkGJYopTx9ozX2P+xx5s7l9POoi/B0kkSuBsdgkWk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Fmp6sXBAZwSPqev/Ngf/lXNUI5x4u5MPA6q7ckmyN6WJKNvz
-	2H0+tr0mniTpKJJciL/Hty+KdJLNtENDlYzlMse4qBmduB3UkMWgfDPX04UJ28zsAoVuViOwutZ
-	rvwkq+lPKmpFiPgBA7j+Hzx8e5j8UQbs=
-X-Google-Smtp-Source: AGHT+IF6mLk5QxDgJRgmUD2SQ+TwUZbHqxeypTmarAHulyh/ocsnGm49ajtuq2A2H6gvv4MwmBsWK0iQm2vCRyux+WY=
-X-Received: by 2002:a05:6808:2f13:b0:43f:5d93:3e3d with SMTP id
- 5614622812f47-443a30b194dmr11083560b6e.35.1761213519920; Thu, 23 Oct 2025
- 02:58:39 -0700 (PDT)
+	b=YRqxNR6Ql+pnysU2X06F0a0XgmsOJSs7sLT0bNmnUv6YFM8c1YV1iVBchpNTRAcpA
+	 Ddz66uE1ctwCrjoNCawAqqMnt0ZmA+ksq9WVXqdPaH1RiBpkLkJfjNsb+SdyEsXDlo
+	 D3S9a+qv3GYodXiCe6T4NKRyTrqB27yfMTkTXz8L11nvBfJfSRtQEg5FQ5Uyn/ubwf
+	 ORxzvXIofLIHnVcJYM9wX08ZDbGqjThGQPc/7QPmdXpC01R1iTqwyYLzu4pC48jE3h
+	 u2nfXmJ3ixWU0YBj/c/bo3T27nsW46i0J7ce9iWN/nUuwp/9J9fgVi/5hy9fwQD5jR
+	 07LCWaKkIM1PA==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6536caa5fddso269333eaf.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Oct 2025 02:59:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWSg3M4HKFEt1i3nzBw046XtDd0sN8SAe/rVVO9YUmOOhnSPyGRM29FGG7DlyrxuDcDfnvCvdXA1HS+@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGqmSu6VZcpnNdp2CWcrvlt3vczr6pJ4WgGZU6jRpGcw/U/ml0
+	IRkuzx2bqVHXmZ5/mshWsVl/FMyuGMhc80H/GFoauy34T2HzjoBB6mHu8cbokdAZ0SnGjZRRMxI
+	d68xNzvUP+UkUXHu4goFhCRlqaigj6js=
+X-Google-Smtp-Source: AGHT+IGNOHxiftdsqRUUBLNuovRr63nj4b2FWcvZ5Wf6kKfZFM8RS7QpLjefBQ2F0i9qGtq1UixrmzYeD86UGSu2Sd8=
+X-Received: by 2002:a05:6808:1389:b0:43f:cbed:1ed2 with SMTP id
+ 5614622812f47-443a2ef4293mr10810299b6e.17.1761213593105; Thu, 23 Oct 2025
+ 02:59:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022204523.10752-1-tony.luck@intel.com>
-In-Reply-To: <20251022204523.10752-1-tony.luck@intel.com>
+References: <20251007234149.2769-1-W_Armin@gmx.de> <ec099f39-89a2-46ee-a10c-1350ecf7fc83@gmx.de>
+In-Reply-To: <ec099f39-89a2-46ee-a10c-1350ecf7fc83@gmx.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 23 Oct 2025 11:58:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hhnAq-HJhXU8VTAWKNg0PJkYbeocCKEffYOurZn0U81Q@mail.gmail.com>
-X-Gm-Features: AS18NWBLqkSgQM1_EReJZN6QIt7t3F9hVfjKrizmndBRdcttE-en3UVt8DVlzpk
-Message-ID: <CAJZ5v0hhnAq-HJhXU8VTAWKNg0PJkYbeocCKEffYOurZn0U81Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: MRRM: Check revision of MRRM table
-To: Tony Luck <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Thu, 23 Oct 2025 11:59:40 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h8w0wrO5ziqQchN_f5Cb=Duqfc6=uOzR_-pk5_UcJ95g@mail.gmail.com>
+X-Gm-Features: AS18NWAyc-O_hzZt7yOab3Amu3oLXozn9Zu1QcvAnGZ6JDNmfS0ajETT8n8etMw
+Message-ID: <CAJZ5v0h8w0wrO5ziqQchN_f5Cb=Duqfc6=uOzR_-pk5_UcJ95g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] ACPI fan _DSM support
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 22, 2025 at 10:45=E2=80=AFPM Tony Luck <tony.luck@intel.com> wr=
-ote:
+On Wed, Oct 22, 2025 at 11:41=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> Before trying to parse the MRRM table, check that the table revision
-> is the one that is expected.
+> Am 08.10.25 um 01:41 schrieb Armin Wolf:
+>
+> > Microsoft has designed a _DSM interface for the ACPI fan device [1]
+> > that allows the OS to set fan speed trip points. The ACPI firmware
+> > will notify the ACPI fan device when said trip points are triggered.
+> >
+> > Unfortunately some device manufacturers (like HP) blindly assume that
+> > the OS will use this _DSM interface and thus only update the fan speed
+> > value returned by the _FST control method when sending a notification
+> > to the ACPI fan device. This results in stale fan speed values being
+> > reported by the ACPI fan driver [2].
+> >
+> > The first patch performs a simple cleanup in order to reduce the usage
+> > of the acpi_device struct. The second patch fixes an issue with some
+> > 64-bit ACPI implementations where an invalid value was reported
+> > instead of the standard ACPI placeholder value (0xFFFFFFFF). The third
+> > patch fixes an unrelated issue inside the hwmon support code while the
+> > next two patches add support for the ACPI fan notifications as
+> > specified in ACPI 11.2.3. The last patch finally adds support for the
+> > Microsoft _DSM interface.
+> >
+> > All patches where tested with a custom SSDT [3] and the acpi_call [4]
+> > kernel module and appear to work just fine.
+>
+> Any thought on this?
 
-OK, so should there be a Fixes: tag?  Or is it just a tidy-up of the code?
+Not yet, but I'm going to get to it today.
 
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
->  drivers/acpi/acpi_mrrm.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
-> index 47ea3ccc2142..a6dbf623e557 100644
-> --- a/drivers/acpi/acpi_mrrm.c
-> +++ b/drivers/acpi/acpi_mrrm.c
-> @@ -63,6 +63,9 @@ static __init int acpi_parse_mrrm(struct acpi_table_hea=
-der *table)
->         if (!mrrm)
->                 return -ENODEV;
->
-> +       if (mrrm->header.revision !=3D 1)
-> +               return -EINVAL;
-> +
->         if (mrrm->flags & ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS)
->                 return -EOPNOTSUPP;
->
-> --
-> 2.51.0
->
->
+> I tested it with a custom SSDT, so i can prove that those patches work.
+
+OK
 
