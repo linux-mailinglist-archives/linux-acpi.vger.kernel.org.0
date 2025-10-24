@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-18200-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18201-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C06FC07980
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 19:52:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C71CC07A41
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 20:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A95FA35A27B
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 17:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384101C83C19
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95710346777;
-	Fri, 24 Oct 2025 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79DF348894;
+	Fri, 24 Oct 2025 18:03:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5E633FE26;
-	Fri, 24 Oct 2025 17:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80AE348881;
+	Fri, 24 Oct 2025 18:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761328368; cv=none; b=cyoQQOlrzCOz8Rn6Iev/ms2fxtgz8tUf1JuCEFI8XnfWhyjA41plnGm2g2VKzMfQx32NebAXFjWCNUgSC6Cxs68J6dAPcdWc1FX5+Wkit1NIBeF4uBTxOOZFLDkGq2Oz6fEw2v2V9hIBPC+LuFr4N2zwpkmFNTLfOsWv5YdmMV8=
+	t=1761329011; cv=none; b=o4ldHyoiFILNgNkUf0Wt3VskasJaM8SZB0UKEGWdSr8TNsxn4DyzT7xpAPWf5Y3xUq1HTJwxtZ2/y/+wmFpkL94kNE+nMKllwZbskCv1rIHxA71+1KOnx0ljPF5DHGwg7eQhMQpxTZfHFVWStS4PfkkEr7X3BQQgvOVqU3gyd1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761328368; c=relaxed/simple;
-	bh=CLuXSTG9NRI58+a1hWOBp0kNaI16bo/jqRz0pYjTLpY=;
+	s=arc-20240116; t=1761329011; c=relaxed/simple;
+	bh=cDm7wfr/4bJW6Jm2Vn5dxt6Ad7Oj0cMcUzYP7ciZUR0=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FdEGrhUGKak4j0zBHao4tDPRwwHjf4tN73sLc5enHJyMsRte9LPjW2lPJLM0CR5zGZcShBijOkpGcZaDpsFq+cB3IjPPn38sJA729i7mSkYNPvBu8iVvUU+mcHqF5L1h0Q7YqczQ+xsGqtAn6rg5EU7kKE46ajNVjtcOzpiPxmQ=
+	 MIME-Version:Content-Type; b=J/DshKCdML9YbDKSL+iv8HD87MwpVxGods4TIoaTzCejqsLQyzt7YMNGrbRDru6sb0fzmZTfqhJaWSqjuO901rlWFBH9HWqd8r5Y/H78DBajmYeaWaavtRVHu5g5ScozhPIozq4NYBAAqtIIkBPOaOupOUSlTRc2Uiu5dIHcAkY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctVlT0TySz6GD8s;
-	Sat, 25 Oct 2025 01:49:25 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctVzL6WlJz6M4gJ;
+	Sat, 25 Oct 2025 01:59:42 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id E8D2F14027A;
-	Sat, 25 Oct 2025 01:52:43 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 4DB8B140417;
+	Sat, 25 Oct 2025 02:03:26 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
- 2025 18:52:42 +0100
-Date: Fri, 24 Oct 2025 18:52:41 +0100
+ 2025 19:03:24 +0100
+Date: Fri, 24 Oct 2025 19:03:23 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: James Morse <james.morse@arm.com>
 CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -59,12 +59,11 @@ CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
  Deacon" <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
 	Gavin Shan <gshan@redhat.com>
-Subject: Re: [PATCH v3 15/29] arm_mpam: Reset MSC controls from cpuhp
- callbacks
-Message-ID: <20251024185241.0000206e@huawei.com>
-In-Reply-To: <20251017185645.26604-16-james.morse@arm.com>
+Subject: Re: [PATCH v3 18/29] arm_mpam: Register and enable IRQs
+Message-ID: <20251024190323.0000328d@huawei.com>
+In-Reply-To: <20251017185645.26604-19-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
-	<20251017185645.26604-16-james.morse@arm.com>
+	<20251017185645.26604-19-james.morse@arm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -77,31 +76,92 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 17 Oct 2025 18:56:31 +0000
+On Fri, 17 Oct 2025 18:56:34 +0000
 James Morse <james.morse@arm.com> wrote:
 
-> When a CPU comes online, it may bring a newly accessible MSC with
-> it. Only the default partid has its value reset by hardware, and
-> even then the MSC might not have been reset since its config was
-> previously dirtied. e.g. Kexec.
+> Register and enable error IRQs. All the MPAM error interrupts indicate a
+> software bug, e.g. out of range partid. If the error interrupt is ever
+> signalled, attempt to disable MPAM.
 > 
-> Any in-use partid must have its configuration restored, or reset.
-> In-use partids may be held in caches and evicted later.
+> Only the irq handler accesses the MPAMF_ESR register, so no locking is
+> needed. The work to disable MPAM after an error needs to happen at process
+> context as it takes mutex. It also unregisters the interrupts, meaning
+> it can't be done from the threaded part of a threaded interrupt.
+> Instead, mpam_disable() gets scheduled.
 > 
-> MSC are also reset when CPUs are taken offline to cover cases where
-> firmware doesn't reset the MSC over reboot using UEFI, or kexec
-> where there is no firmware involvement.
+> Enabling the IRQs in the MSC may involve cross calling to a CPU that
+> can access the MSC.
 > 
-> If the configuration for a RIS has not been touched since it was
-> brought online, it does not need resetting again.
+> Once the IRQ is requested, the mpam_disable() path can be called
+> asynchronously, which will walk structures sized by max_partid. Ensure
+> this size is fixed before the interrupt is requested.
 > 
-> To reset, write the maximum values for all discovered controls.
-> 
-> CC: Rohit Mathew <Rohit.Mathew@arm.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> CC: Rohit Mathew <rohit.mathew@arm.com>
+> Tested-by: Rohit Mathew <rohit.mathew@arm.com>
 > Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+One trivial thing inline to reduce the patch churn a tiny bit.
+May not be worth the hassle.
+
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 545482e112b7..f18a22f825a0 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -14,6 +14,9 @@
+
+
+
+>  static void mpam_enable_once(void)
+>  {
+> -	mutex_lock(&mpam_list_lock);
+> -	mpam_enable_merge_features(&mpam_classes);
+> -	mutex_unlock(&mpam_list_lock);
+
+Can you shift this later in the earlier patch (ordering clearly doesn't matter)
+so as to reduce churn here?
+
+> +	int err;
+>  
+>  	/*
+>  	 * Once the cpuhp callbacks have been changed, mpam_partid_max can no
+> @@ -1318,6 +1572,27 @@ static void mpam_enable_once(void)
+>  	partid_max_published = true;
+>  	spin_unlock(&partid_max_lock);
+>  
+> +	/*
+> +	 * If all the MSC have been probed, enabling the IRQs happens next.
+> +	 * That involves cross-calling to a CPU that can reach the MSC, and
+> +	 * the locks must be taken in this order:
+> +	 */
+> +	cpus_read_lock();
+> +	mutex_lock(&mpam_list_lock);
+> +	mpam_enable_merge_features(&mpam_classes);
+> +
+> +	err = mpam_register_irqs();
+> +
+> +	mutex_unlock(&mpam_list_lock);
+> +	cpus_read_unlock();
+> +
+> +	if (err) {
+> +		pr_warn("Failed to register irqs: %d\n", err);
+> +		mpam_disable_reason = "Failed to enable.";
+> +		schedule_work(&mpam_broken_work);
+> +		return;
+> +	}
+> +
+>  	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline,
+>  				      "mpam:online");
+>  
+> @@ -1385,6 +1660,8 @@ void mpam_disable(struct work_struct *ignored)
+>  	}
+>  	mutex_unlock(&mpam_cpuhp_state_lock);
+>  
+> +	mpam_unregister_irqs();
+> +
+>  	idx = srcu_read_lock(&mpam_srcu);
+>  	list_for_each_entry_srcu(class, &mpam_classes, classes_list,
+>  				 srcu_read_lock_held(&mpam_srcu))
 
 
