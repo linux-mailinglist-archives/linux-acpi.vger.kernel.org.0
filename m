@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-18194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E5DC074E5
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:28:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2248AC07640
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1AF67583EA2
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 16:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 488C91B87EE0
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A696233509F;
-	Fri, 24 Oct 2025 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D40231D74E;
+	Fri, 24 Oct 2025 16:47:21 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3B62DCF70;
-	Fri, 24 Oct 2025 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3C7F9C1;
+	Fri, 24 Oct 2025 16:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761323120; cv=none; b=VPqpe9W8YZRxjskjl5153bUJi82GfE6ayhuEei4curszpLoPLMyN6OupULgBA+WxAd2WOYPNXGQHBWDVOZpKadYnJibGozskkil9lXf30CXzR80c7EjuvYfHhYL0ggibVz0NOlNCkq45ykOxtt0UXXf6/79ebzBO2lUhmok3keI=
+	t=1761324441; cv=none; b=Zk0/mJ1B/CJLF5/JFptuoaa7KyLGBJJvJjI7wG+Z0DzIaUWHEQsl3Iu1XNM2hy04fSLytlJk/PS/hduyO5WL0QWC2uN4Bw4MpThPuMUHcIcyA/h1fON2obqE6iXX+rSSo0FuRPZSXIT4EdEIHVG6sGpp6TtoaaEsMJvNFZQI9PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761323120; c=relaxed/simple;
-	bh=CTvAjivleXHSJk5VwDjixoS2ri9XXj8olENKg9PaxRg=;
+	s=arc-20240116; t=1761324441; c=relaxed/simple;
+	bh=1DlT732Q4g9Q7JvygNsAztbcORNBus7wT5QEd/JJuNE=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aC6JphJRHAvWQ5eznIaX3W/wrV2vfMpwr6cQsQ5WXby7xMoE+Nhl9CRx3DTSivGUcqV/DVPD7wJ/46FzSPpgfQsVEU9cPTk6BGObXW6wFXWYWvG730x/kXNbiZlvGRjYMxy0NNF0XNQZVQvN+AAiSXdNjFfxv07fm7N23e8ds9I=
+	 MIME-Version:Content-Type; b=NTei48lag+SrIPiBxDGSsoJq8vZFmBj2CPJvvI+dxktb2qdLsR0UwZjxOPhY6wu6zphbdxNKjKQBz2yLc+KWSwmH5X1fbKVJ0aQfavAgW3aqOHbOnD5v4E7bqhqC01M9gfD/oXHD9YQ8JgE6MncmYVXnB1uD/eWEhJ/A/mJkhYM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctSpV6KfVz6GDGT;
-	Sat, 25 Oct 2025 00:21:54 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctTHS0tZKz6M4Yg;
+	Sat, 25 Oct 2025 00:43:32 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 934431402ED;
-	Sat, 25 Oct 2025 00:25:13 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6CC4F14010C;
+	Sat, 25 Oct 2025 00:47:15 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
- 2025 17:25:12 +0100
-Date: Fri, 24 Oct 2025 17:25:10 +0100
+ 2025 17:47:14 +0100
+Date: Fri, 24 Oct 2025 17:47:12 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: James Morse <james.morse@arm.com>
 CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -58,13 +58,13 @@ CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
  Deacon" <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
-	Gavin Shan <gshan@redhat.com>
-Subject: Re: [PATCH v3 07/29] arm_mpam: Add probe/remove for mpam msc driver
- and kbuild boiler plate
-Message-ID: <20251024172510.0000560b@huawei.com>
-In-Reply-To: <20251017185645.26604-8-james.morse@arm.com>
+	Gavin Shan <gshan@redhat.com>, Ben Horgan <ben.horgan@arm.com>
+Subject: Re: [PATCH v3 08/29] arm_mpam: Add the class and component
+ structures for firmware described ris
+Message-ID: <20251024174712.000051b6@huawei.com>
+In-Reply-To: <20251017185645.26604-9-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
-	<20251017185645.26604-8-james.morse@arm.com>
+	<20251017185645.26604-9-james.morse@arm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -77,210 +77,153 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 17 Oct 2025 18:56:23 +0000
+n Fri, 17 Oct 2025 18:56:24 +0000
 James Morse <james.morse@arm.com> wrote:
 
-> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
-> only be accessible from those CPUs, and they may not be online.
-> Touching the hardware early is pointless as MPAM can't be used until
-> the system-wide common values for num_partid and num_pmg have been
-> discovered.
+> An MSC is a container of resources, each identified by their RIS index.
+> Some RIS are described by firmware to provide their position in the system.
+> Others are discovered when the driver probes the hardware.
 > 
-> Start with driver probe/remove and mapping the MSC.
+> To configure a resource it needs to be found by its class, e.g. 'L2'.
+> There are two kinds of grouping, a class is a set of components, which
+> are visible to user-space as there are likely to be multiple instances
+> of the L2 cache. (e.g. one per cluster or package)
 > 
-> CC: Carl Worth <carl@os.amperecomputing.com>
+> Add support for creating and destroying structures to allow a hierarchy
+> of resources to be created.
+> 
+> CC: Ben Horgan <ben.horgan@arm.com>
 > Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
+A few minor things inline.  Mostly code ordering related to make
+it easier to review!
 
-Trying not to replicate comments too much...
-
-A few things inline but others found bigger stuff to fix.
-> diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
-> new file mode 100644
-> index 000000000000..58c83b5c8bfd
-> --- /dev/null
-> +++ b/drivers/resctrl/Kconfig
-> @@ -0,0 +1,13 @@
-> +menuconfig ARM64_MPAM_DRIVER
-> +	bool "MPAM driver"
-> +	depends on ARM64 && ARM64_MPAM && EXPERT
-> +	help
-> +	  MPAM driver for System IP, e,g. caches and memory controllers.
-
-Bit minimal for help text :)
-
-> +
-> +if ARM64_MPAM_DRIVER
-
-I'd add a blank line here.
-
-> +config ARM64_MPAM_DRIVER_DEBUG
-> +	bool "Enable debug messages from the MPAM driver"
-> +	help
-> +	  Say yes here to enable debug messages from the MPAM driver.
-> +
-> +endif
-
+> ---
+>  drivers/resctrl/mpam_devices.c  | 390 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |  93 ++++++++
+>  include/linux/arm_mpam.h        |   8 +-
+>  3 files changed, 483 insertions(+), 8 deletions(-)
+> 
 > diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> new file mode 100644
-> index 000000000000..d18eeec95f79
-> --- /dev/null
+> index d18eeec95f79..8685e50f08c6 100644
+> --- a/drivers/resctrl/mpam_devices.c
 > +++ b/drivers/resctrl/mpam_devices.c
+> @@ -30,7 +30,7 @@
+>  static DEFINE_MUTEX(mpam_list_lock);
+>  static LIST_HEAD(mpam_all_msc);
+>  
+> -static struct srcu_struct mpam_srcu;
+> +struct srcu_struct mpam_srcu;
 
-> +static struct mpam_msc *do_mpam_msc_drv_probe(struct platform_device *pdev)
+Meh. Others may be fussier about this but I'd rather you just
+added the extern when this was first introduced and didn't
+have this churn here.
+
+
+> +static void mpam_vmsc_destroy(struct mpam_vmsc *vmsc)
 > +{
-> +	int err;
-> +	u32 tmp;
-> +	struct mpam_msc *msc;
-> +	struct resource *msc_res;
-> +	struct device *dev = &pdev->dev;
+> +	struct mpam_component *comp = vmsc->comp;
 > +
 > +	lockdep_assert_held(&mpam_list_lock);
 > +
-> +	msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
-> +	if (!msc)
-> +		return ERR_PTR(-ENOMEM);
+> +	list_del_rcu(&vmsc->comp_list);
+> +	add_to_garbage(vmsc);
 > +
-> +	mutex_init(&msc->probe_lock);
-Maybe worth
-	err = devm_mutex_init(&msc->probe_lock);
-	if (err)
-		return err;
-to enable the mutex debugging if anyone wants it.  I've stopped trying
-to analyze whether that is useful or not, now it is easy to add to drivers
-already doing devm.
-
-> +	mutex_init(&msc->part_sel_lock);
-> +	msc->id = pdev->id;
-> +	msc->pdev = pdev;
-> +	INIT_LIST_HEAD_RCU(&msc->all_msc_list);
-> +	INIT_LIST_HEAD_RCU(&msc->ris);
-> +
-> +	err = update_msc_accessibility(msc);
-> +	if (err)
-> +		return ERR_PTR(err);
-> +	if (cpumask_empty(&msc->accessibility)) {
-> +		dev_err_once(dev, "MSC is not accessible from any CPU!");
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
-> +	if (device_property_read_u32(&pdev->dev, "pcc-channel", &tmp))
-> +		msc->iface = MPAM_IFACE_MMIO;
-> +	else
-> +		msc->iface = MPAM_IFACE_PCC;
-> +
-> +	if (msc->iface == MPAM_IFACE_MMIO) {
-> +		void __iomem *io;
-> +
-> +		io = devm_platform_get_and_ioremap_resource(pdev, 0,
-> +							    &msc_res);
-> +		if (IS_ERR(io)) {
-> +			dev_err_once(dev, "Failed to map MSC base address\n");
-> +			return (void *)io;
-
-ERR_CAST() is there to make this stuff more obvious
-
-> +		}
-> +		msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
-> +		msc->mapped_hwpage = io;
-> +	}
-> +
-> +	list_add_rcu(&msc->all_msc_list, &mpam_all_msc);
-> +	platform_set_drvdata(pdev, msc);
-> +
-> +	return msc;
+> +	if (list_empty(&comp->vmsc))
+> +		mpam_comp_destroy(comp);
 > +}
 > +
-> +static int mpam_msc_drv_probe(struct platform_device *pdev)
+> +static void mpam_ris_destroy(struct mpam_msc_ris *ris)
+I'd rather see the create / destroy next to each other if possible.
+Makes it easier to check this unwinds the creat path.
+
 > +{
-> +	int err;
-> +	struct mpam_msc *msc = NULL;
-> +	void *plat_data = pdev->dev.platform_data;
+> +	struct mpam_vmsc *vmsc = ris->vmsc;
+> +	struct mpam_msc *msc = vmsc->msc;
+> +	struct mpam_component *comp = vmsc->comp;
+> +	struct mpam_class *class = comp->class;
 > +
-> +	mutex_lock(&mpam_list_lock);
-> +	msc = do_mpam_msc_drv_probe(pdev);
-> +	mutex_unlock(&mpam_list_lock);
-> +	if (!IS_ERR(msc)) {
-> +		/* Create RIS entries described by firmware */
-> +		err = acpi_mpam_parse_resources(msc, plat_data);
-> +		if (err)
-> +			mpam_msc_drv_remove(pdev);
-> +	} else {
-> +		err = PTR_ERR(msc);
-> +	}
+> +	lockdep_assert_held(&mpam_list_lock);
 > +
-> +	if (!err && atomic_add_return(1, &mpam_num_msc) == fw_num_msc)
-> +		pr_info("Discovered all MSC\n");
+> +	/*
+> +	 * It is assumed affinities don't overlap. If they do the class becomes
+> +	 * unusable immediately.
+> +	 */
+> +	cpumask_andnot(&comp->affinity, &comp->affinity, &ris->affinity);
+> +	cpumask_andnot(&class->affinity, &class->affinity, &ris->affinity);
+> +	clear_bit(ris->ris_idx, &msc->ris_idxs);
+> +	list_del_rcu(&ris->vmsc_list);
+> +	list_del_rcu(&ris->msc_list);
+Can you reorder these so that they are reverse of what happens in create path?
+Makes not real difference other than slightly easier to check everything is done.
+Right now I'm failing to spot where this was added to ris->msc_list in the
+create path.
+
+
+> +	add_to_garbage(ris);
 > +
-> +	return err;
+> +	if (list_empty(&vmsc->ris))
+> +		mpam_vmsc_destroy(vmsc);
 > +}
+> +
+
+> +
+> +/*
+> + * The cacheinfo structures are only populated when CPUs are online.
+> + * This helper walks the device tree to include offline CPUs too.
+
+Comment stale?  It does walk a tree of devices but I'm not sure that's
+what people will read device tree as meaning.
+
+> + */
+> +int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+> +				   cpumask_t *affinity)
+> +{
+> +	return acpi_pptt_get_cpumask_from_cache_id(cache_id, affinity);
+> +}
+
+> +
+> +static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
+> +				  enum mpam_class_types type, u8 class_id,
+> +				  int component_id)
+> +{
+...
+
+> +	ris = devm_kzalloc(&msc->pdev->dev, sizeof(*ris), GFP_KERNEL);
+> +	if (!ris)
+> +		return -ENOMEM;
+> +	init_garbage(&ris->garbage);
+> +	ris->garbage.pdev = pdev;
+I wonder if it's cleaner to just pass the pdev (sometimes null) in
+as a parameter to init_garbage()
+> +
+> +	class = mpam_class_find(class_id, type);
+> +	if (IS_ERR(class))
+> +		return PTR_ERR(class);
+
+
 
 > diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-> new file mode 100644
-> index 000000000000..6ac75f3613c3
-> --- /dev/null
+> index 6ac75f3613c3..1a5d96660382 100644
+> --- a/drivers/resctrl/mpam_internal.h
 > +++ b/drivers/resctrl/mpam_internal.h
-> @@ -0,0 +1,52 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +// Copyright (C) 2025 Arm Ltd.
-> +
-> +#ifndef MPAM_INTERNAL_H
-> +#define MPAM_INTERNAL_H
-> +
-> +#include <linux/arm_mpam.h>
-> +#include <linux/cpumask.h>
-> +#include <linux/io.h>
-> +#include <linux/mailbox_client.h>
-> +#include <linux/mutex.h>
-> +#include <linux/sizes.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/srcu.h>
 
-Includes need another look.
+> +/*
+> + * Structures protected by SRCU may not be freed for a surprising amount of
+> + * time (especially if perf is running). To ensure the MPAM error interrupt can
+> + * tear down all the structures, build a list of objects that can be gargbage
 
-Should be seeing the list header for starters and
-mailbox_client.h doesn't make sense yet.  Some of the
-others may need pushing to the patches where they are
-first used or pushing down into the c files that need them.
+Spell check.  garbage
 
+> + * collected once synchronize_srcu() has returned.
+> + * If pdev is non-NULL, use devm_kfree().
+> + */
+> +struct mpam_garbage {
+> +	/* member of mpam_garbage */
+> +	struct llist_node	llist;
 > +
-> +struct platform_device;
-> +
-> +struct mpam_msc {
-> +	/* member of mpam_all_msc */
-> +	struct list_head        all_msc_list;
-> +
-> +	int			id;
-> +	struct platform_device *pdev;
-> +
-> +	/* Not modified after mpam_is_enabled() becomes true */
-> +	enum mpam_msc_iface	iface;
-> +	u32			nrdy_usec;
-> +	cpumask_t		accessibility;
-> +
-> +	/*
-> +	 * probe_lock is only taken during discovery. After discovery these
-> +	 * properties become read-only and the lists are protected by SRCU.
-> +	 */
-> +	struct mutex		probe_lock;
-> +	unsigned long		ris_idxs;
-> +	u32			ris_max;
-> +
-> +	/* mpam_msc_ris of this component */
-> +	struct list_head	ris;
-> +
-> +	/*
-> +	 * part_sel_lock protects access to the MSC hardware registers that are
-> +	 * affected by MPAMCFG_PART_SEL. (including the ID registers that vary
-> +	 * by RIS).
-> +	 * If needed, take msc->probe_lock first.
-> +	 */
-> +	struct mutex		part_sel_lock;
-> +
-> +	void __iomem		*mapped_hwpage;
-> +	size_t			mapped_hwpage_sz;
+> +	void			*to_free;
+> +	struct platform_device	*pdev;
 > +};
-> +#endif /* MPAM_INTERNAL_H */
-
 
 
