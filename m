@@ -1,446 +1,247 @@
-Return-Path: <linux-acpi+bounces-18211-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18212-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6066DC07C9F
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 20:39:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB93C0810D
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 22:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 749913B8A84
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:39:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5703B8475
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 20:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FAD34C99D;
-	Fri, 24 Oct 2025 18:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A957A2F546D;
+	Fri, 24 Oct 2025 20:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="hUwCGu2g"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ezlIFMq7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012050.outbound.protection.outlook.com [40.93.195.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB9834C821;
-	Fri, 24 Oct 2025 18:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761331127; cv=none; b=IUaoX/VJyKhNumtddGJzhWVPaicSVpfCdY2Qz3WJC8Dr/5kxBWFd+4cCvTK8gMSYYEcZSL35iIlQ6EA8xDqRd2aYY9SgT77gCe8i2haGgIO0aKBrOD0xHS3GxZfGMoTZtddS+B7bG/cwWLWOVYMcML++uGPzgUdFBanZNENGV9o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761331127; c=relaxed/simple;
-	bh=VfuyrzGYcEicD1d9RUTdm+6Wif3rnUDFmF3gcDaE1f8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MawyFo6HPD43kJVHfs+HLKJAsrVRLZsSozJR1zeyefPiuCgnNoNScw4H8d0V0mSjPl/X+T23sJgD1/1Hj/Ibtu6lxKy+1odFfJY+pLtR9Y0ejWiN5nFPjhS9/rXDBVrRi66Up5fUUOipAF8x1/prNdkxXAGxhoaQsujQrHMjTx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=hUwCGu2g; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1761331119; x=1761935919; i=w_armin@gmx.de;
-	bh=kI8zofgUNUgpbjLJnL4Sr/DLZs0GcHA0ckLMQDs0AsU=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hUwCGu2gaNK9yJjrE3uTjwseXD4jYSCvaAGBlhlzEhCI6pimJKiPQxFFDQCgsUt7
-	 N0QYf1oJXQ+6IJ6g3WCiAI4FHPBIUtv544jhAwAX2AdexvCYYuv/laVoPjuupigOW
-	 NDNdk4h3TQafe4HE0wtQxskqrejQheVtSqruNgxBhns8s0NUK5DJ+Z4F9kSmpET4A
-	 OREZCXes5mOq+n7rZKLqeUig4yWzjW3sjY/g7i8q/PRpUHi8cPGEQgaev+nQBy/jq
-	 MJMdr7OqNqinu60vIzq51Dh4GtC8xNAp93FzU1hYNNdhES/P48AaEdXYx1GctpkSv
-	 ypk4E9aD+6/rNJQAHQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.fritz.box ([93.202.247.91]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MqaxU-1uPsi647FI-00dOAF; Fri, 24 Oct 2025 20:38:39 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] ACPI: fan: Add support for Microsoft fan extensions
-Date: Fri, 24 Oct 2025 20:38:24 +0200
-Message-Id: <20251024183824.5656-4-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251024183824.5656-1-W_Armin@gmx.de>
-References: <20251024183824.5656-1-W_Armin@gmx.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6702F39D6;
+	Fri, 24 Oct 2025 20:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761337821; cv=fail; b=cbfztw04TQtU+yKu02k7xGL3dmBhfPD7ULCr2YvEnqzBDyIZHYBdAKlbr8UmnW17m5lP06EtAT/L7hixoGSW+eqmLNva8TuhY7/N/vEpWHqHmeKcDFFr9vulX4l/zzUoGNnq++SAQzrhKiiv1OpVDPNZFeJJRLW+UaPV10WWoYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761337821; c=relaxed/simple;
+	bh=oOIjcZ8wpJNRxBEnTGHf6YAMdmYXdY6aiBCzztGNeUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jhFl2KwAPo74me4WPIitJDkk+oIuKThNzit1krC2z29Fr8RhqjwYaEx4jsghg/i5tpk4vJ2aoefXUFnKbYIfmx1ZLPRPAaGO7wshlwMt0WBuuO3g95X+xJEeuNYg79DOz5iHi7JFOZQlKPkaQpsIJPGl0cF7yvtEuCWY5bAQmfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ezlIFMq7; arc=fail smtp.client-ip=40.93.195.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SDDWpwku/F6XBQNXduNMjiupCEjzyRFbXGtcmlmjS2i+iXgoisFtjzIwLMoy11N0LLG2NEvpbsJkDSyEUshFVqxaOvNX03SyHzICkymiyKOsA2fa/0FKvsrCqwgFIA7M9/Izc/K5tmnPpcGazYooJ5qsQUR0aH2Hu54pMN6yfeOe5MnDg1sRye57w369jP8N3quqPTEe6Gjzk1ij9uoJeo1TYUuVIZXkD5UAiJvwzBcAghLYxCPgtkbiYwq+FOUYalDy/g/0qIsmafgA9u2IptYgqAMUW4do69RX1WCUG5L95CpoEqI2TTdYs71kN+781wbK7ol60auC46M4+Q3p8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LeeU1fhSfiOpxiw59koplAMJTlucWpmZvT8aGwbQS+8=;
+ b=Fw385i6JJIQYfUeCtT5MomREctqS2qwHlD6CPJq+wFW0QHguevHf8t0+9l+kiPEBqeyYMTeJbRa8dqVXhPDZ0letyh+CHgoqlN+rjW8uluRbxJ5JntfYoQ/F+2iQCUVQ18HbyWtl23RX/5kFsFWGJpc8Zpo+7SHHOhpLcaTUIVS3ER+GsmJ0/X/lbOSNzOVOpY+YJ3LPzts/W0Nf80rlPdLYvroSMOx5YJzkLJKSYGqiP3P6KiUmDbS3wvNg/y4SqXhCGtSwjDa7AqpyRdlIG8cA1NEJWr4BtUG2ZfHut1/39IqTAK/WbMIsStFzOvSK+k3gtPf1YzC7r55wSBYx4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LeeU1fhSfiOpxiw59koplAMJTlucWpmZvT8aGwbQS+8=;
+ b=ezlIFMq73P0t0A3cMEj9/3I3dJg/wqiLUyoDGfw01gffDs/ZXNQcSaBriu04DzevwjRrQ2jszeWW18l0VkZgrGNwy+mYTLu4Kyz68I9RfYYSjol7s70UG1iX2X5QryAonr5UmDEdi+dGIkIU+blv/afY7GqdoLYyZqCnRKkNN0w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
+ DS0PR12MB6608.namprd12.prod.outlook.com (2603:10b6:8:d0::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.13; Fri, 24 Oct 2025 20:30:17 +0000
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
+ 20:30:17 +0000
+Date: Fri, 24 Oct 2025 16:30:12 -0400
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-edac@vger.kernel.org, Smita.KoralahalliChannabasappa@amd.com,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Bert Karwatzki <spasswolf@web.de>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] x86/mce: Unify AMD DFR handler with MCA Polling
+Message-ID: <20251024203012.GA251815@yaz-khff2.amd.com>
+References: <20251016-wip-mca-updates-v7-0-5c139a4062cb@amd.com>
+ <20251016-wip-mca-updates-v7-2-5c139a4062cb@amd.com>
+ <20251024150333.GSaPuVRQYxH92zyrmO@fat_crate.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024150333.GSaPuVRQYxH92zyrmO@fat_crate.local>
+X-ClientProxiedBy: BL1P221CA0015.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c5::34) To DM4PR12MB6373.namprd12.prod.outlook.com
+ (2603:10b6:8:a4::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cCUJa7O/fGLsQFcHfVnAILquOJ/RKBf2PTPl8SKA9NpZLrgWsuV
- zyuyNssMt4ylbGwlhQUTU89z445A8hbmXBTkvhlglwRPNhDuK0TaQIr3yzSGS1Wh3YFSJNg
- eRBBF/5cYukahFHX7JFnTTLkNaGP/i51N7zYNEkaaCjnRsJ+xnDXV2cH93eTFuj7GUq8ppV
- Vrgp8FSQTlPv2J3jPhVrA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2MK3trNCnIQ=;QzupsnEl5cH2mG1sih8VIECn8gc
- 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
- ohWQP9UXeLFT3XxxU=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|DS0PR12MB6608:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d3f1286-ab62-45ce-5fe7-08de133c24ff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zQlRJ8YDKqgTAno6YBgGBidy/LB3IPAQJKUgQAJkcLXXcuCPK8fuUbAbj5bz?=
+ =?us-ascii?Q?CEidJEWnyqu1RfwqAmT05gwLEdVjlYZQuQy929CJIvIOsqbMV8OPd5KmmepK?=
+ =?us-ascii?Q?rP9nTrTsItkKP0hMG0Tm49Q5LPDrmMfJm+JgBels2XkkxbKAIWwcEqKxKiwd?=
+ =?us-ascii?Q?fL7AJFlW+LRHzcXJBoW9oTjLAeYFcv1Wc7Oyf0UkVRJTrK7+jHhLH1H1NsgN?=
+ =?us-ascii?Q?gy7sXaX2zkA+F4ljboV/27x0L0vrDzs+zI82m27eeMmouQ3M/UdCAmCjLM6L?=
+ =?us-ascii?Q?nAKLxNEL7hzCt39WgEa6wnGygqXwzInXr9RgWRu+oq9Cdh26wPCp8alASZgr?=
+ =?us-ascii?Q?nVRZTPUkAiOoTetJ8PSKqAANp820SeOJ8xJ1n9HYSOn32YthLzT867KryzSs?=
+ =?us-ascii?Q?mUOHMMbak1EVBqR2fB7SkSFBsbZ/ULJuQkKVOOm8fD6wAQwQ6O/ExeEHPBPj?=
+ =?us-ascii?Q?RlfMwkj70d69BZ0zGMh0FUZJ8X+iwblv/moC+P5AeiMG/fk3jrhTN3xprAqb?=
+ =?us-ascii?Q?ThZKOt1uHlebceNAyxZgMn6Ppo5uOotXGhPmlWQQ2iKMnBaA3zKrw8fWkWWH?=
+ =?us-ascii?Q?nN0Aq0CRUctozqXm2O4BFPPgxo5iMOw2f+/apM6LlCG+zJWNtw5nelRc8xF4?=
+ =?us-ascii?Q?Z2857bGi5h6mfmFs00O9nG+dW2sN3ECnrFIcM2LcFZMeOgMo9tADKOszTOsB?=
+ =?us-ascii?Q?rJVQHtq/qIXVe5O08TNBTYtKPXCvqbDNYbjZ/uTDnXrfS1ae+UEQw0wZSuFg?=
+ =?us-ascii?Q?KynKiXKGqysSdHxohQVAE8T2P/dCvR/0nu8YJTzJRonspUvxgCTMjGEQPZl3?=
+ =?us-ascii?Q?KNRaVkTaxGAU7GznDwGP9A78dtIao8GWHgHxIAHYTMbbJ4kTuKbiDOJTNzQ4?=
+ =?us-ascii?Q?routSU44zESO4q5mJh93PwnXac4uu3oU393Ftkp6+soQKfvJymtXPzey5Z3l?=
+ =?us-ascii?Q?Wg0sPLSDGpm2RCVyTLLn7hp2qyCEbSjNtvdAid886JYnOV5KNLsHjwtNVGy2?=
+ =?us-ascii?Q?GYBylG5fIeMHBxJuXXM1HpK8koJqUYLiZWdmJmoYvkQwCjVQYN6KNi3tlnHc?=
+ =?us-ascii?Q?OsK8a0nFAgDq99I20zXcgz4H1hH8HandBV9kBh20LZDNHWmnoiRcaV6h32Cn?=
+ =?us-ascii?Q?mjWmw/FvNzsW04DQmW+sxLx9dA6hOV4hFcGbpl+6Q54lCmrBga5KOn4vaukq?=
+ =?us-ascii?Q?O6zva1DsWYAC1mYLoEivLmHWkaobDqSvEad/cFl82RrdZ9VkbcAAYsGvsys6?=
+ =?us-ascii?Q?cPwaQnueFJRnbMD07x9BrsQ/0MBJkV0MQtDrnaUXDOuIfOiBrCrF2Oi9HyFv?=
+ =?us-ascii?Q?XY3MoK/8AeE+BNBqPStK59quRyGpbCIaFhhMEmeaPAMvI+7+5ZxYkD5nWep4?=
+ =?us-ascii?Q?P8Ig3+Z2MbGq5ICTAXJpTioDx8xxhHRJd/dJIFdwIz3TVBsfvpvmdKpBJAJI?=
+ =?us-ascii?Q?4PiJ9u7AVS9iUYch+BCDSXjLDVC7EBGx?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xy4ZmH+bdhb1EqwKY4HrjTp0G4Hq6znPkDZ5AOcfYU7KC3hmp6HjWsmxr3UH?=
+ =?us-ascii?Q?T0D1scFjOTqpHAhudsNTb6Nhiw1liXDj95Jb1/y+qcvp6KP4+szdwYoILwdl?=
+ =?us-ascii?Q?Zsz1r9q3HIUNOjh+bcTl83zGNsTaQTh9EGrqpUmIz60krfq1OJh/hh3uOfCV?=
+ =?us-ascii?Q?qK+8LB7O1ydmukAmPZfMf0QRyRBH/0d5W5HCWi3lDuTBXZFzh3FwzvBnEKQ+?=
+ =?us-ascii?Q?uA6fi/G2D2v44O15lDEWu9AKDQ7tbylKjJYsE1GecNMvssRVzHqIYt/UKw9e?=
+ =?us-ascii?Q?QC9cfjD2QyZvN+F8qfG7/2JpyJvNt8dNnFnntWuyitjm5BYfANHOanbwvkfq?=
+ =?us-ascii?Q?lY5o7mT33iJFRmcX+LklhYkvlh6CsKJc5KGFuQXbp43ec/JBd5drEaEUt58b?=
+ =?us-ascii?Q?7TYVFFwvksWl4y0M9lYbV3iDYHxNbtLihGP08AAr7n0pxBefV5pZAH9Xhkwz?=
+ =?us-ascii?Q?cl2siRobjf2xt/8l/etsT+Oe45ItpV31uZ8R4aMAgWNXdCEqlUbXDenXo49Q?=
+ =?us-ascii?Q?/3YM//iodhuVJZC445B6fdxPPHcJiM5SnCYSxeuxrYIzZ9lBimeP7HOAGu5n?=
+ =?us-ascii?Q?sTu0QnuIleT7OD9zcehFvBtHamTaUAXXFtkrkVZAS0b8XJPGPShOAxRhrpIr?=
+ =?us-ascii?Q?WRsax1vQ2j80rXnC3sjhp88AEiKalG6ghEXfc30He2pYvsSkA8ILZnYonbax?=
+ =?us-ascii?Q?YVnPwou5+jFNP+lFZEwKkZhNdaVLwD8yHGZw4QToIsfJ8/FegyXZvra6Os44?=
+ =?us-ascii?Q?ADJG8q3tLUYP1QTa5tak/ogrzheYlnA6Orlm+XYy7MTujmKzUG0MB5A2f9oQ?=
+ =?us-ascii?Q?uw5N7AfoDfuPeD5dxHdBJunZqnUkD747zcId+T/b2eG8bI7gY6jFIHdLOonN?=
+ =?us-ascii?Q?uCuJFblsvCRCulu6lUxacFMva9R+2n+d9sm0oMOuou/NtsfUtlsR5Y2Zt7I9?=
+ =?us-ascii?Q?HMxK/ZAbaDHVxIHYnUx9PkWQDp364LZ2qhCYKgIXe8yyJJUoiwAtEpCt2Cdc?=
+ =?us-ascii?Q?PlL8zTF0BUwbn/bcQM9lWMuAeqtfPI5CvfCNduuMaa10hr0ESYxtCA+INVul?=
+ =?us-ascii?Q?82obAgspL8zQYeQXj57RTTAM7Qr9Vmd0X6bd81DESnpEbKem5sIsDiXqL8nx?=
+ =?us-ascii?Q?OoZb8yRejRe0UC5HPJRAJjLJm1PpFvZMytcvPlDckPAMn9PT66DJ+5X4Gh3f?=
+ =?us-ascii?Q?ZC4ZJHizwMyj4MydHT1+AU3LSL0gclEQplKIx7gchdy3Q/f4+raZgi/3hoMp?=
+ =?us-ascii?Q?nReyBW9EFRR0VXlF/osIAv4rbnfx4rFAndNRysSChFPxNlZh5ItxipnNdpET?=
+ =?us-ascii?Q?/EUKb5+NM8Hp7ew8eawmSSzFA60G9zbVbyNz2lvnvO/s0pwf9LDvnCGeAj7a?=
+ =?us-ascii?Q?WTHaez8TJH6vVMNOOckiRkb63j0U0t2yFep0KTM+Ki9How6QHYfWZn/U7kEO?=
+ =?us-ascii?Q?TtfCmiSaQHfODZT+g3VHAZvSFBxoLcSFUiZir7FUf5X583LX+ELfPASCXbPD?=
+ =?us-ascii?Q?d/aTmN7ebrhemJoF4lU/N+YUrRZC2UD+yjJpocvaTEdxQjn0iYXORaERc/6p?=
+ =?us-ascii?Q?rcw0y2fshlGjRoEsuS034lvL7RYksk4SiZgAYB2M?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d3f1286-ab62-45ce-5fe7-08de133c24ff
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 20:30:17.5085
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xYyg3x99aqqroynIhXuZgU0no46pjEMFcugeWXW/gxUTMkze6ok3oekBhzvfeOcLjiH1caNdpaTAIt9mDAkB0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6608
 
-Microsoft has designed a set of extensions for the ACPI fan device
-allowing the OS to specify a set of fan speed trip points. The
-platform firmware will then notify the ACPI fan device when one
-of the trip points is triggered.
+On Fri, Oct 24, 2025 at 05:03:33PM +0200, Borislav Petkov wrote:
+> On Thu, Oct 16, 2025 at 04:37:47PM +0000, Yazen Ghannam wrote:
+> > @@ -1878,6 +1924,9 @@ static void __mcheck_cpu_init_prepare_banks(void)
+> >  
+> >  		bitmap_fill(all_banks, MAX_NR_BANKS);
+> >  		machine_check_poll(MCP_UC | MCP_QUEUE_LOG, &all_banks);
+> > +
+> > +		if (mce_flags.smca)
+> > +			machine_check_poll(MCP_DFR | MCP_QUEUE_LOG, &all_banks);
+> 
+> So you're going to run the poll again just for DFR errors?!
+> 
+> What for?
 
-Unfortunatly, some device manufacturers (like HP) blindly assume
-that the OS will use said extensions and thus only update the values
-returned by the _FST control method when receiving such a
-notification. As a result the ACPI fan driver is currently unusable
-on such machines, always reporting a constant value.
+Yeah, I guess I went too far with trying to catch bogus errors.
 
-Fix this by adding support for the Microsoft extensions. During probe
-and when resuming from suspend the driver will attempt to trigger an
-initial notification that will update the values returned by _FST.
-Said trip points will be updated each time a notification is received
-from the platform firmware to ensure that the values returned by
-the _FST control method are updated.
+> 
+> I think this is enough:
+> 
+> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+> index 1482648c8508..7d6588195d56 100644
+> --- a/arch/x86/include/asm/mce.h
+> +++ b/arch/x86/include/asm/mce.h
+> @@ -299,7 +299,6 @@ enum mcp_flags {
+>  	MCP_TIMESTAMP	= BIT(0),	/* log time stamp */
+>  	MCP_UC		= BIT(1),	/* log uncorrected errors */
+>  	MCP_QUEUE_LOG	= BIT(2),	/* only queue to genpool */
+> -	MCP_DFR		= BIT(3),	/* log deferred errors */
+>  };
+>  
+>  void machine_check_poll(enum mcp_flags flags, mce_banks_t *b);
+> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+> index 64aa7ecfd332..d9f9ee7db5c8 100644
+> --- a/arch/x86/kernel/cpu/mce/amd.c
+> +++ b/arch/x86/kernel/cpu/mce/amd.c
+> @@ -807,7 +807,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_deferred_error)
+>  /* APIC interrupt handler for deferred errors */
+>  static void amd_deferred_error_interrupt(void)
+>  {
+> -	machine_check_poll(MCP_TIMESTAMP | MCP_DFR, &this_cpu_ptr(&mce_amd_data)->dfr_intr_banks);
+> +	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->dfr_intr_banks);
+>  }
+>  
+>  static void reset_block(struct threshold_block *block)
+> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+> index 39725df7d35c..7be062429ce3 100644
+> --- a/arch/x86/kernel/cpu/mce/core.c
+> +++ b/arch/x86/kernel/cpu/mce/core.c
+> @@ -779,17 +779,13 @@ static bool should_log_poll_error(enum mcp_flags flags, struct mce_hw_err *err)
+>  {
+>  	struct mce *m = &err->m;
+>  
+> -	if (flags & MCP_DFR)
+> +	if (mce_flags.smca)
+>  		return smca_should_log_poll_error(flags, err);
+>  
+>  	/* If this entry is not valid, ignore it. */
+>  	if (!(m->status & MCI_STATUS_VAL))
+>  		return false;
+>  
+> -	/* Ignore deferred errors if not looking for them (MCP_DFR not set). */
+> -	if (m->status & MCI_STATUS_DEFERRED)
+> -		return false;
+> -
+>  	/*
+>  	 * If we are logging everything (at CPU online) or this
+>  	 * is a corrected error, then we must log it.
+> @@ -1924,9 +1920,6 @@ static void __mcheck_cpu_init_prepare_banks(void)
+>  
+>  		bitmap_fill(all_banks, MAX_NR_BANKS);
+>  		machine_check_poll(MCP_UC | MCP_QUEUE_LOG, &all_banks);
+> -
+> -		if (mce_flags.smca)
+> -			machine_check_poll(MCP_DFR | MCP_QUEUE_LOG, &all_banks);
+>  	}
+>  
+>  	for (i = 0; i < this_cpu_read(mce_num_banks); i++) {
+> 
+> 
+> 
 
-Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-exp=
-eriences/design-guide
-Closes: https://github.com/lm-sensors/lm-sensors/issues/506
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/acpi/fan.h      |   2 +
- drivers/acpi/fan_core.c | 173 +++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 173 insertions(+), 2 deletions(-)
+This looks good to me.
 
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index dcc1ad3118ff..f85f9a0fbfcd 100644
-=2D-- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -56,6 +56,8 @@ struct acpi_fan {
- 	struct acpi_fan_fif fif;
- 	struct acpi_fan_fps *fps;
- 	int fps_count;
-+	/* A value of 0 means that trippoint-related functions are not supported=
- */
-+	u32 fan_trip_granularity;
- #if IS_REACHABLE(CONFIG_HWMON)
- 	struct device *hdev;
- #endif
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 7be22c52670c..1ec213afcdfd 100644
-=2D-- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -7,11 +7,16 @@
-  *  Copyright (C) 2022 Intel Corporation. All rights reserved.
-  */
-=20
-+#include <linux/bits.h>
- #include <linux/kernel.h>
-+#include <linux/limits.h>
-+#include <linux/math.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
-+#include <linux/uuid.h>
- #include <linux/thermal.h>
- #include <linux/acpi.h>
- #include <linux/platform_device.h>
-@@ -21,6 +26,24 @@
-=20
- #define ACPI_FAN_NOTIFY_STATE_CHANGED	0x80
-=20
-+/*
-+ * Defined inside the "Fan Noise Signal" section at
-+ * https://learn.microsoft.com/en-us/windows-hardware/design/device-exper=
-iences/design-guide.
-+ */
-+static const guid_t acpi_fan_microsoft_guid =3D GUID_INIT(0xA7611840, 0x9=
-9FE, 0x41AE, 0xA4, 0x88,
-+							0x35, 0xC7, 0x59, 0x26, 0xC8, 0xEB);
-+#define ACPI_FAN_DSM_GET_TRIP_POINT_GRANULARITY 1
-+#define ACPI_FAN_DSM_SET_TRIP_POINTS		2
-+#define ACPI_FAN_DSM_GET_OPERATING_RANGES	3
-+
-+/*
-+ * Ensures that fans with a very low trip point granularity
-+ * do not send too many notifications.
-+ */
-+static uint min_trip_distance =3D 100;
-+module_param(min_trip_distance, uint, 0);
-+MODULE_PARM_DESC(min_trip_distance, "Minimum distance between fan speed t=
-rip points in RPM");
-+
- static const struct acpi_device_id fan_device_ids[] =3D {
- 	ACPI_FAN_DEVICE_IDS,
- 	{"", 0},
-@@ -310,6 +333,131 @@ static int acpi_fan_get_fps(struct acpi_device *devi=
-ce)
- 	return status;
- }
-=20
-+static int acpi_fan_dsm_init(struct device *dev)
-+{
-+	union acpi_object dummy =3D {
-+		.package =3D {
-+			.type =3D ACPI_TYPE_PACKAGE,
-+			.count =3D 0,
-+			.elements =3D NULL,
-+		},
-+	};
-+	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	union acpi_object *obj;
-+	int ret =3D 0;
-+
-+	if (!acpi_check_dsm(fan->handle, &acpi_fan_microsoft_guid, 0,
-+			    BIT(ACPI_FAN_DSM_GET_TRIP_POINT_GRANULARITY) |
-+			    BIT(ACPI_FAN_DSM_SET_TRIP_POINTS)))
-+		return 0;
-+
-+	dev_info(dev, "Using Microsoft fan extensions\n");
-+
-+	obj =3D acpi_evaluate_dsm_typed(fan->handle, &acpi_fan_microsoft_guid, 0=
-,
-+				      ACPI_FAN_DSM_GET_TRIP_POINT_GRANULARITY, &dummy,
-+				      ACPI_TYPE_INTEGER);
-+	if (!obj)
-+		return -EIO;
-+
-+	if (obj->integer.value > U32_MAX)
-+		ret =3D -EOVERFLOW;
-+	else
-+		fan->fan_trip_granularity =3D obj->integer.value;
-+
-+	kfree(obj);
-+
-+	return ret;
-+}
-+
-+static int acpi_fan_dsm_set_trip_points(struct device *dev, u64 upper, u6=
-4 lower)
-+{
-+	union acpi_object args[2] =3D {
-+		{
-+			.integer =3D {
-+				.type =3D ACPI_TYPE_INTEGER,
-+				.value =3D lower,
-+			},
-+		},
-+		{
-+			.integer =3D {
-+				.type =3D ACPI_TYPE_INTEGER,
-+				.value =3D upper,
-+			},
-+		},
-+	};
-+	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	union acpi_object in =3D {
-+		.package =3D {
-+			.type =3D ACPI_TYPE_PACKAGE,
-+			.count =3D ARRAY_SIZE(args),
-+			.elements =3D args,
-+		},
-+	};
-+	union acpi_object *obj;
-+
-+	obj =3D acpi_evaluate_dsm(fan->handle, &acpi_fan_microsoft_guid, 0,
-+				ACPI_FAN_DSM_SET_TRIP_POINTS, &in);
-+	kfree(obj);
-+
-+	return 0;
-+}
-+
-+static int acpi_fan_dsm_start(struct device *dev)
-+{
-+	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	int ret;
-+
-+	if (!fan->fan_trip_granularity)
-+		return 0;
-+
-+	/*
-+	 * Some firmware implementations only update the values returned by the
-+	 * _FST control method when a notification is received. This usually wor=
-ks
-+	 * with Microsoft Windows as setting up trip points will keep triggering
-+	 * said notifications, but will cause issues when using _FST without the
-+	 * Microsoft-specific trip point extension.
-+	 *
-+	 * Because of this we have to ensure that an initial notification is tri=
-ggered
-+	 * to start the cycle of trip points updates. We achive this by setting =
-the trip
-+	 * points sequencially to two separate ranges. As by the Microsoft speci=
-fication
-+	 * the firmware should trigger a notification immediately if the fan spe=
-ed is outside
-+	 * of the trip point range. This _should_ result in at least one notific=
-ation as both
-+	 * ranges do not overlap, meaning that the current fan speed needs to be=
- outside of
-+	 * at least one range.
-+	 */
-+	ret =3D acpi_fan_dsm_set_trip_points(dev, fan->fan_trip_granularity, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return acpi_fan_dsm_set_trip_points(dev, fan->fan_trip_granularity * 3,
-+					    fan->fan_trip_granularity * 2);
-+}
-+
-+static int acpi_fan_dsm_update_trips_points(struct device *dev, struct ac=
-pi_fan_fst *fst)
-+{
-+	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	u64 upper, lower;
-+
-+	if (!fan->fan_trip_granularity)
-+		return 0;
-+
-+	if (!acpi_fan_speed_valid(fst->speed))
-+		return -EINVAL;
-+
-+	upper =3D roundup_u64(fst->speed + min_trip_distance, fan->fan_trip_gran=
-ularity);
-+	if (fst->speed <=3D min_trip_distance) {
-+		lower =3D 0;
-+	} else {
-+		/*
-+		 * Valid fan speed values cannot be larger than 32 bit, so
-+		 * we can safely assume that no overflow will happen here.
-+		 */
-+		lower =3D rounddown((u32)fst->speed - min_trip_distance, fan->fan_trip_=
-granularity);
-+	}
-+
-+	return acpi_fan_dsm_set_trip_points(dev, upper, lower);
-+}
-+
- static void acpi_fan_notify_handler(acpi_handle handle, u32 event, void *=
-context)
- {
- 	struct device *dev =3D context;
-@@ -323,8 +471,13 @@ static void acpi_fan_notify_handler(acpi_handle handl=
-e, u32 event, void *context
- 		 * receive an ACPI event indicating that the fan state has changed.
- 		 */
- 		ret =3D acpi_fan_get_fst(handle, &fst);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Error retrieving current fan status: %d\n", ret);
-+		} else {
-+			ret =3D acpi_fan_dsm_update_trips_points(dev, &fst);
-+			if (ret < 0)
-+				dev_err(dev, "Failed to update trip points: %d\n", ret);
-+		}
-=20
- 		acpi_fan_notify_hwmon(dev);
- 		acpi_bus_generate_netlink_event("fan", dev_name(dev), event, 0);
-@@ -394,6 +547,10 @@ static int acpi_fan_probe(struct platform_device *pde=
-v)
- 	}
-=20
- 	if (fan->has_fst) {
-+		result =3D acpi_fan_dsm_init(&pdev->dev);
-+		if (result)
-+			return result;
-+
- 		result =3D devm_acpi_fan_create_hwmon(&pdev->dev);
- 		if (result)
- 			return result;
-@@ -402,6 +559,12 @@ static int acpi_fan_probe(struct platform_device *pde=
-v)
- 		if (result)
- 			return result;
-=20
-+		result =3D acpi_fan_dsm_start(&pdev->dev);
-+		if (result) {
-+			dev_err(&pdev->dev, "Failed to start Microsoft fan extensions\n");
-+			return result;
-+		}
-+
- 		result =3D acpi_fan_create_attributes(device);
- 		if (result)
- 			return result;
-@@ -487,8 +650,14 @@ static int acpi_fan_suspend(struct device *dev)
-=20
- static int acpi_fan_resume(struct device *dev)
- {
--	int result;
- 	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	int result;
-+
-+	if (fan->has_fst) {
-+		result =3D acpi_fan_dsm_start(dev);
-+		if (result)
-+			dev_err(dev, "Failed to start Microsoft fan extensions: %d\n", result)=
-;
-+	}
-=20
- 	if (fan->acpi4)
- 		return 0;
-=2D-=20
-2.39.5
+Should I send another revision?
 
+Thanks,
+Yazen
 
