@@ -1,140 +1,146 @@
-Return-Path: <linux-acpi+bounces-18171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18172-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD60C051C7
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 10:42:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EA0C05433
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 11:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2D4F0507966
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 08:38:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C16C1B82B2E
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 09:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B2D307AEB;
-	Fri, 24 Oct 2025 08:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIESWRIh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01397308F2A;
+	Fri, 24 Oct 2025 09:10:21 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5F5306487
-	for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 08:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2259E2FA0CC;
+	Fri, 24 Oct 2025 09:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761294930; cv=none; b=T2AwZdE/C1awQ4QN4JPUGdyiD8BD2h4GGHXagiOVvUI4dBGsInAXyHmhLrXcK4XVn2HlJJnUARtYim5Kfjqk6WUuhdwmoprGfL02YaQ5pZo4EMvl9MtjcMhZ5XRBFPDux7nDiT6fPl6CQQ35fCWb6xOhgIX+eZmxtmhuNsz70nE=
+	t=1761297020; cv=none; b=S08GRQST/qtaZvnQe+4qgNIpXB1UGdUU1IZFKUvOATpanHY324k63Wx32XgFiMS4Me67hF/kX8IS+uzNcv56PAVtHa5SrQHMfRYqsjkWalxOeHEDHTeWHlQwtEGEMwNqQcWlXQcToWsrXAf+wfDCIycbnlnINpbBzfFivQ56s2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761294930; c=relaxed/simple;
-	bh=rs6+rIkwBSTFk9oYKPn+vWj3PBLzsTh+yyt3kunlGBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r8AOnqHxcv8ZtH9iu9FV5Mjlgs6LkhLSDWug/7pLDdjrBTR+DiQqrBcmfgMluEEnRW000/xmV39WvvTOeiE3N1dy86ZM9ZuFD2Z1tewB4z8z1+dybqHU6pncJKDoTzfOV2mlc5vAYjeRTzogoWPXgAwAL0BIkvF7zIqRM3uDUbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIESWRIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98088C4CEF1
-	for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 08:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761294929;
-	bh=rs6+rIkwBSTFk9oYKPn+vWj3PBLzsTh+yyt3kunlGBI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NIESWRIh48tdpGQ8r7/qaZ3/1yO96wyvPJ/RrMpQFBaafnkEx18iZBRSes2pyHDrP
-	 EFi1YKFhjK+Wu+Dx92+uwrFVdKnv8h0Q+tr4f8PxYYoJYol20fooQ7W/txSlSR9/Kd
-	 xO0YbhChmdOsbsfzor+Ou8dmwgviODWis6pKv4pp+Fp7K+l7RafO+/RZYZTxl/GJvt
-	 Y0tmoQP7L3c+bd/Oa5kDsXk7cVlx5R9lq0PxvIIRU+s9L1WagzG1bhLokuyQT0hOjt
-	 9knxMzXP8Y3CE2JjzNf5HhD8BoNGsygzGbL3WohK0kgDJBiGxZISiUiltK6p7yTKh2
-	 5ESKfs/eJ20/Q==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-65363319bacso895262eaf.2
-        for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 01:35:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWJtoB1rKuuAUkH09v0ZZ1zJzbBCjSrmIpbU3sQEfD12TF+yCe1WCxOReR/yzUgXupYvykOzbfE8ar1@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+biSfVo0kthNCrGKPLKTQFnuDkq3XFVC3mcz/GQpwQBlair6a
-	n5WGx8zX8WT+tK1x/OBD9QP/NoBqvGpnYMUqBNqHI3k6ellIXuIGtTdEm+aRMW13OX3NetHOY/J
-	kyEwDwECmF3+lG9mxux7jnsRHNQWHaOI=
-X-Google-Smtp-Source: AGHT+IGDHDmhaPaIVA0YNouC/sPWwhYWD8hB8prSLd6xwuSCIeELLgzZGaGrLwlh4yPxk3EKpeKsGpwzuKkf2GbsaMo=
-X-Received: by 2002:a05:6808:1a20:b0:441:8f74:e8f with SMTP id
- 5614622812f47-443a3153d11mr12209274b6e.57.1761294928899; Fri, 24 Oct 2025
- 01:35:28 -0700 (PDT)
+	s=arc-20240116; t=1761297020; c=relaxed/simple;
+	bh=wjF2RxGPPD5WQjfzijEJkTv2SShQyxnXYGmHOj1sukM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qe9WgAZl191vdd2XvkWeL5sHxD8SuLz2yuikNQhUIOhFwaCYqazbR1o1YC/WwLN5Rdwly52wx89KfFE5/z+Q2qZ3Kvs26CffkKtD28FVgXVJKXpCaUsH4Ojxjt8RKD9B1skf4qq61NB1G1Fur6tdtl+RRlnZyQ88m2taMKUvNXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ctH6q5xC7z2Cgpb;
+	Fri, 24 Oct 2025 17:05:23 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0ABFD1800CE;
+	Fri, 24 Oct 2025 17:10:16 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 17:10:15 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
+ 2025 17:10:15 +0800
+Message-ID: <e1d440bd-23c0-434c-a771-5c0907c5d3ab@huawei.com>
+Date: Fri, 24 Oct 2025 17:10:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251007234149.2769-1-W_Armin@gmx.de> <ec099f39-89a2-46ee-a10c-1350ecf7fc83@gmx.de>
- <CAJZ5v0h8w0wrO5ziqQchN_f5Cb=Duqfc6=uOzR_-pk5_UcJ95g@mail.gmail.com>
- <CAJZ5v0idydJCQqnEs38KJT+1TmVJuhLeCFikypDLD1Yd_8zWhg@mail.gmail.com> <de8dc59e-d301-4954-b39c-f032b6aa0db9@gmx.de>
-In-Reply-To: <de8dc59e-d301-4954-b39c-f032b6aa0db9@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 24 Oct 2025 10:35:16 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gd3N_2W95=wuGdymy++0Mm5NLa8zKX8nhO4Lie83PBvQ@mail.gmail.com>
-X-Gm-Features: AS18NWBGBPvY2tOkAuHWHydpl-mL1FxjQEeN6LOGczTKwPqDRuEuGSc5EQl7L8o
-Message-ID: <CAJZ5v0gd3N_2W95=wuGdymy++0Mm5NLa8zKX8nhO4Lie83PBvQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] ACPI fan _DSM support
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 6/9] ACPI: processor: idle: Do not change power states
+ if get power info failed
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
+References: <20250929093754.3998136-1-lihuisong@huawei.com>
+ <20250929093754.3998136-7-lihuisong@huawei.com>
+ <CAJZ5v0jBqPLjK2v7A-8Qd6ERhwz47jP3YCiTHJhD8vAgRHVjcQ@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0jBqPLjK2v7A-8Qd6ERhwz47jP3YCiTHJhD8vAgRHVjcQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Thu, Oct 23, 2025 at 10:13=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 23.10.25 um 21:22 schrieb Rafael J. Wysocki:
->
-> > On Thu, Oct 23, 2025 at 11:59=E2=80=AFAM Rafael J. Wysocki <rafael@kern=
-el.org> wrote:
-> >> On Wed, Oct 22, 2025 at 11:41=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> w=
-rote:
-> >>> Am 08.10.25 um 01:41 schrieb Armin Wolf:
-> >>>
-> >>>> Microsoft has designed a _DSM interface for the ACPI fan device [1]
-> >>>> that allows the OS to set fan speed trip points. The ACPI firmware
-> >>>> will notify the ACPI fan device when said trip points are triggered.
-> >>>>
-> >>>> Unfortunately some device manufacturers (like HP) blindly assume tha=
-t
-> >>>> the OS will use this _DSM interface and thus only update the fan spe=
-ed
-> >>>> value returned by the _FST control method when sending a notificatio=
-n
-> >>>> to the ACPI fan device. This results in stale fan speed values being
-> >>>> reported by the ACPI fan driver [2].
-> >>>>
-> >>>> The first patch performs a simple cleanup in order to reduce the usa=
-ge
-> >>>> of the acpi_device struct. The second patch fixes an issue with some
-> >>>> 64-bit ACPI implementations where an invalid value was reported
-> >>>> instead of the standard ACPI placeholder value (0xFFFFFFFF). The thi=
-rd
-> >>>> patch fixes an unrelated issue inside the hwmon support code while t=
-he
-> >>>> next two patches add support for the ACPI fan notifications as
-> >>>> specified in ACPI 11.2.3. The last patch finally adds support for th=
-e
-> >>>> Microsoft _DSM interface.
-> >>>>
-> >>>> All patches where tested with a custom SSDT [3] and the acpi_call [4=
-]
-> >>>> kernel module and appear to work just fine.
-> >>> Any thought on this?
-> >> Not yet, but I'm going to get to it today.
-> >>
-> >>> I tested it with a custom SSDT, so i can prove that those patches wor=
-k.
-> >> OK
-> > I've applied two first patches for 6.19 and the third one for 6.18-rc, =
-as a fix.
->
-> Please note that the third patch depends on the first patch! Otherwise yo=
-u will
-> get a runtime error when acpi_fan_hwmon_read() tries to cast the platform=
- device
-> to a ACPI device.
 
-Ah, good to know, I've missed that dependency, thanks for pointing it out.
-
-> > My understanding is that patches [4-5/6] are preparations for the last
-> > one that needs a pointer to the MSFT documentation it is based on.
+在 2025/10/22 3:49, Rafael J. Wysocki 写道:
+> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
+>> Driver will update power states when processor power states have been
+>> changed. To prevent any other abnormal issues, here add the verification
+>> for the result of getting power information, don't change power states
+>> and one error log when get power information failed.
+> But the old states may not be usable any more in that case.
+Yes
 >
-> I understand, i will send a v3 series without the first three patch and t=
-his
-> issue being addressed.
-
-Thanks!
+> If you want to check the acpi_processor_get_power_info(), it should
+> disable ACPi idle entirely on failures.
+ From the modification of this patch, this cpuidle device will be 
+disabled if the acpi_processor_get_power_info(）fails to get on this device.
+And the cpuidle of the device will be disabled according to the 
+definition of cpuidle_not_available().
+We should not call disable_cpuidle() to disable cpuidle of all CPUs.
+So the modification in this patch is enough, right?
+>
+>> Fixes: f427e5f1cf75 ("ACPI / processor: Get power info before updating the C-states")
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/acpi/processor_idle.c | 15 ++++++++++-----
+>>   1 file changed, 10 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index b0d6b51ee363..92b231f5d514 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -1315,6 +1315,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>>          int cpu;
+>>          struct acpi_processor *_pr;
+>>          struct cpuidle_device *dev;
+>> +       int ret = 0;
+>>
+>>          if (disabled_by_idle_boot_param())
+>>                  return 0;
+>> @@ -1344,16 +1345,20 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>>                  }
+>>
+>>                  /* Populate Updated C-state information */
+>> -               acpi_processor_get_power_info(pr);
+>> -               acpi_processor_setup_cpuidle_states(pr);
+>> +               ret = acpi_processor_get_power_info(pr);
+>> +               if (ret)
+>> +                       pr_err("Get processor-%u power information failed.\n",
+>> +                              pr->id);
+>> +               else
+>> +                       acpi_processor_setup_cpuidle_states(pr);
+>>
+>>                  /* Enable all cpuidle devices */
+>>                  for_each_online_cpu(cpu) {
+>>                          _pr = per_cpu(processors, cpu);
+>>                          if (!_pr || !_pr->flags.power_setup_done)
+>>                                  continue;
+>> -                       acpi_processor_get_power_info(_pr);
+>> -                       if (_pr->flags.power) {
+>> +                       ret = acpi_processor_get_power_info(_pr);
+>> +                       if (!ret && _pr->flags.power) {
+>>                                  dev = per_cpu(acpi_cpuidle_device, cpu);
+>>                                  acpi_processor_setup_cpuidle_dev(_pr, dev);
+>>                                  cpuidle_enable_device(dev);
+>> @@ -1363,7 +1368,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>>                  cpus_read_unlock();
+>>          }
+>>
+>> -       return 0;
+>> +       return ret;
+>>   }
+>>
+>>   void acpi_processor_register_idle_driver(void)
+>> --
+>> 2.33.0
+>>
 
