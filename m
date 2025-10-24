@@ -1,61 +1,64 @@
-Return-Path: <linux-acpi+bounces-18210-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18208-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C325C07C90
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 20:39:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C20C07C87
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 20:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A607E34359C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:39:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FB961C8104B
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 18:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E4534B693;
-	Fri, 24 Oct 2025 18:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD15634AAE7;
+	Fri, 24 Oct 2025 18:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Nkt7u74n"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Stl8IX9m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CB134AAF2;
-	Fri, 24 Oct 2025 18:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE0F309EFF;
+	Fri, 24 Oct 2025 18:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761331123; cv=none; b=FyBVLz5RVnf/k2H98CIeCY3PK6moJ2Cvm+T9XwuKy9nOyp2CuT5/5Sc/Zx1JbpaYoXzajwJyMG4K9gdK656tynySCZ11UV3TkA37tMpKz7FXHT6SFVqby3USrn/3NMKOgpmrZBw1+j9FL7kMhylfGCF1Q/vnDNRtpTNwmkGZHPU=
+	t=1761331120; cv=none; b=NQ0sfZg2Yo2gEqpPBJ5GQF/xqLAmd/KeoeRJh5ff8fksVM0d/jRdVWo4LLM7U3XWvGMUa1og1vCb0/1Kw9AoUiTuyvY3Mc3fJHz60wfTV6FG5Z1Q/pZtVvHWO7Op5gPzvYhCPd5IBlv9r8iV+o7vpynuLeSoY14sJzI270ygUtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761331123; c=relaxed/simple;
-	bh=WRf9IaXMzh9B/NBHpqw8ys+Klikm9oSunSxLA5Ywa4Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FEOPcoeJNg6wtY0OrlCkqJgaUgdMW4+tQTC1Jn/Vbqhe97oU9qDp3OHS85LRoy7MOWh/0/RmJFvzoRZyQm5Qo+mYVIlXzW90qS8mvdNd/b/gr1vioIMqI9ZaqBhM9IiHKaAsi1eCimeteqQNuwniTCiESvNmHLH4wLqOih9HQh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Nkt7u74n; arc=none smtp.client-ip=212.227.17.20
+	s=arc-20240116; t=1761331120; c=relaxed/simple;
+	bh=8gDu5zuPLk33NAmJ3WZKbijbJ8qnTqrJoej7WwiPsqg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oDtINrl/+5Vq9y1Nw5S4GT4wHL3y5I/RDx7Z+SDAw0j5BuxuvixMUcDr3oR1WsqvO6oHsQel0G0XhCC2okKv/4BLA1FRvIGhpjZUYwOtg5CK2lasgbT0mhRZnRW8sDeuMA0Bc6BRAaXpSm/ByP+M8hZ1oc5tXhdSlb8p3P2V2MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Stl8IX9m; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1761331114; x=1761935914; i=w_armin@gmx.de;
-	bh=psk2uCruRI7GJiVRlYoHrmShQQXO61rViK8tujqWmng=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1761331116; x=1761935916; i=w_armin@gmx.de;
+	bh=yaJ2vhZGJYLCCzCma1kImL1OBNIVEEsDW59LF7HCr40=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=Nkt7u74n+3U6ux2uKrwuul86+8UloNj3B1rxQD41f94pyMCFP18FfVgNUyOI6p8E
-	 9sn3S9LexY5S2ub87IaXYm/+Fy7+u8veBGTO8pji9hWa1isDiikOUoBXirASw+h0w
-	 e94z4qLtHobuvkq4tXv0pCnPWLLN029lA+563ckGhP6db698JcBUcRboVhvly1i71
-	 +W1j1dBMJBYq5ML7KuyctQuVAeph8boaxmqYMvHoZrz/CDm7IUsP0nabz/zLCZYFu
-	 H6F/maZTg+qjKwUgbFd4TFOCNwjyIp439d+/ZxyPzeyrCfPsh43AEePJFcoA4MNz3
-	 nkhodStdkwdgqB7MZA==
+	b=Stl8IX9mMvtMNN0X86W5G29zT7M/3Glhjs/7Er/vP+5NpMGEXN8Vh/L5cFmrNDDK
+	 8fyjtEfooqd8sTRNDPd66urIRQ1Fbvz6S56CcGVP6vpgZ1Clf4XHF3dOu6EgAckhM
+	 e1AiF5WH1Cs6J3fC9KBqwgkYWUfWZS7RQk37UTs7wFcdtQLiPZTfuo119bJQI2nJe
+	 y5MdDeOQMR465x5v8pbgj5571QWOBkUke0AGu/TX0YKYYeqf/zwISXjugVtPkytuX
+	 tWf2SViZa3fz6ve7lhz5fvmalgHBbBshYazt282z+yMGoool76hFSRygOQBES3gDs
+	 +XRdq9hn1Ten4yVDcg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from mx-amd-b650.fritz.box ([93.202.247.91]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MHGCu-1uzDWk1QWG-00Ehpi; Fri, 24 Oct 2025 20:38:34 +0200
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MJVDM-1usVRj3oEq-00Wvza; Fri, 24 Oct 2025 20:38:36 +0200
 From: Armin Wolf <W_Armin@gmx.de>
 To: rafael@kernel.org,
 	lenb@kernel.org
 Cc: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/3] ACPI fan _DSM support
-Date: Fri, 24 Oct 2025 20:38:21 +0200
-Message-Id: <20251024183824.5656-1-W_Armin@gmx.de>
+Subject: [PATCH v3 1/3] ACPI: fan: Add basic notification support
+Date: Fri, 24 Oct 2025 20:38:22 +0200
+Message-Id: <20251024183824.5656-2-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251024183824.5656-1-W_Armin@gmx.de>
+References: <20251024183824.5656-1-W_Armin@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,123 +66,173 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+5tBYZ22jZDoegAUPG/0oC/pGvmqh/ia0GXNLgei9ghBZObxi+U
- 9LCTqa6ETlZeFKnJrLonMDtBwOdtzvBI9vHY+EH/NM+f1zQLrrxCIEAtdVX604V8lrs8Vay
- iIGJd9yNu5EjC6rIe36pQ6fE2LOkVz+62oU/v5cMnuXSFdFECvHU52vKiI78CIA9OroQzZS
- uRsa5lDMJDWgX/hMmgZbQ==
+X-Provags-ID: V03:K1:sAx+YDn3Kngldh7pYaKdnsuCXB1Tah0peK2LDXrPY+0mCuIs/6E
+ IGBTuO6JZJutP9NMpEU+svXgByKWrwngYRkddCI+j/p2YgouWqNAhNtbkhlfT3/gvRaQsud
+ hHAw9OKTlCaBQ0qPpRxOft4IvKevOzzrvlf5Hj7tan/DkHcU2xY7p9Oul5MU8YtqvwCohr7
+ BCc/DfqNUKCoQCOv2HYsw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:u7GHzjbtYK8=;6/jCLxSobzvJtuAMY6TJaEHdNWP
- XgvBi189duEAKY9DPh+SWMq8V4L/CNV2XdaMT1fcW36GqzAL6WPVttzcHwRJ2sJwZVmeCp4KZ
- /PjhqVDa11ycOPm7D1weEnQqIrdg/Zc39g7nsvEdTLSyl+VZd5GQfUsZb7S8SonAwzpD68qXR
- jUJJJegsl2RNw8KJK1hdV2y9OAdcCOpKZ1uG7orvudwhTyeYY+0w6qGO2zJTj5kPdZTidx0dI
- gYHLy08PFICGXQZCKe4QIQovGvnJRhDnxckk1HcPIBT0MXM9ooHY3CDTcMh2W8Qn+Kpz2Y+3Z
- bK2Y6Kh8wRHvG3/YZFrMuDYyHs16IPKNqal9zqKp4Zo2EE7eP3KFVDWAB1lkN/xNcOW3AvSZT
- ZT8sMxWdNvseDtfhFt+KrPrZffLVJCBWW/Cs5rzqEPYZhBRZAZkwW+MfQUyGeaIKHyXDfLzud
- QyEP7XX7K/PrdJZMpO72wb2I4QGVIFnfnx08L2lRjg5+Jl8VDgw3EQgT5LLlQBJhu4yICy2iI
- u9LgUrLC7CI53BswFyOR8saIrWN83CnEEgdQ/CZ1btCeitPtoi+cLzMW12VQ8myKJvIJi5O2V
- nyGr1JC2JUYLWljU5SUegddPjj5n8i4BU9BUiek/0sc1pgKrHp3Chfd7ohFkSLxZAQpqF2y3f
- URWL+I44J6utYJsu4aMc1Y4zs67tacdO8453lcG6zhaf8HD4zp/SM0p5obymYmm1vojWSKgQA
- /nXuXy8uGRCkjfRsBdN5ZxBkYqqZ1UCp+Lp4wGTCXw1XsgcUpJySMx6SaoaJXcV8gt6jjsqHp
- kliCuWAVyH83yuqyZdOhPtPOmXmi+vuRzud59/k49j800gt7XI5jQgcVnxHmEHtcSnq3Hpan4
- 3W6vCX/Gnb8OQVLWgnrTfUp9lycyGs8z2U0RpsqzQVoeydr7bptIDfbK1sXLrK2ubE9F+VQ0R
- nnU2rQ6X4LHtwVCQCF0PpMH+sDK4T19keiKehs94MfzNuNAEV1MoOg+k3yIayyJQPKbJ6sQ4X
- HrvFiZFFbk7PynvHD18JvjGKww8wEtObKGgfBiprQnyXNDfmLzGE9elu+OSGfvAFF8HpIws+s
- Xp8dqRAYUMWAnX+KieKnQyribmigfc1Tz7vowL4eyBtL4miBAHgSLgjbJ42S+1XOvmUPZHhqw
- 8ce4ifxyNabh1DGD0FYluALuO+eaYpFNxLg3ygUynk06JeZbtDiQXL2P9U6pU3skK2WnIKzVS
- SW/LrGQBZF9DsyPhg928I/tNyEmqs/UYUao09yGrYeyZQM2/Fo1bhwBN6C4pIgRIYAHYXEZ7i
- IGzKuKgE1V1pIN9h9g6KWEkZCPm+QnxOpFReUYMDcHLCthsDEWctYXq7iTh66apVNA7RJmLEo
- X/m1Puacn2VOKNWitst3bFtztcHAsuOT4zM9vWwj0svtBztyHsI+GSgqsZQy2+7Ak2LLtKTDT
- cPWyCbZTTyAiZmgfD0xOHOtcPLPulMi7jNoeUhEf18efvKNJ8ubgjA+ZgmuqaDUnfqAAHG0Iv
- 8PfLTpaMwAmc7hjzac6B9+m8Ibk3bAs7vG88ZA2iKcm/JQogEzrDjAups5rZvKjBU2cAKRNqd
- FUHnwa43zfIA3E9Z1ejHpJ1TqP6v4o5WLhcFl/Tk8/oF0eWJcm32NyBR7GNQOk11thktaeBWK
- lH8GwKsNWcGDABaEHqwMcQDEMufe+NIh2n6uKgiCrekwqg1liWgwuHTrVqdL5ufRNkmEGK5Uj
- nBAyJWaT/UePzTp8lBQvHobdQURfUtCzwX7IuUShQWyQRsH5WfZm7kEZyKRqR6JP3cIfkYGc7
- 70+5P6cwNsoGVFqwUQSKSYxLD2IxxFEZi7/yiOseFkJEczQAJeHtAJ8IMV4E9GM+3WHXvpctb
- CqW437yInxhi+4xkq4jUxv6dkwUOtTLsG62CA1vqQdJRJaZUfFnGCuyqiunL71TxKeRe/Txme
- zHjPnlrGvtDVNRQFvci88gSRwKOTzw6BFodzXu3z2MnWI7cJEwRGjE98U9FFL/BwIIfao7tKq
- XWBdqIUlIGEMmrWie3lgTVPjTToI4bADkWj0GtoapRwAfjXKmo+DeIeAVDORIfQ5RTojWA6Wj
- d5mWUYoHZ0SU1He4SS4MnSbmvnjUqwwnOo5bY/yPejzQqrQno/AUTtBf+IrbV24XeyrADUXAO
- byOgMJDkRbls465K7vbHHlNcgA9e8433OhL++q9L89vDThLHlD5rlD86hkuXSL+xJ23G1kb7i
- 34MeG6FAg3ulo6zLJOpva8tQ+oaODPAB0Zm5GiGg2lTeb8WeyVDSTAI0sO3EgO2IXeeJA/SkC
- QYv0YRzJndT01nSV5H1DBCXzI4UQIPVl5uvLbhRRL/slUvdD5VABKKQX+q1+wOevVQ4QHkjJD
- oQSocSy6J9tDQO9ZFPtv6u4zsgQdzRcmuYq/CjAfoN2NuOnBJfIEDs1owOGoRBlq9e37YthLr
- CLT45WwLkRRR8DY1DKQAY8RDYdxXJX1RL8/R/yRc/DtqP0LO5hS/l4HQCMp+c7galneZ+SP2j
- CfsF/93RwBP/hDWSAx8gtpONejO8C7ntuOoQ32YQiVug1XzTfnwdJCSaJTiXYlwDtnyrLEV5x
- xfFM8pemlDoyc/eKFnOEdN5269gZcCcwCljDi5jWSDMbg3KnZEsHtOL09dv619CJapHUJuKFm
- DFPMoX2wuU0GZM4sZstNC1d4hNwUmofeoGGGZxDrJT2FmkGj8bMa8ZDBLNuG2nvcnQj4tFXc8
- kHZYJJhly1xnG+26iqtO3+KxSrUCu0r3SiUjCifCl5am7sjXU9xGh5Rz4mCq1GtzGy5JWPV7J
- tOLIvXXs075jp31CQQrq2Rp0Iw7/D3xHmeve1yLTtqHfPX+MCQj0w16gw5fuuc5we8DGWXYnr
- Z2aYHcZDOaSWWoetBSV11BwZwk2ojYsFWSCOTHW1TXwcUbWGkFQnNP90K1Jrh1HW/53Ifrw9g
- NC5pv2HS5XGwnjLm2qqVj/hblnilJ7O8kzDBmygekVXdBxmCk20ITfvQ9a17+w9AFQgoMWapD
- xADjrwzBYPYxKrf5G7pc1YUnZTeDL/uxo1RIgH4uKIA6tNOJQYJwZZxQMGLVKqGmDxXoT1CNm
- v7MJt4ik8b1rP6J0WOCnHyduPExGCQO2pL7O5+bPWVvL6f2FgMyRaqoq+5D2atjCxu5Uk3NHg
- f6F3XufVK7+Yjesmeuo54mUetyiT49RAyOcfJy0xqrDWbnmjykg/ngfsxuvW3tOlYjnBt9OLw
- PnDkD4ecuIz1MozZjR8GVod7aoudzAztnvvf7L+RFNvuYuwHQbC7T3xtsHAYKxyLufePuqqIg
- vDP/z0SKa+EXOw+8EIGKS4gYOhNEEKANj9ud1gTz9x7rGr23hdWDAsAzhHhIgfhtBX1kqBDU5
- S2rG9sUcKspXXdtIKTw+H02JVRoTU8uAv19IrTTkOmppXo6OxZ+pGbwbljsKzyEU9BV5wgBy1
- 3zftVzpgAdhAOLI3wBnZ5pWMh5svK19lxGlpVyJPdc2BDYXT+zvAgs2vHp+/YfyGzaWGtqpHw
- 0ktz1cwndSDCan6eWchbehzWAwgw5V8DB4VF1IIvFKeRFnzB+ZJf1ntsrSWzchkHRchjXaP9+
- lxf4M72FQYImceFM4kgo8mExYUVKuXFNDJpJsDzSefI0WLKTNeUF4uVhjisn3saW9rojx+8l+
- ZPPEujHjugP+qEQi69L8xDl0MLptIVml4aVS5zdbmClwrLsPdL1hGN+8pgosBrToVYUZ1Tr4r
- eIdnmW8XLiXJGDl047eh7u1GF3mH8QuhbXK7B6LtfvTtq4aulqfZo/GwUDuMRy986Ek7Y+ncU
- jOZtxG2j/WRDUbSMKaSzx94u0t4CPXww+3F89+KIdJF1Z63v75E1aTlQW/eBD8/d/PrGouScQ
- QZVWlSZVxzjLa2PBs5EhrZlYWkebo9wAuJYMVVDwiTfBndy2BolmE/CkPaevUhf5E1GgScSAl
- 0xtrz2zdIpSyVh9/MnCzM7yPU5e+ZjtibhxDQkZXLT/Non7PQVBJ3p0BVoLJxlGscYpdjHAnj
- 0COkB2lZXiYEMFbJBFrntKx9Mdp3bloitXQPTjyQe08v1P9csl2ea542Sam6uA+Za87wP900v
- qRaLSi8bs/WWPL2r/hWjxPP5i4+csbNmfk+HM6endeqZq5jQIJ3YuFaMTSSNeYuG0KSH8Phle
- wiztpxh4TKfL5Vuvuc97B4gctUgw3WOAjXZSuT+D79/buEHC2X3lgeYpdRaqLkxoGxw0rUw4L
- 4bzCqmEfL0svWDsEYC9b2qsCoFNoA06BmwnoIOjzhd3/z3u8G/5ULpxJl81lGR1ZB7jDZJYxP
- yv5nJXF9FmWBkMhEhj9RlT+Tzm7OnvQjHVQqMTsnNfYAiJOXB4tQo5a67rtn8w9iuvTubtMdN
- YnWP/T2X1twcx3W8ESL+HEoeW3FkwBydYDZmPRQNrssSzqTyYNNMeusyfOc3Gru4uSSSULP9K
- t3NxV94seG+3n7Atkl8mHw6NcL+fqOnYeTGliKlbuX8stEBBV3hKX3tu8irnJLOzKgPFD1oLL
- xR5wnOmv3d+KERhsr26A8XEwWbFEX05QtB1w9ZyNJUXhgXRZ1M2OJiIapbTiWiUA+oChJQMUf
- SabaupJzCIHA+CDrpeS0MBT8GPXR9gT+Xyj5oCvcGaPdLiPMcEe0Lr65y8WScijjfnWZd7yJJ
- HRIz9S6GxjdpLVDmFvh0wrgeaooglyM/ms63qfwybO+/hpwUBTmdIjVY4SMO4nY2rUmcas/qq
- PFl960AiQ5V6qPjdj76jU9MoHaesx8YRZ/lTSwzqgSzgJBtvlBgGcSblAE9tGb3150clU79O0
- qb8pM95MSeENjsb18xjTZKczJGLEbZsfB4ifmmQF4ROFKmjLwl3uhHl6eiRy7GLeY3gOxCi59
- EblGC0rIJmcmG1cTRZPkgTt/TK10jX5bnbk/02xnEPvgIzFJV05Wu5HgKyqlw8ly0
+UI-OutboundReport: notjunk:1;M01:P0:kWWG2Izpzbc=;q2sjXVM5KVQiOjzZ38QzExt35BY
+ 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
+ 39pSA==
 
-Microsoft has designed a _DSM interface for the ACPI fan device [1]
-that allows the OS to set fan speed trip points. The ACPI firmware
-will notify the ACPI fan device when said trip points are triggered.
+The ACPI specification states that the platform firmware can notify
+the ACPI fan device that the fan speed has changed an that the _FST
+control method should be reevaluated. Add support for this mechanism
+to prepare for future changes.
 
-Unfortunately some device manufacturers (like HP) blindly assume that
-the OS will use this _DSM interface and thus only update the fan speed
-value returned by the _FST control method when sending a notification
-to the ACPI fan device. This results in stale fan speed values being
-reported by the ACPI fan driver [2].
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/fan_core.c | 50 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-The first two patches add support for the ACPI fan notifications as
-specified in ACPI 11.2.3. The last patch finally adds support for the
-Microsoft _DSM interface.
-
-All patches where tested with a custom SSDT [3] and the acpi_call [4]
-kernel module and appear to work just fine.
-
-[1] https://learn.microsoft.com/en-us/windows-hardware/design/device-exper=
-iences/design-guide
-[2] https://github.com/lm-sensors/lm-sensors/issues/506
-[3] https://github.com/Wer-Wolf/acpi-fan-ssdt/blob/master/ssdt-dsm.asl
-[4] https://github.com/nix-community/acpi_call
-
-Changes since v2:
-- drop already merged patches
-- add links to the MSFT documentation in patch 3
-
-Changes since v1:
-- use acpi_evaluate_dsm_typed() during _DSM initialization
-- send ACPI netlink event when after handling a ACPI notification
-
-Armin Wolf (3):
-  ACPI: fan: Add basic notification support
-  ACPI: fan: Add hwmon notification support
-  ACPI: fan: Add support for Microsoft fan extensions
-
- drivers/acpi/fan.h       |   7 ++
- drivers/acpi/fan_core.c  | 222 ++++++++++++++++++++++++++++++++++++++-
- drivers/acpi/fan_hwmon.c |  15 ++-
- 3 files changed, 239 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 46e7fe7a506d..9ee4ef2d6dbc 100644
+=2D-- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -19,6 +19,8 @@
+=20
+ #include "fan.h"
+=20
++#define ACPI_FAN_NOTIFY_STATE_CHANGED	0x80
++
+ static const struct acpi_device_id fan_device_ids[] =3D {
+ 	ACPI_FAN_DEVICE_IDS,
+ 	{"", 0},
+@@ -308,6 +310,50 @@ static int acpi_fan_get_fps(struct acpi_device *devic=
+e)
+ 	return status;
+ }
+=20
++static void acpi_fan_notify_handler(acpi_handle handle, u32 event, void *=
+context)
++{
++	struct device *dev =3D context;
++	struct acpi_fan_fst fst;
++	int ret;
++
++	switch (event) {
++	case ACPI_FAN_NOTIFY_STATE_CHANGED:
++		/*
++		 * The ACPI specification says that we must evaluate _FST when we
++		 * receive an ACPI event indicating that the fan state has changed.
++		 */
++		ret =3D acpi_fan_get_fst(handle, &fst);
++		if (ret < 0)
++			dev_err(dev, "Error retrieving current fan status: %d\n", ret);
++
++		acpi_bus_generate_netlink_event("fan", dev_name(dev), event, 0);
++		break;
++	default:
++		dev_dbg(dev, "Unsupported ACPI notification 0x%x\n", event);
++		break;
++	}
++}
++
++static void acpi_fan_notify_remove(void *data)
++{
++	struct acpi_fan *fan =3D data;
++
++	acpi_remove_notify_handler(fan->handle, ACPI_DEVICE_NOTIFY, acpi_fan_not=
+ify_handler);
++}
++
++static int devm_acpi_fan_notify_init(struct device *dev)
++{
++	struct acpi_fan *fan =3D dev_get_drvdata(dev);
++	acpi_status status;
++
++	status =3D acpi_install_notify_handler(fan->handle, ACPI_DEVICE_NOTIFY,
++					     acpi_fan_notify_handler, dev);
++	if (ACPI_FAILURE(status))
++		return -EIO;
++
++	return devm_add_action_or_reset(dev, acpi_fan_notify_remove, fan);
++}
++
+ static int acpi_fan_probe(struct platform_device *pdev)
+ {
+ 	int result =3D 0;
+@@ -351,6 +397,10 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+ 		if (result)
+ 			return result;
+=20
++		result =3D devm_acpi_fan_notify_init(&pdev->dev);
++		if (result)
++			return result;
++
+ 		result =3D acpi_fan_create_attributes(device);
+ 		if (result)
+ 			return result;
 =2D-=20
 2.39.5
 
