@@ -1,59 +1,46 @@
-Return-Path: <linux-acpi+bounces-18175-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18176-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958B7C05647
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 11:44:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F98C05684
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 11:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DD43A5448
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 09:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFD051890FE2
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 09:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057A030BB96;
-	Fri, 24 Oct 2025 09:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FD630BB8A;
+	Fri, 24 Oct 2025 09:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="fyuTfiXE"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aRz+AIt8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9546E30B50F;
-	Fri, 24 Oct 2025 09:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB2C29293D;
+	Fri, 24 Oct 2025 09:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761298854; cv=none; b=M6R+WYCR/5LnvEEEjhJS20K44d7aL6V/FcsT0zMzdozHf7EK/NSTpxsfb1yqvWBmvRmKkC8XCiW69MzDqy2m+dxrc8X0fIJQagEG5GG9psTfxSTYHTUIityO1GiPCOHICZ1fBKeUttGrqPVesQ4/mXMbP9m0Lo0ZBiqvR2dhv+c=
+	t=1761299157; cv=none; b=MRcJRPOdvG7vU9mbZ7qBnMpAMmQbbD8OLuk5MN0pP9nm1sZwN8u/Lb0oIteuq5aGX3dSgCepEQNAPT/qug+P7VlRP0LjiMXJgAzdoP/MMHfUl7/FLoikObLIf8SmcJ6SdcvCRKrFD3iMHdwztp0XnXklcS3oWMtwB5aGQhBCP6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761298854; c=relaxed/simple;
-	bh=DGayQpkhZPLa/s8gxbji4hsifpgUxhD4Bp14VrHlQKg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Qw+FZDRMmIPU4bLrTyiSndoT3vB0GpcB0yjcY/EGp8S8EW71/vEuqEAI9A4DCAZHSdybOiHpV06NHSRawh8kSirlCDXdZqwJvo2w1aGji8wY92Gc0Ss5WhwUO1MI3yNw7w81FvOrFFo0tGW5xt56PENMhcEnL4NmGqtyyDagxc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=fyuTfiXE; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=7RqplOmmQP4YUVxtX/HZJ9cHI6vtBIamIcDg6K2HqXY=;
-	b=fyuTfiXEhDlikiz6oKbneJzJhcBL+N2c2mJSTrahShA+QP4dhFfnefjGO3k5TDZHuV5y3dPlB
-	APo7isnF672GvOFzRqwY6Zw2xeY08x9zOkZ6cuk/BJYBedBlauPodxLDAA4KX7rmhyeG0gsIBK2
-	AXcm2Uwy2SGKl2/fUuDBPog=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4ctHtT4dz0z1T4Fg;
-	Fri, 24 Oct 2025 17:39:45 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 98CCB18006C;
-	Fri, 24 Oct 2025 17:40:42 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 24 Oct 2025 17:40:42 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
- 2025 17:40:41 +0800
-Message-ID: <ab814879-37d6-49dc-8a38-6b94cabf9327@huawei.com>
-Date: Fri, 24 Oct 2025 17:40:41 +0800
+	s=arc-20240116; t=1761299157; c=relaxed/simple;
+	bh=5vm20h85K03C4kMvIssWzsO97pYAaqIGDGM2Vmjrduw=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=U+tKUALOXjQk8fxddT7fvB6XY9OcYo3F9tMQhKLokVfMo+bRe+l223jbr0O5431ucigNsTy0nbZWNlwD/1B0R6qWmKTCEuFJJ+YCVtlsCOxx8igpnqXhofdE7dtNWuXTTGX0jenI5BKkv3C2z8xM36qxI27XtkQzv5emzb9PwvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aRz+AIt8; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761299149; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=8i7IvoUyLwZipphMmlbv7Bm0R6d4DUro9PNdCGClahw=;
+	b=aRz+AIt8JQnu0tLicYAm5LxSzSjux4OSWF+UAi5NZw1dem0rtNU6ik0Fuz9bu71+q6/cQrEH/E6lqnrtjvGBaMPVQQq4y25j9t43KwzHj35xqlwO9d9ZDR9f2/Ntx1RJEc33SF04i+7orFaufA2iE5Msqhc0FBucydVNwuTLdbs=
+Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqu0ajN_1761299145 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Oct 2025 17:45:47 +0800
+Message-ID: <d2550489-834c-4dcd-b41f-d22590880343@linux.alibaba.com>
+Date: Fri, 24 Oct 2025 17:45:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -61,109 +48,212 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/9] ACPI: processor: idle: Add the verification of
- processor FFH LPI state
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
-References: <20250929093754.3998136-1-lihuisong@huawei.com>
- <20250929093754.3998136-6-lihuisong@huawei.com>
- <CAJZ5v0iLt7rnXBaTBv=-ztKro39h1hECQS_Ov9Cn1eBcfhXDaQ@mail.gmail.com>
- <92b1b431-9855-43fb-8bb3-801649064438@huawei.com>
- <CAJZ5v0g0PgicTEAb3gAeF2D3ZqONNt+6odt2SfGE7XtY3zoPyg@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0g0PgicTEAb3gAeF2D3ZqONNt+6odt2SfGE7XtY3zoPyg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
+To: ankita@nvidia.com, aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com,
+ mochs@nvidia.com, skolothumtho@nvidia.com, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, tony.luck@intel.com,
+ bp@alien8.de, rafael@kernel.org, guohanjun@huawei.com, mchehab@kernel.org,
+ lenb@kernel.org, kevin.tian@intel.com, alex@shazbot.org
+Cc: cjia@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
+ zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-edac@vger.kernel.org, Jonathan.Cameron@huawei.com,
+ ira.weiny@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ u.kleine-koenig@baylibre.com, peterz@infradead.org,
+ linux-acpi@vger.kernel.org, kvm@vger.kernel.org
+References: <20251021102327.199099-1-ankita@nvidia.com>
+ <20251021102327.199099-2-ankita@nvidia.com>
+In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
 
-在 2025/10/23 18:35, Rafael J. Wysocki 写道:
-> On Thu, Oct 23, 2025 at 12:17 PM lihuisong (C) <lihuisong@huawei.com> wrote:
->>
->> 在 2025/10/22 3:42, Rafael J. Wysocki 写道:
->>> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
->>>> Both ARM64 and RISCV architecture would validate Entry Method of LPI
->>>> state and SBI HSM or PSCI cpu suspend. Driver should return failure
->>>> if FFH of LPI state are not ok.
->>> First of all, I cannot parse this changelog, so I don't know the
->>> motivation for the change.
->> Sorry for your confusion.
->>> Second, if _LPI is ever used on x86, the
->>> acpi_processor_ffh_lpi_probe() in acpi_processor_get_power_info() will
->>> get in the way.
->> AFAICS, it's also ok if X86 platform use LPI.
-> No, because it returns an error by default as it stands today.
->
->>> Why does the evaluation in acpi_processor_setup_cpuidle_dev() not work?
->> The acpi_processor_ffh_lpi_probe does verify the validity of LPI for ARM
->> and RISCV.
->> But the caller of the acpi_processor_setup_cpuidle_dev()don't verify the
->> return value.
->> In addition, from the name of acpi_processor_setup_cpuidle_dev(), its
->> main purpose is to setup cpudile device rather than to verify LPI.
-> That's fair enough.
->
-> Also, the list of idle states belongs to the cpuidle driver, not to a
-> cpuidle device.
->
->> So I move it to a more prominent position and redefine the
->> acpi_processor_setup_cpuidle_dev to void in patch 9/9.
->>>> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low Power Idle(LPI) states")
->>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->>>> ---
->>>>    drivers/acpi/processor_idle.c | 10 ++++++++--
->>>>    1 file changed, 8 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->>>> index 5684925338b3..b0d6b51ee363 100644
->>>> --- a/drivers/acpi/processor_idle.c
->>>> +++ b/drivers/acpi/processor_idle.c
->>>> @@ -1264,7 +1264,7 @@ static int acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
->>>>
->>>>           dev->cpu = pr->id;
->>>>           if (pr->flags.has_lpi)
->>>> -               return acpi_processor_ffh_lpi_probe(pr->id);
->>>> +               return 0;
->>>>
->>>>           return acpi_processor_setup_cpuidle_cx(pr, dev);
->>>>    }
->>>> @@ -1275,7 +1275,13 @@ static int acpi_processor_get_power_info(struct acpi_processor *pr)
->>>>
->>>>           ret = acpi_processor_get_lpi_info(pr);
->>>>           if (ret)
-> So I think it would be better to check it here, that is
->
-> if (!ret) {
->         ret = acpi_processor_ffh_lpi_probe(pr->id));
->         if (!ret)
->                 return 0;
->
->         pr_info("CPU%d: FFH LPI state is invalid\n", pr->id);
->         pr->flags.has_lpi = 0;
-> }
->
-> return acpi_processor_get_cstate_info(pr);
->
-> And the default acpi_processor_ffh_lpi_probe() needs to be changed to return 0.
-Sorry, I don't understand why pr->flags.has_lpi is true if 
-acpi_processor_ffh_lpi_probe() return failure.
-In addition, X86 platform doesn't define acpi_processor_ffh_lpi_probe(). 
-this function will return EOPNOTSUPP.
->
->>>> -               ret = acpi_processor_get_cstate_info(pr);
->>>> +               return acpi_processor_get_cstate_info(pr);
->>>> +
->>>> +       if (pr->flags.has_lpi) {
->>>> +               ret = acpi_processor_ffh_lpi_probe(pr->id);
->>>> +               if (ret)
->>>> +                       pr_err("Processor FFH LPI state is invalid.\n");
->>>> +       }
->>>>
->>>>           return ret;
->>>>    }
->>>> --
+
+在 2025/10/21 18:23, ankita@nvidia.com 写道:
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> The kernel MM currently does not handle ECC errors / poison on a memory
+> region that is not backed by struct pages. If a memory region mapped
+> using remap_pfn_range() for example, but not added to the kernel, MM
+> will not have associated struct pages. Add a new mechanism to handle
+> memory failure on such memory.
+> 
+> Make kernel MM expose a function to allow modules managing the device
+> memory to register the device memory SPA and the address space associated
+> it. MM maintains this information as an interval tree. On poison, MM can
+> search for the range that the poisoned PFN belong and use the address_space
+> to determine the mapping VMA.
+> 
+> In this implementation, kernel MM follows the following sequence that is
+> largely similar to the memory_failure() handler for struct page backed
+> memory:
+> 1. memory_failure() is triggered on reception of a poison error. An
+> absence of struct page is detected and consequently memory_failure_pfn()
+> is executed. 
+
+This step depends on PATCH 2. I suggest reordering the patches so that
+PATCH 2 comes first, which would make the series easier to review and
+understand.
+
+> 2. memory_failure_pfn() collects the processes mapped to the PFN.
+> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
+> poisoned PFN using kill_procs().
+> 
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
+> to a PFN would need breaking the PMD mapping into PTEs to unmap only
+> the poisoned PFN. This will have a major performance impact.
+> 
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.com/ [1]
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   include/linux/memory-failure.h |  17 +++++
+>   include/linux/mm.h             |   1 +
+>   include/ras/ras_event.h        |   1 +
+>   mm/Kconfig                     |   1 +
+>   mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
+>   6 files changed, 148 insertions(+), 1 deletion(-)
+>   create mode 100644 include/linux/memory-failure.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 520fb4e379a3..463d062d0386 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11359,6 +11359,7 @@ M:	Miaohe Lin <linmiaohe@huawei.com>
+>   R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
+>   L:	linux-mm@kvack.org
+>   S:	Maintained
+> +F:	include/linux/memory-failure.h
+>   F:	mm/hwpoison-inject.c
+>   F:	mm/memory-failure.c
+>   
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
+> new file mode 100644
+> index 000000000000..bc326503d2d2
+> --- /dev/null
+> +++ b/include/linux/memory-failure.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_FAILURE_H
+> +#define _LINUX_MEMORY_FAILURE_H
+> +
+> +#include <linux/interval_tree.h>
+> +
+> +struct pfn_address_space;
+> +
+> +struct pfn_address_space {
+> +	struct interval_tree_node node;
+> +	struct address_space *mapping;
+> +};
+> +
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space);
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space);
+> +
+> +#endif /* _LINUX_MEMORY_FAILURE_H */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..0ab4ea82ce9e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4006,6 +4006,7 @@ enum mf_action_page_type {
+>   	MF_MSG_DAX,
+>   	MF_MSG_UNSPLIT_THP,
+>   	MF_MSG_ALREADY_POISONED,
+> +	MF_MSG_PFN_MAP,
+>   	MF_MSG_UNKNOWN,
+>   };
+>   
+> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+> index c8cd0f00c845..fecfeb7c8be7 100644
+> --- a/include/ras/ras_event.h
+> +++ b/include/ras/ras_event.h
+> @@ -375,6 +375,7 @@ TRACE_EVENT(aer_event,
+>   	EM ( MF_MSG_DAX, "dax page" )					\
+>   	EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )			\
+>   	EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )		\
+> +	EM ( MF_MSG_PFN_MAP, "non struct page pfn" )                    \
+>   	EMe ( MF_MSG_UNKNOWN, "unknown page" )
+>   
+>   /*
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e443fe8cd6cf..0b07219390b9 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -777,6 +777,7 @@ config MEMORY_FAILURE
+>   	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+>   	bool "Enable recovery from hardware memory errors"
+>   	select MEMORY_ISOLATION
+> +	select INTERVAL_TREE
+>   	select RAS
+>   	help
+>   	  Enables code to recover from some memory failures on systems
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..acfe5a9bde1d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -38,6 +38,7 @@
+>   
+>   #include <linux/kernel.h>
+>   #include <linux/mm.h>
+> +#include <linux/memory-failure.h>
+>   #include <linux/page-flags.h>
+>   #include <linux/sched/signal.h>
+>   #include <linux/sched/task.h>
+> @@ -154,6 +155,10 @@ static const struct ctl_table memory_failure_table[] = {
+>   	}
+>   };
+>   
+> +static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
+> +
+> +static DEFINE_MUTEX(pfn_space_lock);
+> +
+>   /*
+>    * Return values:
+>    *   1:   the page is dissolved (if needed) and taken off from buddy,
+> @@ -957,6 +962,7 @@ static const char * const action_page_types[] = {
+>   	[MF_MSG_DAX]			= "dax page",
+>   	[MF_MSG_UNSPLIT_THP]		= "unsplit thp",
+>   	[MF_MSG_ALREADY_POISONED]	= "already poisoned page",
+> +	[MF_MSG_PFN_MAP]                = "non struct page pfn",
+>   	[MF_MSG_UNKNOWN]		= "unknown page",
+>   };
+>   
+> @@ -1349,7 +1355,7 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+>   {
+>   	trace_memory_failure_event(pfn, type, result);
+>   
+> -	if (type != MF_MSG_ALREADY_POISONED) {
+> +	if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
+>   		num_poisoned_pages_inc(pfn);
+>   		update_per_node_mf_stats(pfn, result);
+>   	}
+> @@ -2216,6 +2222,121 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
+>   	kill_procs(&tokill, true, pfn, flags);
+>   }
+>   
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
+
+I have a design consideration here. Non-struct page PFNs typically
+represent device memory managed by device drivers through their own
+memory allocators. These drivers are responsible for allocation and
+deallocation of this memory.
+
+Rather than having MM maintain metadata about these PFNs, have you
+considered adding an operation callback similar to
+dev_pagemap_ops->memory_failure? This would allow device memory
+allocators to:
+
+- Maintain their own metadata tracking poison status (similar to
+   TestSetPageHWPoison())
+- Handle device-specific requirements for memory failure
+- Provide more flexibility for different types of device memory
+
+Thanks.
+Shuai
 
