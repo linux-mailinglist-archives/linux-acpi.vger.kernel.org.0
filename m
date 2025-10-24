@@ -1,269 +1,152 @@
-Return-Path: <linux-acpi+bounces-18183-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18184-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E641C0627C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 14:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5058BC06439
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 14:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8223BB51C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 11:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 813253AC6EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Oct 2025 12:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6964C303CA8;
-	Fri, 24 Oct 2025 11:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACFF316909;
+	Fri, 24 Oct 2025 12:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iQ93Bx7o"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O7uGKTtK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010067.outbound.protection.outlook.com [40.93.198.67])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7887304BC1;
-	Fri, 24 Oct 2025 11:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761307155; cv=fail; b=b4H1JupLKfU/5Rr549wSqE2y4HAiYct8gn/pnzfwHh3HW/PFnnDkbMUY0d3zpQp1kCQby3cHo+PXmALve2wkuJQKpp9tU25L2Y7eHR8QQQ3HeTM3ikpW7zhWTiOYVxpknQ5pjT1Q8A1+Z23GQjt6TF80jPJe+ng+ZCLsmNDKDRU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761307155; c=relaxed/simple;
-	bh=lPcBJ+IurrnNE6VPSaCah0Rffl7kGD3utAQ/klb2YM0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Iuk5+iWZYisnFIPMX6yxlczWPB7zeg1Xh/kBYprXyzHxsV0eXapKO0qwU1/KG+rvRx1H0UK+AExqid40yaZS1ESmWGYvNdtlVdgrRdr0Crbpko/G8QMw1GpxAAd/d/wJLEPq8bzQQB3dvUu8O7r5wAeqrKZVt5YruA58XK+MxsI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iQ93Bx7o; arc=fail smtp.client-ip=40.93.198.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PwAO0UdqEgjC5Plw08VYKS0cC16x2hai/4x8Xn/SfuLoxYCeig4AlQYWr8OrR+9ToowC1eaqegnqVXp3y0mMEUIUh/zAXmfCmkl/G37niwsbdqvTmL6WFsvslLxf2Jbqw2VSZE48GOUuhz8n4LBx+WJCgvOabRVrnbq/W4WsfbIJEsUR71RgMlA8rNQP6SrR6wjczjgAum5tdfncU7fM5Efcvaf3hRalrPHYcffOFCcda785vNz1a6cKDyYMBQSN0aFt4DARyijuBDHx8D/L5NXWwEFxPvQd9p42qsTSZoxC5ok8niS0ZO2tBKKNtYC8O04C7EylJcQ1s6NX6zpnCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S7asKaPQ1krv2Lckh95gj7h3c7eO3u8dmHB9Xz+7gOU=;
- b=ibHA/DkmvpbTVkIyuO1OYFM6suffr5t5pHb4mZXZS/A26edA5h2BCyOf3Jy1lRLJUflji3fkWa9Yrz4hMYovW4/dtwNhukvuKTi5d52IUOPD8z2YEDpnENqJ7VN+st6yKW+2+Vuo7irZXHC5theAvAflKIF5Ei5GAzzj5Q2DLE0iFTyVA1C9Ui0m6VCpOnwfCDzqQqTgpNNJVL7VVqQNM2rJWxZBXYdhC160SXGoiN6c9H4a3nrS/A3tq9eE6oNpsy09qslO283QnA1+53VT64oeD5J7qsj6p9FhSD+krBniBBBEefsJjXEEKYZgphEUmmSVIGC5rR7q1wfXqV4sgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S7asKaPQ1krv2Lckh95gj7h3c7eO3u8dmHB9Xz+7gOU=;
- b=iQ93Bx7o/YEVHjg3sk/KR1FpUk/YahuX/jvkd3GO9WpMjj66EVxRP1YZJLcZZjt1oSZoZVUtRJB4F8U8+Fomhaw1zcD1KuFpHTzfZ4u+l6pVMM9y9wEhzbT7GwLB2ZrksQBktjtY08b9bR98Spt6yOckSakZHPe1n2R/5Odqc/kyewpwLrIjj3R4goTAkeKZsmZAT9dyRlrjsDz29Ys9Ph5qgRTUbZL7ugpmCE1g2xa/9JtumAowXPKxEKSk9FcGlPrH+N15VsxQD3hel58aUeIymsXzUe0EzbkOQjhRBYihbN4B5zecPyTFps1REJpgu9tt8jw1Gn348TCZBa7NRQ==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by MW4PR12MB7215.namprd12.prod.outlook.com (2603:10b6:303:228::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Fri, 24 Oct
- 2025 11:59:09 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::ae1b:d89a:dfb6:37c2]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::ae1b:d89a:dfb6:37c2%7]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
- 11:59:09 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Shuai Xue <xueshuai@linux.alibaba.com>
-CC: Aniket Agashe <aniketa@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Matt
- Ochs <mochs@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>,
-	"linmiaohe@huawei.com" <linmiaohe@huawei.com>, "nao.horiguchi@gmail.com"
-	<nao.horiguchi@gmail.com>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
-	"rafael@kernel.org" <rafael@kernel.org>, "guohanjun@huawei.com"
-	<guohanjun@huawei.com>, "mchehab@kernel.org" <mchehab@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "kevin.tian@intel.com"
-	<kevin.tian@intel.com>, "alex@shazbot.org" <alex@shazbot.org>, Neo Jia
-	<cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Dheeraj Nigam
-	<dnigam@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "Jonathan.Cameron@huawei.com"
-	<Jonathan.Cameron@huawei.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"Smita.KoralahalliChannabasappa@amd.com"
-	<Smita.KoralahalliChannabasappa@amd.com>, "u.kleine-koenig@baylibre.com"
-	<u.kleine-koenig@baylibre.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
-Thread-Topic: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
-Thread-Index: AQHcQnTIOnJO2MvUxkKEvE04/4cxdLTREQaAgAAjR4CAAAHgmg==
-Date: Fri, 24 Oct 2025 11:59:09 +0000
-Message-ID:
- <SA1PR12MB71992D35824674EB3A0C7D4AB0F1A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <20251021102327.199099-2-ankita@nvidia.com>
- <d2550489-834c-4dcd-b41f-d22590880343@linux.alibaba.com>
- <20251024115201.GD847003@nvidia.com>
-In-Reply-To: <20251024115201.GD847003@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|MW4PR12MB7215:EE_
-x-ms-office365-filtering-correlation-id: 7a374073-93a7-4994-b341-08de12f4bd86
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?AHymHMZtIdtCXWrk00B3pNK/XcWyv6W8tJbwoiSJwBR+Pl1JsjLeorTkTq?=
- =?iso-8859-1?Q?Ttlj3ugxooty2l3itOXOeJF9dpeVbyQr4h1tAz/0YyLYBOdWnqmO4n3bit?=
- =?iso-8859-1?Q?GX7nKXMO89T6VWh/Wsq6uQyfZkSVqWxya3BsoMvo9tSmKKAkUhXVW/MG4s?=
- =?iso-8859-1?Q?1WgPoXlXxxdbvCXQas1PsdE2HtLLFmQuih0ifBr33f9LwAhch3xxRwvHp1?=
- =?iso-8859-1?Q?7KXGH3cnsZ38hZcIgdnR4A1Bi39kMwYuponb089DLNdR/MCmtAkODCPGgV?=
- =?iso-8859-1?Q?I3ka3mRYwIMN8lJU7cAhL6/tj46WX2XxLuXoIgPfnZxEiOg0e/ksdvksR1?=
- =?iso-8859-1?Q?VfyO5HfaIbVL9BprKwXhvtNSulAlbxEN8ibDmbPl/KQQfbRWtz4i5Ne9d7?=
- =?iso-8859-1?Q?8py5sI2f/VSTAGorXpMVoDj/0r/I+8V9WUPhqgkexDIYd6TE1Vz5cjuMEd?=
- =?iso-8859-1?Q?CxFF39Wq1QbDSN1PwUrtoqn6yBZ8KIlQJMFPIBxDnCL/+8Xr7OXA6CbBpx?=
- =?iso-8859-1?Q?wdRb0u+0JhJXCLCdd2xcsvxsT5pfLDj+pPlr+gIyryfbp/MXskB7Rrkd0d?=
- =?iso-8859-1?Q?Aviy30ynyqivPjx3zxJ3VDrqEhowagsfp9SB/XWKnvvsEx6T1HnOLhydoO?=
- =?iso-8859-1?Q?O7Pqjoark7YClkjFy1zpT6opK4KOSVa8C4vvX5qoj+fXDJLi0VYs/5XJU0?=
- =?iso-8859-1?Q?OBRwTIU8cqXo767YZYINRhrEW7gXVbSBJiVyxQy63dhYDEq9oLwHmP2SCN?=
- =?iso-8859-1?Q?VbPEKv5mIzWGKUGMwe/F3cwmg+CHNJO9XX0/UCfrMyDZUMd0Oa3d6/ewSC?=
- =?iso-8859-1?Q?A8RnDtAIrAfthR8TIdNIaa2H39Ou7z+P1QCzTYclcZ611DJVQ+X2/z27/Y?=
- =?iso-8859-1?Q?Rmd5kz7BJBo0x81OzPZxR9Sn/Ka4snp+n3nhmnVCFgZJ0jSSPexSVjntVV?=
- =?iso-8859-1?Q?5uJaNx0NGF9WZwHxtQj5eITRMr5gvejenYGKSGFs6/f7R5UK1XSh/PPz/y?=
- =?iso-8859-1?Q?Tqk9ptYnWwHbXfZZYTPGgiLoQi1CwvX52nJIiiIPoSMSmMfxfLGJWe6rH6?=
- =?iso-8859-1?Q?AX224ubEuAxUbJ5aZ02KvAG8Ves4fg07TTS/pYtiet9ICdvDP8s94HQsDW?=
- =?iso-8859-1?Q?BYPo6VnC017GyJLYsrrxcHZ1fhtFmyPR8RMeCAdTGq7XXOqAwHnS/stibB?=
- =?iso-8859-1?Q?FX9aHvc1bEPVrCc4biANDVOerBZPvpgqhvnsXEJDTLBuOVUJ4I+qW8jGCy?=
- =?iso-8859-1?Q?t67T1Mr6+iE0Gd/ZnoYdKZ76tEgmWG5oAU++sMz0X7jQlByYWQdGj/lpVG?=
- =?iso-8859-1?Q?XUWOxlv9FC4ipkdgRoNG0O4RwwLcetv6Tp5Ziby+ChATM7osxMQsZgCRI0?=
- =?iso-8859-1?Q?d7KukEjnrHI+Fdo1z2udA8yHlozXh2WwN8pQ116yETKMZlQiANQQSKEFfj?=
- =?iso-8859-1?Q?JoYs6jdVL9K+ggn9CJm0yqhHzEEOPng6Dsks84to07RDRnaSlZb4kyvDTd?=
- =?iso-8859-1?Q?Aj5mHOlGLxXOCFrY9NKePJXUuVE/WGzYdO0XibiAUcgVRx4Bn+PtIWKKiv?=
- =?iso-8859-1?Q?v+kGAKABIJbnx2o4AOYR963Rcj5U?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?Ehs1ONWSw4DmJpu8YlT71Kf0cmpDETmsWErDFcu9YnIwZksUMHtrOFTiUw?=
- =?iso-8859-1?Q?mSZOjaujOA0e7GDMLyIZr0eBTg8gQdy1KfFRR/ynzPonwohMbSwysnlHLT?=
- =?iso-8859-1?Q?2iy6VaYnHWXP9daDUYGLwtKP/smPswYRs+wOhY/QGkWs34mUs0iOsqJw/S?=
- =?iso-8859-1?Q?DcQxLVdrRJmKOwlght1lR7swQIgXOXxDoZ2IWjdM308OG5qQMdumcSgjyt?=
- =?iso-8859-1?Q?uNNg0cPH8d0WIqZflPsfY30xzijl3w3UcrxfN39UYfw7jBDufDcuNvWMQM?=
- =?iso-8859-1?Q?D42TwzyL3p8rNkteEpaEdV1MYkxzF6Edw/NWqcLRz9dG9sPeChK+El7sNw?=
- =?iso-8859-1?Q?My5bLwiSafqk0r/BNJ+G7CJY8TmHTC/ewkbeEo9q/G8Su1f44DS/GsO6PC?=
- =?iso-8859-1?Q?HO6PlPcLWSG7HOH1iwY6hollnLyxolMrGi560JN765c+EQmBj99RYKqtSw?=
- =?iso-8859-1?Q?urFYELuV2KzBZLButCAqfH9tfoC2DOPSyYyxcWwAvV6mecDcEpvDG5rDkt?=
- =?iso-8859-1?Q?UY3rKsW1MxVCUmR70LSvGIWMuGfaiALMZfh1yCslpQHYrqOmLJd0s4Arno?=
- =?iso-8859-1?Q?aiUbc8zEypzuvTQvFAosCOx//MO/BCBZoZCyi2H5BffJN8J69KgLtSnSCl?=
- =?iso-8859-1?Q?iJECAF5QjQDuZyuzABIYddA+trpY2JmYxCrpDN3zjR41ltkumnhgBgNkti?=
- =?iso-8859-1?Q?0SUccjdNw86q4LnwTJAp3lg9zHYplwqM00XSaSBiCmvbY6Woo9sgJfw3i/?=
- =?iso-8859-1?Q?ZP3B7bwIbfJEZl3vdiRbzDhjP+BpjnJo3lz+XGvSkTPZtS3mUTJirHz8zK?=
- =?iso-8859-1?Q?VRiKw/AVWj/XPo4jdQIFVbWdSfNiUHdBaOuIUFPaPwowbOxlnIvx/WAsWF?=
- =?iso-8859-1?Q?fUZ0A/Nz2wbojOPHU/jd1HrH7MNwtyVcF8OLAFj8ztwartftLKqrdM3aDW?=
- =?iso-8859-1?Q?060M5DwgodtMwM1RgIlwA0UQ7OAR2QNsal5NCN2cPHCgz27TaA/g12/DHw?=
- =?iso-8859-1?Q?46dBlEgo2Us+7RpaXwZig5EQxjeve4tIsNweH7fKlMla+/GU+D6jLdKOj9?=
- =?iso-8859-1?Q?YsQUBtXOI5S6fo+vxTNIFSzl8kpU69zWHpVkf8OSb4VyHvY2WhvNl1C2Da?=
- =?iso-8859-1?Q?Nrv0ParFO/04DFBIFGo10oNJ4t61b7xUO8IQXYSx7HglEHyi3t/VZzLlgU?=
- =?iso-8859-1?Q?QGZONqop3WVQKCuJ9MlWG6ijtzzg08Qvf6QhV7HXazdBaEzR8uJ84wYl+m?=
- =?iso-8859-1?Q?qXg2fZHdMHFg4DD952IvbWVPSBxZXthp9z6WC4mog3+MMzTRdcNuAnnquL?=
- =?iso-8859-1?Q?TXCteI3pvx25KAPwEN+UkQuLcFaFJ/LoAKA0gU9YTLD0OuTO302LSD0sSY?=
- =?iso-8859-1?Q?M6Jf9/BiU9mc4HjNzHsnwknKFt40fDgauhRp0obUvoZdDr4yPjpq9u8haQ?=
- =?iso-8859-1?Q?j01WW1qkx3w9zMXI9zdthNy4SaHJZlpflJVsOy1b7IrOKh5lLA8SGHNV3V?=
- =?iso-8859-1?Q?WhYIJHFAKqQmKFv5fslYgXmcHcRN+8jUR1XjbQQqYIS61oYeldLc+SE/MN?=
- =?iso-8859-1?Q?wsj9Qm3oOai5v3ik74pOJeTQJC/1nVuSIhuSWNG5zwZg+JK1xMBhdkOGLd?=
- =?iso-8859-1?Q?ixb7vXc7Suda4=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD30E313529
+	for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 12:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761309097; cv=none; b=Bm/7RagugDVSXzapekTAi8UpSeC9TgjYsHGMqIwAu1Yt1o6izMBPyUPW4+7Pks8pc11+SRvJA1HxuRzYExqNjjcfncbwwXpEWx62gfpcZnjko4LQ3zXPrYR102u3Bbyjtb8grJLKyGDYBa4F/OCxHb/dLwLUYKxuRP/Cyb7MNy4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761309097; c=relaxed/simple;
+	bh=XiTDVkg1kAETpNdGmqCEBuwWFR6IVEd0PECMW0nJHq4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kNI1MtbrRAhkhsGiQDQ6BlZj0yTEsw3CLYGeMY2O2b0gfmtaK74oI51VX80I3rA+2M4ECsPgMFFG+MQ0pCi0UuxdZkaJ6JY+2JB2zFeO3aNVufoqdBE6ad3V41nJVJh7biW3NKciYg5q7FMQysdAOYVSEhXB/i82NeY8tHHaTEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O7uGKTtK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59O3FLBX022330
+	for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 12:31:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=2bAsfJsMqfmVZMLORayPyE/1jk3wBrKlzyf
+	VzHYGp8s=; b=O7uGKTtKODlV1izXE+xekeaagbTBEkBALzCFByC/LBULekqcUMs
+	tM4kZCOaiirBv+YkyHFrAHAz5cCbAgVP8jqaRfIg7iS7DAgiODvEGIRsRWNvcnDy
+	zbQ2nGnhrfHVsXZGA23LXz6GhJ4FSAV5B8BnLmd+LYZuErzHzrUo4xN3AVKusmMO
+	C4QTGyXf/wviu+OfxSrxBnB4XW6CKRwpeJDpl2gBTUGT9tpkOabEoNpImrOogzDs
+	mW5bl8NOEyiNSGoulUCf/nu1BC3ci0SEo1cARRPa28o2GO02/PWsNMp62/uFnXcm
+	ji0D4Scp9mgfYW2GjMoRnPgUs9Ri+EjSsjA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49y67qny7d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 12:31:34 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-26985173d8eso46517265ad.1
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Oct 2025 05:31:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761309094; x=1761913894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2bAsfJsMqfmVZMLORayPyE/1jk3wBrKlzyfVzHYGp8s=;
+        b=gdWtFtxxGIRsmiTROdAWSeEGumkpSiyVv7ViUcOrtBLuFcG5z8qxfX51QOy3YKoaPx
+         ez1Oa2tXaTvQ0iqbOS64lyieBet5yRKGLeyO64/poDitt/veOotS/PGzMgjlV5Y12JXq
+         xP28XqFeS4VDfNAn/S4VPOJAMxXVWRIzfnGXGMB6Lt1CPXK0c5xkpBd/xZHB+4oJIQx+
+         M7kvfsyVtV5ihQ6D+CmSTPEEW1imdGVr09Pkl7ByqYElOsrf5FFlAiAGQzVCz5Yj+Xab
+         DVbUBH+ZUZjzB41PV78yMZRbstvWtRWbIImC/seJJXjrHcvZzEXat9YTRgTB0J9UHGPb
+         uqUw==
+X-Forwarded-Encrypted: i=1; AJvYcCViL5/sjcJj/SMNc3LYMrqe/QGs0b+MPBrWjs+SL0oRtBE6tK2lswv9seqCrXlPjri74Y/JyBv9ggdv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoW5DwPRETDAjpSkjnwhRjLaFbUA8zeMhCIBwGT4fjwhbZE4MG
+	gC8zUMWGDVQnTeHCEO1HIgzEpN48my+4VUyJkQsOlxtmrjCycSTK4Z2xnQkFWe4K/Qfi8jUE7nh
+	KGJjwSD/YSI4oicdtrVTbkA1numYUWna05eHZGwvbLYFJkjRRjubG4S5X72pGjziT
+X-Gm-Gg: ASbGncsQzdJa79mQKtp+pef8TVeejtCs5xEDaGGQ9NiyxpANEXRffCseIUhSMMMRLZT
+	hPzZ/5xCvUaCK8zrp+nSaPD7bb9+2JMiDIm9hOtOnWjpqsYByDPBN44Tvr8WGqbYIq46yTLTFNE
+	nA38o744dtMztKr4jgBNgheCpLXpQyKyvBb5pP4Bx4BVx2Wg3qtYnLyXMOoGU5DoTpNlJIHzibh
+	actxvgv2Qz5u5NumiPIgHASCnbf3EethldBFMMjm98Mr4fJCcYnvdEpv3zZnX/SZb0eJBmWCxGx
+	fZqkDeKN1mIXy0ydNhHu5IQkdoy3Mc4EZ/yyyLP8b/j752dBB0xi2GlD1Nc/FqwLQYoKEeehPXt
+	P8AkHQoi/SWcM+wBJzC4bdvCdQi64K0OzvVv1OqUefsQGzMf8hlbX
+X-Received: by 2002:a17:902:d50a:b0:290:bfb7:376f with SMTP id d9443c01a7336-290cb46bf6emr323434235ad.51.1761309093997;
+        Fri, 24 Oct 2025 05:31:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEucBc3iLZLhsl0wh3jp8jpvtimkKB//Sc+M+8IumHk8rQsjhXsplOGeikn1LVFuY+rB3c6XA==
+X-Received: by 2002:a17:902:d50a:b0:290:bfb7:376f with SMTP id d9443c01a7336-290cb46bf6emr323433855ad.51.1761309093557;
+        Fri, 24 Oct 2025 05:31:33 -0700 (PDT)
+Received: from hu-punita-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946dda72d0sm54981275ad.16.2025.10.24.05.31.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 05:31:32 -0700 (PDT)
+From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+To: rafael@kernel.org
+Cc: lenb@kernel.org, cp0613@linux.alibaba.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Subject: [PATCH] ACPI: SPCR: Check for table version when using precise baudrate
+Date: Fri, 24 Oct 2025 13:31:25 +0100
+Message-Id: <20251024123125.1081612-1-punit.agrawal@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a374073-93a7-4994-b341-08de12f4bd86
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2025 11:59:09.3711
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3Q6YDAEs8zHNRhAqE/TWWnednCV8JA4EKq7QwsV+O5Ca0/snjJG3KSGW9f5RhDCvq171PAWgbGpccdWQO+hHyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7215
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIyMDE2OCBTYWx0ZWRfX2axXYrflw44e
+ EyWPSXEvofEwNqY46sedtYD97vGx0f+zV/EDGlCNH1aaNJfU5Z/GfdUe2DoN1nJsx6Afr8szvKg
+ sz1rl9sNtg0c1spVNZGH3HWtWBPXZAJb1cIwoGrETBDaNQrUAokQchVM+XOzMwdMn13yFORtWD0
+ JaoGn++ujj6p3tJvcsiV4MW5klBrHMgnqdaYZaOe3Gc8JQAzVIt2o3SkK1aqo0WDxstJYKnmnwz
+ XyqNnqCtYFaFXtAu0jGhK/kv1dCqXX9X+m17HcnqWxBgOJ0+RoDqEYCCr35B6SMM0S9t+YyHv5R
+ jgugqd+9kRGLlI1F69KPw6qkVqP0Ajw0Se+X5MD7cvSdrxK5J5Bgedj+K4BbdtJX0hxwASeMeO5
+ GcgA0PJ4SefdoN2Pod4K1re48BNR+w==
+X-Authority-Analysis: v=2.4 cv=LMRrgZW9 c=1 sm=1 tr=0 ts=68fb71a6 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
+ a=3rrkCrMOeJKuegrRhzgA:9 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: hhE5VITBje-L3efbSyCpWbn2ofkYM3cr
+X-Proofpoint-ORIG-GUID: hhE5VITBje-L3efbSyCpWbn2ofkYM3cr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-24_01,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1011 priorityscore=1501 impostorscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510220168
 
-Thank you so much for the feedbacks! Comments inline.=0A=
-=0A=
->> +int register_pfn_address_space(struct pfn_address_space *pfn_space)=0A=
->> +{=0A=
->> +	if (!pfn_space)=0A=
->> +		return -EINVAL;=0A=
->=0A=
-> Is there a reason callers may be passing NULL?=0A=
-No, that would be an invalid use case for such. =0A=
-=0A=
-> Register and unregister are good places to use guard().=0A=
-Thanks for the suggestion Ira. Will update it.=0A=
-=0A=
->If the pfn is not in the process why is it added to the kill list?=0A=
-I kept it as it is still a process with VMA mapped to the problematic=0A=
-PFN. This would ultimately result in SIGKILL to be sent to the process.=0A=
-in kill_procs(). This is very similar to the __add_to_kill() implementation=
-.=0A=
-=0A=
->> +static int memory_failure_pfn(unsigned long pfn, int flags)=0A=
->> +{=0A=
->> +	struct interval_tree_node *node;=0A=
->> +	LIST_HEAD(tokill);=0A=
->> +=0A=
->> +	mutex_lock(&pfn_space_lock);=0A=
->=0A=
-> scoped_guard()  Or probably wrap this part in a guarded function.=0A=
-=0A=
-Ack, thanks.=0A=
-=0A=
->> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space)=
-=0A=
->> +{=0A=
->> +       if (!pfn_space)=0A=
->> +               return;=0A=
->> +=0A=
->> +       mutex_lock(&pfn_space_lock);=0A=
->> +       interval_tree_remove(&pfn_space->node, &pfn_space_itree);=0A=
->=0A=
-> IIRC removing something not in interval tree will panic kernel. If I=0A=
-> am not mistaken, should here do something like=0A=
-> interval_tree_iter_first before interval_tree_remove, to avoid=0A=
-> driver's ill behavior crash the system?=0A=
-=0A=
-Thanks Jiaqi for the suggestion. Yeah, I think we should add it.=0A=
-I'll fix that in the next version.=0A=
-=0A=
-=0A=
-> If pfn doesn't belong to any address space mapping, it's still=0A=
-> counted as MF_RECOVERED?=0A=
-=0A=
-Hi Miaohe, I wasn't sure how should we tag this. It seems you=0A=
-are suggesting MF_FAILED is more appropriate. I'll address that.=0A=
-=0A=
->>  	p =3D pfn_to_online_page(pfn);=0A=
->>  	if (!p) {=0A=
->>  		res =3D arch_memory_failure(pfn, flags);=0A=
->=0A=
-> Can we move above memory_failure_pfn block here? I'm worried=0A=
-> that too many scenario branches might lead to confusion.=0A=
-=0A=
-Sure if there isn't any objection, I'll update it.=0A=
-=0A=
->> On Fri, Oct 24, 2025 at 05:45:45PM +0800, Shuai Xue wrote:=0A=
->> Rather than having MM maintain metadata about these PFNs, have you=0A=
->> considered adding an operation callback similar to=0A=
->> dev_pagemap_ops->memory_failure?=0A=
->=0A=
-> I think someone could come with such a proposal on top of this, it=0A=
-> would not be hard to add some ops to pfn_address_space and have the=0A=
-> code call them instead of using the address_space.=0A=
-=0A=
-> This version just needs to link into the existing VMA machinery (ie=0A=
-> collect_procs_pfn), it doesn't make alot of sense to push that work=0A=
-> into drivers.=0A=
-=0A=
-Thanks Shuai for the suggestion. However, I agree on this with Jason.=0A=
-It is preferable to keep that as separate.=
+Commit 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
+added support to use the precise baud rate available since SPCR
+1.09 (revision 4) but failed to check the version of the table
+provided by the firmware. Accessing an older version of SPCR table
+causes accesses beyond the end of the table and can lead to garbage
+data to be used for the baud rate.
+
+Check the version of the firmware provided SPCR to ensure that the
+precise baudrate is vaild before using it.
+
+Fixes: 4d330fe54145 ("ACPI: SPCR: Support Precise Baud Rate field")
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+---
+ drivers/acpi/spcr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+index d4d52d5e9016..73cb933fdc89 100644
+--- a/drivers/acpi/spcr.c
++++ b/drivers/acpi/spcr.c
+@@ -155,7 +155,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+ 	 * Baud Rate field. If this field is zero or not present, Configured
+ 	 * Baud Rate is used.
+ 	 */
+-	if (table->precise_baudrate)
++	if (table->header.revision >= 4 && table->precise_baudrate)
+ 		baud_rate = table->precise_baudrate;
+ 	else switch (table->baud_rate) {
+ 	case 0:
+-- 
+2.34.1
+
 
