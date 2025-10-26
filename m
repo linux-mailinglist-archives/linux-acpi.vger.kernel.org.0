@@ -1,213 +1,175 @@
-Return-Path: <linux-acpi+bounces-18223-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18224-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A917EC0A481
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 09:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95162C0A73F
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 13:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F085F3ADA5D
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 08:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F21D3AD739
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 12:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7992027BF6C;
-	Sun, 26 Oct 2025 08:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FF72D97BA;
+	Sun, 26 Oct 2025 12:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X5loQGbD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6jL8ot1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22202773E3
-	for <linux-acpi@vger.kernel.org>; Sun, 26 Oct 2025 08:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B622D97A1
+	for <linux-acpi@vger.kernel.org>; Sun, 26 Oct 2025 12:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761466371; cv=none; b=VqMXecnwwo5jqwYpaQL8OM/UxF76+uL7PKJ8+zu0EKY7M8deZf3U53ge5voszAJvvQsFwPFYSkz5x8rUUDKgWv3Lf4Xe2nlBQLhcQNjoUuZBMvcymFLdf647fybcYHptWg5T+kaXLcab0UWmaLRlV1yCLg9aKq2EvfP1JhLHk8o=
+	t=1761482086; cv=none; b=N9Dkuy2uLxzGhVuW74p59xKWJOPgeXzHdvMZEIzuz8eCeTCt+VFONYc17QVWBHk1fpdTCWo8hnbKSq9EDuPBBb+k7dIsy+do4k9vU9Z0i+dXZhPra4dnLgcZ6z5TPS606H+SOmGYy9Lu0OqrJGRk4+FnTs6+bpwo3rp/XyiIZUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761466371; c=relaxed/simple;
-	bh=KNQiFIatDFDW/ugWS3KsTuNPGeunfC6QHOJzplAW0hI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5dOukO76p6PXR5nrb8qzNlI8Vm/cjY8oLy2MjdmIXt94Cgug4PGIbFNI9PJT48gktey/QwINUY5JUFxaXQoSqcAHDbjLC0cT+Km+K7RUsnmRjGb81FtE7WhgVMKKKoaRdylI4a1XM7KgOmWDuQzPj8plAuqluY/j43B9s04ZEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X5loQGbD; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-33b9dc8d517so3561497a91.0
-        for <linux-acpi@vger.kernel.org>; Sun, 26 Oct 2025 01:12:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761466369; x=1762071169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I04xuq3ZlAMJMmWZbV+GGOpvIwMx+dHIGrDI5rSwvUs=;
-        b=X5loQGbDDPfBjYea5QXDpUQFoe52Lst5nPJrhMmhjjEjmvszhCEJa4ThyKczkUG+lF
-         R91atu1/0k8znmmAbZRsbrf7Qm2e+U7KDZlG/sT+R/DKy541Y3OJ0I0IB1yQ5udzC1eo
-         AsMjnKXMk6LgsaMUxR2FBrXIyEJ23yYYILx8tgNqCDb4vd2Wo2VAVE+fUdXhQ50w++S8
-         kHYItCLyx0d8eWVZPZSWt5Hc5WK1Y2BNvepNEhlJtTjgpty0gyjk5AfiG8jQJYjWSSfU
-         kQpA4StoDpQfnIuEG97PWherfdgBNsQ9nxWZG+3Ssfl/aje9ynEXqFjH4eub2SYOxZ3l
-         5THg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761466369; x=1762071169;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I04xuq3ZlAMJMmWZbV+GGOpvIwMx+dHIGrDI5rSwvUs=;
-        b=LVi/68EYSiJTseuZaBChYY1+ZQ2Jle777XiVmh4Y3KTGnU5OF5eJ6A4BFNyvAZa7W8
-         HRbMoKifZeqjwLsSVKLHnWpX4Z6P/xkLWGRen0qCIWNFi3hxpBv6V3e5KSgZJ2OZJeqz
-         7yB3dbPq8tlGV+Uh+mra+A8w5EsR/MI6bzIwSuy43+xi85DQoPPyim+ogRxXokulWM6m
-         AM+PPaUHNLLSegWzwMx8n91KFNb9q/FN3PhwHl/8qL8fcu6c82CdGEgcP3tHrpxs985O
-         FA6J0eJ5Sg23NzfTlhoy+Lm/NK8VUzLrn3xPmheJtXOYLoEAMz+fJMydWKVifN3eePAi
-         F66A==
-X-Forwarded-Encrypted: i=1; AJvYcCVSQNcNkOANlrQNVJr38bYp4tWrmvyogzgdvF6us02aW1FYRTeRDvP3McYiHatBzPNBNFmRseXqSzWn@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDCf7KMATHjks39jLzlcuWy3zKFvLJJmTGQHXfC5/ec2yMgThY
-	WScEujC3pwDGZ+aPfj8BePbSqNqdiUylulp0LW67rcMtp9ySE2DAYnl6
-X-Gm-Gg: ASbGncuiW+Mq3PKau7K1vfH0TKQ6cmc15LmftOwLvudlJf6oEkUQp2qO/xlyFuK68JF
-	ymWTYo5Ik+Wbs6j+5zvLEPIBKl7q3WpdRxlePLHRLP1XpjOWWnma9A5K3BIqgHuZNzTbA8KCXrJ
-	4zgOWibswBb6tj2J84+rCQ414j9Tv63D+VBZL8l741ZDYYCc4iCrB6IgS8LMm0B6UXrlOCXEXZS
-	jt/POqKYnIciGZ5d0G5bpr4DVbDCzz39aFO8C5aGldDtAB67vhNB9+2jL1dKMaBPXQLTRVzsHrt
-	VbjtN8fYm9P9iD1cBayAWKXq2P4RuGZXCFrgP8PjLwt0k+jr2OIecfKP3LG+lfI3Qvn1U8jz1cD
-	nJgepcoFj1YYx37WwM/cPRQsEnV3YM1RAyDgZqIFEidYKB3n9O3M8r1f8I9D0r33QXHaJ0y21co
-	4uGba0P164LniL2ED7xSqRX4XNjWnjZX/uq+tXAifeh8av8Ixo7gutCoooApRIT9CjwTo=
-X-Google-Smtp-Source: AGHT+IH3N+rTZmae0YIHzKhUxnKjJn04vmCm4zs9XWx4XwHFbqlNVNo4C6bScayA3iX7peruw5FJSQ==
-X-Received: by 2002:a17:90b:1dd2:b0:327:9e88:7714 with SMTP id 98e67ed59e1d1-33bcf926c1bmr40699771a91.37.1761466368907;
-        Sun, 26 Oct 2025 01:12:48 -0700 (PDT)
-Received: from bliptop (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fee8014f6sm2374654a91.0.2025.10.26.01.12.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Oct 2025 01:12:48 -0700 (PDT)
-From: "Derek J. Clark" <derekjohn.clark@gmail.com>
-To: Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Len Brown <lenb@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mario Limonciello <superm1@kernel.org>,
-	Zhixin Zhang <zhangzx36@lenovo.com>,
-	Mia Shao <shaohz1@lenovo.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH 3/3] platform/x86: lenovo-wmi-gamezone Use explicit allow list
-Date: Sun, 26 Oct 2025 01:12:40 -0700
-Message-ID: <20251026081240.997038-4-derekjohn.clark@gmail.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251026081240.997038-1-derekjohn.clark@gmail.com>
-References: <20251026081240.997038-1-derekjohn.clark@gmail.com>
+	s=arc-20240116; t=1761482086; c=relaxed/simple;
+	bh=yWdBEvQ3ngs8EBxdz+2XpeKUEBjGRWsSJkE7qF5U5cY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=okn9v6hbPU3dPICkqhUka2xSm1fqLZKheypXPIMi3ndHUniLrNDbIPgIsxWodx330h3wsZ9f59rDfqFyfHgQpn9KjTErPF0P2QnimCW2lu0pZX61lxcMTVqPZZzPnlu5Lga7bFEYgtnPRALM4qqyownvnFo6jc1XNG5tSm3M1qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6jL8ot1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2E1C19421
+	for <linux-acpi@vger.kernel.org>; Sun, 26 Oct 2025 12:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761482085;
+	bh=yWdBEvQ3ngs8EBxdz+2XpeKUEBjGRWsSJkE7qF5U5cY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=c6jL8ot1OBY0PKo4IqtTB9qXRTx9+a5+1MxwE9eMYOFeGwlleoi9DsdxIP1N0l0On
+	 zyg0VcszSuTXqibWw02812fcDNzbO/IwM6uCSIyQnbO89+BrX/urZ2Zjj3eDuEmQFf
+	 hQmTPNbjFRy8TV1+NUD9mId5ANn8cWBirzC2UyxMSL6LhyDxJoGRHDNOBk/0++gI6v
+	 cucn+utkpDXRWhDQ7/BRlioFW1fLNZr/sMtDPc2TD43P/nTzVhb6TmX801kTjRvq65
+	 Zehrv8au7rLc4b7sJgMO0ScgJFjTArOZWdZoya1MdEfeHYGYtxMztFu1tn0bL8T8yR
+	 b67lp3ntdQQiw==
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c2846c961fso1963907a34.2
+        for <linux-acpi@vger.kernel.org>; Sun, 26 Oct 2025 05:34:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWUDciAf8rS/FDR8mwEih5cp+1CbH3d116DU85Y+LgMtPx+nx3R3BmlGTlSbYJez4Y5qPZHjESNFci2@vger.kernel.org
+X-Gm-Message-State: AOJu0YykiPfBEa7gGAJXIxG1IL+6O5q1eGcvWfSlEAxoTHwt0XnxbxOa
+	K6bzFqaHGkKshk6FSWjQDsAuqQa3dQbow2Dv8rJwc0jIFwJ33qSw0CC2X4KooBFg2RSa73IB7se
+	QBfhaXcU7HtpuLjvwLfYt2TL72zIMQfw=
+X-Google-Smtp-Source: AGHT+IHDrl/qGfsuH6pDSyu2LHOznPsTx+vcm2kq+BMs6YVixR4JBY2HJDdM7C9BM1NURhNAlrLD4OLKRfUHPtu8WB4=
+X-Received: by 2002:a05:6808:d4b:b0:43b:6639:7307 with SMTP id
+ 5614622812f47-44bd41c9cd4mr5040300b6e.23.1761482084824; Sun, 26 Oct 2025
+ 05:34:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250929093754.3998136-1-lihuisong@huawei.com>
+ <20250929093754.3998136-7-lihuisong@huawei.com> <CAJZ5v0jBqPLjK2v7A-8Qd6ERhwz47jP3YCiTHJhD8vAgRHVjcQ@mail.gmail.com>
+ <e1d440bd-23c0-434c-a771-5c0907c5d3ab@huawei.com>
+In-Reply-To: <e1d440bd-23c0-434c-a771-5c0907c5d3ab@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sun, 26 Oct 2025 13:34:28 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h64UoWY=Zkpc4g2UH+ii8K6APDSV2qLp==yHuRQz+fsQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bl783FLk3NpoNYF2yfbzEexKm25cNaoRYtOQbU6yqkkeIJw8iYUi1tvZeM
+Message-ID: <CAJZ5v0h64UoWY=Zkpc4g2UH+ii8K6APDSV2qLp==yHuRQz+fsQ@mail.gmail.com>
+Subject: Re: [PATCH v1 6/9] ACPI: processor: idle: Do not change power states
+ if get power info failed
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
+	yubowen8@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The stubbed extreme mode issue seems to be more prevalent than previously
-thought with multiple users having reported BIOS bugs from setting
-"performance" when using userspace tools such as PPD. To avoid this ever
-being possible, make enabling extreme mode an explicit allow list instead.
-These users will still be able to set extreme mode using the Fn+Q keyboard
-chord, so no functionality is lost. Currently no models have been
-validated with extreme mode.
+On Fri, Oct 24, 2025 at 11:10=E2=80=AFAM lihuisong (C) <lihuisong@huawei.co=
+m> wrote:
+>
+>
+> =E5=9C=A8 2025/10/22 3:49, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Mon, Sep 29, 2025 at 11:38=E2=80=AFAM Huisong Li <lihuisong@huawei.c=
+om> wrote:
+> >> Driver will update power states when processor power states have been
+> >> changed. To prevent any other abnormal issues, here add the verificati=
+on
+> >> for the result of getting power information, don't change power states
+> >> and one error log when get power information failed.
+> > But the old states may not be usable any more in that case.
+> Yes
+> >
+> > If you want to check the acpi_processor_get_power_info(), it should
+> > disable ACPi idle entirely on failures.
+>  From the modification of this patch, this cpuidle device will be
+> disabled if the acpi_processor_get_power_info(=EF=BC=89fails to get on th=
+is device.
+> And the cpuidle of the device will be disabled according to the
+> definition of cpuidle_not_available().
+> We should not call disable_cpuidle() to disable cpuidle of all CPUs.
 
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
----
- .../wmi/devices/lenovo-wmi-gamezone.rst       | 10 +++---
- drivers/platform/x86/lenovo/wmi-gamezone.c    | 33 ++-----------------
- 2 files changed, 8 insertions(+), 35 deletions(-)
+Since the same idle state data is used for all CPUs, I'd say cpuidle
+should be disabled for all of them in that case.
 
-diff --git a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst b/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
-index 6c908f44a08e..79051dc62022 100644
---- a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
-+++ b/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
-@@ -31,11 +31,11 @@ The following platform profiles are supported:
- Extreme
- ~~~~~~~~~~~~~~~~~~~~
- Some newer Lenovo "Gaming Series" laptops have an "Extreme Mode" profile
--enabled in their BIOS.
--
--For some newer devices the "Extreme Mode" profile is incomplete in the BIOS
--and setting it will cause undefined behavior. A BIOS bug quirk table is
--provided to ensure these devices cannot set "Extreme Mode" from the driver.
-+enabled in their BIOS. For some newer devices the "Extreme Mode" profile
-+is incomplete in the BIOS and setting it will cause undefined behavior. To
-+prevent ever setting this on unsupported hardware, an explicit allow quirk
-+table is provided with all validated devices. This ensures only fully
-+supported devices can set "Extreme Mode" from the driver.
- 
- Custom Profile
- ~~~~~~~~~~~~~~
-diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platform/x86/lenovo/wmi-gamezone.c
-index faabbd4657bd..0488162a7194 100644
---- a/drivers/platform/x86/lenovo/wmi-gamezone.c
-+++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
-@@ -47,10 +47,6 @@ struct quirk_entry {
- 	bool extreme_supported;
- };
- 
--static struct quirk_entry quirk_no_extreme_bug = {
--	.extreme_supported = false,
--};
--
- /**
-  * lwmi_gz_mode_call() - Call method for lenovo-wmi-other driver notifier.
-  *
-@@ -241,31 +237,8 @@ static int lwmi_gz_profile_set(struct device *dev,
- 	return 0;
- }
- 
-+/* Explicit allow list */
- static const struct dmi_system_id fwbug_list[] = {
--	{
--		.ident = "Legion Go 8APU1",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go 8APU1"),
--		},
--		.driver_data = &quirk_no_extreme_bug,
--	},
--	{
--		.ident = "Legion Go S 8APU1",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go S 8APU1"),
--		},
--		.driver_data = &quirk_no_extreme_bug,
--	},
--	{
--		.ident = "Legion Go S 8ARP1",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go S 8ARP1"),
--		},
--		.driver_data = &quirk_no_extreme_bug,
--	},
- 	{},
- 
- };
-@@ -278,7 +251,7 @@ static const struct dmi_system_id fwbug_list[] = {
-  * Anything version 5 or lower does not. For devices with a version 6 or
-  * greater do a DMI check, as some devices report a version that supports
-  * extreme mode but have an incomplete entry in the BIOS. To ensure this
-- * cannot be set, quirk them to prevent assignment.
-+ * cannot be set, quirk them to enable assignment.
-  *
-  * Return: bool.
-  */
-@@ -292,7 +265,7 @@ static bool lwmi_gz_extreme_supported(int profile_support_ver)
- 
- 	dmi_id = dmi_first_match(fwbug_list);
- 	if (!dmi_id)
--		return true;
-+		return false;
- 
- 	quirks = dmi_id->driver_data;
- 
--- 
-2.51.1
+Alternatively, check if it works for any of them and apply the data
+from the CPU where it works to all of them.  If it doesn't work for
+any of them, there's nothing to apply.
 
+> So the modification in this patch is enough, right?
+> >
+> >> Fixes: f427e5f1cf75 ("ACPI / processor: Get power info before updating=
+ the C-states")
+> >> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> >> ---
+> >>   drivers/acpi/processor_idle.c | 15 ++++++++++-----
+> >>   1 file changed, 10 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_id=
+le.c
+> >> index b0d6b51ee363..92b231f5d514 100644
+> >> --- a/drivers/acpi/processor_idle.c
+> >> +++ b/drivers/acpi/processor_idle.c
+> >> @@ -1315,6 +1315,7 @@ int acpi_processor_power_state_has_changed(struc=
+t acpi_processor *pr)
+> >>          int cpu;
+> >>          struct acpi_processor *_pr;
+> >>          struct cpuidle_device *dev;
+> >> +       int ret =3D 0;
+> >>
+> >>          if (disabled_by_idle_boot_param())
+> >>                  return 0;
+> >> @@ -1344,16 +1345,20 @@ int acpi_processor_power_state_has_changed(str=
+uct acpi_processor *pr)
+> >>                  }
+> >>
+> >>                  /* Populate Updated C-state information */
+> >> -               acpi_processor_get_power_info(pr);
+> >> -               acpi_processor_setup_cpuidle_states(pr);
+> >> +               ret =3D acpi_processor_get_power_info(pr);
+> >> +               if (ret)
+> >> +                       pr_err("Get processor-%u power information fai=
+led.\n",
+> >> +                              pr->id);
+> >> +               else
+> >> +                       acpi_processor_setup_cpuidle_states(pr);
+> >>
+> >>                  /* Enable all cpuidle devices */
+> >>                  for_each_online_cpu(cpu) {
+> >>                          _pr =3D per_cpu(processors, cpu);
+> >>                          if (!_pr || !_pr->flags.power_setup_done)
+> >>                                  continue;
+> >> -                       acpi_processor_get_power_info(_pr);
+> >> -                       if (_pr->flags.power) {
+> >> +                       ret =3D acpi_processor_get_power_info(_pr);
+> >> +                       if (!ret && _pr->flags.power) {
+> >>                                  dev =3D per_cpu(acpi_cpuidle_device, =
+cpu);
+> >>                                  acpi_processor_setup_cpuidle_dev(_pr,=
+ dev);
+> >>                                  cpuidle_enable_device(dev);
+> >> @@ -1363,7 +1368,7 @@ int acpi_processor_power_state_has_changed(struc=
+t acpi_processor *pr)
+> >>                  cpus_read_unlock();
+> >>          }
+> >>
+> >> -       return 0;
+> >> +       return ret;
+> >>   }
+> >>
+> >>   void acpi_processor_register_idle_driver(void)
+> >> --
+> >> 2.33.0
+> >>
 
