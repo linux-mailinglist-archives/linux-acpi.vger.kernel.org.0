@@ -1,112 +1,105 @@
-Return-Path: <linux-acpi+bounces-18247-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18248-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6503C0E615
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 15:23:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DE2C0F602
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 17:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4563189794C
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 14:23:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A9484FB094
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 16:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C132426462E;
-	Mon, 27 Oct 2025 14:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cdaBfoQb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B675317704;
+	Mon, 27 Oct 2025 16:33:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D0B3081CD;
-	Mon, 27 Oct 2025 14:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702C0316918;
+	Mon, 27 Oct 2025 16:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761574995; cv=none; b=AoMTSf2lWm2j7WcXMva1oVS6szEd8JojUYowvxU3iTEQvBdk6EgSvw0Ig8VvlspUhIPR3dwl7v7ClNF3WfQQoheySISqdwKUd5X3PpXZJflf5UL6N6eu03Lej7+gWF16KawiKbHwPsheXXFJ+/NXDh9LyL83p36Zbsm6dUyNza0=
+	t=1761582804; cv=none; b=tVXYCTf7zrhwxQn/wdycNycYO25IZbkeRzfVtCB8QQgL9AtjrRVWcLlHloWDWkt8Ey2X0hgUvN8zCw5+KoALJqhFHTDn1gcMiWrGqOM/viu2jS3IZYhmHRvLJQ4QM6dTz70G2m5Mq4YQbn1HRuSEAszwp8vOvLZDCaYYUgc3xBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761574995; c=relaxed/simple;
-	bh=fm1rWXPQZcpi2+uxhMsNMIyRQSyhCR/roTyZlWfCFNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nf5W25MmFJuiGC163Mk8m2YVv1P+h6fAAf/zjl3CAcej8euwc4VC+yJHpuH6YZGCimmPBKEuHgDTmrYIbJzOfBLz9A/l/nrcpKuN2Ug+c2bbyratpHacPnGaKPV9kHegqX0htYAds0iPIBJmMRL9/OCR3SzkkTApr+ozRqaYYGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cdaBfoQb; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 300C940E019D;
-	Mon, 27 Oct 2025 14:23:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id z-6BA6geamk3; Mon, 27 Oct 2025 14:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1761574986; bh=6wcpZ5fcSTosdMzg7ajLOqb/tuYrXwNTAuu+9ROomxc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cdaBfoQbPCuGj8RnDDCvVuAiGAxU4WThgJjGTdTgRCqrN8AkUqUIBCDkKcPcyibzL
-	 IvDD0tRkUu4hb9Ej40MOa1OTKvOiGaa2MUt4l1oyGU0s5FHW6+UZFtS8lWdEX//TzU
-	 MvhghKi7AL+pNZpf/5gWSvI4UEPk+FHEG1MUyAvjwVwoZSN4wvt4Eq3pgqsSaeoOu0
-	 9wSmq6Tc6FkHPZFivnrWozgBHpfswcmbPv/jp9o3qpH4zLwrEe0p+FndQNPYh967fb
-	 xphvlY/LYwujUse6YUUNLXbNYT9YeVxu9JjbPq0o/z2oFQ0nGMaQntOQz7fJdiCF45
-	 oQ5SIl0eq60CpwrTqYcZaqLEY/FG5tSGK6GmH6HiinJ/uimUnr9qHcx/mDaE2XAfna
-	 oQqL8YKsevy2Tepyq3EsZEza5LYtUr0F0JL0QqZVdUfbR7rbvbjL/U5H9TZdvicKbf
-	 wDxUBFSCTPj8rYT1NtQ7MosRxgIYz6ytvydMIfIPXeENFDMRl18jymvgx+vtqHR4u6
-	 JV+hhE02CoZjceYJpU92P34r5pw2ai3xQQtLZuuAtbYzBynzk7Whu9a8ZpRRPjh2iF
-	 jHA+pcVZcfxkskA9kT4c0off2MBknKCMEaUfNhG28lQ/hVMQ2pUqIIzMXMnHqiKeDp
-	 3PEFoHgjLe/dVQgaRvw84xS8=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1F47440E01FA;
-	Mon, 27 Oct 2025 14:22:45 +0000 (UTC)
-Date: Mon, 27 Oct 2025 15:22:44 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>,
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ricardo Neri <ricardo.neri@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Subject: Re: [PATCH v6 03/10] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20251027142244.GZaP-ANLSidOxk0R_W@fat_crate.local>
-References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
- <20251016-rneri-wakeup-mailbox-v6-3-40435fb9305e@linux.intel.com>
+	s=arc-20240116; t=1761582804; c=relaxed/simple;
+	bh=XDOjvRcPSnqlNPNSFNOMfSTBKGcACSV8dNB+v6CXk3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nb19AZdY5ruEaVZf3Xa3sU5OVGi3wbG3ypxbS22Ji3QdFF2irjB7xoa5Rj6OpBB+keN5ZCteseDhj05qs42V0OPrzaCNyIP+hqKzKia1ahSIh7pRI3iT9dp9SomlwM3lNUQIF66ZUw8r+2U0Le1ntSPR2G9GemsExInhdpsnGoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2ABD169E;
+	Mon, 27 Oct 2025 09:33:13 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B4C73F63F;
+	Mon, 27 Oct 2025 09:33:16 -0700 (PDT)
+Message-ID: <6380b1a2-45ea-4a7f-a1db-81d92442fca8@arm.com>
+Date: Mon, 27 Oct 2025 16:33:14 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251016-rneri-wakeup-mailbox-v6-3-40435fb9305e@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/29] arm_mpam: Add MPAM MSC register layout
+ definitions
+To: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
+ Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-10-james.morse@arm.com>
+ <20251024183228.00005a64@huawei.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20251024183228.00005a64@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 16, 2025 at 07:57:25PM -0700, Ricardo Neri wrote:
-> Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Hi James, Jonathan,
 
-This is missing an ack from the devicetree maintainers:
+On 10/24/25 18:32, Jonathan Cameron wrote:
+> On Fri, 17 Oct 2025 18:56:25 +0000
+> James Morse <james.morse@arm.com> wrote:
+> 
+>> Memory Partitioning and Monitoring (MPAM) has memory mapped devices
+>> (MSCs) with an identity/configuration page.
+>>
+>> Add the definitions for these registers as offset within the page(s).
+>>
+>> Link: https://developer.arm.com/documentation/ihi0099/latest/
+> 
+> I can't figure out how to get a stable link when there is only
+> one version.  If possible would be good to use one.
+> 
+> I guess it probably doesn't matter unless someone renames things as
+> you only have as subset of the fields currently there for some registers.
+> 
+https://developer.arm.com/documentation/ihi0099/aa/
 
-./scripts/get_maintainer.pl -f Documentation/devicetree/
+This link has the version, A.a, at the end so should be stable. I found
+this by visiting an unknown version,
+https://developer.arm.com/documentation/ihi0099/unknown/, and seeing
+where it redirects.
 
--- 
-Regards/Gruss,
-    Boris.
+Thanks,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Ben
 
