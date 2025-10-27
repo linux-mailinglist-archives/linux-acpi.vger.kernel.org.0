@@ -1,48 +1,59 @@
-Return-Path: <linux-acpi+bounces-18237-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3DFC0B425
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 22:19:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E49C0B9BD
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 02:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3DD064E1287
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Oct 2025 21:19:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D88418946B5
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 01:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579CE27F017;
-	Sun, 26 Oct 2025 21:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4B729AB15;
+	Mon, 27 Oct 2025 01:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R07RrYKZ"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="elZ5s9EU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278A020CCCA;
-	Sun, 26 Oct 2025 21:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8EF4315E;
+	Mon, 27 Oct 2025 01:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761513545; cv=none; b=iuWPUl39f2woIRD2ZBe4sqAP5atxCMuzjLjFplvO6h8NSWp4NhE8fyHndsmX21AKf6/yUDsuaEZM4n1llYMd6eJ2TWtSL3STbYOyGUOqm/mYyAtBCSr/hrLWGqiWRNWLETzBaEYQ6RtqJW21jzA9aOrdFBPZDWCvbVtR5ZCDyJM=
+	t=1761529382; cv=none; b=Di3sXy5VFily16BI/g/uiFHZEoN+TyeOmVotMGl7tvROf2ES5agq9Lj1ZIQIQnUbGFRmQNMYwEUh2Xwo8ddUsk03rrc2SiCbxtDko3Uxq8Cqv48Dvo5w2efzTxKaRROgfFFNe2nX6No8z4n2SLhUbUj3qYQKoP61vfaWDNT7dbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761513545; c=relaxed/simple;
-	bh=tA8eZgWnlCi9ZrV541Lh/Wxe1Vmica+1ovXprSbL1us=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=auC/ZGw9zp7eUu1Z2n/5udo3TjpAXfrUCjYcGm1yeqczSPiIY2ebBkwGP4qdWAflroGJTD+tNj9PI8zkk7EPnY6ZszT06tWXVOgoWhl+AmldLzKJGLPit4rxPefnv4I0jBTQAB/xWoYb6P2/02zBjxzHOPpabmmAC5KMQBc2rjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R07RrYKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D1EC4CEE7;
-	Sun, 26 Oct 2025 21:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761513543;
-	bh=tA8eZgWnlCi9ZrV541Lh/Wxe1Vmica+1ovXprSbL1us=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R07RrYKZeksMACcEBL/HG8Vov3V7OO5DDZEOItUdwyrDOY4mueahyXmzgfaySfAdd
-	 i/h/OPlsfItn9gZfoZpFEKNzMS1frHD744DIoy8TgD7Q0U+QXjc2JYR8ioF1Xvw9iU
-	 aO/SFeYjVjRVjpidZbNJ5Nk294XUlpqFeRcHu9q7z7crw6NM7/peas1MrdqvH748hd
-	 Du323oiBTfopmYhLEicmqC02dOvXKXsg13yeDAYwwKzkvsdhvknXk00WttE0ZIKDzd
-	 tq9ep6tRWU6fwl3Ael1olm4BfTWk6F3Fv0lgaTsY9FX3cWbkMK/JkFEhL1u2HAigPg
-	 vfhcgsmj0BdMA==
-Message-ID: <e3f19e6b-9500-4283-aae8-24ebba2bbb60@kernel.org>
-Date: Sun, 26 Oct 2025 16:19:01 -0500
+	s=arc-20240116; t=1761529382; c=relaxed/simple;
+	bh=IVeZ7hAy7RNUpQh8Rh7q8cY6WrErlY9sM+xxsWl9ynE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZptoixNDm/JcDla1bEOi2y2TUvf1KLzXRVjeoUyKItU4C4HHtAa5ffwfL41OOYQ4xZyzlqA9A/QjwDMSGHErgqJxk0/IWI7bTA6J4IGezlJfMoObnAbKxt6I0TuuBH209d3fpqnoK0x1JHntzkoylBEkQcWvyDwP1wdKW9GSKkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=elZ5s9EU; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=NkCoTJfTbuhScNbhpAvICZ/VNOsqCz0G1J1WauGdrg4=;
+	b=elZ5s9EULnSfe9sonKeHX4ndGTMiQn8timHDKJC6x4pCTcHntTbGw7KDp1RuCq51X9kP5e872
+	xTx1F/MmefePlYPY0BhxMSMzCuMGkEtqTzfkUOcWb+nMGcpinDdxHQikpneoro2J6Tcnuar5P1W
+	DjM5Bvl+5kG7rHlNXngOjH8=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4cvx8H2GtJzLlZ1;
+	Mon, 27 Oct 2025 09:42:23 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id C069A1402CA;
+	Mon, 27 Oct 2025 09:42:50 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 27 Oct 2025 09:42:48 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 27 Oct
+ 2025 09:42:48 +0800
+Message-ID: <37fb4e84-d404-449e-986a-e5ccb327bd78@huawei.com>
+Date: Mon, 27 Oct 2025 09:42:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,157 +61,127 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] platform/x86: lenovo-wmi-gamezone Use explicit allow
- list
-To: "Derek J. Clark" <derekjohn.clark@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Armin Wolf <W_Armin@gmx.de>, Len Brown <lenb@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Zhixin Zhang <zhangzx36@lenovo.com>, Mia Shao <shaohz1@lenovo.com>,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
- Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org
-References: <20251026081240.997038-1-derekjohn.clark@gmail.com>
- <20251026081240.997038-4-derekjohn.clark@gmail.com>
- <4c3a594b-7a57-4b5e-85c8-e9337d70c7e6@kernel.org>
- <1411B6CE-132B-4450-BB27-9ED44BD897B0@gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <1411B6CE-132B-4450-BB27-9ED44BD897B0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v1 5/9] ACPI: processor: idle: Add the verification of
+ processor FFH LPI state
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
+References: <20250929093754.3998136-1-lihuisong@huawei.com>
+ <20250929093754.3998136-6-lihuisong@huawei.com>
+ <CAJZ5v0iLt7rnXBaTBv=-ztKro39h1hECQS_Ov9Cn1eBcfhXDaQ@mail.gmail.com>
+ <92b1b431-9855-43fb-8bb3-801649064438@huawei.com>
+ <CAJZ5v0g0PgicTEAb3gAeF2D3ZqONNt+6odt2SfGE7XtY3zoPyg@mail.gmail.com>
+ <ab814879-37d6-49dc-8a38-6b94cabf9327@huawei.com>
+ <CAJZ5v0hHO_vuQ71sQ2=vmjEMNr3jYh6Wx_nk55gQVdGgWFDHKQ@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0hHO_vuQ71sQ2=vmjEMNr3jYh6Wx_nk55gQVdGgWFDHKQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
 
-
-On 10/26/25 2:22 PM, Derek J. Clark wrote:
-> On October 26, 2025 10:50:40 AM PDT, Mario Limonciello <superm1@kernel.org> wrote:
+在 2025/10/26 20:40, Rafael J. Wysocki 写道:
+> On Fri, Oct 24, 2025 at 11:40 AM lihuisong (C) <lihuisong@huawei.com> wrote:
 >>
->>
->> On 10/26/25 3:12 AM, Derek J. Clark wrote:
->>> The stubbed extreme mode issue seems to be more prevalent than previously
->>> thought with multiple users having reported BIOS bugs from setting
->>> "performance" when using userspace tools such as PPD. To avoid this ever
->>> being possible, make enabling extreme mode an explicit allow list instead.
->>> These users will still be able to set extreme mode using the Fn+Q keyboard
->>> chord, so no functionality is lost. Currently no models have been
->>> validated with extreme mode.
->>
->> So what exactly happens when a user uses FN+Q to change to extreme mode but it's now in the allow list?  Does it report as "custom" mode?
->>
-> It turns out I got a correction after posting this that I'll need to include for v2. Extreme is never actually set using Fn+Q and can only be set in software. In that case, functionality is lost (though extreme should match custom mode default values, so only slightly). The only chance this could happen realistically would be if a user switched from windows in extreme mode and then booted windows, since the setting is retained.
-
-Is retaining the setting across reboots/OSes the "expected" behavior? 
-Or should it be resetting to balanced at startup?
-
-If you set it explicitly to balanced when the module is loaded that 
-would help to alleviate any of these corner cases.
-> 
-> TBS, I'm asking some folks to test exactly that situation so we can know definitely. My assumption was that it would report extreme normally but not be setable.
-> 
->> I feel like this is going to turn into an impedance mismatch.  I'm leaning it's better to just expose extreme mode so that userspace knows what's actually going on.
-> 
-> It's possible, I'll wait for confirmation of the behavior from someone with the affected hardware.
-
-OK.
-
-> 
-> Thanks,
-> Derek
-> 
->> I feel the bug situation will actually improve because PPD and Tuned have no idea what extreme mode means so it won't be "easy" to get into it.  This at least will allow discovery of BIOS bugs as well that can then get reported and fixed in BIOS.
->>
+>> 在 2025/10/23 18:35, Rafael J. Wysocki 写道:
+>>> On Thu, Oct 23, 2025 at 12:17 PM lihuisong (C) <lihuisong@huawei.com> wrote:
+>>>> 在 2025/10/22 3:42, Rafael J. Wysocki 写道:
+>>>>> On Mon, Sep 29, 2025 at 11:38 AM Huisong Li <lihuisong@huawei.com> wrote:
+>>>>>> Both ARM64 and RISCV architecture would validate Entry Method of LPI
+>>>>>> state and SBI HSM or PSCI cpu suspend. Driver should return failure
+>>>>>> if FFH of LPI state are not ok.
+>>>>> First of all, I cannot parse this changelog, so I don't know the
+>>>>> motivation for the change.
+>>>> Sorry for your confusion.
+>>>>> Second, if _LPI is ever used on x86, the
+>>>>> acpi_processor_ffh_lpi_probe() in acpi_processor_get_power_info() will
+>>>>> get in the way.
+>>>> AFAICS, it's also ok if X86 platform use LPI.
+>>> No, because it returns an error by default as it stands today.
 >>>
->>> Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
->>> ---
->>>    .../wmi/devices/lenovo-wmi-gamezone.rst       | 10 +++---
->>>    drivers/platform/x86/lenovo/wmi-gamezone.c    | 33 ++-----------------
->>>    2 files changed, 8 insertions(+), 35 deletions(-)
+>>>>> Why does the evaluation in acpi_processor_setup_cpuidle_dev() not work?
+>>>> The acpi_processor_ffh_lpi_probe does verify the validity of LPI for ARM
+>>>> and RISCV.
+>>>> But the caller of the acpi_processor_setup_cpuidle_dev()don't verify the
+>>>> return value.
+>>>> In addition, from the name of acpi_processor_setup_cpuidle_dev(), its
+>>>> main purpose is to setup cpudile device rather than to verify LPI.
+>>> That's fair enough.
 >>>
->>> diff --git a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst b/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
->>> index 6c908f44a08e..79051dc62022 100644
->>> --- a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
->>> +++ b/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
->>> @@ -31,11 +31,11 @@ The following platform profiles are supported:
->>>    Extreme
->>>    ~~~~~~~~~~~~~~~~~~~~
->>>    Some newer Lenovo "Gaming Series" laptops have an "Extreme Mode" profile
->>> -enabled in their BIOS.
->>> -
->>> -For some newer devices the "Extreme Mode" profile is incomplete in the BIOS
->>> -and setting it will cause undefined behavior. A BIOS bug quirk table is
->>> -provided to ensure these devices cannot set "Extreme Mode" from the driver.
->>> +enabled in their BIOS. For some newer devices the "Extreme Mode" profile
->>> +is incomplete in the BIOS and setting it will cause undefined behavior. To
->>> +prevent ever setting this on unsupported hardware, an explicit allow quirk
->>> +table is provided with all validated devices. This ensures only fully
->>> +supported devices can set "Extreme Mode" from the driver.
->>>      Custom Profile
->>>    ~~~~~~~~~~~~~~
->>> diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platform/x86/lenovo/wmi-gamezone.c
->>> index faabbd4657bd..0488162a7194 100644
->>> --- a/drivers/platform/x86/lenovo/wmi-gamezone.c
->>> +++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
->>> @@ -47,10 +47,6 @@ struct quirk_entry {
->>>    	bool extreme_supported;
->>>    };
->>>    -static struct quirk_entry quirk_no_extreme_bug = {
->>> -	.extreme_supported = false,
->>> -};
->>> -
->>>    /**
->>>     * lwmi_gz_mode_call() - Call method for lenovo-wmi-other driver notifier.
->>>     *
->>> @@ -241,31 +237,8 @@ static int lwmi_gz_profile_set(struct device *dev,
->>>    	return 0;
->>>    }
->>>    +/* Explicit allow list */
->>>    static const struct dmi_system_id fwbug_list[] = {
->>> -	{
->>> -		.ident = "Legion Go 8APU1",
->>> -		.matches = {
->>> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>> -			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go 8APU1"),
->>> -		},
->>> -		.driver_data = &quirk_no_extreme_bug,
->>> -	},
->>> -	{
->>> -		.ident = "Legion Go S 8APU1",
->>> -		.matches = {
->>> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>> -			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go S 8APU1"),
->>> -		},
->>> -		.driver_data = &quirk_no_extreme_bug,
->>> -	},
->>> -	{
->>> -		.ident = "Legion Go S 8ARP1",
->>> -		.matches = {
->>> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>> -			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go S 8ARP1"),
->>> -		},
->>> -		.driver_data = &quirk_no_extreme_bug,
->>> -	},
->>>    	{},
->>>      };
->>> @@ -278,7 +251,7 @@ static const struct dmi_system_id fwbug_list[] = {
->>>     * Anything version 5 or lower does not. For devices with a version 6 or
->>>     * greater do a DMI check, as some devices report a version that supports
->>>     * extreme mode but have an incomplete entry in the BIOS. To ensure this
->>> - * cannot be set, quirk them to prevent assignment.
->>> + * cannot be set, quirk them to enable assignment.
->>>     *
->>>     * Return: bool.
->>>     */
->>> @@ -292,7 +265,7 @@ static bool lwmi_gz_extreme_supported(int profile_support_ver)
->>>      	dmi_id = dmi_first_match(fwbug_list);
->>>    	if (!dmi_id)
->>> -		return true;
->>> +		return false;
->>>      	quirks = dmi_id->driver_data;
->>>    
->>
-> 
-
+>>> Also, the list of idle states belongs to the cpuidle driver, not to a
+>>> cpuidle device.
+>>>
+>>>> So I move it to a more prominent position and redefine the
+>>>> acpi_processor_setup_cpuidle_dev to void in patch 9/9.
+>>>>>> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low Power Idle(LPI) states")
+>>>>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>>>>>> ---
+>>>>>>     drivers/acpi/processor_idle.c | 10 ++++++++--
+>>>>>>     1 file changed, 8 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>>>>>> index 5684925338b3..b0d6b51ee363 100644
+>>>>>> --- a/drivers/acpi/processor_idle.c
+>>>>>> +++ b/drivers/acpi/processor_idle.c
+>>>>>> @@ -1264,7 +1264,7 @@ static int acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
+>>>>>>
+>>>>>>            dev->cpu = pr->id;
+>>>>>>            if (pr->flags.has_lpi)
+>>>>>> -               return acpi_processor_ffh_lpi_probe(pr->id);
+>>>>>> +               return 0;
+>>>>>>
+>>>>>>            return acpi_processor_setup_cpuidle_cx(pr, dev);
+>>>>>>     }
+>>>>>> @@ -1275,7 +1275,13 @@ static int acpi_processor_get_power_info(struct acpi_processor *pr)
+>>>>>>
+>>>>>>            ret = acpi_processor_get_lpi_info(pr);
+>>>>>>            if (ret)
+>>> So I think it would be better to check it here, that is
+>>>
+>>> if (!ret) {
+>>>          ret = acpi_processor_ffh_lpi_probe(pr->id));
+>>>          if (!ret)
+>>>                  return 0;
+>>>
+>>>          pr_info("CPU%d: FFH LPI state is invalid\n", pr->id);
+>>>          pr->flags.has_lpi = 0;
+>>> }
+>>>
+>>> return acpi_processor_get_cstate_info(pr);
+>>>
+>>> And the default acpi_processor_ffh_lpi_probe() needs to be changed to return 0.
+>> Sorry, I don't understand why pr->flags.has_lpi is true if
+>> acpi_processor_ffh_lpi_probe() return failure.
+> It is set by acpi_processor_get_lpi_info() on success and
+> acpi_processor_ffh_lpi_probe() does not update it.
+The acpi_processor_get_lpi_info() will return failure on X86 platform 
+because this function first call acpi_processor_ffh_lpi_probe().
+And acpi_processor_ffh_lpi_probe return EOPNOTSUPP because X86 platform 
+doesn't implement it.
+So I think pr->flags.has_lpi is false on X86 plaform.
+>
+>> In addition, X86 platform doesn't define acpi_processor_ffh_lpi_probe().
+>> this function will return EOPNOTSUPP.
+> Which is exactly why it is a problem.  x86 has no reason to implement
+> it because FFH always works there.
+Sorry, I still don't understand why X86 has no reason to implement it.
+I simply think that X86 doesn't need it.
+AFAICS, the platform doesn't need to get LPI info if this platform 
+doesn't implement acpi_processor_ffh_lpi_probe().
+>
+>>>>>> -               ret = acpi_processor_get_cstate_info(pr);
+>>>>>> +               return acpi_processor_get_cstate_info(pr);
+>>>>>> +
+>>>>>> +       if (pr->flags.has_lpi) {
+>>>>>> +               ret = acpi_processor_ffh_lpi_probe(pr->id);
+>>>>>> +               if (ret)
+>>>>>> +                       pr_err("Processor FFH LPI state is invalid.\n");
+>>>>>> +       }
+>>>>>>
+>>>>>>            return ret;
+>>>>>>     }
+>>>>>> --
 
