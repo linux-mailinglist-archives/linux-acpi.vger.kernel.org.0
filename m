@@ -1,66 +1,68 @@
-Return-Path: <linux-acpi+bounces-18265-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18266-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B8AC116F7
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 21:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C61DC11E9F
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 23:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276CD5662F2
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D473BDB51
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 22:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47F73126B5;
-	Mon, 27 Oct 2025 20:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DA72F5473;
+	Mon, 27 Oct 2025 22:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9EVhyCS"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hs81Q2Fa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D552652AF;
-	Mon, 27 Oct 2025 20:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FEF2DA767;
+	Mon, 27 Oct 2025 22:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761598257; cv=none; b=H6YkXTXsvyZtEWD916rctj1Iy0Cwuc5X5XLEyfF3OkUEzPRd1+O9tleiPcW5iP3KLgH3vwVNUbFVFRYJKK+r4aR+/I4J4yjI7OPBBglV6hSb54WTNR212PluUi4qRNb8Rh0v0PFGpGUrM/JZFjq9M6H5yP85TvNFC/uYByQ7Lwg=
+	t=1761605554; cv=none; b=uaIpQlb2xIh5oWcz4MOnJVCpdWXAmRdi0Wg7BFFsh4mNBA3t6o8Ovhxexpg5ab+I9MKIJ8His87/23JNR+u29hkxIhm7RWyX9PwOl/+J/ELiOmjVPgC8Rtv2xrWhcCyta7/ggBRBudy/BnxqKrcaSBPeiRsivJDjlaNAkFzSa9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761598257; c=relaxed/simple;
-	bh=z+FDoogTKU9c2WL40dpjz8cNG7A5GjItH6nzMZSkZxw=;
+	s=arc-20240116; t=1761605554; c=relaxed/simple;
+	bh=yrCHsA4FE0DQZIKmxjTVqcgChi8qj2604NHLFRRakwc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rL3kVjc1wP5yRrbGtJVCEinkdiW2Db/OjkRnYEKPUs26Cvf/0yHm7wiXbDQghp/v/ZAVRuzzuctggeImsOMG4M2mg6XPHiPIf2hmpiGwsp/LyG4ryA+3ebplNTghUMbfgxVSRgpskULnt8OvV3BDVmE9XhZOOrc9i3jbV2qtZrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9EVhyCS; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761598256; x=1793134256;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z+FDoogTKU9c2WL40dpjz8cNG7A5GjItH6nzMZSkZxw=;
-  b=R9EVhyCSu7tRsHzkr6GD9jwefFKyRI3uHjYNF3+8Xn1fm80c/kL2IPIu
-   ZHbR8WkxuGyc1uFQ/WogJ0HKdbTYp0KJpkbhQeIxzt0/2kC2fdCOJ8/I3
-   HsPO0V2oZCxO43+oStrP1SCBjtLq/+Nzs+JwTozNL5rks6TE5AozX9EMv
-   lE7WjZk89MfERHeTkqd2mxOlkBkH3CRbdmcoJwPEs/WojWspomas7fN0F
-   1jyfQFqTQufasN9WhHJZo76M+XSUoGAe3yhDeDCohAjHWFNwhGesWgavy
-   6kxVrURzlLOIy/dugefUzBq4tl2b3+q9aNscLn6PFVcZqjBbFCpFkz/WX
-   A==;
-X-CSE-ConnectionGUID: VZvgDS6ZRIWnYtVz3lwNoA==
-X-CSE-MsgGUID: wdqFpfIkQJSzq4QqAnGBIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75133326"
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="75133326"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:50:55 -0700
-X-CSE-ConnectionGUID: P97fmo4ATamgPOVbmizedg==
-X-CSE-MsgGUID: LKd5bah5QcWJEkcg/3BWVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="190351070"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:50:55 -0700
-Date: Mon, 27 Oct 2025 13:58:16 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IPlENOGV8H9vId4EP8D9/s5UCa2oMwfNjW3nEZBIL80hjoi1W4+eM+bqlTQ7Z3LDVgfkBGvLs22DKfOrHUNlgL20mRalBQ/g3Ds0M7jyqa9u8C7R5VP+j1mMyitMZntXATF4nEegpSlO1Kc4Ah3mbeC4SpJhTzc0OSJf1HAx6HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hs81Q2Fa; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C261640E019D;
+	Mon, 27 Oct 2025 22:52:28 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id wxK6XUZyRoym; Mon, 27 Oct 2025 22:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761605545; bh=7v/WPSjOch5oe5tgxg1RBNsrwNHRci6/At81V+V11Wo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hs81Q2Fas0n2vUs1TVVjyyupw+LiKeWwyK+fzb8MPgZMVG2yl7vRLlTbXUJz+noVg
+	 MUpddT3gyY534UKpCr5yvjme+iIFcpsyA1PXP2DbAg/s4G3BrBHJrTDlq3oT/LAYf7
+	 1G2LMrUqrw/wkhamIsq4Xh6baOwcvrkTcW3oaR6PpA28O3nGvmLrJlPC6KqTprw5zP
+	 xdQYZzJj4x1e+PJXO43kpKyWgVAEKu/Q0f9HwiRb+tEjkLbB8OL8kpzRZxo8zDt4To
+	 LlaIuULxhvN8bKC+uPGTwSzOmpl3Q4FBkPh2JwLd1I5NjmXOr6d4S+qkelEQ/J7ONX
+	 Z4KJ6r+48i30rllGNMGA1Q057+KX0TEXM7x+G0sR4ckWhPvqnojCKw7E9/b8SJlV9+
+	 uCy3jiKbapkjZnwf0LAnAipZsxmeEXABHDBiCXpUGJPp3pk6298fe6ZNoKpiztdxS0
+	 lN3/MQSJHLKVEVukXwHIkiRVCJbbZs9BYC0Dapm0BD/idLZzrGgFnbYBXZrdmEaXJx
+	 idIN5o3a5mRsdT3fCF4MfZHhQ4iwc/L46Pz2R8NsJ4jga4WkQHbnEWwzHnceBqy63k
+	 rmEQQtmgJRDF8KbDCBqZHPzpThDmpYtB4jM77UdPi3wjBHNcvpWR7EDf92iogTP0JP
+	 SwsXVt1PziPHyFzyoYvGS5RI=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 104B940E01A5;
+	Mon, 27 Oct 2025 22:52:04 +0000 (UTC)
+Date: Mon, 27 Oct 2025 23:51:57 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
 	"K. Y. Srinivasan" <kys@microsoft.com>,
@@ -75,42 +77,32 @@ Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Ricardo Neri <ricardo.neri@intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Subject: Re: [PATCH v6 02/10] x86/acpi: Move acpi_wakeup_cpu() and helpers to
- smpwakeup.c
-Message-ID: <20251027205816.GB14161@ranerica-svr.sc.intel.com>
+Subject: Re: [PATCH v6 03/10] dt-bindings: reserved-memory: Wakeup Mailbox
+ for Intel processors
+Message-ID: <20251027225157.GEaP_3jeX5SgNwshus@fat_crate.local>
 References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
- <20251016-rneri-wakeup-mailbox-v6-2-40435fb9305e@linux.intel.com>
- <20251027141835.GYaP9_O1C3cms6msfv@fat_crate.local>
+ <20251016-rneri-wakeup-mailbox-v6-3-40435fb9305e@linux.intel.com>
+ <20251027142244.GZaP-ANLSidOxk0R_W@fat_crate.local>
+ <20251027204538.GA14161@ranerica-svr.sc.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251027141835.GYaP9_O1C3cms6msfv@fat_crate.local>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20251027204538.GA14161@ranerica-svr.sc.intel.com>
 
-On Mon, Oct 27, 2025 at 03:18:35PM +0100, Borislav Petkov wrote:
-> On Thu, Oct 16, 2025 at 07:57:24PM -0700, Ricardo Neri wrote:
-> >  arch/x86/kernel/acpi/madt_wakeup.c | 76 ----------------------------------
-> >  arch/x86/kernel/smpwakeup.c        | 83 ++++++++++++++++++++++++++++++++++++++
-> 
-> How does ACPI-related code belong in the arch/x86/kernel/ hierarchy?
-> 
-> Not to mention that arch/x86/kernel/ is a dumping ground for everything *and*
-> the kitchen sink so we should not put more crap in there...
+On Mon, Oct 27, 2025 at 01:45:38PM -0700, Ricardo Neri wrote:
+> Agreed. They are in the "To:" field of my submission. Rob has reviewed the
+> patchset.
 
-Right. All the functions in the file start with the acpi_ prefix. It could
-be kept under arch/x86/kernel/acpi/. The Kconfig symbol X86_MAILBOX_WAKEUP
-would have to live in arch/x86/Kconfig as there is no Kconfig file under
-arch/x86/kernel/acpi. ACPI_MADT_WAKEUP is arch/x86/Kconfig.
+Oh, sorry, I missed that one - must be blind. :-\
 
-Does that sound acceptable?
+-- 
+Regards/Gruss,
+    Boris.
 
-Thank you for your feedback, Boris,
-
-Best,
-Ricardo
+https://people.kernel.org/tglx/notes-about-netiquette
 
