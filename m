@@ -1,150 +1,282 @@
-Return-Path: <linux-acpi+bounces-18249-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18250-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7763EC0FEB1
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 19:26:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AD0C107DD
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EECA2343ECF
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 18:26:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 55D05351654
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 19:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9F22D948D;
-	Mon, 27 Oct 2025 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE6832E15C;
+	Mon, 27 Oct 2025 19:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnzzAYeY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwU1j2US"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE602D876B
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 18:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A898032E153
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 19:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761589557; cv=none; b=RT4g1+2szjq8h8plGPmNd8KaYn6qTXf6QQWdc6ybOYqxJNwOYSVlExIsw6/qpNDGTLHRg53O5xd0sun6ScK9VUcV8nF22CxKDDGcFGtfeGzdaotpOQlrI1+S4q5AxtTOVPel9hVU2pfeaabE+wkTamHo4Da7H6/nOgUETpWVohU=
+	t=1761591847; cv=none; b=J47BDF8Vw9WKMfKjQEE5tGMZK0900ie+u2Y5gkr6ecyS/QQuRXRRkqDqa0K6P2fqbaVUPVtmF359mrsZCElG/5AAVf17OOnKbu2FBE3/XiofMLbVFUur2Ip+dGXofmzwRXnx84PDAJjq47N4X37lRRpAiagUVvcotQ8rsD3HzyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761589557; c=relaxed/simple;
-	bh=x0GdLq5oDT2bsye4+zTGepjhdJueRV6Y+YQZ4kwiQjI=;
+	s=arc-20240116; t=1761591847; c=relaxed/simple;
+	bh=fcQeAhNiYJjtpEZq9ve4tm5KFCfMUDGuTGx0PXAYero=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LTzGPBcf4AWDlxPP26RNfSZjBVSK55APaauBip8oAFriJMhHsxmUPIXppWc7Gd7O9IywZUCwNnM2GCogvHgRuUXtak9XeclSnxz0nzUhyR/aToCW2eU5UoNzCfVURLCbL+bfsjA1b4PZ9cwZ1gQ9JVPr10B4Bu8ADaoyZqI0QmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnzzAYeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762F9C116C6
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 18:25:56 +0000 (UTC)
+	 To:Cc:Content-Type; b=KF9SiXIqSb5dMrertECGA9L6gOXUTW7HhgG65EM1spOCiSn9P/U9UMDIE0L6aKQIbB7+A1TTfFS2Qu4bEb6vzkrtXujAFozJpax9q00DCYOmms+bUHKh9ZFzxf2ebFOfCKm1yuR0pTvo5taWlrKQqye9Z5aZ9ioIFV6QO8EM4Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwU1j2US; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7C2C19422
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 19:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761589556;
-	bh=x0GdLq5oDT2bsye4+zTGepjhdJueRV6Y+YQZ4kwiQjI=;
+	s=k20201202; t=1761591847;
+	bh=fcQeAhNiYJjtpEZq9ve4tm5KFCfMUDGuTGx0PXAYero=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gnzzAYeYRz3Mqb8WaFg/u8kWKIHC/9wtZNUsL4sZFO0qmlko7bbcQ5ilEk18RYcCN
-	 LMG90WoISGQMs1krcPexq6q4y92QG+z9J+f3in7KMugAUCKqZhExUxSCj0pG4E649y
-	 KUXbjdGTiyAgfKEKoD6swr13seSDIgUh5H9i6X9iRJk4F2JJ9kEGD2SKR9gMDdHENQ
-	 JAw7PKzgHEgQniBjIVBL96yyHNDWGtVLaP6CJQnfD6d2S83uAPlJGAPefNSGzpHFqt
-	 7uL6o8q9/8nSAAYvvOfZd6XZO9B8beUEIgdyEd+MbRlL74heJiEQhNWSCsQao9JcLz
-	 nxDz1foQ+lTiQ==
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-44da774cc9dso1369191b6e.3
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 11:25:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXo1UPlo9GPoIwHPdFVSQfn4nwZIpproOa630tBNeMtAcNYzRR3eGG54f+WEPaPMrobOnLgf703lJAI@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhFpJ0AdtfvEuvdc61/on5LbOiGXXmLs/G3SbDDnXcza8opctT
-	nRQho/49MsVh9wjt+4SorKuN8xvONkVmfCU7LDCtYqzVqbpkxpjqn05XwiCAQW+dDW+CT/Mi3FX
-	29O4/BjYwMLsxsIZ9hIy3Fz9e22H2Hb8=
-X-Google-Smtp-Source: AGHT+IH+/v+LQw9DzQQ8Vvjc8o5cD0s9vYZfdVPNB6aKtMkLpGObabhiy1PrnQHxjpgsbBapAIOim4OcgWEv0zzMosQ=
-X-Received: by 2002:a05:6808:f89:b0:44b:1f75:dee7 with SMTP id
- 5614622812f47-44f6b911a0cmr399801b6e.8.1761589555767; Mon, 27 Oct 2025
- 11:25:55 -0700 (PDT)
+	b=qwU1j2US3C1tV2Pe/xobyXU/1XkPiyq3LXjnYZWLhx2JpSYLy66qGMJyi8P6VdK11
+	 Q0tN7I7otUSRJLVfIYRZ0j3X0kvS+nBlzBAM65iI1lmZSPUBJrjL9uNHtf4SLirNK0
+	 jaSPLuNgtyOlg2J++KJ2mZkIhesG4CT60Fh/JcQGl+LiPOoV7YULdHP2r+yOh25+if
+	 TVxo9gxEZ5FLONSpVPmOXArHQUxekkP7JzW7XL1Hf8bYFBd3CDbq6DjLIEJIc3aIsY
+	 /oe2D0IfXhqcvpzYADRbaO682DbWQmlz2Z/6OfpICOtYR9KXt+IIY1Jrj/9pMNGkf8
+	 mwR0sJaPxK/bg==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-653652a4256so2523236eaf.0
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 12:04:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUOLjm6KFyP5M6ukxar7k+BfL1ZMB7IAUlZ/l1HtHtfkZNjBi5GXYJe81347WJGzZyndzvQDC30AUKS@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlCzhtrTThcmeQVCrx3KUDMGyogIs3Zhul6lsePnCGQge17Y9J
+	hxOK/UY3mILOE6bVykovy6E7Rd97b3cpwCuUvMjBzb+0Ez9kZdilxpmq0ltNjrw3vRq1O+HZKE+
+	5LSxOOrWr+3dVM2ECQLqb8jHm1hS44Mo=
+X-Google-Smtp-Source: AGHT+IHqU1lALKNbqY3/sWJ3Ed38JfJTEibmu5AJ+RAb0lY9VIMD5+XIUrwig44AUg2mO1SXH7aO4213auJAyyGLifY=
+X-Received: by 2002:a05:6820:2288:b0:654:fab9:e7b1 with SMTP id
+ 006d021491bc7-6566effb7e3mr486841eaf.0.1761591846643; Mon, 27 Oct 2025
+ 12:04:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_EAFBEC2D1967D73F4F76B8048D2F59BB1105@qq.com>
-In-Reply-To: <tencent_EAFBEC2D1967D73F4F76B8048D2F59BB1105@qq.com>
+References: <20251015080710.1468409-1-badal.nilawar@intel.com> <20251015080710.1468409-2-badal.nilawar@intel.com>
+In-Reply-To: <20251015080710.1468409-2-badal.nilawar@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 Oct 2025 19:25:43 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0httK0xmvA5zcYruU1Ypsw1YXHBOaPQxwCai8YDLsGkvA@mail.gmail.com>
-X-Gm-Features: AWmQ_bkhyJQvdvhTfLeogaWPxZqKwt3rdWh3HYbs3GEZYZulKc9_EJEohW0F2fg
-Message-ID: <CAJZ5v0httK0xmvA5zcYruU1Ypsw1YXHBOaPQxwCai8YDLsGkvA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: PRM: Skip the initialization when boot from
- legacy BIOS
-To: "Shang song (Lenovo)" <shangsong2@foxmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, shangsong2@lenovo.com
+Date: Mon, 27 Oct 2025 20:03:54 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ipDwzRUcAjs0r_3sTC1Noqt8VEMCUe6+bjgdR9C9Caeg@mail.gmail.com>
+X-Gm-Features: AWmQ_bl3jHwN0OKod7003QqdzqRmx1Tkd8QlLOrctgpY1cHuLToGOg2ptxV1-iw
+Message-ID: <CAJZ5v0ipDwzRUcAjs0r_3sTC1Noqt8VEMCUe6+bjgdR9C9Caeg@mail.gmail.com>
+Subject: Re: [PATCH v5 01/12] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
+To: Badal Nilawar <badal.nilawar@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org, anshuman.gupta@intel.com, rafael@kernel.org, 
+	lenb@kernel.org, bhelgaas@google.com, ilpo.jarvinen@linux.intel.com, 
+	lucas.demarchi@intel.com, rodrigo.vivi@intel.com, varun.gupta@intel.com, 
+	ville.syrjala@linux.intel.com, uma.shankar@intel.com, karthik.poosa@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 13, 2025 at 10:38=E2=80=AFAM Shang song (Lenovo)
-<shangsong2@foxmail.com> wrote:
+On Wed, Oct 15, 2025 at 10:02=E2=80=AFAM Badal Nilawar <badal.nilawar@intel=
+.com> wrote:
 >
-> To address the confusion caused by the misleading "Failed to find VA for =
-GUID..."
-> message during legacy BIOS boot, making 'EFI_RUNTIME_SERVICES's earlier j=
-udgment
-> can prevent this false alert.
+> From: Anshuman Gupta <anshuman.gupta@intel.com>
 >
-> Signed-off-by: Shang song (Lenovo) <shangsong2@foxmail.com>
+> Implement _DSM method 0Ah, as per PCI Firmware r3.3, sec 4.6.10,
+> to request auxiliary power required by the device when in D3cold state.
+>
+> Note that this implementation assumes only a single device below the
+> Downstream Port will request for Aux Power Limit under a given
+> Root Port/Downstream Port because it does not track and aggregate
+> requests from all child devices below the Downstream Port as required
+> by PCI Firmware r3.3, sec 4.6.10.
+>
+> Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
+> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  drivers/acpi/prmt.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+> V2(Bjorn/Rafael):
+>   - Call acpi_dsm_check() to find method 0Ah supported
+>   - Return retry interval to caller
+> V3(Kuppuswamy)
+>   - Add NULL check for retry interval
+> V4
+>   - Define enums for aux power request status (Rafael)
+>   - Add Co-developed-by and clean up Signed-off-by (Kappuswamy)
+>  (Bjorn)
+>   - Instead of root pci device pass the pci device of driver, traverse
+>     up the tree and discover _DSM
+>   - Allow only function 0 of device to request aux power
+>   - Allow retry_interval to be NULL
+>   - Refine commit message and function description
+> ---
+>  drivers/pci/pci-acpi.c   | 114 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/pci-acpi.h |   9 ++++
+>  2 files changed, 123 insertions(+)
 >
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 6792d4385eee..ec367d322ab2 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -305,11 +305,6 @@ static acpi_status acpi_platformrt_space_handler(u32=
- function,
->         efi_status_t status;
->         struct prm_context_buffer context;
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 9369377725fa..c7eab1e75dd5 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1418,6 +1418,120 @@ static void pci_acpi_optimize_delay(struct pci_de=
+v *pdev,
+>         ACPI_FREE(obj);
+>  }
 >
-> -       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> -               pr_err_ratelimited("PRM: EFI runtime services no longer a=
-vailable\n");
-> -               return AE_NO_HANDLER;
-> -       }
-> -
+> +static struct pci_dev *pci_acpi_check_dsm(struct pci_dev *dev, u64 rev, =
+u64 funcs)
 
-The check removed by this change addresses a different case than the
-similar check in init_prmt(), so removing it when relocating the other
-check is questionable.
+The name of the function should be more specific than this, at least
+to indicate that it is about the downstream port _DSM.
 
-Please limit this patch to the init_prmt() changes.
+> +{
+> +       struct pci_dev *bdev;
+> +       acpi_handle handle;
+> +
+> +       if (!dev)
+> +               return ERR_PTR(-EINVAL);
 
->         /*
->          * The returned acpi_status will always be AE_OK. Error values wi=
-ll be
->          * saved in the first byte of the PRM message buffer to be used b=
-y ASL.
-> @@ -388,6 +383,14 @@ void __init init_prmt(void)
->         acpi_status status;
->         int mc;
->
-> +       /*
-> +        * Return immediately if EFI_RUNTIME_SERVICES is not enabled.
-> +        */
+dev has been checked against NULL already by the caller.
 
-One-line comment would be sufficient here.
+> +
+> +       bdev =3D  dev;
+> +       while (bdev) {
 
-> +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> +               pr_info("PRM: EFI runtime services unavailable, can not i=
-nitialize.\n");
-> +               return;
+And there would be fewer code lines if a for () loop were used here.
+
+> +               handle =3D ACPI_HANDLE(&bdev->dev);
+> +               if (handle && acpi_check_dsm(handle, &pci_acpi_dsm_guid, =
+rev, 1 << funcs))
+> +                       return bdev;
+> +
+> +               bdev =3D pci_upstream_bridge(bdev);
 > +       }
 > +
->         status =3D acpi_get_table(ACPI_SIG_PRMT, 0, &tbl);
->         if (ACPI_FAILURE(status))
->                 return;
-> @@ -404,11 +407,6 @@ void __init init_prmt(void)
->
->         pr_info("PRM: found %u modules\n", mc);
->
-> -       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> -               pr_err("PRM: EFI runtime services unavailable\n");
-> -               return;
-> -       }
-> -
->         status =3D acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
->                                                     ACPI_ADR_SPACE_PLATFO=
-RM_RT,
->                                                     &acpi_platformrt_spac=
-e_handler,
-> --
+> +       return ERR_PTR(-ENODEV);
+
+Personally, I don't see much value in putting this code into a
+separate function.
+
+> +}
+> +
+> +enum aux_pwr_req_status {
+> +       AUX_PWR_REQ_DENIED               =3D 0x0,
+> +       AUX_PWR_REQ_GRANTED              =3D 0x1,
+> +       AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL  =3D 0x2,
+> +       AUX_PWR_REQ_RETRY_INTERVAL_MIN   =3D 0x11,
+> +       AUX_PWR_REQ_RETRY_INTERVAL_MAX   =3D 0x1F
+> +};
+> +
+> +/**
+> + * pci_acpi_request_d3cold_aux_power - Request aux power while device is=
+ in D3cold
+> + * @dev: PCI device instance
+> + * @requested_mw: Requested auxiliary power in milliwatts
+> + * @retry_interval: Retry interval returned by platform to retry auxilia=
+ry
+> + *                  power request
+> + *
+> + * Request auxilary power to platform firmware, via Root Port/Switch Dow=
+nstream
+> + * Port ACPI _DSM Function 0Ah, needed for the PCI device when it is in =
+D3cold.
+> + * Evaluate the _DSM and handle the response accordingly.
+> + *
+> + * For Multi-Function Devices, driver for Function 0 is required to repo=
+rt an
+> + * aggregate power requirement covering all functions contained within t=
+he
+> + * device.
+> + *
+> + * Note: Aggregation across multiple child devices beneath the Root/Swit=
+ch Downstream
+> + * Port is not supported.
+
+"Note: " isn't particularly useful here IMV.
+
+> + *
+> + * Return: Returns 0 on success and errno on failure.
+> + */
+> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested=
+_mw,
+> +                                     u32 *retry_interval)
+> +{
+> +       union acpi_object in_obj =3D {
+> +               .integer.type =3D ACPI_TYPE_INTEGER,
+> +               .integer.value =3D requested_mw,
+> +       };
+> +
+> +       union acpi_object *out_obj;
+> +       int result, ret =3D -EINVAL;
+> +       struct pci_dev *bdev;
+> +
+> +       if (!dev || PCI_FUNC(dev->devfn) !=3D 0)
+
+I'm not sure about the PCI_FUNC(dev->devfn) check.
+
+Synchronization between drivers in this respect can be somewhat
+tricky.  It would be more straightforward to allow the first caller of
+this for a given port with the _DSM under it to "win" in all cases,
+including different functions within the same device (this happens in
+the other cases anyway IIUC).
+
+> +               return -EINVAL;
+> +
+> +       bdev =3D pci_acpi_check_dsm(dev, 4, 1 << DSM_PCI_D3COLD_AUX_POWER=
+_LIMIT);
+> +
+> +       if (IS_ERR(bdev))
+> +               return PTR_ERR(bdev);
+> +
+> +       out_obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(&bdev->dev),
+> +                                         &pci_acpi_dsm_guid, 4,
+> +                                         DSM_PCI_D3COLD_AUX_POWER_LIMIT,
+> +                                         &in_obj, ACPI_TYPE_INTEGER);
+> +       if (!out_obj)
+> +               return -EINVAL;
+> +
+> +       result =3D out_obj->integer.value;
+
+out_obj can be freed here and the code below can be made to return an
+error code right away in multiple places.
+
+> +       if (retry_interval)
+> +               *retry_interval =3D 0;
+> +
+> +       switch (result) {
+> +       case AUX_PWR_REQ_DENIED:
+> +               pci_dbg(bdev, "D3cold Aux Power %u mW request denied\n",
+> +                       requested_mw);
+> +               break;
+> +       case AUX_PWR_REQ_GRANTED:
+> +               pci_info(bdev, "D3cold Aux Power request granted: %u mW\n=
+",
+> +                        requested_mw);
+> +               ret =3D 0;
+> +               break;
+> +       case AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL:
+> +               pci_info(bdev, "D3cold Aux Power: Main power won't be rem=
+oved\n");
+> +               ret =3D -EBUSY;
+> +               break;
+> +       default:
+> +               if (result >=3D AUX_PWR_REQ_RETRY_INTERVAL_MIN &&
+> +                   result <=3D AUX_PWR_REQ_RETRY_INTERVAL_MAX) {
+> +                       pci_info(bdev, "D3cold Aux Power request needs re=
+try interval: %u seconds\n",
+> +                                result & 0xF);
+> +                       if (retry_interval) {
+> +                               *retry_interval =3D result & 0xF;
+> +                               ret =3D -EAGAIN;
+> +                       }
+> +               } else {
+> +                       pci_err(bdev, "D3cold Aux Power: Reserved or unsu=
+pported response: 0x%x\n",
+> +                               result);
+> +               }
+> +               break;
+> +       }
+> +
+> +       ACPI_FREE(out_obj);
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
+> +
 
