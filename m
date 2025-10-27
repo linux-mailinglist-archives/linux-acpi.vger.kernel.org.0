@@ -1,105 +1,150 @@
-Return-Path: <linux-acpi+bounces-18248-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18249-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DE2C0F602
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 17:40:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7763EC0FEB1
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 19:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A9484FB094
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 16:37:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EECA2343ECF
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 18:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B675317704;
-	Mon, 27 Oct 2025 16:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9F22D948D;
+	Mon, 27 Oct 2025 18:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnzzAYeY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702C0316918;
-	Mon, 27 Oct 2025 16:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE602D876B
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 18:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761582804; cv=none; b=tVXYCTf7zrhwxQn/wdycNycYO25IZbkeRzfVtCB8QQgL9AtjrRVWcLlHloWDWkt8Ey2X0hgUvN8zCw5+KoALJqhFHTDn1gcMiWrGqOM/viu2jS3IZYhmHRvLJQ4QM6dTz70G2m5Mq4YQbn1HRuSEAszwp8vOvLZDCaYYUgc3xBw=
+	t=1761589557; cv=none; b=RT4g1+2szjq8h8plGPmNd8KaYn6qTXf6QQWdc6ybOYqxJNwOYSVlExIsw6/qpNDGTLHRg53O5xd0sun6ScK9VUcV8nF22CxKDDGcFGtfeGzdaotpOQlrI1+S4q5AxtTOVPel9hVU2pfeaabE+wkTamHo4Da7H6/nOgUETpWVohU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761582804; c=relaxed/simple;
-	bh=XDOjvRcPSnqlNPNSFNOMfSTBKGcACSV8dNB+v6CXk3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nb19AZdY5ruEaVZf3Xa3sU5OVGi3wbG3ypxbS22Ji3QdFF2irjB7xoa5Rj6OpBB+keN5ZCteseDhj05qs42V0OPrzaCNyIP+hqKzKia1ahSIh7pRI3iT9dp9SomlwM3lNUQIF66ZUw8r+2U0Le1ntSPR2G9GemsExInhdpsnGoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2ABD169E;
-	Mon, 27 Oct 2025 09:33:13 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B4C73F63F;
-	Mon, 27 Oct 2025 09:33:16 -0700 (PDT)
-Message-ID: <6380b1a2-45ea-4a7f-a1db-81d92442fca8@arm.com>
-Date: Mon, 27 Oct 2025 16:33:14 +0000
+	s=arc-20240116; t=1761589557; c=relaxed/simple;
+	bh=x0GdLq5oDT2bsye4+zTGepjhdJueRV6Y+YQZ4kwiQjI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LTzGPBcf4AWDlxPP26RNfSZjBVSK55APaauBip8oAFriJMhHsxmUPIXppWc7Gd7O9IywZUCwNnM2GCogvHgRuUXtak9XeclSnxz0nzUhyR/aToCW2eU5UoNzCfVURLCbL+bfsjA1b4PZ9cwZ1gQ9JVPr10B4Bu8ADaoyZqI0QmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnzzAYeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762F9C116C6
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 18:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761589556;
+	bh=x0GdLq5oDT2bsye4+zTGepjhdJueRV6Y+YQZ4kwiQjI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gnzzAYeYRz3Mqb8WaFg/u8kWKIHC/9wtZNUsL4sZFO0qmlko7bbcQ5ilEk18RYcCN
+	 LMG90WoISGQMs1krcPexq6q4y92QG+z9J+f3in7KMugAUCKqZhExUxSCj0pG4E649y
+	 KUXbjdGTiyAgfKEKoD6swr13seSDIgUh5H9i6X9iRJk4F2JJ9kEGD2SKR9gMDdHENQ
+	 JAw7PKzgHEgQniBjIVBL96yyHNDWGtVLaP6CJQnfD6d2S83uAPlJGAPefNSGzpHFqt
+	 7uL6o8q9/8nSAAYvvOfZd6XZO9B8beUEIgdyEd+MbRlL74heJiEQhNWSCsQao9JcLz
+	 nxDz1foQ+lTiQ==
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-44da774cc9dso1369191b6e.3
+        for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 11:25:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXo1UPlo9GPoIwHPdFVSQfn4nwZIpproOa630tBNeMtAcNYzRR3eGG54f+WEPaPMrobOnLgf703lJAI@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhFpJ0AdtfvEuvdc61/on5LbOiGXXmLs/G3SbDDnXcza8opctT
+	nRQho/49MsVh9wjt+4SorKuN8xvONkVmfCU7LDCtYqzVqbpkxpjqn05XwiCAQW+dDW+CT/Mi3FX
+	29O4/BjYwMLsxsIZ9hIy3Fz9e22H2Hb8=
+X-Google-Smtp-Source: AGHT+IH+/v+LQw9DzQQ8Vvjc8o5cD0s9vYZfdVPNB6aKtMkLpGObabhiy1PrnQHxjpgsbBapAIOim4OcgWEv0zzMosQ=
+X-Received: by 2002:a05:6808:f89:b0:44b:1f75:dee7 with SMTP id
+ 5614622812f47-44f6b911a0cmr399801b6e.8.1761589555767; Mon, 27 Oct 2025
+ 11:25:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/29] arm_mpam: Add MPAM MSC register layout
- definitions
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
- James Morse <james.morse@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
- Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Gavin Shan <gshan@redhat.com>
-References: <20251017185645.26604-1-james.morse@arm.com>
- <20251017185645.26604-10-james.morse@arm.com>
- <20251024183228.00005a64@huawei.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20251024183228.00005a64@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <tencent_EAFBEC2D1967D73F4F76B8048D2F59BB1105@qq.com>
+In-Reply-To: <tencent_EAFBEC2D1967D73F4F76B8048D2F59BB1105@qq.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 Oct 2025 19:25:43 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0httK0xmvA5zcYruU1Ypsw1YXHBOaPQxwCai8YDLsGkvA@mail.gmail.com>
+X-Gm-Features: AWmQ_bkhyJQvdvhTfLeogaWPxZqKwt3rdWh3HYbs3GEZYZulKc9_EJEohW0F2fg
+Message-ID: <CAJZ5v0httK0xmvA5zcYruU1Ypsw1YXHBOaPQxwCai8YDLsGkvA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI: PRM: Skip the initialization when boot from
+ legacy BIOS
+To: "Shang song (Lenovo)" <shangsong2@foxmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, shangsong2@lenovo.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi James, Jonathan,
+On Mon, Oct 13, 2025 at 10:38=E2=80=AFAM Shang song (Lenovo)
+<shangsong2@foxmail.com> wrote:
+>
+> To address the confusion caused by the misleading "Failed to find VA for =
+GUID..."
+> message during legacy BIOS boot, making 'EFI_RUNTIME_SERVICES's earlier j=
+udgment
+> can prevent this false alert.
+>
+> Signed-off-by: Shang song (Lenovo) <shangsong2@foxmail.com>
+> ---
+>  drivers/acpi/prmt.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index 6792d4385eee..ec367d322ab2 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -305,11 +305,6 @@ static acpi_status acpi_platformrt_space_handler(u32=
+ function,
+>         efi_status_t status;
+>         struct prm_context_buffer context;
+>
+> -       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> -               pr_err_ratelimited("PRM: EFI runtime services no longer a=
+vailable\n");
+> -               return AE_NO_HANDLER;
+> -       }
+> -
 
-On 10/24/25 18:32, Jonathan Cameron wrote:
-> On Fri, 17 Oct 2025 18:56:25 +0000
-> James Morse <james.morse@arm.com> wrote:
-> 
->> Memory Partitioning and Monitoring (MPAM) has memory mapped devices
->> (MSCs) with an identity/configuration page.
->>
->> Add the definitions for these registers as offset within the page(s).
->>
->> Link: https://developer.arm.com/documentation/ihi0099/latest/
-> 
-> I can't figure out how to get a stable link when there is only
-> one version.  If possible would be good to use one.
-> 
-> I guess it probably doesn't matter unless someone renames things as
-> you only have as subset of the fields currently there for some registers.
-> 
-https://developer.arm.com/documentation/ihi0099/aa/
+The check removed by this change addresses a different case than the
+similar check in init_prmt(), so removing it when relocating the other
+check is questionable.
 
-This link has the version, A.a, at the end so should be stable. I found
-this by visiting an unknown version,
-https://developer.arm.com/documentation/ihi0099/unknown/, and seeing
-where it redirects.
+Please limit this patch to the init_prmt() changes.
 
-Thanks,
+>         /*
+>          * The returned acpi_status will always be AE_OK. Error values wi=
+ll be
+>          * saved in the first byte of the PRM message buffer to be used b=
+y ASL.
+> @@ -388,6 +383,14 @@ void __init init_prmt(void)
+>         acpi_status status;
+>         int mc;
+>
+> +       /*
+> +        * Return immediately if EFI_RUNTIME_SERVICES is not enabled.
+> +        */
 
-Ben
+One-line comment would be sufficient here.
+
+> +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> +               pr_info("PRM: EFI runtime services unavailable, can not i=
+nitialize.\n");
+> +               return;
+> +       }
+> +
+>         status =3D acpi_get_table(ACPI_SIG_PRMT, 0, &tbl);
+>         if (ACPI_FAILURE(status))
+>                 return;
+> @@ -404,11 +407,6 @@ void __init init_prmt(void)
+>
+>         pr_info("PRM: found %u modules\n", mc);
+>
+> -       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> -               pr_err("PRM: EFI runtime services unavailable\n");
+> -               return;
+> -       }
+> -
+>         status =3D acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
+>                                                     ACPI_ADR_SPACE_PLATFO=
+RM_RT,
+>                                                     &acpi_platformrt_spac=
+e_handler,
+> --
 
