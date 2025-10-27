@@ -1,217 +1,132 @@
-Return-Path: <linux-acpi+bounces-18252-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18253-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE98C10C85
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:19:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188C1C10F7C
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BDF7C35265E
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 19:19:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED9D581DCA
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 19:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB966303CA2;
-	Mon, 27 Oct 2025 19:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882DB32C933;
+	Mon, 27 Oct 2025 19:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KB5HKJ28"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PMQx/etA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B0527FD62
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 19:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F21A17F4F6;
+	Mon, 27 Oct 2025 19:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592701; cv=none; b=BINlNqv1omESKqoMqkPvFTn89Hm7FMGisi7vrrn4mqBU8oXbqzJWWMvu6RmKqy1dJtHg0mD3PTmNGgiZrazK/l4GVsoctLN/jRBw+rH7/YbE61uG4E8UQVneFQraLMssQ72Rv7yrfF5ixBt3b0FJkvoA7V0JO/fe7dNrYED6W3s=
+	t=1761592850; cv=none; b=csQjYFbd5D+IwcLLQ9CJef2I+VVNjjURjG0T3A5gpYpJhVvVdCyqGRryxQjg40x7K1YTmARQsPmNsJJAs23RlFF+0ExhtPL17wW1pD+ZgVUEVtZGhCF8IjdAZGnh6ab0iaR67gp4uTEPNo5Q0Km4KNrmk+Vf3jK5/kNr/68n1R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592701; c=relaxed/simple;
-	bh=OelLsFAXU+Fsi6L9G9DsfhE25tyeK8sAjvICS4TYkjg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IhOTvGi0TyxbQvw8uFu6XMFQl9N2puUr1lCrTH96VWGXifMJc76lFG7lURDC0SeD0Rwm1O+rQQ1ZgEX84cZjtqYNOgWsDbq3kbPUuea/yZVvLir+xVAvUI/rwyZt5FMXXkZ4vnK/emLuqM8k2LNsTiJ0WqgWVtVzqFFWYXdGGAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KB5HKJ28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F48C113D0
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 19:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761592701;
-	bh=OelLsFAXU+Fsi6L9G9DsfhE25tyeK8sAjvICS4TYkjg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KB5HKJ28F8/kbAyy/Q/svtw9GIrAEOUpMpuLaC0PpbPj3md1U87+g9eWafGuJyp8U
-	 hzzUxK3bQnZ4ruOIO6VJQ42JK91fApvTgJ+F//716wnNjCWlQ536Bxa/xT1IQpkKAO
-	 +7yLZAF6+XxgqxmpHVrdjdU+rgL+GFI3vQqe3yEwJ/cuGWk6moxv/p9J9z16XBj4Ql
-	 PXLu2su5FiJzYJDFGrsLXH1YGmCcHhGJByyNrQQVqr//lWiLDdqIGbE01MYP7uH8kp
-	 G8WpBhRnouuq/wgVcLBDMR52tCfQ2jgiBO3FeqEWBk7e99DwnIZu5oxO/mLnnhpA/w
-	 IT1ZipdX/qs3A==
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c28bf230feso5389406a34.0
-        for <linux-acpi@vger.kernel.org>; Mon, 27 Oct 2025 12:18:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVszFQpiQlh8Cf5aejfPN0C6QcEmcZdZMhnl5bg6ib9Gv3NydyLo9T6kSxeAOxdiBgEpfA8stOW8nsQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbXXuf9MTNpCTzID1uiqaN76SZfqUYEosON7LTO2YBzlGowlc8
-	Ba6izuG+JmJVQDnmKOqWDqsTRN+q1w8Dfyue12NfvYBxNuOVHRiivxcKJ07/2gPltr4pwBr6Mbc
-	/NXgmnNw/Fi9SHGCgU+drl05r/GXe5oQ=
-X-Google-Smtp-Source: AGHT+IFw/Kkfe4EybU49GxVuXH5EGZG0kFSP8ZK9WdOoQTeBST5gRDl513Lon13x7GB2i3/6H9ZUgWPC2mPZJZ/P4Uo=
-X-Received: by 2002:a05:6808:898e:20b0:44f:6d70:dd22 with SMTP id
- 5614622812f47-44f6d7116f2mr61656b6e.25.1761592700822; Mon, 27 Oct 2025
- 12:18:20 -0700 (PDT)
+	s=arc-20240116; t=1761592850; c=relaxed/simple;
+	bh=Wa6ldUv/zgI4JDq1tbT5Y+zylHVbZFrpTUSzqV/aoa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TFCoEn/BwUnXHcw5n1Ysx8QeNw4O6eAgvsEHFvRE64x6Ah0+F+0Ot5JH9ALAUsXdqIz4RJ0n2sNbAuKC7TLoRbLmfT6D38UOkXUnj9/CpGb/k6/3sWGgEdFW/jWgyupZSCpKnjNuyb9Dc9/2V4Ysph1rNRoYGsJ0GRxZY4SnF0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PMQx/etA; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 42B5340E019D;
+	Mon, 27 Oct 2025 19:20:44 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ggxpkL2yj3s6; Mon, 27 Oct 2025 19:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761592837; bh=1p4W+F+S0SLPkZVenYI4ZocIHZejOQOryBLd3i2s/hU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PMQx/etA73TOv2yFREJkLovtaztTvX/PMpHTTiyqJ9AcqP0fngLzrNoNOlF8oh/tZ
+	 /pGcyYIvopZrVpK0JdbHOLea3u4z1lK5sequd1DQltPfueTatFl2PEZALoWDG25tHB
+	 Y3TAS9yv9PQRNrIIEdnj3rsLYZmUZoxzjcX47TPZhQplzwFgVOl7Vs4tnnIpNMXiMq
+	 YAkUow67hB+uLo+YB/2+/9IOxWskSF4SjlARats4zyvZJqUxqqvWzwfumxO2J26+QS
+	 lRpsuDoBKTbUMjEhgyrrZxoKNBMCp1zxqHnwdRP1A3PMilKxFOnM0ngxPIVwWDLKry
+	 gtIPrEHGpKZV1ZBNnFsEQ7kONYl2qjy0nnVqm51Gy1etpEv02h9qoFMNvXv9MtHMxn
+	 hS+sMyE505DdoxCoQkw2Vj+e5d8K6nB/SW0aptL2zE6A/RFmiVHzc2KTeBQCelGV2E
+	 1dy8BYY+JXq3DFoH3IJssknEQtsHgfr444+AxFTpT36KAu+R3QgRHq3qtbBB9JtoyV
+	 4XWlzB5GCXlcEOk5v6B3uHBCmLPmo7v1YoXNlsgfMAgUXvOOWhF5NULiSgj97RNGgt
+	 fxS+0U2XR4ZDzJLsZpwa7y9OYLvGNDqNX5LaLJWtnCE9TdMwsmUJ+yWCHlMPgeE/E5
+	 fCY/lKHnThXybHSgOzrQnnio=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 72AD940E021A;
+	Mon, 27 Oct 2025 19:20:26 +0000 (UTC)
+Date: Mon, 27 Oct 2025 20:20:19 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+	Avadhut Naik <avadhut.naik@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>
+Subject: Re: [PATCH v2 2/2] RAS/AMD/ATL: Require PRM support for future
+ systems
+Message-ID: <20251027192019.GAaP_F8yifQ1TKlqtO@fat_crate.local>
+References: <20251017-wip-atl-prm-v2-0-7ab1df4a5fbc@amd.com>
+ <20251017-wip-atl-prm-v2-2-7ab1df4a5fbc@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015080710.1468409-1-badal.nilawar@intel.com> <20251015080710.1468409-4-badal.nilawar@intel.com>
-In-Reply-To: <20251015080710.1468409-4-badal.nilawar@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 Oct 2025 20:18:09 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iAD0rVco+nNmwn4u1FYYsWHvjA=b+EeMY-O_W-H-RBBg@mail.gmail.com>
-X-Gm-Features: AWmQ_bmO66YPlWauSlWEjdLGC2fURRE5csK6mLRxrX7YKlQmYrs1HNS-q848e1g
-Message-ID: <CAJZ5v0iAD0rVco+nNmwn4u1FYYsWHvjA=b+EeMY-O_W-H-RBBg@mail.gmail.com>
-Subject: Re: [PATCH v5 03/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-To: Badal Nilawar <badal.nilawar@intel.com>
-Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, anshuman.gupta@intel.com, rafael@kernel.org, 
-	lenb@kernel.org, bhelgaas@google.com, ilpo.jarvinen@linux.intel.com, 
-	lucas.demarchi@intel.com, rodrigo.vivi@intel.com, varun.gupta@intel.com, 
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com, karthik.poosa@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251017-wip-atl-prm-v2-2-7ab1df4a5fbc@amd.com>
 
-On Wed, Oct 15, 2025 at 10:02=E2=80=AFAM Badal Nilawar <badal.nilawar@intel=
-.com> wrote:
->
-> From: Anshuman Gupta <anshuman.gupta@intel.com>
->
-> Implement _DSM Method 0Bh as per PCI Firmware r3.3, sec 4.6.10.
-
-Can you please describe it here briefly for the benefit of people
-without access to the PCI Firmware r3.3 specification?
-
-And how is this related to the aux power limit the first two patches are ab=
-out?
-
-> Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
-> V2:
->  - Call acpi_check_dsm() to find method 0Bh supported
-> V3(Kappuswamy/Rafael):
->  - %s/pci_warn/pci_info/ when PERST# Assertion Delay request fails
-> ---
->  drivers/pci/pci-acpi.c   | 53 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/pci-acpi.h |  9 ++++++-
->  2 files changed, 61 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 74f118016b1d..230077200ce8 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1554,6 +1554,59 @@ int pci_acpi_request_d3cold_aux_power(struct pci_d=
-ev *dev, u32 requested_mw,
+On Fri, Oct 17, 2025 at 01:26:29PM +0000, Yazen Ghannam wrote:
+> +	/* All other systems should have PRM handlers. */
+> +	if (!acpi_prm_handler_available(&norm_to_sys_guid)) {
+> +		pr_debug("PRM not available\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	df_cfg.flags.prm_only = true;
+> +	return 0;
 >  }
->  EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
+>  
+>  static int get_dram_hole_base(void)
+> @@ -297,6 +305,9 @@ int get_df_system_info(void)
+>  		return ret;
+>  	}
+>  
+> +	if (df_cfg.flags.prm_only)
+> +		return 0;
+> +
+>  	apply_node_id_shift();
+>  
+>  	get_num_maps();
+> diff --git a/drivers/ras/amd/atl/umc.c b/drivers/ras/amd/atl/umc.c
+> index 6e072b7667e9..18ce419236a5 100644
+> --- a/drivers/ras/amd/atl/umc.c
+> +++ b/drivers/ras/amd/atl/umc.c
+> @@ -422,7 +422,7 @@ unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
+>  		 socket_id, die_id, coh_st_inst_id, addr);
+>  
+>  	ret_addr = prm_umc_norm_to_sys_addr(socket_id, err->ipid, addr);
+> -	if (!IS_ERR_VALUE(ret_addr))
+> +	if (!IS_ERR_VALUE(ret_addr) || df_cfg.flags.prm_only)
+>  		return ret_addr;
 >
-> +/**
-> + * pci_acpi_add_perst_assertion_delay - Request PERST# Delay via ACPI DS=
-M
-> + * @dev: PCI device instance
-> + * @delay_us: Requested delay_us
-> + *
-> + * Request PERST# Assertion Delay to platform firmware, via Root Port/
-> + * Switch Downstream Port ACPI _DSM Function 0Bh, for the specified
-> + * PCI device.
-> + * Evaluate the _DSM and handle the response accordingly.
-> + *
-> + * Return: returns 0 on success and errno on failure.
-> + */
-> +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us=
-)
-> +{
-> +       union acpi_object in_obj =3D {
-> +               .integer.type =3D ACPI_TYPE_INTEGER,
-> +               .integer.value =3D delay_us,
-> +       };
-> +
-> +       union acpi_object *out_obj;
-> +       int result, ret =3D -EINVAL;
-> +       struct pci_dev *bdev;
-> +
-> +       if (!dev)
-> +               return -EINVAL;
-> +
-> +       bdev =3D pci_acpi_check_dsm(dev, 4, 1 << DSM_PCI_PERST_ASSERTION_=
-DELAY);
-> +
-> +       if (IS_ERR(bdev))
-> +               return PTR_ERR(bdev);
-> +
-> +       out_obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(&bdev->dev),
-> +                                         &pci_acpi_dsm_guid, 4,
-> +                                         DSM_PCI_PERST_ASSERTION_DELAY,
-> +                                         &in_obj, ACPI_TYPE_INTEGER);
-> +       if (!out_obj)
-> +               return -EINVAL;
-> +
-> +       result =3D out_obj->integer.value;
 
-Freeing out_obj here would allow error handling below to be more
-straightforward.
+Much better, thanks!
 
-> +
-> +       if (result =3D=3D delay_us) {
-> +               pci_info(dev, "PERST# Assertion Delay set to %u microseco=
-nds\n", delay_us);
-> +               ret =3D 0;
-> +       } else {
-> +               pci_info(dev, "PERST# Assertion Delay request failed, usi=
-ng %u microseconds\n",
-> +                        result);
-> +       }
-> +
-> +       ACPI_FREE(out_obj);
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_acpi_add_perst_assertion_delay);
-> +
->  static void pci_acpi_set_external_facing(struct pci_dev *dev)
->  {
->         u8 val;
-> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
-> index ba48e7ddb360..4d8b8cea019e 100644
-> --- a/include/linux/pci-acpi.h
-> +++ b/include/linux/pci-acpi.h
-> @@ -122,6 +122,7 @@ extern const guid_t pci_acpi_dsm_guid;
->  #define DSM_PCI_POWER_ON_RESET_DELAY           0x08
->  #define DSM_PCI_DEVICE_READINESS_DURATIONS     0x09
->  #define DSM_PCI_D3COLD_AUX_POWER_LIMIT         0x0A
-> +#define DSM_PCI_PERST_ASSERTION_DELAY          0x0B
->
->  #ifdef CONFIG_PCIE_EDR
->  void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
-> @@ -135,7 +136,7 @@ int pci_acpi_set_companion_lookup_hook(struct acpi_de=
-vice *(*func)(struct pci_de
->  void pci_acpi_clear_companion_lookup_hook(void);
->  int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested=
-_mw,
->                                       u32 *retry_interval);
-> -
-> +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us=
-);
->  #else  /* CONFIG_ACPI */
->  static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
->  static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
-> @@ -145,6 +146,12 @@ static inline int pci_acpi_request_d3cold_aux_power(=
-struct pci_dev *dev,
->  {
->         return -EOPNOTSUPP;
->  }
-> +
-> +static inline int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev=
-,
-> +                                                    u32 delay_us)
-> +{
-> +       return -EOPNOTSUPP;
-> +}
->  #endif /* CONFIG_ACPI */
->
->  #endif /* _PCI_ACPI_H_ */
-> --
+Both applied.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
