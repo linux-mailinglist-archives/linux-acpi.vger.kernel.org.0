@@ -1,62 +1,64 @@
-Return-Path: <linux-acpi+bounces-18263-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18265-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFF0C116A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 21:38:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B8AC116F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 21:51:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C7A68352863
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:38:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276CD5662F2
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Oct 2025 20:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F2B3164B6;
-	Mon, 27 Oct 2025 20:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47F73126B5;
+	Mon, 27 Oct 2025 20:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="epbD1kNT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9EVhyCS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB66305E29;
-	Mon, 27 Oct 2025 20:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D552652AF;
+	Mon, 27 Oct 2025 20:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761597499; cv=none; b=kTtewusQhSqOHBdoojLi0X70o8aeAqAoXIQ7GArbN7uO55fZO4QdV2BYFa041TJABerp+U1g/iTJcUqhqABvxv8ZfdNufdXZrXmW3sRC0lfvMTCoTyIl29EvkLFUeF4l/wEHfgXFXPN/4bmNbMPnPBUJkHdQFQhn67Se6rVEfvs=
+	t=1761598257; cv=none; b=H6YkXTXsvyZtEWD916rctj1Iy0Cwuc5X5XLEyfF3OkUEzPRd1+O9tleiPcW5iP3KLgH3vwVNUbFVFRYJKK+r4aR+/I4J4yjI7OPBBglV6hSb54WTNR212PluUi4qRNb8Rh0v0PFGpGUrM/JZFjq9M6H5yP85TvNFC/uYByQ7Lwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761597499; c=relaxed/simple;
-	bh=5UQm7v/j9A/hzLS0XZZ9DQ+j2ooCVmH3POGZzPBRr54=;
+	s=arc-20240116; t=1761598257; c=relaxed/simple;
+	bh=z+FDoogTKU9c2WL40dpjz8cNG7A5GjItH6nzMZSkZxw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WnzrBgIorHeiujz9qybsd+0vIuVpEQFU/mwsBREj6GeVw0HU+8H6qVDlualfjJHkQNYb9OG2ESWpX8kwmnSHk6kxklnbJgl4RJCUwETh8UYyBf4cY1WvhT6V9K8zMZooKOp6qT2Dvgy7bZqNh/yWDwkA6ppp8wg+UDjsyqMITJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=epbD1kNT; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=rL3kVjc1wP5yRrbGtJVCEinkdiW2Db/OjkRnYEKPUs26Cvf/0yHm7wiXbDQghp/v/ZAVRuzzuctggeImsOMG4M2mg6XPHiPIf2hmpiGwsp/LyG4ryA+3ebplNTghUMbfgxVSRgpskULnt8OvV3BDVmE9XhZOOrc9i3jbV2qtZrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9EVhyCS; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761597497; x=1793133497;
+  t=1761598256; x=1793134256;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=5UQm7v/j9A/hzLS0XZZ9DQ+j2ooCVmH3POGZzPBRr54=;
-  b=epbD1kNTday+NqVJtsQzEGJLe65ofy1iKOLOEaeGHDj2ywxB75ODurFv
-   xaTJAptJ6BHqKoXOC/MG4xd9id86wkFFtGMO4OqDVAjEBIBMGcdNp7c9u
-   Y54SaSPkgJ9Gpg9ThyxiDIBOwdWWicgE1EmA0x+QzZendiIZyTTidBfuz
-   PxhQKfi15Qm+IZX/KuRQodxik/NQn4sqvnK9jnjgOPWBAQaSPywwmqkRn
-   4O5vA9RzFGn4/qYDTjY4lEwBn5rxW26UsVoiBmmzcnmBzHDugrMjP4IW1
-   Dxw/PaXQavjfaA6ACcppcdvl9g+bGG1kVdEnImr04MLo/TkDOgxBp0HAB
-   g==;
-X-CSE-ConnectionGUID: JYUGpnhlTqacRCiblxWWKQ==
-X-CSE-MsgGUID: U04Iml9iSKyij0gAIfvAaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75033727"
+  bh=z+FDoogTKU9c2WL40dpjz8cNG7A5GjItH6nzMZSkZxw=;
+  b=R9EVhyCSu7tRsHzkr6GD9jwefFKyRI3uHjYNF3+8Xn1fm80c/kL2IPIu
+   ZHbR8WkxuGyc1uFQ/WogJ0HKdbTYp0KJpkbhQeIxzt0/2kC2fdCOJ8/I3
+   HsPO0V2oZCxO43+oStrP1SCBjtLq/+Nzs+JwTozNL5rks6TE5AozX9EMv
+   lE7WjZk89MfERHeTkqd2mxOlkBkH3CRbdmcoJwPEs/WojWspomas7fN0F
+   1jyfQFqTQufasN9WhHJZo76M+XSUoGAe3yhDeDCohAjHWFNwhGesWgavy
+   6kxVrURzlLOIy/dugefUzBq4tl2b3+q9aNscLn6PFVcZqjBbFCpFkz/WX
+   A==;
+X-CSE-ConnectionGUID: VZvgDS6ZRIWnYtVz3lwNoA==
+X-CSE-MsgGUID: wdqFpfIkQJSzq4QqAnGBIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75133326"
 X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
-   d="scan'208";a="75033727"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:38:17 -0700
-X-CSE-ConnectionGUID: 843NkRjgSAK5pPp1mxXvXQ==
-X-CSE-MsgGUID: 5vBnlc7qTWCD6sOE7pOpYA==
+   d="scan'208";a="75133326"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:50:55 -0700
+X-CSE-ConnectionGUID: P97fmo4ATamgPOVbmizedg==
+X-CSE-MsgGUID: LKd5bah5QcWJEkcg/3BWVA==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; 
+   d="scan'208";a="190351070"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:38:16 -0700
-Date: Mon, 27 Oct 2025 13:45:38 -0700
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 13:50:55 -0700
+Date: Mon, 27 Oct 2025 13:58:16 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>
 Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -73,12 +75,12 @@ Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Ricardo Neri <ricardo.neri@intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Subject: Re: [PATCH v6 03/10] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20251027204538.GA14161@ranerica-svr.sc.intel.com>
+Subject: Re: [PATCH v6 02/10] x86/acpi: Move acpi_wakeup_cpu() and helpers to
+ smpwakeup.c
+Message-ID: <20251027205816.GB14161@ranerica-svr.sc.intel.com>
 References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
- <20251016-rneri-wakeup-mailbox-v6-3-40435fb9305e@linux.intel.com>
- <20251027142244.GZaP-ANLSidOxk0R_W@fat_crate.local>
+ <20251016-rneri-wakeup-mailbox-v6-2-40435fb9305e@linux.intel.com>
+ <20251027141835.GYaP9_O1C3cms6msfv@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,22 +89,28 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027142244.GZaP-ANLSidOxk0R_W@fat_crate.local>
+In-Reply-To: <20251027141835.GYaP9_O1C3cms6msfv@fat_crate.local>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Mon, Oct 27, 2025 at 03:22:44PM +0100, Borislav Petkov wrote:
-> On Thu, Oct 16, 2025 at 07:57:25PM -0700, Ricardo Neri wrote:
-> > Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+On Mon, Oct 27, 2025 at 03:18:35PM +0100, Borislav Petkov wrote:
+> On Thu, Oct 16, 2025 at 07:57:24PM -0700, Ricardo Neri wrote:
+> >  arch/x86/kernel/acpi/madt_wakeup.c | 76 ----------------------------------
+> >  arch/x86/kernel/smpwakeup.c        | 83 ++++++++++++++++++++++++++++++++++++++
 > 
-> This is missing an ack from the devicetree maintainers:
+> How does ACPI-related code belong in the arch/x86/kernel/ hierarchy?
 > 
-> ./scripts/get_maintainer.pl -f Documentation/devicetree/
+> Not to mention that arch/x86/kernel/ is a dumping ground for everything *and*
+> the kitchen sink so we should not put more crap in there...
 
-Agreed. They are in the "To:" field of my submission. Rob has reviewed the
-patchset.
+Right. All the functions in the file start with the acpi_ prefix. It could
+be kept under arch/x86/kernel/acpi/. The Kconfig symbol X86_MAILBOX_WAKEUP
+would have to live in arch/x86/Kconfig as there is no Kconfig file under
+arch/x86/kernel/acpi. ACPI_MADT_WAKEUP is arch/x86/Kconfig.
+
+Does that sound acceptable?
+
+Thank you for your feedback, Boris,
+
+Best,
+Ricardo
 
