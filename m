@@ -1,164 +1,157 @@
-Return-Path: <linux-acpi+bounces-18297-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18298-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67264C1639A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 18:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28872C16520
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 18:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 075453A8FD4
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 17:37:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3264068CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 17:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D0534C83D;
-	Tue, 28 Oct 2025 17:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548AD3451AE;
+	Tue, 28 Oct 2025 17:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GZVLBtOc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB5E3314B8;
-	Tue, 28 Oct 2025 17:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1589225402;
+	Tue, 28 Oct 2025 17:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761673032; cv=none; b=tDx3NEZYB92yUVlip78wZutb3cjEq0cdmOnKoV6xs9wlsRIoIYCD3fdoMNGkd5ARIaT74cW7VCSYGFrypc96/Th+bJxuiJzsbD54QC/j4AAqsGeumez2DJprDxFbPB9bF341EgfL7b6Sbzj4D5qIKSNAInP8Wv/3GoyUJEVb+rQ=
+	t=1761673643; cv=none; b=ts0TzW3aAQtC2DanPG/N4XIDDuoIqpjdcICxgh43lvgk8BsLJssrFSKm+VgfTNLqENCWNpObqszNZpNnclOLYbMpN6Fm8dpQjbDs5O4DiJFcX03JgXuOO80oYOgE8SviO1JAmXHdkB8yzGB59auYABFNlsjo4qR7gwPIcHRR0IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761673032; c=relaxed/simple;
-	bh=G3TLd8Hl1Ec17sjc6IMx64ueGdYu5PtD8M1IERWgHdw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YQx0PeRosK6QBZUT1G2kWIsT4cFzNX8is1ZKpuu2HvP4TFT11KYmYnv9bF/z8M/Sj71JKGZRVYozwLUa/b7AyWpezzLMOFHOulDL5V4SOuTFntjEzYnSS99711sOTT0i4B7nLn2yIg8BYu8Nbhhdp5gyUtOl/uIDoQ9inivcs2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA05C168F;
-	Tue, 28 Oct 2025 10:37:01 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D3223F673;
-	Tue, 28 Oct 2025 10:37:03 -0700 (PDT)
-Message-ID: <d91f65fb-900f-4d21-ad5e-0cbe146bbb65@arm.com>
-Date: Tue, 28 Oct 2025 17:37:02 +0000
+	s=arc-20240116; t=1761673643; c=relaxed/simple;
+	bh=P295r9+6SdHA5A6u2aoFNKPmIUEH3ZUuo7xEs0+qf/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dTJJgCPKlwdjBd8Deb8tqWnyj6HB/E/gqyI/kOCcSChSbj0yYitWDP3xF7N/2hRqdpLWZGtR1wzuEgneumWTtZN3W6yTT6oLH8C4W2BOBKrYAJsACxFU7aJ1K+u64owqcIgCrPBn61P6lGe46hdwo9QKu2h9s9Qd8jn/sHa9e7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GZVLBtOc; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D59DD40E01A5;
+	Tue, 28 Oct 2025 17:47:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id arMPkg8uknQV; Tue, 28 Oct 2025 17:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761673634; bh=ybo6xcppig+jStlIPQv996AyXfzWzyye/OuJkMRjEwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GZVLBtOcRtJYxby18y7C06R/6G6ZKsiPLyWRRUOmh7ADCriMDWUXkhwp7gLOE1M3p
+	 oJ+uMEEB1qDUeA1Oj8NKje9EibRm8ejsz9rs8Amxz5qxw1E5Xyi63MbN0JCjM/p1Km
+	 TdJDjsQPcRer+/WD4l7dV9JJfsrAF8ar9L+lINBuknEZ3pDwn6/+1ZEkMmzss+81II
+	 e9ykSx0NG/DRLXQ7NvFeOqPHrK7Qopf/5uVwQkUyr3nAEXPcn2PhfyTKMl7f8TN/gE
+	 uQgGqkIu08193lX4IDRoCkcUVkZdafn1oC87MMiNu/c1sDDHeYrUbWmuByux58RD2V
+	 ChFAdRv966OayudaAiDPV4gk1A3rO7+pq8oEoyEghj781eSv6LJ28MsJTbb2j2Eo/Q
+	 hzvfGdCio79IL6quY2LzUam6gf3zVo2tZm+AYQW14gaJuxoOaK8R/DutHzEVwNr4j9
+	 IZHtJQi6AdcXN2IIomI/epEdzRG0F9LArlKV/RsDc5o28PEqfbNw4N0iooeSsHy0aS
+	 QS/oPO99MqcJOq2PKdN5uk5SlmFKg6JetOja8K3Ky3x4L0bcWjVBQR5PY1PTwu83oy
+	 gItmj9u+l537b9OdWYrlC5CJt/Iw0+enatNig0pDDN7E4jFLPTrmfLKzdOHdAlT28y
+	 SBp5WctlhA5EfNVUXC4JRunE=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D501640E00DA;
+	Tue, 28 Oct 2025 17:47:01 +0000 (UTC)
+Date: Tue, 28 Oct 2025 18:46:56 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-edac@vger.kernel.org, Smita.KoralahalliChannabasappa@amd.com,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Bert Karwatzki <spasswolf@web.de>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] x86/mce: Unify AMD DFR handler with MCA Polling
+Message-ID: <20251028174656.GBaQEBkOErfNAJbJsf@fat_crate.local>
+References: <20251016-wip-mca-updates-v7-0-5c139a4062cb@amd.com>
+ <20251016-wip-mca-updates-v7-2-5c139a4062cb@amd.com>
+ <20251024150333.GSaPuVRQYxH92zyrmO@fat_crate.local>
+ <20251024203012.GA251815@yaz-khff2.amd.com>
+ <20251024212723.GGaPvvO3l2OlUEG7Xn@fat_crate.local>
+ <20251025150304.GXaPzmqFawI0NrCC-0@fat_crate.local>
+ <20251027133542.GA8279@yaz-khff2.amd.com>
+ <20251027141139.GA51741@yaz-khff2.amd.com>
+ <20251028152231.GAaQDft32eXtTZBBzg@fat_crate.local>
+ <20251028154258.GA526743@yaz-khff2.amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mpam: Clean MBWU monitor overflow bit
-To: Zeng Heng <zengheng4@huawei.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, carl@os.amperecomputing.com,
- catalin.marinas@arm.com, dakr@kernel.org, dave.martin@arm.com,
- david@redhat.com, dfustini@baylibre.com, fenghuay@nvidia.com,
- gregkh@linuxfoundation.org, gshan@redhat.com, guohanjun@huawei.com,
- jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- sunnanyong@huawei.com, tan.shaopeng@fujitsu.com, wangkefeng.wang@huawei.com,
- will@kernel.org, xhao@linux.alibaba.com
-References: <a3e95937-b0c7-020e-d52d-7189d2540f8f@huawei.com>
- <20251025093428.1379218-1-zengheng4@huawei.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20251025093428.1379218-1-zengheng4@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251028154258.GA526743@yaz-khff2.amd.com>
 
-Hi Zeng,
-
-On 10/25/25 10:34, Zeng Heng wrote:
-> The MSMON_MBWU register accumulates counts monotonically forward and
-> would not automatically cleared to zero on overflow. The overflow portion
-> is exactly what mpam_msmon_overflow_val() computes, there is no need to
-> additionally subtract mbwu_state->prev_val.
+On Tue, Oct 28, 2025 at 11:42:58AM -0400, Yazen Ghannam wrote:
+> Yes, fair point. How about this?
 > 
-> Before invoking write_msmon_ctl_flt_vals(), the overflow bit of the
-> MSMON_MBWU register must first be read to prevent it from being
-> inadvertently cleared by the write operation. Then, before updating the
-> monitor configuration, the overflow bit should be cleared to zero.
-> 
-> Finally, use the overflow bit instead of relying on counter wrap-around
-> to determine whether an overflow has occurred, that avoids the case where
-> a wrap-around (now > prev_val) is overlooked.
-> 
-> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-> ---
->  drivers/resctrl/mpam_devices.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 0dd048279e02..575980e3a366 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -1062,6 +1062,21 @@ static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
->  	}
->  }
->  
-> +static bool read_msmon_mbwu_is_overflow(struct mpam_msc *msc)
-> +{
-> +	u32 ctl;
-> +	bool overflow;
-> +
-> +	ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
-> +	overflow = ctl & MSMON_CFG_x_CTL_OFLOW_STATUS ? true : false;
-> +
-> +	if (overflow)
-> +		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl &
-> +				     ~MSMON_CFG_x_CTL_OFLOW_STATUS);
+> 	/*
+> 	 * If MCA_STATUS has a valid error of any type, then use it.
+> 	 *
+> 	 * If the error happens to be a deferred error, then the copy
+> 	 * saved in MCA_DESTAT will be cleared at the end of the
+> 	 * handler.
+> 	 *
+> 	 * If MCA_STATUS does not have a valid error, then check
+> 	 * MCA_DESTAT for a valid deferred error.
+> 	 */
 
+Well, we already have this at the top:
 
-Seems sensible. It's best to consider the overflow status bit for long
-counters as well. Although, that's introduced later in the series so
-depends on patch ordering. (Sorry, was considering patches on top of the
-full series when I commented on counter length before.)
+/* 
+ * We have three scenarios for checking for Deferred errors:
+ * 
+ * 1) Non-SMCA systems check MCA_STATUS and log error if found.
+ * 2) SMCA systems check MCA_STATUS. If error is found then log it and also
+ *    clear MCA_DESTAT.
+ * 3) SMCA systems check MCA_DESTAT, if error was not found in MCA_STATUS, and
+ *    log it.
+ */
 
-> +
-> +	return overflow;
-> +}
-> +
->  /* Call with MSC lock held */
->  static void __ris_msmon_read(void *arg)
->  {
-> @@ -1069,6 +1084,7 @@ static void __ris_msmon_read(void *arg)
->  	bool config_mismatch;
->  	struct mon_read *m = arg;
->  	u64 now, overflow_val = 0;
-> +	bool mbwu_overflow = false;
->  	struct mon_cfg *ctx = m->ctx;
->  	bool reset_on_next_read = false;
->  	struct mpam_msc_ris *ris = m->ris;
-> @@ -1091,6 +1107,7 @@ static void __ris_msmon_read(void *arg)
->  			reset_on_next_read = mbwu_state->reset_on_next_read;
->  			mbwu_state->reset_on_next_read = false;
->  		}
-> +		mbwu_overflow = read_msmon_mbwu_is_overflow(msc);
+ and that is good enough IMO. The rest people can read out from the code.
 
-If the config is then found to mismatch, then mbwu_overflow can be
-subsequently set to false.
+> Okay, agreed. I think this entire second comment can be removed.
 
->  	}
->  
->  	/*
-> @@ -1138,8 +1155,8 @@ static void __ris_msmon_read(void *arg)
->  		mbwu_state = &ris->mbwu_state[ctx->mon];
->  
->  		/* Add any pre-overflow value to the mbwu_state->val */
-> -		if (mbwu_state->prev_val > now)
-> -			overflow_val = mpam_msmon_overflow_val(m->type) - mbwu_state->prev_val;
-> +		if (mbwu_overflow)
-> +			overflow_val = mpam_msmon_overflow_val(m->type);
+Gone.
 
-Yep, makes sense.
+IOW, this:
 
->  
->  		mbwu_state->prev_val = now;
+/* 
+ * We have three scenarios for checking for Deferred errors:
+ * 
+ * 1) Non-SMCA systems check MCA_STATUS and log error if found.
+ * 2) SMCA systems check MCA_STATUS. If error is found then log it and also
+ *    clear MCA_DESTAT.
+ * 3) SMCA systems check MCA_DESTAT, if error was not found in MCA_STATUS, and
+ *    log it.
+ */
+static bool smca_should_log_poll_error(struct mce *m)
+{
+        if (m->status & MCI_STATUS_VAL)
+                return true;
+ 
+        m->status = mce_rdmsrq(MSR_AMD64_SMCA_MCx_DESTAT(m->bank));
+        if ((m->status & MCI_STATUS_VAL) && (m->status & MCI_STATUS_DEFERRED)) {
+                m->kflags |= MCE_CHECK_DFR_REGS;
+                return true;
+        }
+ 
+        return false;
+}
 
-With this prev_val no longer has any use.
+-- 
+Regards/Gruss,
+    Boris.
 
->  		mbwu_state->correction += overflow_val;
-Thanks,
-
-Ben
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
