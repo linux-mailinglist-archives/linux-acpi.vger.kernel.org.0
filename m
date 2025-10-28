@@ -1,65 +1,40 @@
-Return-Path: <linux-acpi+bounces-18295-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18296-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D112BC15CBF
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 17:28:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09925C160A8
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 18:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9114261B8
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 16:21:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E8414E8155
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 17:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E3D2882B4;
-	Tue, 28 Oct 2025 16:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MiP0vk8Y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B2832BF43;
+	Tue, 28 Oct 2025 17:04:59 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DFE263F32;
-	Tue, 28 Oct 2025 16:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BE313D51E;
+	Tue, 28 Oct 2025 17:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761668397; cv=none; b=oXOGiKDJUg2Ws1TXRmYKzkHrDwCX/FkVYsz6DwoZHp4Kvzp6L8MJTmv85OoWu9HK9IEymZ+v9npULJs4A/gyN1gu8nrZfNstuCVGabVJwBES9mpF/G9d+0AqmVR/W5777OlnuYZmt3Bc7sUNoUr4FFLI/6S4SA2y3wWBzn1svjk=
+	t=1761671099; cv=none; b=HC9f+8vZ6nObEytKlKUItq3vuZmF8TJm0tX7sJNKnaF+/lwQWT97l+LPiXxi6/6imyA3oKLey93E84XzIZdLhxKL1kcMDjWZIpZ9agkLTyMoka7RO8SfZ8dyqJL38Eg1vAjpMsVe5D5FHSWuC+YZ/nHdGYLH6vEqrYCcet/k4/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761668397; c=relaxed/simple;
-	bh=ql0oHBgcfkHjGUpO+SghiDYcqKotDono1NNct+0rvfg=;
+	s=arc-20240116; t=1761671099; c=relaxed/simple;
+	bh=OT+5A1kQwZizv6hxo2CJYKqoOrcvSA1bK0diOAcRiAc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YYcVHvPLGfxU+BqwFxU16+SkVdFqP2VZfsMppsE8DDyNLITtLqHNIpqGgmWQIcXsLFNuXxw8NEy83hquzzaat5oKKNufIxosQFs4GT5sgfwYnLVNZoYSV4Rdvi9IRj6FabXh1lDONl2yzCNGI5pdLimSpwtbKAu2EJgecn/W9Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MiP0vk8Y; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761668395; x=1793204395;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ql0oHBgcfkHjGUpO+SghiDYcqKotDono1NNct+0rvfg=;
-  b=MiP0vk8Yk6OlWfel7fsvba+m2Tm8UZIc6r01s2MGC+0/OkWVHrN5jRRa
-   3fHYytH9gIR3NF18UjF5Vt/t5LTStzFDjcEWZbPFlPUQlp+lxFxoQfvQI
-   uGtl6vzcVz6fKmfN2wznE5usqB2hCfs96OLOTFB3hclv0+TYLpFIXqrZr
-   FALuKrX39QTM7eJ/5dbD3U3xcyKR7tf7l8/mjt0hsNiS0Xt4Rgp7rQ5+s
-   Uca2Yjpf9xkKx9iNLvOAMeN5mtH8onU3bOwnMwJOQh42bjXlYdMwbUY3m
-   XuBwstFT2q8zMN3VfUSNo8jgFaaFm/c1sumXAtFHWXnKOf/2jCRgPiAna
-   Q==;
-X-CSE-ConnectionGUID: 29TaYD4RRpWm1qtFNa9fqg==
-X-CSE-MsgGUID: GjXZNZQlR4a9S/E7CVuDjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62979185"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="62979185"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:19:54 -0700
-X-CSE-ConnectionGUID: UGf4618tTTyI56XQsvU/MQ==
-X-CSE-MsgGUID: AY3nXcO2R7KvdLAQ9FIFXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="190528315"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:19:53 -0700
-Message-ID: <bf4e81e4-70c2-434d-960d-d3b2277ac8ca@linux.intel.com>
-Date: Tue, 28 Oct 2025 09:19:43 -0700
+	 In-Reply-To:Content-Type; b=NieG0W+LFtGT9N0ykvn1S8jnuSxA1XVy4q13Ep/eSBCmQgnZ4X7PzQGr6Nh/7w1EvKsjCaNKDrCTxD+Xu5+NEICCJIE298OEzYkTpwCJoAJdOfi+DshQnR8ls1FKsXjECaMwhVhNJ16xpHFRYORFV8xguVuUr9GyHR7mQ6FVKRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3CDB168F;
+	Tue, 28 Oct 2025 10:04:47 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B5E763F673;
+	Tue, 28 Oct 2025 10:04:49 -0700 (PDT)
+Message-ID: <4d77f16c-eeb7-40bc-ac37-2639308f8484@arm.com>
+Date: Tue, 28 Oct 2025 17:04:47 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,93 +42,95 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6 v6] ACPI: extlog: Trace CPER Non-standard Section Body
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- linux-cxl@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
- Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
- Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
- Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Li Ming <ming.li@zohomail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,
- Karolina Stolarek <karolina.stolarek@oracle.com>,
- Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
- Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
- <20251023122612.1326748-2-fabio.m.de.francesco@linux.intel.com>
+Subject: Re: [PATCH mpam mpam/snapshot/v6.14-rc1] arm64/mpam: Fix MBWU monitor
+ overflow handling
+To: Zeng Heng <zengheng4@huawei.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
+ guohanjun@huawei.com, jeremy.linton@arm.com, jonathan.cameron@huawei.com,
+ kobak@nvidia.com, lcherian@marvell.com, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, lpieralisi@kernel.org, peternewman@google.com,
+ quic_jiles@quicinc.com, rafael@kernel.org, robh@kernel.org,
+ rohit.mathew@arm.com, scott@os.amperecomputing.com, sdonthineni@nvidia.com,
+ sudeep.holla@arm.com, tan.shaopeng@fujitsu.com, will@kernel.org,
+ xhao@linux.alibaba.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20251017185645.26604-25-james.morse@arm.com>
+ <20251022133913.629859-1-zengheng4@huawei.com>
+ <8e22c81e-5e78-41e0-a81e-0f9826e5edf0@arm.com>
+ <a3e95937-b0c7-020e-d52d-7189d2540f8f@huawei.com>
+From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20251023122612.1326748-2-fabio.m.de.francesco@linux.intel.com>
+In-Reply-To: <a3e95937-b0c7-020e-d52d-7189d2540f8f@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Hi Zeng,
 
-
-On 10/23/2025 5:25 AM, Fabio M. De Francesco wrote:
-> ghes_do_proc() has a catch-all for unknown or unhandled CPER formats
-> (UEFI v2.10 Appendix N 2.3), extlog_print() does not. This gap was
-
-Latest is v2.11, right? Why not use it for reference?
-
-> noticed by a RAS test that injected CXL protocol errors which were
-> notified to extlog_print() via the IOMCA (I/O Machine Check
-> Architecture) mechanism. Bring parity to the extlog_print() path by
-> including a similar log_non_standard_event().
+On 10/25/25 09:45, Zeng Heng wrote:
+> Hi Ben,
 > 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
-
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
-
->  drivers/acpi/acpi_extlog.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> On 2025/10/23 0:17, Ben Horgan wrote:
+>>>
+>>> Also fix the handling of overflow amount calculation. There's no need to
+>>> subtract mbwu_state->prev_val when calculating overflow_val.
+>>
+>> Why not? Isn't this the pre-overflow part that we are missing from the
+>> running count?
+>>
 > 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index f6b9562779de..47d11cb5c912 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -183,6 +183,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else {
-> +			void *err = acpi_hest_get_payload(gdata);
-> +
-> +			log_non_standard_event(sec_type, fru_id, fru_text,
-> +					       gdata->error_severity, err,
-> +					       gdata->error_data_length);
->  		}
->  	}
->  
+> The MSMON_MBWU register accumulates counts monotonically forward and
+> would not automatically cleared to zero on overflow.
+> 
+> The overflow portion is exactly what mpam_msmon_overflow_val() computes,
+> there is no need to additionally subtract mbwu_state->prev_val.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Yes, I now see you are correct. The 'correction' ends up holding
+(counter size) * (number of overflows) and the current value of the
+counter plus this gives you the bandwidth use up until now.
+
+> 
+>>>
+>>> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+>>> ---
+>>>   drivers/resctrl/mpam_devices.c | 8 +++++---
+>>>   1 file changed, 5 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/
+>>> mpam_devices.c
+>>> index 0dd048279e02..06f3ec9887d2 100644
+>>> --- a/drivers/resctrl/mpam_devices.c
+>>> +++ b/drivers/resctrl/mpam_devices.c
+>>> @@ -1101,7 +1101,8 @@ static void __ris_msmon_read(void *arg)
+>>>       clean_msmon_ctl_val(&cur_ctl);
+>>>       gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+>>>       config_mismatch = cur_flt != flt_val ||
+>>> -              cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
+>>> +             (cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS) !=
+>>> +             (ctl_val | MSMON_CFG_x_CTL_EN);
+>>
+>> This only considers 31 bit counters. I would expect any change here to
+>> consider all lengths of counter. Also, as the overflow bit is no longer
+>> reset due to the config mismatch it needs to be reset somewhere else.
+> 
+> Yes, overflow bit needs to be cleared somewhere. I try to point out in
+> the next patch mail.
+
+I had misunderstood before but the current code in the series doesn't
+make use of overflow bit and just relies on prev_val > now. Using
+overflow status does give us a bit more lee-way for overflowing so is a
+useful enhancement.
+
+> 
+> Best Regards,
+> Zeng Heng
+> 
+> 
+Thanks,
+
+Ben
 
 
