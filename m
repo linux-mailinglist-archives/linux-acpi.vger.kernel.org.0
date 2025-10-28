@@ -1,103 +1,188 @@
-Return-Path: <linux-acpi+bounces-18273-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18274-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53E3C13C53
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 10:22:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0946AC1411D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 11:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F5764E7AFD
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 09:20:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E6C414E2F95
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 10:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDDC2DA776;
-	Tue, 28 Oct 2025 09:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD1D2DEA68;
+	Tue, 28 Oct 2025 10:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZbvQb/um"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpCjauIF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF082C0294;
-	Tue, 28 Oct 2025 09:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCE71E49F;
+	Tue, 28 Oct 2025 10:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761643246; cv=none; b=u2i7oyoTpCL6v+fo0rozWCjnlAnlDuau2/xZkacsinU+yvLTE/Q9wCbxi3Qfs6lmznW9RlGc9c+0gOY9ApwpltKi7BitRlRhemDeyoiuVnTxTd//m+bCvWwWjIZ6DIYiSv1zO19l1huhVCdENNILq9quGTv8Rt27fL5msO1wNFA=
+	t=1761646751; cv=none; b=tg2ASk9wBOZlJLsKkpwKnAmTj08sL9Tb/imlUHPdjOF/Ui91F4vnfErYxw80IL7N/aPLTJlVvNduJbnVGpX/JvDyM0fJ2kuqxbRgpLvLgbqwnzWpYv3qbUxoQudwDblOH//P6MG+W+CHJrGVqI/wJYE9azarLg8hANfbK9bXSdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761643246; c=relaxed/simple;
-	bh=SKHL9sv+geSvfdC16ZXGX9bi5INVTRDZqvPMpldezFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoF6wuVkzgz0yc3lA2pS1JzBOhWVUDbwMLS0hxPA4FdpKAd9spg39axmOCHez3r+f690cxr0cHfsC+OdjmcBoMDsslN01e+xOG4lZRhuaEbf/6LYMKBZF0Kf0C7ttQ7KC81ZHZirCnNamUCEOity3DgxxVU6vtyqqopd0OOhG7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZbvQb/um; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761643245; x=1793179245;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SKHL9sv+geSvfdC16ZXGX9bi5INVTRDZqvPMpldezFc=;
-  b=ZbvQb/umtOO0JeBGmKNr3H9JWOGjKAsi10NgGon5V1BTirVNGXwhiJ4k
-   wZlBvMCMd7mMMR9pJfW2VE0MFhnk8Hqp7g2bqAiovTtS24u1EAeJTg3n6
-   cAo6Q5Hlz0iLkBsJ2D34T47qc/ZlNLJl7xIAGBYMZmJmnVGZgZY97VFcH
-   khX1TeuX/v7ThD/N0wlGg9XMxGkcEABmxT98KJHH4EescVHWcMCvaJKqa
-   Am+U1cPbs+KtTYce1Nft6hwr3n+/j9qjrGEIgPxRqdbQHsDgjffNSpGMu
-   /TSdteJBUyUW6SnxFLDIQZ/eFo3GiY+74neVSqBuFjDdgnmeqsLzKot4x
-   A==;
-X-CSE-ConnectionGUID: llKcOKx9RFeOHm8lJeyQlg==
-X-CSE-MsgGUID: /sxHajxRREWyL0i2S7Am/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66354539"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="66354539"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:20:45 -0700
-X-CSE-ConnectionGUID: pklLLn3aThG7RGCwZZ2E4A==
-X-CSE-MsgGUID: zb9QtwiZQzGfwXOBe74dDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="184527887"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:20:42 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vDfsd-00000003GXG-3rdH;
-	Tue, 28 Oct 2025 11:20:39 +0200
-Date: Tue, 28 Oct 2025 11:20:39 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: ACPI: i2c-muxes: fix I2C device references
-Message-ID: <aQCK56FcZSCZdmgE@smile.fi.intel.com>
-References: <20251027192628.130998-1-jonas.gorski@gmail.com>
+	s=arc-20240116; t=1761646751; c=relaxed/simple;
+	bh=rTsiu6Lg9PZhrtKUJKqwPQO26S58LDXJ57pUZwdY5ng=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=f+urHKzzSs/IGcC97T/3A4sjqUJZAbf1PVOVPA6Bgyfsainsx/JYA3y0gc50aZB2EFVBfolGqtxJ/vGbuxuhv1H+7vIiHta5NDPOrOb8wDk0cKupyhLY5eFJUnMhfBIOARmr7LCUo6Q4F7B4Ru+xDwg8jFf9J7VSEXuyOFnG9w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpCjauIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3228C4CEE7;
+	Tue, 28 Oct 2025 10:19:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761646750;
+	bh=rTsiu6Lg9PZhrtKUJKqwPQO26S58LDXJ57pUZwdY5ng=;
+	h=From:Subject:Date:To:Cc:From;
+	b=fpCjauIFUkgpfgT171hCNQY/l4yDNErSco51dU7/5qdghLbuP22zvvc5Tm6IZrCIC
+	 5anRaznpikHViYV1KfvO/wgw4T8WXN5odJead3jyN9MDiHyALSAhAoUPGGdM5DQfzv
+	 I3pHRxCMUqCN2ZrQh1zMYHV9LIcex/MWeThdRRkIr/wMRjSCkc+30oSKXBUbKq/Q/7
+	 Rdjpqhc8E+oYFlw1SN+KmoJhj+VMi2l+daVPvdFJi3uJ2RBf5eZmB03Q2EG3emAzvz
+	 2Os6VzM3Ic24NgRJSwhqiNj/igG9k7bsPoPmAJFgA8CR5hMgJDW2EOkeEuVYI/Hvql
+	 reD5AiDv50eMw==
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH not for merging 0/7] irqchip/gic-v5: Code first ACPI boot
+ support
+Date: Tue, 28 Oct 2025 11:18:58 +0100
+Message-Id: <20251028-gicv5-host-acpi-v1-0-01a862feb5ca@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027192628.130998-1-jonas.gorski@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJKYAGkC/x3MQQqEMAxA0auUrA20HTqDXkVcSBNrFraSigji3
+ S2zfIv/b6iswhUGc4PyKVVKbnCdgbjOOTEKNYO3PjjrPSaJZ8C11APnuAtS6OkbHX3I/qBVu/I
+ i1/84Qi6HWYqajTVJTjA9zwvbbNIpcgAAAA==
+X-Change-ID: 20251022-gicv5-host-acpi-d59d6c1d3d07
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+ Marc Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Jose Marinho <jose.marinho@arm.com>
+X-Mailer: b4 0.14.3
 
-On Mon, Oct 27, 2025 at 08:26:28PM +0100, Jonas Gorski wrote:
-> When the device references were changed from relative to absolute in
-> commit e65cb011349e ("Documentation: ACPI: Fix parent device
-> references"), the MUX0 device was omitted from the paths.
-> 
-> So add it to fix the references.
+The ACPI and ACPI IORT specifications are being updated to support bindings
+required to describe GICv5 based systems.
 
-> Fixes: e65cb011349e ("Documentation: ACPI: Fix parent device references")
+The ACPI specification GICv5 bindings ECR [1] was published and now it is
+going through the approval process to get it ratified.
 
-Closes: https://lore.kernel.org/all/48d0fb45-096c-4caa-b51c-753c2f17f018@gmail.com/
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The Arm IORT specification [2] has been updated to include GICv5 IWB
+specific bindings in revision E.g.
 
+Implement kernel code that - based on the aforementioned bindings - adds
+support for GICv5 ACPI probing.
+
+ACPICA changes supporting the bindings are posted with the series
+to make it self-contained - they should not be considered for merging
+(and consequently the kernel code as well is not ready to be upstreamed,
+it is posted so that it can be reviewed ahead of spec ratification, we
+are not expecting any major spec changes).
+
+The ACPI bindings were prototyped in edk2 - code available in these
+branches [3][4].
+
+===========================
+Kernel implementation notes
+===========================
+
+IRS and ITS probing is triggered using the standard irqchip ACPI probing
+mechanism - there is no significant difference compared to previous GIC
+versions other.
+
+The only difference that is worth noting is that GICv3/4 systems include a
+single MADT component describing the interrupt controller (ie GIC distributor)
+whereas GICv5 systems include one or more IRSes. The probing code is
+implemented so that an MADT IRS detection triggers probing for all IRSes
+in one go.
+
+The IWB driver probes like any other ACPI device. IORT code is updated so
+that a deviceID for the IWB can be detected.
+
+The only major change compared to GICv3/4 systems is the GSI namespace that
+is split between PPI/SPI IRQs and IWB backed IRQs.
+
+The main GSI handle - to map an IRQ - has to detect whether to look-up
+using the top level GSI domain or an IWB domain in that the two IRQ
+namespaces are decoupled.
+
+IORT code implements the logic to retrieve an IWB domain by looking up its
+IWB frame id, as described in [1].
+
+Most important implementation detail worth noting is that - at this stage -
+ACPI code is not capable of handling devices probe order IRQ dependency on
+the interrupt controller driver their IRQ is routed to.
+
+This is not an issue on GICv3/4 systems in that the full GIC hierarchy
+probes earlier than any other device, so by the time IRQs mappings have to
+be carried out (ie acpi_register_gsi()) the GIC drivers have already
+probed.
+
+On GICv5 systems, the IWB is modelled as a device and its device driver
+probes at device_initcall time. That's when the IWB IRQ domain is actually
+registered - which poses problems for devices whose IRQs are IWB routed and
+require to resolve the IRQ mapping before the IWB driver has a chance to
+probe.
+
+Work on resolving devices<->IWB probe order dependency has started in
+parallel with this series.
+
+For PPI/SPI/LPI backed IRQs the probe dependency is not a problem because
+in GICv5 systems the IRSes and ITSes probe early so their IRQ domain are
+set in place before devices require IRQ mappings.
+
+ACPICA patches are a Linuxised version of ACPICA GICv5 pull request [5] and
+should not be considered for merging (ACPICA changes won't be finalized
+until the ACPI specification is ratified), they are there so that the
+kernel can map/parse GICv5 ACPI firmware data structures 
+
+[1] https://github.com/tianocore/edk2/issues/11148
+[2] https://developer.arm.com/documentation/den0049/eg
+[3] https://github.com/LeviYeoReum/edk2/tree/levi/gicv5_patch
+[4] https://github.com/LeviYeoReum/edk2-platforms/tree/levi/gicv5_patch
+[5] https://github.com/acpica/acpica/pull/1043
+
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+---
+Jose Marinho (2):
+      ACPICA: Add GICv5 MADT structures
+      ACPICA: Add Arm IORT IWB node definitions
+
+Lorenzo Pieralisi (5):
+      irqdomain: Add parent field to irqchip_fwid
+      PCI/MSI: Make the pci_msi_map_rid_ctlr_node() interface firmware agnostic
+      irqchip/gic-v5: Add ACPI IRS probing
+      irqchip/gic-v5: Add ACPI ITS probing
+      irqchip/gic-v5: Add ACPI IWB probing
+
+ drivers/acpi/arm64/iort.c                | 190 +++++++++++++++++++-----
+ drivers/acpi/bus.c                       |   3 +
+ drivers/irqchip/irq-gic-its-msi-parent.c |  45 +++---
+ drivers/irqchip/irq-gic-v5-irs.c         | 247 ++++++++++++++++++++++++-------
+ drivers/irqchip/irq-gic-v5-its.c         | 132 ++++++++++++++++-
+ drivers/irqchip/irq-gic-v5-iwb.c         |  42 ++++--
+ drivers/irqchip/irq-gic-v5.c             | 138 ++++++++++++++---
+ drivers/pci/msi/irqdomain.c              |  24 ++-
+ include/acpi/actbl2.h                    |  56 ++++++-
+ include/linux/acpi.h                     |   1 +
+ include/linux/acpi_iort.h                |  11 +-
+ include/linux/irqchip/arm-gic-v5.h       |   8 +
+ include/linux/irqdomain.h                |  30 +++-
+ include/linux/msi.h                      |   3 +-
+ kernel/irq/irqdomain.c                   |  14 +-
+ 15 files changed, 786 insertions(+), 158 deletions(-)
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251022-gicv5-host-acpi-d59d6c1d3d07
+
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Lorenzo Pieralisi <lpieralisi@kernel.org>
 
 
