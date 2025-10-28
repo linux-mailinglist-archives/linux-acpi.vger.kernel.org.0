@@ -1,211 +1,150 @@
-Return-Path: <linux-acpi+bounces-18283-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18284-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7700EC1518B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 15:14:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E68C153BD
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 15:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 459314EB0C1
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 14:11:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD4304E592B
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 14:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E554335094;
-	Tue, 28 Oct 2025 14:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6dnwsvU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A32242D9F;
+	Tue, 28 Oct 2025 14:48:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5413328E5
-	for <linux-acpi@vger.kernel.org>; Tue, 28 Oct 2025 14:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25F23AB88;
+	Tue, 28 Oct 2025 14:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761660652; cv=none; b=QrXISVtC+LKAgr1brgXlqygSjb1dhiTb4i5Jla5ZzNgK02ZKGkbLZZ76YdKoph77vqbepaXN+GnAU9GeoFAoLm4onO42BjrQZg0TtKzUfxXAaxAmuhL+nycUtWMyvTo0BGwh7N/X7p9RKjCHePgyh/jLyuUULwPU1pFt02RhqPU=
+	t=1761662905; cv=none; b=Gq7zUdqg8oXohVlPWpgdY0eKrCOjkIMAVEQfu6LgKvbKdueeWh2Vh4e1MyJYKTlKgCqhJgz6XiQ+JMN7eJS9rOi7BkxD1976JdX5nHDFvhFC6N344RjRH1jgZHF94GlWX3+v3F5VxUK96hz76IqNnXbiLQDI9+cqcqKJ83PL6aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761660652; c=relaxed/simple;
-	bh=9MQdQxj70yjmNeGCIc6Di+FRAIbRgsLKF+QiN38fNXY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ThzDZ7a2vBW90wZuVpWa15V7MYgDo2SabY8TOJNq2ML/5Q3ORRRqwXnW80VRNT37jnjUd3bwlmz0OXGswvkZC6AnJrPyFlNrl4Nk/Wc5Q5nawXUWO+fy5pZ5nwiAzs7o4K6ZUceYgw879kzhYC3dpuaGc9XTOc+fZkp2EAiHyOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6dnwsvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C964C116C6
-	for <linux-acpi@vger.kernel.org>; Tue, 28 Oct 2025 14:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761660652;
-	bh=9MQdQxj70yjmNeGCIc6Di+FRAIbRgsLKF+QiN38fNXY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=G6dnwsvUgrYl1OrqkZ9wOHYFRXBUnREZvE3I4Q8DK7cBq1Rg4GC1O7T6hLgDpw0uB
-	 LOeIcsJWCYs0+Ds6rJt+IA/ZYvko7PDG4uz6+BNtvuScjGYNU2WOvlu0dYpaPb1Z9E
-	 jyNTQnXLrBqMWo/Pr6Q+ynv2d4OyfGAu08zuKhFTmvkmk4JoLjqnvLFKHqVeYlHWGT
-	 B403m1RShc+XaN/zUuWTQFaZD4vHt8Y1H907S1PEHjuifUbVXTq+YNy2b3lD2UpCuh
-	 kdYycVw0GLNngjDcjVuqHjAAqX6aE1wbx/9K43ceEhm6UDjebJHz49FdMuy7BzX5ci
-	 hB27FC679dGAg==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-443ac891210so3258143b6e.1
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Oct 2025 07:10:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXoPB4vGQlQRs0Bq9hkkTS+26Tnpl+YeOxfJZx3Sf/lQg6/UtzEHDH5xG2JhVLWEsrfIvG2BCBH/Rhf@vger.kernel.org
-X-Gm-Message-State: AOJu0YzusBKNxFXVmFZ4IqPnzrvYaAjyXb0YbeaYoCSyJs6FUwlZiZnk
-	wEsDZBfZ8NJW3bPufX/jLf6MmCJq4T0MnL/q22V+sHCO82RVW0KMujPnufFFnfE3nRamCjc+nNo
-	vxidd4iF7iK77iev2az6xnbPtfXDjLVc=
-X-Google-Smtp-Source: AGHT+IE0knAQw6FfaushnbySWImrTzxFtRDabqyVZ1OX3SSkfmRS+Rz3Ee2OaBsxYv6Q+KSNzkK0/9j1cQNQK9cPfvg=
-X-Received: by 2002:a05:6808:15a7:b0:441:8f74:f1f with SMTP id
- 5614622812f47-44f6bb1e9c6mr1559391b6e.57.1761660651602; Tue, 28 Oct 2025
- 07:10:51 -0700 (PDT)
+	s=arc-20240116; t=1761662905; c=relaxed/simple;
+	bh=u5tgenMRvxilh77m58rybstaqB+YjCZ+fqhpsL+7yLw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mq9gL0wZWsTB9kTKImcCnK73lnSJTd6ZCZCt9Ausw1czj50z0Ydeqod8MY4okFcuielxAYdVJEUOUKKsyXb84XOQzR/33YLljUQYNKimBQJdPDe/77almzqnyIhhoBjqpEvihSaXSk7JOxfJ87S7OoZEcUzthknCtf1RSs+8uX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cwtSH23J8z6M4hV;
+	Tue, 28 Oct 2025 22:44:31 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9749D1400D3;
+	Tue, 28 Oct 2025 22:48:20 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Oct
+ 2025 14:48:18 +0000
+Date: Tue, 28 Oct 2025 14:48:16 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	"Len Brown" <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>, Borislav
+ Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Davidlohr Bueso" <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
+	"Alison Schofield" <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+	Mario Limonciello <mario.limonciello@amd.com>, Huacai Chen
+	<chenhuacai@kernel.org>, Heinrich Schuchardt
+	<heinrich.schuchardt@canonical.com>, Arnd Bergmann <arnd@arndb.de>, "Peter
+ Zijlstra" <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, "Guo
+ Weikang" <guoweikang.kernel@gmail.com>, Xin Li <xin@zytor.com>, Will Deacon
+	<will@kernel.org>, Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan
+	<gshan@redhat.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6n?=
+ =?ISO-8859-1?Q?ig?= <u.kleine-koenig@baylibre.com>, Li Ming
+	<ming.li@zohomail.com>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Karolina Stolarek
+	<karolina.stolarek@oracle.com>, Jon Pan-Doh <pandoh@google.com>, "Lukas
+ Wunner" <lukas@wunner.de>, Shiju Jose <shiju.jose@huawei.com>,
+	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 2/6 v6] ACPI: extlog: Trace CPER PCI Express Error
+ Section
+Message-ID: <20251028144816.000018a3@huawei.com>
+In-Reply-To: <20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
+References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+	<20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250929093754.3998136-1-lihuisong@huawei.com>
- <20250929093754.3998136-6-lihuisong@huawei.com> <CAJZ5v0iLt7rnXBaTBv=-ztKro39h1hECQS_Ov9Cn1eBcfhXDaQ@mail.gmail.com>
- <92b1b431-9855-43fb-8bb3-801649064438@huawei.com> <CAJZ5v0g0PgicTEAb3gAeF2D3ZqONNt+6odt2SfGE7XtY3zoPyg@mail.gmail.com>
- <ab814879-37d6-49dc-8a38-6b94cabf9327@huawei.com> <CAJZ5v0hHO_vuQ71sQ2=vmjEMNr3jYh6Wx_nk55gQVdGgWFDHKQ@mail.gmail.com>
- <37fb4e84-d404-449e-986a-e5ccb327bd78@huawei.com> <CAJZ5v0j9i1W3JmDQP+-tTqu1dnE1i1XeZUk5=JMKRN_e++iJ7w@mail.gmail.com>
- <8b1dc682-928a-4898-876c-ae6ccf59d328@huawei.com>
-In-Reply-To: <8b1dc682-928a-4898-876c-ae6ccf59d328@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 Oct 2025 15:10:39 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hTkVzuKQu4WFOxtdfC-uXTBYkBr77UurXj_zfDbgV0vg@mail.gmail.com>
-X-Gm-Features: AWmQ_blMwiClUZfXYAWhC0RqhmMfjUZfV9B0g6Ofzj4BSy4UXTWbOnLbxq5ntE4
-Message-ID: <CAJZ5v0hTkVzuKQu4WFOxtdfC-uXTBYkBr77UurXj_zfDbgV0vg@mail.gmail.com>
-Subject: Re: [PATCH v1 5/9] ACPI: processor: idle: Add the verification of
- processor FFH LPI state
-To: "lihuisong (C)" <lihuisong@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
-	yubowen8@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Tue, Oct 28, 2025 at 1:45=E2=80=AFPM lihuisong (C) <lihuisong@huawei.com=
-> wrote:
->
->
-> =E5=9C=A8 2025/10/27 20:28, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Mon, Oct 27, 2025 at 2:43=E2=80=AFAM lihuisong (C) <lihuisong@huawei=
-.com> wrote:
-> >>
-> >> =E5=9C=A8 2025/10/26 20:40, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> >>> On Fri, Oct 24, 2025 at 11:40=E2=80=AFAM lihuisong (C) <lihuisong@hua=
-wei.com> wrote:
-> >>>> =E5=9C=A8 2025/10/23 18:35, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> >>>>> On Thu, Oct 23, 2025 at 12:17=E2=80=AFPM lihuisong (C) <lihuisong@h=
-uawei.com> wrote:
-> >>>>>> =E5=9C=A8 2025/10/22 3:42, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> >>>>>>> On Mon, Sep 29, 2025 at 11:38=E2=80=AFAM Huisong Li <lihuisong@hu=
-awei.com> wrote:
-> >>>>>>>> Both ARM64 and RISCV architecture would validate Entry Method of=
- LPI
-> >>>>>>>> state and SBI HSM or PSCI cpu suspend. Driver should return fail=
-ure
-> >>>>>>>> if FFH of LPI state are not ok.
-> >>>>>>> First of all, I cannot parse this changelog, so I don't know the
-> >>>>>>> motivation for the change.
-> >>>>>> Sorry for your confusion.
-> >>>>>>> Second, if _LPI is ever used on x86, the
-> >>>>>>> acpi_processor_ffh_lpi_probe() in acpi_processor_get_power_info()=
- will
-> >>>>>>> get in the way.
-> >>>>>> AFAICS, it's also ok if X86 platform use LPI.
-> >>>>> No, because it returns an error by default as it stands today.
-> >>>>>
-> >>>>>>> Why does the evaluation in acpi_processor_setup_cpuidle_dev() not=
- work?
-> >>>>>> The acpi_processor_ffh_lpi_probe does verify the validity of LPI f=
-or ARM
-> >>>>>> and RISCV.
-> >>>>>> But the caller of the acpi_processor_setup_cpuidle_dev()don't veri=
-fy the
-> >>>>>> return value.
-> >>>>>> In addition, from the name of acpi_processor_setup_cpuidle_dev(), =
-its
-> >>>>>> main purpose is to setup cpudile device rather than to verify LPI.
-> >>>>> That's fair enough.
-> >>>>>
-> >>>>> Also, the list of idle states belongs to the cpuidle driver, not to=
- a
-> >>>>> cpuidle device.
-> >>>>>
-> >>>>>> So I move it to a more prominent position and redefine the
-> >>>>>> acpi_processor_setup_cpuidle_dev to void in patch 9/9.
-> >>>>>>>> Fixes: a36a7fecfe60 ("ACPI / processor_idle: Add support for Low=
- Power Idle(LPI) states")
-> >>>>>>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> >>>>>>>> ---
-> >>>>>>>>      drivers/acpi/processor_idle.c | 10 ++++++++--
-> >>>>>>>>      1 file changed, 8 insertions(+), 2 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/proces=
-sor_idle.c
-> >>>>>>>> index 5684925338b3..b0d6b51ee363 100644
-> >>>>>>>> --- a/drivers/acpi/processor_idle.c
-> >>>>>>>> +++ b/drivers/acpi/processor_idle.c
-> >>>>>>>> @@ -1264,7 +1264,7 @@ static int acpi_processor_setup_cpuidle_de=
-v(struct acpi_processor *pr,
-> >>>>>>>>
-> >>>>>>>>             dev->cpu =3D pr->id;
-> >>>>>>>>             if (pr->flags.has_lpi)
-> >>>>>>>> -               return acpi_processor_ffh_lpi_probe(pr->id);
-> >>>>>>>> +               return 0;
-> >>>>>>>>
-> >>>>>>>>             return acpi_processor_setup_cpuidle_cx(pr, dev);
-> >>>>>>>>      }
-> >>>>>>>> @@ -1275,7 +1275,13 @@ static int acpi_processor_get_power_info(=
-struct acpi_processor *pr)
-> >>>>>>>>
-> >>>>>>>>             ret =3D acpi_processor_get_lpi_info(pr);
-> >>>>>>>>             if (ret)
-> >>>>> So I think it would be better to check it here, that is
-> >>>>>
-> >>>>> if (!ret) {
-> >>>>>           ret =3D acpi_processor_ffh_lpi_probe(pr->id));
-> >>>>>           if (!ret)
-> >>>>>                   return 0;
-> >>>>>
-> >>>>>           pr_info("CPU%d: FFH LPI state is invalid\n", pr->id);
-> >>>>>           pr->flags.has_lpi =3D 0;
-> >>>>> }
-> >>>>>
-> >>>>> return acpi_processor_get_cstate_info(pr);
-> >>>>>
-> >>>>> And the default acpi_processor_ffh_lpi_probe() needs to be changed =
-to return 0.
-> >>>> Sorry, I don't understand why pr->flags.has_lpi is true if
-> >>>> acpi_processor_ffh_lpi_probe() return failure.
-> >>> It is set by acpi_processor_get_lpi_info() on success and
-> >>> acpi_processor_ffh_lpi_probe() does not update it.
-> >> The acpi_processor_get_lpi_info() will return failure on X86 platform
-> >> because this function first call acpi_processor_ffh_lpi_probe().
-> >> And acpi_processor_ffh_lpi_probe return EOPNOTSUPP because X86 platfor=
-m
-> >> doesn't implement it.
-> >> So I think pr->flags.has_lpi is false on X86 plaform.
-> > On x86 it is 0, but what if acpi_processor_ffh_lpi_probe() fails on arm=
-64, say?
-> Arm64 supports the acpi_processor_ffh_lpi_probe().
-> So pr->flags.has_lpi is 1 on success.
-> >>>> In addition, X86 platform doesn't define acpi_processor_ffh_lpi_prob=
-e().
-> >>>> this function will return EOPNOTSUPP.
-> >>> Which is exactly why it is a problem.  x86 has no reason to implement
-> >>> it because FFH always works there.
-> >> Sorry, I still don't understand why X86 has no reason to implement it.
-> >> I simply think that X86 doesn't need it.
-> >> AFAICS, the platform doesn't need to get LPI info if this platform
-> >> doesn't implement acpi_processor_ffh_lpi_probe().
->
-> > Well, that's what is implemented in the current code, but it will need
-> > to be changed if x86 is ever added and I'd rather avoid cleanups
-> > making it harder to change.
->
-> What you mean is that X86 use LPI?
+On Thu, 23 Oct 2025 14:25:37 +0200
+"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
 
-In the future, x86 may want to use _LPI, that's all.
+> I/O Machine Check Architecture events may signal failing PCIe components
+> or links. The AER event contains details on what was happening on the wire
+> when the error was signaled.
+> 
+> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
+> by the I/O MCA.
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+Hi Fabio,
 
-> If X86 also define acpi_processor_ffh_lpi_probe and use LPI, this patch
-> is also good to it.
+Was taking a fresh look at this as a precursor to looking at later
+patches in series and spotted something that I'm doubtful about.
 
-Well, fair enough.
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index 47d11cb5c912..cefe8d2d8aff 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+>  	return 1;
+>  }
+>  
+> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> +			      int severity)
+> +{
+> +	struct aer_capability_regs *aer;
+> +	struct pci_dev *pdev;
+> +	unsigned int devfn;
+> +	unsigned int bus;
+> +	int aer_severity;
+> +	int domain;
+> +
+> +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+
+Looking again, I'm not sure this is as intended.  Is the aim to
+allow for either one of these two?  Or check that that are both present? 
+That is should it be !(A && B) rather than !(A || B)?
+
+
+> +		return;
+> +
+> +	aer_severity = cper_severity_to_aer(severity);
+> +	aer = (struct aer_capability_regs *)pcie_err->aer_info;
+> +	domain = pcie_err->device_id.segment;
+> +	bus = pcie_err->device_id.bus;
+> +	devfn = PCI_DEVFN(pcie_err->device_id.device,
+> +			  pcie_err->device_id.function);
+> +	pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+> +	if (!pdev)
+> +		return;
+> +
+> +	pci_print_aer(pdev, aer_severity, aer);
+> +	pci_dev_put(pdev);
+> +}
+
 
