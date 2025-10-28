@@ -1,126 +1,103 @@
-Return-Path: <linux-acpi+bounces-18272-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18273-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C83C132D0
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 07:32:19 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53E3C13C53
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 10:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28B6F1A27430
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 06:32:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F5764E7AFD
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Oct 2025 09:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33429C35A;
-	Tue, 28 Oct 2025 06:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDDC2DA776;
+	Tue, 28 Oct 2025 09:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="aErX//JP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZbvQb/um"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E97029B8E5;
-	Tue, 28 Oct 2025 06:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF082C0294;
+	Tue, 28 Oct 2025 09:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761633110; cv=none; b=oPYvfiVUbe81PIEmBxHQ4CU8pIA92Rrtmr9p/jjX3AVoqyB9xR8ZImkZ9o1KwV/I4i8n00yAjpX0ZVhZHoBA5MDDK/jCWEXGEVA+bfEpvJLaSLnIHOHWHTnSxi3j91oQQcwX0wybkgN/A+0ror0+q+8kIyJ8aQFCr3hbHG+vO/c=
+	t=1761643246; cv=none; b=u2i7oyoTpCL6v+fo0rozWCjnlAnlDuau2/xZkacsinU+yvLTE/Q9wCbxi3Qfs6lmznW9RlGc9c+0gOY9ApwpltKi7BitRlRhemDeyoiuVnTxTd//m+bCvWwWjIZ6DIYiSv1zO19l1huhVCdENNILq9quGTv8Rt27fL5msO1wNFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761633110; c=relaxed/simple;
-	bh=kRRUofgeos3ZtqWPJdn9BGVMz9ruxa9wz+KdE97I8AM=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=K4HmTkiThScLvdBAQO/RGOmcYzg7aYtIg/PRKHLKtxh1D8hWXjY3KA7gp2um6MpJh39BxVkHqgjtBQDPDec2r0FvtUluv4uOU0hJQ/Wy+G24U44AZpVuwleW8MxOHJdMMWzLDAZBKQvy/5n4q7WZLferdZ/JAyhJvR5Z/SITA30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=aErX//JP; arc=none smtp.client-ip=162.62.57.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1761632799;
-	bh=pi1zXcr5RpNJ+LWrYVRPR8sqQuBNG7+Xw9qcszIoFM4=;
-	h=From:To:Cc:Subject:Date;
-	b=aErX//JPDEPZGG8rmiRIdO0sFYckDF+Oa7ZRtO0278rzCOlG7Is+ZLDcynWPlSYLQ
-	 cIyb8hjh/A+DhlG3aGjCZA+JxHgEpMxvD0m/xgPWS3fGayffKxh2q48XfmFuZfJ3EZ
-	 B+LQug4IUVs7Zb2jr7DpV1Jzd117xs4LH3iYsKTw=
-Received: from dcitdc.dci.com ([61.220.30.51])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 5189CEA7; Tue, 28 Oct 2025 14:20:24 +0800
-X-QQ-mid: xmsmtpt1761632424ti6wb9lir
-Message-ID: <tencent_EA7267F6C936BBDE7977C3076819C9BA8D08@qq.com>
-X-QQ-XMAILINFO: NAuAIaytDrXp1QDAZDTmKMpfa75ZonkIdJUkMhBt1OUgMrQzXFl9JXtmDRFzvX
-	 aDLhNZEqZ2jrlJ20GkyBgreWHhn/pSI9rQ3/ZWKWvxX6MmLIFAAU8lBNsrIxytAdkkgC3e2QksDl
-	 fDMgIofmu7Yho3eE0WVMxO/sdLeTAfjnkyf49hC8tSr/wBhdIhDHRKDvvMqfBiYG7A3vIWl0eieH
-	 f0Rpwvsq1y7H0iChqsjXKtXP1ZpeANgw7H2dHIL3VNs2pUPdomXWP5IZDVWYyFoqmsHm+Qh/POU/
-	 4UQvtpCq4jAp1zIw1yZFSkO1hg6K3QGRaR3G+0gfv+bowztobV9Ak2fzZ9UdG93WA8UVZQj7gjq6
-	 rzrRHJuicr4Bsg3NlN9ofuAf9Bxagcui9ksX1z31bhAQucyNZd/nYCkk8uO5wZfLFEMvvjeYR+f8
-	 P/0jZhs8y3J7WTev4HwpEfRNIcnN5obxcPnm/UfxO5AkDO77bvCCFo/Djwt0o2fc0tqN5ail53vY
-	 z7/tg16OR1Hr/Ml/WX/XZBPZr3LkJqew9ZS+rYFje4HLpyt/l0RQuylaJdj/u6QUKkdt8eyBNVJo
-	 uYEe8IN95QwdYhpSg4F21XhooSzCr4ecN5QH/ONL0opMR21OWwzsv1G68CRxGBxJUfBxz3LNRb6H
-	 Mwv1RNLQrQ8TrWbcWcMGhTMcyHs9pRfOe+xT66al7C2hYUmii0C5ino8OXOOGgit6GD6S66dsjtm
-	 Epi7dps797rlkpLddkhJACRZuw3la3hdiHP7AUTn7VoGTQrXhtqEb8B+rPe20C0Br9Zbs3kTVMQd
-	 CejNihFBw2MTGW39fstBXe6RwQ//LNdkpuRnsDCdl3yk55KjByKHIRds7KPJCg9oaramsLM+937T
-	 bl11CutpI+D3ZCWtQ9ajA70gmTJ3pTLlEFlE+CZ7LHD387r9FAZWz7mpDQf1JgcJEyPL33X9VrtD
-	 pxlaE10+iv8n26g2uPyRxL3XPNwJkTKUpuwVhQPhDzMrviR0ucSjcZxKJUzEWT
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-From: "Shang song (Lenovo)" <shangsong2@foxmail.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shangsong2@lenovo.com,
-	"Shang song (Lenovo)" <shangsong2@foxmail.com>
-Subject: [PATCH v2 1/1] ACPI: PRM: Skip the initialization when boot from legacy BIOS
-Date: Tue, 28 Oct 2025 02:20:13 -0400
-X-OQ-MSGID: <20251028062014.3090136-1-shangsong2@foxmail.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1761643246; c=relaxed/simple;
+	bh=SKHL9sv+geSvfdC16ZXGX9bi5INVTRDZqvPMpldezFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NoF6wuVkzgz0yc3lA2pS1JzBOhWVUDbwMLS0hxPA4FdpKAd9spg39axmOCHez3r+f690cxr0cHfsC+OdjmcBoMDsslN01e+xOG4lZRhuaEbf/6LYMKBZF0Kf0C7ttQ7KC81ZHZirCnNamUCEOity3DgxxVU6vtyqqopd0OOhG7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZbvQb/um; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761643245; x=1793179245;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SKHL9sv+geSvfdC16ZXGX9bi5INVTRDZqvPMpldezFc=;
+  b=ZbvQb/umtOO0JeBGmKNr3H9JWOGjKAsi10NgGon5V1BTirVNGXwhiJ4k
+   wZlBvMCMd7mMMR9pJfW2VE0MFhnk8Hqp7g2bqAiovTtS24u1EAeJTg3n6
+   cAo6Q5Hlz0iLkBsJ2D34T47qc/ZlNLJl7xIAGBYMZmJmnVGZgZY97VFcH
+   khX1TeuX/v7ThD/N0wlGg9XMxGkcEABmxT98KJHH4EescVHWcMCvaJKqa
+   Am+U1cPbs+KtTYce1Nft6hwr3n+/j9qjrGEIgPxRqdbQHsDgjffNSpGMu
+   /TSdteJBUyUW6SnxFLDIQZ/eFo3GiY+74neVSqBuFjDdgnmeqsLzKot4x
+   A==;
+X-CSE-ConnectionGUID: llKcOKx9RFeOHm8lJeyQlg==
+X-CSE-MsgGUID: /sxHajxRREWyL0i2S7Am/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66354539"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="66354539"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:20:45 -0700
+X-CSE-ConnectionGUID: pklLLn3aThG7RGCwZZ2E4A==
+X-CSE-MsgGUID: zb9QtwiZQzGfwXOBe74dDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="184527887"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 02:20:42 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vDfsd-00000003GXG-3rdH;
+	Tue, 28 Oct 2025 11:20:39 +0200
+Date: Tue, 28 Oct 2025 11:20:39 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: ACPI: i2c-muxes: fix I2C device references
+Message-ID: <aQCK56FcZSCZdmgE@smile.fi.intel.com>
+References: <20251027192628.130998-1-jonas.gorski@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027192628.130998-1-jonas.gorski@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-To address the confusion caused by the misleading "Failed to find VA for GUID..."
-message during legacy BIOS boot, making 'EFI_RUNTIME_SERVICES's earlier judgment
-can prevent this false alert.
+On Mon, Oct 27, 2025 at 08:26:28PM +0100, Jonas Gorski wrote:
+> When the device references were changed from relative to absolute in
+> commit e65cb011349e ("Documentation: ACPI: Fix parent device
+> references"), the MUX0 device was omitted from the paths.
+> 
+> So add it to fix the references.
 
-Signed-off-by: Shang song (Lenovo) <shangsong2@foxmail.com>
----
+> Fixes: e65cb011349e ("Documentation: ACPI: Fix parent device references")
 
-Changes in v2:
-  - Add comment for the code update.
+Closes: https://lore.kernel.org/all/48d0fb45-096c-4caa-b51c-753c2f17f018@gmail.com/
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
- drivers/acpi/prmt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 6792d4385eee..4457ff17f878 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -392,6 +392,14 @@ void __init init_prmt(void)
- 	if (ACPI_FAILURE(status))
- 		return;
- 
-+	/*
-+	 * Return immediately if EFI_RUNTIME_SERVICES is not enabled.
-+	 */
-+	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-+		pr_err("PRM: EFI runtime services unavailable\n");
-+		return;
-+	}
-+
- 	mc = acpi_table_parse_entries(ACPI_SIG_PRMT, sizeof(struct acpi_table_prmt) +
- 					  sizeof (struct acpi_table_prmt_header),
- 					  0, acpi_parse_prmt, 0);
-@@ -404,11 +412,6 @@ void __init init_prmt(void)
- 
- 	pr_info("PRM: found %u modules\n", mc);
- 
--	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
--		pr_err("PRM: EFI runtime services unavailable\n");
--		return;
--	}
--
- 	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
- 						    ACPI_ADR_SPACE_PLATFORM_RT,
- 						    &acpi_platformrt_space_handler,
 -- 
-2.43.7
+With Best Regards,
+Andy Shevchenko
+
 
 
