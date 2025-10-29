@@ -1,77 +1,79 @@
-Return-Path: <linux-acpi+bounces-18314-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18315-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791B1C1A035
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 12:29:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC27C1A050
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 12:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 06773507C27
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 11:27:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF8421894B15
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 11:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1FD32E6B9;
-	Wed, 29 Oct 2025 11:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11E5331A4C;
+	Wed, 29 Oct 2025 11:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="G6c7LF4e"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="KsGXi5Kp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1A732ED4B
-	for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 11:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B4C3314B3
+	for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 11:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761737227; cv=none; b=VX+NC91dJbPvairUJqrdkaDWb5YmeedD+WsP9L5/rWyRPL4lTLsbzIr69hojomvCqcNakUhrELfsV7mDk7z24h4i4tTNQ3kOhZP+kt39Un0M91+xfgGAQ0Eb1utK8Ye1ePPGO9aScJemZxTDsKWAOGwSnqsMih8APJ/dgOPtADQ=
+	t=1761737231; cv=none; b=Q9QmddVEon6AuyrasQCZX91J32suly9RN0OVrTlMxiMQF1DLSA5CJEB6tEwPTSb0j3q/230EzBDo+BuHn6BlIRpB3MiDO2hu+mScAOOsz4lgitIjowgejJnPanW/ZTsMciCgymh6yS+vYc6+EWeaTA0hwKg3YuIK9oMScOO9LCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761737227; c=relaxed/simple;
-	bh=Hjkf53zqmGuffTDA/lEf7CNxn/oGC5EWuEOnSQGpNUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z3kmHxCKx2Q4/dABZ8CNJk+QGPZAtMCEcWtKnIqcxFz6D3f0Fb+CBDupP/nCFtSzB1WPizWswZDr3eKkeP/+1WIJV86LIWgEZ998ciGF0CcuvNMsS1qqwoC5+7v0ECDeAp9S67aUR7kr8Pr4DFTlIsWpaOMmakGh2i1iLBNtLRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=G6c7LF4e; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1761737231; c=relaxed/simple;
+	bh=xZ3ZGRZyyesAYiVSJppgbzc/6wpmKcXOnx/IFbeBZY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j1qJbuqJmZuFNtQxeGd4onrPax07cZR6a2uvA/sCffQO78/p+hpk3izNdYqqAXtvUaKZGRiVWN0ytL+nneFUzd25SiMHiKuHFKM6H3949tNglceWrBKBI7DSER3rqbMEOoct6m149n9x+mVjBdhbzNucVkCtrsphZwdoZr2mWGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=KsGXi5Kp; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-330b4739538so7178173a91.3
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 04:27:04 -0700 (PDT)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-33292adb180so7236462a91.3
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 04:27:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1761737224; x=1762342024; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=o/A6oM3VT03v+OO6JYlGjLYI0SFwHFSmDU7wY8ZWBxg=;
-        b=G6c7LF4e+f4s2AYPLQKTLRnc9nPT3davp1/XTjgz645UVttXKTA2x4v9WbO+BsWI0O
-         h3ogonXDJQtdomshXokrrcrZpAv/mM2PRpHchjAJFvQ3YqOjWVmI23dqJyvXeg/EVghf
-         GmP7iBDNxYJGwbPjNbUzplnd9w0Kp1mm96ugwmeQxdVxyU39iRSTcv5veq0/qLjU7UxF
-         nFYJ2waVwj7tVnKG3u5YmWpAPmFhPOxiyBvtjEyoS1baWJJZxGOOvAHCdqL7Iox1dCkt
-         kZhJSzFsLy9M0mlFhE6G8jCUABby4+QRoK1t4ts2xpc9Mpytwx/PeXsS5qtZjJ71se8t
-         b7kA==
+        d=ventanamicro.com; s=google; t=1761737229; x=1762342029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fc2pmS4Yu1PyEFNeNlAsHoxFDYNywDlEMWQLdy1zt3o=;
+        b=KsGXi5KppNs02/pneO9yLUQjhUPG/sVUpEifv5AsL7S0cJmlOETyulMh0j6qoUTBze
+         cDL4hwaZxA1qr4aU3B8pvs22ERpQSlccLOzL9l63tqb8oPELiKyW3bP6IAs+KwMMWLr1
+         +bAT5d8WVCZzSRYz9r8BnD2k5DOaVhRGqWBUWCxRqoVGJL5ysF32CxePnM85N6ZufQdR
+         NgXgLKY5RVrnx+Ha+ba9YyjmhZTwhCXrq33l1INaZgO/tXVu8oSVX2bwnxl+MoAiy3Kj
+         ohiZedkNnqIm5JtwuQQJURXVzBHrgDrE9FoSX9j3EqdE+4FwnrVxB4ynJ9SS6ksXphuo
+         81XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761737224; x=1762342024;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o/A6oM3VT03v+OO6JYlGjLYI0SFwHFSmDU7wY8ZWBxg=;
-        b=V9zTImgifL1KWIbtSvpVdzY7KsHs2UNyX4oYAMp9SUK07b9CSO42/51q8EtTUEeFZg
-         tRRdgFh/dTq/WEHzhZos6haKSgSfEVf/kIZJpRVa6r/msMTzyfLjfZTmhIg15kWnNOnx
-         m8ZAJCllqZnxmb9WcsgVNM6XRdhg+H9HZ9bwuIjbPWaAhZEzgV5e3XeBfVvGuWqBdCwz
-         HxRVyg315kcEozQ9DzUGU+hd2bGLIcZp3O6jHTreW1j0kMolhMGqycXwTEHyTlc68ysw
-         Slt+sZ/VaEklHl1R/AsOhhRI9S3Ivrh5fwk/dYggeU/bV95veEeu4oDXUhHvmBPmPCkQ
-         I5ig==
-X-Forwarded-Encrypted: i=1; AJvYcCWfqSX5AoTrdUm3zG4DYOKPE8HcAdVtAAMTMdf4AEUliKQj47f4wNbdzhoZoWClsSCJePMYH8M/H5gF@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrHiVOAzdUidSD5vnawVSVdDGFGw3BfHOoRuDi3RgrmRuFz+sI
-	xXu+6gLrxrkCpRkFv/Xh4cggLVnexi1UQw40iJjbQdFpxKVANAxbjuW3TGaRNERjm0U=
-X-Gm-Gg: ASbGnct1uOsArv/+7wi009MlKmioi2IOeLhjwsSRt3V8wKIwNz5e6ejMz5e/y/QtEaL
-	86xHYbSHj6JA0luhh9i4ZENeSMCXmUMvPmZ3YXqSNcqjtlHyXHBzF6M0e3B9thIVIsvAY6rBjBs
-	Jddxxrep9zgBg/oNIXYE5vPPAuO6SBCE/YZXdpY3FGdjUBFNtdhzAfu02hPabR3rspvuwvVtQcO
-	Wk7VN4JGlelmFfOv+wxlmMzi8NI8pJCp6GvbESr2ZT5TN11UWZxoT2EwgoyHMYCnEcugLWg4VZN
-	YawUlb3IpeQ2OY0OXwlIqJjZN6AqzRkAvLeORm0ATtO+L7FHLbdwkx732b01xmz5ZKIwIk0yROr
-	tcl05CXzpzM+RmS1GePAjjjb4vMy/YctQtVSbDnPGcxjAL+63HK7Yqn0PR2ZC7IEMy9Wdi1cutV
-	1W8ru3hQFdkrZ1UnCR/mc/h6QmRXtL
-X-Google-Smtp-Source: AGHT+IHpjKO2jUEb6+cQytmuQWp7mpQLNMuWE1ztXt3I54KFHlYNvHVC4AHhBNanzFdemT5w+k0ovA==
-X-Received: by 2002:a17:90b:134b:b0:32d:db5b:7636 with SMTP id 98e67ed59e1d1-3403a28efb0mr2855484a91.27.1761737223563;
-        Wed, 29 Oct 2025 04:27:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761737229; x=1762342029;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fc2pmS4Yu1PyEFNeNlAsHoxFDYNywDlEMWQLdy1zt3o=;
+        b=PsjJxHKV0sHIpR+KzgFSoke51W+rxETNMH+rfBis3spJ6dt5Ab8jugj5HAZwys7SCz
+         9ebVesy7hxRDjfUlOvNaCf0jnibkdpnyyMbWjpzBi9F+y8xq4VqtCMkUpbQQkzjjvF+X
+         P0f0s1WG2cjMovRxEonfaviqPnxFcsDOM2XJa8PF2lqwOaRmdwckrHgyAGFAfODMiWXN
+         9nSf4AmgnXIcFOgmXLh2+0Ayzws+8QIpZXo4q13v3R66U5lpaK5rb9vCLIV82Lm9uLMU
+         ejI6tpKigiPHUf3vFa/l9jFL6HR9z90edT34yaA8RYYQO3TJOCqwakdN6JuzpXy784e4
+         wtSA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6EFl8OiH6zVraS6/Q09fNzNoQxSamwReO+mkfhf7qqP5WZ39AOBDl8VdaETo9qH2MaOrlnhKiwkn8@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEhlL1Wv0cs8/V47HGVQKQmw6yqzKyy61KJsEeaehnt9fBwQ01
+	mniG4ahy+153U3am15o2biox2RTKmAQlN4uGa70FsZqIpRWH4XEj3gefxBUEr+mRAII=
+X-Gm-Gg: ASbGnctrrqr36AY3mg7yBXCubNyLVYBtG26XrtfXplj2ccJrHtie9mPG7C7Wc+HRmdn
+	wxI+XpmAZAqaSeZwBQCTNkBbLSSCDTy5h5mHDgG8QBjuY/lGtfKlElpty10fv9iXxJQuepBPmsT
+	Nm9YwIdk5wS5s4vKc4LRHjEo7G739XrFgZkv/+YtgWEo+aLStflPJsDCmS3yLVH+iyHNn5r1uAk
+	zmj9YWkCXV1mPCwsSF0nN/1fEiJN5PW7uYL5rOFb8j+Vw/DbrwgWqpAuONtmlMatFx5mE9qdxeJ
+	E6B3VdT19OVpvTgSpA/Xa8mlgdBdGucpXcdx/prD6xjRneg9GviPLHXd/BwIKEq1/IGCnW/unhQ
+	h3lelST+prb7FCunP22KJfc0svFa4VsT8LiEcFSJk8X2Pp2Nxhoq7Wn+Wcvk+0dsD/CXZ8xrxQA
+	Em3RvMV68k1xL4eylzLCurXT3TjiAZ
+X-Google-Smtp-Source: AGHT+IGEAqFeWf0ftjlgJx4OkwPZYhleAzhblNhIB2XsxH/EACVURZv5OiId6pITaCbKSnoGThy0lA==
+X-Received: by 2002:a17:90b:2811:b0:330:6f13:53fc with SMTP id 98e67ed59e1d1-3403a290f88mr2790213a91.27.1761737228426;
+        Wed, 29 Oct 2025 04:27:08 -0700 (PDT)
 Received: from ventana-desktop.localhost ([2405:201:d019:c0ce:f7f5:7789:48e5:c03f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7f6040sm15316918a91.16.2025.10.29.04.26.58
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7f6040sm15316918a91.16.2025.10.29.04.27.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 04:27:03 -0700 (PDT)
+        Wed, 29 Oct 2025 04:27:08 -0700 (PDT)
 From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 To: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -90,10 +92,12 @@ Cc: paul.walmsley@sifive.com,
 	sunilvl@ventanamicro.com,
 	apatel@ventanamicro.com,
 	Himanshu Chauhan <hchauhan@ventanamicro.com>
-Subject: [RFC PATCH v2 00/10] Add RAS support for RISC-V architecture
-Date: Wed, 29 Oct 2025 16:56:38 +0530
-Message-ID: <20251029112649.3811657-1-hchauhan@ventanamicro.com>
+Subject: [RFC PATCH v2 01/10] riscv: Define ioremap_cache for RISC-V
+Date: Wed, 29 Oct 2025 16:56:39 +0530
+Message-ID: <20251029112649.3811657-2-hchauhan@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251029112649.3811657-1-hchauhan@ventanamicro.com>
+References: <20251029112649.3811657-1-hchauhan@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,106 +106,28 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RAS stands for Reliability, Availability and Serviceability.
+bert and einj drivers use ioremap_cache for mapping entries
+but ioremap_cache is not defined for RISC-V.
 
-This series implements the RAS support for RISC-V architecture using
-RISC-V RERI specification. It is conformant to ACPI platform error
-interfaces (APEI). It uses the highest priority Supervisor Software
-Events (SSE)[2] to deliver the hardware error events to the kernel.
-The SSE implementation has already been merged in OpenSBI. Clement
-has sent a patch series for its implemenation in Linux kernel.[5]
+Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+---
+ arch/riscv/include/asm/io.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-The GHES driver framework is used as is with the following changes for RISC-V:
-	1. Register each ghes entry with SSE layer. Ghes notification vector is SSE event.
-	2. Add RISC-V specific entries for processor type and ISA string
-	3. Add fixmap indices GHES SSE Low and High Priority to help map and read from
-	   physical addresses present in GHES entry.
-	4. Other changes to build/configure the RAS support
-
-How to Use:
-----------
-This RAS stack consists of Qemu[3], OpenSBI, EDK2[4], Linux kernel and devmem utility to inject and trigger
-errors. Qemu [Ref.] has support to emulate RISC-V RERI. The RAS agent is implemented in OpenSBI which
-creates CPER records. EDK2 generates HEST table and populates it with GHES entries with the help of
-OpenSBI.
-
-Qemu Command:
-------------
-<qemu-dir>/build/qemu-system-riscv64 \
-    -s -accel tcg -m 4096 -smp 2 \
-    -cpu rv64,smepmp=false \
-    -serial mon:stdio \
-    -d guest_errors -D ./qemu.log \
-    -bios <opensbi-dir>/build/platform/generic/firmware/fw_dynamic.bin \
-    -monitor telnet:127.0.0.1:55555,server,nowait \
-    -device virtio-gpu-pci -full-screen \ 
-    -device qemu-xhci \
-    -device usb-kbd \
-    -blockdev node-name=pflash0,driver=file,read-only=on,filename=<edk2-build-dir>/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT_CODE.fd \
-    -blockdev node-name=pflash1,driver=file,filename=<edk2-build-dir>/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT_VARS.fd \
-    -M virt,pflash0=pflash0,pflash1=pflash1,rpmi=true,reri=true,aia=aplic-imsic \
-    -kernel <kernel image> \
-    -initrd <rootfs image> \
-    -append "root=/dev/ram rw console=ttyS0 earlycon=uart8250,mmio,0x10000000"
-
-Error Injection & Triggering:
-----------------------------
-devmem 0x4010040 32 0x2a1
-devmem 0x4010048 32 0x9001404
-devmem 0x4010044 8 1
-
-The above commands injects a TLB error on CPU 0.
-
-Sample Output (CPU 0):
----------------------
-[   34.370282] {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[   34.371375] {1}[Hardware Error]: event severity: recoverable
-[   34.372149] {1}[Hardware Error]:  Error 0, type: recoverable
-[   34.372756] {1}[Hardware Error]:   section_type: general processor error
-[   34.373357] {1}[Hardware Error]:   processor_type: 3, RISCV
-[   34.373806] {1}[Hardware Error]:   processor_isa: 6, RISCV64
-[   34.374294] {1}[Hardware Error]:   error_type: 0x02
-[   34.374845] {1}[Hardware Error]:   TLB error
-[   34.375448] {1}[Hardware Error]:   operation: 1, data read
-[   34.376100] {1}[Hardware Error]:   target_address: 0x0000000000000000
-
-References:
-----------
-[1] RERI Specification: https://github.com/riscv-non-isa/riscv-ras-eri/releases/download/v1.0/riscv-reri.pdf
-[2] SSE Section in OpenSBI v3.0: https://github.com/riscv-non-isa/riscv-sbi-doc/releases/download/v3.0/riscv-sbi.pdf
-[3] Qemu source (with RERI emulation support): https://github.com/ventanamicro/qemu.git (branch: dev-upstream)
-[4] EDK2: https://github.com/ventanamicro/edk2.git (branch: dev-upstream)
-[5] SSE Kernel Patches (v7): https://lore.kernel.org/all/20250908181717.1997461-1-cleger@rivosinc.com/
-
-Changes in v2:
- - Made changes to be conformant with SSE v7 patches
- - Fixed some bot warnings
-
-Himanshu Chauhan (10):
-  riscv: Define ioremap_cache for RISC-V
-  riscv: Define arch_apei_get_mem_attribute for RISC-V
-  acpi: Introduce SSE in HEST notification types
-  riscv: Add fixmap indices for GHES IRQ and SSE contexts
-  riscv: conditionally compile GHES NMI spool function
-  riscv: Add functions to register ghes having SSE notification
-  riscv: Add RISC-V entries in processor type and ISA strings
-  riscv: Introduce HEST SSE notification handlers
-  riscv: Select HAVE_ACPI_APEI required for RAS
-  riscv: Enable APEI GHES driver in defconfig
-
- arch/riscv/Kconfig                     |   1 +
- arch/riscv/configs/defconfig           |   3 +
- arch/riscv/include/asm/acpi.h          |  20 ++++
- arch/riscv/include/asm/fixmap.h        |   8 ++
- arch/riscv/include/asm/io.h            |   3 +
- drivers/acpi/apei/Kconfig              |   5 +
- drivers/acpi/apei/ghes.c               | 103 +++++++++++++++--
- drivers/firmware/efi/cper.c            |   3 +
- drivers/firmware/riscv/riscv_sbi_sse.c | 147 +++++++++++++++++++++++++
- include/acpi/actbl1.h                  |   3 +-
- include/linux/riscv_sbi_sse.h          |  16 +++
- 11 files changed, 300 insertions(+), 12 deletions(-)
-
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+index 09bb5f57a9d3..5550b28f38db 100644
+--- a/arch/riscv/include/asm/io.h
++++ b/arch/riscv/include/asm/io.h
+@@ -142,6 +142,9 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
+ #ifdef CONFIG_MMU
+ #define arch_memremap_wb(addr, size, flags)	\
+ 	((__force void *)ioremap_prot((addr), (size), __pgprot(_PAGE_KERNEL)))
++
++#define ioremap_cache(addr, size)					\
++	((__force void *)ioremap_prot((addr), (size), PAGE_KERNEL))
+ #endif
+ 
+ #endif /* _ASM_RISCV_IO_H */
 -- 
 2.43.0
 
