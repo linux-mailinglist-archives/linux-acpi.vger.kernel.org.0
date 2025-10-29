@@ -1,79 +1,79 @@
-Return-Path: <linux-acpi+bounces-18345-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18346-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6BEC1C27D
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 17:41:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC92C1C43E
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 17:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C102D1889BFB
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 16:34:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC2FA5A532F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Oct 2025 16:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993433491CE;
-	Wed, 29 Oct 2025 16:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE8934AB1C;
+	Wed, 29 Oct 2025 16:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TsPkz5A0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a6u7zSRA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C9A346A09
-	for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 16:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EE1347FC6
+	for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 16:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761755633; cv=none; b=ozKmXG4LeSQjLY9LD+K6TCa7vmea3//OlCBjI2Ba2ZvbE36l8eucaLkGMZKN+7Y1O2cirHCNC1VaLwpCQqoTnsA8VQ9rUr6zBhhZTSgnMGe0C3aJm9F9ts4BEGlsyCBBMPEdWpUkmqmjE4UtOtT9Q2AZUMb2iLOrXRQE3IUMbKE=
+	t=1761755634; cv=none; b=AWcozwkBrGwKmzZAhFCaIEiRR3UzuU0381j/aHvDQRjXkWkwJ1d9+jtMsEXn+3SWUeTWoEanQKA8kKOcvAhTy9eLKsTfAzPqs4bgldUDNqWxhzD3HCA5XcZ21i09M8K7M6PwgxGuI2v1M654iocvngKdPFt5jOQJHl2tBq2peRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761755633; c=relaxed/simple;
-	bh=nyc2pqrGN622czbqL752mZIP4IX12KOgaXiQ7fJqL2Q=;
+	s=arc-20240116; t=1761755634; c=relaxed/simple;
+	bh=T06l1/4GOHE/LpDkePy4eVSTWo0uNva18SmJ0icOHLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ig/yO9DcTSreHxEwPmIKQPlF4A3FpJFYniQl3XgGc2hJXZQLCHbnTz534Olt9QccsUT4IZZbv5KrGkCPlTGz94N266Vz1+ue21cuyMFEkzhgUE/d3TjoBBYYZKPlECdieXvMsMg+6eOp88u4K4wk1Cy4/6Bycv4zCX3mH5Om4LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TsPkz5A0; arc=none smtp.client-ip=209.85.218.42
+	 MIME-Version; b=btptMs/kJNmw5MDGkUPocgwSfYFmaoDpK9+TI4VVNcn9RX8VZepB70aUIT9mdU/uUtFYgbZthThMV3bIep0NUGdyBt42FKACMwUmONNphmV/dKJAHKqFRwCwDJwpm0d/9+q5R1x+QlK6PJJwuRTvo6s/jp+KytaF0dpvA3WYJus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a6u7zSRA; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b704db3686cso12313366b.3
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 09:33:49 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3d196b7eeeso15654666b.0
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 09:33:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761755628; x=1762360428; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761755630; x=1762360430; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oOtQpkg6YutdjljN7zgxOA0UqmJOiKsRIM6+iFOdM9w=;
-        b=TsPkz5A0bpVSK3bFDodOhIgj/wYyMO0MoglQcGiMbEmlELok9GrfGJC/MX19dAtDWd
-         PV9aqbzS7n9GKCMH9JbfEGzdsocDYidHLBXXUEqkzN24nFiRchS3bnV7lHvy0Zwe8PgE
-         hYQNEP/ddtu+iQaTE2BL4+Dlj+1OBFEBuxAuKmwZUMfnCM0oAB26z0Mg6s9/FZaVLstL
-         i0j1Ec6H6QqIp9QpyvJmECPGbGZV3UzFH+TyrwRdPZwMBIXlQCh0xfHmR5cX/sRfAFAE
-         EiZ2Tc/IZpFGW3E/Hj0RWDZ2a39mH/qR7F0eqIV20xPkUwc+vdeSQS2opAAH39LXK2Vn
-         24xA==
+        bh=8XbRLU+7LExsM1Q2W4kgKdkH4Wh0K6zsU36k2L5dwa0=;
+        b=a6u7zSRALXcD5cAfl7zziHXqingpPMwA+3HQpLoOUYAN+T4DZYbzvXQku88P5LytsG
+         dSepd0zu7KwPEm+SLTpu7V5mZsAQiytCslwBZjiW4yUtTcTJQVUXYl8R4juqoTdj51JI
+         hCf1+U2YwclJoZF5yhDg/VxPsE6YKgy2pkmrqgE4KuIgw4dbPiW6aPL5RpFKbASmU9Fr
+         AQZoN4oxCVq06kTWykouoPPTYq731ySwec2CxMhlePbiX0q6OgoGOpbNmyKXbrtrsNd6
+         Wt1rhpU4kMgjFyK9e0qmJH4LqvKrN/HO0Gl3VvRi3eWCGseFGqkfUaC9te4+Xnky0T79
+         IADQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761755628; x=1762360428;
+        d=1e100.net; s=20230601; t=1761755630; x=1762360430;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oOtQpkg6YutdjljN7zgxOA0UqmJOiKsRIM6+iFOdM9w=;
-        b=RxmZvXEGhULzRnfEsfvMSVDHkeEIOpF5GebrxUBBj4nU5q88uYZsuhJoeCU3i2InOR
-         v97B8/WIP2RtJTTXtUkv6ZpZXemUAPZdQk0anx938R9dpxbsOgi+Won2Z7iqRAYIo6HL
-         PHukuoR/Bzr/FKR3YdgmM9kh/hYGQoqT/2O3ki5tmIFdukEgz82aSAFxOZQrJqbHGaXD
-         7zolOs3wtgKAaBSkosQW/HPoAWFroi0pfIvVPQuZIX4FX70Mhc9nVl6QSpUYUQFP3QpC
-         VQ74X5QlWra/nlaWfDOKxZ9eMtoWrznBo2q/crwVyG6sRShAvb0jRzbheF9DXVUsU5/k
-         GPKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSn/ZyEbHH5NVzPVtWKwcsX/dAbXg0aRvBT1JNI0RO0VnL3xYLOV6riGKNNxK4tZvs5W0r+/QhUeyG@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCeh7qsFdcFxNzp7VvwxYaNrnop53jWWtO27K9j1SU/53iPp2h
-	5uJ0PprR7ow3Khrwi1gg69rW5Ri6nCVau+IDoC9HxJiQ90uhp+WGCzEX
-X-Gm-Gg: ASbGncsFe3Njc30RwSM10FNP82NUuI6Yq1kVeiw4qJW2nPAZmyRXWDX+LX2nqnahMd0
-	HSL7yflZpvrM/clskURi09xG1uZEu0JS1FVpjv7WvJSwR2XZwN8oiGJnR4PxuqGvQ1WSAtc7BBu
-	BQCtc/cg5hGDCB0KqbL+nD2v3Xm+E/uCIoo8K6SIv24oED2IZIDKgr3BDEiGL7huSJDy4hDOrXp
-	Wvx5L3F9FOpy8RljuvQYLg3Hh+PJvMBLiI2FJ4mxnc07Kqj2HnGptE0iepk+6mul3vCKOwmDzVO
-	o1v1BZKP+A2BYQ8Xqn0MXgXNegyVRPsK7O0cD8FabqmwuImQgoufVCHoEQEodSwxU2Tg+Je69i7
-	SsJCXgPM/eUpwWuv0pW779xlXekwcH9gkvPDSZ5USXrptHDc6A8DJSOjuqrwnjYyvwnzfJ4ISL9
-	Eevd9boOSdDrLCzcB/z+5E6TfURqh9ISrCR435x/eKUG/juMa+RjS9vA==
-X-Google-Smtp-Source: AGHT+IFucoSpcC/sMHQ4BHPU2Sj/4WR5SsWuPVRxpOY+Rb83Lsjw7eIU5fItk/Z3WAxH0T7dO6D6kQ==
-X-Received: by 2002:a17:906:ee81:b0:b6d:7e01:cbc5 with SMTP id a640c23a62f3a-b703d55289bmr367879066b.53.1761755627345;
-        Wed, 29 Oct 2025 09:33:47 -0700 (PDT)
+        bh=8XbRLU+7LExsM1Q2W4kgKdkH4Wh0K6zsU36k2L5dwa0=;
+        b=sTni6ED6Z4CCwN31flKvRJ228cU1d4l580Obd1Qil4KzzH256Kl9aVslCrTKiTkC5+
+         enP8HT6KaExhF70Hi+W3RVCH6q68AYi1llT2bDwMUKch+Rbt0xtaD4JAyf4n8B0NXttu
+         +eU/I4Z0AHVM2SSObeVAUMJr/dLCw5kYmI+Gxue84rYD30IHZoxWntGyiiDKrnf1dwB6
+         yQJnWZ24Ph3IGGu5lq+xLexzBaqhUYUF8DiJNrtL0oODTVhWb3OMAYwZBaq+YVHijw0Z
+         j5s2KtJdE4nH+TJ9l5Iezd+dxxPPRTsbeoLOBudp+J3RJ0UzQ+NChMe/QC7dWW2icN02
+         etaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVn3QLquPPBKZa4uo7itAS4ZGGhs4ZB9J4/fLH7bFtto92NK9wStfbpYxwpCB3dKEvoHcMv6Tq9PKIK@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2yfrJKc+x/RbRVJIeshhBEgjgMgChU8CdSr7r51itb1YAIAgQ
+	4ZKXBtjMQu54zjFmW0dwNnI75ftCYaGVsB29ZLXqNOgpUpq9WIgHggEy
+X-Gm-Gg: ASbGncuMPAYrB3/Efsw1OevXrBYqSSX2XaUCu6Q5IBKKxOhd6x1RM2jzyw8EyD4/C/X
+	rh1k70vyJdGpm3jPCYWs14jDq/KSFeXOBM279H2Zgf3RhbeIqfrcpRn8MMoQ5WOaWoWNYuB/lPA
+	2Cifcxl2Z2xkNRRMqj0uugiD0qVIbYCqIlc+4BvKeu7Ht5jAW9cAHQhBkp9JTZ8pCvEXUj0Vlw5
+	e+IvYPj3zO4sVB1F3tucYXMY1Qv0Y+9B7bahaC1uWajvvOVS7Dbn/ii9A+tZhJox/5/iqRiMQlu
+	ZALLe/Kf1hIxFW0xz0yFPJwkt9U3y4eDf75sNCcVbBknP3Brz+1ORsIVcMJ6j7RsaiGFBr6P7mH
+	cMngNbkfVBPlON5LfrUBAKq/Yb4aB5X55wiDJXv2EYl9vvsv5fQ5nTF5dKHpgsXNThsSE+sv1mR
+	9EeB14x4gEzXpYxlx3irRxdGHF8WhTFhLrF3Dekdgo4hBzOLkdUJb+5llGTz1Lsqq1DV/r
+X-Google-Smtp-Source: AGHT+IFQlpirQWvqETIaDsilJH4sjQW05iHSTqO+BVFy04krtNR3muOIO8OYFK3MmzGZwCCaLhUORw==
+X-Received: by 2002:a17:907:1c8c:b0:b3e:580a:1842 with SMTP id a640c23a62f3a-b703d557003mr393915166b.48.1761755629552;
+        Wed, 29 Oct 2025 09:33:49 -0700 (PDT)
 Received: from localhost (p200300e41f274600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f27:4600:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6d853e5138sm1485764866b.44.2025.10.29.09.33.46
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6dad195456sm939661066b.72.2025.10.29.09.33.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 09:33:46 -0700 (PDT)
+        Wed, 29 Oct 2025 09:33:48 -0700 (PDT)
 From: Thierry Reding <thierry.reding@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>
@@ -87,9 +87,9 @@ Cc: x86@kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/7] MIPS: PCI: Use contextual data instead of global variable
-Date: Wed, 29 Oct 2025 17:33:31 +0100
-Message-ID: <20251029163336.2785270-3-thierry.reding@gmail.com>
+Subject: [PATCH v3 3/7] bus: mvebu-mbus: Use contextual data instead of global variable
+Date: Wed, 29 Oct 2025 17:33:32 +0100
+Message-ID: <20251029163336.2785270-4-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029163336.2785270-1-thierry.reding@gmail.com>
 References: <20251029163336.2785270-1-thierry.reding@gmail.com>
@@ -111,83 +111,61 @@ Signed-off-by: Thierry Reding <treding@nvidia.com>
 Changes in v3:
 - adjust for API changes and update commit message
 
-Changes in v2:
-- remove unused global variable
+ drivers/bus/mvebu-mbus.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
- arch/mips/pci/pci-alchemy.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
-
-diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
-index 6bfee0f71803..f73bf60bd069 100644
---- a/arch/mips/pci/pci-alchemy.c
-+++ b/arch/mips/pci/pci-alchemy.c
-@@ -33,6 +33,7 @@
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index dd94145c9b22..d33c8e42e91c 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -130,6 +130,7 @@ struct mvebu_mbus_win_data {
+ };
  
- struct alchemy_pci_context {
- 	struct pci_controller alchemy_pci_ctrl; /* leave as first member! */
+ struct mvebu_mbus_state {
 +	struct syscore syscore;
- 	void __iomem *regs;			/* ctrl base */
- 	/* tools for wired entry for config space access */
- 	unsigned long last_elo0;
-@@ -46,12 +47,6 @@ struct alchemy_pci_context {
- 	int (*board_pci_idsel)(unsigned int devsel, int assert);
+ 	void __iomem *mbuswins_base;
+ 	void __iomem *sdramwins_base;
+ 	void __iomem *mbusbridge_base;
+@@ -1008,7 +1009,7 @@ fs_initcall(mvebu_mbus_debugfs_init);
+ 
+ static int mvebu_mbus_suspend(void *data)
+ {
+-	struct mvebu_mbus_state *s = &mbus_state;
++	struct mvebu_mbus_state *s = data;
+ 	int win;
+ 
+ 	if (!s->mbusbridge_base)
+@@ -1042,7 +1043,7 @@ static int mvebu_mbus_suspend(void *data)
+ 
+ static void mvebu_mbus_resume(void *data)
+ {
+-	struct mvebu_mbus_state *s = &mbus_state;
++	struct mvebu_mbus_state *s = data;
+ 	int win;
+ 
+ 	writel(s->mbus_bridge_ctrl,
+@@ -1074,10 +1075,6 @@ static const struct syscore_ops mvebu_mbus_syscore_ops = {
+ 	.resume = mvebu_mbus_resume,
  };
  
--/* for syscore_ops. There's only one PCI controller on Alchemy chips, so this
-- * should suffice for now.
-- */
--static struct alchemy_pci_context *__alchemy_pci_ctx;
--
--
- /* IO/MEM resources for PCI. Keep the memres in sync with fixup_bigphys_addr
-  * in arch/mips/alchemy/common/setup.c
-  */
-@@ -306,9 +301,7 @@ static int alchemy_pci_def_idsel(unsigned int devsel, int assert)
- /* save PCI controller register contents. */
- static int alchemy_pci_suspend(void *data)
- {
--	struct alchemy_pci_context *ctx = __alchemy_pci_ctx;
--	if (!ctx)
--		return 0;
-+	struct alchemy_pci_context *ctx = data;
- 
- 	ctx->pm[0]  = __raw_readl(ctx->regs + PCI_REG_CMEM);
- 	ctx->pm[1]  = __raw_readl(ctx->regs + PCI_REG_CONFIG) & 0x0009ffff;
-@@ -328,9 +321,7 @@ static int alchemy_pci_suspend(void *data)
- 
- static void alchemy_pci_resume(void *data)
- {
--	struct alchemy_pci_context *ctx = __alchemy_pci_ctx;
--	if (!ctx)
--		return;
-+	struct alchemy_pci_context *ctx = data;
- 
- 	__raw_writel(ctx->pm[0],  ctx->regs + PCI_REG_CMEM);
- 	__raw_writel(ctx->pm[2],  ctx->regs + PCI_REG_B2BMASK_CCH);
-@@ -359,10 +350,6 @@ static const struct syscore_ops alchemy_pci_syscore_ops = {
- 	.resume = alchemy_pci_resume,
- };
- 
--static struct syscore alchemy_pci_syscore = {
--	.ops = &alchemy_pci_syscore_ops,
+-static struct syscore mvebu_mbus_syscore = {
+-	.ops = &mvebu_mbus_syscore_ops,
 -};
 -
- static int alchemy_pci_probe(struct platform_device *pdev)
- {
- 	struct alchemy_pci_platdata *pd = pdev->dev.platform_data;
-@@ -480,9 +467,10 @@ static int alchemy_pci_probe(struct platform_device *pdev)
- 	__raw_writel(val, ctx->regs + PCI_REG_CONFIG);
- 	wmb();
+ static int __init mvebu_mbus_common_init(struct mvebu_mbus_state *mbus,
+ 					 phys_addr_t mbuswins_phys_base,
+ 					 size_t mbuswins_size,
+@@ -1122,7 +1119,9 @@ static int __init mvebu_mbus_common_init(struct mvebu_mbus_state *mbus,
+ 		writel(UNIT_SYNC_BARRIER_ALL,
+ 		       mbus->mbuswins_base + UNIT_SYNC_BARRIER_OFF);
  
--	__alchemy_pci_ctx = ctx;
- 	platform_set_drvdata(pdev, ctx);
--	register_syscore(&alchemy_pci_syscore);
-+	ctx->syscore.ops = &alchemy_pci_syscore_ops;
-+	ctx->syscore.data = ctx;
-+	register_syscore(&ctx->syscore);
- 	register_pci_controller(&ctx->alchemy_pci_ctrl);
+-	register_syscore(&mvebu_mbus_syscore);
++	mbus->syscore.ops = &mvebu_mbus_syscore_ops;
++	mbus->syscore.data = mbus;
++	register_syscore(&mbus->syscore);
  
- 	dev_info(&pdev->dev, "PCI controller at %ld MHz\n",
+ 	return 0;
+ }
 -- 
 2.51.0
 
