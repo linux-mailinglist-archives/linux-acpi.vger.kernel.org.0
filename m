@@ -1,206 +1,168 @@
-Return-Path: <linux-acpi+bounces-18375-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18376-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6DEC20F4F
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 16:34:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A07C2108A
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 16:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F39251887BBD
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 15:31:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F40F74EFAE0
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 15:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03A1288517;
-	Thu, 30 Oct 2025 15:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F732E6105;
+	Thu, 30 Oct 2025 15:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFFZtvmL"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T/xScyqN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BD51E3DCD;
-	Thu, 30 Oct 2025 15:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39B237A3BC
+	for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 15:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761838283; cv=none; b=EVlyInFj16rSFkA28ebRmtwPGuqaN7VtfdQfzwd50/heNMBNfnIk3mNhLZ9J1Zaj6NWlfdXn2vEWTCPsL05aoyOku/VrPrP2hHzlH1rGF0/nYS5CH4QJjgry8tFR80+1UEA7kpv5bqx3PQBxiQvxGlWGB6ssORyJiEmUIB+5JNk=
+	t=1761839276; cv=none; b=KubTN4Z03oivcfgBIjgyVbycqhOjLJSFyOkAom/6e02HxPe7FI3r2HeEY9pefpX/cZQ4vH9iurNpPFGQ61iJIHgvoWeetIJjsQ9fpQvX0OALPcHS1G5+fg4n5J31s8LiBsYSSlVE7fvbRSOySpz3UMiS5FeIuZlW+pZrlzb276M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761838283; c=relaxed/simple;
-	bh=BQKVwpOXmWrg/NEsihgDHlt6ylYYGyKXQx46PtRBNIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=kyRUy5mOqNplPbJGsENf9vkzwxjZWNeqalneFJrtajCm6WiOJL1BWNLFwUgHfE4RRIBqH3OUYHyxHmWcOvJOB5IIGat7cKDEzpnHGYSWzBSly8MB8Y1/FIiTn7UHb7vbXKyqM4cRZPOm3WPzoy5KiTz+k6Qu6H3IXEJeFqgjZ+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFFZtvmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B243BC4CEF1;
-	Thu, 30 Oct 2025 15:31:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761838282;
-	bh=BQKVwpOXmWrg/NEsihgDHlt6ylYYGyKXQx46PtRBNIE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=XFFZtvmLEsNprsgJCGzuegi3fo25BFtbyMKj/vENFC2KNhctUWYTRw+Ob7OEsPprU
-	 6RLUb4R0FtZX5SuSVghhYpA/qbFQ31O0l8MxxjFENM70+PpO+pvJ7y4nJGg6rYCVSF
-	 f1E/lZIO2nysDztmIhGwZgf77f/GEc/qLlGLVyRJ1bhbGEqIZ0izCUKouYbBbxhPwB
-	 o6ini4Cjp8T6XA47GbGqM/Hcb7VA5Nnpya3KjRlz+AgI/l83VQ/ip73xZZJMLHvUY6
-	 PIR6KCA1wLrqDh7IEl3L0xtmv1duKWtzakHljhYnSWSiCzKNnorQ1GlmH1r7EuGObb
-	 Pl+A6RH05shBg==
-Date: Thu, 30 Oct 2025 10:31:21 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] MIPS: PCI: Use contextual data instead of global
- variable
-Message-ID: <20251030153121.GA1624982@bhelgaas>
+	s=arc-20240116; t=1761839276; c=relaxed/simple;
+	bh=W1zw8qCD1fGu6vpnn4V64xxQGTS5z7t2Go4O+Abr6i8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z+gHoe57X2WEhkLJRwum9Ti4pMfHpRyCQPIiHmsd5LBZ+eFBdGXjW9/Fv0E+mSsunUeSSN5ifFMinlCIfQhkgKgyg8F0llRtugT1JV8Zvetj2pqQZoDgmG/i7PjkACdXvFlfTpFwqNc9ZqKYysCrLED4AQ1LAQJ2gEpdRw4SURQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T/xScyqN; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4298b49f103so509943f8f.2
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 08:47:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1761839273; x=1762444073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X+2vUN9vUrrG0TjG/UGpxBf0iBedJfrxlMW3xSp+vBQ=;
+        b=T/xScyqNpG0vSitb/PRRo3WYI1mUJ20pIOBwISfby+JNFHMvYBLxwwhqPQ1GskxV/6
+         sx483naw3H2w9hzpgB5PwhiaqptpL9qnucmIZsFJqhsf36X4n8vQTMIkbNu9S3r0C96d
+         xHzNYf0ENAM0s0ZWm2bwpg+iD2yAKWvEJIPA2+iWKSH7HFSx3vPrO0E4pIhI0M+afNkt
+         2JEQlLIh3o3HaTkJTD4Gg8H/KwPOtH9sbdqwMhrS2Sw64k+9ICOwVhL3DWRSYLwD3apI
+         +2dhoEUu/ykbCSjSgWLja3BYJUwzaS3asFYKL81nELrmNS51jGc5oqUERTG4ycTu54Ap
+         HueA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761839273; x=1762444073;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X+2vUN9vUrrG0TjG/UGpxBf0iBedJfrxlMW3xSp+vBQ=;
+        b=kuft/ClC8nIEU1WjgG8TdHc5nDYRa5Xc+ELTYq9MAjqfYtgZGzohHZ8Nq9WJyPjIT1
+         KNYZ/qztKmty6SohKe80sYuir1sITb9efNn8HGgCx70BxZtwNaD7bB5B2Fp+ikscWYg5
+         huwp8tWO03KRq2GxYFw1puJjK7CppgOMHgVk1Wp26ApEEcg1GKj3314c9wzkcKv9lMqM
+         W+NwR53yOY2CLQSbjUZtwsLoy7q41ZZqhV1D8dfSRLKC9EhjfhLtkt7zqIyi3T+y6R+2
+         642NoljCMv1vzIzBT3Npt21km6HgKbNAHJm75LKpKBzYqe6L6NYqrpPSuyS/A7zg/wOR
+         qlGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMcSPvbgMB4DsxUubzkdrRaCYbyJ/T59h69mMLevwMMSgZbJ8mFmzP/2q5FCPN4X6MUA88Sp60co7C@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCN8NKYrfhqe1lYATfwPaEZJtqHqiHhQx2FZBnDeP/zSQlj4Cs
+	5JRmJUj6brHbWugHR7lcEwRYeBZ+T0HjN1qHhQNEArmGDhosWgqI643VY7hK5Oepvy8=
+X-Gm-Gg: ASbGncuyZTgbH1OhG+PUte0VhZYg1ve8BuoScevRbTipC2RPECCcCHSVd58nSl1MTVR
+	BJkIyc2+duCvXUcvXouD8D7MR7trdPSIXMGR7EOnlpwAUQOQuK993jJa2kTPWl+1YWMkeQljyCa
+	zTwFpkSM5mxgQOUoc2oeJ9o3slBiFUufC80B84QZ9I14lZLOOF9BRq6/xYzQE6fbIT7lSK0K4MM
+	pTdXGPgIvvuFgQModeHmXCsO8gKTkzGA6/bgUNHSp3jJGXx0V5tR4I3jcQceJVeK57KDmhf5Zto
+	4L7+pSBrUlf8HpLOaLZk/SXQRDQtiAa9vm488tWlPRHyz+10AsDpFJXcHMnWS17IG0/HQkipWzx
+	6oVGmrBOXUQPrZSOdeGvt6aK4pcoYf1YpzH0kc5ZviB/h1xqBUB651ToGiZSl7GQxgYl8HZBN6j
+	W1HX4GadpDYrWvUIo=
+X-Google-Smtp-Source: AGHT+IGP0z4V00XKiXMmYp4l2/BZ8F0n9XtVTSemRHjCzKtJaTEABQJsm3CuVaPc7Far4bXVn0wIIA==
+X-Received: by 2002:a5d:64e4:0:b0:429:66bf:1475 with SMTP id ffacd0b85a97d-429bd67242fmr59867f8f.3.1761839273055;
+        Thu, 30 Oct 2025 08:47:53 -0700 (PDT)
+Received: from linux.fritz.box ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d4494sm33230465f8f.21.2025.10.30.08.47.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 08:47:52 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: [PATCH 0/5] replace old wq(s), added WQ_PERCPU to alloc_workqueue
+Date: Thu, 30 Oct 2025 16:47:34 +0100
+Message-ID: <20251030154739.262582-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <t3la3jte5tia7rh5ftuv5cchrwdxe4cxa2v3g6lxgoh5u6rmcy@hzw7lbke2vac>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 30, 2025 at 01:16:12PM +0100, Thierry Reding wrote:
-> On Wed, Oct 29, 2025 at 12:46:54PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Oct 29, 2025 at 05:33:31PM +0100, Thierry Reding wrote:
-> > > From: Thierry Reding <treding@nvidia.com>
-> > > 
-> > > Pass the driver-specific data via the syscore struct and use it in the
-> > > syscore ops.
+Hi,
 
-> > > +++ b/arch/mips/pci/pci-alchemy.c
-> > > @@ -33,6 +33,7 @@
-> > >  
-> > >  struct alchemy_pci_context {
-> > >  	struct pci_controller alchemy_pci_ctrl; /* leave as first member! */
-> > > +	struct syscore syscore;
-> > >  	void __iomem *regs;			/* ctrl base */
-> > >  	/* tools for wired entry for config space access */
-> > >  	unsigned long last_elo0;
-> > > @@ -46,12 +47,6 @@ struct alchemy_pci_context {
-> > >  	int (*board_pci_idsel)(unsigned int devsel, int assert);
-> > >  };
-> > >  
-> > > -/* for syscore_ops. There's only one PCI controller on Alchemy chips, so this
-> > > - * should suffice for now.
-> > > - */
-> > > -static struct alchemy_pci_context *__alchemy_pci_ctx;
-> > > -
-> > > -
-> > >  /* IO/MEM resources for PCI. Keep the memres in sync with fixup_bigphys_addr
-> > >   * in arch/mips/alchemy/common/setup.c
-> > >   */
-> > > @@ -306,9 +301,7 @@ static int alchemy_pci_def_idsel(unsigned int devsel, int assert)
-> > >  /* save PCI controller register contents. */
-> > >  static int alchemy_pci_suspend(void *data)
-> > >  {
-> > > -	struct alchemy_pci_context *ctx = __alchemy_pci_ctx;
-> > > -	if (!ctx)
-> > > -		return 0;
-> > > +	struct alchemy_pci_context *ctx = data;
-> > >  
-> > >  	ctx->pm[0]  = __raw_readl(ctx->regs + PCI_REG_CMEM);
-> > >  	ctx->pm[1]  = __raw_readl(ctx->regs + PCI_REG_CONFIG) & 0x0009ffff;
-> > > @@ -328,9 +321,7 @@ static int alchemy_pci_suspend(void *data)
-> > >  
-> > >  static void alchemy_pci_resume(void *data)
-> > >  {
-> > > -	struct alchemy_pci_context *ctx = __alchemy_pci_ctx;
-> > > -	if (!ctx)
-> > > -		return;
-> > > +	struct alchemy_pci_context *ctx = data;
-> > >  
-> > >  	__raw_writel(ctx->pm[0],  ctx->regs + PCI_REG_CMEM);
-> > >  	__raw_writel(ctx->pm[2],  ctx->regs + PCI_REG_B2BMASK_CCH);
-> > > @@ -359,10 +350,6 @@ static const struct syscore_ops alchemy_pci_syscore_ops = {
-> > >  	.resume = alchemy_pci_resume,
-> > >  };
-> > >  
-> > > -static struct syscore alchemy_pci_syscore = {
-> > > -	.ops = &alchemy_pci_syscore_ops,
-> > > -};
-> > > -
-> > >  static int alchemy_pci_probe(struct platform_device *pdev)
-> > >  {
-> > >  	struct alchemy_pci_platdata *pd = pdev->dev.platform_data;
-> > > @@ -480,9 +467,10 @@ static int alchemy_pci_probe(struct platform_device *pdev)
-> > >  	__raw_writel(val, ctx->regs + PCI_REG_CONFIG);
-> > >  	wmb();
-> > >  
-> > > -	__alchemy_pci_ctx = ctx;
-> > >  	platform_set_drvdata(pdev, ctx);
-> > > -	register_syscore(&alchemy_pci_syscore);
-> > > +	ctx->syscore.ops = &alchemy_pci_syscore_ops;
-> > > +	ctx->syscore.data = ctx;
-> > > +	register_syscore(&ctx->syscore);
-> > 
-> > As far as I can tell, the only use of syscore in this driver is for
-> > suspend/resume.
-> > 
-> > This is a regular platform_device driver, so instead of syscore, I
-> > think it should use generic power management like other PCI host
-> > controller drivers do, something like this:
-> > 
-> >   static int alchemy_pci_suspend_noirq(struct device *dev)
-> >   ...
-> > 
-> >   static int alchemy_pci_resume_noirq(struct device *dev)
-> >   ...
-> > 
-> >   static DEFINE_NOIRQ_DEV_PM_OPS(alchemy_pci_pm_ops,
-> >                                  alchemy_pci_suspend_noirq,
-> >                                  alchemy_pci_resume_noirq);
-> > 
-> >   static struct platform_driver alchemy_pcictl_driver = {
-> >           .probe          = alchemy_pci_probe,
-> >           .driver = {
-> >                   .name   = "alchemy-pci",
-> >                   .pm     = pm_sleep_ptr(&alchemy_pci_pm_ops),
-> >           },
-> >   };
-> > 
-> > Here's a sample in another driver:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/controller/cadence/pci-j721e.c?id=v6.17#n663
-> 
-> I thought so too, but then I looked at the history and saw that it was
-> initially regular PM ops and then fixed by using syscore in this commit:
-> 
->     commit 864c6c22e9a5742b0f43c983b6c405d52817bacd
->     Author: Manuel Lauss <manuel.lauss@googlemail.com>
->     Date:   Wed Nov 16 15:42:28 2011 +0100
->     
->         MIPS: Alchemy: Fix PCI PM
->     
->         Move PCI Controller PM to syscore_ops since the platform_driver PM methods
->         are called way too late on resume and far too early on suspend (after and
->         before PCI device resume/suspend).
->         This also allows to simplify wired entry management a bit.
->     
->         Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
->         Cc: linux-mips@linux-mips.org
->         Patchwork: https://patchwork.linux-mips.org/patch/3007/
->         Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+=== Current situation: problems ===
 
-The alchemy PCI controller is a platform_device, and it must be
-initialized before enumerating the PCI devices below it.  The same
-order should apply for suspend/resume (suspend PCI devices, then PCI
-controller; resume PCI controller, then PCI devices).
+Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask is
+set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
 
-So if this didn't work before, I think it means something is messed up
-with the device hierarchy.
+This leads to different scenarios if a work item is scheduled on an
+isolated CPU where "delay" value is 0 or greater then 0:
+        schedule_delayed_work(, 0);
 
-But I understand the difficulty of testing changes here, so syscore is
-simplest from that point of view.
+This will be handled by __queue_work() that will queue the work item on the
+current local (isolated) CPU, while:
 
-It does complicate maintenance though.  I think all of mips ultimately
-uses register_pci_controller() and pcibios_scanbus().  Neither really
-contains anything mips-specific, so they duplicate a lot of the code
-in pci_host_probe().  Oh well, I guess that's part of the burden of
-supporting old platforms forever.
+        schedule_delayed_work(, 1);
 
-Bjorn
+Will move the timer on an housekeeping CPU, and schedule the work there.
+
+Currently if a user enqueue a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+
+This lack of consistency cannot be addressed without refactoring the API.
+
+=== Recent changes to the WQ API ===
+
+The following, address the recent changes in the Workqueue API:
+
+- commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+- commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+
+The old workqueues will be removed in a future release cycle.
+
+=== Introduced Changes by this series ===
+
+1) [P 1-2]  Replace uses of system_wq and system_unbound_wq
+
+	system_wq is a per-CPU workqueue, but his name is not clear.
+	system_unbound_wq is to be used when locality is not required.
+
+	Because of that, system_wq has been replaced with system_percpu_wq, and
+	system_unbound_wq has been replaced with system_dfl_wq.
+
+2) [P 3-4-5] WQ_PERCPU added to alloc_workqueue()
+
+	This change adds a new WQ_PERCPU flag to explicitly request
+	alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
+
+
+Thanks!
+
+Marco Crivellari (5):
+  ACPI: scan: replace use of system_unbound_wq with system_dfl_wq
+  ACPI: OSL: replace use of system_wq with system_percpu_wq
+  ACPI: EC: WQ_PERCPU added to alloc_workqueue users
+  ACPI: OSL: WQ_PERCPU added to alloc_workqueue users
+  ACPI: thermal: WQ_PERCPU added to alloc_workqueue users
+
+ drivers/acpi/ec.c      | 3 ++-
+ drivers/acpi/osl.c     | 6 +++---
+ drivers/acpi/scan.c    | 2 +-
+ drivers/acpi/thermal.c | 3 ++-
+ 4 files changed, 8 insertions(+), 6 deletions(-)
+
+-- 
+2.51.0
+
 
