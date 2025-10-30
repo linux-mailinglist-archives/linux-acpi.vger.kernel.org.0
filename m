@@ -1,152 +1,127 @@
-Return-Path: <linux-acpi+bounces-18381-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18382-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F556C21099
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 16:51:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1484C213AF
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 17:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7684246628C
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 15:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7014A189A060
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 16:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36383366FD7;
-	Thu, 30 Oct 2025 15:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83702DF3EA;
+	Thu, 30 Oct 2025 16:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WAz4PaLg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UmBVhbsr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CB93655E2
-	for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 15:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D57C133;
+	Thu, 30 Oct 2025 16:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761839281; cv=none; b=A28jWN3m6c2Qb7RLFIxkC9BY9SbklpIxY5qR+R8k9MwXrnlBmy6fTJmMznbZatwo6KRJedE4oAoun5TRLUI+fWARAX/5YUYqtJDFgqNGH53wdlBvzZqPMQwwvEdRcsHesGiTLhJ59GW++pZMj/IAmY+X9e404Hzy/1NfCtWDeOs=
+	t=1761842118; cv=none; b=Gqm6OqwR5q8xTd9eWHqxAkOYBiqQk2xNT4qermO7RaJMXQHg3RwLpL1FtaGmtGMaKrFuxFYjuWbhviXmj51JrsU9FIfuDVHkcKNuyo/n6qfpilekGsTOBn24N9jNvS4uOFdIjLxjGLZ6E9G7T6hx6FBSt58zLGkMlr/NjdORh9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761839281; c=relaxed/simple;
-	bh=XJrAeM0bm8IOI+PtKrJkM5ofQWWoG6sG4rQq8LIKX0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AO1z5BfrHa9k9aKTzd3OJ5I/vtxfez7NDjvbHUL6fT6oeg8RaJw4adrQFWv8kOxEBv4hXPveXVR5NTL5mfHq3gL51hdyzGJN6eZAlx04RJPmApihVAAngvzh10Kt2S1Py82yuTzQaSnipygvLOgh1uz+eKjH1dprtNCzNwNIrxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WAz4PaLg; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-421851bcb25so724977f8f.2
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 08:47:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761839277; x=1762444077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1EvAdEwVOXpN/RTJbLmUZiFBI5Zw4W1nq/Q+XC07Oog=;
-        b=WAz4PaLg1bZJgv+lXGj4SosOAfcLlPRh3xCK/sL/InmnYo0JXGJ8n/0QGyb7e1Vg0d
-         kiQLhoBLrPPCaP2Ju94e0sWlbRF0l380mClSMQicbAdDSrgHUjO2GUHyEAYskCrVBEum
-         sUUr5wzUwIpNzVMHOi8bYJiTmfzGgxgclLisesItdDai9GrgkwSDCbD5ebKsbUKoY4Pd
-         oZIsKQRAe3ZF/1hJEcF7P8zi0E/q8uoYRLzQHwqNbU2rmBfjnZ46E0K5scAGLjJE9ZKG
-         5zPnbexlcaLH0DgOW0aMdFhKMbadh8wgwq8NJ5TIAdJDc4EE6OskfT1rGGWg9YB8/kHD
-         SkiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761839277; x=1762444077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1EvAdEwVOXpN/RTJbLmUZiFBI5Zw4W1nq/Q+XC07Oog=;
-        b=WLvkyAcOzqeXcqn3hsfF2USTAZBTxsXGk3jFCdV2P4zIeZYLNMNQbWQjECPUcf0RPA
-         B6YcXxpJCR3ft7Pl5Okq+nGwIBGeHEBBU5X9Do2gYPU7eeAhozdx1LXi/OORsp2AMh6n
-         zoUB9s0J36QTet+ODclUB8IIHASaDMI8TWOdh3J5Fobe8uH0ZlUMcPZbtQNJphUVAlhJ
-         ItxxvdXfUzewqY4olXpo60DLyMzUO6s7rVaLoYNud1V9edYU6iQ5D2BY2Bak73CwAnS/
-         fVx0o/vGYGYZ41/8uFcHFf0DFYPx8Qmg2Tsb5vTG9FbUGrIw7NpYa2LvaNB+HrXXzuBr
-         v/Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmdDe23bRiYLq6Gq/PuxnbTL/asZDLsrvMIxmD3LPxzpMn9E1fSE6sh+SnGxge5jW9GScicRmZvPIm@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmUgUAma7JiWMSWTsTmPNb3Rk+IfoxFD4smdVTWWOpOi5Du93P
-	lZnRlqPT8AP2FKiMnuLTu+XqLJNXZ022gdhwnYTTSV8Q2OR6rQM2Xvp8VsaoZPj8TtE=
-X-Gm-Gg: ASbGnctWtvITHKyPGKj0eQ2Xlkdbca7SEweFKpSLJFvNH7QJ9fpm41pp7D+/PlykL8c
-	E0zyhZyfuvIZ6HZvNxRdktp9G6z/y7g4S5AvqHh4EUC37CsulpvMwaQKT+5lrKQNidOO1sCg340
-	YHdD78P0EBwdNX1jFoPnbBJTMqL7VzFT8OeKrRjHsrUrxkG75buxfPGtkiaREZyApkDA8ZsDaS0
-	ZsVPI2yrTJ65L+uvFGyX68e7Wrut32vKPsZ9OMSI2WpPzeKFR1tqtmhdoMemRTmH+1qhGSwgHE7
-	EJRBiS/q4uPqcoeFIOLv8k0ZtmqugUtK07LcTXps+8mjg4ojlV8GQxhz+fdjfNq2Bs42ksCGN05
-	8FVxTpXbCuf8msipfbW33iEcbSJiN59q5C3UtFoWZ5pyiwIAJyWAEXFZ2MoXmPZ+9rhy4JcaKKV
-	ze5Ri47I6quiPODas=
-X-Google-Smtp-Source: AGHT+IHv0b72t6uTN5xevmEXlNNhXb865PxInovOLuEzLPLCBQj4iAvE7Apv1laDFcFKTRnG6CgXAg==
-X-Received: by 2002:a05:6000:2309:b0:426:ed9d:4072 with SMTP id ffacd0b85a97d-429bd680cd2mr43975f8f.21.1761839277284;
-        Thu, 30 Oct 2025 08:47:57 -0700 (PDT)
-Received: from linux.fritz.box ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d4494sm33230465f8f.21.2025.10.30.08.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 08:47:57 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH 5/5] ACPI: thermal: WQ_PERCPU added to alloc_workqueue users
-Date: Thu, 30 Oct 2025 16:47:39 +0100
-Message-ID: <20251030154739.262582-6-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251030154739.262582-1-marco.crivellari@suse.com>
-References: <20251030154739.262582-1-marco.crivellari@suse.com>
+	s=arc-20240116; t=1761842118; c=relaxed/simple;
+	bh=hN0a1nBdKiMFiaSD/0G7lwpKVl2foow4E6pO4Pcw4F0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8arAwF79b1uFMJMr/2OucwkM2PI0rVUjQD+OowoUox5u2w4/KlbcZd74DtpF0lp+QZpUY1XJYD4oatLNGSqNq9ieDEwGD2SJLf0LsLDFnSzGVkjMznESpInaOf8k0bsrN7RjoR41BDNBnSQsz7rsX7K3ZfHIpXS9ZMY8eoaEnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UmBVhbsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38906C4CEF1;
+	Thu, 30 Oct 2025 16:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761842118;
+	bh=hN0a1nBdKiMFiaSD/0G7lwpKVl2foow4E6pO4Pcw4F0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UmBVhbsrQtd2KdUoHIzwQgLRpap1mnzaevw6pXbKZmMsNw4YgKVexPHNc+DCZY7rz
+	 ELtQbSCDRehuO8RYNFosVNUPCBYaIU7Kfd9n4dxOTyTSs8BHnBv5my6P065L8BsEt4
+	 DP+yxEOUtptvkZ5QS15jYpGGlNjqohyoPfI5I244Ur7FUZRrXWL332j/G568pykAXF
+	 UKqH00JIBeGIN2C2A4CJSccwnDSoh9TCGnUvIiYeJbipWvnATN7/NkFzSosiKKPsmn
+	 iF1Hsc6UmyIjWRbE6V0KclKFYW7SD35wb1hzt9rZ7wSKxzRmsCh9W9aWQqgfQl9iHM
+	 vYREVSeY9+4CQ==
+Date: Thu, 30 Oct 2025 17:35:11 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v2 3/4] clocksource/drivers/arm_arch_timer_mmio: Switch
+ over to standalone driver
+Message-ID: <aQOTv3VnOCTjSj46@lpieralisi>
+References: <20250814154622.10193-1-maz@kernel.org>
+ <20250814154622.10193-4-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814154622.10193-4-maz@kernel.org>
 
-Currently if a user enqueue a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
-This lack of consistentcy cannot be addressed without refactoring the API.
+On Thu, Aug 14, 2025 at 04:46:21PM +0100, Marc Zyngier wrote:
 
-alloc_workqueue() treats all queues as per-CPU by default, while unbound
-workqueues must opt-in via WQ_UNBOUND.
+[...]
 
-This default is suboptimal: most workloads benefit from unbound queues,
-allowing the scheduler to place worker threads where they’re needed and
-reducing noise when CPUs are isolated.
+> diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
 
-This change adds a new WQ_PERCPU flag to explicitly request
-alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
+[...]
 
-With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
-any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
-must now use WQ_PERCPU.
+>  #ifdef CONFIG_ACPI_GTDT
+> -static int __init
+> -arch_timer_mem_verify_cntfrq(struct arch_timer_mem *timer_mem)
+> -{
+> -	struct arch_timer_mem_frame *frame;
+> -	u32 rate;
+> -	int i;
+> -
+> -	for (i = 0; i < ARCH_TIMER_MEM_MAX_FRAMES; i++) {
+> -		frame = &timer_mem->frame[i];
+> -
+> -		if (!frame->valid)
+> -			continue;
+> -
+> -		rate = arch_timer_mem_frame_get_cntfrq(frame);
+> -		if (rate == arch_timer_rate)
+> -			continue;
+> -
+> -		pr_err(FW_BUG "CNTFRQ mismatch: frame @ %pa: (0x%08lx), CPU: (0x%08lx)\n",
+> -			&frame->cntbase,
+> -			(unsigned long)rate, (unsigned long)arch_timer_rate);
+> -
+> -		return -EINVAL;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -static int __init arch_timer_mem_acpi_init(int platform_timer_count)
+> -{
+> -	struct arch_timer_mem *timers, *timer;
+> -	struct arch_timer_mem_frame *frame, *best_frame = NULL;
+> -	int timer_count, i, ret = 0;
+> -
+> -	timers = kcalloc(platform_timer_count, sizeof(*timers),
+> -			    GFP_KERNEL);
+> -	if (!timers)
+> -		return -ENOMEM;
+> -
+> -	ret = acpi_arch_timer_mem_init(timers, &timer_count);
 
-Once migration is complete, WQ_UNBOUND can be removed and unbound will
-become the implicit default.
+You probably already noticed (I was checking the initcall level in
+drivers/acpi/arm64/gtdt.c to start sorting out GICv5 IWB dependencies),
+AFAICS acpi_arch_timer_mem_init() is now unused so it can be removed.
 
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-CC: Zhang Rui <rui.zhang@intel.com>
----
- drivers/acpi/thermal.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 8537395b417b..a511f9ea0267 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -1060,7 +1060,8 @@ static int __init acpi_thermal_init(void)
- 	}
- 
- 	acpi_thermal_pm_queue = alloc_workqueue("acpi_thermal_pm",
--						WQ_HIGHPRI | WQ_MEM_RECLAIM, 0);
-+						WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_PERCPU,
-+						0);
- 	if (!acpi_thermal_pm_queue)
- 		return -ENODEV;
- 
--- 
-2.51.0
-
+Thanks,
+Lorenzo
 
