@@ -1,149 +1,161 @@
-Return-Path: <linux-acpi+bounces-18383-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18384-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4887CC21520
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 17:56:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEC9C218C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 18:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C26CC3503FD
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 16:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A777918846DC
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 17:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996302EDD50;
-	Thu, 30 Oct 2025 16:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2C036B978;
+	Thu, 30 Oct 2025 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLZNmM5s"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a9aZc+oa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F22EBB81;
-	Thu, 30 Oct 2025 16:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EA572639;
+	Thu, 30 Oct 2025 17:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761843362; cv=none; b=IV9tJqofVzz4RudvRhba/Ev4yqHy3+GkI4TswXCECGA+kb5IdaYqEKJSghjQf+IxbTFQEJqRcmR+sFsQuHEi/sOir3z4nrESwwkylZhhmrT+m/yn21N/8KPZJwrX/+JeO9UB8NZfn0xg7VtnSqJHQEJKtGZ4xc46hhhspL+GOtI=
+	t=1761846372; cv=none; b=n5f8Txq4n8t+OpdBRFNNU8U6nzFw1YPTAgyPFMoz2H/5AAS0vT73o9UZqkxKGlNU5bqJt8BizRziXzBdnNGjG+D2IR7xe24m69CeOPGwRYOlk3sYSkXCBBNpmdJPYxQOe8L7yisE6ELu4GeRKwqGEa7W51PI3ix27LLT+Ta+Wlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761843362; c=relaxed/simple;
-	bh=TSkKPAea4VwmtNaIMxByl43L8U9cQGcR3r6GSkUPrnE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c9SKDhjDJol3eZsas/EvM+oYInPYpFL/3h+YDl8etagL4GjUsEEqQ228XuTe/D8rsC1gR7qjrCP2C7FXHiK09z7KrjFTeLnn/YrswLhf3XCyf8lWDk7oQL3Gj7w/PpeZHYhBWf6fxnFk6HBe+77gJ3GTHbpGVdktZFI1n2jlicU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLZNmM5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF046C4CEF1;
-	Thu, 30 Oct 2025 16:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761843362;
-	bh=TSkKPAea4VwmtNaIMxByl43L8U9cQGcR3r6GSkUPrnE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OLZNmM5so9aVLzC+KrJnz9ti13IloyA41Zyc1qR+ig2tvg5jr51nm2rZAWAeYVr7l
-	 2VPUuL3Q1TlIpfskHooe3MfuICA6hdqnd58416e3/wpTLIXHi954/bnh8cUO/w1HgL
-	 V0U3hcRsWd6W5v1JGvtIEHZVK9AeY8i/l5vSfLIOOOksWPuz8wLDWVOVYAQ5XWSCtJ
-	 ZNG+vcB3kbYkNo1BM/vLF41dmQg0nB6kHsJak4UA+nQ82bTRqT+dR1a5wTEFkrPDsH
-	 6fqQjIdEhwVAe4qEt9RwpPT4nudhZox+LMC+vAlOVmVsvt2jeAytkikFJuEH48WZhM
-	 7oC/es6HGM86A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vEVwN-000000013xM-3dZz;
-	Thu, 30 Oct 2025 16:55:59 +0000
-Date: Thu, 30 Oct 2025 16:55:59 +0000
-Message-ID: <86pla4uy5c.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	s=arc-20240116; t=1761846372; c=relaxed/simple;
+	bh=b2xexS6Qluhsr9ZmEqlGOXtDsR48B9OmLyAHTqqnzbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LjoLq0MKGeFrLfUrUIe51XbsZqc5fwnua1H39mqhbrIWWIPo7VrKdPaH3TeEFTgHvFB/FYbNyqZ9N1x/rhz3Q/NlLsCiX+znGeQgYfu1ZfxerfyNVXKjQxSCz4/Vf9VU4tuL+xaSqzqYJZ2n5USdHGQYoe4A/PXYHfWY9Fku9KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a9aZc+oa; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761846371; x=1793382371;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b2xexS6Qluhsr9ZmEqlGOXtDsR48B9OmLyAHTqqnzbk=;
+  b=a9aZc+oalwpkkO3hWqBjbs+vMi2rgj2oCJWDp9pLe3pUWSPg17iqCDkk
+   qtoML0dPBqScbo9FxrwSY7YmQ7R/AZQMGRtMEp8FyyOxwlGnBwjCp0Vvd
+   L5zCnMqUbvo4RtH77w62IQLIkhCDtzYEjNT4TpN6wIfv+x4EAb205jkxB
+   97ro6/cHB+/K2qd2xpsYHiqeTsw97hnUSzPDmTo3cwvzxloXWSuyDIOCt
+   bDsIGdyu3BwN9yVxbg8OTj1KZ84jVX/0rH6qbmoBK+b/LarR1PP3eI258
+   KPdDmAphYmaudT3bb5j5vaY6vXMiTcU8IyniGCQX7e13RwYO0LDCgyrqd
+   A==;
+X-CSE-ConnectionGUID: O6WR9q+wTHSEKlMPPgKEkA==
+X-CSE-MsgGUID: khR0DuIRQTuTyy4OBIblWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64039302"
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
+   d="scan'208";a="64039302"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 10:46:10 -0700
+X-CSE-ConnectionGUID: b/GmOWjcS2aKDC4H8SgNzQ==
+X-CSE-MsgGUID: HAspeAjwQ7KrOmmY4Vdu1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
+   d="scan'208";a="191158265"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 10:45:58 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vEWif-00000003zFy-3ih6;
+	Thu, 30 Oct 2025 19:45:53 +0200
+Date: Thu, 30 Oct 2025 19:45:53 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Steven Price <steven.price@arm.com>
-Subject: Re: [PATCH v2 3/4] clocksource/drivers/arm_arch_timer_mmio: Switch over to standalone driver
-In-Reply-To: <aQOTv3VnOCTjSj46@lpieralisi>
-References: <20250814154622.10193-1-maz@kernel.org>
-	<20250814154622.10193-4-maz@kernel.org>
-	<aQOTv3VnOCTjSj46@lpieralisi>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 18/29] i2c: mux: Create missing devlink between mux
+ and adapter physical device
+Message-ID: <aQOkUa1IwuiOeSvT@smile.fi.intel.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-19-herve.codina@bootlin.com>
+ <6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: lpieralisi@kernel.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de, mark.rutland@arm.com, alexandru.elisei@arm.com, steven.price@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, 30 Oct 2025 16:35:11 +0000,
-Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
-> 
-> On Thu, Aug 14, 2025 at 04:46:21PM +0100, Marc Zyngier wrote:
-> 
-> [...]
-> 
-> > diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-> 
-> [...]
-> 
-> >  #ifdef CONFIG_ACPI_GTDT
-> > -static int __init
-> > -arch_timer_mem_verify_cntfrq(struct arch_timer_mem *timer_mem)
-> > -{
-> > -	struct arch_timer_mem_frame *frame;
-> > -	u32 rate;
-> > -	int i;
-> > -
-> > -	for (i = 0; i < ARCH_TIMER_MEM_MAX_FRAMES; i++) {
-> > -		frame = &timer_mem->frame[i];
-> > -
-> > -		if (!frame->valid)
-> > -			continue;
-> > -
-> > -		rate = arch_timer_mem_frame_get_cntfrq(frame);
-> > -		if (rate == arch_timer_rate)
-> > -			continue;
-> > -
-> > -		pr_err(FW_BUG "CNTFRQ mismatch: frame @ %pa: (0x%08lx), CPU: (0x%08lx)\n",
-> > -			&frame->cntbase,
-> > -			(unsigned long)rate, (unsigned long)arch_timer_rate);
-> > -
-> > -		return -EINVAL;
-> > -	}
-> > -
-> > -	return 0;
-> > -}
-> > -
-> > -static int __init arch_timer_mem_acpi_init(int platform_timer_count)
-> > -{
-> > -	struct arch_timer_mem *timers, *timer;
-> > -	struct arch_timer_mem_frame *frame, *best_frame = NULL;
-> > -	int timer_count, i, ret = 0;
-> > -
-> > -	timers = kcalloc(platform_timer_count, sizeof(*timers),
-> > -			    GFP_KERNEL);
-> > -	if (!timers)
-> > -		return -ENOMEM;
-> > -
-> > -	ret = acpi_arch_timer_mem_init(timers, &timer_count);
-> 
-> You probably already noticed (I was checking the initcall level in
-> drivers/acpi/arm64/gtdt.c to start sorting out GICv5 IWB dependencies),
-> AFAICS acpi_arch_timer_mem_init() is now unused so it can be removed.
+On Thu, Oct 30, 2025 at 04:23:24PM +0100, Andi Shyti wrote:
 
-See https://lore.kernel.org/r/20251030110137.1843007-1-maz@kernel.org
+...
 
-Thanks,
+> > +	dl = device_link_add(muxc->dev, parent_physdev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> 
+> Not to call twice put_device, I would add it once here and then
+> check for !dl.
 
-	M.
+I was almost commenting the same in one of the previous rounds, but...
+
+> > +	if (!dl) {
+> > +		dev_err(muxc->dev, "failed to create device link to %s\n",
+> > +			dev_name(parent_physdev));
+
+...haven't you noticed this use? With your (and my old) suggestion this may
+lead to NULL / stale pointer dereference.
+
+> > +		put_device(parent_physdev);
+> > +		ret = -EINVAL;
+> > +		goto err_free_priv;
+> > +	}
+> > +	put_device(parent_physdev);
 
 -- 
-Without deviation from the norm, progress is not possible.
+With Best Regards,
+Andy Shevchenko
+
+
 
