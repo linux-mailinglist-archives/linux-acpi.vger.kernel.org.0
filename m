@@ -1,136 +1,77 @@
-Return-Path: <linux-acpi+bounces-18385-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18386-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C85AC221A6
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 20:59:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B891C2233F
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 21:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BAAE3AF013
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 19:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C8B1A66A3A
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 20:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C441A33374F;
-	Thu, 30 Oct 2025 19:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aifjOcy5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185FD329E57;
+	Thu, 30 Oct 2025 20:16:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2EC333445
-	for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 19:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF239329E41;
+	Thu, 30 Oct 2025 20:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761854336; cv=none; b=M8ImYfH2NaJQgIPPBPHtUa9CH6BlkFSi8Oew4e/4XAYDdHRUCJl92CvEEkC1d68uLvGBpProjOXdpZQaAYmEjUqnmpTvk9vQG1F9w1ShlXH5zcHXqxrTqWVZ/JPxIXiq9BlUAOmyk8IY7nMkp1pshrJ2KB2bafcsIsTjoZ9B8bA=
+	t=1761855369; cv=none; b=kGEvDWq5mGtCWrYT96nc3E2uBio4q0cG2meAWwjtOHaT7ortIQv4wi/e7X4ESjqB2h1HF5811bw0TWR4e+R/b57OMHx2zYLYvMDK+7411O6DuvOkIB5dGkRlujmtrdOXMj7CRTOxNYH/AZOTQ8soyWJ0tfPibkSmHsXm1AK+1Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761854336; c=relaxed/simple;
-	bh=27Bt+XohUsCY6jPuadnGJYHmq2UygEPw3QOYlngYMe0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZPiV1UZwrAna705Wk3ZQu9S4LYsbG41C5r6Bw95uPr+H5WhqU8/zplqvGPB5HX1n24tqqx99XKr0kYPE+peIC0C70Tx3GhV99TqEdvrtgcL91ZlLIn0jCZ24qkLGTY3yjAIN+pZorPqG9zhPaJERE0lWWsr39jZNlRNkc+trHIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aifjOcy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5634EC4CEF1
-	for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 19:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761854336;
-	bh=27Bt+XohUsCY6jPuadnGJYHmq2UygEPw3QOYlngYMe0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=aifjOcy5p31rA4UaJkpaf61qn0EzeV7pjNxuprvvXuySfZHVhGmrHq6aAWud1w/q0
-	 KjH8TtVkGCJUkahZrzDzxJDzK0pDjfQ5yOWK60SGWUAKHCVIy852/Ypep8uV9vDZf9
-	 pWlFSM5cdF0XVmq5t3a4kN7f43T6PS8f08esYKOZGaQ6FueX3gPFPtsYxUMxcY5OVK
-	 cD3R0ENYLDaCSVA8DU1YdPvBMfYFEYfbDbo6+obmfHV5Z92x3hHtFJH4s3O5os/2PV
-	 aPrba+vxKzWBIOgGEfOstK9IpMrsuMK6hI38vrFWg4bPxk5UUTnCXvj00olv6iA7su
-	 qqaSiYY8R508Q==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-373b7e07182so959013fac.0
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 12:58:56 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx1EoRIu3tlHEFvCuaqJ6kAiYBtFoEB+TbP1TswBM2je7nq4iqW
-	whxSsHmjchyZRNVTRav7kWW8CHzQWxCpmwOCfOKi/npQyZc7X46TIEfd4B2utabtZ1AC57c4i94
-	74DzjVkTPU4YJXWqJUmoJWNaj8MPir8Q=
-X-Google-Smtp-Source: AGHT+IG3Lr6fvBnfKNJvXTlqKqqyJFVgcQM1Ir5oNAP54/iFD1uFwuwIGNg2P27LmaSU/D7Xbc6eAsFKXBttWKKDO0c=
-X-Received: by 2002:a05:6808:2f1b:b0:43f:1daf:dad6 with SMTP id
- 5614622812f47-44f95fe10demr480804b6e.49.1761854335647; Thu, 30 Oct 2025
- 12:58:55 -0700 (PDT)
+	s=arc-20240116; t=1761855369; c=relaxed/simple;
+	bh=BCTybeK7kbZPZoR7hVsfW499Ax65jB45Y6OolRAkkYY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=P5LuysHR60sqmgz6edBX97eHxi6O0msVLYXJPVTcUVxzrGd4id3EROceNiSbsR4KcUwzpGlHm3C26dKNnzBTek8DzKV6VUpjtNn04zvm2hv/73mKUFvbiIAfGxRbE9wGyCmYBTh9Bj9mMqIh5UTmstM7EcuJynFZVSa3/oZhLE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 6C88692009D; Thu, 30 Oct 2025 21:10:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 60ED392009C;
+	Thu, 30 Oct 2025 20:10:17 +0000 (GMT)
+Date: Thu, 30 Oct 2025 20:10:17 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    Thierry Reding <thierry.reding@gmail.com>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org, 
+    linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+    linux-mips@vger.kernel.org, loongarch@lists.linux.dev, 
+    linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
+    linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/7] MIPS: PCI: Use contextual data instead of global
+ variable
+In-Reply-To: <20251030153121.GA1624982@bhelgaas>
+Message-ID: <alpine.DEB.2.21.2510302003120.1185@angie.orcam.me.uk>
+References: <20251030153121.GA1624982@bhelgaas>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 30 Oct 2025 20:58:44 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gWU1sKjFQMcnhP17F4h6HbeX3Fvw4GQDqd6zbQknD4VQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bns_GLKZyutIK1RZWaosqCZigZYk56k68y3_xnWg2bKlpCF1jjtmgftj0o
-Message-ID: <CAJZ5v0gWU1sKjFQMcnhP17F4h6HbeX3Fvw4GQDqd6zbQknD4VQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.18-rc4
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Linus,
+On Thu, 30 Oct 2025, Bjorn Helgaas wrote:
 
-Please pull from the tag
+> It does complicate maintenance though.  I think all of mips ultimately
+> uses register_pci_controller() and pcibios_scanbus().  Neither really
+> contains anything mips-specific, so they duplicate a lot of the code
+> in pci_host_probe().  Oh well, I guess that's part of the burden of
+> supporting old platforms forever.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.18-rc4
+ FWIW new MIPS hardware continues being manufactured and if there is 
+anything needed to clean up in generic MIPS/PCI platform code, then that 
+can certainly be scheduled, subject to developers' resource availability.  
+Individual MIPS platforms may vary of course, and with the solely legacy 
+ones it will depend on the availability of hardware and engineers willing 
+to maintain it.
 
-with top-most commit 8907226bed1ebd10d069f6f70ff0aaa8840f3267
-
- Merge branches 'acpi-button', 'acpi-video' and 'acpi-fan'
-
-on top of commit dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
-
- Linux 6.18-rc3
-
-to receive ACPI fixes for 6.18-rc4.
-
-These fix three ACPI driver issues and add version checks to two ACPI
-table parsers:
-
- - Call input_free_device() on failing input device registration as
-   necessary (and mentioned in the input subsystem documentation) in the
-   ACPI button driver (Kaushlendra Kumar)
-
- - Fix use-after-free in acpi_video_switch_brightness() by canceling
-   a delayed work during tear-down (Yuhao Jiang)
-
- - Use platform device for devres-related actions in the ACPI fan driver
-   to allow device-managed resources to be cleaned up properly (Armin
-   Wolf)
-
- - Add version checks to the MRRM and SPCR table paresers (Tony Luck and
-   Punit Agrawal)
-
-Thanks!
-
-
----------------
-
-Armin Wolf (2):
-      ACPI: fan: Use ACPI handle when retrieving _FST
-      ACPI: fan: Use platform device for devres-related actions
-
-Kaushlendra Kumar (1):
-      ACPI: button: Call input_free_device() on failing input device
-registration
-
-Punit Agrawal (1):
-      ACPI: SPCR: Check for table version when using precise baudrate
-
-Tony Luck (1):
-      ACPI: MRRM: Check revision of MRRM table
-
-Yuhao Jiang (1):
-      ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
-
----------------
-
- drivers/acpi/acpi_mrrm.c  |  3 +++
- drivers/acpi/acpi_video.c |  4 +++-
- drivers/acpi/button.c     |  4 +++-
- drivers/acpi/fan.h        |  7 ++++---
- drivers/acpi/fan_attr.c   |  2 +-
- drivers/acpi/fan_core.c   | 36 +++++++++++++++++++++++-------------
- drivers/acpi/fan_hwmon.c  | 11 +++++------
- drivers/acpi/spcr.c       |  2 +-
- 8 files changed, 43 insertions(+), 26 deletions(-)
+  Maciej
 
