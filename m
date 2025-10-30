@@ -1,128 +1,172 @@
-Return-Path: <linux-acpi+bounces-18355-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18356-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAC2C1E6FC
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 06:36:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612F6C1E820
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 07:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74FE188B9AB
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 05:37:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D97444E62E9
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Oct 2025 06:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2A32868B0;
-	Thu, 30 Oct 2025 05:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2982F60DA;
+	Thu, 30 Oct 2025 06:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAFpFgNl"
+	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="0gwxhhNO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2F778F2B;
-	Thu, 30 Oct 2025 05:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CB726A0DB
+	for <linux-acpi@vger.kernel.org>; Thu, 30 Oct 2025 06:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761802600; cv=none; b=LLteaGLpnIMq8dR9NHMs52j3Lf7oWx+e4nC1iH7hQSR5tP6lAj4kyt4M7GX2YRVzH7Su2PPTCapb6wLKYdc4MLX4RlhJ7jWfUSz+jSzFfs+YxsFTSCDWY0aI6rnucWeozCbQteyWuYp3tqad8LMzLdgcO5cvJHCjaNplJSVx4K4=
+	t=1761804436; cv=none; b=TWngA+PIMFneRBl4vENKhWlLGEX7/7aGbcdwZqf/yY7EHnjl0nmsATDLVoLquhnZiReOT7HZiYQZNeCy3CpqE9GsjqX7cJVqL8Amb72r1nUUrcFrO08d3hEhzI8qufH1z5QLXnaSfsyJ/5iJnCuVobmFIM5MnJPGU7bH5G04C04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761802600; c=relaxed/simple;
-	bh=I0DvfS4U97yWtVOK4JDyCuktO+OnCUalK1razNfYHYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VWV6W8IcyLam/KvB1fjTZn+ExLE1vfl1wu7ulGC1PnlgP3h0wQY5uEheZFIQlmrknoO2DV2juLjG6bc9VYYEsiWpJjLovL1xshezC0uMjWGLUU3yQHbvSqDPnKRr2TMok/E61DYhVdaiW9QTkXWH3aYtdUDTIb+xT4CC32AZ8BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAFpFgNl; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761802599; x=1793338599;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I0DvfS4U97yWtVOK4JDyCuktO+OnCUalK1razNfYHYY=;
-  b=ZAFpFgNlRyrNqvSS2nGqp0PIjnZdUw7KsOKgKSgwrQvkfSkb8T5r6+Xt
-   1ekHqtkSlNc1Qk0LGDpSf87XgXhP4WJidxvEoqCwy4tzSAxdyL1lC/JZO
-   Nv2zoGKUVtrY0nPUniv+rMeql1k8nnP9/v6S3L4K0TkExiVhwRk2cBAvh
-   MF2DKaT2meWigO4Gjv71Z3kB7BRFg1IDQBdirSTPcYHxef3pPNu0VHyGY
-   D5R3/6J0omQj/UELgh1bfRyMc5HIX7Z9iw3xDBqy6uBow7fg1zpdessjf
-   iQuC/Ol8S5sEns0AfkudTVZdfSw0/mT5c69dEIJIR7DzYNaN0z08PKyOg
-   Q==;
-X-CSE-ConnectionGUID: 00A4lAj/TMuM6ki3qc9UWg==
-X-CSE-MsgGUID: LU/dPjw+TLe+kVwLsHCPRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="86561957"
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="86561957"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 22:36:39 -0700
-X-CSE-ConnectionGUID: LvGHA+liS02goj4ga5s29g==
-X-CSE-MsgGUID: fXa5BMzSQTy9VXuquhwAag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="190224388"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 22:36:34 -0700
-Date: Wed, 29 Oct 2025 22:43:50 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>,
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ricardo Neri <ricardo.neri@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Subject: Re: [PATCH v6 02/10] x86/acpi: Move acpi_wakeup_cpu() and helpers to
- smpwakeup.c
-Message-ID: <20251030054350.GA17477@ranerica-svr.sc.intel.com>
-References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
- <20251016-rneri-wakeup-mailbox-v6-2-40435fb9305e@linux.intel.com>
- <20251027141835.GYaP9_O1C3cms6msfv@fat_crate.local>
- <20251027205816.GB14161@ranerica-svr.sc.intel.com>
- <20251029111358.GDaQH29lURT0p_WWsb@fat_crate.local>
+	s=arc-20240116; t=1761804436; c=relaxed/simple;
+	bh=/6eS1rSrp3y277Vz4B3Abj/WQzCqBSEwZwUivQ53yoA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RHsQOO0dyalBpWw5W5YaHJ13a1SSp73AEqwa/y8+tus0C4TQuXAEIxgc74B8HmgXmltZSFoe7Kq/HskLxVI477GG0EmMW1rOPuVLzFGbnuPyqGsBw7uBiKy80xWPdySUcNh8JuVmWXjxbsLZZOW/HcwpOD05DQl2Y8yH+VhbsOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=0gwxhhNO; arc=none smtp.client-ip=209.85.166.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-92b92e4b078so30477139f.0
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Oct 2025 23:07:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1761804434; x=1762409234; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B2oOVPuOCfFeYpVN2DHmuplgz6ll1JdAv6+U3SGE1nM=;
+        b=0gwxhhNORdYniZZzPck6P6fKpoDTfcj3OLogXg33XBkk33c8zK5zJhtMl1n+6otqDt
+         yTu3G0fbMleUYBhjYnMlUzO8UocbTcYKPS2nzoBLCYNDAyQmvhA/ae26MsXwn3gPzcVm
+         i8VABokHVHtIYunV9QVnLnzozs/ByraB6OjOU+9rv9swrn+HFjsXAjD5qei1icnoh85N
+         5lZaM/a8sN8UQcs3hfE3ZKCMtSd0fY7WxG2lrgCyS+vbwKcBrVL6AQ4wb88fmA5KLVcK
+         xBBzuzZDNsxC7T+21KNMzpi95JwiXdyGvT22jajZ1B6dTAPVH8eht6awMlBSBRc9xa0C
+         ileg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761804434; x=1762409234;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B2oOVPuOCfFeYpVN2DHmuplgz6ll1JdAv6+U3SGE1nM=;
+        b=KRv7vSmlc7CESXXvLNtzVf2l5RZxCjxo7/ZW/HusvsG9S9uHNnNYaDc7kl29QxnIYD
+         yg3xh9C+sH70haW2lMNurV0p7/4qqiNJhDh38ldYuRflrC09vM7eka/lZUzetNQ5axij
+         vd2aE3AwcWjJ5vh/Eut0zUPTI2FUGGOHXwjtlkJmIqnNI/6a6D+YG1BtXwBGJj+isB5w
+         dcF62S9d21csTd96SiemIEje67r4a2rXCfRrhdk/3WYjxGAdmUzKkxiHA+BmGXoAAkIp
+         eI+XwteSX96XqpFyQuhXy8CNgY/dwiGrcyoSA13kBZtUTgXH+6gpIl1h7uFM+lrW4HDy
+         FMdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFy2e4e4OgOQZGpxeNM+oeIUqPXUy0EvmV+yNCrRG2NKKXgco3rZkWm+AjnJKBT5Jo8v3JEsAt+TpZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCZ9Gyl+jkwihVZHlIWqBnUWaWqStMqBz+oXW1bJ6pAcdTwoWv
+	8FPT+57WdyGLfLcJ5BcSTq2kZIB/R6bfegRqwB1MHlzjPVjm4IxR57dfuMe1Oev9NItTVXqN3wz
+	di2BkxtDxI80ZGm4j44ExqBXH5SbRKE829NWMs7l9HQ==
+X-Gm-Gg: ASbGnctEPVK0g6U4TaV1dPPlPJa7WQSkNO9wK3jsYA6FClYp49CKQn+iJSxsjM8Pacb
+	MHXCGiaKRd8zelRJfoZnSWqc9jDU/Oc3ii8yWUmAWNzobalKgT4VGzv8JpIIF3F3misdJhRFXwF
+	8sd+eAcgbUBvGE2lBKavSLUXUKbg/vTTfVVyXCKFBBfUUCRvBFsX3lzT+kq+16qvy1CJYr4+lCG
+	O6ChwEbpX1gjBpof6nkpxjSjcAltS/XM35suKxRk96wA3YA1x/FHYLj2mV8ZawBJO/S4CNBPaJh
+	yi6VPMAU5BHpbfFqzYX+HjUkP9i4
+X-Google-Smtp-Source: AGHT+IF2w8g1ojnDyGQLFzRzdE61uNp4FTHmi/dw+D9zx9iGIJ1bDIJjlMRj6txF7f56YSZyhxHtxSGceOGnH7lmkQU=
+X-Received: by 2002:a05:6e02:4714:b0:432:fbe2:3605 with SMTP id
+ e9e14a558f8ab-432fbe23809mr44060065ab.11.1761804433543; Wed, 29 Oct 2025
+ 23:07:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029111358.GDaQH29lURT0p_WWsb@fat_crate.local>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20251014132106.181155-1-apatel@ventanamicro.com>
+ <20251014132106.181155-2-apatel@ventanamicro.com> <012aaa39-a37b-e682-0e34-9b7d7cd87f75@kernel.org>
+In-Reply-To: <012aaa39-a37b-e682-0e34-9b7d7cd87f75@kernel.org>
+From: Anup Patel <anup@brainfault.org>
+Date: Thu, 30 Oct 2025 11:37:00 +0530
+X-Gm-Features: AWmQ_bmMf5OoHFiUJY6zI6JVVcFsxCAmo8ACbrb1vAID1QwfAgdvKVsJ-cC2OvY
+Message-ID: <CAAhSdy0iwq_ZPzFY5_x_wsbM_H+npSDVv1F=wP=O-_25VChh6Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] RISC-V: Add common csr_read_num() and
+ csr_write_num() functions
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Anup Patel <apatel@ventanamicro.com>, Sunil V L <sunilvl@ventanamicro.com>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, 
+	Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Atish Patra <atishp@rivosinc.com>, Nutty Liu <nutty.liu@hotmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 29, 2025 at 12:13:58PM +0100, Borislav Petkov wrote:
-> On Mon, Oct 27, 2025 at 01:58:16PM -0700, Ricardo Neri wrote:
-> > Right. All the functions in the file start with the acpi_ prefix. It could
-> > be kept under arch/x86/kernel/acpi/. The Kconfig symbol X86_MAILBOX_WAKEUP
-> > would have to live in arch/x86/Kconfig as there is no Kconfig file under
-> > arch/x86/kernel/acpi. ACPI_MADT_WAKEUP is arch/x86/Kconfig.
-> > 
-> > Does that sound acceptable?
-> 
-> Right, this looks kinda weird. You have devicetree thing using ACPI code,
-> you're trying to carve it out but then it is ACPI code anyway. So why even do
-> that?
-> 
-> You can simply leave ACPI enabled on that configuration. I don't see yet what
-> the point for the split is - saving memory, or...?
+On Thu, Oct 30, 2025 at 12:35=E2=80=AFAM Paul Walmsley <pjw@kernel.org> wro=
+te:
+>
+> Hi Anup,
+>
+> On Tue, 14 Oct 2025, Anup Patel wrote:
+>
+> > In RISC-V, there is no CSR read/write instruction which takes CSR
+> > number via register so add common csr_read_num() and csr_write_num()
+> > functions which allow accessing certain CSRs by passing CSR number
+> > as parameter. These common functions will be first used by the
+> > ACPI CPPC driver and RISC-V PMU driver.
+> >
+> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> > Reviewed-by: Atish Patra <atishp@rivosinc.com>
+> > Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+>
+> This patch also (silently) removes the CSR number filtering, e.g.
+>
+> > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
+> > index 42c1a9052470..fe491937ed25 100644
+> > --- a/drivers/acpi/riscv/cppc.c
+> > +++ b/drivers/acpi/riscv/cppc.c
+> > @@ -65,24 +65,19 @@ static void sbi_cppc_write(void *write_data)
+> >  static void cppc_ffh_csr_read(void *read_data)
+> >  {
+> >       struct sbi_cppc_data *data =3D (struct sbi_cppc_data *)read_data;
+> > +     int err;
+> >
+> > -     switch (data->reg) {
+> > -     /* Support only TIME CSR for now */
+> > -     case CSR_TIME:
+> > -             data->ret.value =3D csr_read(CSR_TIME);
+> > -             data->ret.error =3D 0;
+> > -             break;
+> > -     default:
+> > -             data->ret.error =3D -EINVAL;
+> > -             break;
+> > -     }
+>
+> ... the above code, and:
 
-I did not want to enable the whole of ACPI code as I need a tiny portion of it.
-Then yes, saving memory and having a smaller binary were considerations.
+The switch case is incomplete for cppc_ffh_csr_read().
+Also, csr_read_num() already does appropriate filtering
+so the switch case over here is now redundant.
 
-The only dependency that ACPI_MADT_WAKEUP has on ACPI is the code to read and
-parse the ACPI table that enumerates the mailbox. (There are a couple of
-declarations for CPU offlining that need tweaking if I want ACPI_MADT_WAKEUP to
-not depend on ACPI at all).
+>
+> >  /*
+> >   * Read the CSR of a corresponding counter.
+> >   */
+> >  unsigned long riscv_pmu_ctr_read_csr(unsigned long csr)
+> >  {
+> > -     if (csr < CSR_CYCLE || csr > CSR_HPMCOUNTER31H ||
+> > -        (csr > CSR_HPMCOUNTER31 && csr < CSR_CYCLEH)) {
+> > -             pr_err("Invalid performance counter csr %lx\n", csr);
+> > -             return -EINVAL;
+>
+> ... the above code.
+>
+> I'm thinking that we probably want to keep the CSR number filtering code
+> in; at least, I can't think of a good reason to remove it.  Care to add i=
+t
+> back in?
 
-The DeviceTree firmware only needs the code to wake CPUs up. That is the code
-I am carving out.
+We can potentially have custom CSRs as hardware counters
+hence the CSR filtering over here is already incomplete. Plus,
+csr_read_num() already does the CSR filtering and returns
+failure for inappropriate CSR number.
 
-Having said that, vmlinux and bzImage increase by 4% if I enable ACPI.
-
-Thanks and BR,
-Ricardo
+Regards,
+Anup
 
