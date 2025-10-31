@@ -1,154 +1,188 @@
-Return-Path: <linux-acpi+bounces-18399-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18400-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A595C243C8
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 10:46:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737FDC24673
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 11:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 275C834E6BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 09:46:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 508954EEDAC
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 10:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FCE3195F0;
-	Fri, 31 Oct 2025 09:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B401633DEE0;
+	Fri, 31 Oct 2025 10:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UheooJD3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iEWEp9JC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7028A1E9B3D;
-	Fri, 31 Oct 2025 09:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4050633A024;
+	Fri, 31 Oct 2025 10:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761904016; cv=none; b=UK5JRgkV+Rdbzjs08dhKhbTFqTx24XFmc/ndcFt1YTwW953fO7QQ3NPhxA4aaYOYr9OrlzzieoHHXqipFlkEpVoX6ziXJCPU4op/lvktfphWw5lzNceHMwA8JrYLiGViamIlwM3xqeJ3A3y3NbWQJASady2pw6uTnlqNG3qs6Vs=
+	t=1761905925; cv=none; b=gV4JLTnXg3lRx+3xzJxZmEkxpPOLPlSAVbUG/oX6hgRrRGUpS9Z5tD9tOyyju3MyszVfsxSOwpVq80AB0KhhG1EpDfRLxRVBqK/vnLEICVci4iAF9u57LiAXP8ulJjhtC0rAdtQCijjTn8l0W+9wBB7IhEcXU8kjnfIALpuetA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761904016; c=relaxed/simple;
-	bh=2eMlBgwX73pe9RAiAfHmesRjr+Xow2HzEmR6TjqXqSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ERSi9nySFiQaAx9/A0Qful8mEnEhojKRpAU5c9RbyGaB5ybrxFFT969jIT8kOKfhLVDIXIR2VNpU0mORu3AB3kj3390Yk3zDfwCteR13dODc5ym9VIzQ8pVPOaHTxjIpOca+wGjrVAEEnd2HfoEW0/j9JdjjQkV/2IQhldebAl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UheooJD3; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1761905925; c=relaxed/simple;
+	bh=ScQKh0k+g0sLHY6zzPeiiWF3Mx49kdxeKS7TZIXktok=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oerCHwtGdqIc67mCjnve1K8p0mD5KA8pvsNKmOGmhCLiUCmx7VINWSH/jWfqLngqpeCKJ4J/f866qQMZB0CsQAFaEs0k5XshzvK+8Vb+085yewvUU/7JA431gZX9Yx3eeWOfuO4PLW34Rf9a23RdP/65PoTvrJpwCV4j6u1HUbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iEWEp9JC; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761904015; x=1793440015;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2eMlBgwX73pe9RAiAfHmesRjr+Xow2HzEmR6TjqXqSY=;
-  b=UheooJD3raSfEj9nkVon/uD67uSbkM+Be8BAWqjbvJFcYuVBjW6yhEIQ
-   Uiyo5wEi5K4nwISWfzlywY6kfKbq2Fe1OaFWEbE2+saT3rwQ9ZY0EqeV/
-   trVcN8ZURvsuGEHdb4dz6kXDxYmT/3ZA548/U1YgyBNeLf6yJQ3A+6RED
-   KNeUO4jGHKy7GwyPzyWF2y/HSQK2en2D1rP9V9gI5yi4gax0LRLYS9305
-   nS8VddtWwpS2TxyYGCbX1p1sVUIkDNnYgHHnD0Er9ZnpSlNhwtSHuXONa
-   ANay/rpdcHJj/+IS531ZqQz8wVMXxHBvglRhQmeeHpxcJsNyuf5Rza0zr
-   w==;
-X-CSE-ConnectionGUID: vmibVxc7SGqhB8RkucyWcQ==
-X-CSE-MsgGUID: 53e7CBsuR3mrFT1GpVDtsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67901001"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="67901001"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:46:54 -0700
-X-CSE-ConnectionGUID: NU+JcNjpT7W+uY91AWHlcA==
-X-CSE-MsgGUID: 8Mpc5cneR4OWCfngFJAIoA==
+  t=1761905923; x=1793441923;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ScQKh0k+g0sLHY6zzPeiiWF3Mx49kdxeKS7TZIXktok=;
+  b=iEWEp9JCYSCTMYEkh6+Zz1rt/s5pZ2VgFxzqpXxW+DRrRf5PNQ7aFvkL
+   CJD25IV0pzyfoFdwYjiecfuek128+Cm918K9zI40cDnoaDdvAbIjHd+VH
+   lByTnzpanD5vZeQ+iDwzf8rKH7k6E7TP0t4AshFxWu6xgBR+RxtWNSKoY
+   qkkCYYOWQLEXyK562JGi39oQHfDMoRo/M8GeCJrOV7VbTEH5UrohnX4PU
+   aH/VBCsvk5kusq7fqqhBsR+E/jlX3nrFtmTYO2v9+cGxjtf8Y712UDXAE
+   olJqMlsOagBzm9bLb/YzPKqX4yEhtnqA9aCYBwpOkQqji7laDm5s5njJM
+   Q==;
+X-CSE-ConnectionGUID: wudIQrEYThGBVwKxzKhXrw==
+X-CSE-MsgGUID: yP4uDmFtTxqbP1YRHiBnAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63761119"
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
+   d="scan'208";a="63761119"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:43 -0700
+X-CSE-ConnectionGUID: k25i44LyS2un9PQ5Y6ncag==
+X-CSE-MsgGUID: vJDIqqS8RQmFeEw6PNSdLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="216850790"
-Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:46:51 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vEliX-00000004E91-1gch;
-	Fri, 31 Oct 2025 11:46:45 +0200
-Date: Fri, 31 Oct 2025 11:46:44 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v3 03/10] software node: allow referencing firmware nodes
-Message-ID: <aQSFhHB3txNJ-8uc@smile.fi.intel.com>
-References: <20251029-reset-gpios-swnodes-v3-0-638a4cb33201@linaro.org>
- <20251029-reset-gpios-swnodes-v3-3-638a4cb33201@linaro.org>
- <aQMy00pxp7lrIrvh@smile.fi.intel.com>
- <CAMRc=MdP58d=o7ZL4bAdsaYwzrs6nJo3bhS7Jf1UkDNwPOnAsg@mail.gmail.com>
- <aQRyFSHWzccTPa3M@smile.fi.intel.com>
- <CAMRc=McT+Q8ZVk9_HTyWd6uS0OoP92E_phwef7CDyDVeNbJCqA@mail.gmail.com>
+   d="scan'208";a="185890295"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.56])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:30 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Shuai Xue <xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>,
+ Ilpo =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/6 v6] ACPI: extlog: Trace CPER PCI Express Error Section
+Date: Fri, 31 Oct 2025 11:18:27 +0100
+Message-ID: <2351924.vFx2qVVIhK@fdefranc-mobl3>
+In-Reply-To: <20251028144816.000018a3@huawei.com>
+References:
+ <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+ <20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
+ <20251028144816.000018a3@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=McT+Q8ZVk9_HTyWd6uS0OoP92E_phwef7CDyDVeNbJCqA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Oct 31, 2025 at 10:00:37AM +0100, Bartosz Golaszewski wrote:
-> On Fri, Oct 31, 2025 at 9:24 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Oct 30, 2025 at 04:17:48AM -0700, Bartosz Golaszewski wrote:
+On Tuesday, October 28, 2025 3:48:16=E2=80=AFPM Central European Standard T=
+ime Jonathan Cameron wrote:
+> On Thu, 23 Oct 2025 14:25:37 +0200
+> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
+>=20
+> > I/O Machine Check Architecture events may signal failing PCIe components
+> > or links. The AER event contains details on what was happening on the w=
+ire
+> > when the error was signaled.
+> >=20
+> > Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
+> > by the I/O MCA.
+> >=20
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
+com>
+> Hi Fabio,
+>=20
+> Was taking a fresh look at this as a precursor to looking at later
+> patches in series and spotted something that I'm doubtful about.
+>=20
+> > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> > index 47d11cb5c912..cefe8d2d8aff 100644
+> > --- a/drivers/acpi/acpi_extlog.c
+> > +++ b/drivers/acpi/acpi_extlog.c
+> > @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+> >  	return 1;
+> >  }
+> > =20
+> > +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> > +			      int severity)
+> > +{
+> > +	struct aer_capability_regs *aer;
+> > +	struct pci_dev *pdev;
+> > +	unsigned int devfn;
+> > +	unsigned int bus;
+> > +	int aer_severity;
+> > +	int domain;
+> > +
+> > +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> > +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+>=20
+> Looking again, I'm not sure this is as intended.  Is the aim to
+> allow for either one of these two?  Or check that that are both present?=
+=20
+> That is should it be !(A && B) rather than !(A || B)?
+>=20
+Hi Jonathan,
 
-...
+You're right. We need to check that both are true and return if they are=20
+not, then the statement has to be !(A && B).
 
-> > But first of all, your series doesn't compile AFAICS:
-> >
-> > drivers/reset/core.c:981:6: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-> >   981 |         if (IS_ERR(rgpio_dev->swnode))
-> >       |             ^~~~~~~~~~~~~~~~~~~~~~~~~
-> > drivers/reset/core.c:1001:9: note: uninitialized use occurs here
-> >        1001 |         return ret;
-> >             |                ^~~
-> > drivers/reset/core.c:981:2: note: remove the 'if' if its condition is always false
-> >   981 |         if (IS_ERR(rgpio_dev->swnode))
-> >       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >   982 |                 goto err_put_of_node;
-> >       |                 ~~~~~~~~~~~~~~~~~~~~
-> > drivers/reset/core.c:905:13: note: initialize the variable 'ret' to silence this warning
-> >   905 |         int id, ret, lflags;
-> >       |                    ^
-> >       |                     = 0
-> > 1 error generated.
-> 
-> You're not wrong but for the record: it builds fine for me with
-> aarch64-linux-gnu-gcc 14.2 for some reason so I didn't notice it. I'll
-> fix it.
+Thank you,
 
-GCC is not _the_ compiler nowadays. And building with `make W=1` should be a good
-practice for subsystem maintainers :-)
+=46abio=20
+>=20
+> > +		return;
+> > +
+> > +	aer_severity =3D cper_severity_to_aer(severity);
+> > +	aer =3D (struct aer_capability_regs *)pcie_err->aer_info;
+> > +	domain =3D pcie_err->device_id.segment;
+> > +	bus =3D pcie_err->device_id.bus;
+> > +	devfn =3D PCI_DEVFN(pcie_err->device_id.device,
+> > +			  pcie_err->device_id.function);
+> > +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
+> > +	if (!pdev)
+> > +		return;
+> > +
+> > +	pci_print_aer(pdev, aer_severity, aer);
+> > +	pci_dev_put(pdev);
+> > +}
+>=20
+>=20
 
-...
 
-> > So, but to the topic
-> >
-> > I have applied this and get the only error as per above
-> >
-> >  (const struct software_node_ref_args) {                                \
-> >  -       ._node = _ref,                                          \
-> >  +       .swnode = _Generic(_ref, const struct software_node *: _ref, default: NULL), \
-> >  +       .fwnode = _Generic(_ref, struct fwnode_handle *: _ref, default: NULL), \
-> >
-> 
-> That works, thanks for the idea.
-
-You're welcome!
-
--- 
-With Best Regards,
-Andy Shevchenko
 
 
 
