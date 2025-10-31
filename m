@@ -1,177 +1,169 @@
-Return-Path: <linux-acpi+bounces-18401-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18402-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0315FC24745
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 11:28:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45F1C25068
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 13:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 805594E5E8A
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 10:27:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EC3864F5ECA
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 12:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CD933F8BE;
-	Fri, 31 Oct 2025 10:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8412634A3B6;
+	Fri, 31 Oct 2025 12:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="1XTiHZWL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lEM92E8z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95191336ED6
-	for <linux-acpi@vger.kernel.org>; Fri, 31 Oct 2025 10:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B8C338F54;
+	Fri, 31 Oct 2025 12:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761906437; cv=none; b=mbhsbjTKZRNW8VL0Np5yfvy3K6a2VBwGzQs3COKxJkexPIuHD5cMY6SGSToAooTG6w8h4ohfp7dNFhpzE8EyUPkmWXlJKol34pjT1nN/0LWewCyPH+lTLGkKzXqF0/nKNWKZCgG338LRtRVMzBNIyf/wXc18/7jiJiig9MPJquE=
+	t=1761913930; cv=none; b=O9Y89lelE9QstUt4RiOeQ3eL+0weVCoH/Hg/AgMlabtv+OHs7cD4u4MCqrnS10KS0lg4/g935lylVlREmr3BZXbZuN5JDP2mEYK/8Pse/y09sRCMDpvNeUvRkPsk4nvUOnxmgRw99gEZPtjbTTkiEO+djyTp/NSlQo4MIqfqkl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761906437; c=relaxed/simple;
-	bh=LZJjK3oBrjpMjUbg96mJVTjbUwuIdFSzDRhJE0m26JQ=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SURAWQ863akM3xAo1iyplAvET6lQursJEBDOVKL4dW06ZE89OvVAfDh4PdchwZPvm29KY+mBs1Ka7UU9DVgzJlZBaWQWyvV1SwpGR/DKE6dW2qoCG/MmEDAJ6yU8yIxlT8gQbcUd7Y2ZhlXaMYIeF0NQl40XHxImNqs2F1pLW6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=1XTiHZWL; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3652d7800a8so15998291fa.0
-        for <linux-acpi@vger.kernel.org>; Fri, 31 Oct 2025 03:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761906434; x=1762511234; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :mime-version:in-reply-to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pNOU1iRdcbi0x6KU+9+XlLF3cgDUgehMK+0RcldpnIE=;
-        b=1XTiHZWLRywz1jgUl5oU4KKcSWlnxkl5AuoB8ztAuIRNjofKjiZOl5QQMN213ASpIk
-         /63Kvs8dR43qiY5kzd64ke4Np6NVDZuUScBIiCkfnJKQ4kUWDOPPl/9ti6nBMAPcOvff
-         XyC3XkfvGHRb04KpmvzUtiejHsDeyOdzsi/LWG3R1y/Dv7ZC80cuwTY9k6Ld3U0hnTgr
-         1tENe9LJB2Vkg+511sjc4hJP6RyWJFyD3bLfBbpJSHDFqo7Gx41t4j8YBNYZX/TzU2wo
-         5+32MNlcWW0qxZJA9ZFTw3rnqCEZlHIyjIZME/HeQSodN6HyEpJgBKRvwfqM580XMLXV
-         FBGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761906434; x=1762511234;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :mime-version:in-reply-to:from:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pNOU1iRdcbi0x6KU+9+XlLF3cgDUgehMK+0RcldpnIE=;
-        b=BYXnuKsCTzK7kqRbp4ow4o/E6kUVQW4fwzsYFtjGGQ/01c+97Kmap2DdnX3cAgNMX6
-         tYFq7mNFqU/CjSzgC75rSLed96glq5QHZ/fYtmduvXFbZ8dfU/4rf7rUshwLQcfJqWkA
-         SucvQ1useapCscfvqustW58RiXoCKb32s6VW3YAugnxhOa5ciJR3TfidhESI5vAWMz4r
-         r6co/mBNWrQIKgM7hjy7SjhUSFRlopxJjiQ9znCM6pqml/BInmE6FV2dXLwx6Dpzo7iX
-         pPZNgq96Pi7UByaM30VQrd7wZe9mMgZIeQWaVVOQEcTcif7Heml0kOS0yTSN1C6/lEMj
-         nyIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzu1ctVDSoU4YAXG2HoM2Ar2ttUSlMo/aGZHs9RApSvaX31GWDy1p67VYa9Ac3bD1Tmyh6xUJPX1t7@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDVwSmVn35kzl8WW7RlvAUeDqmQ7BSbpv3T7RNN5CUYsf3T4MH
-	cu3pIvalMrHx9W+NiLvy4epUVQSdhoqHZ9/FyVDEwro90FXXU4K1ffL1Pfcot2bY46S3EvjcFey
-	yIvaXi303REjj3zxp1xLpGnloeMtD1cjt/bEotpcLOw==
-X-Gm-Gg: ASbGnctvjYryBTRnMy234cnV/YIawUfXvICB3xsv/LFeKZ4Tvs7R0ynjB9Bj+6H3o+E
-	ZjW04+NNrcHJh1wBC2AeRaqbKkODOZaVAXzikn/qRlGsvQKH/oiYoq5hSu7yK3RGVMU9jBD/aJ2
-	PVRxOfMxRvCwm0qwZffgkVhOFPTjQAD+Yfsl7g4WprpYx6l9XlyvVFJzTCSIlBOoycIe63Hn0cm
-	ddUUjeXLVr8YwIi3wN0hoDZCwO4Abi1dzTssSC4Y19IoZIgYksAzZRCXoOliMlgSVwDx1+j2gzu
-	kYFWOZtOBUp1Q2BF
-X-Google-Smtp-Source: AGHT+IFo3peC5StgeTxxGQqDBXnQdp1UAiFfDKKeZSL+XtcRWdzRvlhIPKe567Wwjp5cIPhZ6+UfJrC81qMWudtMilk=
-X-Received: by 2002:a05:651c:31d4:b0:36c:7a76:d17a with SMTP id
- 38308e7fff4ca-37a18d87b15mr10021321fa.9.1761906431943; Fri, 31 Oct 2025
- 03:27:11 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Oct 2025 05:27:10 -0500
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Oct 2025 05:27:10 -0500
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-In-Reply-To: <aQSFDhUp89xul2AP@smile.fi.intel.com>
+	s=arc-20240116; t=1761913930; c=relaxed/simple;
+	bh=vAvTZWxGuxuqYRzWeF+dPsTukeuTCdomYTBSlfcskGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B72sLgQZgRFKfVnTDuQv/qs5bS8yB6H3jZyIYA1JixWTJnH15U7oaO7qZ4xN1T6+HwcBM3rtU+8qrS9fxm0HPLVL6VDhOn3kfVITB/Lax2GzQvHrs8161pCzeDZKZBFCgid0yk0KHx2hcmZkBxwwOe4pu6/YYud3G0WicpjGKeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lEM92E8z; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761913927; x=1793449927;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=vAvTZWxGuxuqYRzWeF+dPsTukeuTCdomYTBSlfcskGI=;
+  b=lEM92E8z7PO6kvI8wA1U/JkObZeBvcJuFxTyjjFKfsSkSD0Vy83wntd2
+   1Oe7evCWnEAY2QgR89OitD6/O2OnNf18lInbiiP8oSolSpc+mbXlAnmH2
+   2C78G2n+NCpJ0DJEpTSf4wbyQPqrdhF8wBE0H9jcvsE4u/bAu50jgCdD3
+   zynmT3/PI2tVLBY+teeL0CkgP1do1tnpScGms9Q4+uzv7dVq/5HcYkQy+
+   1w8T0P9oawETXwhGYysr7vKi12vIuGOW8QWpWasv6msB4joNzMqu4sMxQ
+   cFxA7OvL/4qKiqV5MMhh+aupIABw5nXfJaUxg8S9fCjPNyX8GYb+x+Hag
+   w==;
+X-CSE-ConnectionGUID: Gml329+OQSuyGMI9HS1tvw==
+X-CSE-MsgGUID: b1L/cz73Qli1dLTZTtXHHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64001045"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64001045"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:32:05 -0700
+X-CSE-ConnectionGUID: imYMsrLsRyC9p//fO6WQxg==
+X-CSE-MsgGUID: 3/0RZUxDQyub/6nfaKcuNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
+   d="scan'208";a="186342409"
+Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:32:03 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vEoIP-00000004GCj-28Or;
+	Fri, 31 Oct 2025 14:31:57 +0200
+Date: Fri, 31 Oct 2025 14:31:56 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v3 02/10] software node: increase the reference of the
+ swnode by its fwnode
+Message-ID: <aQSsPIJ26Sx2WqhE@smile.fi.intel.com>
+References: <20251029-reset-gpios-swnodes-v3-0-638a4cb33201@linaro.org>
+ <20251029-reset-gpios-swnodes-v3-2-638a4cb33201@linaro.org>
+ <aQMxNgC9SWQp-yUy@smile.fi.intel.com>
+ <CAMRc=Md=Dcwj0qDu5ysDafjuV0Ud9z2Ky3PQpDzfiKRt2L-HgQ@mail.gmail.com>
+ <aQRztwrOFCWk8IG8@smile.fi.intel.com>
+ <CAMRc=MezQ7RC=ZjiKkMa0qiaKTRXePOKxOCDjjV=-qUYto2jqA@mail.gmail.com>
+ <aQSFDhUp89xul2AP@smile.fi.intel.com>
+ <CAMRc=MdfbbkWBeAgw3G=k7xgSc8TPhZQ56ks9Or9p9Ah-y5YQw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029-reset-gpios-swnodes-v3-0-638a4cb33201@linaro.org>
- <20251029-reset-gpios-swnodes-v3-2-638a4cb33201@linaro.org>
- <aQMxNgC9SWQp-yUy@smile.fi.intel.com> <CAMRc=Md=Dcwj0qDu5ysDafjuV0Ud9z2Ky3PQpDzfiKRt2L-HgQ@mail.gmail.com>
- <aQRztwrOFCWk8IG8@smile.fi.intel.com> <CAMRc=MezQ7RC=ZjiKkMa0qiaKTRXePOKxOCDjjV=-qUYto2jqA@mail.gmail.com>
- <aQSFDhUp89xul2AP@smile.fi.intel.com>
-Date: Fri, 31 Oct 2025 05:27:10 -0500
-X-Gm-Features: AWmQ_bmvuRg5selCz60KVvdQ444EnQp28Ff1ZBUj00ynWwJi8NQDD4tLMKkPhnk
-Message-ID: <CAMRc=MdfbbkWBeAgw3G=k7xgSc8TPhZQ56ks9Or9p9Ah-y5YQw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] software node: increase the reference of the
- swnode by its fwnode
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdfbbkWBeAgw3G=k7xgSc8TPhZQ56ks9Or9p9Ah-y5YQw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, 31 Oct 2025 10:44:46 +0100, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> said:
-> On Fri, Oct 31, 2025 at 10:03:47AM +0100, Bartosz Golaszewski wrote:
->> On Fri, Oct 31, 2025 at 9:30=E2=80=AFAM Andy Shevchenko
->> <andriy.shevchenko@linux.intel.com> wrote:
->> > On Thu, Oct 30, 2025 at 03:33:02AM -0700, Bartosz Golaszewski wrote:
->> > > On Thu, 30 Oct 2025 10:34:46 +0100, Andy Shevchenko
->> > > <andriy.shevchenko@linux.intel.com> said:
->
-> ...
->
->> > > Andy: the resulting code after patch 3/10 looks like this:
->> > >
->> > > struct fwnode_handle *refnode;
->> > >
->> > > (...)
->> >
->> > Let's say something like below to be put here
->> >
->> > /*
->> >  * The reference in software node may refer to a node of a different t=
-ype.
->> >  * Depending on the type we choose either to use software node directl=
-y, or
->> >  * delegate that to fwnode API.
->> >  */
->>
->> But this is incorrect: we're not really doing that. We either use the
->> firmware node reference directly OR cast the software node to its
->> firmware node representation. We ALWAYS use the firmware node API
->> below.
->>
->> This really *is* evident from the code but if it'll make you happy and
->> make you sign off on this, I'll add a corrected version.
->
-> The comment should answer to the Q: "Why the heck are we calling fwnode A=
-PIs here?"
->
->> IMO It's completely redundant.
->
-> This is unusual case for swnode API (see other functions, they call direc=
-tly
-> the low-level implementation instead of going to a round via fwnode). Tha=
-t's
-> why I insist on a comment of this piece. It may be obvious for you, but t=
-he
-> unprepared read would be surprised by this inconsistency.
->
+On Fri, Oct 31, 2025 at 05:27:10AM -0500, Bartosz Golaszewski wrote:
+> On Fri, 31 Oct 2025 10:44:46 +0100, Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> said:
+> > On Fri, Oct 31, 2025 at 10:03:47AM +0100, Bartosz Golaszewski wrote:
+> >> On Fri, Oct 31, 2025 at 9:30 AM Andy Shevchenko
+> >> <andriy.shevchenko@linux.intel.com> wrote:
+> >> > On Thu, Oct 30, 2025 at 03:33:02AM -0700, Bartosz Golaszewski wrote:
+> >> > > On Thu, 30 Oct 2025 10:34:46 +0100, Andy Shevchenko
+> >> > > <andriy.shevchenko@linux.intel.com> said:
 
-I propose to have the following:
+...
 
-+       /*
-+        * A software node can reference other software nodes or firmware
-+        * nodes (which are the abstraction layer sitting on top of them).
-+        * This is done to ensure we can create references to static softwa=
-re
-+        * nodes before they're registered with the firmware node framework=
-.
-+        * At the time the reference is being resolved, we expect the swnod=
-es
-+        * in question to already have been registered and to be backed by
-+        * a firmware node. This is why we use the fwnode API below to read=
- the
-+        * relevant properties and bump the reference count.
-+        */
+> >> > > Andy: the resulting code after patch 3/10 looks like this:
+> >> > >
+> >> > > struct fwnode_handle *refnode;
+> >> > >
+> >> > > (...)
+> >> >
+> >> > Let's say something like below to be put here
+> >> >
+> >> > /*
+> >> >  * The reference in software node may refer to a node of a different type.
+> >> >  * Depending on the type we choose either to use software node directly, or
+> >> >  * delegate that to fwnode API.
+> >> >  */
+> >>
+> >> But this is incorrect: we're not really doing that. We either use the
+> >> firmware node reference directly OR cast the software node to its
+> >> firmware node representation. We ALWAYS use the firmware node API
+> >> below.
+> >>
+> >> This really *is* evident from the code but if it'll make you happy and
+> >> make you sign off on this, I'll add a corrected version.
+> >
+> > The comment should answer to the Q: "Why the heck are we calling fwnode APIs here?"
+> >
+> >> IMO It's completely redundant.
+> >
+> > This is unusual case for swnode API (see other functions, they call directly
+> > the low-level implementation instead of going to a round via fwnode). That's
+> > why I insist on a comment of this piece. It may be obvious for you, but the
+> > unprepared read would be surprised by this inconsistency.
+> >
+> 
+> I propose to have the following:
+> 
+> +       /*
+> +        * A software node can reference other software nodes or firmware
+> +        * nodes (which are the abstraction layer sitting on top of them).
+> +        * This is done to ensure we can create references to static software
+> +        * nodes before they're registered with the firmware node framework.
+> +        * At the time the reference is being resolved, we expect the swnodes
+> +        * in question to already have been registered and to be backed by
+> +        * a firmware node. This is why we use the fwnode API below to read the
+> +        * relevant properties and bump the reference count.
+> +        */
+> 
+> This at least adds relevant information on *why* we're using the fwnode API.
 
-This at least adds relevant information on *why* we're using the fwnode API=
-.
+Yes, works for me, thanks!
 
-Bart
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
