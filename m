@@ -1,64 +1,64 @@
-Return-Path: <linux-acpi+bounces-18406-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18407-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB71BC25947
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 15:31:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66520C25CE9
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 16:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99FF94E8240
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 14:30:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95D2C3B9B33
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 15:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C1834C153;
-	Fri, 31 Oct 2025 14:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB7D2C08DF;
+	Fri, 31 Oct 2025 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m/llmHWP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZXX1Bma9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B74634BA5F
-	for <linux-acpi@vger.kernel.org>; Fri, 31 Oct 2025 14:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6F62BEC20
+	for <linux-acpi@vger.kernel.org>; Fri, 31 Oct 2025 15:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761920997; cv=none; b=n14dpXEq2e/hECGKfujc9AB0EbuOgQHfWcXnP/NJqZKGDnapYfPWuVOCx1N381TUxSNkiB4QlCpJ59KMypefT1fJDU0IoDFFuec2r95YV3zZ6KG1c7WJvNaa9vp+2ExKlqmKfQW6fTXQQjRkKPnmbifeoV9+AmnO1ghFwgfswOM=
+	t=1761924030; cv=none; b=ZNEKAbLyroFbt3tBAvQcZY9QYeTiAGiX1SzC8peQ4f8t+sDmwBelAleHe5XPOyzm9NUFeYsreEwcOGds458lXU5MraRIVJ0L6MNSAcyiDNtxm8zqSCuAi2I9F3QLJ22H/qeulh/VWG00arhqpdxT/nw4+xEbdGOGGzK3iXxMfdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761920997; c=relaxed/simple;
-	bh=DpRmmnQNFBCQ/QafgwFnqLT9Yw/H1JWWO9tLoLVtAy4=;
+	s=arc-20240116; t=1761924030; c=relaxed/simple;
+	bh=y3b+wUCsWckPBCTPgAZadRRNBEdlpxrfsSHKNnGesNY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LRiJNLWcnqkDFoYr5w1+yKPbVMU8T/15UZKg7VB9CPNoid0taKLhOew+ODO8O+T7+EqbXU7eNz8kY/rL+iBw/WOi8fgz5FbtncGBZtKnRRozKBHcVRcidP6SJnTLQnW0MvI9esOamXnUbuX8wR2UkPasvHHP/u/iFENq04OZRd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m/llmHWP; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=IIaBcq2DZFuFNWCJ69Rp0+KvIfpGueRbZrey+b0r4YUEldPX23/cFLYyPXuR7y7OVFEDeUfC36Mk+wy6edhs8knsppObLPKWJzX7olzwvTmKIcm7U2PRpgMev9arNBx8aTv5dw3R4a0H4WpDPy2dAuPOut7Zp8NffcGGgLtXzO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZXX1Bma9; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D08001A0887;
-	Fri, 31 Oct 2025 14:29:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EAD594E41441;
+	Fri, 31 Oct 2025 15:20:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DC5860704;
-	Fri, 31 Oct 2025 14:29:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4B4A11818003;
-	Fri, 31 Oct 2025 15:29:31 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CDE360710;
+	Fri, 31 Oct 2025 15:20:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 067DE11818041;
+	Fri, 31 Oct 2025 16:20:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761920989; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761924023; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=H1xEmCgdr5BM399Kc4ZsWwaTbhEQ52MJYYiQpqbSK6Q=;
-	b=m/llmHWPK2GTOxgP86qebD1Z2Edet7KZozbxg7xHP71zP8WGHqlNCsjTjzbgRJW6AoYEg9
-	PGGuEBK7TNuc+3zADlLbC1jrjiYc/TXhPfAwEtjv3025kcM3TvB0cUwMNtHDn+fuYXbapk
-	18lKsj6lpv1/ObuOPQiBVRZx/Tm+zaLVFOXH7eT76X6+OiJSchpc3v+iGXicmC9AbAQ7Fi
-	n3R42rQTkma0JCEYRFgzMb9znRzRns4yCbMUv4DSU7pRjgiVIxLEd6NnupsCZT4TGW2iAp
-	n6HmKRiLt0yJEP375+9QgT+CNjKgF6b7Kiq48SW1im8mtyVm7PYpr3cu982RMw==
-Date: Fri, 31 Oct 2025 15:29:30 +0100
+	bh=goHQM/1NASiwEpJFuU+gt1w80LtYcWXr5Gc0K9tmMcc=;
+	b=ZXX1Bma9X3KMNXlEJ6m3KmzgeWaoHvqKZUDGbtyXcyczSWNcqa1WxZl7PaaP3QnmzL9gq4
+	h0YuPlq7t/ag22Qc0RV6DUkEOizZ8aU4YvVAi5tQ0oCrNCN9uTlgnrGvmTf6uzjWAFrc/P
+	iOZon5nGEinDurKqvP8UIygDFPUWAiUqm59zHUbmHyOs3e60XOGs63ifmZhf114mLUKRqK
+	bIKj+JoZJxnMO/w5PK2AbEIM7ADXeVegLKetdhc6qx0E6UYxyvcnSln30z+BZXKje9+TfM
+	AmSNEEcgTn5HJwFcJWmSNYyzhr1jXdHX0RhRB0lSnwspgtNFDoD+bFqnfo/hgQ==
+Date: Fri, 31 Oct 2025 16:20:04 +0100
 From: Herve Codina <herve.codina@bootlin.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
  <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
  Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
  Helgaas <bhelgaas@google.com>, Charles Keepax
@@ -86,11 +86,11 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
  <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
-Message-ID: <20251031152930.3c51a313@bootlin.com>
-In-Reply-To: <CAMuHMdVnsWMB24BTFKwggEXKOtqJ96GWZh2Xz+ogocQHM+=+6Q@mail.gmail.com>
+Message-ID: <20251031162004.180d5e3f@bootlin.com>
+In-Reply-To: <20251030141448.GA3853761-robh@kernel.org>
 References: <20251015071420.1173068-1-herve.codina@bootlin.com>
 	<20251015071420.1173068-6-herve.codina@bootlin.com>
-	<CAMuHMdVnsWMB24BTFKwggEXKOtqJ96GWZh2Xz+ogocQHM+=+6Q@mail.gmail.com>
+	<20251030141448.GA3853761-robh@kernel.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -103,70 +103,55 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 31 Oct 2025 09:52:16 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+Hi Rob,
 
-> Hi Hervé,
-> 
-> On Wed, 15 Oct 2025 at 09:17, Herve Codina <herve.codina@bootlin.com> wrote:
+On Thu, 30 Oct 2025 09:14:48 -0500
+Rob Herring <robh@kernel.org> wrote:
+
+> On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
 > > A Simple Platform Bus is a transparent bus that doesn't need a specific
 > > driver to perform operations at bus level.
-> >
+> > 
 > > Similar to simple-bus, a Simple Platform Bus allows to automatically
 > > instantiate devices connected to this bus.
-> >
+> > 
 > > Those devices are instantiated only by the Simple Platform Bus probe
-> > function itself.
-> >
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
+> > function itself.  
 > 
-> Thanks for your patch!
+> Don't let Greg see this... :)
 > 
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/bus/simple-platform-bus.yaml
-> > @@ -0,0 +1,50 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/bus/simple-platform-bus.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Simple Platform Bus
-> > +
-> > +maintainers:
-> > +  - Herve Codina <herve.codina@bootlin.com>
-> > +
-> > +description: |
-> > +  A Simple Platform Bus is a transparent bus that doesn't need a specific
-> > +  driver to perform operations at bus level.
-> > +
-> > +  Similar to simple-bus, a Simple Platform Bus allows to automatically
-> > +  instantiate devices connected to this bus. Those devices are instantiated
-> > +  only by the Simple Platform Bus probe function itself.  
+> I can't say I'm a fan either. "Platform bus" is a kernel thing, and the 
+> distinction here between the 2 compatibles is certainly a kernel thing.
 > 
-> So what are the differences with simple-bus? That its children are
-> instantiated "only by the Simple Platform Bus probe function itself"?
-> If that is the case, in which other places are simple-bus children
-> instantiated?
+> I think this needs to be solved within the kernel.
 
-In of_platform_populate(). It call of_platform_bus_create() which is
-recursive:
-  https://elixir.bootlin.com/linux/v6.14/source/drivers/of/platform.c#L374
-
-So children are instantiated out of the bus probe().
-
+I fully agree with that.
 
 > 
-> Do we need properties related to power-management (clocks, power-domains),
-> or will we need a "simple-pm-platform-bus" later? ;-)
-> 
-> FTR, I still think we wouldn't have needed the distinction between
-> "simple-bus" and "simple-pm-bus"...
+> What I previously said is define a list of compatibles to not 
+> instantiate the child devices. This would essentially be any case having 
+> a specific compatible and having its own driver. So if someone has 
+> 'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if 
+> they add a driver for "vendor,not-so-simple-bus", then they have to add 
+> the compatible to the list in the simple-pm-bus driver. I wouldn't 
+> expect this to be a large list. There's only a handful of cases where 
+> "simple-bus" has a more specific compatible. And only a few of those 
+> have a driver. A more general and complicated solution would be making 
+> linux handle 2 (or more) drivers matching a node and picking the driver 
+> with most specific match. That gets complicated with built-in vs. 
+> modules. I'm not sure we really need to solve that problem.
 
-I would like that. Using simple-pm-bus solves my issue but I don't have any
-clocks or power-domains to set. The simple-pm-bus bus requires at least
-one of them. Even if the driver itself solved my issue, I cannot be
-compliant with its binding.
+Right. Let discard the "more general and complicated solution" and focus
+on the list of compatible to avoid child devices instantiation.
+
+Do you mean that, for "simple-bus" compatible we should:
+ - Remove the recursive device instantiation from of_platform_populate().
+ - In simple-bus probe(), check the device we probe against the
+   'no_instantiate_children' list
+      - If it matches, do not instantiate chidren
+      - If it doesn't match instantiate children
+
+Is that correct?
 
 Best regards,
 Hervé
