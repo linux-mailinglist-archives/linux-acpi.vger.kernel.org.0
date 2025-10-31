@@ -1,251 +1,209 @@
-Return-Path: <linux-acpi+bounces-18391-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18392-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DB5C23816
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 08:11:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5599EC23CF1
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 09:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BF21E4F0809
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 07:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 115573A1F73
+	for <lists+linux-acpi@lfdr.de>; Fri, 31 Oct 2025 08:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53C5326D6C;
-	Fri, 31 Oct 2025 07:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B432DF710;
+	Fri, 31 Oct 2025 08:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EnVBXX1Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30292126F0A;
-	Fri, 31 Oct 2025 07:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B43254B18;
+	Fri, 31 Oct 2025 08:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761894679; cv=none; b=EdQln1IxIDZaft25E7TgvAhG3PpUbDXll/5am7hqeHuXyujYjFZhwj6CdPE7sO7GkC1ngMLHE9gDiItg868waWLjtTLxf9ullRTROU/SkN9Pf6SHm+Lu44yrXu8CTC+Xi7JI9rlz7jYXCh7S1apTA1OFUhjL3+8JMw+ePh0aUU8=
+	t=1761899042; cv=none; b=ad55ER+qWLTvULLY5P2GyJDNSRlVCW5NnaKpORYWXIGnN69yitIAFWRnsuoXPgsvaWk5R3exsFVZHPFxchfKTrF1EtxnabX/BQjam06wiRjSHozKsfb7XyD/INNPWyXeKyB0WEaL/9wevXe2MO5YMS9Sr4VvW76vu+XKDdpGgUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761894679; c=relaxed/simple;
-	bh=tnwbG5gjntBIwi0oGGVpAYxCyD3L5YMaw6KX+6pHdPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Q62LM8xvkKdgrzH9Z42lWXKwyhT4+ootiMNHMROep5jN7fS+zMXw7FFR/XayQtmLJdsLLbMVoSsf+PkzsaYPzIPkOD32XcfzuVBMOIK7Ig+bMG7F3AXmBWMNJ83vouWGxDUg4FeNvomiRGWXgNr5OkVwz1ep8yEjHyBb/nz0KVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cyXF35PtDz12LFQ;
-	Fri, 31 Oct 2025 15:10:31 +0800 (CST)
-Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
-	by mail.maildlp.com (Postfix) with ESMTPS id DDF21180B71;
-	Fri, 31 Oct 2025 15:11:07 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
- (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 31 Oct
- 2025 15:11:07 +0800
-Message-ID: <5b8602a6-73ea-4c34-8154-0a48e218d4f4@hisilicon.com>
-Date: Fri, 31 Oct 2025 15:11:06 +0800
+	s=arc-20240116; t=1761899042; c=relaxed/simple;
+	bh=iNeitY+jy/bxrj72/Zpk5k1d9UslaqD88+dmUtZte5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BHOITlXy18gXsDOwkNy5w8Gu7VhFaaK37ZDJCPnAKBX4Ky51yvBYQlBPRTlzDMBEviezk2eJ7Vjt2zyxtz7cJOpehkszxPyBMiFQrjvjL84Oua/a0cHW0LCXEl+5MscEHASVjxGzA0Jxj8rFLOs2R5h4nK87nOnFgMqKg/qjx8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EnVBXX1Z; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761899040; x=1793435040;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=iNeitY+jy/bxrj72/Zpk5k1d9UslaqD88+dmUtZte5k=;
+  b=EnVBXX1ZQsYHthl0hG8L0cM0BGdkZD2l0HAyTYMeSvd1NWb5o5a5r776
+   3o5HM/ZmhVZbdlFXBnmVZVDezsMJeNN0K7wM7Fq4ymFG5NDlX+paGbi30
+   5Dk6+dmEN/ZSzG3RhewA6LYecnXDTbB0p7oWGyoKB+s2gVt6xaL2lDWGk
+   X9HhmYZHZbEcKGdE91LLPbRWr3J4wSfnF+7Mp8kh+d65cOW6salmxEO5S
+   jpFCl2Pac+dUwvkpKvEHtPF4UQoFuAnIYqZhMpU7JiB3LCp53X3ITBtpn
+   LuJnU4VR0R0eO4xP/TUy4ybVREW+hlBbqm0bgk280PGGttO5S4ywZidYB
+   g==;
+X-CSE-ConnectionGUID: PJxVEbyeRFyyPdkDxxILaw==
+X-CSE-MsgGUID: 5dA0s9W7SFGJ5W2cWW17gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="51627082"
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
+   d="scan'208";a="51627082"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:23:59 -0700
+X-CSE-ConnectionGUID: rrF45/pJRDuOs+Lzjeoj/Q==
+X-CSE-MsgGUID: S9HDMt2PQe6LDFeMtec76A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
+   d="scan'208";a="223409521"
+Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:23:57 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vEkQI-00000004Cvo-2hZi;
+	Fri, 31 Oct 2025 10:23:50 +0200
+Date: Fri, 31 Oct 2025 10:23:49 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v3 03/10] software node: allow referencing firmware nodes
+Message-ID: <aQRyFSHWzccTPa3M@smile.fi.intel.com>
+References: <20251029-reset-gpios-swnodes-v3-0-638a4cb33201@linaro.org>
+ <20251029-reset-gpios-swnodes-v3-3-638a4cb33201@linaro.org>
+ <aQMy00pxp7lrIrvh@smile.fi.intel.com>
+ <CAMRc=MdP58d=o7ZL4bAdsaYwzrs6nJo3bhS7Jf1UkDNwPOnAsg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] cpufreq: CPPC: Update FIE arch_freq_scale in ticks
- for non-PCC regs
-To: Beata Michalska <beata.michalska@arm.com>
-CC: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
-	<zhenglifeng1@huawei.com>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>
-References: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
- <20250828110212.2108653-3-zhanjie9@hisilicon.com> <aQNq7uwVCtFfBDMJ@arm.com>
-Content-Language: en-US
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <aQNq7uwVCtFfBDMJ@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500004.china.huawei.com (7.202.195.141)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdP58d=o7ZL4bAdsaYwzrs6nJo3bhS7Jf1UkDNwPOnAsg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-
-
-On 10/30/2025 9:41 PM, Beata Michalska wrote:
-> Hi Jie,
-> On Thu, Aug 28, 2025 at 07:02:12PM +0800, Jie Zhan wrote:
->> Currently, the CPPC Frequency Invariance Engine (FIE) is invoked from the
->> scheduler tick but defers the update of arch_freq_scale to a separate
->> thread because cppc_get_perf_ctrs() would sleep if the CPC regs are in PCC.
->>
->> However, this deferred update mechanism is unnecessary and introduces extra
->> overhead for non-PCC register spaces (e.g. System Memory or FFH), where
->> accessing the regs won't sleep and can be safely performed from the tick
->> context.  Also, reading perf counters of a remote CPU may return 0 if it's
->> in a low-power idle state, e.g. power down or reset.
-> I'm not sure how this is relevant to the changes (?)
-Hi Beata,
-
-The CPPC FIE is eventually handled in a thread, where it accesses perf
-counters of remote CPUs.
-
-Reading perf counters of a remote CPU may throw us warnings of
-"cppc_scale_freq_workfn: failed to read perf counters"
-because the CPC regs are in System Memory and the target CPU is in a
-power-down idle state.
-
-Moving the FIE handling back to the scheduler tick process makes the CPU
-handle its own perf counters so it won't fail.  Then the issue is
-inherently solved.
-
-I can update the commit log so this would be clear.
->>
->> Update arch_freq_scale directly in ticks for non-PCC regs and keep the
->> deferred update mechanism for PCC regs.
->>
->> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
->> ---
->>  drivers/cpufreq/cppc_cpufreq.c | 52 +++++++++++++++++++++++-----------
->>  1 file changed, 36 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->> index 7724318b3415..66d74b062ceb 100644
->> --- a/drivers/cpufreq/cppc_cpufreq.c
->> +++ b/drivers/cpufreq/cppc_cpufreq.c
->> @@ -55,31 +55,24 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
->>  				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
->>  
->>  /**
->> - * cppc_scale_freq_workfn - CPPC arch_freq_scale updater for frequency invariance
->> - * @work: The work item.
->> + * __cppc_scale_freq_tick - CPPC arch_freq_scale updater for frequency invariance
->> + * @cppc_fi: per-cpu CPPC FIE data.
->>   *
->> - * The CPPC driver register itself with the topology core to provide its own
->> + * The CPPC driver registers itself with the topology core to provide its own
->>   * implementation (cppc_scale_freq_tick()) of topology_scale_freq_tick() which
->>   * gets called by the scheduler on every tick.
->>   *
->>   * Note that the arch specific counters have higher priority than CPPC counters,
->>   * if available, though the CPPC driver doesn't need to have any special
->>   * handling for that.
->> - *
->> - * On an invocation of cppc_scale_freq_tick(), we schedule an irq work (since we
->> - * reach here from hard-irq context), which then schedules a normal work item
->> - * and cppc_scale_freq_workfn() updates the per_cpu arch_freq_scale variable
->> - * based on the counter updates since the last tick.
->>   */
->> -static void cppc_scale_freq_workfn(struct kthread_work *work)
->> +static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
->>  {
->> -	struct cppc_freq_invariance *cppc_fi;
->>  	struct cppc_perf_fb_ctrs fb_ctrs = {0};
->>  	struct cppc_cpudata *cpu_data;
->>  	unsigned long local_freq_scale;
->>  	u64 perf;
->>  
->> -	cppc_fi = container_of(work, struct cppc_freq_invariance, work);
->>  	cpu_data = cppc_fi->cpu_data;
->>  
->>  	if (cppc_get_perf_ctrs(cppc_fi->cpu, &fb_ctrs)) {
->> @@ -104,6 +97,14 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
->>  	per_cpu(arch_freq_scale, cppc_fi->cpu) = local_freq_scale;
->>  }
->>  
->> +static void cppc_scale_freq_workfn(struct kthread_work *work)
->> +{
->> +	struct cppc_freq_invariance *cppc_fi;
->> +
->> +	cppc_fi = container_of(work, struct cppc_freq_invariance, work);
->> +	__cppc_scale_freq_tick(cppc_fi);
->> +}
->> +
->>  static void cppc_irq_work(struct irq_work *irq_work)
->>  {
->>  	struct cppc_freq_invariance *cppc_fi;
->> @@ -112,7 +113,14 @@ static void cppc_irq_work(struct irq_work *irq_work)
->>  	kthread_queue_work(kworker_fie, &cppc_fi->work);
->>  }
->>  
->> -static void cppc_scale_freq_tick(void)
->> +/*
->> + * Reading perf counters may sleep if the CPC regs are in PCC.  Thus, we
->> + * schedule an irq work in scale_freq_tick (since we reach here from hard-irq
->> + * context), which then schedules a normal work item cppc_scale_freq_workfn()
->> + * that updates the per_cpu arch_freq_scale variable based on the counter
->> + * updates since the last tick.
->> + */
->> +static void cppc_scale_freq_tick_pcc(void)
->>  {
->>  	struct cppc_freq_invariance *cppc_fi = &per_cpu(cppc_freq_inv, smp_processor_id());
->>  
->> @@ -123,6 +131,11 @@ static void cppc_scale_freq_tick(void)
->>  	irq_work_queue(&cppc_fi->irq_work);
->>  }
->>  
->> +static void cppc_scale_freq_tick(void)
->> +{
->> +	__cppc_scale_freq_tick(&per_cpu(cppc_freq_inv, smp_processor_id()));
->> +}
->> +
->>  static struct scale_freq_data cppc_sftd = {
->>  	.source = SCALE_FREQ_SOURCE_CPPC,
->>  	.set_freq_scale = cppc_scale_freq_tick,
->> @@ -140,8 +153,10 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
->>  		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
->>  		cppc_fi->cpu = cpu;
->>  		cppc_fi->cpu_data = policy->driver_data;
->> -		kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
->> -		init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
->> +		if (cppc_perf_ctrs_in_pcc()) {
-> I'm wondering if we really need to go through all present cpus every time this
-> check is needed. Maybe the result of it could be stashed somehow, especially now
-> that more invocations are added.
-Make sense.  I'll have a look whether it's safe to stash that in
-cppc_freq_invariance_init() and use the stashed value later.
-
-Thanks!
-Jie
+On Thu, Oct 30, 2025 at 04:17:48AM -0700, Bartosz Golaszewski wrote:
+> On Thu, 30 Oct 2025 10:41:39 +0100, Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> said:
+> > On Wed, Oct 29, 2025 at 01:28:37PM +0100, Bartosz Golaszewski wrote:
+> >>
+> >> At the moment software nodes can only reference other software nodes.
+> >> This is a limitation for devices created, for instance, on the auxiliary
+> >> bus with a dynamic software node attached which cannot reference devices
+> >> the firmware node of which is "real" (as an OF node or otherwise).
+> >>
+> >> Make it possible for a software node to reference all firmware nodes in
+> >> addition to static software nodes. To that end: add a second pointer to
+> >> struct software_node_ref_args of type struct fwnode_handle. The core
+> >> swnode code will first check the swnode pointer and if it's NULL, it
+> >> will assume the fwnode pointer should be set. Rework the helper macros
+> >> and deprecate the existing ones whose names don't indicate the reference
+> >> type.
+> >>
+> >> Software node graphs remain the same, as in: the remote endpoints still
+> >> have to be software nodes.
+> >
+> > ...
+> >
+> >> -#define SOFTWARE_NODE_REFERENCE(_ref_, ...)			\
+> >> +#define __SOFTWARE_NODE_REF(_ref, _node, ...)			\
+> >>  (const struct software_node_ref_args) {				\
+> >> -	.node = _ref_,						\
+> >> +	._node = _ref,						\
+> >>  	.nargs = COUNT_ARGS(__VA_ARGS__),			\
+> >>  	.args = { __VA_ARGS__ },				\
+> >>  }
+> >
+> > Okay, looking at this again I think we don't need a new parameter.
+> > We may check the type of _ref_
+> > (actually why are the macro parameters got renamed here and elsewhere?)
+> > and assign the correct one accordingly. I think this is what _Generic()
+> > is good for.
+> >
 > 
-> ---
-> BR
-> Beata
->> +			kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
->> +			init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
->> +		}
->>  
->>  		ret = cppc_get_perf_ctrs(cpu, &cppc_fi->prev_perf_fb_ctrs);
->>  		if (ret && cpu_online(cpu)) {
->> @@ -174,6 +189,9 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
->>  	/* policy->cpus will be empty here, use related_cpus instead */
->>  	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
->>  
->> +	if (!cppc_perf_ctrs_in_pcc())
->> +		return;
->> +
->>  	for_each_cpu(cpu, policy->related_cpus) {
->>  		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
->>  		irq_work_sync(&cppc_fi->irq_work);
->> @@ -206,9 +224,11 @@ static void __init cppc_freq_invariance_init(void)
->>  		}
->>  	}
->>  
->> -	if (fie_disabled)
->> +	if (fie_disabled || !cppc_perf_ctrs_in_pcc())
->>  		return;
->>  
->> +	cppc_sftd.set_freq_scale = cppc_scale_freq_tick_pcc;
->> +
->>  	kworker_fie = kthread_run_worker(0, "cppc_fie");
->>  	if (IS_ERR(kworker_fie)) {
->>  		pr_warn("%s: failed to create kworker_fie: %ld\n", __func__,
->> @@ -228,7 +248,7 @@ static void __init cppc_freq_invariance_init(void)
->>  
->>  static void cppc_freq_invariance_exit(void)
->>  {
->> -	if (fie_disabled)
->> +	if (fie_disabled || !cppc_perf_ctrs_in_pcc())
->>  		return;
->>  
->>  	kthread_destroy_worker(kworker_fie);
->> -- 
->> 2.33.0
->>
+> Oh, that's neat, I would love to use _Generic() here but I honest to god have
+> no idea how to make it work. I tried something like:
 > 
+> #define __SOFTWARE_NODE_REF(_ref, ...)                          \
+> _Generic(_ref,                                                  \
+>         const struct software_node *:                           \
+>                 (const struct software_node_ref_args) {         \
+>                         .swnode = _ref,                         \
+>                         .nargs = COUNT_ARGS(__VA_ARGS__),       \
+>                         .args = { __VA_ARGS__ },                \
+>                 },                                              \
+>         struct fwnode_handle *:                                 \
+>                 (const struct software_node_ref_args) {         \
+>                         .fwnode = _ref,                         \
+>                         .nargs = COUNT_ARGS(__VA_ARGS__),       \
+>                         .args = { __VA_ARGS__ },                \
+>                 }                                               \
+>         )
+> 
+> 
+> But this fails like this:
+> 
+> In file included from ./include/linux/acpi.h:16,
+>                  from drivers/reset/core.c:8:
+> drivers/reset/core.c: In function ‘__reset_add_reset_gpio_device’:
+> drivers/reset/core.c:958:52: error: initialization of ‘const struct
+> software_node *’ from incompatible pointer type ‘struct fwnode_handle
+> *’ [-Wincompatible-pointer-types]
+>   958 |                                                    parent->fwnode,
+>       |                                                    ^~~~~~
+> ./include/linux/property.h:374:35: note: in definition of macro
+> ‘__SOFTWARE_NODE_REF’
+>   374 |                         .swnode = _ref,                         \
+> 
+> So the right branch is not selected. How exactly would you use it here?
+
+I believe this is an easy task.
+
+But first of all, your series doesn't compile AFAICS:
+
+drivers/reset/core.c:981:6: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
+  981 |         if (IS_ERR(rgpio_dev->swnode))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/reset/core.c:1001:9: note: uninitialized use occurs here
+       1001 |         return ret;
+            |                ^~~
+drivers/reset/core.c:981:2: note: remove the 'if' if its condition is always false
+  981 |         if (IS_ERR(rgpio_dev->swnode))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  982 |                 goto err_put_of_node;
+      |                 ~~~~~~~~~~~~~~~~~~~~
+drivers/reset/core.c:905:13: note: initialize the variable 'ret' to silence this warning
+  905 |         int id, ret, lflags;
+      |                    ^
+      |                     = 0
+1 error generated.
+
+So, but to the topic
+
+I have applied this and get the only error as per above
+
+ (const struct software_node_ref_args) {                                \
+ -       ._node = _ref,                                          \
+ +       .swnode = _Generic(_ref, const struct software_node *: _ref, default: NULL), \
+ +       .fwnode = _Generic(_ref, struct fwnode_handle *: _ref, default: NULL), \
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
