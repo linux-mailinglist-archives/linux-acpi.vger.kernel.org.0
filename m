@@ -1,135 +1,195 @@
-Return-Path: <linux-acpi+bounces-18450-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18451-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4C2C2B2CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 11:56:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 107B7C2C0C2
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 14:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37BFC4E2E17
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 10:56:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B9703A254B
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 13:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC3C2FBDF9;
-	Mon,  3 Nov 2025 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35827707;
+	Mon,  3 Nov 2025 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="GEjDmM21"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9BpxbsN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903A43002DA
-	for <linux-acpi@vger.kernel.org>; Mon,  3 Nov 2025 10:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B230F52C;
+	Mon,  3 Nov 2025 13:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762167376; cv=none; b=Ym+WY0sSlesD98dk3FvdbsyER0dNbMqU1OKI0iWJW7HExRopij9byZF7dDbstthhZqOU27g6qInpfO123CeorgXs2HQYmVBGuQwvHJq0JqyNOfI6KLUxSTOCFUTAQLWGFIgzQwwwOlD+3XsE00iP5upgNKMbr1Zx3Y1VFf/1R5s=
+	t=1762175725; cv=none; b=WcNdUk6GAY7J9nW/LMY5g9tPUNqalv1B6qchGxguEL88BA2pTnpghFG4yxfBtxA4wkqRDTKyJYl/NeAlkiHcDsH9fB6MmMgJN42hHVrotj9kHqPigLN40GXf3Qwhq4q5y9ZzCKDRMCMYppY15A2N+Q1UUDSyg5hwjh0omVuRwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762167376; c=relaxed/simple;
-	bh=qXd1oKO85msYoAVXXFRKg+REL5mVmucUjgWVubyCwzQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ejII+4mdJe1tT+epCw4N2PmazlcGm+UvD8IbbzhsJqokMFIlRvMTuBvUAWUch+GOEZw8X/snJpn3cF5vKwUhlmQulFio4qbJN4sc4oTes0j9ilApjDYLXz66ol4KbY7YZ0BMGoUYOohQHkRKeeCdR28HGNbO2q8ITA77TCi0lFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=GEjDmM21; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-378e8d10494so43315871fa.2
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Nov 2025 02:56:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762167372; x=1762772172; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ok14Sy5kuYnk485Ftwy7kJP5xIgoR392fDNYbBDnVsc=;
-        b=GEjDmM21brD60IDPvOLK4mVw/J58f58NnHnBLBc3eSK7EDPtCPIkrx1lzVOL7ny4NG
-         ueMQCmyBb5ySLVGqqeUWmQ6L+5KrSRYSEyaviljmmxcJZWx53bQ6HbtE32r0UuxpR1aE
-         HYyGQ+qHThCkNtxLsMjMaL2NgRwjCPS1did9aII8lIDDa1hf1h2Dqe1qyWBAjQvc/jZw
-         MuW94y+xfITOAk18nnHwb9my9xpckl53mBGhu6X192TRqlKiCNvkAMIWX5otU+3v76Gw
-         YW5wKCMv4shQxT4W9Zbnkyr+gWF9AdHjIT5sTJXd9Mt8unMvoJCl68CBV6VOnLGzFm0K
-         X+Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762167372; x=1762772172;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ok14Sy5kuYnk485Ftwy7kJP5xIgoR392fDNYbBDnVsc=;
-        b=VkhDulMlidZaiO24p/seoGvtvCrkUxyq16SsLKWkX1/rVS6X3lC1hsWOc/S6j3TVFJ
-         kGhVO2ddTmxHS+GGgkOwdAg2j3bOjrDOwv0tRVlsF9nO2PFQFa7atQxBYqTZ3n0JyT+F
-         JLdsuB7R1L6YWyBZjirswIViE14s5klfdI5qSEvk/R5lA2ubsdJLwtnuhpUaXaMoj7ML
-         koKogYSxJrkabGgalp29PyquRSDMlp/gynM/xhhmIFKaxtj9+WIgwEghquUy+arysrvK
-         jGjPBEZxYG3EqMG4GcrAKbwpFqR/WHjiYHFd07/Qno211w+Oin2eBtIilChnYErz15j7
-         BDqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWph2HZ6JTChNZU4O4HrydriAi4oDlCzpooWcwlIdPtLIybx3bCAoWRr2RCtBk8ruEz/RSP5iTkww8e@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgUj6XJf4R/mNvsGBX8mLGw5tBQORDQwQtYyENlwcOmdOf5GL3
-	AQ5hbk1ct0VOvngdbDnHxeqFMmksobZ9bKyeHY7DuBGDHIYZzycWLcrerOImbVKLQoUpLEiWeiG
-	hYzsDMa97ayD21/SXIKiHmFBN8oE5VmufREjgQSoTcw==
-X-Gm-Gg: ASbGncvh2V1GYD2l4YwetABniF71tQnVDTeoE03UXM4xPV8JTEVlotMPaE40kUBtYNT
-	55WCpFBUdAsQ68EbrQ9eTsWjPEfLM+5F8Vx1rq9kMlfttn7mvdXXIB/ZM57k8o8Dd6fLQjPRYfY
-	iJ21g8dE5G+nBjSHmfCrCAHUtJQ1nSZszb86KfAlLnHt/WkGBbO8rcnP4nDqtCTij7n7333vaeC
-	vcZLDfe2MLM31lMHKVDZFzcZM4+pmm5rJtQO6NWEsUTpx89NEZifXzclrOAuS/ii1v0eEE9pB32
-	ngSdK/ODNz8eZk1R
-X-Google-Smtp-Source: AGHT+IGCNFyrRkoy6fXh6ZFQgn7Nyap9sPAn3749NMDYc+KPJNXNFZcWuq9hVUt8f+/CoqxAouRL21Fy6SGUSNRsLi4=
-X-Received: by 2002:a2e:9284:0:b0:372:9c25:7a94 with SMTP id
- 38308e7fff4ca-37a18e2d703mr27723701fa.41.1762167372364; Mon, 03 Nov 2025
- 02:56:12 -0800 (PST)
+	s=arc-20240116; t=1762175725; c=relaxed/simple;
+	bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDta4olUU2j1GGYPHIgfJuEjfiPvXSR27UldceHckbwJPnDT8PoUN3hLZ8PrUwfy/3k89Ij9un96CkKtj34/s6ixacYgg+nuQxKP3zqE7JNtik4npLUPM940mJC4TsRNNuxXnEmBRRKxN+nOM9m85OKnBwPbc8DFA9RzfkTA5eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9BpxbsN; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762175723; x=1793711723;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
+  b=R9BpxbsNLi+OLBtP9lVsjaM1BcnHKPKGddCqwF1F76bBkmNTk4sHZb0p
+   IhiVTm37/FWvGLzvyiZPX7ZCc0ytacuX1XS8WTKmOErufBUxrD8CkwEs4
+   Hrtmvh3Xsqyfjr0jOefXwaTRLl8XX0g6YxQfMdX8ciAmBGB/UOQa2F0nb
+   SWtmC9yyOhibn/657mOxosMpSKc8E3PGb1ze2DfGWMBzO/6Io/GJ1yyhb
+   lP1P4v9u+W2NbYzds3eO9wJRWymfjbBIZ9NBk2uSC73hIqvxUiBklOyI6
+   TJiP6tPv5+lR8acg5TWswPD7qVj8mDNNC3lLtt6U7bDrbLBUxfrUd4nVz
+   Q==;
+X-CSE-ConnectionGUID: NUanCj8IQXKZdx7Z26NZjA==
+X-CSE-MsgGUID: y5VM+1igRgy3HMstEh2kbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="89711441"
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="89711441"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:21 -0800
+X-CSE-ConnectionGUID: 2nVMVhYKS1+Szz2U6eBIYg==
+X-CSE-MsgGUID: x7QyeuscRq+VoOU3ce8bdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="186105007"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:20 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFuOy-000000059bH-2oEI;
+	Mon, 03 Nov 2025 15:15:16 +0200
+Date: Mon, 3 Nov 2025 15:15:15 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+Message-ID: <aQiq4_W6AL1n-Geh@smile.fi.intel.com>
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+ <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
+ <aQiATDzxEIKBytXw@smile.fi.intel.com>
+ <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103-reset-gpios-swnodes-v4-0-6461800b6775@linaro.org>
- <20251103-reset-gpios-swnodes-v4-3-6461800b6775@linaro.org>
- <aQh6n2XuI0oayg2g@smile.fi.intel.com> <CAMRc=Md=r7GaO3A_7de+EqzboyA2cqNSTZx7+64VSMvRBb9gpw@mail.gmail.com>
- <aQiJgRDm0lZYqSmj@kekkonen.localdomain>
-In-Reply-To: <aQiJgRDm0lZYqSmj@kekkonen.localdomain>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 3 Nov 2025 11:56:00 +0100
-X-Gm-Features: AWmQ_bk3gj7buQnHcMQ8QrYYR-_txSOE_pOOdJ6cMSRz8o8pL2AgO4lkThKstzw
-Message-ID: <CAMRc=MfQ6n0S4RCPMhvE8kx5w4pc47=M3pwMH6c_CCo1-uZMKA@mail.gmail.com>
-Subject: Re: [PATCH v4 03/10] software node: allow referencing firmware nodes
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Nov 3, 2025 at 11:52=E2=80=AFAM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Bartosz, Andy,
->
-> On Mon, Nov 03, 2025 at 11:36:36AM +0100, Bartosz Golaszewski wrote:
-> > On Mon, Nov 3, 2025 at 10:49=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > +#define SOFTWARE_NODE_REF_SWNODE(_ref, ...)                  \
-> > > > +     __SOFTWARE_NODE_REF(_ref, __VA_ARGS__)
-> > > > +
-> > > > +#define SOFTWARE_NODE_REF_FWNODE(_ref, ...)                  \
-> > > > +     __SOFTWARE_NODE_REF(_ref, __VA_ARGS__)
-> > > > +
-> > > > +/* DEPRECATED, use SOFTWARE_NODE_REF_SWNODE() instead. */
-> > > > +#define SOFTWARE_NODE_REFERENCE(_ref, ...)                   \
-> > > > +     SOFTWARE_NODE_REF_SWNODE(_ref, __VA_ARGS__)
-> > >
-> > > Now, useless.
-> > >
-> >
-> > No, why? With these changes, SOFTWARE_NODE_REFERENCE()'s name is a bit
-> > misleading or incomplete, so I'm proposing to start replacing it with
-> > SOFTWARE_NODE_REF_SWNODE() which is compatible with the former but has
-> > a better name.
->
-> Given we're already using _Generic() to determine the argument type, coul=
-d
-> we simply use e.g. SOFTWARE_NODE_REF() in both cases?
->
+On Mon, Nov 03, 2025 at 11:20:30AM +0100, Hans de Goede wrote:
+> On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
+> > On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
+> >> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
+> >>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+> >>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+> >>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+> >>>> on the SPI device.
+> >>>>
+> >>>> If there is no driver for the SPI device then the move to spi_probe()
+> >>>> results in acpi_dev_gpio_irq_get() never getting called. This may
+> >>>> cause problems by leaving the GPIO pin floating because this call is
+> >>>> responsible for setting up the GPIO pin direction and/or bias according
+> >>>> to the values from the ACPI tables.
+> >>>>
+> >>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+> >>>> to ensure the GPIO pin is always correctly setup, while keeping the
+> >>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+> >>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+> >>>> yet.
+> >>>
+> >>> Even before following the link to some papering over module via the link below
+> >>> I wondered, if the I²C case should be covered as well. The
+> >>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+> >>> touchpads.
+> >>>
+> >>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
 
-It may be possible, yes. I'll look into it.
+...
 
-Bart
+> >>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
+> >>
+> >> Yes Mark and I got an offlist email bisecting this to the:
+> >>
+> >> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+> >>
+> >> commit (on a stable kernel series) and a later email confirming that this
+> >> patch fixes it.
+> > 
+> > Shouldn't we use Closes in this case instead of Link?
+> 
+> I guess so.
+> 
+> >> It seems that leaving the fingerprint reader enable pin (the first GPIO
+> >> listed in _CRS which is an output only pin, is likely the enable pin)
+> >> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
+> >> fixing this by forcing the enable pin to no longer float is a bit of
+> >> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+> >> so we need this to fix a regression
+> > 
+> > Yeah, fixing a regression is good thing, but not papering over the issue.
+> 
+> I agree in principle, but this is a quick and safe way to fix
+> the regression, where as the generic fix you describe below is
+> likely months away and also has significant risks of causing
+> regressions in various places, see below.
+
+Perhaps we should add a TODO / FIXME there as well?
+So at least we will know that this is not a proper solution.
+
+> >> and as you indicate it seems
+> >> like a good idea in general and maybe we should also do this for i2c.
+> > 
+> >> As for doing something similar for I2C devices, that is an interesting
+> >> question. Even though it is possible I'm not aware of any i2c-devices
+> >> which have a userspace driver like SPI/USB fingerprint readers do,
+> >> so on i2c I would expect probe() to always get called. So I'm not sure
+> >> it is necessary there.
+> > 
+> > Reading the problem statement (the second paragraph) I lean towards
+> > a generic solution residing somewhere in drivers/acpi/scan.c (like
+> > acpi_init_device_object() / acpi_bus_attach() calls), although I don't
+> > see a quick way how to achieve this. It seems would require a bit of
+> > refactoring to allow ACPI glue code to call specific subsystem calls
+> > or making a GPIOLIB to provide some "early" initialisation flow(s).
+> 
+> I guess that you want to do the direction and bias init on all
+> GPIOs listed in _CRS, at least for devices with status == present ?
+
+For the devices that are serial busses only (I²C, SPI, UART).
+
+> I was wondering about the same thing, but ACPI tables are full
+> of, well, erm, garbage in various places so I'm afraid that doing
+> this for all GPIO _CRS resources is likely to cause a whole lot
+> of pain.
+> 
+> Typically the firmware already sets up the direction + bias
+> of all used pins. I'm pretty sure the BIOS-es have some GPIO
+> init table especially for this somewhere.
+> 
+> Now those init-tables may have bugs, but I'm seriously worried
+> about the implication of doing the direction + bios setup for
+> all _CRS GPIO entries. I have simply seen too much non sense
+> devices (with _STA returning 0x0f) listing GPIOs also actually
+> used elsewhere to think this is a good idea.
+
+Btw, other GPIO initialisation issues we have been solving by adding quirks.
+Why this one can't be targeted with the same approach?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
