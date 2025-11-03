@@ -1,119 +1,120 @@
-Return-Path: <linux-acpi+bounces-18425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86322C2A9E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 09:44:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01510C2AC27
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 10:35:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5419E18925AE
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 08:44:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CE47348A9A
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 09:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED632E7BCE;
-	Mon,  3 Nov 2025 08:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109F72EB84F;
+	Mon,  3 Nov 2025 09:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="eQk8loMt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ldEVTPYP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316FF2E62B9;
-	Mon,  3 Nov 2025 08:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7EE20DD52;
+	Mon,  3 Nov 2025 09:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762159379; cv=none; b=CkWXlT3zP0heZQsBXaJo1otu5l7aYZ9eFUcU8moWb/ZQlCDDVk2oIblBpMWixgIuIwBpz+RvNq/BeVP2RbfMdcMe1tNPZOeae+4JjbK20MeHjojU3VWY82Kyo+sgwbkiMTfuoq3AsywWjmENgH3ofFTpAHGUZ0tAJA36Yfmdqkc=
+	t=1762162508; cv=none; b=REv4Sjn9pzj4vhqLWMxhY8C9t740oDYTi4zo0qKx1EElCKPVF6+cbER6nDUq7u9cg6/Oy5iKrPwGUo3tsq4ucw50cXMRazmsTwRrfvp2/0sYMLbK6O7ZD++QbBhE7Jmr04AwBJ/fP8+XhiU8CijaRUDKx4wg6J9D4TabmXFsUjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762159379; c=relaxed/simple;
-	bh=FpI1U6+LSrImKj5yJbC3JbtvCb9JrCxDUrMJy8x2q70=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kfB2F2pJjiu7briKjQKAyiiih/7QxqCVGuUlGAsudOVLFVXsPN2vA6eAvs8YZnan19RbiKPUWHQX0k+u6JfrJtKaf7vgSNcljTIYD/0xaWo7tG8726tfzhXuY7FdTuvaCu2Svy2eF0IGTkGDFQ+IWPlupcGgSNWfK+21pRmb0Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=eQk8loMt; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lYn04A0PNhNxpV/CFYWHsfLmTyXgv8vwZHaF7oFVV/Y=;
-	b=eQk8loMtGE3Frl7BTUJivn9kSDLvaJ4OMz48g8g54CTcIKHTA/ATZ+MCEoRWqgxYS+lRbwjBU
-	xkndrqX+FuPRN8aGleo7BOg2Yj/8C8dHXrUw4Q9fqx+8zmfN/ZLe65cJ67VNAnFUwNsH6CoxTpO
-	BMCJtQwrB3Y04sd4txviFHI=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4d0Q6H75M1z12LGF;
-	Mon,  3 Nov 2025 16:41:11 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id A961D147B64;
-	Mon,  3 Nov 2025 16:42:48 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 3 Nov 2025 16:42:48 +0800
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 3 Nov 2025 16:42:47 +0800
-From: Huisong Li <lihuisong@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<Sudeep.Holla@arm.com>, <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
-	<lihuisong@huawei.com>
-Subject: [PATCH v2 7/7] ACPI: processor: idle: Redefine acpi_processor_setup_cpuidle_dev to void
-Date: Mon, 3 Nov 2025 16:42:44 +0800
-Message-ID: <20251103084244.2654432-8-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20251103084244.2654432-1-lihuisong@huawei.com>
-References: <20251103084244.2654432-1-lihuisong@huawei.com>
+	s=arc-20240116; t=1762162508; c=relaxed/simple;
+	bh=3Lv1tnlhgCB9vdu0ZkwoOO7RrUhXDwV8Tgt8OB4u5O8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DrUan4FzzHw4/54hX1pcE1YXAhTMsBonpvCopVHPcZiVGr1+dshLbZJ1zjuRJvNLEBR0yUfK04sZQtD11xNnoPAnkus3RWvd4b26up2Bo8E6bNdYmwCqV2r9rlVVFO+Uk69bAy9dbej0y/0A3lTUumGISfWEIp65Fs/7wOVA2Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ldEVTPYP; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762162506; x=1793698506;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=3Lv1tnlhgCB9vdu0ZkwoOO7RrUhXDwV8Tgt8OB4u5O8=;
+  b=ldEVTPYPm1WqJxO35YPr+RVG36HNPT/R/zvgl0sZGBsgjW1sT1y26V7V
+   Dc3g4gDPFRJ1n2ndAgsST113igkGqsIwRT6kfoCrkP7sVsB17ngjH59y5
+   00XhVg2Ky2A949kIZfq+DY2ICFOFTBxooygqG73mexs5P9eQHeIXUJV3O
+   302Oe0HD7t26LM1FhniIzLSBULaXVW/OHwonBK8RDqXCMpZVeH90Xwxrf
+   ceLmGF4RX/7QPV5HMnXwgauWbCyC8jPV8UVQP7EZ4QiK27Sxa64pBk4w1
+   JYDCk+tRrcy2OZOUw4JWqMlRwQwPzwDdJGi5ElA/f7vPPAO30nhKJZhWE
+   w==;
+X-CSE-ConnectionGUID: wCF1o2nyT9CKwPv4p86wMA==
+X-CSE-MsgGUID: CTtz4o4wQdaXsuBmP1Gcjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="68094207"
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="68094207"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:35:06 -0800
+X-CSE-ConnectionGUID: 2H7ffXlOSieACmCDsTPuCg==
+X-CSE-MsgGUID: n2UsL+lwTTS0ewMmE2T2XQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="210352434"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:35:04 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFqxp-000000056kW-0lNh;
+	Mon, 03 Nov 2025 11:35:01 +0200
+Date: Mon, 3 Nov 2025 11:35:00 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+Message-ID: <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+References: <20251102190921.30068-1-hansg@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+In-Reply-To: <20251102190921.30068-1-hansg@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Notice that the acpi_processor_setup_cpuidle_dev() don't need to
-return any value because their callers don't check them anyway.
-So redefine the function to void.
+On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+> on the SPI device.
+> 
+> If there is no driver for the SPI device then the move to spi_probe()
+> results in acpi_dev_gpio_irq_get() never getting called. This may
+> cause problems by leaving the GPIO pin floating because this call is
+> responsible for setting up the GPIO pin direction and/or bias according
+> to the values from the ACPI tables.
+> 
+> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+> to ensure the GPIO pin is always correctly setup, while keeping the
+> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+> yet.
 
-No intentional functional impact.
+Even before following the link to some papering over module via the link below
+I wondered, if the I²C case should be covered as well. The
+https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+touchpads.
 
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/acpi/processor_idle.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 46614cf1ae8b..2ae51c42f544 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1248,18 +1248,17 @@ static void acpi_processor_setup_cpuidle_states(struct acpi_processor *pr)
-  * @pr: the ACPI processor
-  * @dev : the cpuidle device
-  */
--static int acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
--					    struct cpuidle_device *dev)
-+static void acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
-+					     struct cpuidle_device *dev)
- {
- 	if (!pr->flags.power_setup_done || !pr->flags.power || !dev)
--		return -EINVAL;
-+		return;
- 
- 	dev->cpu = pr->id;
- 	if (pr->flags.has_lpi)
--		return 0;
-+		return;
- 
- 	acpi_processor_setup_cpuidle_cx(pr, dev);
--	return 0;
- }
- 
- static int acpi_processor_get_power_info(struct acpi_processor *pr)
+...
+
+I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
+
 -- 
-2.33.0
+With Best Regards,
+Andy Shevchenko
+
 
 
