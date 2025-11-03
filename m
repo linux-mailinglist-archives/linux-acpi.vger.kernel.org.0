@@ -1,216 +1,196 @@
-Return-Path: <linux-acpi+bounces-18452-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18453-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C91C2C10A
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 14:26:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D32C2C29F
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 14:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031A53B2866
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 13:20:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA9AA4F397B
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 13:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A907A22ACEB;
-	Mon,  3 Nov 2025 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5657530F81C;
+	Mon,  3 Nov 2025 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aY0ndYWs"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iSuStlNC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC32635;
-	Mon,  3 Nov 2025 13:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE26F30AABF;
+	Mon,  3 Nov 2025 13:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762176009; cv=none; b=f78LfhmZSjKFrPb3Kl2nkiWzI1AXA1uZxgblT7kLKFqT26dQpCMFWlHaYwonhHk3ObyYCiMxntZsD6GzV0nn/aStRxIdV09COd03DfxlhIkon0+0Zc9/MEa8z/tJFrSFf64qxsDdzMtIKGLL69r1CFVqhYLnIW3dKRzMOlu9vOc=
+	t=1762176914; cv=none; b=rs7ceUWsR7pTQ34ZqvZ4x0OioT7EQ3JYSOD6TpPcaD1GPODQs5mq48SmFKkMuHlPlGM/M/GTDkq24tbDW6SBp6NB5mxzgGzAnC2MkHeTo5U6bmkoKC9eIC6jdhzus8UiD0+AsubTroPSmTrsag4PWOoMME6NGX0coFRQ6QF4zwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762176009; c=relaxed/simple;
-	bh=/wr6DM7plefzFxe5cqGRChKJvSm5bKx5O8az99iQw1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tiy388kz51VPy6AJfo6LFofWU2e2/8q1+rE6mmTDNDAK9p13vXzZZCg5DlK0f+nOVOfJLf26XDEKuXkpwTBxHm38sQvTc9g3iWWRhotyCYNjHFPHjDivB6u7XE20RocTQDzP7VNqwzumK7PBpNc0NvxeGVUV7iW9OEa4uoGummc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aY0ndYWs; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9185740E01A5;
-	Mon,  3 Nov 2025 13:20:02 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id YJCfSWo4KNQ9; Mon,  3 Nov 2025 13:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1762175996; bh=YVO+ioF7tgxntygjp0N1BdULWpfg3s1EkWAhl+6LYHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aY0ndYWsl9sd4t9nwaRWQWqnTfFnVOpBMIw/gtqif0UtUjRGIkFkj4W1aMzNIGl1u
-	 AZyPMsi4m+T8U6b9gsZlnQ7bL/yBi/wuwBpfVm7YJeArtR8YGQLVLVlvQ9QRVLCsS4
-	 sATk6rdG4dVBCARBtwtLoaUKkvKdHTqyfmrXYWgb3HIukKhKV1vPqrr/LQyjtJOjDf
-	 YZkcMw/DxhYLgx12ALprr38zMYISlJg7d4mA5CotRoDizAS7k/1/HYuinlHWCEsK3X
-	 uDYHNJ2ezIKiM1FExr2Jrn8tgtPbq4c2DOop3IqPSdgIwKXONpHZ/A/7Qkf2sLS5wq
-	 jysa2mn8uy7+wPaEKDgggWQKFwwqYoffuGZ6kS455EmVDQsAb3dhvM3j4H8sxolv8E
-	 OHxkj15zfkutEpIFMf7XphyVeFIhvlAcwp60mtaPVSqduuOgbkhtc0CbtkAVNSvkXp
-	 h1zjOOs8j7e8044eMOfF6UWlXcyi3mwGCSqu10W3EbILloBbAU87qSZYBzE11kaFqg
-	 QfRUe91E9ueRM/B8Fya7QC0pAUGytwjMVfmvaU6tpSFJyP9rRbXj3PfKyfypmwYrB2
-	 ROR6iy0NkS6PSFnzg0H7GfBjjxj4mFOHDNP6lws0NKXTPsWBKu+4tFROocs/kug2CW
-	 5lKels5SpWXndmPaKrU9RSzk=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 361F840E01CD;
-	Mon,  3 Nov 2025 13:19:20 +0000 (UTC)
-Date: Mon, 3 Nov 2025 14:19:14 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: Daniel Ferguson <danielf@os.amperecomputing.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Message-ID: <20251103131914.GEaQir0sdz4Te_ea0l@fat_crate.local>
-References: <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
- <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
- <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
- <9433067c142b45d583eb96587b929878@huawei.com>
- <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
- <20250917183608.000038c4@huawei.com>
- <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
- <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
- <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
- <75e9bae2d30748d5b66c288135915cc3@huawei.com>
+	s=arc-20240116; t=1762176914; c=relaxed/simple;
+	bh=HUhCBMZvZipHgUmjcVZ0eOSnMcg+HbQiCeJ/7jxn+Gg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P6p/dLO60d+vtjssYhbMGrfTt+v/z6HcloMASoeQsnvO97hK4x3hSMMuGUEuDVKjpijL/da5jfWHB91CVgzDfuZ/IJD1mqn42ZCUxrl3dn7x4B+0HYI8+H1dN+Bwcy2EubRCnHKz2vys0hke6Kbdxm8WyQfcq+ja+rA21zxZXTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iSuStlNC; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E3E031A183F;
+	Mon,  3 Nov 2025 13:35:09 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CE9160628;
+	Mon,  3 Nov 2025 13:35:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F194010B500FE;
+	Mon,  3 Nov 2025 14:34:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762176907; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=koLz65BvAsRdOTOjAYYzE2T1rPDi7AByKsxkPawhxGI=;
+	b=iSuStlNC/qPWehMW5QtSxmK7/Ek+OmtM952H+Xk5cz64yvAI1dRLRJl2LFnH1Saj3uIcSn
+	Tfo0dDHHxzLe5rPhwCbyehjx3KhF+kWXpLRNtBcibrsD5eWlEhe06L8+GQDP7gihuHb7M4
+	aMb4hr5u64HA2jT9649n28R3LSuMyiMLHcAn1aj1T2djrGGH2TKUKnNVTaabRGpAWKTAUy
+	xDNG39m9CDfMAnKBAqtJttRhZlsDSxkcO7NokNzenCtkiwC6nxpHFV3TZc+Gz2qOhJ3anH
+	P5/UUwG3W53ojB0Z3tCqPkFB8BoZl0mckys6ra3FPqO4z9ocBaUZIcIEe7GxPQ==
+Date: Mon, 3 Nov 2025 14:34:52 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter
+ Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>, Saravana Kannan
+ <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 18/29] i2c: mux: Create missing devlink between mux
+ and adapter physical device
+Message-ID: <20251103143452.080c3503@bootlin.com>
+In-Reply-To: <6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<20251015071420.1173068-19-herve.codina@bootlin.com>
+	<6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <75e9bae2d30748d5b66c288135915cc3@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Oct 17, 2025 at 12:54:36PM +0000, Shiju Jose wrote:
-> ACPI spec defined RAS2 interface for scrub and scrub parameters per node
-> .  Thus to make compatible to the spec,  kernel and firmware implementations
-> for RAS2 scrubbing are per node.
+Hi Andi,
 
-Ok, makes sense. You can have heterogeneous or whatever nodes.
+On Thu, 30 Oct 2025 16:23:24 +0100
+Andi Shyti <andi.shyti@kernel.org> wrote:
 
-> For the design and prototyping your request for "start a scrub on the whole
-> system", we are trying make sysfs scrub control system-wide while keeping
-> underlying RAS2 scrubbing per node.
-
-I guess per-node does make sense...
-
-> for the demand scrubbing should the kernel send scrub request to only on the
-> corresponding node or to all the nodes etc.
-
-Well, since scrubbing should not interfere with normal operation, you could
-start it on the target where it should scrub and then do a full circle over
-all memory. For example. Or do something simple and which comes "natural".
-
-> From the ACPI spec RAS2 scrub interface perspective,  needs per-node scrub
-> rate and other scrub parameters. One of the use case for demand/background
-> scrubbing in a specific node in which frequent corrected memory errors
-> reported to the user space and CE count exceeds the threshold.
-
-I guess.
-
-Or you can simply start scrubbing around the failing address. With a certain
-radius. If the node thing comes more natural, sure but you can have a big fat
-node and if you start scrubbing the whole thing, you will get to the actual
-address you want to scrub after a long while. So the per-node thing is not
-necessarily the optimal solution. Question is, what you really wanna do on an
-error, as a reaction...
-
-> If you agree to keep per-node scrub rate and thus per-node scrub control in
-> the sysfs, then I will continue to use the original design in v12? Otherwise
-> will try to use the new design with common system-wide scrub control in the
-> sysfs and underlying RAS2 scrubbing implementation per node.
-
-See above.
-
-> This is for demand scrubbing feature/use case where a specific address range
-> to scrub and OS must set the mandatory  spec defined  RAS2 table field
-> 'Requested Address Range(INPUT)' while requesting the demand scrubbing in
-> a node. Hope the firmware can ignore the request if the requested address
-> range to scrub is irrelevant for a node, because in this approach we have
-> common sysfs scrub control and kernel is requesting demand scrubbing
-> system-wide across all nodes.
+> Hi Herve,
 > 
-> If this approach is not correct, can we use (b) as below? providing we need
-> to get PA range for the nodes in the RAS2 driver  using the functions
-> (start_pfn = node_start_pfn(nid) and size_pfn = node_spanned_pages(nid);)
-> as implemented in v12 and discussed earlier in this thread.
+> ...
 > 
+> > When an i2c mux is involved in an i2c path, the struct dev topology is
+> > the following:  
+> 
+> supernitpick: I'd leave blank line here.
 
-I'm wondering how useful that address range scrubbing would be and whether it
-is worth the effort... I guess the goal here is something along those lines:
-"oh, you just had an error at address X, so let's scrub [ A ... X ... B ] with
-A and B having, hm, dunno, sufficient values to contain X and perhaps cover
-sufficient range to catch error locality or whatnot.
+Will be added.
 
-But you'd need to do this only when you have a fat memory node and where you
-start scrubbing at the beginning of the node range and then you'd have to wait
-for a relatively long time to reach the PA X at fault...
+> 
+> >     +----------------+                +-------------------+
+> >     | i2c controller |                |      i2c mux      |
+> >     |     device     |                |      device       |
+> >     |       ^        |                |                   |
+> >     |       |        |                |                   |
+> >     |  dev's parent  |                |                   |
+> >     |       |        |                |                   |
+> >     |   i2c adapter  |                | i2c adapter chanX |
+> >     |     device  <---- dev's parent ------  device       |
+> >     |   (no driver)  |                |    (no driver)    |
+> >     +----------------+                +-------------------+
+> >   
+> 
+> ...
+> 
+> > No relationship exists between the i2c mux device itself and the i2c
+> > controller device (physical device) in order to have the i2c mux device
+> > calling i2c_del_adapter() to remove its downtream adapters and so,  
+> 
+> /downtream/downstream/
 
-But I have a better idea: how about you start at X - y, i.e., at an address
-a bit smaller than the last reported one and then continue from there on,
-reach the *end* of the node and then wraparound to the beginning until
-you reach X again?
+Will be fixed
 
-This way you don't need to supply any range and you are still "on time" when
-reacting to the error with scrubbing...
+> 
+> > release references taken to the upstream adapter.  
+> 
+> ...
+> 
+> > +	/*
+> > +	 * There is no relationship set between the mux device and the physical
+> > +	 * device handling the parent adapter. Create this missing relationship
+> > +	 * in order to remove the i2c mux device (consumer) and so the dowstream
+> > +	 * channel adapters before removing the physical device (supplier) which
+> > +	 * handles the i2c mux upstream adapter.
+> > +	 */
+> > +	parent_physdev = i2c_get_adapter_physdev(parent);
+> > +	if (!parent_physdev) {
+> > +		dev_err(muxc->dev, "failed to get the parent physical device\n");
+> > +		ret = -EINVAL;  
+> 
+> -ENODEV?
 
-Hmmm?
+Yes, -ENODEV makes sense here. Will be changed in the next iteration.
 
-> Sure. Then background scrubbing will not be allowed if demand scrubbing is
-> in progress in a node, if the system-wide scrub control in sysfs is chosen. 
+> 
+> > +		goto err_free_priv;
+> > +	}
+> > +	dl = device_link_add(muxc->dev, parent_physdev, DL_FLAG_AUTOREMOVE_CONSUMER);  
+> 
+> Not to call twice put_device, I would add it once here and then
+> check for !dl.
 
-So can the kernel interrupt background scrubbing on some node? Because then it
-is easy:
+As Andy already mentioned, we cannot do that. Indeed, dev_name(parent_physdev)
+is called in the error path and so the device reference has to be kept.
 
-You interrupt background scrubbing whenever needed with on-demand scrubbing on
-that particular node...
+> 
+> > +	if (!dl) {
+> > +		dev_err(muxc->dev, "failed to create device link to %s\n",
+> > +			dev_name(parent_physdev));
+> > +		put_device(parent_physdev);
+> > +		ret = -EINVAL;  
+> 
+> same here, should this be -ENODEV?
 
-It looks like it is starting to crystallize...
+For this one, I am not so sure.
 
-Thx.
+The failure is related to the device link creation and probably due to some
+devlink invalid internal flags or state instead of a missing device.
 
--- 
-Regards/Gruss,
-    Boris.
+That's said, if you really want the -ENODEV here, let me know.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Best regards,
+Hervé
 
