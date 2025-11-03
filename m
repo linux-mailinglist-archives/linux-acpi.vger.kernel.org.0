@@ -1,195 +1,216 @@
-Return-Path: <linux-acpi+bounces-18451-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18452-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107B7C2C0C2
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 14:22:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C91C2C10A
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 14:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B9703A254B
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 13:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 031A53B2866
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 13:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35827707;
-	Mon,  3 Nov 2025 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A907A22ACEB;
+	Mon,  3 Nov 2025 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9BpxbsN"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aY0ndYWs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B230F52C;
-	Mon,  3 Nov 2025 13:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC32635;
+	Mon,  3 Nov 2025 13:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762175725; cv=none; b=WcNdUk6GAY7J9nW/LMY5g9tPUNqalv1B6qchGxguEL88BA2pTnpghFG4yxfBtxA4wkqRDTKyJYl/NeAlkiHcDsH9fB6MmMgJN42hHVrotj9kHqPigLN40GXf3Qwhq4q5y9ZzCKDRMCMYppY15A2N+Q1UUDSyg5hwjh0omVuRwLY=
+	t=1762176009; cv=none; b=f78LfhmZSjKFrPb3Kl2nkiWzI1AXA1uZxgblT7kLKFqT26dQpCMFWlHaYwonhHk3ObyYCiMxntZsD6GzV0nn/aStRxIdV09COd03DfxlhIkon0+0Zc9/MEa8z/tJFrSFf64qxsDdzMtIKGLL69r1CFVqhYLnIW3dKRzMOlu9vOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762175725; c=relaxed/simple;
-	bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
+	s=arc-20240116; t=1762176009; c=relaxed/simple;
+	bh=/wr6DM7plefzFxe5cqGRChKJvSm5bKx5O8az99iQw1k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDta4olUU2j1GGYPHIgfJuEjfiPvXSR27UldceHckbwJPnDT8PoUN3hLZ8PrUwfy/3k89Ij9un96CkKtj34/s6ixacYgg+nuQxKP3zqE7JNtik4npLUPM940mJC4TsRNNuxXnEmBRRKxN+nOM9m85OKnBwPbc8DFA9RzfkTA5eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9BpxbsN; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762175723; x=1793711723;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=BrUO1cTuo9HyN2IfjVfYTebP2gccBlnbEGfKcY5hl1Y=;
-  b=R9BpxbsNLi+OLBtP9lVsjaM1BcnHKPKGddCqwF1F76bBkmNTk4sHZb0p
-   IhiVTm37/FWvGLzvyiZPX7ZCc0ytacuX1XS8WTKmOErufBUxrD8CkwEs4
-   Hrtmvh3Xsqyfjr0jOefXwaTRLl8XX0g6YxQfMdX8ciAmBGB/UOQa2F0nb
-   SWtmC9yyOhibn/657mOxosMpSKc8E3PGb1ze2DfGWMBzO/6Io/GJ1yyhb
-   lP1P4v9u+W2NbYzds3eO9wJRWymfjbBIZ9NBk2uSC73hIqvxUiBklOyI6
-   TJiP6tPv5+lR8acg5TWswPD7qVj8mDNNC3lLtt6U7bDrbLBUxfrUd4nVz
-   Q==;
-X-CSE-ConnectionGUID: NUanCj8IQXKZdx7Z26NZjA==
-X-CSE-MsgGUID: y5VM+1igRgy3HMstEh2kbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="89711441"
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="89711441"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:21 -0800
-X-CSE-ConnectionGUID: 2nVMVhYKS1+Szz2U6eBIYg==
-X-CSE-MsgGUID: x7QyeuscRq+VoOU3ce8bdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="186105007"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 05:15:20 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFuOy-000000059bH-2oEI;
-	Mon, 03 Nov 2025 15:15:16 +0200
-Date: Mon, 3 Nov 2025 15:15:15 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-Message-ID: <aQiq4_W6AL1n-Geh@smile.fi.intel.com>
-References: <20251102190921.30068-1-hansg@kernel.org>
- <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
- <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
- <aQiATDzxEIKBytXw@smile.fi.intel.com>
- <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tiy388kz51VPy6AJfo6LFofWU2e2/8q1+rE6mmTDNDAK9p13vXzZZCg5DlK0f+nOVOfJLf26XDEKuXkpwTBxHm38sQvTc9g3iWWRhotyCYNjHFPHjDivB6u7XE20RocTQDzP7VNqwzumK7PBpNc0NvxeGVUV7iW9OEa4uoGummc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aY0ndYWs; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9185740E01A5;
+	Mon,  3 Nov 2025 13:20:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YJCfSWo4KNQ9; Mon,  3 Nov 2025 13:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762175996; bh=YVO+ioF7tgxntygjp0N1BdULWpfg3s1EkWAhl+6LYHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aY0ndYWsl9sd4t9nwaRWQWqnTfFnVOpBMIw/gtqif0UtUjRGIkFkj4W1aMzNIGl1u
+	 AZyPMsi4m+T8U6b9gsZlnQ7bL/yBi/wuwBpfVm7YJeArtR8YGQLVLVlvQ9QRVLCsS4
+	 sATk6rdG4dVBCARBtwtLoaUKkvKdHTqyfmrXYWgb3HIukKhKV1vPqrr/LQyjtJOjDf
+	 YZkcMw/DxhYLgx12ALprr38zMYISlJg7d4mA5CotRoDizAS7k/1/HYuinlHWCEsK3X
+	 uDYHNJ2ezIKiM1FExr2Jrn8tgtPbq4c2DOop3IqPSdgIwKXONpHZ/A/7Qkf2sLS5wq
+	 jysa2mn8uy7+wPaEKDgggWQKFwwqYoffuGZ6kS455EmVDQsAb3dhvM3j4H8sxolv8E
+	 OHxkj15zfkutEpIFMf7XphyVeFIhvlAcwp60mtaPVSqduuOgbkhtc0CbtkAVNSvkXp
+	 h1zjOOs8j7e8044eMOfF6UWlXcyi3mwGCSqu10W3EbILloBbAU87qSZYBzE11kaFqg
+	 QfRUe91E9ueRM/B8Fya7QC0pAUGytwjMVfmvaU6tpSFJyP9rRbXj3PfKyfypmwYrB2
+	 ROR6iy0NkS6PSFnzg0H7GfBjjxj4mFOHDNP6lws0NKXTPsWBKu+4tFROocs/kug2CW
+	 5lKels5SpWXndmPaKrU9RSzk=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 361F840E01CD;
+	Mon,  3 Nov 2025 13:19:20 +0000 (UTC)
+Date: Mon, 3 Nov 2025 14:19:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: Daniel Ferguson <danielf@os.amperecomputing.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20251103131914.GEaQir0sdz4Te_ea0l@fat_crate.local>
+References: <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
+ <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+ <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
+ <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
+ <75e9bae2d30748d5b66c288135915cc3@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <75e9bae2d30748d5b66c288135915cc3@huawei.com>
 
-On Mon, Nov 03, 2025 at 11:20:30AM +0100, Hans de Goede wrote:
-> On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
-> > On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
-> >> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
-> >>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
-> >>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-> >>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-> >>>> on the SPI device.
-> >>>>
-> >>>> If there is no driver for the SPI device then the move to spi_probe()
-> >>>> results in acpi_dev_gpio_irq_get() never getting called. This may
-> >>>> cause problems by leaving the GPIO pin floating because this call is
-> >>>> responsible for setting up the GPIO pin direction and/or bias according
-> >>>> to the values from the ACPI tables.
-> >>>>
-> >>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-> >>>> to ensure the GPIO pin is always correctly setup, while keeping the
-> >>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
-> >>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
-> >>>> yet.
-> >>>
-> >>> Even before following the link to some papering over module via the link below
-> >>> I wondered, if the I²C case should be covered as well. The
-> >>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
-> >>> touchpads.
-> >>>
-> >>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+On Fri, Oct 17, 2025 at 12:54:36PM +0000, Shiju Jose wrote:
+> ACPI spec defined RAS2 interface for scrub and scrub parameters per node
+> .  Thus to make compatible to the spec,  kernel and firmware implementations
+> for RAS2 scrubbing are per node.
 
-...
+Ok, makes sense. You can have heterogeneous or whatever nodes.
 
-> >>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
-> >>
-> >> Yes Mark and I got an offlist email bisecting this to the:
-> >>
-> >> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-> >>
-> >> commit (on a stable kernel series) and a later email confirming that this
-> >> patch fixes it.
-> > 
-> > Shouldn't we use Closes in this case instead of Link?
+> For the design and prototyping your request for "start a scrub on the whole
+> system", we are trying make sysfs scrub control system-wide while keeping
+> underlying RAS2 scrubbing per node.
+
+I guess per-node does make sense...
+
+> for the demand scrubbing should the kernel send scrub request to only on the
+> corresponding node or to all the nodes etc.
+
+Well, since scrubbing should not interfere with normal operation, you could
+start it on the target where it should scrub and then do a full circle over
+all memory. For example. Or do something simple and which comes "natural".
+
+> From the ACPI spec RAS2 scrub interface perspective,  needs per-node scrub
+> rate and other scrub parameters. One of the use case for demand/background
+> scrubbing in a specific node in which frequent corrected memory errors
+> reported to the user space and CE count exceeds the threshold.
+
+I guess.
+
+Or you can simply start scrubbing around the failing address. With a certain
+radius. If the node thing comes more natural, sure but you can have a big fat
+node and if you start scrubbing the whole thing, you will get to the actual
+address you want to scrub after a long while. So the per-node thing is not
+necessarily the optimal solution. Question is, what you really wanna do on an
+error, as a reaction...
+
+> If you agree to keep per-node scrub rate and thus per-node scrub control in
+> the sysfs, then I will continue to use the original design in v12? Otherwise
+> will try to use the new design with common system-wide scrub control in the
+> sysfs and underlying RAS2 scrubbing implementation per node.
+
+See above.
+
+> This is for demand scrubbing feature/use case where a specific address range
+> to scrub and OS must set the mandatory  spec defined  RAS2 table field
+> 'Requested Address Range(INPUT)' while requesting the demand scrubbing in
+> a node. Hope the firmware can ignore the request if the requested address
+> range to scrub is irrelevant for a node, because in this approach we have
+> common sysfs scrub control and kernel is requesting demand scrubbing
+> system-wide across all nodes.
 > 
-> I guess so.
+> If this approach is not correct, can we use (b) as below? providing we need
+> to get PA range for the nodes in the RAS2 driver  using the functions
+> (start_pfn = node_start_pfn(nid) and size_pfn = node_spanned_pages(nid);)
+> as implemented in v12 and discussed earlier in this thread.
 > 
-> >> It seems that leaving the fingerprint reader enable pin (the first GPIO
-> >> listed in _CRS which is an output only pin, is likely the enable pin)
-> >> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
-> >> fixing this by forcing the enable pin to no longer float is a bit of
-> >> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-> >> so we need this to fix a regression
-> > 
-> > Yeah, fixing a regression is good thing, but not papering over the issue.
-> 
-> I agree in principle, but this is a quick and safe way to fix
-> the regression, where as the generic fix you describe below is
-> likely months away and also has significant risks of causing
-> regressions in various places, see below.
 
-Perhaps we should add a TODO / FIXME there as well?
-So at least we will know that this is not a proper solution.
+I'm wondering how useful that address range scrubbing would be and whether it
+is worth the effort... I guess the goal here is something along those lines:
+"oh, you just had an error at address X, so let's scrub [ A ... X ... B ] with
+A and B having, hm, dunno, sufficient values to contain X and perhaps cover
+sufficient range to catch error locality or whatnot.
 
-> >> and as you indicate it seems
-> >> like a good idea in general and maybe we should also do this for i2c.
-> > 
-> >> As for doing something similar for I2C devices, that is an interesting
-> >> question. Even though it is possible I'm not aware of any i2c-devices
-> >> which have a userspace driver like SPI/USB fingerprint readers do,
-> >> so on i2c I would expect probe() to always get called. So I'm not sure
-> >> it is necessary there.
-> > 
-> > Reading the problem statement (the second paragraph) I lean towards
-> > a generic solution residing somewhere in drivers/acpi/scan.c (like
-> > acpi_init_device_object() / acpi_bus_attach() calls), although I don't
-> > see a quick way how to achieve this. It seems would require a bit of
-> > refactoring to allow ACPI glue code to call specific subsystem calls
-> > or making a GPIOLIB to provide some "early" initialisation flow(s).
-> 
-> I guess that you want to do the direction and bias init on all
-> GPIOs listed in _CRS, at least for devices with status == present ?
+But you'd need to do this only when you have a fat memory node and where you
+start scrubbing at the beginning of the node range and then you'd have to wait
+for a relatively long time to reach the PA X at fault...
 
-For the devices that are serial busses only (I²C, SPI, UART).
+But I have a better idea: how about you start at X - y, i.e., at an address
+a bit smaller than the last reported one and then continue from there on,
+reach the *end* of the node and then wraparound to the beginning until
+you reach X again?
 
-> I was wondering about the same thing, but ACPI tables are full
-> of, well, erm, garbage in various places so I'm afraid that doing
-> this for all GPIO _CRS resources is likely to cause a whole lot
-> of pain.
-> 
-> Typically the firmware already sets up the direction + bias
-> of all used pins. I'm pretty sure the BIOS-es have some GPIO
-> init table especially for this somewhere.
-> 
-> Now those init-tables may have bugs, but I'm seriously worried
-> about the implication of doing the direction + bios setup for
-> all _CRS GPIO entries. I have simply seen too much non sense
-> devices (with _STA returning 0x0f) listing GPIOs also actually
-> used elsewhere to think this is a good idea.
+This way you don't need to supply any range and you are still "on time" when
+reacting to the error with scrubbing...
 
-Btw, other GPIO initialisation issues we have been solving by adding quirks.
-Why this one can't be targeted with the same approach?
+Hmmm?
+
+> Sure. Then background scrubbing will not be allowed if demand scrubbing is
+> in progress in a node, if the system-wide scrub control in sysfs is chosen. 
+
+So can the kernel interrupt background scrubbing on some node? Because then it
+is easy:
+
+You interrupt background scrubbing whenever needed with on-demand scrubbing on
+that particular node...
+
+It looks like it is starting to crystallize...
+
+Thx.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
