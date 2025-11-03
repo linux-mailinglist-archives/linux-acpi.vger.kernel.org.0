@@ -1,108 +1,122 @@
-Return-Path: <linux-acpi+bounces-18441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18442-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0ECC2AE40
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 10:59:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747ABC2AE3D
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 10:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6765B3A7A80
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 09:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E2C188C171
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 09:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206632F9DBB;
-	Mon,  3 Nov 2025 09:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F702FABFF;
+	Mon,  3 Nov 2025 09:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0Ok27gP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCWE8zDV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0542D063F;
-	Mon,  3 Nov 2025 09:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311692FABF9;
+	Mon,  3 Nov 2025 09:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762163846; cv=none; b=exSEtwlYLlb7vw3qp/C40L9nXMbqKzAH+H9wjEqSUFGdjTj9p8Ewgb0ogfhrMFsV9ZC06KsJz35+GJ1Z6+LV05obMSAF45evPt1HZlyerl9eyr/AcS2FczOHBnfTbr/yPU0LXccAQgczJKJVWkLG9WtKO6kHMqEq32EU5tgOG4c=
+	t=1762163868; cv=none; b=Lca6WOWO69owtI5HyffIvyg0K5QDbpeltGr0RKqaYTAT/LUz5d3t96s1iqyebUaVodkUD6nd/FgSp0ru8ikkxZfQUp4Zk/xr4EGiH0N69xXbboqZEHpR45BmzrD9DC0WHRftz16nQyb8C5lTnajPxwq5TPhVGqo8EH9mSSwyikw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762163846; c=relaxed/simple;
-	bh=z/TA5h570uq5vw2oklRA3CJ6CUxs6qCvrPbp4mFTWao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ss7dLAu8/YAkgPp0BpionxKHgcpDKyHFMXgYuFmXLqauIOH8gw/ne/GkUUDKTTBCYZ5hfp0iLVqTJ8PZ8T1gurvb0IS5vJQhs6mJ8+nEeLsJ5gO/hdwvmGlpPAJYsfh6IwQp+FxJPWeo+mEG6qrJcky4fgPN8ez9vCotXMtv6bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0Ok27gP; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762163845; x=1793699845;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z/TA5h570uq5vw2oklRA3CJ6CUxs6qCvrPbp4mFTWao=;
-  b=J0Ok27gPP8liCTV42wd2zjWUN+y3nvLS8tAfYI573Barb1a68djzY+O3
-   dQDEPUM/nt7k/Ybs4ENTDYflxvVP3ZYqyMQu7tOl7VRnOJEOn1UpzTMpS
-   WfFoZrh1s9PuxV3efLYjj7ausBPUfx0WzhpFFxQIz5Sli6Mn77tl4mrYG
-   Lj+WqzrX7VFRMlL/aS74LpqHpgtfCY8pS+3RUBxC+/z5YggioWvrk+4OW
-   wo87uDsWxPJo7LfxrpLSJcBCb7mAqI7OC1EWgdINxLRunc/QzkY9EL0v5
-   dNZ/23LHK3WnrWJZDVUAl8SS1lXnxfTlf0mEUu7e/Hmx8GuPKldNP3BBx
-   g==;
-X-CSE-ConnectionGUID: 55Cy+RWiRa6byVqqM/dNOw==
-X-CSE-MsgGUID: NW4CduB3Rm2rcqAuzU915A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="68095540"
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="68095540"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:57:24 -0800
-X-CSE-ConnectionGUID: QGUqGttuRmCyRj0lldfMmA==
-X-CSE-MsgGUID: Yswh+lbETFiKTHWBdVCzmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="187142817"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 01:57:21 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vFrJL-0000000573P-2Ht0;
-	Mon, 03 Nov 2025 11:57:15 +0200
-Date: Mon, 3 Nov 2025 11:57:14 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v4 06/10] gpio: swnode: update the property definitions
-Message-ID: <aQh8etcksSmStNgz@smile.fi.intel.com>
-References: <20251103-reset-gpios-swnodes-v4-0-6461800b6775@linaro.org>
- <20251103-reset-gpios-swnodes-v4-6-6461800b6775@linaro.org>
+	s=arc-20240116; t=1762163868; c=relaxed/simple;
+	bh=tQJW9d/dyn2Pn4aWTpR7XBvFl5Scj4xudR01U54UyB8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fEdFx62r5HI9vzWnx69wPVC4U48mz3wqqktwl709MleDHTfAvOmMW8Ppw0Y/u4/B/nn9pXZyFf+6FFwwxB9ZPMa6AbShnw4Sr7+EjPY6llU//565jnchTJz9O0wurhAXZvcvckcHhdMJS0RF0FbyewRft7O3rXe/NPTmU1q6AYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCWE8zDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8742FC4CEE7;
+	Mon,  3 Nov 2025 09:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762163867;
+	bh=tQJW9d/dyn2Pn4aWTpR7XBvFl5Scj4xudR01U54UyB8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OCWE8zDVDqBxsuAvXh/gZPeQSRhVF1idQy5B2U9OGGq99RrWd1xYprYmfAffkJDNC
+	 A4WK8e5UW8nzmB7WyZwiyd+93EkJQ7VwrMnzDg3su7Gd2wpk5j0344NWOE9lV9w2S4
+	 sIhiNKgG8Axoj+CDWOcEkWLIg+s2Hcj8n1fDhoerJXusm+6LdpCdhyVfRK8A5U+vOI
+	 9Xik1N5kcHcLvNO2oJH9/I6MAmeJ3q/RS3gHV89TG2f3P0oNRIojMSwiA+LchQ3J90
+	 kcXjtsCG+caa5c/Jl0Y3DL7DnJt8ao/+j9bFBPOq0p9rjyeDyyPqbre0/oI4SIOfqT
+	 Ft1Tn7DmOqDYQ==
+Message-ID: <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
+Date: Mon, 3 Nov 2025 10:57:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251103-reset-gpios-swnodes-v4-6-6461800b6775@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 03, 2025 at 10:35:26AM +0100, Bartosz Golaszewski wrote:
+Hi,
+
+On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
+> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
+>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+>> on the SPI device.
+>>
+>> If there is no driver for the SPI device then the move to spi_probe()
+>> results in acpi_dev_gpio_irq_get() never getting called. This may
+>> cause problems by leaving the GPIO pin floating because this call is
+>> responsible for setting up the GPIO pin direction and/or bias according
+>> to the values from the ACPI tables.
+>>
+>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+>> to ensure the GPIO pin is always correctly setup, while keeping the
+>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
+>> yet.
 > 
-> Use the recommended macros for creating references to software and
-> firmware nodes attached to GPIO providers.
+> Even before following the link to some papering over module via the link below
+> I wondered, if the I²C case should be covered as well. The
+> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
+> touchpads.
+> 
+>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+> 
+> ...
+> 
+> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
 
-Do we need now this patch at all?
-See comments to the patch 3.
+Yes Mark and I got an offlist email bisecting this to the:
 
--- 
-With Best Regards,
-Andy Shevchenko
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+
+commit (on a stable kernel series) and a later email confirming that this
+patch fixes it.
+
+It seems that leaving the fingerprint reader enable pin (the first GPIO
+listed in _CRS which is an output only pin, is likely the enable pin)
+floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
+fixing this by forcing the enable pin to no longer float is a bit of
+luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+so we need this to fix a regression and as you indicate it seems
+like a good idea in general and maybe we should also do this for i2c.
+
+As for doing something similar for I2C devices, that is an interesting
+question. Even though it is possible I'm not aware of any i2c-devices
+which have a userspace driver like SPI/USB fingerprint readers do,
+so on i2c I would expect probe() to always get called. So I'm not sure
+it is necessary there.
+
+Regards,
+
+Hans
 
 
 
