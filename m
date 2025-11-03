@@ -1,165 +1,218 @@
-Return-Path: <linux-acpi+bounces-18474-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18475-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19813C2DA80
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 19:22:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F129FC2E603
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 00:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78EBF18859E9
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 18:22:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CD3E4E9179
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 23:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C1E289378;
-	Mon,  3 Nov 2025 18:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7D62FE56E;
+	Mon,  3 Nov 2025 23:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UZWNhCHI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LVTAqsao"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437A02877F2
-	for <linux-acpi@vger.kernel.org>; Mon,  3 Nov 2025 18:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196B62FC037;
+	Mon,  3 Nov 2025 23:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762194136; cv=none; b=pkN8s3Ic6Gp9zOP4/1UInngcRudwVigSFUqiYKuVaiHJd2sAXCIvgyv27JTqDobAjOHE5CEqWet/Pkg4Bzl1BWqmqb4cCZBwAfX0A4Vxu8ehvfSvoQLPO4/g8ytyCfdYb0pS4+cJ5EixDUJfFfEBRAZrrNmTJF7rnV1eWUcVHOw=
+	t=1762211161; cv=none; b=Cxh4Db9q7pZx6bkWBQ/9VAVsiE1lyLwiqM+RSg/STKBQ48ft8gaYmfVJ6yshgAznK6A4zT3pZ394Xpyh77ilyObK84GkazWlRZG7Rn1bi33YLqaubKSu8GjDenCZoVstJLCUUtVZBNuBZ1Cht9DVjPKdh6f+7gX0tcVCcU9mgIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762194136; c=relaxed/simple;
-	bh=hBQwSFa3ls5tXGp6taWMTxAYUVgv5w1YYI79QHPzWyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gEw+CbckVNiQMcXHv5DnPX+rZK9K+IXaKg2Be18mW6PA8+a0UdDMGGmhXPUAh86ijLUX1XxPk/sW8CvS1MRuhJS3XB7jtuYM/vHg+nbMfIfyz0A6caHPMLPAUAF0lMq5v5TtrBFBefChwjkcQ2Ru8/FLI72sJtWJrYJOLtn6m+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UZWNhCHI; arc=none smtp.client-ip=209.85.218.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b3c2c748bc8so603748366b.2
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Nov 2025 10:22:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762194131; x=1762798931; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CADywisMv8oKHI4QSeR7YMm7LIR82MPNXUUykN5HtdQ=;
-        b=UZWNhCHIJ/gRUyJkjqO9j2Ouw+9KMUIDZ7RU1g+gHLh7t9ogJKmadqG2ksz/6SINjv
-         NfNNhN+pg/v8FKFb9RbHvyuzJPbyAiXVFI4O0+TAhq/KXKCBgiJyGv9an0kzjQSniWau
-         E3WHw0WSAW2tXTpBj/AJZvw6yfz+NzBATlDmnzGfjJKVCOzGVEIOou/z18OiLGFGGl8k
-         aQ79bvM4SvC3OZRtevh+OyGQhsEmpGLz9PEzkgYj+AsHo+xlob/xqJEgJLtfV+fqdQDd
-         KRhbYW5RGsCFTIUGYex0VX9KBfqdojf8FLouOmHwynrrCWqUm5pwQ/w8ltayR/Q+61vf
-         hP5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762194131; x=1762798931;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CADywisMv8oKHI4QSeR7YMm7LIR82MPNXUUykN5HtdQ=;
-        b=O46YiPG4bZ6Xp/iVhuM5+aWMbINEkUi3YYfegwJYNY2mYEMOgiWU2YMlni2ao0DciI
-         GbbUwLaDUdSMzMuAS9467ZbiN/dIqOEeuM3S6LCwgYWY0KwgGTCH+xj6/YtUqh6RhQJH
-         YIN7sfgLOrsO1pMoodzUlwAyHMfhz+BfStSU22bUSmeqAfz6RlcUWbDivR9CrSkWbeSv
-         EOS02BRbd4mDmlUgWBJrKQo0e/RwbqI7nHZpC3y8gv/UBR5TxWziP0PwxRND4QNLbI6O
-         sft/zHLvIiynTMWHK2Q2EWDVaTRohsC5QHfN/WEI7TI+g1fJOohRgURwh4Z5sjxT0qIO
-         WeUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWrUgvCMLsVZB74pYnTFPGETc93pS2jrBK0ored7sX+vbJ9Wm29V6hnjlXjM0W0ndn+d2agLF8kmHyM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxilekrvKIHW+8OItZgnV1bH2kVGvnzDU72KlGDv64rH1kqzhbz
-	rtsfHJz3g9ERm5p9iwgxnBmsbo6YcW9nhX/66KnanaGHyszpIwatYVHdj+377d9R8kk=
-X-Gm-Gg: ASbGncvcI8OaH8dMUq4TM0aep8co++cRJWRSFBjqmdmx39Gf6u9j9In1+QrOyZ2rT5d
-	MlylOyKfSBCMjujircV0FruuGL2zQD0pOeEodTAvyfRuDK7hXSlOavPr8JsF8deyFCXH+QmMkof
-	IYQDh8glErqnSMdlHQm1lp6f/xY+cpxu9cUwKIjFVGI5HImCmZ3WVZC1Lki9WuYZjqSrmRZzpww
-	HRZjKN/29ymdN/LyYDZ74fFtxPx1aagpTR7MViEWZxOr19P3x37hNRO+lHIfV30kpY5rKOhJXP+
-	1A7vwg/f9l4qbEQQW6+P4cVqwDwdONexFqq4ykMXY6zdqQRYZ2Ltw9kQ00ioz9GWdFObKJ7KyDT
-	HnKy+XG+gQWnZ0UDWOq/QYeArtcQdmZm43umk6hqG/lQRNXYHgG2vKalj452DD0g2ljIIQbZldg
-	mwiFXngcF/nzcbUg==
-X-Google-Smtp-Source: AGHT+IHNFHN7nALHAQI3py5s3oB3pNSaTHU60CtQtHtaXj2ajzjyABGHYsA7JkTUyfWfWQz+8Ib3/g==
-X-Received: by 2002:a17:907:944d:b0:b70:b7c2:abe9 with SMTP id a640c23a62f3a-b70b7c2af64mr561377766b.38.1762194131429;
-        Mon, 03 Nov 2025 10:22:11 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b70bedcec19sm413921266b.7.2025.11.03.10.22.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 10:22:10 -0800 (PST)
-Date: Mon, 3 Nov 2025 19:22:09 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Aniket Agashe <aniketa@nvidia.com>,
-	Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Matt Ochs <mochs@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	"linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"david@redhat.com" <david@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"guohanjun@huawei.com" <guohanjun@huawei.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"kevin.tian@intel.com" <kevin.tian@intel.com>,
-	"alex@shazbot.org" <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>,
-	Kirti Wankhede <kwankhede@nvidia.com>,
-	"Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>,
-	Krishnakant Jaju <kjaju@nvidia.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>,
-	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] mm: handle poisoning of pfn without struct pages
-Message-ID: <aQjy0ZsVq7vhxtr7@tiehlicka>
-References: <20251026141919.2261-1-ankita@nvidia.com>
- <20251026141919.2261-3-ankita@nvidia.com>
- <20251027172620.d764b8e0eab34abd427d7945@linux-foundation.org>
- <MW4PR12MB7213976611F767842380FB56B0FAA@MW4PR12MB7213.namprd12.prod.outlook.com>
- <aQRy4rafpvo-W-j6@tiehlicka>
- <SA1PR12MB71998D21DD1852EB074A11ABB0C6A@SA1PR12MB7199.namprd12.prod.outlook.com>
+	s=arc-20240116; t=1762211161; c=relaxed/simple;
+	bh=yqb+lQ7fKBLnHXkoJuuGAgVYHvCIKuQEhXrNGYrB9IQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGQHOAhxDQIpo2vVWsmVsMr+d9QJPgC0AA8nmrSOtcZRMRs2IVsir1Ty2iMJNXliAMdrOIrXEg/zRBOsRU18p+rZpq+akQKEONQrGcAVxJB+bc9PoJs5TEvkQIe86Q7zt9SDi9zcgFXCBAHklw1sao1QBKPJvfDotaByVb+ImMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LVTAqsao; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762211160; x=1793747160;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yqb+lQ7fKBLnHXkoJuuGAgVYHvCIKuQEhXrNGYrB9IQ=;
+  b=LVTAqsao9ajKVVNZ7dcg2fy4Uiq9pbAHUyIEFtyvDw82M4SgjdT+zyj9
+   6ZbYCvAE2gz0oK8DtjGPZyvlyRQ5QiaLOjSUaqhjSKreXWUcy3VkNlLW1
+   Ra/vmr6cBdVIfFmhsLFN2gKgiJk25Uab4GrmI45PH3M9atSH/LmBIAaZw
+   hMXELlSgosO8N4qAscj+fq+TGN8akslzw30VH5sLmvbO02FUy2sZd7bXv
+   J7X2dcfzRKRCtp+e/DblML2SFkkQEGopjIjuIfm/6mSVVvtvKx8v4+Srq
+   gDrMNj3CESqMXaHOn8NR20eXE9riFjCq+d3AA9otY8xgDvle/F6V/ff9/
+   A==;
+X-CSE-ConnectionGUID: eJLAM3ZnR/mfYbj5aTY7cg==
+X-CSE-MsgGUID: 0kSpcl8lT964shIKWAO4dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="63310419"
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="63310419"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 15:06:00 -0800
+X-CSE-ConnectionGUID: 337uyCQTSwC3PM+2sEsCjQ==
+X-CSE-MsgGUID: zykQcdenQZibtJp7SI+qFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="191340930"
+Received: from sramkris-mobl1.amr.corp.intel.com (HELO agluck-desk3.home.arpa) ([10.124.221.2])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 15:05:59 -0800
+From: Tony Luck <tony.luck@intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Hanjun Guo <guohanjun@huawei.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Tony Luck <tony.luck@intel.com>,
+	Andi Kleen <andi.kleen@intel.com>
+Subject: [PATCH] ACPI: APEI: GHES: Improve ghes_notify_nmi() status check
+Date: Mon,  3 Nov 2025 15:05:47 -0800
+Message-ID: <20251103230547.8715-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <SA1PR12MB71998D21DD1852EB074A11ABB0C6A@SA1PR12MB7199.namprd12.prod.outlook.com>
 
-On Sun 02-11-25 11:55:56, Ankit Agrawal wrote:
-> >> >> +static void add_to_kill_pfn(struct task_struct *tsk,
-> >> >> +                         struct vm_area_struct *vma,
-> >> >> +                         struct list_head *to_kill,
-> >> >> +                         unsigned long pfn)
-> >> >> +{
-> >> >> +     struct to_kill *tk;
-> >> >> +
-> >> >> +     tk = kmalloc(sizeof(*tk), GFP_ATOMIC);
-> >> >> +     if (!tk)
-> >> >> +             return;
-> >> >
-> >> > This is unfortunate.  GFP_ATOMIC is unreliable and we silently behave
-> >> > as if it worked OK.
-> >>
-> >> Got it. I'll mark this as a failure case.
-> >
-> > why do you need to batch all processes and kill them at once? Can you
-> > just kill one by one?
-> 
-> Hi Michal, I am trying to replicate what is being done today for non-PFNMAP
-> memory failure in __add_to_kill
-> (https://github.com/torvalds/linux/blob/master/mm/memory-failure.c#L376).
-> For this series, I am inclined to keep it uniform.
+ghes_notify_nmi() is called for every NMI and must check whether the NMI was
+generated because an error was signalled by platform firmware.
 
-Unless there is a very good reason for this code then I would rather not
-rely on an atomic allocation. This just makes the behavior hard to
-predict
+This check is very expensive as for each registered GHES NMI source it reads
+from the acpi generic address attached to this error source to get the physical
+address of the acpi_hest_generic_status block.  It then checks the "block_status"
+to see if an error was logged.
+
+The ACPI/APEI code must create virtual mappings for each of those physical
+addresses, and tear them down afterwards. On an Icelake system this takes around
+15,000 TSC cycles. Enough to disturb efforts to profile system performance.
+
+If that were not bad enough, there are some atomic accesses in the code path
+that will cause cache line bounces between CPUs. A problem that gets worse as
+the core count increases.
+
+But BIOS changes neither the acpi generic address nor the physical address of
+the acpi_hest_generic_status block. So this walk can be done once when the NMI is
+registered to save the virtual address (unmapping if the NMI is ever unregistered).
+The "block_status" can be checked directly in the NMI handler. This can be done
+without any atomic accesses.
+
+Resulting time to check that there is not an error record is around 900 cycles.
+
+Reported-by: Andi Kleen <andi.kleen@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+
+---
+N.B. I only talked to an Intel BIOS expert about this. GHES code is shared by
+other architectures, so it would be wise to get confirmation on whether this
+assumption applies to all, or is Intel (or X86) specific.
+---
+ include/acpi/ghes.h      |  1 +
+ drivers/acpi/apei/ghes.c | 39 ++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 37 insertions(+), 3 deletions(-)
+
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index ebd21b05fe6e..58655d313a1f 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -29,6 +29,7 @@ struct ghes {
+ 	};
+ 	struct device *dev;
+ 	struct list_head elist;
++	void __iomem *error_status_vaddr;
+ };
+ 
+ struct ghes_estatus_node {
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 97ee19f2cae0..62713b612865 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1425,7 +1425,21 @@ static LIST_HEAD(ghes_nmi);
+ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
+ {
+ 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_nmi);
++	bool active_error = false;
+ 	int ret = NMI_DONE;
++	struct ghes *ghes;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(ghes, &ghes_nmi, list) {
++		if (ghes->error_status_vaddr && readl(ghes->error_status_vaddr)) {
++			active_error = true;
++			break;
++		}
++	}
++	rcu_read_unlock();
++
++	if (!active_error)
++		return ret;
+ 
+ 	if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
+ 		return ret;
+@@ -1439,13 +1453,26 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
+ 	return ret;
+ }
+ 
+-static void ghes_nmi_add(struct ghes *ghes)
++static int ghes_nmi_add(struct ghes *ghes)
+ {
++	struct acpi_hest_generic *g = ghes->generic;
++	u64 paddr;
++	int rc;
++
++	rc = apei_read(&paddr, &g->error_status_address);
++	if (rc)
++		return rc;
++	ghes->error_status_vaddr = acpi_os_ioremap(paddr, sizeof(ghes->estatus->block_status));
++	if (!ghes->error_status_vaddr)
++		return AE_BAD_ADDRESS;
++
+ 	mutex_lock(&ghes_list_mutex);
+ 	if (list_empty(&ghes_nmi))
+ 		register_nmi_handler(NMI_LOCAL, ghes_notify_nmi, 0, "ghes");
+ 	list_add_rcu(&ghes->list, &ghes_nmi);
+ 	mutex_unlock(&ghes_list_mutex);
++
++	return 0;
+ }
+ 
+ static void ghes_nmi_remove(struct ghes *ghes)
+@@ -1455,6 +1482,10 @@ static void ghes_nmi_remove(struct ghes *ghes)
+ 	if (list_empty(&ghes_nmi))
+ 		unregister_nmi_handler(NMI_LOCAL, "ghes");
+ 	mutex_unlock(&ghes_list_mutex);
++
++	if (ghes->error_status_vaddr)
++		iounmap(ghes->error_status_vaddr);
++
+ 	/*
+ 	 * To synchronize with NMI handler, ghes can only be
+ 	 * freed after NMI handler finishes.
+@@ -1462,7 +1493,7 @@ static void ghes_nmi_remove(struct ghes *ghes)
+ 	synchronize_rcu();
+ }
+ #else /* CONFIG_HAVE_ACPI_APEI_NMI */
+-static inline void ghes_nmi_add(struct ghes *ghes) { }
++static inline int ghes_nmi_add(struct ghes *ghes) { return -EINVAL; }
+ static inline void ghes_nmi_remove(struct ghes *ghes) { }
+ #endif /* CONFIG_HAVE_ACPI_APEI_NMI */
+ 
+@@ -1630,7 +1661,9 @@ static int ghes_probe(struct platform_device *ghes_dev)
+ 		ghes_sea_add(ghes);
+ 		break;
+ 	case ACPI_HEST_NOTIFY_NMI:
+-		ghes_nmi_add(ghes);
++		rc = ghes_nmi_add(ghes);
++		if (rc)
++			goto err;
+ 		break;
+ 	case ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED:
+ 		rc = apei_sdei_register_ghes(ghes);
 -- 
-Michal Hocko
-SUSE Labs
+2.51.0
+
 
