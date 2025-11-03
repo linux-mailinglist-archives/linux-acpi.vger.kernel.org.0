@@ -1,163 +1,241 @@
-Return-Path: <linux-acpi+bounces-18444-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18445-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8940C2B017
-	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 11:20:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76877C2B19A
+	for <lists+linux-acpi@lfdr.de>; Mon, 03 Nov 2025 11:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 421A11883DB9
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 10:21:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45A03AA628
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 10:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F842FD68D;
-	Mon,  3 Nov 2025 10:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD192FE592;
+	Mon,  3 Nov 2025 10:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KubTNhK5"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="iv5OUXrD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C687A2FD665;
-	Mon,  3 Nov 2025 10:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015772FCC04
+	for <linux-acpi@vger.kernel.org>; Mon,  3 Nov 2025 10:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762165233; cv=none; b=EKdkPS5gGTL7IHWoBgXLYwy+u3he+U1gBdB0o2raVieZCwXr0RMSPfjqkPt8lYkvATSc/zy3mE4m4YxZq8nRmvVycCK6cP0w4WLIVBMBhyqgVadbZbXFVG2xW5wffEtysYeLbnbyc6/6DPJZVfUrzjh/r9Xoxwqv+vktSoxBZyA=
+	t=1762166213; cv=none; b=q1fEtNxJbEx3savV2RSS7ji6FtmePns8iz8EIYFcvXUjSrhNy8JpOzlPS25vX++n6mIWCrbvEjyOnK0829NypaOxueyS6ohMFEKQ6dKSGLStol4BkyPNEzPl5FppOqArNs7opYFAFGrk4XlaqVjphDnPFhD5yV81TWmckSLze24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762165233; c=relaxed/simple;
-	bh=/OQsET2xvFD951RyDdz77w1a6W8AD8LiQnRlUdUtVJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bHaVCpgo75TWwWVFRJEGvpTmTJX8zGgbM9JHAH5e0+GttXSBslH/dWuq+xKgyPws0auUMRNopx7gCKxByZSWr05ywCZbIZfizxGR8EMobmu5eByUFUgK6eGO+rN5Bn5Tj12YzBCAJKf0bQH94nvflQRsV5NigWq7aeaDE2+XZ/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KubTNhK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F1FC4CEE7;
-	Mon,  3 Nov 2025 10:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762165233;
-	bh=/OQsET2xvFD951RyDdz77w1a6W8AD8LiQnRlUdUtVJo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KubTNhK5mppAn1Y9Mq5wbGCeiG3nW3Ryzs/hu194Y4WXAFedihRAlgr+BZ5o6WM+n
-	 3bhAd+uMi1C71lfwD30VRfv987Y4+fHti7QZ3efzChAs5WBVjYVWauoPI3nFj/+0N6
-	 6qOULxo4kY2Oxlnc8DI3Wj5Wajj2COCUukBLUH3m6VEqa4K/RGAB75hGs/cwCF/bWg
-	 DNXWklqqavH7wb2IMkVdDaohwhCZV9Fg7/iH2umvnOJf38rO5Q9LUsVObMO16xuV5h
-	 AJ+1iSDsjvhBsLDfvmHL+6sn0HTqFbt/xMgg0helMz80A4x3I35uqjPv+9L2t75Xt/
-	 8yaLY4MvakcqA==
-Message-ID: <af07a18b-cfc8-47d1-ac5a-b343cbfe0f36@kernel.org>
-Date: Mon, 3 Nov 2025 11:20:30 +0100
+	s=arc-20240116; t=1762166213; c=relaxed/simple;
+	bh=+MmxogPhCLs9ZpI9QmsWexfExGRNeJu+3ZnjBRPUXe4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZRaV+SWpGQItbPWjdAJ+pxr42YpgiT51alX0NedXZOIUTRagHpLdJNg++e2CLPif9ai0MWZKSjo+g9b4lbuwrp/NQUIocomXK4IF4w7yToyUhZAaS2wWjrSCRg4xdAAu4KttK/hHApVuKtevAv8bsvBXim+r0s6Rc0nXnnHA9Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=iv5OUXrD; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3717780ea70so46778471fa.1
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Nov 2025 02:36:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762166210; x=1762771010; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XjLBSonYsqmv8UYBTszg3fkXjFKAEIXlmbkscAA6YbA=;
+        b=iv5OUXrDCZogogcKkaAr2xU9qPJ09nejdz8PXi5j3gPIVivtB1RBQgE/F3QQ1nGwJy
+         GM9OxBnVhI69OguE+YQ7/B/GI52YjpVurtceaK4SWItb4Ti4zaspM7rSK1pjYPgrf+Mr
+         A1gvN1fUAPQGqfCrRl7KInQJhbEXUifSN+iXHGctNMfg1p8gdekdjQKk6gv4Jrsmv634
+         YBcUTXIAutvtHOfq+12fr44JLfo+3VEqlNnL6rW457Y8XcOpWL0t/zWO1O6idx/UMzUX
+         Dm7X27jtovNir7m0HYSf8kz6CqTWalrqRMx+znF2vcqmeFUXZuqRVoEqVlC/emLTmyhs
+         FqJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762166210; x=1762771010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XjLBSonYsqmv8UYBTszg3fkXjFKAEIXlmbkscAA6YbA=;
+        b=aB2VQ6HDF5gr1WYaRo5wwjSIR+zHoURIxjXeK62jXTIB5xoN+wlE1ptCE45R4gogKk
+         AdUAngZJ+ayj/nMoarf3GCblpKIhtksXfA8Iwe1RGj/ekVrTVRCOkBzQd+TDee9Pi21u
+         J9fWtOPuRf9AiH0DR956/mjSRkrZcmBLbOardzD4G9FVr9jcM82ObTwauryMb8QEdiOb
+         crg5B8SGz1ellaQPXBmYWDm99H8MzOvjJwecI8e1ya47/llyG2pqcxpOVsn3C6xeaEeN
+         ENsdAbQIfb4B67Dx1Yjm02IO1YJmdynIEwoC8U6AFFpt5e+XqP8E/bXXyXKqk3/bQWKG
+         DboQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjaYefTZRgE30EM+Fznw4Nvw4R4eiwgQSZhlEgPJUk+1VzFw1oamBG4Zu/QPJUQ1sT+fGUoyxMKCbi@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDFbB/xnqjN5wuPzzgCXOkTYBqmjWZcHdXyNlgtXy66ew06Iu+
+	LZVg/8uy/KDgf9CJWPYeYx597EczRv7blx6cLPdFNQiwLy3pbdqymHuoFTTJKPYzJiL/uzDCTwI
+	kbXrSON6g/h92Jg1Py+lU1PPdcxXcHHWCrHL+H4BbZg==
+X-Gm-Gg: ASbGncvSeJ5CC4mCJ7J15mutyhBz/DRG/094wUCXRzsHNMYGCeR31+zpErqsGWy+x8Y
+	44/v52DiGzsV/PEvvthxWRue5j8/KaYUc68UMZYOOTu7+v3cMBIRXSOcaFbWBOSSLBcUg6yB70J
+	E7Sq9Z5AtnxtGWEaj4zBZeKYOXftUHnniiIR6uvYWsGm60JBh63jVQSCeb5PgAFIh8K4lSq7f+b
+	/OhIX9hQKLtWZrhZENOZhZq7bdaQESqX7Q52CECDAZ56b1qRm6LAdr+VD4VCH7bWwIKWJr9Oy0n
+	Xrli0RJfDEYkGowL4ly5+ApbExE=
+X-Google-Smtp-Source: AGHT+IE87NQ2wrN4nbBrNGJFPIv5zQc1LIytN9zHMv4eWDwdCr6Is7aAXMrMg0as6kgGpZ9GoAeO7eWblG8JuiJzHas=
+X-Received: by 2002:a2e:be27:0:b0:37a:2b3d:12cc with SMTP id
+ 38308e7fff4ca-37a2b3d178fmr22342871fa.44.1762166210020; Mon, 03 Nov 2025
+ 02:36:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, stable@vger.kernel.org
-References: <20251102190921.30068-1-hansg@kernel.org>
- <aQh3RJQ95jTx7VYO@smile.fi.intel.com>
- <f8dc0e8b-bbdc-4ac6-9ebc-c633bda24403@kernel.org>
- <aQiATDzxEIKBytXw@smile.fi.intel.com>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <aQiATDzxEIKBytXw@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251103-reset-gpios-swnodes-v4-0-6461800b6775@linaro.org>
+ <20251103-reset-gpios-swnodes-v4-3-6461800b6775@linaro.org> <aQh6n2XuI0oayg2g@smile.fi.intel.com>
+In-Reply-To: <aQh6n2XuI0oayg2g@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 3 Nov 2025 11:36:36 +0100
+X-Gm-Features: AWmQ_bkxzE88tRObcETZ4rhIp4MxY1YrBBIl6dy0Tsm5UlD4jZWeoUiNmbbz8tk
+Message-ID: <CAMRc=Md=r7GaO3A_7de+EqzboyA2cqNSTZx7+64VSMvRBb9gpw@mail.gmail.com>
+Subject: Re: [PATCH v4 03/10] software node: allow referencing firmware nodes
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On 3-Nov-25 11:13 AM, Andy Shevchenko wrote:
-> On Mon, Nov 03, 2025 at 10:57:44AM +0100, Hans de Goede wrote:
->> On 3-Nov-25 10:35 AM, Andy Shevchenko wrote:
->>> On Sun, Nov 02, 2025 at 08:09:21PM +0100, Hans de Goede wrote:
->>>> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
->>>> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
->>>> on the SPI device.
->>>>
->>>> If there is no driver for the SPI device then the move to spi_probe()
->>>> results in acpi_dev_gpio_irq_get() never getting called. This may
->>>> cause problems by leaving the GPIO pin floating because this call is
->>>> responsible for setting up the GPIO pin direction and/or bias according
->>>> to the values from the ACPI tables.
->>>>
->>>> Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
->>>> to ensure the GPIO pin is always correctly setup, while keeping the
->>>> acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
->>>> -EPROBE_DEFER returns caused by the GPIO controller not having a driver
->>>> yet.
->>>
->>> Even before following the link to some papering over module via the link below
->>> I wondered, if the I²C case should be covered as well. The
->>> https://github.com/alexpevzner/hotfix-kvadra-touchpad refers to I²C enabled
->>> touchpads.
->>>
->>>> Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-> 
+On Mon, Nov 3, 2025 at 10:49=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Nov 03, 2025 at 10:35:23AM +0100, Bartosz Golaszewski wrote:
+> >
+> > At the moment software nodes can only reference other software nodes.
+> > This is a limitation for devices created, for instance, on the auxiliar=
+y
+> > bus with a dynamic software node attached which cannot reference device=
+s
+> > the firmware node of which is "real" (as an OF node or otherwise).
+> >
+> > Make it possible for a software node to reference all firmware nodes in
+> > addition to static software nodes. To that end: add a second pointer to
+> > struct software_node_ref_args of type struct fwnode_handle. The core
+> > swnode code will first check the swnode pointer and if it's NULL, it
+> > will assume the fwnode pointer should be set. Rework the helper macros
+> > and deprecate the existing ones whose names don't indicate the referenc=
+e
+> > type.
+> >
+> > Software node graphs remain the same, as in: the remote endpoints still
+> > have to be software nodes.
+>
 > ...
-> 
->>> I'm not against the SPI fix, but is it confirmed that it really fixes the issue?
->>
->> Yes Mark and I got an offlist email bisecting this to the:
->>
->> Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
->>
->> commit (on a stable kernel series) and a later email confirming that this
->> patch fixes it.
-> 
-> Shouldn't we use Closes in this case instead of Link?
+>
+> > +     /*
+> > +      * A software node can reference other software nodes or firmware
+> > +      * nodes (which are the abstraction layer sitting on top of them)=
+.
+> > +      * This is done to ensure we can create references to static soft=
+ware
+> > +      * nodes before they're registered with the firmware node framewo=
+rk.
+> > +      * At the time the reference is being resolved, we expect the swn=
+odes
+> > +      * in question to already have been registered and to be backed b=
+y
+> > +      * a firmware node. This is why we use the fwnode API below to re=
+ad the
+>
+> A nit-pick (since anyway it requires a new version): move 'the' to the ne=
+xt
+> line to make them more equal in the length.
+>
+> > +      * relevant properties and bump the reference count.
+> > +      */
+>
+> ...
+>
+> > -#define SOFTWARE_NODE_REFERENCE(_ref_, ...)                  \
+> > +#define __SOFTWARE_NODE_REF(_ref, ...)                               \
+>
+> No, NAK. The renaming of the parameters is not related to this change _at=
+ all_.
+> Why do you change established style here? Did I miss your answer to my qu=
+estion
+> in the previous rounds?
+>
 
-I guess so.
+Ah, my brain just filtered out the trailing '_'.
 
->> It seems that leaving the fingerprint reader enable pin (the first GPIO
->> listed in _CRS which is an output only pin, is likely the enable pin)
->> floating is causing these issues. So in a way the acpi_dev_gpio_irq_get()
->> fixing this by forcing the enable pin to no longer float is a bit of
->> luck. But things did work before d24cfee7f63d ("spi: Fix acpi deferred irq probe")
->> so we need this to fix a regression
-> 
-> Yeah, fixing a regression is good thing, but not papering over the issue.
+> >  (const struct software_node_ref_args) {                              \
+> > -     .node =3D _ref_,                                          \
+> > +     .swnode =3D _Generic(_ref,                                \
+> > +                        const struct software_node *: _ref,  \
+> > +                        default: NULL),                      \
+> > +     .fwnode =3D _Generic(_ref,                                \
+> > +                        struct fwnode_handle *: _ref,        \
+> > +                        default: NULL),                      \
+> >       .nargs =3D COUNT_ARGS(__VA_ARGS__),                       \
+> >       .args =3D { __VA_ARGS__ },                                \
+> >  }
+>
+> ...
+>
+> > +#define SOFTWARE_NODE_REF_SWNODE(_ref, ...)                  \
+> > +     __SOFTWARE_NODE_REF(_ref, __VA_ARGS__)
+> > +
+> > +#define SOFTWARE_NODE_REF_FWNODE(_ref, ...)                  \
+> > +     __SOFTWARE_NODE_REF(_ref, __VA_ARGS__)
+> > +
+> > +/* DEPRECATED, use SOFTWARE_NODE_REF_SWNODE() instead. */
+> > +#define SOFTWARE_NODE_REFERENCE(_ref, ...)                   \
+> > +     SOFTWARE_NODE_REF_SWNODE(_ref, __VA_ARGS__)
+>
+> Now, useless.
+>
 
-I agree in principle, but this is a quick and safe way to fix
-the regression, where as the generic fix you describe below is
-likely months away and also has significant risks of causing
-regressions in various places, see below.
+No, why? With these changes, SOFTWARE_NODE_REFERENCE()'s name is a bit
+misleading or incomplete, so I'm proposing to start replacing it with
+SOFTWARE_NODE_REF_SWNODE() which is compatible with the former but has
+a better name.
 
->> and as you indicate it seems
->> like a good idea in general and maybe we should also do this for i2c.
-> 
->> As for doing something similar for I2C devices, that is an interesting
->> question. Even though it is possible I'm not aware of any i2c-devices
->> which have a userspace driver like SPI/USB fingerprint readers do,
->> so on i2c I would expect probe() to always get called. So I'm not sure
->> it is necessary there.
-> 
-> Reading the problem statement (the second paragraph) I lean towards
-> a generic solution residing somewhere in drivers/acpi/scan.c (like
-> acpi_init_device_object() / acpi_bus_attach() calls), although I don't
-> see a quick way how to achieve this. It seems would require a bit of
-> refactoring to allow ACPI glue code to call specific subsystem calls
-> or making a GPIOLIB to provide some "early" initialisation flow(s).
+> ...
+>
+>
+> > -#define PROPERTY_ENTRY_REF(_name_, _ref_, ...)                        =
+       \
+> > +#define __PROPERTY_ENTRY_REF(_type, _name, _ref, ...)                 =
+       \
+> >  (struct property_entry) {                                            \
+> > -     .name =3D _name_,                                                =
+ \
+> > +     .name =3D _name,                                                 =
+ \
+> >       .length =3D sizeof(struct software_node_ref_args),               =
+ \
+> >       .type =3D DEV_PROP_REF,                                          =
+ \
+> > -     { .pointer =3D &SOFTWARE_NODE_REFERENCE(_ref_, ##__VA_ARGS__), },=
+ \
+> > +     { .pointer =3D &_type(_ref, ##__VA_ARGS__), },                   =
+ \
+> >  }
+>
+> Do we need this now? I assume that _Generic() takes case of this.
+>
 
-I guess that you want to do the direction and bias init on all
-GPIOs listed in _CRS, at least for devices with status == present ?
+Ah, right, it should be done here as well.
 
-I was wondering about the same thing, but ACPI tables are full
-of, well, erm, garbage in various places so I'm afraid that doing
-this for all GPIO _CRS resources is likely to cause a whole lot
-of pain.
+> ...
+>
+> > +#define PROPERTY_ENTRY_REF_SWNODE(_name, _ref, ...)                  \
+> > +     __PROPERTY_ENTRY_REF(SOFTWARE_NODE_REF_SWNODE,                  \
+> > +                          _name, _ref, __VA_ARGS__)
+> > +
+> > +#define PROPERTY_ENTRY_REF_FWNODE(_name, _ref, ...)                  \
+> > +     __PROPERTY_ENTRY_REF(SOFTWARE_NODE_REF_FWNODE,                  \
+> > +                         _name, _ref, __VA_ARGS__)
+> > +
+> > +/* DEPRECATED, use PROPERTY_ENTRY_REF_SWNODE() instead. */
+> > +#define PROPERTY_ENTRY_REF(_name, _ref, ...)                         \
+> > +     PROPERTY_ENTRY_REF_SWNODE(_name, _ref, __VA_ARGS__)
+>
+> Seems like useless churn.
+>
 
-Typically the firmware already sets up the direction + bias
-of all used pins. I'm pretty sure the BIOS-es have some GPIO
-init table especially for this somewhere.
+This is the same argument as with SOFTWARE_NODE_REF_SWNODE(). It's not
+clear from the name what PROPERTY_ENTRY_REF() is really referencing.
 
-Now those init-tables may have bugs, but I'm seriously worried
-about the implication of doing the direction + bios setup for
-all _CRS GPIO entries. I have simply seen too much non sense
-devices (with _STA returning 0x0f) listing GPIOs also actually
-used elsewhere to think this is a good idea.
-
-Regards,
-
-Hans
-
+Bart
 
