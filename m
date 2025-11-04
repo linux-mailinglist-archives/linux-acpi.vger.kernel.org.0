@@ -1,218 +1,265 @@
-Return-Path: <linux-acpi+bounces-18475-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18476-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F129FC2E603
-	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 00:07:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2FEC2EC63
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 02:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CD3E4E9179
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Nov 2025 23:06:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 227F54F00F6
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 01:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7D62FE56E;
-	Mon,  3 Nov 2025 23:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2688A215F42;
+	Tue,  4 Nov 2025 01:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LVTAqsao"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="afi9Pdef"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196B62FC037;
-	Mon,  3 Nov 2025 23:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB953F9C5;
+	Tue,  4 Nov 2025 01:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762211161; cv=none; b=Cxh4Db9q7pZx6bkWBQ/9VAVsiE1lyLwiqM+RSg/STKBQ48ft8gaYmfVJ6yshgAznK6A4zT3pZ394Xpyh77ilyObK84GkazWlRZG7Rn1bi33YLqaubKSu8GjDenCZoVstJLCUUtVZBNuBZ1Cht9DVjPKdh6f+7gX0tcVCcU9mgIc=
+	t=1762219940; cv=none; b=ESpfSyykD21JVpxHuEbI/NdE88g1zrXA6TX32bOncC0GynTArKnMVu3DzIPebi+VcWMaHODfafnPsP0L0etEX5sjEiGvnqaa6udiXwXfFRIUm+8LPMNDP4xTsSStJ1kpSpDBX4dT4T29uF2YDm61AZxbeNSYxD6/YfBpoN1mrV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762211161; c=relaxed/simple;
-	bh=yqb+lQ7fKBLnHXkoJuuGAgVYHvCIKuQEhXrNGYrB9IQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGQHOAhxDQIpo2vVWsmVsMr+d9QJPgC0AA8nmrSOtcZRMRs2IVsir1Ty2iMJNXliAMdrOIrXEg/zRBOsRU18p+rZpq+akQKEONQrGcAVxJB+bc9PoJs5TEvkQIe86Q7zt9SDi9zcgFXCBAHklw1sao1QBKPJvfDotaByVb+ImMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LVTAqsao; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762211160; x=1793747160;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yqb+lQ7fKBLnHXkoJuuGAgVYHvCIKuQEhXrNGYrB9IQ=;
-  b=LVTAqsao9ajKVVNZ7dcg2fy4Uiq9pbAHUyIEFtyvDw82M4SgjdT+zyj9
-   6ZbYCvAE2gz0oK8DtjGPZyvlyRQ5QiaLOjSUaqhjSKreXWUcy3VkNlLW1
-   Ra/vmr6cBdVIfFmhsLFN2gKgiJk25Uab4GrmI45PH3M9atSH/LmBIAaZw
-   hMXELlSgosO8N4qAscj+fq+TGN8akslzw30VH5sLmvbO02FUy2sZd7bXv
-   J7X2dcfzRKRCtp+e/DblML2SFkkQEGopjIjuIfm/6mSVVvtvKx8v4+Srq
-   gDrMNj3CESqMXaHOn8NR20eXE9riFjCq+d3AA9otY8xgDvle/F6V/ff9/
-   A==;
-X-CSE-ConnectionGUID: eJLAM3ZnR/mfYbj5aTY7cg==
-X-CSE-MsgGUID: 0kSpcl8lT964shIKWAO4dw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="63310419"
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="63310419"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 15:06:00 -0800
-X-CSE-ConnectionGUID: 337uyCQTSwC3PM+2sEsCjQ==
-X-CSE-MsgGUID: zykQcdenQZibtJp7SI+qFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="191340930"
-Received: from sramkris-mobl1.amr.corp.intel.com (HELO agluck-desk3.home.arpa) ([10.124.221.2])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 15:05:59 -0800
-From: Tony Luck <tony.luck@intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Hanjun Guo <guohanjun@huawei.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>,
-	Andi Kleen <andi.kleen@intel.com>
-Subject: [PATCH] ACPI: APEI: GHES: Improve ghes_notify_nmi() status check
-Date: Mon,  3 Nov 2025 15:05:47 -0800
-Message-ID: <20251103230547.8715-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1762219940; c=relaxed/simple;
+	bh=vNSBaswq9iTC4QcIDHz3o2ptHOwc66ABOSg7CYYRO4E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CxLG1O0n4x/LpsoZsTletL3WWvokqvMRDVCRRya2KL63xpHh1/0oP5CBPAup4fc/bkXp7LL/Md7iGDE80SoU19e3vXTWZGP8FdKjnNKggPCN23VMNbgxKfvZwiTjEmPcfBc0OT0f3fqFCEguoVaZxrCAzAFl37PwoORTALfh2EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=afi9Pdef; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762219933; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=zQjPW7LxByIK6v4CmBoQXlVZQd37/WIYx7Isg1rv6MA=;
+	b=afi9Pdefrgj1/ipq9jJem81pYeKqhijgYasfaRcqxDmHHPqJhuvOonKZy6VOjvk7Dgqop6FuUWhoWw9YsJZYgQTTXc1AySazixJ9fgvW8MEniPDM1zgcdPSTdD6bZm2ZW90rnCMD9Rcy9+ANfLWoSlXq+rTMr7pb76BV6OzQid8=
+Received: from 30.50.185.91(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WreyVhb_1762219931 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Nov 2025 09:32:12 +0800
+Message-ID: <bf42a19d-0f5d-48d8-91f5-febb8bfd06d3@linux.alibaba.com>
+Date: Tue, 4 Nov 2025 09:32:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: APEI: Handle repeated SEA error interrupts storm
+ scenarios
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Junhao He <hejunhao3@h-partners.com>, "Luck, Tony" <tony.luck@intel.com>
+Cc: tony.luck@intel.com, bp@alien8.de, guohanjun@huawei.com,
+ mchehab@kernel.org, jarkko@kernel.org, yazen.ghannam@amd.com,
+ jane.chu@oracle.com, lenb@kernel.org, Jonathan.Cameron@huawei.com,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+ shiju.jose@huawei.com, tanxiaofei@huawei.com, linuxarm@huawei.com
+References: <20251030071321.2763224-1-hejunhao3@h-partners.com>
+ <CAJZ5v0h=QtcT7zhZEgrTjUk7EAk2OfbGG6BoEEv-3toKODMXQA@mail.gmail.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0h=QtcT7zhZEgrTjUk7EAk2OfbGG6BoEEv-3toKODMXQA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-ghes_notify_nmi() is called for every NMI and must check whether the NMI was
-generated because an error was signalled by platform firmware.
 
-This check is very expensive as for each registered GHES NMI source it reads
-from the acpi generic address attached to this error source to get the physical
-address of the acpi_hest_generic_status block.  It then checks the "block_status"
-to see if an error was logged.
 
-The ACPI/APEI code must create virtual mappings for each of those physical
-addresses, and tear them down afterwards. On an Icelake system this takes around
-15,000 TSC cycles. Enough to disturb efforts to profile system performance.
+在 2025/11/4 00:19, Rafael J. Wysocki 写道:
+> On Thu, Oct 30, 2025 at 8:13 AM Junhao He <hejunhao3@h-partners.com> wrote:
+>>
+>> The do_sea() function defaults to using firmware-first mode, if supported.
+>> It invoke acpi/apei/ghes ghes_notify_sea() to report and handling the SEA
+>> error, The GHES uses a buffer to cache the most recent 4 kinds of SEA
+>> errors. If the same kind SEA error continues to occur, GHES will skip to
+>> reporting this SEA error and will not add it to the "ghes_estatus_llist"
+>> list until the cache times out after 10 seconds, at which point the SEA
+>> error will be reprocessed.
+>>
+>> The GHES invoke ghes_proc_in_irq() to handle the SEA error, which
+>> ultimately executes memory_failure() to process the page with hardware
+>> memory corruption. If the same SEA error appears multiple times
+>> consecutively, it indicates that the previous handling was incomplete or
+>> unable to resolve the fault. In such cases, it is more appropriate to
+>> return a failure when encountering the same error again, and then proceed
+>> to arm64_do_kernel_sea for further processing.
+>>
+>> When hardware memory corruption occurs, a memory error interrupt is
+>> triggered. If the kernel accesses this erroneous data, it will trigger
+>> the SEA error exception handler. All such handlers will call
+>> memory_failure() to handle the faulty page.
+>>
+>> If a memory error interrupt occurs first, followed by an SEA error
+>> interrupt, the faulty page is first marked as poisoned by the memory error
+>> interrupt process, and then the SEA error interrupt handling process will
+>> send a SIGBUS signal to the process accessing the poisoned page.
+>>
+>> However, if the SEA interrupt is reported first, the following exceptional
+>> scenario occurs:
+>>
+>> When a user process directly requests and accesses a page with hardware
+>> memory corruption via mmap (such as with devmem), the page containing this
+>> address may still be in a free buddy state in the kernel. At this point,
+>> the page is marked as "poisoned" during the SEA claim memory_failure().
+>> However, since the process does not request the page through the kernel's
+>> MMU, the kernel cannot send SIGBUS signal to the processes. And the memory
+>> error interrupt handling process not support send SIGBUS signal. As a
+>> result, these processes continues to access the faulty page, causing
+>> repeated entries into the SEA exception handler. At this time, it lead to
+>> an SEA error interrupt storm.
+>>
+>> Fixes this by returning a failure when encountering the same error again.
+>>
+>> The following error logs is explained using the devmem process:
+>>    NOTICE:  SEA Handle
+>>    NOTICE:  SpsrEl3 = 0x60001000, ELR_EL3 = 0xffffc6ab42671400
+>>    NOTICE:  skt[0x0]die[0x0]cluster[0x0]core[0x1]
+>>    NOTICE:  EsrEl3 = 0x92000410
+>>    NOTICE:  PA is valid: 0x1000093c00
+>>    NOTICE:  Hest Set GenericError Data
+>>    [ 1419.542401][    C1] {57}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 9
+>>    [ 1419.551435][    C1] {57}[Hardware Error]: event severity: recoverable
+>>    [ 1419.557865][    C1] {57}[Hardware Error]:  Error 0, type: recoverable
+>>    [ 1419.564295][    C1] {57}[Hardware Error]:   section_type: ARM processor error
+>>    [ 1419.571421][    C1] {57}[Hardware Error]:   MIDR: 0x0000000000000000
+>>    [ 1419.571434][    C1] {57}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x0000000081000100
+>>    [ 1419.586813][    C1] {57}[Hardware Error]:   error affinity level: 0
+>>    [ 1419.586821][    C1] {57}[Hardware Error]:   running state: 0x1
+>>    [ 1419.602714][    C1] {57}[Hardware Error]:   Power State Coordination Interface state: 0
+>>    [ 1419.602724][    C1] {57}[Hardware Error]:   Error info structure 0:
+>>    [ 1419.614797][    C1] {57}[Hardware Error]:   num errors: 1
+>>    [ 1419.614804][    C1] {57}[Hardware Error]:    error_type: 0, cache error
+>>    [ 1419.629226][    C1] {57}[Hardware Error]:    error_info: 0x0000000020400014
+>>    [ 1419.629234][    C1] {57}[Hardware Error]:     cache level: 1
+>>    [ 1419.642006][    C1] {57}[Hardware Error]:     the error has not been corrected
+>>    [ 1419.642013][    C1] {57}[Hardware Error]:    physical fault address: 0x0000001000093c00
+>>    [ 1419.654001][    C1] {57}[Hardware Error]:   Vendor specific error info has 48 bytes:
+>>    [ 1419.654014][    C1] {57}[Hardware Error]:    00000000: 00000000 00000000 00000000 00000000  ................
+>>    [ 1419.670685][    C1] {57}[Hardware Error]:    00000010: 00000000 00000000 00000000 00000000  ................
+>>    [ 1419.670692][    C1] {57}[Hardware Error]:    00000020: 00000000 00000000 00000000 00000000  ................
+>>    [ 1419.783606][T54990] Memory failure: 0x1000093: recovery action for free buddy page: Recovered
+>>    [ 1419.919580][ T9955] EDAC MC0: 1 UE Multi-bit ECC on unknown memory (node:0 card:1 module:71 bank:7 row:0 col:0 page:0x1000093 offset:0xc00 grain:1 - APEI location: node:0 card:257 module:71 bank:7 row:0 col:0)
+>>    NOTICE:  SEA Handle
+>>    NOTICE:  SpsrEl3 = 0x60001000, ELR_EL3 = 0xffffc6ab42671400
+>>    NOTICE:  skt[0x0]die[0x0]cluster[0x0]core[0x1]
+>>    NOTICE:  EsrEl3 = 0x92000410
+>>    NOTICE:  PA is valid: 0x1000093c00
+>>    NOTICE:  Hest Set GenericError Data
+>>    NOTICE:  SEA Handle
+>>    NOTICE:  SpsrEl3 = 0x60001000, ELR_EL3 = 0xffffc6ab42671400
+>>    NOTICE:  skt[0x0]die[0x0]cluster[0x0]core[0x1]
+>>    NOTICE:  EsrEl3 = 0x92000410
+>>    NOTICE:  PA is valid: 0x1000093c00
+>>    NOTICE:  Hest Set GenericError Data
+>>    ...
+>>    ...        ---> Hapend SEA error interrupt storm
+>>    ...
+>>    NOTICE:  SEA Handle
+>>    NOTICE:  SpsrEl3 = 0x60001000, ELR_EL3 = 0xffffc6ab42671400
+>>    NOTICE:  skt[0x0]die[0x0]cluster[0x0]core[0x1]
+>>    NOTICE:  EsrEl3 = 0x92000410
+>>    NOTICE:  PA is valid: 0x1000093c00
+>>    NOTICE:  Hest Set GenericError Data
+>>    [ 1429.818080][ T9955] Memory failure: 0x1000093: already hardware poisoned
+>>    [ 1429.825760][    C1] ghes_print_estatus: 1 callbacks suppressed
+>>    [ 1429.825763][    C1] {59}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 9
+>>    [ 1429.843731][    C1] {59}[Hardware Error]: event severity: recoverable
+>>    [ 1429.861800][    C1] {59}[Hardware Error]:  Error 0, type: recoverable
+>>    [ 1429.874658][    C1] {59}[Hardware Error]:   section_type: ARM processor error
+>>    [ 1429.887516][    C1] {59}[Hardware Error]:   MIDR: 0x0000000000000000
+>>    [ 1429.901159][    C1] {59}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x0000000081000100
+>>    [ 1429.901166][    C1] {59}[Hardware Error]:   error affinity level: 0
+>>    [ 1429.914896][    C1] {59}[Hardware Error]:   running state: 0x1
+>>    [ 1429.914903][    C1] {59}[Hardware Error]:   Power State Coordination Interface state: 0
+>>    [ 1429.933319][    C1] {59}[Hardware Error]:   Error info structure 0:
+>>    [ 1429.946261][    C1] {59}[Hardware Error]:   num errors: 1
+>>    [ 1429.946269][    C1] {59}[Hardware Error]:    error_type: 0, cache error
+>>    [ 1429.970847][    C1] {59}[Hardware Error]:    error_info: 0x0000000020400014
+>>    [ 1429.970854][    C1] {59}[Hardware Error]:     cache level: 1
+>>    [ 1429.988406][    C1] {59}[Hardware Error]:     the error has not been corrected
+>>    [ 1430.013419][    C1] {59}[Hardware Error]:    physical fault address: 0x0000001000093c00
+>>    [ 1430.013425][    C1] {59}[Hardware Error]:   Vendor specific error info has 48 bytes:
+>>    [ 1430.025424][    C1] {59}[Hardware Error]:    00000000: 00000000 00000000 00000000 00000000  ................
+>>    [ 1430.053736][    C1] {59}[Hardware Error]:    00000010: 00000000 00000000 00000000 00000000  ................
+>>    [ 1430.066341][    C1] {59}[Hardware Error]:    00000020: 00000000 00000000 00000000 00000000  ................
+>>    [ 1430.294255][T54990] Memory failure: 0x1000093: already hardware poisoned
+>>    [ 1430.305518][T54990] 0x1000093: Sending SIGBUS to devmem:54990 due to hardware memory corruption
+>>
+>> Signed-off-by: Junhao He <hejunhao3@h-partners.com>
+>> ---
+>>   drivers/acpi/apei/ghes.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 005de10d80c3..eebda39bfc30 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -1343,8 +1343,10 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
+>>          ghes_clear_estatus(ghes, &tmp_header, buf_paddr, fixmap_idx);
+>>
+>>          /* This error has been reported before, don't process it again. */
+>> -       if (ghes_estatus_cached(estatus))
+>> +       if (ghes_estatus_cached(estatus)) {
+>> +               rc = -ECANCELED;
+>>                  goto no_work;
+>> +       }
+>>
+>>          llist_add(&estatus_node->llnode, &ghes_estatus_llist);
+>>
+>> --
+> 
+> This needs a response from the APEI reviewers as per MAINTAINERS, thanks!
 
-If that were not bad enough, there are some atomic accesses in the code path
-that will cause cache line bounces between CPUs. A problem that gets worse as
-the core count increases.
+Hi, Rafael and Junhao,
 
-But BIOS changes neither the acpi generic address nor the physical address of
-the acpi_hest_generic_status block. So this walk can be done once when the NMI is
-registered to save the virtual address (unmapping if the NMI is ever unregistered).
-The "block_status" can be checked directly in the NMI handler. This can be done
-without any atomic accesses.
+Sorry for late response, I try to reproduce the issue, it seems that
+EINJ systems broken in 6.18.0-rc1+.
 
-Resulting time to check that there is not an error record is around 900 cycles.
+[ 3950.741186] CPU: 36 UID: 0 PID: 74112 Comm: einj_mem_uc Tainted: G            E       6.18.0-rc1+ #227 PREEMPT(none)
+[ 3950.751749] Tainted: [E]=UNSIGNED_MODULE
+[ 3950.755655] Hardware name: Huawei TaiShan 200 (Model 2280)/BC82AMDD, BIOS 1.91 07/29/2022
+[ 3950.763797] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3950.770729] pc : acpi_os_write_memory+0x108/0x150
+[ 3950.775419] lr : acpi_os_write_memory+0x28/0x150
+[ 3950.780017] sp : ffff800093fbba40
+[ 3950.783319] x29: ffff800093fbba40 x28: 0000000000000000 x27: 0000000000000000
+[ 3950.790425] x26: 0000000000000002 x25: ffffffffffffffff x24: 000000403f20e400
+[ 3950.797530] x23: 0000000000000000 x22: 0000000000000008 x21: 000000000000ffff
+[ 3950.804635] x20: 0000000000000040 x19: 000000002f7d0018 x18: 0000000000000000
+[ 3950.811741] x17: 0000000000000000 x16: ffffae52d36ae5d0 x15: 000000001ba8e890
+[ 3950.818847] x14: 0000000000000000 x13: 0000000000000000 x12: 0000005fffffffff
+[ 3950.825952] x11: 0000000000000001 x10: ffff00400d761b90 x9 : ffffae52d365b198
+[ 3950.833058] x8 : 0000280000000000 x7 : 000000002f7d0018 x6 : ffffae52d5198548
+[ 3950.840164] x5 : 000000002f7d1000 x4 : 0000000000000018 x3 : ffff204016735060
+[ 3950.847269] x2 : 0000000000000040 x1 : 0000000000000000 x0 : ffff8000845bd018
+[ 3950.854376] Call trace:
+[ 3950.856814]  acpi_os_write_memory+0x108/0x150 (P)
+[ 3950.861500]  apei_write+0xb4/0xd0
+[ 3950.864806]  apei_exec_write_register_value+0x88/0xc0
+[ 3950.869838]  __apei_exec_run+0xac/0x120
+[ 3950.873659]  __einj_error_inject+0x88/0x408 [einj]
+[ 3950.878434]  einj_error_inject+0x168/0x1f0 [einj]
+[ 3950.883120]  error_inject_set+0x48/0x60 [einj]
+[ 3950.887548]  simple_attr_write_xsigned.constprop.0.isra.0+0x14c/0x1d0
+[ 3950.893964]  simple_attr_write+0x1c/0x30
+[ 3950.897873]  debugfs_attr_write+0x54/0xa0
+[ 3950.901870]  vfs_write+0xc4/0x240
+[ 3950.905173]  ksys_write+0x70/0x108
+[ 3950.908562]  __arm64_sys_write+0x20/0x30
+[ 3950.912471]  invoke_syscall+0x4c/0x110
+[ 3950.916207]  el0_svc_common.constprop.0+0x44/0xe8
+[ 3950.920893]  do_el0_svc+0x20/0x30
+[ 3950.924194]  el0_svc+0x38/0x160
+[ 3950.927324]  el0t_64_sync_handler+0x98/0xe0
+[ 3950.931491]  el0t_64_sync+0x184/0x188
+[ 3950.935140] Code: 14000006 7101029f 54000221 d50332bf (f9000015)
+[ 3950.941210] ---[ end trace 0000000000000000 ]---
+[ 3950.945807] Kernel panic - not syncing: Oops: Fatal exception
 
-Reported-by: Andi Kleen <andi.kleen@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+We need to fix it first.
 
----
-N.B. I only talked to an Intel BIOS expert about this. GHES code is shared by
-other architectures, so it would be wise to get confirmation on whether this
-assumption applies to all, or is Intel (or X86) specific.
----
- include/acpi/ghes.h      |  1 +
- drivers/acpi/apei/ghes.c | 39 ++++++++++++++++++++++++++++++++++++---
- 2 files changed, 37 insertions(+), 3 deletions(-)
-
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index ebd21b05fe6e..58655d313a1f 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -29,6 +29,7 @@ struct ghes {
- 	};
- 	struct device *dev;
- 	struct list_head elist;
-+	void __iomem *error_status_vaddr;
- };
- 
- struct ghes_estatus_node {
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 97ee19f2cae0..62713b612865 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1425,7 +1425,21 @@ static LIST_HEAD(ghes_nmi);
- static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
- {
- 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_nmi);
-+	bool active_error = false;
- 	int ret = NMI_DONE;
-+	struct ghes *ghes;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(ghes, &ghes_nmi, list) {
-+		if (ghes->error_status_vaddr && readl(ghes->error_status_vaddr)) {
-+			active_error = true;
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	if (!active_error)
-+		return ret;
- 
- 	if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
- 		return ret;
-@@ -1439,13 +1453,26 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
- 	return ret;
- }
- 
--static void ghes_nmi_add(struct ghes *ghes)
-+static int ghes_nmi_add(struct ghes *ghes)
- {
-+	struct acpi_hest_generic *g = ghes->generic;
-+	u64 paddr;
-+	int rc;
-+
-+	rc = apei_read(&paddr, &g->error_status_address);
-+	if (rc)
-+		return rc;
-+	ghes->error_status_vaddr = acpi_os_ioremap(paddr, sizeof(ghes->estatus->block_status));
-+	if (!ghes->error_status_vaddr)
-+		return AE_BAD_ADDRESS;
-+
- 	mutex_lock(&ghes_list_mutex);
- 	if (list_empty(&ghes_nmi))
- 		register_nmi_handler(NMI_LOCAL, ghes_notify_nmi, 0, "ghes");
- 	list_add_rcu(&ghes->list, &ghes_nmi);
- 	mutex_unlock(&ghes_list_mutex);
-+
-+	return 0;
- }
- 
- static void ghes_nmi_remove(struct ghes *ghes)
-@@ -1455,6 +1482,10 @@ static void ghes_nmi_remove(struct ghes *ghes)
- 	if (list_empty(&ghes_nmi))
- 		unregister_nmi_handler(NMI_LOCAL, "ghes");
- 	mutex_unlock(&ghes_list_mutex);
-+
-+	if (ghes->error_status_vaddr)
-+		iounmap(ghes->error_status_vaddr);
-+
- 	/*
- 	 * To synchronize with NMI handler, ghes can only be
- 	 * freed after NMI handler finishes.
-@@ -1462,7 +1493,7 @@ static void ghes_nmi_remove(struct ghes *ghes)
- 	synchronize_rcu();
- }
- #else /* CONFIG_HAVE_ACPI_APEI_NMI */
--static inline void ghes_nmi_add(struct ghes *ghes) { }
-+static inline int ghes_nmi_add(struct ghes *ghes) { return -EINVAL; }
- static inline void ghes_nmi_remove(struct ghes *ghes) { }
- #endif /* CONFIG_HAVE_ACPI_APEI_NMI */
- 
-@@ -1630,7 +1661,9 @@ static int ghes_probe(struct platform_device *ghes_dev)
- 		ghes_sea_add(ghes);
- 		break;
- 	case ACPI_HEST_NOTIFY_NMI:
--		ghes_nmi_add(ghes);
-+		rc = ghes_nmi_add(ghes);
-+		if (rc)
-+			goto err;
- 		break;
- 	case ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED:
- 		rc = apei_sdei_register_ghes(ghes);
--- 
-2.51.0
-
+Thanks.
+Shuai
 
