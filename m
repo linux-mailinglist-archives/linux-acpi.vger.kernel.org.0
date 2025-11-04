@@ -1,174 +1,176 @@
-Return-Path: <linux-acpi+bounces-18488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F99C31177
-	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 13:56:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77988C314BA
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 14:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 717354202AE
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 12:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0BB189E3E2
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 13:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA4A2EC54B;
-	Tue,  4 Nov 2025 12:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C12221FA0;
+	Tue,  4 Nov 2025 13:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="juiqD+5r"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC6E2EC542;
-	Tue,  4 Nov 2025 12:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A43277C8D;
+	Tue,  4 Nov 2025 13:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762260961; cv=none; b=tivBiUMSGeECCX62X555SSm1X81m60Qj991Y7J3gUV9xoHcxPLg896jPDtxm6zYBPyh87V2astxJc1wAzT3OWaQ0m/bbT3EbNKvkRH5CIKX8ukRudbr1GY2b+jm2cFMbo9cbXLiUIWUpScfnAcAHAUcWpgpB4NMIe2+0uW0y7P8=
+	t=1762264139; cv=none; b=c16JIdCnvLRdm8nRg0/eOP3f7GqRIqx+6q5k0oVFZPpEQkfTaTJGElq71muEWrA9POsfEnJAYrKgF8nSXKQT9fcc7Lhy5u1+xMQ19h4O+QggtmaBqfHRDQR8F3KAEWpXATK28BhSlwid0wk/aaFhao8WhoFQ46qJp6ihXQ+DDa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762260961; c=relaxed/simple;
-	bh=6Tz/dGTSyJPmBuJ8bKtv2nx0NsjdqmJRwSE1Z1vQg+E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Tx/JWEJO1SRqLXxbEBC16U2kNwfhvFZgM5G1OzGx/UQ17HXlcmS2nW7EesblqMSiprrVjx+Hwx1UsrlGzt2S6rfLK9afxJu3RsT0b5HikMQvNO/VXXg0+vybgBRQi6HqBdqMm2fUEcgdhabPCp6puwulpgKJOTShVHr/v8tE4sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d17jF0n8nzJ46kC;
-	Tue,  4 Nov 2025 20:55:29 +0800 (CST)
-Received: from dubpeml100006.china.huawei.com (unknown [7.214.145.132])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9B1121402F3;
-	Tue,  4 Nov 2025 20:55:48 +0800 (CST)
-Received: from dubpeml100008.china.huawei.com (7.214.145.227) by
- dubpeml100006.china.huawei.com (7.214.145.132) with Microsoft SMTP Server
+	s=arc-20240116; t=1762264139; c=relaxed/simple;
+	bh=tyy27PwGGsvcneRrPtNtZCqEyrjIhx92dquuwVOnPbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VRmRZ556r3c5NGDvOuQStg0r7MF5kw84uav7j5LGK+45ry7AynEZhmbRLwnpJNIcIsFi6C0L5P6FPbEsrukAiO5Dj4wlor+Nln47383bFf1dmaORxw06LVQ7V4Z89R6vwaS7n+mRQJQ5yPAc8kN074pj7l04i//nIh3TCX1Fejk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=juiqD+5r; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=HhgDFV3NXn/IRH8qXjdRXYahylPUabXUbstxozU3bK0=;
+	b=juiqD+5rV0RJy9nL5jDwbDD+vWxjSfNoRfXvQQJVf00Ih5/L/8xPUq8UXXmrrCva3dMEBL/WI
+	UhKAHGa8mMhBeZeeJgMhS7d4p3ZOOKFlGtLEf0gfhexs530LjVpByzGqb2f5qePfvb0zbBY6LHU
+	sD3ai+GbhT8PPehn6vERIAw=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4d18sQ1Hflz1T4G2;
+	Tue,  4 Nov 2025 21:47:38 +0800 (CST)
+Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
+	by mail.maildlp.com (Postfix) with ESMTPS id 91792180080;
+	Tue,  4 Nov 2025 21:48:50 +0800 (CST)
+Received: from [10.174.178.24] (10.174.178.24) by
+ kwepemf100008.china.huawei.com (7.202.181.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 12:55:48 +0000
-Received: from dubpeml100008.china.huawei.com ([7.214.145.227]) by
- dubpeml100008.china.huawei.com ([7.214.145.227]) with mapi id 15.02.1544.011;
- Tue, 4 Nov 2025 12:55:48 +0000
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: Daniel Ferguson <danielf@os.amperecomputing.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "rppt@kernel.org"
-	<rppt@kernel.org>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "lenb@kernel.org"
-	<lenb@kernel.org>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: RE: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Topic: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Index: AQHcHC9WuMPoKRXbY02Oy+WxUZ/jerSMt+SAgAK0t2CAABfigIAEdNLAgAOLbYCAABR4AIACsFkAgBrSt9CAD6pngIAAFX0QgBx0XwCAAX+KcA==
-Date: Tue, 4 Nov 2025 12:55:48 +0000
-Message-ID: <409217e466a9497697a82e2ac8a6a5f7@huawei.com>
-References: <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
- <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
- <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
- <9433067c142b45d583eb96587b929878@huawei.com>
- <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
- <20250917183608.000038c4@huawei.com>
- <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
- <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
- <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
- <75e9bae2d30748d5b66c288135915cc3@huawei.com>
- <20251103131914.GEaQir0sdz4Te_ea0l@fat_crate.local>
-In-Reply-To: <20251103131914.GEaQir0sdz4Te_ea0l@fat_crate.local>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.1544.11; Tue, 4 Nov 2025 21:48:48 +0800
+Message-ID: <40e9934d-4d19-5cea-e21f-d287584b71f4@huawei.com>
+Date: Tue, 4 Nov 2025 21:48:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] arm64/mpam: Clean MBWU monitor overflow bit
+Content-Language: en-US
+To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
+CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
+	<baolin.wang@linux.alibaba.com>, <carl@os.amperecomputing.com>,
+	<catalin.marinas@arm.com>, <dakr@kernel.org>, <dave.martin@arm.com>,
+	<david@redhat.com>, <dfustini@baylibre.com>, <fenghuay@nvidia.com>,
+	<gregkh@linuxfoundation.org>, <gshan@redhat.com>, <guohanjun@huawei.com>,
+	<jeremy.linton@arm.com>, <jonathan.cameron@huawei.com>, <kobak@nvidia.com>,
+	<lcherian@marvell.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>, <wangkefeng.wang@huawei.com>,
+	<sunnanyong@huawei.com>
+References: <20251017185645.26604-25-james.morse@arm.com>
+ <20251029075655.3284280-1-zengheng4@huawei.com>
+ <b0ea1879-9e77-4eb3-8312-ce27d73cc1f4@arm.com>
+ <f4518f80-8e17-e622-fbe6-e20a7d1c85fc@huawei.com>
+ <293395d7-5766-45df-a2e0-1542fecda5a7@arm.com>
+From: Zeng Heng <zengheng4@huawei.com>
+In-Reply-To: <293395d7-5766-45df-a2e0-1542fecda5a7@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf100008.china.huawei.com (7.202.181.222)
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
-bGllbjguZGU+DQo+U2VudDogMDMgTm92ZW1iZXIgMjAyNSAxMzoxOQ0KPlRvOiBTaGlqdSBKb3Nl
-IDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQo+Q2M6IERhbmllbCBGZXJndXNvbiA8ZGFuaWVsZkBv
-cy5hbXBlcmVjb21wdXRpbmcuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPjxqb25hdGhhbi5jYW1l
-cm9uQGh1YXdlaS5jb20+OyByYWZhZWxAa2VybmVsLm9yZzsgYWtwbUBsaW51eC0NCj5mb3VuZGF0
-aW9uLm9yZzsgcnBwdEBrZXJuZWwub3JnOyBkZmVyZ3Vzb25AYW1wZXJlY29tcHV0aW5nLmNvbTsg
-bGludXgtDQo+ZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3Jn
-OyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LQ0KPmRvY0B2Z2VyLmtlcm5lbC5vcmc7IHRvbnku
-bHVja0BpbnRlbC5jb207IGxlbmJAa2VybmVsLm9yZzsNCj5ZYXplbi5HaGFubmFtQGFtZC5jb207
-IG1jaGVoYWJAa2VybmVsLm9yZzsgTGludXhhcm0NCj48bGludXhhcm1AaHVhd2VpLmNvbT47IHJp
-ZW50amVzQGdvb2dsZS5jb207IGppYXFpeWFuQGdvb2dsZS5jb207DQo+Sm9uLkdyaW1tQGFtZC5j
-b207IGRhdmUuaGFuc2VuQGxpbnV4LmludGVsLmNvbTsNCj5uYW95YS5ob3JpZ3VjaGlAbmVjLmNv
-bTsgamFtZXMubW9yc2VAYXJtLmNvbTsganRob3VnaHRvbkBnb29nbGUuY29tOw0KPnNvbWFzdW5k
-YXJhbS5hQGhwZS5jb207IGVyZGVtYWt0YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2dsZS5jb207
-DQo+ZHVlbndlbkBnb29nbGUuY29tOyBndGhlbGVuQGdvb2dsZS5jb207DQo+d3NjaHdhcnR6QGFt
-cGVyZWNvbXB1dGluZy5jb207IHdic0Bvcy5hbXBlcmVjb21wdXRpbmcuY29tOw0KPm5pZmFuLmN4
-bEBnbWFpbC5jb207IHRhbnhpYW9mZWkgPHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47IFplbmd0YW8g
-KEIpDQo+PHByaW1lLnplbmdAaGlzaWxpY29uLmNvbT47IFJvYmVydG8gU2Fzc3UgPHJvYmVydG8u
-c2Fzc3VAaHVhd2VpLmNvbT47DQo+a2FuZ2thbmcuc2hlbkBmdXR1cmV3ZWkuY29tOyB3YW5naHVp
-cWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjEy
-IDEvMl0gQUNQSTpSQVMyOiBBZGQgQUNQSSBSQVMyIGRyaXZlcg0KPg0KPk9uIEZyaSwgT2N0IDE3
-LCAyMDI1IGF0IDEyOjU0OjM2UE0gKzAwMDAsIFNoaWp1IEpvc2Ugd3JvdGU6DQpbLi4uXQ0KPg0K
-Pj4gVGhpcyBpcyBmb3IgZGVtYW5kIHNjcnViYmluZyBmZWF0dXJlL3VzZSBjYXNlIHdoZXJlIGEg
-c3BlY2lmaWMgYWRkcmVzcw0KPj4gcmFuZ2UgdG8gc2NydWIgYW5kIE9TIG11c3Qgc2V0IHRoZSBt
-YW5kYXRvcnkgIHNwZWMgZGVmaW5lZCAgUkFTMiB0YWJsZQ0KPj4gZmllbGQgJ1JlcXVlc3RlZCBB
-ZGRyZXNzIFJhbmdlKElOUFVUKScgd2hpbGUgcmVxdWVzdGluZyB0aGUgZGVtYW5kDQo+PiBzY3J1
-YmJpbmcgaW4gYSBub2RlLiBIb3BlIHRoZSBmaXJtd2FyZSBjYW4gaWdub3JlIHRoZSByZXF1ZXN0
-IGlmIHRoZQ0KPj4gcmVxdWVzdGVkIGFkZHJlc3MgcmFuZ2UgdG8gc2NydWIgaXMgaXJyZWxldmFu
-dCBmb3IgYSBub2RlLCBiZWNhdXNlIGluDQo+PiB0aGlzIGFwcHJvYWNoIHdlIGhhdmUgY29tbW9u
-IHN5c2ZzIHNjcnViIGNvbnRyb2wgYW5kIGtlcm5lbCBpcw0KPj4gcmVxdWVzdGluZyBkZW1hbmQg
-c2NydWJiaW5nIHN5c3RlbS13aWRlIGFjcm9zcyBhbGwgbm9kZXMuDQo+Pg0KPj4gSWYgdGhpcyBh
-cHByb2FjaCBpcyBub3QgY29ycmVjdCwgY2FuIHdlIHVzZSAoYikgYXMgYmVsb3c/IHByb3ZpZGlu
-ZyB3ZQ0KPj4gbmVlZCB0byBnZXQgUEEgcmFuZ2UgZm9yIHRoZSBub2RlcyBpbiB0aGUgUkFTMiBk
-cml2ZXIgIHVzaW5nIHRoZQ0KPj4gZnVuY3Rpb25zIChzdGFydF9wZm4gPSBub2RlX3N0YXJ0X3Bm
-bihuaWQpIGFuZCBzaXplX3BmbiA9DQo+PiBub2RlX3NwYW5uZWRfcGFnZXMobmlkKTspIGFzIGlt
-cGxlbWVudGVkIGluIHYxMiBhbmQgZGlzY3Vzc2VkIGVhcmxpZXIgaW4gdGhpcw0KPnRocmVhZC4N
-Cj4+DQo+DQo+SSdtIHdvbmRlcmluZyBob3cgdXNlZnVsIHRoYXQgYWRkcmVzcyByYW5nZSBzY3J1
-YmJpbmcgd291bGQgYmUgYW5kIHdoZXRoZXIgaXQNCj5pcyB3b3J0aCB0aGUgZWZmb3J0Li4uIEkg
-Z3Vlc3MgdGhlIGdvYWwgaGVyZSBpcyBzb21ldGhpbmcgYWxvbmcgdGhvc2UgbGluZXM6DQo+Im9o
-LCB5b3UganVzdCBoYWQgYW4gZXJyb3IgYXQgYWRkcmVzcyBYLCBzbyBsZXQncyBzY3J1YiBbIEEg
-Li4uIFggLi4uIEIgXSB3aXRoIEEgYW5kIEINCj5oYXZpbmcsIGhtLCBkdW5ubywgc3VmZmljaWVu
-dCB2YWx1ZXMgdG8gY29udGFpbiBYIGFuZCBwZXJoYXBzIGNvdmVyIHN1ZmZpY2llbnQNCj5yYW5n
-ZSB0byBjYXRjaCBlcnJvciBsb2NhbGl0eSBvciB3aGF0bm90Lg0KPg0KPkJ1dCB5b3UnZCBuZWVk
-IHRvIGRvIHRoaXMgb25seSB3aGVuIHlvdSBoYXZlIGEgZmF0IG1lbW9yeSBub2RlIGFuZCB3aGVy
-ZSB5b3UNCj5zdGFydCBzY3J1YmJpbmcgYXQgdGhlIGJlZ2lubmluZyBvZiB0aGUgbm9kZSByYW5n
-ZSBhbmQgdGhlbiB5b3UnZCBoYXZlIHRvIHdhaXQNCj5mb3IgYSByZWxhdGl2ZWx5IGxvbmcgdGlt
-ZSB0byByZWFjaCB0aGUgUEEgWCBhdCBmYXVsdC4uLg0KPg0KPkJ1dCBJIGhhdmUgYSBiZXR0ZXIg
-aWRlYTogaG93IGFib3V0IHlvdSBzdGFydCBhdCBYIC0geSwgaS5lLiwgYXQgYW4gYWRkcmVzcyBh
-IGJpdA0KPnNtYWxsZXIgdGhhbiB0aGUgbGFzdCByZXBvcnRlZCBvbmUgYW5kIHRoZW4gY29udGlu
-dWUgZnJvbSB0aGVyZSBvbiwgcmVhY2ggdGhlDQo+KmVuZCogb2YgdGhlIG5vZGUgYW5kIHRoZW4g
-d3JhcGFyb3VuZCB0byB0aGUgYmVnaW5uaW5nIHVudGlsIHlvdSByZWFjaCBYDQo+YWdhaW4/DQo+
-DQo+VGhpcyB3YXkgeW91IGRvbid0IG5lZWQgdG8gc3VwcGx5IGFueSByYW5nZSBhbmQgeW91IGFy
-ZSBzdGlsbCAib24gdGltZSIgd2hlbg0KPnJlYWN0aW5nIHRvIHRoZSBlcnJvciB3aXRoIHNjcnVi
-YmluZy4uLg0KPg0KPkhtbW0/DQpUaGFua3MgQm9yaXNsYXYgZm9yIHRoZSB2YWx1YWJsZSBzdWdn
-ZXN0aW9uIGFuZCBpdCBtYWtlIHNlbnNlLiBTaW5jZSBwcmVzZW50bHkgd2UgYXJlDQpub3Qgc3Vy
-ZSBob3cgcmVhY2hpbmcgdGhlIGVuZCBvZiB0aGUgbm9kZSB3b3JrIG9uIGluZGl2aWR1YWwgcGxh
-dGZvcm1zLCAgY2FuIHdlIGRvDQp0aGlzIGFzIGFuIG9wdGltaXphdGlvbiBpbiB0aGUgbmV4dCBz
-dGFnZT8gYW5kIA0KQ2FuIHdlIHN0YXJ0IHdpdGggYmFzaWMgZGVtYW5kIHNjcnViYmluZyB3aXRo
-b3V0IGFkZHJlc3MgcmFuZ2UgY29udHJvbCBpbiBzeXNmcywNCmJ1dCB3aXRoIHVzZXIgc3BhY2Ug
-c2V0IG9ubHkgc2NydWIgcmF0ZSBhbmQgZW5hYmxlX2RlbWFuZCwga2VybmVsIHNldCB0aGUNCm5v
-ZGUncyBhZGRyIHJhbmdlIGFzIFJlcXVlc3RlZCBBZGRyZXNzIFJhbmdlIHRvIHN0YXJ0IHRoZSBk
-ZW1hbmQgc2NydWJiaW5nIG9uDQplbnRpcmUgbm9kZSwgYXMgeW91IHN1Z2dlc3RlZD8NCj4NCj4+
-IFN1cmUuIFRoZW4gYmFja2dyb3VuZCBzY3J1YmJpbmcgd2lsbCBub3QgYmUgYWxsb3dlZCBpZiBk
-ZW1hbmQNCj4+IHNjcnViYmluZyBpcyBpbiBwcm9ncmVzcyBpbiBhIG5vZGUsIGlmIHRoZSBzeXN0
-ZW0td2lkZSBzY3J1YiBjb250cm9sIGluIHN5c2ZzIGlzDQo+Y2hvc2VuLg0KPg0KPlNvIGNhbiB0
-aGUga2VybmVsIGludGVycnVwdCBiYWNrZ3JvdW5kIHNjcnViYmluZyBvbiBzb21lIG5vZGU/IEJl
-Y2F1c2UgdGhlbiBpdA0KPmlzIGVhc3k6DQpSQVMyIFNUT1BfUEFUUk9MX1NDUlVCQkVSICBjb21t
-YW5kIGFsbG93cyBpbnRlcnJ1cHRpbmcgYmFja2dyb3VuZCBzY3J1YmJpbmcuICANCj4NCj5Zb3Ug
-aW50ZXJydXB0IGJhY2tncm91bmQgc2NydWJiaW5nIHdoZW5ldmVyIG5lZWRlZCB3aXRoIG9uLWRl
-bWFuZA0KPnNjcnViYmluZyBvbiB0aGF0IHBhcnRpY3VsYXIgbm9kZS4uLg0KPg0KU3VyZS4gV2ls
-bCBkby4NCj5JdCBsb29rcyBsaWtlIGl0IGlzIHN0YXJ0aW5nIHRvIGNyeXN0YWxsaXplLi4uDQo+
-DQoNClRoYW5rcywNClNoaWp1DQo=
+Hi Ben,
+
+On 2025/11/4 18:24, Ben Horgan wrote:
+> Hi Zeng,
+> 
+> On 11/3/25 03:47, Zeng Heng wrote:
+>> Hi Ben,
+>>
+>> On 2025/10/30 17:52, Ben Horgan wrote:
+>>> Hi Zeng,
+>>>
+>>> On 10/29/25 07:56, Zeng Heng wrote:
+>>>> The MSMON_MBWU register accumulates counts monotonically forward and
+>>>> would not automatically cleared to zero on overflow. The overflow
+>>>> portion
+>>>> is exactly what mpam_msmon_overflow_val() computes, there is no need to
+>>>> additionally subtract mbwu_state->prev_val.
+>>>>
+>>>> Before invoking write_msmon_ctl_flt_vals(), the overflow bit of the
+>>>> MSMON_MBWU register must first be read to prevent it from being
+>>>> inadvertently cleared by the write operation.
+>>>>
+>>>> Finally, use the overflow bit instead of relying on counter wrap-around
+>>>> to determine whether an overflow has occurred, that avoids the case
+>>>> where
+>>>> a wrap-around (now > prev_val) is overlooked. So with this, prev_val no
+>>>> longer has any use and remove it.
+>>>>
+>>>> CC: Ben Horgan <ben.horgan@arm.com>
+>>>> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+>>>> ---
+>>>>    drivers/resctrl/mpam_devices.c  | 22 +++++++++++++++++-----
+>>>>    drivers/resctrl/mpam_internal.h |  3 ---
+>>>>    2 files changed, 17 insertions(+), 8 deletions(-)
+>>>
+>>> This all looks fine for overflow, but what we've been forgetting about
+>>> is the power management. As James mentioned in his commit message, the
+>>> prev_val is after now check is doing double duty. If an msc is powered
+>>> down and reset then we lose the count. Hence, to keep an accurate count,
+>>> we should be considering this case too.
+>>>
+>>
+>>
+>> Regarding CPU power management and CPU on-/off-line scenarios, this
+>> should and already has been handled by mpam_save_mbwu_state():
+>>
+>> 1. Freezes the current MSMON_MBWU counter into the
+>> mbwu_state->correction;
+>> 2. Clears the MSMON_MBWU counter;
+>>
+>> After the CPU is powered back on, the total bandwidth traffic is
+>> MSMON_MBWU(the `now` variable) + correction.
+>>
+>> So the above solution also covers CPU power-down scenarios, and no
+>> additional code is needed to adapt to this case.
+>>
+>> If I've missed anything, thanks in advance to point it out.
+>>
+> 
+> No, I don't think you missed anything. You just didn't mention in your commit message
+> that this is also fixing the power management case.
+> 
+> I'm going to post the next version of this series for James as he is otherwise engaged.
+> I've taken your patch and adapted it to fit in with the order of patches.
+> Does this look ok to you? The support for the long counters will be added later.
+> 
+
+Yes, I have reviewed the patch, and the related adaptations look good to
+me.
+
+> @@ -1016,6 +1025,9 @@ static void __ris_msmon_read(void *arg)
+>          if (config_mismatch) {
+>                  write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
+>                  overflow = false;
+> +       } else if (overflow) {
+> +               mpam_write_monsel_reg(msc, CFG_MBWU_CTL,
+> +                                     cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS);
+>          }
+
+Yes, the clear register operation is added here.
+
+
+
+Best Regards,
+Zeng Heng
+
 
