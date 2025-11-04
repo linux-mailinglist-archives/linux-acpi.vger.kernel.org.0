@@ -1,99 +1,122 @@
-Return-Path: <linux-acpi+bounces-18500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C95EC31F83
-	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 17:06:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C3DC32029
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 17:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A9CF1887DC8
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 16:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F8123A8D15
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 16:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690C5299AB5;
-	Tue,  4 Nov 2025 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BBC331A49;
+	Tue,  4 Nov 2025 16:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0VT8l1Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7+PnSG1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F39026F445;
-	Tue,  4 Nov 2025 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2AB3314D9
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Nov 2025 16:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762272378; cv=none; b=M8MSmwGYLi5ZrJ19hQjS29tXlFR0D6dr7CkXZnFMnLbFQE+OjT0b9KqzRCoU4YOAOhgwRimj853BCdW9Q9G2nsnMpftIVvpt9YfsDH6AWBIvA79Mv149m8PhzN09xVQeJPhFYFbeX0HRZ74QRLaxKVJlm9/dakY+12yF9ODprGg=
+	t=1762273196; cv=none; b=mw/001NadX23pePX4ItXHRZPjf7XhGd2r9HCrM+HDl1XDKIEnacJWvd2eKA+yQi7h/f0vsu+3QnZUqRKuVoQr8HWRkf5yYwCncAxvbCEOc5Blbn9YibUkVEHQJZxWzBDjhn9JgJfJ0AekOvnLJr4bmAhl+C2Wal5ivFUxubIHBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762272378; c=relaxed/simple;
-	bh=cqnsj9XBWpA/oXMHKuywF+Rto0eI5dkzdtMZHlTkuqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l6ysXpUDwA1kv4QWHJdHqPfqghJu5BMjT2fiEMoxR/sQKMkHL5AuaBN8bMv6od/nIu0uHmpX51uoUZJZhJQGyrE5v45WGY9anp9SyVHseVU+ZCJc1zLgyf26k61lzOen0TS0q8WO4K905y4SVluWZe0Uble92UpBl8cJ5e90gXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0VT8l1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A37C116B1;
-	Tue,  4 Nov 2025 16:06:15 +0000 (UTC)
+	s=arc-20240116; t=1762273196; c=relaxed/simple;
+	bh=u5x4oF3JNJTwRbaa5c/DHuS6u+ZbH15kjS5T8fJ6NAA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q1rgd4ShKrJjpvcSORRPwEErVwvA71OwUOerts7MNRD14F7m8415Y1ZvqWqjT6Pl6T685WlQqEF0/YS1DYvhs9ZMdS8Zxai6sfg8kdH6T6GyxzrjmJ8jpcpUAg6te/P06lEHYTicXML6VQWKHc37Rc3NU38bIMxH8YGoorJvCNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7+PnSG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AD2C2BC87
+	for <linux-acpi@vger.kernel.org>; Tue,  4 Nov 2025 16:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762272377;
-	bh=cqnsj9XBWpA/oXMHKuywF+Rto0eI5dkzdtMZHlTkuqY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J0VT8l1YwCz0aL5Sk09v0FM4wvGDp5jij9JpYzehChgsUIj2u6uqPYDJB7zV782j1
-	 RecSNVoTaDhPf0H+nE3KEStkTYStPtppR/swvppzJ2uzFfQZi7ousHGgrxo4SElonq
-	 JWxZynB1J1tkgJsFw+a8Ftck4Izuo/a2BsXqNCUtSQlqJj1QRN5uGqx79WZqW9NqKE
-	 /bCXMvn+ElEJj31ot6BotlPjou3zy3dZbozlCHYfvgWy0shS3OU99oNNwN8h4i0W+s
-	 x1m7I6nXGhwZJ1idJbHp9Wr9ya/JyaYuB1j2D7dhb+EdscmNmDFsDOniANWq3v7zKa
-	 ZYnMPZ+lnnvDw==
-Date: Tue, 4 Nov 2025 16:06:12 +0000
-From: Will Deacon <will@kernel.org>
-To: Hanjun Guo <guohanjun@huawei.com>
-Cc: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v4] ACPI: AGDI: Add interrupt signaling mode support
-Message-ID: <aQokdBkjFqw9ZGRt@willie-the-truck>
-References: <20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com>
- <a93e845a-b084-a680-7158-68363c492b75@huawei.com>
+	s=k20201202; t=1762273196;
+	bh=u5x4oF3JNJTwRbaa5c/DHuS6u+ZbH15kjS5T8fJ6NAA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=p7+PnSG1ty8zvAr6+DfcaNCLQ8TLRt9DiXL83go4nil7mF+l8vSSwzDMXfJHJU9mR
+	 TRPufiBNCXHgj4u3TbjXifIWWCG3hwWD9wIiA4AoG6kHIrOS55dTRDC0R8+d3XGK9C
+	 oGtBt6nir2ZGgJbgxY9Zo4jSbg8L4Q6Rker/isqkkbUux4EKCiF3ihhWFVfG19kIJn
+	 MGGUJN5xLQzL+vdn7bMsIoF/nejpBmhe/jiBLya7NnBDot+o2lWuL/aALTLB9HmCL+
+	 kuk7PeyeViRV1xwco+vEc/bPXFFDCB8Lb2n7tgqsR2J5Nthpa1nrG7LIjY8GydiBjP
+	 SMkr3Incr1GkA==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-3d37c1fb05aso2252274fac.0
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Nov 2025 08:19:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVa9idvGjWfPheHAUwvDlf08WH1b4Ablt/oT/pKpscivTm0Bd0af5nW3quibYSI7tax5fFZ32da007/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWTNWVUygbBgbh8MHLEGHcB22SyhW/1wQ4E7CUZPOKTkAwmQLL
+	ilCcByX2NGr6lBEzrHtcINWw2Qr3Rn7LVGeWPtR/3tyZrsnwQ/VGAfC4obcVu21WDHso9puKkA7
+	wzkVSBmTmXsj4gayIEnwyFospQzYiAuQ=
+X-Google-Smtp-Source: AGHT+IGEim1RbXPCe722nmurcjGc49CZrpe42ZB9j/2qzTiaQ6NOm4zdYG9kulJZfW/hxXopTQS2D1VDyA6xMo7XzuE=
+X-Received: by 2002:a05:6870:3c0e:b0:3d3:fc6d:b5ee with SMTP id
+ 586e51a60fabf-3dace9d9673mr7523325fac.40.1762273195316; Tue, 04 Nov 2025
+ 08:19:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a93e845a-b084-a680-7158-68363c492b75@huawei.com>
+References: <20251103084244.2654432-1-lihuisong@huawei.com>
+ <20251103084244.2654432-5-lihuisong@huawei.com> <CAJZ5v0idhxfOa8_Zp4Z_j5Rqh4GW4JsBpGT_hT=v=NgcEZRb+g@mail.gmail.com>
+ <339a202a-86aa-46f5-b45d-aea653f3e382@huawei.com>
+In-Reply-To: <339a202a-86aa-46f5-b45d-aea653f3e382@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 4 Nov 2025 17:19:44 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ii=ZJeCisXx3EOOMfqe8rRn=FvKBDsNuBucxvM0WXvgg@mail.gmail.com>
+X-Gm-Features: AWmQ_bkPiYsg5rbCV7kZbpLXAc0u5R7QFp3Gf34GCpne8qPfVOb0gKF-4q9N56c
+Message-ID: <CAJZ5v0ii=ZJeCisXx3EOOMfqe8rRn=FvKBDsNuBucxvM0WXvgg@mail.gmail.com>
+Subject: Re: [PATCH v2 4/7] ACPI: processor: idle: Disable ACPI idle if get
+ power information failed in power notify
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
+	yubowen8@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 20, 2025 at 09:23:05PM +0800, Hanjun Guo wrote:
-> On 2025/10/17 15:39, Kazuhiro Abe wrote:
-> > AGDI has two types of signaling modes: SDEI and interrupt.
-> > Currently, the AGDI driver only supports SDEI.
-> > Therefore, add support for interrupt signaling mode
-> > The interrupt vector is retrieved from the AGDI table, and call panic
-> > function when an interrupt occurs.
-> > 
-> > Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-> > Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-> > ---
-> > Hanjun, I have addressed all your comments.
-> > Please review them.
-> > 
-> > v3->v4
-> >   - Add a comment to the flags member.
-> >   - Fix agdi_interrupt_probe.
-> >   - Fix agdi_interrupt_remove.
-> >   - Add space in struct initializsation.
-> >   - Delete curly braces.
-> 
-> Looks good to me,
-> 
-> Acked-by: Hanjun Guo <guohanjun@huawei.com>
+On Tue, Nov 4, 2025 at 10:54=E2=80=AFAM lihuisong (C) <lihuisong@huawei.com=
+> wrote:
+>
+>
+> =E5=9C=A8 2025/11/4 2:09, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Mon, Nov 3, 2025 at 9:42=E2=80=AFAM Huisong Li <lihuisong@huawei.com=
+> wrote:
+> >> The old states may not be usable any more if get power information
+> >> failed in power notify. The ACPI idle should be disabled entirely.
+> > How does it actually disable anything?  It only changes the
+> > acpi_processor_power_state_has_changed() return value AFAICS, but that
+> > return value isn't checked.
+> The acpi_processor_power_state_has_changed() will disable all cpuidle
+> device first.
+> AFAICS, the disabled cpuidle_device would not do cpuidle, please see
+> cpuidle_not_available() and cpuidle_idle_call().
+> It's enough for this?
 
-I wasn't cc'd on the original patch but I couldn't figure out why it
-uses IRQF_NO_AUTOEN when requesting the irq given that the first thing
-it does is enable it.
+Well, not really.
 
-Will
+acpi_processor_register_idle_driver() has been changed to call
+acpi_processor_get_power_info() for each CPU before registering the
+idle driver and if that is successful, it will set
+flags.power_setup_done for the given processor and call
+acpi_processor_setup_cpuidle_states().  That processor need not be
+CPU0.
+
+However, the code updated by the $subject patch calls
+acpi_processor_get_power_info() for CPU0 and the patch would make it
+skip re-enabling cpuidle for all CPUs if it failed.
+
+It essentially needs to do what is done in
+acpi_processor_register_idle_driver(): find a CPU for which
+acpi_processor_get_power_info() does not fail, then call
+acpi_processor_setup_cpuidle_states() and re-enable cpuidle for all
+CPUs unless acpi_processor_get_power_info() fails for all of them.
+
+But there is still a question of whether or not this addresses any
+breakage seen in the field.  If not, maybe it's better to leave this
+code as is for the time being?
+
+I don't see why it is part of this series to be honest.  It is not a cleanu=
+p.
 
