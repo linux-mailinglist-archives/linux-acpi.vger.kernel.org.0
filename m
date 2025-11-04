@@ -1,176 +1,250 @@
-Return-Path: <linux-acpi+bounces-18489-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18490-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77988C314BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 14:49:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB923C31A58
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 15:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0BB189E3E2
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 13:49:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5146C34A1EA
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 14:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C12221FA0;
-	Tue,  4 Nov 2025 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0679D330B13;
+	Tue,  4 Nov 2025 14:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="juiqD+5r"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cXZvVAxP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013010.outbound.protection.outlook.com [40.107.201.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A43277C8D;
-	Tue,  4 Nov 2025 13:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762264139; cv=none; b=c16JIdCnvLRdm8nRg0/eOP3f7GqRIqx+6q5k0oVFZPpEQkfTaTJGElq71muEWrA9POsfEnJAYrKgF8nSXKQT9fcc7Lhy5u1+xMQ19h4O+QggtmaBqfHRDQR8F3KAEWpXATK28BhSlwid0wk/aaFhao8WhoFQ46qJp6ihXQ+DDa4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762264139; c=relaxed/simple;
-	bh=tyy27PwGGsvcneRrPtNtZCqEyrjIhx92dquuwVOnPbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VRmRZ556r3c5NGDvOuQStg0r7MF5kw84uav7j5LGK+45ry7AynEZhmbRLwnpJNIcIsFi6C0L5P6FPbEsrukAiO5Dj4wlor+Nln47383bFf1dmaORxw06LVQ7V4Z89R6vwaS7n+mRQJQ5yPAc8kN074pj7l04i//nIh3TCX1Fejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=juiqD+5r; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=HhgDFV3NXn/IRH8qXjdRXYahylPUabXUbstxozU3bK0=;
-	b=juiqD+5rV0RJy9nL5jDwbDD+vWxjSfNoRfXvQQJVf00Ih5/L/8xPUq8UXXmrrCva3dMEBL/WI
-	UhKAHGa8mMhBeZeeJgMhS7d4p3ZOOKFlGtLEf0gfhexs530LjVpByzGqb2f5qePfvb0zbBY6LHU
-	sD3ai+GbhT8PPehn6vERIAw=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4d18sQ1Hflz1T4G2;
-	Tue,  4 Nov 2025 21:47:38 +0800 (CST)
-Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
-	by mail.maildlp.com (Postfix) with ESMTPS id 91792180080;
-	Tue,  4 Nov 2025 21:48:50 +0800 (CST)
-Received: from [10.174.178.24] (10.174.178.24) by
- kwepemf100008.china.huawei.com (7.202.181.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 21:48:48 +0800
-Message-ID: <40e9934d-4d19-5cea-e21f-d287584b71f4@huawei.com>
-Date: Tue, 4 Nov 2025 21:48:47 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B934325702;
+	Tue,  4 Nov 2025 14:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762268160; cv=fail; b=DfDUMZ4exacPM9pAizagWjf34YqOOA3uOC80omGR8ouDOkm2wkgLyce04jv3giP3UIAUJDWytx42wbmVrOOtnfFmB5yrxj04DXZ0KzFCz4ESnuxTsvdnKAYLX4Uaau1fbI5GfbnbVY0KQ50J2/0tNoxl8j2a0s9b6brevTRBCbk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762268160; c=relaxed/simple;
+	bh=h/BGkOpXjPGriCJCq9V56yAm5XvtayjI/hpAKp7kLcY=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=cJ2C5BezssYPS21cEU3ifkebZzdmxls2OJOwOhdIM1zESpzGnS1Ni0QZHZ4iZuFOg9HP4xs5H8jEhnmqvgkPnoGwHVRL/y3bRbJmNC+2hgDwkZXPVi8qsmJJrcDloRn9CH5+smAaFXAr9WKZd+GnkKgngRG6acKDQwnwI5cZPA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cXZvVAxP; arc=fail smtp.client-ip=40.107.201.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ri8sWOmFIj9gUSBpaLA8sKcmy9Y6c1fAS9bkCqtGaaHCyNrOGpURKKrYxJwZxv0kUv8+LKTrIf0+GZ8UJ+A2Rp+/7BNh9+7gUlN8rS6PUIesJBw/Lus4UYFZtwdeN9SAOfzVxXMw+NLJGufRJxLe190PUId+Xht16LGngaseNkSnNrUonKaM2EPaDJP5KWbiOH6mm76BAdMuBoGmbkM9cc1b4wd4FjNe3H7shT2SoXqQJKwdYQwwGGRRJze7S+0brkVG/Zm3DUjWyILYEUwMz2GNWT4odE7mh+jw26pgBlg3Om3JZDLAgShNj9adPcngpThove+bhxT5+mcL0opz9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y6WnmwqSE/jMCJAEP/telf5fonzpqhjwefOhNYXNrzQ=;
+ b=JPhpoQC9Vp524Hk7DIDtQkBKYPqZ4oSpsOYpD6b1redrGRYGuvquKO9xJCgJ3NL/qimtR/Y7h1ShJxK1QD6y+Rg4zhxKG8Fh4WrSioFCoRgntMYjWgEqJ6CKJlRWgjafKmv/qiwAa+hl3Zk2bMBs7b7cTpPBt5aHmKbkgfXSUJ5xoHfX/Fh9yM4YuagP8r2llc8vNcDz81toJPOWa+arjbWs2VbAwZQR2NehI9eGZcbH7XtMo/lJU8Pd3ZQS+/eGXm80DPNt3ZRBMALLuuhw9UU/ST/CpuCxGPPqaKRJFLq+YjaZ22fygOZp2NIdQcAQhx1C9FpzTIoxIOjz6WpKOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y6WnmwqSE/jMCJAEP/telf5fonzpqhjwefOhNYXNrzQ=;
+ b=cXZvVAxP+yzCJ8LoXl1yzZEoR/IH9hC0PXn2SrLITr9QNv8Zhh4VQZFRNNADfX9v8U50yL8SrbmxBfVVWF619DXziQaQMEmoLmwdFZzYxrDwMJUHtKIw44YH6NI10YXDmSjEcAewxJEqkhjM8JRW02BSwBHe++CUGVVWo6DJys8=
+Received: from DM6PR06CA0081.namprd06.prod.outlook.com (2603:10b6:5:336::14)
+ by SJ2PR12MB8873.namprd12.prod.outlook.com (2603:10b6:a03:53d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Tue, 4 Nov
+ 2025 14:55:56 +0000
+Received: from DS2PEPF0000343A.namprd02.prod.outlook.com
+ (2603:10b6:5:336:cafe::70) by DM6PR06CA0081.outlook.office365.com
+ (2603:10b6:5:336::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.7 via Frontend Transport; Tue, 4
+ Nov 2025 14:55:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS2PEPF0000343A.mail.protection.outlook.com (10.167.18.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Tue, 4 Nov 2025 14:55:55 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 4 Nov
+ 2025 06:55:50 -0800
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: [PATCH v8 0/8] AMD MCA interrupts rework
+Date: Tue, 4 Nov 2025 14:55:37 +0000
+Message-ID: <20251104-wip-mca-updates-v8-0-66c8eacf67b9@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] arm64/mpam: Clean MBWU monitor overflow bit
-Content-Language: en-US
-To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
-CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
-	<baolin.wang@linux.alibaba.com>, <carl@os.amperecomputing.com>,
-	<catalin.marinas@arm.com>, <dakr@kernel.org>, <dave.martin@arm.com>,
-	<david@redhat.com>, <dfustini@baylibre.com>, <fenghuay@nvidia.com>,
-	<gregkh@linuxfoundation.org>, <gshan@redhat.com>, <guohanjun@huawei.com>,
-	<jeremy.linton@arm.com>, <jonathan.cameron@huawei.com>, <kobak@nvidia.com>,
-	<lcherian@marvell.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
-	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
-	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
-	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
-	<xhao@linux.alibaba.com>, <wangkefeng.wang@huawei.com>,
-	<sunnanyong@huawei.com>
-References: <20251017185645.26604-25-james.morse@arm.com>
- <20251029075655.3284280-1-zengheng4@huawei.com>
- <b0ea1879-9e77-4eb3-8312-ce27d73cc1f4@arm.com>
- <f4518f80-8e17-e622-fbe6-e20a7d1c85fc@huawei.com>
- <293395d7-5766-45df-a2e0-1542fecda5a7@arm.com>
-From: Zeng Heng <zengheng4@huawei.com>
-In-Reply-To: <293395d7-5766-45df-a2e0-1542fecda5a7@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemf100008.china.huawei.com (7.202.181.222)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOkTCmkC/23Py27DIBAF0F+JWJeE14DdVf+j6gLDkLDwQ+C6T
+ aP8eyFSa7nu8kqcuZcbyZgiZvJ8uJGES8xxHEpong7EXexwRhp9yUQwAUxwRj/iRHtn6fvk7Yy
+ ZduiF1ca1DgwpakoY4ufj4utbyZ3NSLtkB3epd+Y4nZLNJzcmrM8vMc9juj76F15RrVIMhOQAW
+ vGjaBgozimnV/uFw/FcZg22f7G9P7qxJ7VkET+yjpS7kYugjEotNSgTkEHYarlqxWGvZdFNCL7
+ FTlkLeqvVqrVQe62KFlJ7b1TQ6m83rLoR/3RD7dZgdGMFYmi2Wq+6Zc1e66KLAq+dUV3rttr8a
+ s643mtTNDguW6vK11y36vv9/g1fis8IOwIAAA==
+X-Change-ID: 20250210-wip-mca-updates-bed2a67c9c57
+To: <x86@kernel.org>, Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+	<Smita.KoralahalliChannabasappa@amd.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>, Bert Karwatzki <spasswolf@web.de>,
+	<linux-acpi@vger.kernel.org>, Yazen Ghannam <yazen.ghannam@amd.com>
+X-Mailer: b4 0.15-dev-9b767
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343A:EE_|SJ2PR12MB8873:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11dfa2a9-8cec-424f-9b93-08de1bb241f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MEtqSmFqeks5WUtnYWQ5ZUllNXBvVW1XV1FCbzRCVVBKdVFYZDRtUndqaGRh?=
+ =?utf-8?B?UkEyVGpIYTIrN1NNbnRsU1F4NlZqUndDUEZLaWpPeEFVUkxNZy93cVJWZkxN?=
+ =?utf-8?B?N3NxUWhDLzNzblBBVE1ETXlJcXh2MldaVU13aUFIS0NXZjJidnZlWE5Da3RU?=
+ =?utf-8?B?eG1yS2FXZUxXdndydldBQmpCZ0l5czlsaEkxbDh4S0E1azhYdjMrWmtob0JB?=
+ =?utf-8?B?NWdFR3EwKzVnalhsRGpuY0xRVVZNWEc3cW9saGlmMTNYVUk3Rnk2dnkzdWd1?=
+ =?utf-8?B?cmQzTDY3Yyt6UjQrbzZTaHRGRmI0ZzE0azFVNktyWlo0eThvTXMrUWI1emtn?=
+ =?utf-8?B?SXhwcDA5NDI1cEVuTERxZ1BySXQwV0FubEJENXF3QWhQSXBVNFZTNVNOellu?=
+ =?utf-8?B?bVMxRW9sQ0V1UHEyU0FRYUJvdnpsQ0k1NUo4VmMyaENhU3VUT0pDUEg3eU43?=
+ =?utf-8?B?Mld6ajNVZTlISzJSUG04c1YrNTh1Rm4zcFVldDdxWHZKbTUyZXAvZ2h4aFFM?=
+ =?utf-8?B?em81cVM1b085WThKYW5XTm1zS3FDTFZZczc1UmlVZllyekRhQytEMFI3THJk?=
+ =?utf-8?B?VWwrNG4xUzhBdjJyWit4b250aStlOWpBN2dyMC9ML2lpNWRIWEgyY0NxUFls?=
+ =?utf-8?B?TDJFcWNWM0FTek9IaWMrYXNDZ1R3RmJuU2kvajlBZ255WHJ0Nnh2ODRDTUhj?=
+ =?utf-8?B?WTd6MFFSL05xcldOUDV6VFp0Z3JWTkx4RmdGVmRFSEpPOXpTd1B2THdJSlNn?=
+ =?utf-8?B?cXFKbWdYM0dzTXR6WU9iRmxMQ2JmSE9LK0w5enlyTWJjQ2UzZ3NjZUIycm1N?=
+ =?utf-8?B?a1huaUQ3QzJzSjZSOFdyakFVQXRLOTVjWGhxTnhIWURmVzdDbFZ0QS94YmlV?=
+ =?utf-8?B?QTR4aG8wOFE3bWR4dUp0NGJCaDZhbW9IRTJMNVV4NEp4cHlMbWozUjBGQzBX?=
+ =?utf-8?B?T3ZrUkhwNEk4ZzY2dE9xVmtMNDRDVElwWVdYSVJRNFlkZVpKdGJ0V2MzdzhY?=
+ =?utf-8?B?REp0aDFPN1BwNHoxV0RpM0RsZjFWOEMxdTBaakJUZzFUN1k5VEx1STY1US95?=
+ =?utf-8?B?aUxhcXlJY1lnVXpObFVYMTBxNk1pZGErRkRTUzBaYlZKbnJCR3pIM3lUWjZJ?=
+ =?utf-8?B?SUYxOU9sUTd4cWc3OXphSGgwSEJoaVFhQkd2L3VvY2c0NEwwMkU0RG44V0xX?=
+ =?utf-8?B?V20wREF2K2FvM2pTS2ZYK2VWVGFnTXMySE5LOHlRZUpsY3R5bTYwZXZYVXJx?=
+ =?utf-8?B?blFtRWtLTUs4bkdLcGVQOFlmYWlYbHozSHRMU2tZSkZYMC8zU3lmSzFWb2V4?=
+ =?utf-8?B?UUdlQUlZYVAxRU13MkhmOXhJek9iTTNOUWc2VU5pNnVHTE51emkza2ZwYjUr?=
+ =?utf-8?B?QjNsTElDaCt6TnozelFoZy93N3FjKzBJVFYyYkIwNXJiTDVGZEoxU2xGalRz?=
+ =?utf-8?B?bmYxUVRGSk1qbG5UbzJqaVBIbEFWbHlWaXdseFYxM2NHT1RqVmxZR2p1ekU0?=
+ =?utf-8?B?UEp2RkphSGdwL1ZmUUNBcWZJZkZkOCtqWHlyNS9VdEc4dFp4R2Z6cU9jVWRF?=
+ =?utf-8?B?QmlWWEZ2L0R6M1VuZElpSk1yUlVkT2lPc3hmZDh5ekdjK09RUjdJTk5JOVZU?=
+ =?utf-8?B?bFZVTnYwbjNxU01uQ3o0eHBnbjRvV2FkRFU1TnpCaXpNMUsrTFNsY2NHRXZq?=
+ =?utf-8?B?TFJlcDR2OW5wSXNtdGR4OXh2a054T2doK2lCWnM1ZExPU0xyUEZXVEpsOGlI?=
+ =?utf-8?B?alQwVnVaSEpjL1Rsbk43SXJabDN0Vlp3bUppZTZRM2ZNUXFpS1JZdXk2aWxD?=
+ =?utf-8?B?VWU5dU1RL0gzL3hCemFROEdXOW9kUHh6YTZyd2VUdk03RkhFRzhCR0E1RmQz?=
+ =?utf-8?B?ZExlR2pMNHpkN1ArdmRJMVp1R3R4TitzWlBFK2ZkSkluVVM3ODN3Z0d2Wllt?=
+ =?utf-8?B?RDNCc0VQR3UyMzhRY2ZHTE84b09tb0RpdGtoeUxncHYxdlJrb2N5ZnRhckZw?=
+ =?utf-8?B?ZmZnbTg4My9kaktIaGZIcjFuY0l1R1F3YkpmZHo5VzJpMXFhZ253M0pJZkZ6?=
+ =?utf-8?B?ME40TmZTN3Z3NVZSaWtNVFRTKzFZL3RLUU9WTER4eWNJOHQrRUI5cnhXaDVu?=
+ =?utf-8?Q?eIuU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 14:55:55.7189
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11dfa2a9-8cec-424f-9b93-08de1bb241f6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF0000343A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8873
 
-Hi Ben,
+Hi all,
 
-On 2025/11/4 18:24, Ben Horgan wrote:
-> Hi Zeng,
-> 
-> On 11/3/25 03:47, Zeng Heng wrote:
->> Hi Ben,
->>
->> On 2025/10/30 17:52, Ben Horgan wrote:
->>> Hi Zeng,
->>>
->>> On 10/29/25 07:56, Zeng Heng wrote:
->>>> The MSMON_MBWU register accumulates counts monotonically forward and
->>>> would not automatically cleared to zero on overflow. The overflow
->>>> portion
->>>> is exactly what mpam_msmon_overflow_val() computes, there is no need to
->>>> additionally subtract mbwu_state->prev_val.
->>>>
->>>> Before invoking write_msmon_ctl_flt_vals(), the overflow bit of the
->>>> MSMON_MBWU register must first be read to prevent it from being
->>>> inadvertently cleared by the write operation.
->>>>
->>>> Finally, use the overflow bit instead of relying on counter wrap-around
->>>> to determine whether an overflow has occurred, that avoids the case
->>>> where
->>>> a wrap-around (now > prev_val) is overlooked. So with this, prev_val no
->>>> longer has any use and remove it.
->>>>
->>>> CC: Ben Horgan <ben.horgan@arm.com>
->>>> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
->>>> ---
->>>>    drivers/resctrl/mpam_devices.c  | 22 +++++++++++++++++-----
->>>>    drivers/resctrl/mpam_internal.h |  3 ---
->>>>    2 files changed, 17 insertions(+), 8 deletions(-)
->>>
->>> This all looks fine for overflow, but what we've been forgetting about
->>> is the power management. As James mentioned in his commit message, the
->>> prev_val is after now check is doing double duty. If an msc is powered
->>> down and reset then we lose the count. Hence, to keep an accurate count,
->>> we should be considering this case too.
->>>
->>
->>
->> Regarding CPU power management and CPU on-/off-line scenarios, this
->> should and already has been handled by mpam_save_mbwu_state():
->>
->> 1. Freezes the current MSMON_MBWU counter into the
->> mbwu_state->correction;
->> 2. Clears the MSMON_MBWU counter;
->>
->> After the CPU is powered back on, the total bandwidth traffic is
->> MSMON_MBWU(the `now` variable) + correction.
->>
->> So the above solution also covers CPU power-down scenarios, and no
->> additional code is needed to adapt to this case.
->>
->> If I've missed anything, thanks in advance to point it out.
->>
-> 
-> No, I don't think you missed anything. You just didn't mention in your commit message
-> that this is also fixing the power management case.
-> 
-> I'm going to post the next version of this series for James as he is otherwise engaged.
-> I've taken your patch and adapted it to fit in with the order of patches.
-> Does this look ok to you? The support for the long counters will be added later.
-> 
+This set unifies the AMD MCA interrupt handlers with common MCA code.
+The goal is to avoid duplicating functionality like reading and clearing
+MCA banks.
 
-Yes, I have reviewed the patch, and the related adaptations look good to
-me.
+Patches 1-2:
+Unify AMD interrupt handlers with common MCE code.
 
-> @@ -1016,6 +1025,9 @@ static void __ris_msmon_read(void *arg)
->          if (config_mismatch) {
->                  write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
->                  overflow = false;
-> +       } else if (overflow) {
-> +               mpam_write_monsel_reg(msc, CFG_MBWU_CTL,
-> +                                     cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS);
->          }
+Patches 3-4:
+SMCA Corrected Error Interrupt support.
 
-Yes, the clear register operation is added here.
+Patches 5-7:
+Interrupt storm handling rebased on current set.
 
+Patch 8:
+Add support to get threshold limit from APEI HEST.
 
+Thanks,
+Yazen
 
-Best Regards,
-Zeng Heng
+---
+Changes in v8:
+- Apply "DFR unify" fixups. (Boris)
+- Update "HEST threshold limit" string. (Boris)
+- Link to v7: https://lore.kernel.org/r/20251016-wip-mca-updates-v7-0-5c139a4062cb@amd.com
+
+Changes in v7:
+- Rework DFR error handling to avoid reporting bogus errors.
+- Don't modify polling banks for AMD-systems after an interrupt storm.
+- Link to v6: https://lore.kernel.org/r/20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com
+- Link to "spurious errors" thread:
+  https://lore.kernel.org/r/20250915010010.3547-1-spasswolf@web.de
+
+Changes in v6:
+- Rebase on tip/ras/core.
+- Address comments from Boris for patches 1, 8, and 10.
+- Link to v5: https://lore.kernel.org/r/20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com
+
+Changes in v5:
+- Rebase on v6.17-rc1.
+- Add tags and address comments from Nikolay.
+- Added back patch that was dropped from v4.
+- Link to v4: https://lore.kernel.org/r/20250624-wip-mca-updates-v4-0-236dd74f645f@amd.com
+
+Changes in v4:
+- Rebase on v6.16-rc3.
+- Address comments from Boris about function names.
+- Redo DFR handler integration.
+- Drop AMD APIC LVT rework.
+- Include more AMD thresholding reworks and fixes.
+- Add support to get threshold limit from APEI HEST.
+- Reorder patches so most fixes and reworks are at the beginning.
+- Link to v3: https://lore.kernel.org/r/20250415-wip-mca-updates-v3-0-8ffd9eb4aa56@amd.com
+
+Changes in v3:
+- Rebased on tip/x86/merge rather than tip/master.
+- Updated MSR access helpers (*msrl -> *msrq).
+- Add patch to fix polling after a storm.
+- Link to v2: https://lore.kernel.org/r/20250213-wip-mca-updates-v2-0-3636547fe05f@amd.com
+
+Changes in v2:
+- Add general cleanup pre-patches.
+- Add changes for BSP-only init.
+- Add interrupt storm handling for AMD.
+- Link to v1: https://lore.kernel.org/r/20240523155641.2805411-1-yazen.ghannam@amd.com
+
+---
+Smita Koralahalli (1):
+      x86/mce: Handle AMD threshold interrupt storms
+
+Yazen Ghannam (7):
+      x86/mce: Unify AMD THR handler with MCA Polling
+      x86/mce: Unify AMD DFR handler with MCA Polling
+      x86/mce/amd: Enable interrupt vectors once per-CPU on SMCA systems
+      x86/mce/amd: Support SMCA Corrected Error Interrupt
+      x86/mce/amd: Remove redundant reset_block()
+      x86/mce/amd: Define threshold restart function for banks
+      x86/mce: Save and use APEI corrected threshold limit
+
+ arch/x86/include/asm/mce.h          |  12 ++
+ arch/x86/kernel/acpi/apei.c         |   2 +
+ arch/x86/kernel/cpu/mce/amd.c       | 340 ++++++++++++++----------------------
+ arch/x86/kernel/cpu/mce/core.c      |  31 +++-
+ arch/x86/kernel/cpu/mce/internal.h  |   4 +
+ arch/x86/kernel/cpu/mce/threshold.c |  19 +-
+ 6 files changed, 195 insertions(+), 213 deletions(-)
+---
+base-commit: 5c6f123c419b6e20f84ac1683089a52f449273aa
+change-id: 20250210-wip-mca-updates-bed2a67c9c57
 
 
