@@ -1,105 +1,259 @@
-Return-Path: <linux-acpi+bounces-18479-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18480-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30489C2F081
-	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 03:54:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B031FC2F852
+	for <lists+linux-acpi@lfdr.de>; Tue, 04 Nov 2025 07:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4B4F3BF060
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 02:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CFE9189F72C
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Nov 2025 06:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7D225C809;
-	Tue,  4 Nov 2025 02:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q7xTFejP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1289B22333B;
+	Tue,  4 Nov 2025 06:51:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F65525A631;
-	Tue,  4 Nov 2025 02:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053B21ABC9;
+	Tue,  4 Nov 2025 06:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762224748; cv=none; b=Kf70K87BbCgArm+k5AYj9T+kB6cnaqOcxUX8Mz1VvDfxgh3bpsi8LCyW7ybfxuJZelaO85JL6S7HNHN5LBdYTRp1EAD0PVgNdwhzjXEWSEDZ/OT/HvdbWVneh9wELsxreK4wqYDisfVFYCxcXMZE9rz8q9iydyp1ySkRr6lu0ps=
+	t=1762239079; cv=none; b=KLES9APJjKZYvgxvY6lnoNSIz9pnuSo7vNbGtWkUoZU9CzD1o7sZUnxW28vWYOY2ZCKmSNttY0XvFpv1uh3D8uEY7bw0jh1FQnUb4AfdoFnoolz1+u+DEWMB9xCUC4EdUT+cP0VtBfu4ESOzpS/4FD9+Kk7UUe//78uGZniHyAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762224748; c=relaxed/simple;
-	bh=Xovpelytaf1rVw6/MGWZziRvb+wid13hMajWjKa65Y8=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=VhwOtx5rm+ql1bYHfJ+8Ri1n5QOBJmgwUOi8zO6w4bgJXqVqw13Ed4Ywjeu4XbuQSX0u6YNgc34h3at3pUJIeajusMYHwedZt6d+eaO1WpIV1BUJxrpWgqPMX1C0OJDsM3cRHcIClwwEc99wPCCuN08Eb8oW4DvodtW94VhCs68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q7xTFejP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA1DC4CEFD;
-	Tue,  4 Nov 2025 02:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762224748;
-	bh=Xovpelytaf1rVw6/MGWZziRvb+wid13hMajWjKa65Y8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q7xTFejPKd6NhT06RWpXtSixWQbEpsjjKBezm1wVg44aGl0ALe0Oy1XhGDJVqSHHy
-	 MAJJ0qgiFXuHTQuaQRCrTT7oBrEjP3r5aNq6iZqPuLddO7lzY8BxtsRizHiiSc4pKe
-	 hIbRUTmPyMmu1L6vvb9GyRzw3s52raw3T8RmJaig=
-Date: Mon, 3 Nov 2025 18:52:26 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Ankit Agrawal <ankita@nvidia.com>, Aniket Agashe <aniketa@nvidia.com>,
- Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Matt
- Ochs <mochs@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>, "nao.horiguchi@gmail.com"
- <nao.horiguchi@gmail.com>, "david@redhat.com" <david@redhat.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
- <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
- <surenb@google.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "rafael@kernel.org" <rafael@kernel.org>,
- "guohanjun@huawei.com" <guohanjun@huawei.com>, "mchehab@kernel.org"
- <mchehab@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "alex@shazbot.org"
- <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Zhi
- Wang <zhiw@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Krishnakant Jaju
- <kjaju@nvidia.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "Smita.KoralahalliChannabasappa@amd.com"
- <Smita.KoralahalliChannabasappa@amd.com>, "u.kleine-koenig@baylibre.com"
- <u.kleine-koenig@baylibre.com>, "peterz@infradead.org"
- <peterz@infradead.org>, "linux-acpi@vger.kernel.org"
- <linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] mm: handle poisoning of pfn without struct pages
-Message-Id: <20251103185226.fea151c58ce7077b11b106aa@linux-foundation.org>
-In-Reply-To: <aQjy0ZsVq7vhxtr7@tiehlicka>
-References: <20251026141919.2261-1-ankita@nvidia.com>
-	<20251026141919.2261-3-ankita@nvidia.com>
-	<20251027172620.d764b8e0eab34abd427d7945@linux-foundation.org>
-	<MW4PR12MB7213976611F767842380FB56B0FAA@MW4PR12MB7213.namprd12.prod.outlook.com>
-	<aQRy4rafpvo-W-j6@tiehlicka>
-	<SA1PR12MB71998D21DD1852EB074A11ABB0C6A@SA1PR12MB7199.namprd12.prod.outlook.com>
-	<aQjy0ZsVq7vhxtr7@tiehlicka>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1762239079; c=relaxed/simple;
+	bh=RsL4BomoAXIngr5dz57ebM1HeeCBddI9yZjL9kK0X3k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Fv64Rf0zg6Bp5bWfIWJLycv3CZC3XA3CPHTsrs3hSxV3LsCiqfzF0lv/JtfhAnIeQADm/ODCuFgS5CT2ECRe2xYHDIHZCOVQsdcEhqdmOBZuXlYGYKTpRrtirMdEZvfpeVFW2RnsLYzvPQrv/n9Ub61Eb2LNLgb762g7akSd/9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4d0zbB3GC9zpStT;
+	Tue,  4 Nov 2025 14:49:42 +0800 (CST)
+Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A73314027A;
+	Tue,  4 Nov 2025 14:51:11 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemr500004.china.huawei.com (7.202.195.141) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Nov 2025 14:51:10 +0800
+From: Jie Zhan <zhanjie9@hisilicon.com>
+To: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
+	<beata.michalska@arm.com>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>,
+	<prime.zeng@hisilicon.com>, <jonathan.cameron@huawei.com>
+Subject: [PATCH v3] cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
+Date: Tue, 4 Nov 2025 14:50:39 +0800
+Message-ID: <20251104065039.1675549-1-zhanjie9@hisilicon.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500004.china.huawei.com (7.202.195.141)
 
-On Mon, 3 Nov 2025 19:22:09 +0100 Michal Hocko <mhocko@suse.com> wrote:
+Currently, the CPPC Frequency Invariance Engine (FIE) is invoked from the
+scheduler tick but defers the update of arch_freq_scale to a separate
+thread because cppc_get_perf_ctrs() would sleep if the CPC regs are in PCC.
 
-> > Hi Michal, I am trying to replicate what is being done today for non-PFNMAP
-> > memory failure in __add_to_kill
-> > (https://github.com/torvalds/linux/blob/master/mm/memory-failure.c#L376).
-> > For this series, I am inclined to keep it uniform.
-> 
-> Unless there is a very good reason for this code then I would rather not
-> rely on an atomic allocation. This just makes the behavior hard to
-> predict
+However, this deferred update mechanism is unnecessary and introduces extra
+overhead for non-PCC register spaces (e.g. System Memory or FFH), where
+accessing the regs won't sleep and can be safely performed from the tick
+context.
 
-I don't think this was addressed in the v5 series.
+Furthermore, with the CPPC FIE registered, it throws repeated warnings of
+"cppc_scale_freq_workfn: failed to read perf counters" on our platform with
+the CPC regs in System Memory and a power-down idle state enabled.  That's
+because the remote CPU can be in a power-down idle state, and reading its
+perf counters returns 0.  Moving the FIE handling back to the scheduler
+tick process makes the CPU handle its own perf counters, so it won't be
+idle and the issue would be inherently solved.
 
-Yes please, anything we can do to avoid GFP_ATOMIC makes the kernel
-more reliable.
+To address the above issues, update arch_freq_scale directly in ticks for
+non-PCC regs and keep the deferred update mechanism for PCC regs.
+
+Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+---
+We have tested this on Kunpeng SoCs with the CPC regs both in System Memory
+and FFH.  More tests on other platforms are welcome.
+
+Changelog:
+
+v3:
+- Stash the state of 'cppc_perf_ctrs_in_pcc' so it won't have to check the CPC
+  regs of all CPUs everywhere (Thanks to the suggestion from Beata Michalska).
+- Update the commit log, explaining more on the warning issue caused by
+  accessing perf counters on remote CPUs.
+- Drop Patch 1 that has been accepted, and rebase Patch 2 on that.
+
+v2:
+https://lore.kernel.org/linux-pm/20250828110212.2108653-1-zhanjie9@hisilicon.com/
+- Update the cover letter and the commit log based on v1 discussion
+- Update FIE arch_freq_scale in ticks for non-PCC regs
+
+v1:
+https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
+---
+ drivers/cpufreq/cppc_cpufreq.c | 60 ++++++++++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 9eac77c4f294..4fcaec7e2034 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -48,37 +48,31 @@ struct cppc_freq_invariance {
+ };
+ 
+ static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
++static bool perf_ctrs_in_pcc;
+ static struct kthread_worker *kworker_fie;
+ 
+ static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+ 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
+ 
+ /**
+- * cppc_scale_freq_workfn - CPPC arch_freq_scale updater for frequency invariance
+- * @work: The work item.
++ * __cppc_scale_freq_tick - CPPC arch_freq_scale updater for frequency invariance
++ * @cppc_fi: per-cpu CPPC FIE data.
+  *
+- * The CPPC driver register itself with the topology core to provide its own
++ * The CPPC driver registers itself with the topology core to provide its own
+  * implementation (cppc_scale_freq_tick()) of topology_scale_freq_tick() which
+  * gets called by the scheduler on every tick.
+  *
+  * Note that the arch specific counters have higher priority than CPPC counters,
+  * if available, though the CPPC driver doesn't need to have any special
+  * handling for that.
+- *
+- * On an invocation of cppc_scale_freq_tick(), we schedule an irq work (since we
+- * reach here from hard-irq context), which then schedules a normal work item
+- * and cppc_scale_freq_workfn() updates the per_cpu arch_freq_scale variable
+- * based on the counter updates since the last tick.
+  */
+-static void cppc_scale_freq_workfn(struct kthread_work *work)
++static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
+ {
+-	struct cppc_freq_invariance *cppc_fi;
+ 	struct cppc_perf_fb_ctrs fb_ctrs = {0};
+ 	struct cppc_cpudata *cpu_data;
+ 	unsigned long local_freq_scale;
+ 	u64 perf;
+ 
+-	cppc_fi = container_of(work, struct cppc_freq_invariance, work);
+ 	cpu_data = cppc_fi->cpu_data;
+ 
+ 	if (cppc_get_perf_ctrs(cppc_fi->cpu, &fb_ctrs)) {
+@@ -102,6 +96,14 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+ 	per_cpu(arch_freq_scale, cppc_fi->cpu) = local_freq_scale;
+ }
+ 
++static void cppc_scale_freq_workfn(struct kthread_work *work)
++{
++	struct cppc_freq_invariance *cppc_fi;
++
++	cppc_fi = container_of(work, struct cppc_freq_invariance, work);
++	__cppc_scale_freq_tick(cppc_fi);
++}
++
+ static void cppc_irq_work(struct irq_work *irq_work)
+ {
+ 	struct cppc_freq_invariance *cppc_fi;
+@@ -110,7 +112,14 @@ static void cppc_irq_work(struct irq_work *irq_work)
+ 	kthread_queue_work(kworker_fie, &cppc_fi->work);
+ }
+ 
+-static void cppc_scale_freq_tick(void)
++/*
++ * Reading perf counters may sleep if the CPC regs are in PCC.  Thus, we
++ * schedule an irq work in scale_freq_tick (since we reach here from hard-irq
++ * context), which then schedules a normal work item cppc_scale_freq_workfn()
++ * that updates the per_cpu arch_freq_scale variable based on the counter
++ * updates since the last tick.
++ */
++static void cppc_scale_freq_tick_pcc(void)
+ {
+ 	struct cppc_freq_invariance *cppc_fi = &per_cpu(cppc_freq_inv, smp_processor_id());
+ 
+@@ -121,6 +130,11 @@ static void cppc_scale_freq_tick(void)
+ 	irq_work_queue(&cppc_fi->irq_work);
+ }
+ 
++static void cppc_scale_freq_tick(void)
++{
++	__cppc_scale_freq_tick(&per_cpu(cppc_freq_inv, smp_processor_id()));
++}
++
+ static struct scale_freq_data cppc_sftd = {
+ 	.source = SCALE_FREQ_SOURCE_CPPC,
+ 	.set_freq_scale = cppc_scale_freq_tick,
+@@ -138,8 +152,10 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
+ 		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
+ 		cppc_fi->cpu = cpu;
+ 		cppc_fi->cpu_data = policy->driver_data;
+-		kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
+-		init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
++		if (perf_ctrs_in_pcc) {
++			kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
++			init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
++		}
+ 
+ 		ret = cppc_get_perf_ctrs(cpu, &cppc_fi->prev_perf_fb_ctrs);
+ 
+@@ -177,6 +193,9 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
+ 	/* policy->cpus will be empty here, use related_cpus instead */
+ 	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
+ 
++	if (!perf_ctrs_in_pcc)
++		return;
++
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
+ 		irq_work_sync(&cppc_fi->irq_work);
+@@ -201,17 +220,22 @@ static void __init cppc_freq_invariance_init(void)
+ 	};
+ 	int ret;
+ 
++	perf_ctrs_in_pcc = cppc_perf_ctrs_in_pcc();
++
+ 	if (fie_disabled != FIE_ENABLED && fie_disabled != FIE_DISABLED) {
+-		fie_disabled = FIE_ENABLED;
+-		if (cppc_perf_ctrs_in_pcc()) {
++		if (!perf_ctrs_in_pcc) {
++			fie_disabled = FIE_ENABLED;
++		} else {
+ 			pr_info("FIE not enabled on systems with registers in PCC\n");
+ 			fie_disabled = FIE_DISABLED;
+ 		}
+ 	}
+ 
+-	if (fie_disabled)
++	if (fie_disabled || !perf_ctrs_in_pcc)
+ 		return;
+ 
++	cppc_sftd.set_freq_scale = cppc_scale_freq_tick_pcc;
++
+ 	kworker_fie = kthread_run_worker(0, "cppc_fie");
+ 	if (IS_ERR(kworker_fie)) {
+ 		pr_warn("%s: failed to create kworker_fie: %ld\n", __func__,
+@@ -231,7 +255,7 @@ static void __init cppc_freq_invariance_init(void)
+ 
+ static void cppc_freq_invariance_exit(void)
+ {
+-	if (fie_disabled)
++	if (fie_disabled || !perf_ctrs_in_pcc)
+ 		return;
+ 
+ 	kthread_destroy_worker(kworker_fie);
+-- 
+2.33.0
+
 
