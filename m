@@ -1,167 +1,114 @@
-Return-Path: <linux-acpi+bounces-18543-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18544-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A3DC3590B
-	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 13:11:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074DAC35F0D
+	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 14:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE3E55613A7
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 12:11:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D96218C80B9
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 13:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85383126CE;
-	Wed,  5 Nov 2025 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAB0320CAE;
+	Wed,  5 Nov 2025 13:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AlxKmqfx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA40E8BEC;
-	Wed,  5 Nov 2025 12:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3549315D2E;
+	Wed,  5 Nov 2025 13:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762344703; cv=none; b=b9X4bDB+BNPjtpjlJVONcbzxeG9TcpsiBZa6jn086MWak4zPDv6ACmUwGFp0wor8xAyrwCROk3FwXP+Fv84U5H4qWcuZuzUsYOYGk6mF5h50k0r8n8kDKm1xRh+6kMw928nIyxfUzAFX4Kf8fxaFCJgjb3xIBOL3i36wC2S2c5Q=
+	t=1762351093; cv=none; b=UtCZ7O4xzngLwwYFVo18gWCM/wBpN6egcdrXQn6cV4W+qbgmDLPhVwst8PGxkpBvrHUkMwvavabhMGbKoMi2gb3fj5YCpx50BJX+qfLTqwURK6XY38ITytg4Oz3lWjb9fqeQ6G+Jrumw5QvbxzhHdanViVlMPK2Fd3a33KctFt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762344703; c=relaxed/simple;
-	bh=EvS91HJJGx3poXL0hNmUGqtF1maSmGpFIYmrvs+4mMQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Da60Iu9+bPkNnXMGGiKczczmnhx/ur8EeKuxbijAnQGu9ZNAgyWDdEUHw0xa9cwIpK5DG6DnyikFvzbhu6NjOqPdoanVjPya50rbwSt4PxlrQ7KwIR4QgerpnjrOMyyE5KxCZkdRHizzvH6tJpT2GaUinrwxRZkzgkte9/DSH9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7170E169C;
-	Wed,  5 Nov 2025 04:11:33 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 973C53F66E;
-	Wed,  5 Nov 2025 04:11:36 -0800 (PST)
-Message-ID: <597d479f-4f1d-4cae-b15f-21ecc73a35bf@arm.com>
-Date: Wed, 5 Nov 2025 12:11:35 +0000
+	s=arc-20240116; t=1762351093; c=relaxed/simple;
+	bh=eqQC6z9cdB6up/IayN1Dg2lChZQVrnO6m2KSS1GZctE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XjXG+0aVK7RRnHQctI4NKVkgy+R5HKj9sIJWIDrcmE2F0cMuRuy/GSys+a+pn5mfnFlwuRMMRV3iw/0qM/FSJ+y/9E2DIdLFwS/erq1mbx7UtlbkcqNJS/42+9rgnwjMYFssu1ZQGD3rDvwTJ7FQqdUec99NbeWO7OV3Avp0rsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AlxKmqfx; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762351092; x=1793887092;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eqQC6z9cdB6up/IayN1Dg2lChZQVrnO6m2KSS1GZctE=;
+  b=AlxKmqfxB3FurlUt6k9Qb20uPAsD2qSbeLFJwsLlc1ui/qvKY0aGzvil
+   EC4Ibw8+0Fgm1nmLMR+WU8SeOYzwLEHi14QBs285aBFpdatdiiDKm+MIi
+   z8tTTGFEzKlEdFmLnaS9EH9VHcLVqV97JlWmHiSU/HnpnK/e+SOVkd2j2
+   JUADC5aLdZOZhRa5RVnD8nIBZPAOQO/o1hyYtaNFu+vhUkCBrES7ftpe7
+   1SlrruJAFkanMYv9/jyuQxXn5O2AidJNmIIFLKyf2fEwybp4DwVZxhRX4
+   lDZfzmVLT+KInSnjEan36rZe+yI/j8hGKHb0XwdJKFSiia8KEBH5fhsJE
+   A==;
+X-CSE-ConnectionGUID: efaDqBj+RKWd9zn17OtxGA==
+X-CSE-MsgGUID: MaMb9SKkQWayb//5ukezwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="89926021"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="89926021"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 05:58:11 -0800
+X-CSE-ConnectionGUID: AmSljmC9TgKMbgt4D1Stow==
+X-CSE-MsgGUID: MZLX9/npQgOrg22HbiotuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="187409733"
+Received: from ldmartin-desk2.corp.intel.com (HELO ashevche-desk.local) ([10.124.221.135])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 05:58:08 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vGe1S-00000005ni1-2OB1;
+	Wed, 05 Nov 2025 15:58:02 +0200
+Date: Wed, 5 Nov 2025 15:58:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v5 4/8] gpio: swnode: allow referencing GPIO chips by
+ firmware nodes
+Message-ID: <aQtX6WUjvksdZeku@smile.fi.intel.com>
+References: <20251105-reset-gpios-swnodes-v5-0-1f67499a8287@linaro.org>
+ <20251105-reset-gpios-swnodes-v5-4-1f67499a8287@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 23/29] arm_mpam: Add mpam_msmon_read() to read monitor
- value
-To: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
- 'James Morse' <james.morse@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- "carl@os.amperecomputing.com" <carl@os.amperecomputing.com>,
- "lcherian@marvell.com" <lcherian@marvell.com>,
- "bobo.shaobowang@huawei.com" <bobo.shaobowang@huawei.com>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- Jamie Iles <quic_jiles@quicinc.com>, Xin Hao <xhao@linux.alibaba.com>,
- "peternewman@google.com" <peternewman@google.com>,
- "dfustini@baylibre.com" <dfustini@baylibre.com>,
- "amitsinght@marvell.com" <amitsinght@marvell.com>,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- "fenghuay@nvidia.com" <fenghuay@nvidia.com>,
- "baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- Gavin Shan <gshan@redhat.com>
-References: <20251017185645.26604-1-james.morse@arm.com>
- <20251017185645.26604-24-james.morse@arm.com>
- <OSZPR01MB8798C425E5A820C2E0AAA7BC8BC5A@OSZPR01MB8798.jpnprd01.prod.outlook.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <OSZPR01MB8798C425E5A820C2E0AAA7BC8BC5A@OSZPR01MB8798.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105-reset-gpios-swnodes-v5-4-1f67499a8287@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Shaopeng,
-
-On 11/5/25 08:32, Shaopeng Tan (Fujitsu) wrote:
-> Hello James,
+On Wed, Nov 05, 2025 at 09:47:35AM +0100, Bartosz Golaszewski wrote:
 > 
->> Reading a monitor involves configuring what you want to monitor, and reading
->> the value. Components made up of multiple MSC may need values from each
->> MSC. MSCs may take time to configure, returning 'not ready'.
->> The maximum 'not ready' time should have been provided by firmware.
->>
->> Add mpam_msmon_read() to hide all this. If (one of) the MSC returns not ready,
->> then wait the full timeout value before trying again.
->>
->> CC: Shanker Donthineni <sdonthineni@nvidia.com>
->> Signed-off-by: James Morse <james.morse@arm.com>
-[...]
->> +/* Call with MSC lock held */
->> +static void __ris_msmon_read(void *arg) {
->> +	u64 now;
->> +	bool nrdy = false;
->> +	struct mon_read *m = arg;
->> +	struct mon_cfg *ctx = m->ctx;
->> +	struct mpam_msc_ris *ris = m->ris;
->> +	struct mpam_props *rprops = &ris->props;
->> +	struct mpam_msc *msc = m->ris->vmsc->msc;
->> +	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
->> +
->> +	if (!mpam_mon_sel_lock(msc)) {
->> +		m->err = -EIO;
->> +		return;
->> +	}
->> +	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL,
->> ctx->mon) |
->> +		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
->> +	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
->> +
->> +	/*
->> +	 * Read the existing configuration to avoid re-writing the same values.
->> +	 * This saves waiting for 'nrdy' on subsequent reads.
->> +	 */
->> +	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
->> +	clean_msmon_ctl_val(&cur_ctl);
->> +	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
->> +	if (cur_flt != flt_val || cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN))
->> +		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
-> 
-> When reading the CSU counter of a different control group, the counter is cleared to 0 by the write_msmon_ctl_flt_vals().
-> 
->> +	switch (m->type) {
->> +	case mpam_feat_msmon_csu:
->> +		now = mpam_read_monsel_reg(msc, CSU);
->> +		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy,
->> rprops))
->> +			nrdy = now & MSMON___NRDY;
->> +		break;
-> 
-> The first time read the counter(MSMON_CSU), all bits except nrdy are 0.
+> When doing a software node lookup, we require both the fwnode that
+> references a GPIO chip as well as the node associated with that chip to
+> be software nodes. However, we now allow referencing generic firmware
+> nodes from software nodes in driver core so we should allow the same in
+> GPIO core. Make the software node name check optional and dependent on
+> whether the referenced firmware node is a software node. If it's not,
+> just continue with the lookup.
 
+Makes sense,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-I'm trying to understand your problem. Isn't what you are describing the
-intended behaviour of the nrdy bit? It takes some time to get a count of
-the cache utilization so if it's not ready this is set and the driver
-retries.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> 
-> This means when check the cache monitoring value the first time,
-> cat mon_data/mon_L3_0*/llc_occupancy
-> the result will be 0.
-> From the second time, the result will return to normal.
-
-This is not expected. On creating a new ctrl_mon group, generating some
-memory traffic and checking the llc_occumpancy I see a non-zero value on
-my setup. Not sure why you wouldn't.
-
-> 
-> Best regards,
-> Shaopeng TAN
-> 
-
-Thanks,
-
-Ben
 
 
