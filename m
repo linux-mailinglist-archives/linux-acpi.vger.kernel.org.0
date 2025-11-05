@@ -1,220 +1,213 @@
-Return-Path: <linux-acpi+bounces-18573-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18574-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BC1C3921B
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 06:04:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72846C3966C
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 08:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D230E189D5E6
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 05:04:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB693BABF5
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 07:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51371DF99A;
-	Thu,  6 Nov 2025 05:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29042E0B68;
+	Thu,  6 Nov 2025 07:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VzQM6QJL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fCe0husl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B4934D38E;
-	Thu,  6 Nov 2025 05:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2852DF6F5;
+	Thu,  6 Nov 2025 07:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762405459; cv=none; b=I8V/hXVU/04uVnVTp6JCQIbXI7IWHBbOPOPjKT6FaEddixFW8K4FEgGPyHZ9MX7YtCLEdNIPG4+uE7Wu1DR/9ZaoDns3/WcsHH1ZLweFf9+NRN0XwucsEi8x/RQRmzycIgQLbV8NSBEw47kZReg9FoA2h3RZUgCCyPGLvg5f56M=
+	t=1762414118; cv=none; b=cHtmo0cvBd1BBta7kXS1FVOoo842DnNUD8BFbxkPAPVLgHTpcEw7TIrqWy2eh/cG4dZQ+4OviUvvM9gSDU6E1DBTp56ZSo7oTOS2DSOX3ksEtoa2IY/ri7rlqRk+Er/ZQFoHjYtL+iA9QMnn47IgKpSmDSXSEEz4jIYFPNBuvuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762405459; c=relaxed/simple;
-	bh=9MFTHhTyAuIXmNt1lnMnlfUeqBBv+PebUZL4ozVF4tg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LPpIwXHm1pO4sbQZ4qppIxYMfFp6hlOfwShsmtyWuM9fCCturmEG1yvlUtYBIQNuNTIENZBE9Dt9r0n8P7IqPlixbR+W+xL11PHSgoh+kc2OWCAcqKB0rN+s2W5vFk7FL2waong37MSfCtLgma9qi0aiuElD0IuG4fKGKTfnVGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VzQM6QJL; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762405447; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ayrBHiC5YJYK4R+BfF6m9SthRISNQab5BiTJkkGwV8Q=;
-	b=VzQM6QJLTpKYPkMWL1mWwbq3Jucf5d9Mp6cbimom7J9GUZSGJZwNyg1mycwEZtNqu1lpua8DOzT1mi2jF6Ww4n/xlLP4JM12GVAxJkwbtaB7/ejcHZ2i29l2s8i4MdQxP/Rd28pzjtolnkC9nk1ZluJjJLzSJuSLu4a0a4b7BK8=
-Received: from 30.246.177.186(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WroMjBT_1762405446 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 06 Nov 2025 13:04:07 +0800
-Message-ID: <d49c1287-6a55-4eff-a908-b8a878bdd08a@linux.alibaba.com>
-Date: Thu, 6 Nov 2025 13:04:05 +0800
+	s=arc-20240116; t=1762414118; c=relaxed/simple;
+	bh=1wTrCw7tH2niQnnjbLnl1ZIXBSWyC/o4xO/RZgOwT9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YcUDOOQFtuPmlsb1N49pE1/KXGhyKAjm8547xDe1ky2KgNF6By0pd5CoPfWBceitToD/SfxuazSn6bDqgxGbga/EZ1NDFa5YAixzxvIWyPBvUm/gGqZsT1+ht38yekOjOAgCHnS+OvdIP0umpTR6lLOQDU9qPIocp4FMWfEvfcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fCe0husl; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762414117; x=1793950117;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1wTrCw7tH2niQnnjbLnl1ZIXBSWyC/o4xO/RZgOwT9Q=;
+  b=fCe0huslffM3ABkqPVSCxVrB7skYiFgevz3swToEDhT97Ck6b55q/62q
+   xN4vRkXAQeAgUeFPHsesQ3F8GpeS6sqkyMXf/Qp2iCanmFSwM1U5JOrhB
+   GtbfsBlPvkIwQr7Ur6rlAkTceHqliYymYmfkcmVmWTTJXXi2CIvy/eEpq
+   cKscMov5np1q4uZ1qCRXjJWGIB9xDsQ4YHQu4GThCxeyWuHxvGKuQGFYP
+   NwFZFyL03ttA4zl0/7rNHdio08PGTI3OidoATisSyw+Nb6Zj1oAOLUaD6
+   Bpv5NwX7JMrYUEYYEf8jVjsbdKQAJ66JqTw+MK7r0rf4rxU2tccphuCpq
+   g==;
+X-CSE-ConnectionGUID: fgDu94gcS4eH9mGFb22/1g==
+X-CSE-MsgGUID: ayk0iFZpScmH0XgLm/OePQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="63747901"
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
+   d="scan'208";a="63747901"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 23:28:36 -0800
+X-CSE-ConnectionGUID: fZ57IoJRQkaBLs/kz5cTvQ==
+X-CSE-MsgGUID: cWySKE1OQGO2fBzdQv5eaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
+   d="scan'208";a="191965191"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.151])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 23:28:32 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id C5BB811F983;
+	Wed, 05 Nov 2025 22:54:31 +0200 (EET)
+Date: Wed, 5 Nov 2025 22:54:31 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v5 3/8] software node: allow referencing firmware nodes
+Message-ID: <aQu5hxGGrdPC7VOB@kekkonen.localdomain>
+References: <20251105-reset-gpios-swnodes-v5-0-1f67499a8287@linaro.org>
+ <20251105-reset-gpios-swnodes-v5-3-1f67499a8287@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: APEI: GHES: Improve ghes_notify_nmi() status check
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev,
- Andi Kleen <andi.kleen@intel.com>
-References: <20251103230547.8715-1-tony.luck@intel.com>
- <4ecbe3d3-71f0-47e9-8fad-35b16689d1fa@linux.alibaba.com>
- <aQwDd-Nhgxpkdrcb@agluck-desk3>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <aQwDd-Nhgxpkdrcb@agluck-desk3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105-reset-gpios-swnodes-v5-3-1f67499a8287@linaro.org>
 
+Hi Bartosz,
 
+Thanks for the update.
 
-在 2025/11/6 10:09, Luck, Tony 写道:
-> On Thu, Nov 06, 2025 at 09:46:33AM +0800, Shuai Xue wrote:
->>
->>
->> 在 2025/11/4 07:05, Tony Luck 写道:
->>> ghes_notify_nmi() is called for every NMI and must check whether the NMI was
->>> generated because an error was signalled by platform firmware.
->>>
->>> This check is very expensive as for each registered GHES NMI source it reads
->>> from the acpi generic address attached to this error source to get the physical
->>> address of the acpi_hest_generic_status block.  It then checks the "block_status"
->>> to see if an error was logged.
->>>
->>> The ACPI/APEI code must create virtual mappings for each of those physical
->>> addresses, and tear them down afterwards. On an Icelake system this takes around
->>> 15,000 TSC cycles. Enough to disturb efforts to profile system performance.
->>
->> Hi, Tony
->>
->> Interesting.
->>
->> If I understand correctly, you mean ghes_peek_estatus() and
->> ghes_clear_estatus().
->>
->> I conducted performance testing on our system (ARM v8) and found the
->> following average costs:
->>
->> - ghes_peek_estatus(): 8,138.3 ns (21,160 cycles)
->> - ghes_clear_estatus(): 2,038.3 ns (5,300 cycles)
+On Wed, Nov 05, 2025 at 09:47:34AM +0100, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> ARM doesn't use the NMI path (HAVE_ACPI_APEI_NMI is only set on X86).
-> But maybe you are looking at ghes_notify_sea() which seems similar?
-
-Yes. It is measured in ghes_notify_sea().
-
->>
->>>
->>> If that were not bad enough, there are some atomic accesses in the code path
->>> that will cause cache line bounces between CPUs. A problem that gets worse as
->>> the core count increases.
->>
->> Could you elaborate on which specific atomic accesses you're referring to?
+> At the moment software nodes can only reference other software nodes.
+> This is a limitation for devices created, for instance, on the auxiliary
+> bus with a dynamic software node attached which cannot reference devices
+> the firmware node of which is "real" (as an OF node or otherwise).
 > 
-> ghes_notify_nmi() starts with code to ensure only one CPU executes the
-> GHES NMI path.
+> Make it possible for a software node to reference all firmware nodes in
+> addition to static software nodes. To that end: add a second pointer to
+> struct software_node_ref_args of type struct fwnode_handle. The core
+> swnode code will first check the swnode pointer and if it's NULL, it
+> will assume the fwnode pointer should be set.
 > 
-> 	if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
-> 		return ret;
+> Software node graphs remain the same, as in: the remote endpoints still
+> have to be software nodes.
 > 
-> Looks like an optimization to avoid having a bunch of CPUs queue up
-> waiting for this spinllock:
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+But see below...
+
+> ---
+>  drivers/base/swnode.c    | 24 ++++++++++++++++++++++--
+>  include/linux/property.h | 13 ++++++++++---
+>  2 files changed, 32 insertions(+), 5 deletions(-)
 > 
-> 	raw_spin_lock(&ghes_notify_lock_nmi);
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 6b1ee75a908fbf272f29dbe65529ce69ce03a021..44710339255ffba1766f5984b2898a5fb4436557 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -535,7 +535,24 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+>  	ref_array = prop->pointer;
+>  	ref = &ref_array[index];
+>  
+> -	refnode = software_node_fwnode(ref->node);
+> +	/*
+> +	 * A software node can reference other software nodes or firmware
+> +	 * nodes (which are the abstraction layer sitting on top of them).
+> +	 * This is done to ensure we can create references to static software
+> +	 * nodes before they're registered with the firmware node framework.
+> +	 * At the time the reference is being resolved, we expect the swnodes
+> +	 * in question to already have been registered and to be backed by
+> +	 * a firmware node. This is why we use the fwnode API below to read the
+> +	 * relevant properties and bump the reference count.
+> +	 */
+> +
+> +	if (ref->swnode)
+> +		refnode = software_node_fwnode(ref->swnode);
+> +	else if (ref->fwnode)
+> +		refnode = ref->fwnode;
+> +	else
+> +		return -EINVAL;
+> +
+>  	if (!refnode)
+>  		return -ENOENT;
+>  
+> @@ -633,7 +650,10 @@ software_node_graph_get_remote_endpoint(const struct fwnode_handle *fwnode)
+>  
+>  	ref = prop->pointer;
+>  
+> -	return software_node_get(software_node_fwnode(ref[0].node));
+> +	if (!ref->swnode)
+> +		return NULL;
+> +
+> +	return software_node_get(software_node_fwnode(ref[0].swnode));
+
+This could be:
+
+	return software_node_get(software_node_fwnode(ref->swnode));
+
+>  }
+>  
+>  static struct fwnode_handle *
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 50b26589dd70d1756f3b8644255c24a011e2617c..272bfbdea7bf4ab1143159fa49fc29dcdde0ef9d 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -355,19 +355,26 @@ struct software_node;
+>  
+>  /**
+>   * struct software_node_ref_args - Reference property with additional arguments
+> - * @node: Reference to a software node
+> + * @swnode: Reference to a software node
+> + * @fwnode: Alternative reference to a firmware node handle
+>   * @nargs: Number of elements in @args array
+>   * @args: Integer arguments
+>   */
+>  struct software_node_ref_args {
+> -	const struct software_node *node;
+> +	const struct software_node *swnode;
+> +	struct fwnode_handle *fwnode;
+>  	unsigned int nargs;
+>  	u64 args[NR_FWNODE_REFERENCE_ARGS];
+>  };
+>  
+>  #define SOFTWARE_NODE_REFERENCE(_ref_, ...)			\
+>  (const struct software_node_ref_args) {				\
+> -	.node = _ref_,						\
+> +	.swnode = _Generic(_ref_,				\
+> +			   const struct software_node *: _ref_,	\
+> +			   default: NULL),			\
+> +	.fwnode = _Generic(_ref_,				\
+> +			   struct fwnode_handle *: _ref_,	\
+> +			   default: NULL),			\
+>  	.nargs = COUNT_ARGS(__VA_ARGS__),			\
+>  	.args = { __VA_ARGS__ },				\
+>  }
 > 
-> when the first one to get it will find and handle the logged error.
 
-If an NMI issued, at last one status block is active. I don't see how
-the code path is different.
+-- 
+Kind regards,
 
->>
->>>
->>> But BIOS changes neither the acpi generic address nor the physical address of
->>> the acpi_hest_generic_status block. So this walk can be done once when the NMI is
->>> registered to save the virtual address (unmapping if the NMI is ever unregistered).
->>> The "block_status" can be checked directly in the NMI handler. This can be done
->>> without any atomic accesses.
->>>
->>> Resulting time to check that there is not an error record is around 900 cycles.
->>>
->>> Reported-by: Andi Kleen <andi.kleen@intel.com>
->>> Signed-off-by: Tony Luck <tony.luck@intel.com>
->>>
->>> ---
->>> N.B. I only talked to an Intel BIOS expert about this. GHES code is shared by
->>> other architectures, so it would be wise to get confirmation on whether this
->>> assumption applies to all, or is Intel (or X86) specific.
->>
->> The assumption is "BIOS changes neither the acpi generic address nor the
->> physical address of the acpi_hest_generic_status block."?
->>
->> I've consulted with our BIOS experts from both ARM and RISC-V platform
->> teams, and they confirmed that error status blocks are reserved at boot
->> time and remain unchanged during runtime.
-> 
-> Thanks. Good to have this confirmation.
-> 
->>> ---
->>>    include/acpi/ghes.h      |  1 +
->>>    drivers/acpi/apei/ghes.c | 39 ++++++++++++++++++++++++++++++++++++---
->>>    2 files changed, 37 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
->>> index ebd21b05fe6e..58655d313a1f 100644
->>> --- a/include/acpi/ghes.h
->>> +++ b/include/acpi/ghes.h
->>> @@ -29,6 +29,7 @@ struct ghes {
->>>    	};
->>>    	struct device *dev;
->>>    	struct list_head elist;
->>> +	void __iomem *error_status_vaddr;
->>>    };
->>>    struct ghes_estatus_node {
->>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->>> index 97ee19f2cae0..62713b612865 100644
->>> --- a/drivers/acpi/apei/ghes.c
->>> +++ b/drivers/acpi/apei/ghes.c
->>> @@ -1425,7 +1425,21 @@ static LIST_HEAD(ghes_nmi);
->>>    static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
->>>    {
->>>    	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_nmi);
->>> +	bool active_error = false;
->>>    	int ret = NMI_DONE;
->>> +	struct ghes *ghes;
->>> +
->>> +	rcu_read_lock();
->>> +	list_for_each_entry_rcu(ghes, &ghes_nmi, list) {
->>> +		if (ghes->error_status_vaddr && readl(ghes->error_status_vaddr)) {
->>> +			active_error = true;
->>> +			break;
->>> +		}
->>> +	}
->>> +	rcu_read_unlock();
->>> +
->>> +	if (!active_error)
->>> +		return ret;
->>
->> Shoud we put active_error into struct ghes? If we know it is active, we
->> do not need to call __ghes_peek_estatus() to estatus->block_status().
-> 
-> That might be a useful addition. I was primarily concerned in fixing the
-> "no erroor" case that happens at a very high rate while profiling the
-> system with "perf". 
-
-Do you mean you see "NMI received for unknown reason" when profiling with
-"perf"? And the unknown error is handled by ghes_notify_nmi().
-
-I see some unknown NMI in production in Intel platform, but I did not
-figure out how it happend. Can you help to explain it?
-
-> But skipping (or just removing?
-> __ghes_peek_estatus()) if you have already confirmed that there is
-> a logged error would be good.
-> 
-> If you can use the same technique for ghes_notify_sea() then it would be
-> sensible to move the code I added to ghes_nmi_add() to ghes_new() to
-> save the virtual address for every type of GHES notification.
-
-Sure, I'd like to add it for ghes_notify_sea().
-
-Thanks.
-Shuai
-
+Sakari Ailus
 
