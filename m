@@ -1,82 +1,82 @@
-Return-Path: <linux-acpi+bounces-18523-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18524-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D402DC348FE
-	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 09:50:04 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E2C34922
+	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 09:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED41C18C7FA5
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 08:49:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F0BF4F6612
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 08:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D862E54A8;
-	Wed,  5 Nov 2025 08:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530732E7653;
+	Wed,  5 Nov 2025 08:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wxsI0aqW"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="dy+gHzTa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489342E2DFE
-	for <linux-acpi@vger.kernel.org>; Wed,  5 Nov 2025 08:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694E22E610F
+	for <linux-acpi@vger.kernel.org>; Wed,  5 Nov 2025 08:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762332489; cv=none; b=XcAhcKyjYkOVWSqpT1CIf1K0GiaTpnY8yg72q1hH1OH+diGj6FyJR9TYQun+dfn27gGq0dDhv/7hbZ/hFUapCwhqBuoqqrvg3B8zz4owakohZ/OQ47Y6W0SFHSh8Tm5lAy/BAaIUs4RVC8ppP7sGx79XksL8CBQbh8OmuUmNWig=
+	t=1762332491; cv=none; b=V7xglKAWBGAd/9+uJFae17+KXjOWSABpCIoYk7wJFHig9OdNqX4ZzmBRvxtk2s1Ul4nUmsumWW5Pb5bOJQiqru6tK/1/jOcqOnTKULAia2LYSJqdnVuNMqfeTajXr5pobUAH8Y0Gf+sRoCeHFehKVvFzLIEN1VE//SnYiPzVRyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762332489; c=relaxed/simple;
-	bh=X8edYpKFxJakc/RTqEB+Pipzfl1zQL02ONMlmJvW7is=;
+	s=arc-20240116; t=1762332491; c=relaxed/simple;
+	bh=z0YSr7KrcAc/k0WngzdsyXNvl3twXbRlw/uwLjuKOK4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KQ5Q//JdicVttIyRdvfqOhnQ0Gm1VSB7E+Y7mxn5H4F5H7AAHSMtJiLzPgAoiAwlOGv24fYtLRQU8yq8Dy6243YaUABRZwIy2dk6fTAM7SZWBZ1N45UtFt61chvEgfFrAAW2+QH7pxBodboa+QQSH02auFbcRMUyU0eIX7qFQB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wxsI0aqW; arc=none smtp.client-ip=209.85.221.54
+	 In-Reply-To:To:Cc; b=lTbdgq5i62ykrfV7VgjHJEpjPOuCz7TcN2XUAsjpv4mp2i6dqk8Omf3Z2F7pVM5ptpPMtgNElzbzXvWi6ho85RPunyHBirY1ahyMxcyz1RelRhptvTh6/cJeuAuz6Tonc2VBN2VEFBHOPtQw+sXHjquYxGauKpOmsNYAMkHueq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=dy+gHzTa; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-429c8632fcbso3174320f8f.1
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Nov 2025 00:48:07 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so4107507f8f.0
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Nov 2025 00:48:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762332485; x=1762937285; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762332488; x=1762937288; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cWWTasux6nuDvfpZkvePzyRGdU+qe2S0riWlt2ij+bg=;
-        b=wxsI0aqWJHp2fdcFWv+TDXXYlICmmezR4sL4ipmQirG4lHI6IlXY6X9YP45+EFYo2P
-         yKoQWVpYHw9VnqlUSknz5fKWTDF+ceDX82xAYd/NQB4OMj23L9BkAh0KzJI9vzToDIHv
-         3diqvJ0fhO9c/RzlUsr4r3KjjXyXjdufl0zxUcV6gHd8+RM7oUYx2riyCzVnvMe51URE
-         0+suzwwpO4dkNXxuXw06UtJVhonoe4v1LSBQfEcbgjbuIGKHDV+TC7+U6lEapGiMuoqG
-         XcyaCiV9AONuyntFXDUcbcHk2j5VeA/OYCSIhAI6fQhnP7pCGD3vv6ok+FgMY+TNZs6O
-         ufEA==
+        bh=Fvp1VGmfGTlzha3gDCL6Cw0t8OXa3klcmoFT2A8KMRg=;
+        b=dy+gHzTaCSQKVv7bgXbWEbOcCyH6y/WrrgmbhbIQA/Yy9pU2ivUe1q/EA8OnBKg9HA
+         y+YywLZ/FsxpP5aCVTkIVpHfZQA+uuzDcjecsrMwJSwDS8/tE1MQ8bP15R5yw4q6e3dg
+         NOqKSDSJ8AtCkbc3qiUtxIW+rFFdwY5jN6punOonfa7qF3j4Icao/xGPnDQuVZo37Pf3
+         8vjbLnuWyP1EjF9U174ll8WGXOySVjBdFs4oceiGm2XH4OgV9RZF3VDnJ7QB8VPIr7/j
+         A4fnTuD7DZjgecy+SFTnGvp4XUpK1aOEZGXmfqrftPnC7IxUWf1ZaEOzlQnCJJUE6E2g
+         5ywA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762332485; x=1762937285;
+        d=1e100.net; s=20230601; t=1762332488; x=1762937288;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cWWTasux6nuDvfpZkvePzyRGdU+qe2S0riWlt2ij+bg=;
-        b=WVexBg6S4bNs8mBIWiH6YELGebZFNhluIGo1NoXv6k++ztJ82QSGElkRq3sK7ex5eV
-         +GFQ7Xpb+lsE2N04Ff+d09J6xDzwtrVcc2A4DZxLURXpZOmi054ClapuePchWCtlooA7
-         /jIEDPZXDHCuJH8zlaQ3d/IiQN7bVJ6nqlYpF/nA4lJip0yaDjbqMXrdoTaGJ0qjsCef
-         rLciW7D2MnRCTdd5v/onFAUTifHj/WttKtw5dqTLo5y1Ct7fnTMWPE7dKmyqS5/vTUfE
-         n8fNHDVbq+paSiSR7nCjP4Txk1h0y/KImcDGG6v0HPNoZVPzHNrVWTnKvduqkZN93gJS
-         i9Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCX2AxNtri20aYT4Qe4E/rYXvq7KAtAmfhlcfbCSD5mt7YEJMq6CP8xxhQP675IwPAMn7aIPJHE5vesm@vger.kernel.org
-X-Gm-Message-State: AOJu0YydhpuG9fHE9HVabII4aEZXP0H92PlWesPYxrZcoxgJDCNLta2W
-	cqvBrrFPR/iBPhcDGjCiI6RaN8C1KSkALZ9C6uLUVVF+sPZfkDGn5XZaIJQ5WwRdsuU=
-X-Gm-Gg: ASbGncsFmPVHr4UguvqVYAM61ilttZkBb8MgcE9ayXJ0HXxu3Eryo9mmoIY9chVvCil
-	99zMAfSzuVSCIc8pKxWIAIk3VZZK5oyE3EshqRjrolKi25WTRNEDHzXr5LiyYYRDv3wm2fHkM2S
-	LMmbiqHAl/wUskLiFLx6Qp+N/KnjuBlgXRrRQPXdU3fulb7YdgE7YvpDh+Ilr4aehGa0rgkb2pU
-	ZdCd6kaQuSN0iZJ2tBYjROiicUr2y00Wr2zIOCRWRIV7G7aUFFkLqfncX/RcTrsE/WCaSBtm+6m
-	Q8Rj66ppmYl1HYsdF0bmUsV09R960G6IzVN4ePd781M3DqwnOtyHPf3BVxgOMYfJsghoItsbR+l
-	gtPXMW3d8ndwRdqOcAuPM9wl+WJyKmifYen1ur9PA2y1hW/dJ42csZPg4twWZeQRi4cF0bA==
-X-Google-Smtp-Source: AGHT+IFKGljAN4NkKVJIQ54D8McX8K1Nf915phMDtJjjRKpgui/5LxN2/d8VKz+lQTYKVEd42J88qA==
-X-Received: by 2002:a05:6000:220e:b0:425:7c1b:9344 with SMTP id ffacd0b85a97d-429e32e91b2mr2003985f8f.15.1762332485395;
-        Wed, 05 Nov 2025 00:48:05 -0800 (PST)
+        bh=Fvp1VGmfGTlzha3gDCL6Cw0t8OXa3klcmoFT2A8KMRg=;
+        b=iEzpj7gqeB0cH7dRdvRHu1SvzejW37kNKRGxC8Nn2DuP3b+3CLd3fA1VkzM1Lst8Ev
+         j5oAuoq9InRSBQq05SYFRfP2SoRTiT3MbqdMJAG1q08vpPDNQYmBLyWXkm5iCnsdukwq
+         I0nE4/ygEyvS437M2HI9C24jGxlSj0OtbIvdc5G6X58jOjEcArzg7ljDydAjNk1GSyZn
+         K9FkoRMONjjxD7ACgZcshzxYzgcSFKJ/fBf29wiyaLN69uXI5b3VjoPGId/Lqw4WZBkQ
+         PMvLKPi9QbwWyCOeGjp5GDzBDTrSjweBDj0Hp46sG6A/z5gzk4QQSuDFqcXiBFjJQKYc
+         pi2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU+SQ4PWbjqq45gHagKyOVT9hT6sgHYuA0ToGkIRXDKYzMqj4CCKiOl556bkyVYPbvO1R39goEeFJMX@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3iyALyQTVoMjsJGB1tgUaD3McdM/WPZ2zg+s5GtmCoMR4oPRI
+	0pJmSK3ERHjX/GvL+S2Z13q1g/c9RTbvV+h9jOQ6cI7c4W2+oaPUOD6Do4HmKT8xCuY=
+X-Gm-Gg: ASbGnctF38GK1mtgCwJexbl/tVBo0Dq93vm7T3FaiKMjcP4JKWW6KJ2C9uI+m0iOwEp
+	hh51Q+4i7OfD7Hrb/6fwFVQBBQqc1V5xV202mtpgP+tk1F2BrCuTP6WJB1sW5R6opYKgg3OjqAa
+	/c9WYO4f1Mr/FlBlvVvGgUwx8AucIPI2slYusXa59IhB70VFmxS0iBmud3NakBFcwWYrCHJYA7z
+	IldCZhKiAVUzvXd3XoV6VWZpsbXTXT1HKEITmXq1By5KIPvdeIY8odIzxU3QTxvwMA0FuCqktn+
+	zqZI3NpjH+5qj/JFBtpkfJsM1N7MeplU7kI+QbZ4ydnKSHyDLaQi7fb2tBId28KaY4w/yyTV2Mw
+	GdMA3ZBxBHuwU07PM5IVT6gG2YFgraT20AGACayAPQ1OFjrIGf/JT4Ap06HVYmxxdKF4Axw==
+X-Google-Smtp-Source: AGHT+IFCE+4Da8gI0APq0iWn7f7Tme0BJA40NUIdTq6Amxypg2aQ2fAQIQCz8g+XzJc63cIpCBUPiA==
+X-Received: by 2002:a05:6000:2382:b0:429:d6b7:6b9f with SMTP id ffacd0b85a97d-429e32f47f8mr2313937f8f.26.1762332487723;
+        Wed, 05 Nov 2025 00:48:07 -0800 (PST)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:4e71:8371:5a52:77e4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1f9cdbsm9315936f8f.34.2025.11.05.00.48.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1f9cdbsm9315936f8f.34.2025.11.05.00.48.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 00:48:04 -0800 (PST)
+        Wed, 05 Nov 2025 00:48:05 -0800 (PST)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 05 Nov 2025 09:47:36 +0100
-Subject: [PATCH v5 5/8] reset: order includes alphabetically in
- reset/core.c
+Date: Wed, 05 Nov 2025 09:47:37 +0100
+Subject: [PATCH v5 6/8] reset: make the provider of reset-gpios the parent
+ of the reset device
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-reset-gpios-swnodes-v5-5-1f67499a8287@linaro.org>
+Message-Id: <20251105-reset-gpios-swnodes-v5-6-1f67499a8287@linaro.org>
 References: <20251105-reset-gpios-swnodes-v5-0-1f67499a8287@linaro.org>
 In-Reply-To: <20251105-reset-gpios-swnodes-v5-0-1f67499a8287@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -102,64 +102,101 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1201;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3056;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=YAQBLalSG4YSjo0vg2GdIJVruVYhGTc+UD/iGlJqB84=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBpCw8x21Ejb1yFXnz2kosAyWpBJETwb/9mWsPQJ
- itx3PJY7NCJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaQsPMQAKCRARpy6gFHHX
- cjpCD/4nA48zw7npFITzKnfkqKIPQbwERTmdckcuMxGRycWKQT3YIusQjBVBT6yNHbh6qxOSmBy
- C/C+uO9mPBzlHmcCpdLJwg5MAZVNZzI7U9yzYYNkrt6OFKA8FEHwL71cn4Irjsx1JemJYg4QAGQ
- kdItL1908rDm9waGQ1hf2ak7FQquQwB2E6Y+u3bwsm+OB6I+isPXtp9IIfBr81XIKFE5Zj0O7Zs
- GzRQn6eKn5/JvXDsHKP9tkwOI5mYRTYz5K3rtg7+h0PwKzv/2/dl8PzqGhexkmuH10pG8EWyqD2
- Gl+/gw7s+2gqQa1jjmiFCjBZOBrJCYn3g1R4k3u0yognbCB8FgJdIAhjxL9tfqW+EweFryz8K+F
- /eq+nADel9SQ4Qk0ZlJ8IogXH8kB53U750N/cL5u2Aj1tFaCp88ZddnSehZ8UJdso1T8EzlBAE0
- 8yIcWFlwy7i8Gz4eaYrSQdTlqQ60K/2zLB5E8+tCoOkcS5PJgNvHpRuQujagaoXQUC51V5etekn
- 04qvF/eSDMmsfUD1NsfNUexn8h1aTJMLL5jqCQMaK5A/QTwk1yQxIkhb/Pa/dJ8GfqveMZBeO+p
- q/Nh/Ifxg7043rVJDbsMVXFqfZ8cQEFni1RpJKjjLPmu+GrRaosIf+lOBKMyRh2NHDvDutKeH/D
- uSP3TrjJFOYNrtA==
+ bh=wbCx8dCgwX5b7rXFrK7TZvcGe4EfqUhDGU8MlxrqJm4=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBpCw8y94lVfYRIK3McHELuUpTU5D9HiSg4LMYZM
+ EAFZ69aoMCJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaQsPMgAKCRARpy6gFHHX
+ ci/GEADK4gCdF+QDAPvyLEV4JJIEZZxgc1ErzGdn2kDofeunda+GvStXzppBh/AuLJ4gxCjfq0S
+ l1wmQAggynStqV+JKrxGsCw/fDMxLObSyY1lgDa+usBSk+dFPTDAYhT5HAecSJn0/aCyPwp/5Mg
+ 2H7M5a8RpFXeuA2DqnLp+OtIUylDqO2DwEr8+R8CBrjJO11QRCbT1bXFKiC67sVTkLdfQCPntFh
+ EdI1AyHFpBaKWzO794u1vQoSMRHEvZZwBdsMx/icWd1yLl3GKL0rSrvbd6HUuiKQjCU4QMdVAx7
+ kNQf6Kcm+KrHm9TEsaDGEStQWonlDedBK6YQ3O4rngunRNW7mRXsmfFzP9MT5bNRnScjj3hJVK/
+ mJyGTFXxwhyCFWwRPZyOvACvGKyiAUJEZjDJ67TnsuAilPYrWGMD4QK0CG9zsBU5VrDlXewu4zZ
+ mk80DChNrF1wkVh+4TcUJVoxVIz1mlk722K2+uF/gNy1k+DKlyIbZIpCg3sQfnUWCog1o+V9KL2
+ bRoSlxkfuz2ei975/7mushqLRkpUrmLgeStJqV0DNaMlbaqAHc/Qc/a0xkUbuXy9b54g3IZ+8r5
+ UhTrrZYZiUZCDWECU3GVJQzil+X6wAuEzHjuKZKRg01NYjtlh9msW88V6H2Xgq0nCFYoell4GJr
+ jHg0GjyJe3xm22A==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-For better readability and easier maintenance order the includes
-alphabetically.
+Auxiliary devices really do need a parent so ahead of converting the
+reset-gpios driver to registering on the auxiliary bus, make the GPIO
+device that provides the reset GPIO the parent of the reset-gpio device.
+To that end move the lookup of the GPIO device by fwnode to the
+beginning of __reset_add_reset_gpio_device() which has the added benefit
+of bailing out earlier, before allocating resources for the virtual
+device, if the chip is not up yet.
 
 Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 Acked-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/reset/core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/reset/core.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 4fbaa67a6f79a4af62855c88f6b74f92c3d97159..a368b14144e7bc29ae23becab2eb7a96a4adbe44 100644
+index a368b14144e7bc29ae23becab2eb7a96a4adbe44..af42f4d12bbbfcba225219eac6d6c7edbe2405cc 100644
 --- a/drivers/reset/core.c
 +++ b/drivers/reset/core.c
-@@ -4,19 +4,20 @@
-  *
-  * Copyright 2013 Philipp Zabel, Pengutronix
-  */
+@@ -822,11 +822,11 @@ static void __reset_control_put_internal(struct reset_control *rstc)
+ 	kref_put(&rstc->refcnt, __reset_control_release);
+ }
+ 
+-static int __reset_add_reset_gpio_lookup(int id, struct device_node *np,
++static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int id,
++					 struct device_node *np,
+ 					 unsigned int gpio,
+ 					 unsigned int of_flags)
+ {
+-	const struct fwnode_handle *fwnode = of_fwnode_handle(np);
+ 	unsigned int lookup_flags;
+ 	const char *label_tmp;
+ 
+@@ -841,10 +841,6 @@ static int __reset_add_reset_gpio_lookup(int id, struct device_node *np,
+ 		return -EINVAL;
+ 	}
+ 
+-	struct gpio_device *gdev __free(gpio_device_put) = gpio_device_find_by_fwnode(fwnode);
+-	if (!gdev)
+-		return -EPROBE_DEFER;
+-
+ 	label_tmp = gpio_device_get_label(gdev);
+ 	if (!label_tmp)
+ 		return -EINVAL;
+@@ -899,6 +895,11 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
+ 	 */
+ 	lockdep_assert_not_held(&reset_list_mutex);
+ 
++	struct gpio_device *gdev __free(gpio_device_put) =
++		gpio_device_find_by_fwnode(of_fwnode_handle(args->np));
++	if (!gdev)
++		return -EPROBE_DEFER;
 +
-+#include <linux/acpi.h>
- #include <linux/atomic.h>
- #include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/export.h>
--#include <linux/kernel.h>
--#include <linux/kref.h>
- #include <linux/gpio/driver.h>
- #include <linux/gpio/machine.h>
- #include <linux/idr.h>
-+#include <linux/kernel.h>
-+#include <linux/kref.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/acpi.h>
- #include <linux/platform_device.h>
- #include <linux/reset.h>
- #include <linux/reset-controller.h>
+ 	guard(mutex)(&reset_gpio_lookup_mutex);
+ 
+ 	list_for_each_entry(rgpio_dev, &reset_gpio_lookup_list, list) {
+@@ -919,7 +920,7 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
+ 		goto err_ida_free;
+ 	}
+ 
+-	ret = __reset_add_reset_gpio_lookup(id, args->np, args->args[0],
++	ret = __reset_add_reset_gpio_lookup(gdev, id, args->np, args->args[0],
+ 					    args->args[1]);
+ 	if (ret < 0)
+ 		goto err_kfree;
+@@ -931,7 +932,8 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
+ 	 * Hold reference as long as rgpio_dev memory is valid.
+ 	 */
+ 	of_node_get(rgpio_dev->of_args.np);
+-	pdev = platform_device_register_data(NULL, "reset-gpio", id,
++	pdev = platform_device_register_data(gpio_device_to_device(gdev),
++					     "reset-gpio", id,
+ 					     &rgpio_dev->of_args,
+ 					     sizeof(rgpio_dev->of_args));
+ 	ret = PTR_ERR_OR_ZERO(pdev);
 
 -- 
 2.51.0
