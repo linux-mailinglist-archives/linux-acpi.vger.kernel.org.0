@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-18562-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18563-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086A0C38688
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 00:49:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB83C3867F
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 00:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B95E94F3DAC
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 23:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A64C03B3D03
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 23:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616AF2DC342;
-	Wed,  5 Nov 2025 23:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470B6258EC1;
+	Wed,  5 Nov 2025 23:49:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4271834CDD;
-	Wed,  5 Nov 2025 23:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7E81FA272;
+	Wed,  5 Nov 2025 23:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762386539; cv=none; b=tykhKXrkzWvkF6wN0VfIfHANMHVHMXW8L5A9649w7WMEM3IqRZUr+QMMEKEGRdxqyvrLasyLXGK+IjfDC4kbel9SGIRSQ+qEhZXm0hr7Rd25VMxmR+bNTbQwDQH1WNydAmrbPT1Gy05kR2ZN2zWTeJ2XGG/KSXETnVbfpCNLQX4=
+	t=1762386541; cv=none; b=fIdVEQPPvr5qHwBRliW1aXKOqZn8tjIY6YSm9sPA0TGlpuypV+6t3722T6JpnhG1c3Y6ABjQYnDETdECFryhEnLpYQD07jaC9Q6HnPnRUm9/zlpeRNDCICSMszXpkoNw9Ooql1C6J0ppz8z8odWJiREmgQgOOwLlHdc0DyZoSzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762386539; c=relaxed/simple;
-	bh=B2k3xFM0Shdi3e3P19hj1+izH5kPwAJYk/HrG5f0yrs=;
+	s=arc-20240116; t=1762386541; c=relaxed/simple;
+	bh=EbOHSgLDrk9RhJCElcvwo/xfT2UXm3dcCPq91nMz9vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSjIJfqppu8yJZU+6zT8GzseGAL422wGIWkYjHZxO0P/l/1IHRVacgfO/DPX1AwPnzrpTwChEw1nItp29Y+Jq+CnMuVwkJ58ye2iHb+wycb0Ho5mDhzQxZ7hhbFUZeHUCf3i+GW2SqnwsbR5i0tNojutyd9IaDsEFK1ACHi7oyM=
+	 MIME-Version; b=HNLJC2Ylijp5X83aqFJ/Ncm/ez7G2jNfagu/XOJtlR5qW85r8ErMZ0EdiczTREhC6B+MZ9xUa7W+VMP18HeJXG5eJy+68wQSF4sU7A6EMtpmqLijIdxl3TUj7FqnPop18l4tKTWV8P13q+ynVkR7Lt1MfKECdd3LdLjHhfXgTQE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0541C4CEF5;
-	Wed,  5 Nov 2025 23:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771EFC4CEF5;
+	Wed,  5 Nov 2025 23:49:00 +0000 (UTC)
 From: Dave Jiang <dave.jiang@intel.com>
 To: nvdimm@lists.linux.dev,
 	linux-cxl@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: dan.j.williams@intel.com,
 	ira.weiny@intel.com,
 	rafael@kernel.org,
 	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v4 0/2] acpi/hmat: hmat_register_target() refactor to address lockdep warning
-Date: Wed,  5 Nov 2025 16:48:49 -0700
-Message-ID: <20251105234851.81589-4-dave.jiang@intel.com>
+Subject: [PATCH v4 1/2] acpi/hmat: Return when generic target is updated
+Date: Wed,  5 Nov 2025 16:48:50 -0700
+Message-ID: <20251105234851.81589-5-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251105234851.81589-1-dave.jiang@intel.com>
 References: <20251105234851.81589-1-dave.jiang@intel.com>
@@ -52,22 +52,42 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-v4:
-- Refactor hmat_hotplug_target() (Jonathan)
-- Fix fixes tag. (Jonathan)
+With the current code flow, once the generic target is updated
+target->registered is set and the remaining code is skipped.
+So return immediately instead of going through the checks and
+then skip.
 
-This series has changes that refactor the hmat_register_target() function
-to clean up a lockdep warning.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+---
+no changes
+---
+ drivers/acpi/numa/hmat.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Dave Jiang (2):
-  acpi/hmat: Return when generic target is updated
-  acpi/hmat: Fix lockdep warning for hmem_register_resource()
-
- drivers/acpi/numa/hmat.c | 60 ++++++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 27 deletions(-)
-
-
-base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 5a36d57289b4..1dc73d20d989 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -888,12 +888,13 @@ static void hmat_register_target(struct memory_target *target)
+ 	 * Register generic port perf numbers. The nid may not be
+ 	 * initialized and is still NUMA_NO_NODE.
+ 	 */
+-	mutex_lock(&target_lock);
+-	if (*(u16 *)target->gen_port_device_handle) {
+-		hmat_update_generic_target(target);
+-		target->registered = true;
++	scoped_guard(mutex, &target_lock) {
++		if (*(u16 *)target->gen_port_device_handle) {
++			hmat_update_generic_target(target);
++			target->registered = true;
++			return;
++		}
+ 	}
+-	mutex_unlock(&target_lock);
+ 
+ 	/*
+ 	 * Skip offline nodes. This can happen when memory
 -- 
 2.51.1
 
