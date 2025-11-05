@@ -1,314 +1,159 @@
-Return-Path: <linux-acpi+bounces-18554-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18555-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A05C36B00
-	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 17:28:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BF8C36D67
+	for <lists+linux-acpi@lfdr.de>; Wed, 05 Nov 2025 17:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A510A681DAF
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 16:19:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E06354E3A88
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Nov 2025 16:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55203358B3;
-	Wed,  5 Nov 2025 16:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E331E33890E;
+	Wed,  5 Nov 2025 16:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ABBMehgU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVpbhQKs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8498330313
-	for <linux-acpi@vger.kernel.org>; Wed,  5 Nov 2025 16:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72023016F2
+	for <linux-acpi@vger.kernel.org>; Wed,  5 Nov 2025 16:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762359400; cv=none; b=P390qOrxN+16Z2XHHjGxhtiqIwjvEDO2T+Y1BLN0o1QMD8TE8S5nvNG/RiyJRxPEfZuJPJNbsOv9kFFjq5DkFsT3CBNL2CWrFXwthonIKX0XDLQcBJlzmU08Cjz9URZ/jm09e/WNRqFeHebu4oh4S+jEew7E+NebDBJm9DZdUZw=
+	t=1762361527; cv=none; b=QpqAFgm6I5tgaq23qSd2XnEzs+xB8fAJUXD4B8vhzs76iGHw6I2/+Q+9bJr1S+RzrKKFCB8erAeq9+2Jwnh8Bk5sKb30L+mcAAcn/pb1G0H9NvjT0az4muP6YwjdJXwjASscbDEy/k6APS/Flfq8Jc3K0dm1d46E/RAaoscPrAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762359400; c=relaxed/simple;
-	bh=0mW1b+073J2WkpEQgSQKQ1fM7vUG/qFsJY90DxjuK3Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hUiaML3/8ChPDeNDLquSHt5f7SutYpP9Ndbc6Vdv9O6okoC6POqhF3CjwUXZ7B5bFA3Rxp6k5ROb8ZmB2ixzqJUPQEoW4TOFUgYoKUuv/N5snMnxib4b5XIXQEBj7Sn1mnFxM0gBSBIy4FKqm97OwSCsI+OsbB3AIYT9eZPchH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ABBMehgU; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-93e2d42d9b4so293849139f.2
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Nov 2025 08:16:38 -0800 (PST)
+	s=arc-20240116; t=1762361527; c=relaxed/simple;
+	bh=esO8jRq9uTUw55PJsW3htw0zar+bIhexF73TArzHxxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lxgf9f0zPxVxTOXWrNdexrOasw5SrknBSBxc+49hp8tIGcEj1tZH34K2Fq4QaEugsqosda02aJMsB1WMMfzMheb/l+thJonIBjKUpd9PunMs+2DVkwDHkud3EqgEu0RImf4fV8tICOVANUU2zRW3XkMEM9+jc4VEn1oNJmEPosI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVpbhQKs; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-477563bcaacso75255e9.1
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Nov 2025 08:52:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762359398; x=1762964198; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ACs9ehJB3oUkzpqGylHL7GURPnmGaEVz6xiN6ORjiWI=;
-        b=ABBMehgUwkZhVIo1+hLrwrvLisbWg0FCHrESyyNmmQCC8N2yXkdsC8GSGGE84D6wDm
-         w3jM9d7Vq1duUa8kv6wORSI4JvOCCkBMGHA0loPbg+GwdyE9xX4zepkitVOK9sNfa2mY
-         65QMKy/9bQi0PB+rH9WdQJlf8P39ESyPR73P92/W6vKvY6mquaWnZ3AcJz2D1T8MGK9i
-         ObdLgbka2bMwAU+OmCzEXUmEUDCD1kXOUm4MvWXFpmYi4ChDugPbFJq5GEVCShTsyCs4
-         t2kOlI2Ifphf0CX7UG9l0KTp9yb8/VaXtPocaU1qVoyHLR5NA8eT83RvT29dXpGpPp0e
-         oAoA==
+        d=gmail.com; s=20230601; t=1762361524; x=1762966324; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=esO8jRq9uTUw55PJsW3htw0zar+bIhexF73TArzHxxk=;
+        b=AVpbhQKsWHsJPurkBtpFjS569EuYKUxy0Ewl5KvxLz11TynIudTMz6x27b6A6doKWz
+         ip2xD5KKY1oMJCK0Dweum3CzpsfSfe5Azmrly9qy+6lx5DTGxHpK2A+42y5Z3pqNqWXK
+         5oMVmrIxCr+TXfau1fOpH55Ds8Gfkw+SKMup3+25IM0tOOtYD8mCPcmX3YHevXG3I9fS
+         voKjd3O+6JkWCl7xwg0Uy4qskOwo95lmPAQUzNV1zgopuIouOGjmjNsUQ0iiplG4NNw3
+         pJwe6bLtD5Fb+hz4cFTbQ+dE2Dx8twHim57o5xVAlYBYEkIZ+8VVi9pnTa3HqwZj4o61
+         JDfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762359398; x=1762964198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ACs9ehJB3oUkzpqGylHL7GURPnmGaEVz6xiN6ORjiWI=;
-        b=BEuRmuhP1fELDzc/aAMJ/KEVCoPNjNZhz0RppKeU7Q/wNdmgX0ppGEbdKrtIKMMQRJ
-         qXCRES3LvAp5XZpKZl8/iAj5xiZMGh8rNmeC9HBgyBh3NRStzA5v2jX+pm344Y8PcNmj
-         SWzjpTgm9OSgXiBZSfkb7i61g9LJOxouUMfrwFhBN8lm4Sr0xZ0wNWBgzoTSZTTqFOJh
-         p/IHZTbR9Uy4oPyWpmK8MbtGxQY4/fE9F6UkgX0dN9oNenBRzoKBpfIKoZmdCHgMLb+y
-         C9jRiJL580dlsHcFC9Q0rQbDVfe9iTnIrqdzcc+W0qfG0YPVbr5sERh5OKfFr0ALL8rN
-         4BUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ4mLXZjhP8vyEr8E5bsv3w6iadPmue7yIgv9BlR45c9h9s8MrZcux+sNv2B2zSlUnfWYbeWO7hdaE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTTGETStL8R79ue7pEe3iOH1gspcszSVA0nlIzpKGn/KwX//Jj
-	AK8m6nCeOlSCWzn12xatuAS7I2ODCBy85DygG5u5/61M+ttsO9rfdrdiioJWjOLWKsku7Im+OgH
-	1peFAvryqCJ62ClvFhEoHHPUaNl8rywxQHk8KAiHi
-X-Gm-Gg: ASbGncve5Mt0n6ESUHQpoHW1j44mTrApEpgOCsZaz69ZuuLY/U05pQVnVcCLn9eU1cm
-	TSyMBu6BqHQdTdfbwzu2oI/wQEX0idJ/gKbRoftA+Q3lK6qzpLGM/6fpgV7xno5Muhaxy/IJk9i
-	bZK4dloZTBdrzN5kreardlBvS9xPo6OTZ+vE3HfNyvAV/O/AvX6RukySJ0XbwMBVPb/MR7jKKy9
-	UFd7ZwqPl4mKt2QboRKBoM98LzqLuO0psVDHgjPkhDgna2kyKfiBI0H1B+iKRcWAxy31zveQ02J
-	r4YYisWULS65bpYgDzc6R5qPAQ==
-X-Google-Smtp-Source: AGHT+IFrsuFMA1TSlPF6UPOqwRKI3S1TVMUqjqGwbsvSlZ623YeZIKO2ZUxGfz3c2g6/ooCxqi5U/+HTdvc4VcOqieE=
-X-Received: by 2002:a05:6e02:1805:b0:430:b994:3bd1 with SMTP id
- e9e14a558f8ab-433407698c4mr55204705ab.1.1762359397327; Wed, 05 Nov 2025
- 08:16:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762361524; x=1762966324;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=esO8jRq9uTUw55PJsW3htw0zar+bIhexF73TArzHxxk=;
+        b=Ff7OOH/MEBWDV+W3wzcJBAIaA5aajKzDORrc/AFrMKyA3/TU/WMPSV6VxRyZyYPvvu
+         2A2n4C2+BY4zlKT9HpDIuKRVa9MkrKPSMYjKdv0Ai0jcYC4+gOGHzfttxHkYqgZDbziv
+         EaD5b6h4058TTAtrG0zUtR1tFPy7V0w3MB9sLJF+qGFa04ZHVzrp3C5Qp9Tsqmw1V+eK
+         JCnQZg8WMxAtlFTx0Eg8vaJlWuHRXQ8n6ElPJfHMTKVwxN/qfTSfJ6WRtrfSJML6X/qd
+         eIRM3sOPWscYsz5TkObWic0+O6kO23LUAf6i270EoMlPzIQ7Cip12Zwz9hpy5/KUAH8E
+         DWpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTP/uidB4gozog1BVaQPdUekfQ0/PdAiPYDPlerW0pKNHcjMToZ21sy8AhGLmxZDCSSzx7wCi/Mu9X@vger.kernel.org
+X-Gm-Message-State: AOJu0YytBm5FN8Bvqld39zhyLtfIu03r5fUUd5SI7PW3tbyYamE0gq67
+	5YWPtJEDgX3dSYq2z8IHuf+/DqiN8nBjapcHhWMB4/neYidtICHcHvlM
+X-Gm-Gg: ASbGncvYBFp1ZbP8dyfnSVzEuK/poaoMM6DjFj+gabEt8NG7yffw7K/ZygXtyutC3TG
+	VUQ1PwpgmHzLzMswkd+2kpjKu51Ro83VCkVLdEMIXF2ETOmiVZD7TP1LtXSBMxuuGTkiB2XoUB1
+	3EmS5I5hM/lmjevKOlpVoYak5q8vTJ0qDBrvC06oHfECInkdhIAD+Ly9CXGjJv0iUb8TdK2STZO
+	3HXQVnDj1QAvrJuuYiI/wOzm08uo4CFf5k44OBEfokdu1Y3IzV7secWTNuBFen9a/o/rF9N6PL+
+	aMiu+YLa+5W+ByKA68tc7uPUqtBxF95jyz+Xhw2/XfcVPu8YICnalzLqHgab1b2V1nJJl8Tzs6F
+	351bhsHHbhxZ6Eb1yRlDHj88z3d2YNOAgukD30U+MT0jUsx4WSyV728XOMPy0nxS2cKRgvLQf7D
+	4DA8JTqkwQI0PQGwT1YFQUdjoqX1s6q7CBsjO9Kp86QX6CngEnROZutIPEoCtIs4M=
+X-Google-Smtp-Source: AGHT+IF1eT04urNHEfsD9kdCj32CNL1YcHJ6oGuMVK3cU2BLT/aQRFRmm7ox5OYZe77ML31HK9v5ow==
+X-Received: by 2002:a05:600c:1c94:b0:477:fcb:2256 with SMTP id 5b1f17b1804b1-4775ce23efemr42468465e9.17.1762361524090;
+        Wed, 05 Nov 2025 08:52:04 -0800 (PST)
+Received: from orome (p200300e41f274600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f27:4600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce210a7sm59725725e9.12.2025.11.05.08.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 08:52:02 -0800 (PST)
+Date: Wed, 5 Nov 2025 17:52:01 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/7] syscore: Pass context data to callbacks
+Message-ID: <3dzha4qyqdrbutxby3n5nkvihnxrhniqr6w726eumhzgln2w5l@fbu72mzmjz4m>
+References: <20251029163336.2785270-1-thierry.reding@gmail.com>
+ <20251029163336.2785270-2-thierry.reding@gmail.com>
+ <CAJZ5v0igMJ12KoYCmrWauvOfdxaNP5-XVKoSxUroaKFN7S-rTQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251017185645.26604-1-james.morse@arm.com> <20251017185645.26604-21-james.morse@arm.com>
- <OSZPR01MB8798162B444DA35707A4E3798BFCA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
-In-Reply-To: <OSZPR01MB8798162B444DA35707A4E3798BFCA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
-From: Peter Newman <peternewman@google.com>
-Date: Wed, 5 Nov 2025 17:16:24 +0100
-X-Gm-Features: AWmQ_bn_GHMcQLM6dMy9FTsbSXlRMr5a1a_4wB6ts3RgPX1XxSVdyRM8ndMU0uE
-Message-ID: <CALPaoChLKRQqjZO+O92WQ=MsWjV+q=hVE8=BXCOdkta6ZEXNMQ@mail.gmail.com>
-Subject: Re: [PATCH v3 20/29] arm_mpam: Allow configuration to be applied and
- restored during cpu online
-To: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>
-Cc: James Morse <james.morse@arm.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	D Scott Phillips OS <scott@os.amperecomputing.com>, 
-	"carl@os.amperecomputing.com" <carl@os.amperecomputing.com>, "lcherian@marvell.com" <lcherian@marvell.com>, 
-	"bobo.shaobowang@huawei.com" <bobo.shaobowang@huawei.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, Jamie Iles <quic_jiles@quicinc.com>, 
-	Xin Hao <xhao@linux.alibaba.com>, "dfustini@baylibre.com" <dfustini@baylibre.com>, 
-	"amitsinght@marvell.com" <amitsinght@marvell.com>, David Hildenbrand <david@redhat.com>, 
-	Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, "fenghuay@nvidia.com" <fenghuay@nvidia.com>, 
-	"baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>, 
-	Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, Gavin Shan <gshan@redhat.com>, 
-	Ben Horgan <ben.horgan@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ykyajizgfjgayrmb"
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0igMJ12KoYCmrWauvOfdxaNP5-XVKoSxUroaKFN7S-rTQ@mail.gmail.com>
+
+
+--ykyajizgfjgayrmb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 1/7] syscore: Pass context data to callbacks
+MIME-Version: 1.0
 
-On Mon, Oct 27, 2025 at 9:48=E2=80=AFAM Shaopeng Tan (Fujitsu)
-<tan.shaopeng@fujitsu.com> wrote:
->
-> Hello James,
->
-> > When CPUs come online the MSC's original configuration should be restor=
-ed.
+On Mon, Nov 03, 2025 at 05:18:08PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Oct 29, 2025 at 5:33=E2=80=AFPM Thierry Reding <thierry.reding@gm=
+ail.com> wrote:
 > >
-> > Add struct mpam_config to hold the configuration. This has a bitmap of
-> > features that were modified. Once the maximum partid is known, allocate=
- a
-> > configuration array for each component, and reprogram each RIS configur=
-ation
-> > from this.
+> > From: Thierry Reding <treding@nvidia.com>
 > >
-> > CC: Dave Martin <Dave.Martin@arm.com>
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-> > Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-> > ---
-> > Changes since v2:
-> >  * Call mpam_init_reset_cfg() on alloated config as 0 is not longer cor=
-rect.
-> >  * init_garbage() on each config - the array has to be freed in one go,=
- but
-> >    otherwise this looks weird.
-> >  * Use struct initialiser in mpam_init_reset_cfg(),
-> >  * Moved int err definition.
-> >  * Removed srcu lock taking based on squinting at the only caller.
-> >  * Moved config reset to mpam_reset_component_cfg() for re-use in
-> >    mpam_reset_component_locked(), previous memset() was not enough
-> > since zero
-> >    no longer means reset.
+> > Several drivers can benefit from registering per-instance data along
+> > with the syscore operations. To achieve this, move the modifiable fields
+> > out of the syscore_ops structure and into a separate struct syscore that
+> > can be registered with the framework. Add a void * driver data field for
+> > drivers to store contextual data that will be passed to the syscore ops.
 > >
-> > Changes since v1:
-> >  * Switched entry_rcu to srcu versions.
-> >
-> > Changes since RFC:
-> >  * Added a comment about the ordering around max_partid.
-> >  * Allocate configurations after interrupts are registered to reduce ch=
-urn.
-> >  * Added mpam_assert_partid_sizes_fixed();
-> >  * Make reset use an all-ones instead of zero config.
-> > ---
-> >  drivers/resctrl/mpam_devices.c  | 284
-> > +++++++++++++++++++++++++++++---
-> > drivers/resctrl/mpam_internal.h |  23 +++
-> >  2 files changed, 287 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devi=
-ces.c
-> > index ab37ed1fb5de..e990ef67df5b 100644
-> > --- a/drivers/resctrl/mpam_devices.c
-> > +++ b/drivers/resctrl/mpam_devices.c
-> > @@ -118,6 +118,17 @@ static inline void init_garbage(struct mpam_garbag=
-e
-> > *garbage)  {
-> >       init_llist_node(&garbage->llist);
-> >  }
-> > +
-> > +/*
-> > + * Once mpam is enabled, new requestors cannot further reduce the
-> > +available
-> > + * partid. Assert that the size is fixed, and new requestors will be
-> > +turned
-> > + * away.
-> > + */
-> > +static void mpam_assert_partid_sizes_fixed(void)
-> > +{
-> > +     WARN_ON_ONCE(!partid_max_published);
-> > +}
-> > +
-> >  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)  {
-> >       WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(),
-> > &msc->accessibility)); @@ -366,12 +377,16 @@ static void
-> > mpam_class_destroy(struct mpam_class *class)
-> >       add_to_garbage(class);
-> >  }
-> >
-> > +static void __destroy_component_cfg(struct mpam_component *comp);
-> > +
-> >  static void mpam_comp_destroy(struct mpam_component *comp)  {
-> >       struct mpam_class *class =3D comp->class;
-> >
-> >       lockdep_assert_held(&mpam_list_lock);
-> >
-> > +     __destroy_component_cfg(comp);
-> > +
-> >       list_del_rcu(&comp->class_list);
-> >       add_to_garbage(comp);
-> >
-> > @@ -812,48 +827,102 @@ static void mpam_reset_msc_bitmap(struct
-> > mpam_msc *msc, u16 reg, u16 wd)
-> >       __mpam_write_reg(msc, reg, bm);
-> >  }
-> >
-> > -static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid=
-)
-> > +/* Called via IPI. Call while holding an SRCU reference */ static void
-> > +mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
-> > +                                   struct mpam_config *cfg)
-> >  {
-> >       struct mpam_msc *msc =3D ris->vmsc->msc;
-> >       struct mpam_props *rprops =3D &ris->props;
-> >
-> > -     WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
-> > -
-> >       mutex_lock(&msc->part_sel_lock);
-> >       __mpam_part_sel(ris->ris_idx, partid, msc);
-> >
-> > -     if (mpam_has_feature(mpam_feat_cpor_part, rprops))
-> > -             mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
-> > rprops->cpbm_wd);
-> > +     if (mpam_has_feature(mpam_feat_cpor_part, rprops) &&
-> > +         mpam_has_feature(mpam_feat_cpor_part, cfg)) {
-> > +             if (cfg->reset_cpbm)
-> > +                     mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
-> > +                                           rprops->cpbm_wd);
-> > +             else
-> > +                     mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
-> > +     }
-> >
-> > -     if (mpam_has_feature(mpam_feat_mbw_part, rprops))
-> > -             mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM,
-> > rprops->mbw_pbm_bits);
-> > +     if (mpam_has_feature(mpam_feat_mbw_part, rprops) &&
-> > +         mpam_has_feature(mpam_feat_mbw_part, cfg)) {
-> > +             if (cfg->reset_mbw_pbm)
-> > +                     mpam_reset_msc_bitmap(msc,
-> > MPAMCFG_MBW_PBM,
-> > +                                           rprops->mbw_pbm_bits);
-> > +             else
-> > +                     mpam_write_partsel_reg(msc, MBW_PBM,
-> > cfg->mbw_pbm);
-> > +     }
-> >
-> > -     if (mpam_has_feature(mpam_feat_mbw_min, rprops))
-> > +     if (mpam_has_feature(mpam_feat_mbw_min, rprops) &&
-> > +         mpam_has_feature(mpam_feat_mbw_min, cfg))
-> >               mpam_write_partsel_reg(msc, MBW_MIN, 0);
-> >
-> > -     if (mpam_has_feature(mpam_feat_mbw_max, rprops))
-> > -             mpam_write_partsel_reg(msc, MBW_MAX,
-> > MPAMCFG_MBW_MAX_MAX);
-> > +     if (mpam_has_feature(mpam_feat_mbw_max, rprops) &&
-> > +         mpam_has_feature(mpam_feat_mbw_max, cfg))
-> > +             mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
-> >
-> >       mutex_unlock(&msc->part_sel_lock);
-> >  }
-> >
-> > +struct reprogram_ris {
-> > +     struct mpam_msc_ris *ris;
-> > +     struct mpam_config *cfg;
-> > +};
-> > +
-> > +/* Call with MSC lock held */
-> > +static int mpam_reprogram_ris(void *_arg) {
-> > +     u16 partid, partid_max;
-> > +     struct reprogram_ris *arg =3D _arg;
-> > +     struct mpam_msc_ris *ris =3D arg->ris;
-> > +     struct mpam_config *cfg =3D arg->cfg;
-> > +
-> > +     if (ris->in_reset_state)
-> > +             return 0;
-> > +
-> > +     spin_lock(&partid_max_lock);
-> > +     partid_max =3D mpam_partid_max;
-> > +     spin_unlock(&partid_max_lock);
-> > +     for (partid =3D 0; partid <=3D partid_max + 1; partid++)
-> > +             mpam_reprogram_ris_partid(ris, partid, cfg);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static void mpam_init_reset_cfg(struct mpam_config *reset_cfg) {
-> > +     *reset_cfg =3D (struct mpam_config) {
-> > +             .cpbm =3D ~0,
-> > +             .mbw_pbm =3D ~0,
-> > +             .mbw_max =3D MPAMCFG_MBW_MAX_MAX,
->
-> When rdtgroup_schemata_show() is called, the "cpbm" value is output to th=
-e schema file.
-> Since bitmap lengths are chip-dependent, I think we just need to reset th=
-e bitmap length portion.
-> Otherwise, 0xffffffff(u32) will be output from the schemata file.
+> > Signed-off-by: Thierry Reding <treding@nvidia.com>
+>=20
+> This change is fine with me, so I can apply it unless somebody has any
+> specific heartburn related to it (Greg?), but in case you want to
+> route it differently
+>=20
+> Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-When I apply additional patches to add the mpam_resctrl.c stuff I
-notice this too:
+I have a few follow-up patches for the Tegra PMC driver that depend on
+this. 6.19 is what I was targetting, so if we could put this into a
+stable branch that'd be the best solution. I can set that up via the
+Tegra tree if you and Greg are okay with it.
 
-# grep L3 schemata
-L3:1=3Dffffffff
-# cat info/L3/shareable_bits
-ffff
+If that's all too complicated, I can probably wait until the next cycle
+to merge the PMC changes.
 
-I noticed that new groups also get a too-long cbm as long as any other
-groups have a too-long cbm. Maybe this out-of-range value is bleeding
-into new groups in __init_one_rdt_domain() when it calls
-resctrl_arch_get_config() on all other groups.
+Thierry
 
--Peter
+--ykyajizgfjgayrmb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmkLgLAACgkQ3SOs138+
+s6F0Lg//dTn1/PUCYHRhF8cm1xB6JKggiLC40TRct49fcf9eF5gAdCqXm44qKoaF
+67aqiXAiwzovTctJIu3rz8p71/FeXp/qGWDdPm/+wI7yD+BoCcVO0nmvXuPwCzhd
+ZMwqeaRVm57JX4M9S5BdkOGtDLgAjyZ/6Qq/2isiQSPiWWl/IT3YiLyzw8vq8mcY
+VoepQGK5hm7CHFf8FOBs+sMt6q5JJDm0VjNi+seVcCNg9U25GaXCRc2D9ztAqRib
+3768/KMhlftnoJKsizCwWq2Gyw0Se7ifz66djjf51sHd064LLDv7OZpfeGyiFK01
+MvVGXoPFuIJB0yqIoMRBbeRULm4kq+dkUkt1JWwYAMw9ZJnhXPJJI8bal2IASj8/
+E6NADiYd9HS8kAXWYvLkm0xHv4FN5WXWG2a+Gf6K2vpBm07zG2xnI+eVjYQSnb9W
+O9TcZf3jDWvgEQ31plH5JFY32sI4vjLAdcKS2oRfkbxFDJvTS+RRjj3EPqFshNXf
+B5E6pXTCltOkUepuhbGDzIifVWzYgg/GyXNfwzdnJUXcAz7QPPJySfMraf/dn+8S
+hggVgAivRFDEtaNEqKU6iqoePR3HIUJe/Ebjrb199RV9t4FcnVYOpviJRf5EWpsF
+2YEUJPiA7neiac9fPLwCoRh33bJTIzanmWVxmFF1nQ2vozIt68U=
+=3Mmd
+-----END PGP SIGNATURE-----
+
+--ykyajizgfjgayrmb--
 
