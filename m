@@ -1,213 +1,291 @@
-Return-Path: <linux-acpi+bounces-18574-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18575-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72846C3966C
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 08:29:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0416C3A35D
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 11:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB693BABF5
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 07:28:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AAB5A50021E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 10:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29042E0B68;
-	Thu,  6 Nov 2025 07:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fCe0husl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF4D30C628;
+	Thu,  6 Nov 2025 10:11:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2852DF6F5;
-	Thu,  6 Nov 2025 07:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC412DF131;
+	Thu,  6 Nov 2025 10:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762414118; cv=none; b=cHtmo0cvBd1BBta7kXS1FVOoo842DnNUD8BFbxkPAPVLgHTpcEw7TIrqWy2eh/cG4dZQ+4OviUvvM9gSDU6E1DBTp56ZSo7oTOS2DSOX3ksEtoa2IY/ri7rlqRk+Er/ZQFoHjYtL+iA9QMnn47IgKpSmDSXSEEz4jIYFPNBuvuo=
+	t=1762423914; cv=none; b=KsZbvIeZAABN0+FLMCsWsJIZJCsx8LnPlpMcarOBXKR6EKh/N75elkrJV7qCuzf+q618Lvm7nu0TK1CfL0KaLzGH7imjMA10CuOk6pd/c9uWbc4TU5FSmLSEi/vd3ZM0HBurjkQGBnTduKZ9Y5qmtU1Nthftvu6H+Pz3t4QzfFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762414118; c=relaxed/simple;
-	bh=1wTrCw7tH2niQnnjbLnl1ZIXBSWyC/o4xO/RZgOwT9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YcUDOOQFtuPmlsb1N49pE1/KXGhyKAjm8547xDe1ky2KgNF6By0pd5CoPfWBceitToD/SfxuazSn6bDqgxGbga/EZ1NDFa5YAixzxvIWyPBvUm/gGqZsT1+ht38yekOjOAgCHnS+OvdIP0umpTR6lLOQDU9qPIocp4FMWfEvfcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fCe0husl; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762414117; x=1793950117;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1wTrCw7tH2niQnnjbLnl1ZIXBSWyC/o4xO/RZgOwT9Q=;
-  b=fCe0huslffM3ABkqPVSCxVrB7skYiFgevz3swToEDhT97Ck6b55q/62q
-   xN4vRkXAQeAgUeFPHsesQ3F8GpeS6sqkyMXf/Qp2iCanmFSwM1U5JOrhB
-   GtbfsBlPvkIwQr7Ur6rlAkTceHqliYymYmfkcmVmWTTJXXi2CIvy/eEpq
-   cKscMov5np1q4uZ1qCRXjJWGIB9xDsQ4YHQu4GThCxeyWuHxvGKuQGFYP
-   NwFZFyL03ttA4zl0/7rNHdio08PGTI3OidoATisSyw+Nb6Zj1oAOLUaD6
-   Bpv5NwX7JMrYUEYYEf8jVjsbdKQAJ66JqTw+MK7r0rf4rxU2tccphuCpq
-   g==;
-X-CSE-ConnectionGUID: fgDu94gcS4eH9mGFb22/1g==
-X-CSE-MsgGUID: ayk0iFZpScmH0XgLm/OePQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="63747901"
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
-   d="scan'208";a="63747901"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 23:28:36 -0800
-X-CSE-ConnectionGUID: fZ57IoJRQkaBLs/kz5cTvQ==
-X-CSE-MsgGUID: cWySKE1OQGO2fBzdQv5eaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
-   d="scan'208";a="191965191"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.151])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 23:28:32 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id C5BB811F983;
-	Wed, 05 Nov 2025 22:54:31 +0200 (EET)
-Date: Wed, 5 Nov 2025 22:54:31 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v5 3/8] software node: allow referencing firmware nodes
-Message-ID: <aQu5hxGGrdPC7VOB@kekkonen.localdomain>
-References: <20251105-reset-gpios-swnodes-v5-0-1f67499a8287@linaro.org>
- <20251105-reset-gpios-swnodes-v5-3-1f67499a8287@linaro.org>
+	s=arc-20240116; t=1762423914; c=relaxed/simple;
+	bh=fUWCL+8USFcluuOyJ1yfpV0/AIk5Xei978ERyPPXQCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PvAO4vs8G7LDKq7GGZnmNvb8/wDkiXtge78QbsVkD6ZAdJmJdmmDWLMKXsB8IaIDnnICzwwPb5EMCFlsHxmB2T/YcAB0TPkG9pQIMVFSfVbSzuQCNnP5xr+zr9fHeAScwqczp1WywEPbsUyLcSY4FDSoZyOTaRw7s/qiftMGZc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1449C1596;
+	Thu,  6 Nov 2025 02:11:44 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 40ECF3F66E;
+	Thu,  6 Nov 2025 02:11:47 -0800 (PST)
+Message-ID: <d6b4d9d5-f5bc-4a7d-a221-4451456fbbd3@arm.com>
+Date: Thu, 6 Nov 2025 10:11:45 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105-reset-gpios-swnodes-v5-3-1f67499a8287@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 20/29] arm_mpam: Allow configuration to be applied and
+ restored during cpu online
+To: Peter Newman <peternewman@google.com>,
+ "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>
+Cc: James Morse <james.morse@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ "carl@os.amperecomputing.com" <carl@os.amperecomputing.com>,
+ "lcherian@marvell.com" <lcherian@marvell.com>,
+ "bobo.shaobowang@huawei.com" <bobo.shaobowang@huawei.com>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ Jamie Iles <quic_jiles@quicinc.com>, Xin Hao <xhao@linux.alibaba.com>,
+ "dfustini@baylibre.com" <dfustini@baylibre.com>,
+ "amitsinght@marvell.com" <amitsinght@marvell.com>,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "fenghuay@nvidia.com" <fenghuay@nvidia.com>,
+ "baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-21-james.morse@arm.com>
+ <OSZPR01MB8798162B444DA35707A4E3798BFCA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+ <CALPaoChLKRQqjZO+O92WQ=MsWjV+q=hVE8=BXCOdkta6ZEXNMQ@mail.gmail.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <CALPaoChLKRQqjZO+O92WQ=MsWjV+q=hVE8=BXCOdkta6ZEXNMQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Bartosz,
+Hi Shaopeng, Peter,
 
-Thanks for the update.
-
-On Wed, Nov 05, 2025 at 09:47:34AM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 11/5/25 16:16, Peter Newman wrote:
+> On Mon, Oct 27, 2025 at 9:48 AM Shaopeng Tan (Fujitsu)
+> <tan.shaopeng@fujitsu.com> wrote:
+>>
+>> Hello James,
+>>
+>>> When CPUs come online the MSC's original configuration should be restored.
+>>>
+>>> Add struct mpam_config to hold the configuration. This has a bitmap of
+>>> features that were modified. Once the maximum partid is known, allocate a
+>>> configuration array for each component, and reprogram each RIS configuration
+>>> from this.
+>>>
+>>> CC: Dave Martin <Dave.Martin@arm.com>
+>>> Signed-off-by: James Morse <james.morse@arm.com>
+>>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>>> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+>>> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+>>> ---
+>>> Changes since v2:
+>>>  * Call mpam_init_reset_cfg() on alloated config as 0 is not longer correct.
+>>>  * init_garbage() on each config - the array has to be freed in one go, but
+>>>    otherwise this looks weird.
+>>>  * Use struct initialiser in mpam_init_reset_cfg(),
+>>>  * Moved int err definition.
+>>>  * Removed srcu lock taking based on squinting at the only caller.
+>>>  * Moved config reset to mpam_reset_component_cfg() for re-use in
+>>>    mpam_reset_component_locked(), previous memset() was not enough
+>>> since zero
+>>>    no longer means reset.
+>>>
+>>> Changes since v1:
+>>>  * Switched entry_rcu to srcu versions.
+>>>
+>>> Changes since RFC:
+>>>  * Added a comment about the ordering around max_partid.
+>>>  * Allocate configurations after interrupts are registered to reduce churn.
+>>>  * Added mpam_assert_partid_sizes_fixed();
+>>>  * Make reset use an all-ones instead of zero config.
+>>> ---
+>>>  drivers/resctrl/mpam_devices.c  | 284
+>>> +++++++++++++++++++++++++++++---
+>>> drivers/resctrl/mpam_internal.h |  23 +++
+>>>  2 files changed, 287 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>>> index ab37ed1fb5de..e990ef67df5b 100644
+>>> --- a/drivers/resctrl/mpam_devices.c
+>>> +++ b/drivers/resctrl/mpam_devices.c
+>>> @@ -118,6 +118,17 @@ static inline void init_garbage(struct mpam_garbage
+>>> *garbage)  {
+>>>       init_llist_node(&garbage->llist);
+>>>  }
+>>> +
+>>> +/*
+>>> + * Once mpam is enabled, new requestors cannot further reduce the
+>>> +available
+>>> + * partid. Assert that the size is fixed, and new requestors will be
+>>> +turned
+>>> + * away.
+>>> + */
+>>> +static void mpam_assert_partid_sizes_fixed(void)
+>>> +{
+>>> +     WARN_ON_ONCE(!partid_max_published);
+>>> +}
+>>> +
+>>>  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)  {
+>>>       WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(),
+>>> &msc->accessibility)); @@ -366,12 +377,16 @@ static void
+>>> mpam_class_destroy(struct mpam_class *class)
+>>>       add_to_garbage(class);
+>>>  }
+>>>
+>>> +static void __destroy_component_cfg(struct mpam_component *comp);
+>>> +
+>>>  static void mpam_comp_destroy(struct mpam_component *comp)  {
+>>>       struct mpam_class *class = comp->class;
+>>>
+>>>       lockdep_assert_held(&mpam_list_lock);
+>>>
+>>> +     __destroy_component_cfg(comp);
+>>> +
+>>>       list_del_rcu(&comp->class_list);
+>>>       add_to_garbage(comp);
+>>>
+>>> @@ -812,48 +827,102 @@ static void mpam_reset_msc_bitmap(struct
+>>> mpam_msc *msc, u16 reg, u16 wd)
+>>>       __mpam_write_reg(msc, reg, bm);
+>>>  }
+>>>
+>>> -static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
+>>> +/* Called via IPI. Call while holding an SRCU reference */ static void
+>>> +mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+>>> +                                   struct mpam_config *cfg)
+>>>  {
+>>>       struct mpam_msc *msc = ris->vmsc->msc;
+>>>       struct mpam_props *rprops = &ris->props;
+>>>
+>>> -     WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
+>>> -
+>>>       mutex_lock(&msc->part_sel_lock);
+>>>       __mpam_part_sel(ris->ris_idx, partid, msc);
+>>>
+>>> -     if (mpam_has_feature(mpam_feat_cpor_part, rprops))
+>>> -             mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
+>>> rprops->cpbm_wd);
+>>> +     if (mpam_has_feature(mpam_feat_cpor_part, rprops) &&
+>>> +         mpam_has_feature(mpam_feat_cpor_part, cfg)) {
+>>> +             if (cfg->reset_cpbm)
+>>> +                     mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
+>>> +                                           rprops->cpbm_wd);
+>>> +             else
+>>> +                     mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
+>>> +     }
+>>>
+>>> -     if (mpam_has_feature(mpam_feat_mbw_part, rprops))
+>>> -             mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM,
+>>> rprops->mbw_pbm_bits);
+>>> +     if (mpam_has_feature(mpam_feat_mbw_part, rprops) &&
+>>> +         mpam_has_feature(mpam_feat_mbw_part, cfg)) {
+>>> +             if (cfg->reset_mbw_pbm)
+>>> +                     mpam_reset_msc_bitmap(msc,
+>>> MPAMCFG_MBW_PBM,
+>>> +                                           rprops->mbw_pbm_bits);
+>>> +             else
+>>> +                     mpam_write_partsel_reg(msc, MBW_PBM,
+>>> cfg->mbw_pbm);
+>>> +     }
+>>>
+>>> -     if (mpam_has_feature(mpam_feat_mbw_min, rprops))
+>>> +     if (mpam_has_feature(mpam_feat_mbw_min, rprops) &&
+>>> +         mpam_has_feature(mpam_feat_mbw_min, cfg))
+>>>               mpam_write_partsel_reg(msc, MBW_MIN, 0);
+>>>
+>>> -     if (mpam_has_feature(mpam_feat_mbw_max, rprops))
+>>> -             mpam_write_partsel_reg(msc, MBW_MAX,
+>>> MPAMCFG_MBW_MAX_MAX);
+>>> +     if (mpam_has_feature(mpam_feat_mbw_max, rprops) &&
+>>> +         mpam_has_feature(mpam_feat_mbw_max, cfg))
+>>> +             mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
+>>>
+>>>       mutex_unlock(&msc->part_sel_lock);
+>>>  }
+>>>
+>>> +struct reprogram_ris {
+>>> +     struct mpam_msc_ris *ris;
+>>> +     struct mpam_config *cfg;
+>>> +};
+>>> +
+>>> +/* Call with MSC lock held */
+>>> +static int mpam_reprogram_ris(void *_arg) {
+>>> +     u16 partid, partid_max;
+>>> +     struct reprogram_ris *arg = _arg;
+>>> +     struct mpam_msc_ris *ris = arg->ris;
+>>> +     struct mpam_config *cfg = arg->cfg;
+>>> +
+>>> +     if (ris->in_reset_state)
+>>> +             return 0;
+>>> +
+>>> +     spin_lock(&partid_max_lock);
+>>> +     partid_max = mpam_partid_max;
+>>> +     spin_unlock(&partid_max_lock);
+>>> +     for (partid = 0; partid <= partid_max + 1; partid++)
+>>> +             mpam_reprogram_ris_partid(ris, partid, cfg);
+>>> +
+>>> +     return 0;
+>>> +}
+>>> +
+>>> +static void mpam_init_reset_cfg(struct mpam_config *reset_cfg) {
+>>> +     *reset_cfg = (struct mpam_config) {
+>>> +             .cpbm = ~0,
+>>> +             .mbw_pbm = ~0,
+>>> +             .mbw_max = MPAMCFG_MBW_MAX_MAX,
+>>
+>> When rdtgroup_schemata_show() is called, the "cpbm" value is output to the schema file.
+>> Since bitmap lengths are chip-dependent, I think we just need to reset the bitmap length portion.
+>> Otherwise, 0xffffffff(u32) will be output from the schemata file.
 > 
-> At the moment software nodes can only reference other software nodes.
-> This is a limitation for devices created, for instance, on the auxiliary
-> bus with a dynamic software node attached which cannot reference devices
-> the firmware node of which is "real" (as an OF node or otherwise).
+> When I apply additional patches to add the mpam_resctrl.c stuff I
+> notice this too:
 > 
-> Make it possible for a software node to reference all firmware nodes in
-> addition to static software nodes. To that end: add a second pointer to
-> struct software_node_ref_args of type struct fwnode_handle. The core
-> swnode code will first check the swnode pointer and if it's NULL, it
-> will assume the fwnode pointer should be set.
+> # grep L3 schemata
+> L3:1=ffffffff
+> # cat info/L3/shareable_bits
+> ffff
 > 
-> Software node graphs remain the same, as in: the remote endpoints still
-> have to be software nodes.
+> I noticed that new groups also get a too-long cbm as long as any other
+> groups have a too-long cbm. Maybe this out-of-range value is bleeding
+> into new groups in __init_one_rdt_domain() when it calls
+> resctrl_arch_get_config() on all other groups.
 > 
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> -Peter
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+mpam_init_reset_cfg() is used in places, one for ris reset and another
+for component reset. In component reset these values persist and with
+resctrl support added turn up in the schemata. More significantly, the
+reset flags, reset_cpbm etc, are not reset to false and so the control
+configuration doesn't take effect. I have an update for the component
+case which I'll include when I repost this series for James.
 
-But see below...
+Thanks,
 
-> ---
->  drivers/base/swnode.c    | 24 ++++++++++++++++++++++--
->  include/linux/property.h | 13 ++++++++++---
->  2 files changed, 32 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index 6b1ee75a908fbf272f29dbe65529ce69ce03a021..44710339255ffba1766f5984b2898a5fb4436557 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -535,7 +535,24 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
->  	ref_array = prop->pointer;
->  	ref = &ref_array[index];
->  
-> -	refnode = software_node_fwnode(ref->node);
-> +	/*
-> +	 * A software node can reference other software nodes or firmware
-> +	 * nodes (which are the abstraction layer sitting on top of them).
-> +	 * This is done to ensure we can create references to static software
-> +	 * nodes before they're registered with the firmware node framework.
-> +	 * At the time the reference is being resolved, we expect the swnodes
-> +	 * in question to already have been registered and to be backed by
-> +	 * a firmware node. This is why we use the fwnode API below to read the
-> +	 * relevant properties and bump the reference count.
-> +	 */
-> +
-> +	if (ref->swnode)
-> +		refnode = software_node_fwnode(ref->swnode);
-> +	else if (ref->fwnode)
-> +		refnode = ref->fwnode;
-> +	else
-> +		return -EINVAL;
-> +
->  	if (!refnode)
->  		return -ENOENT;
->  
-> @@ -633,7 +650,10 @@ software_node_graph_get_remote_endpoint(const struct fwnode_handle *fwnode)
->  
->  	ref = prop->pointer;
->  
-> -	return software_node_get(software_node_fwnode(ref[0].node));
-> +	if (!ref->swnode)
-> +		return NULL;
-> +
-> +	return software_node_get(software_node_fwnode(ref[0].swnode));
+Ben
 
-This could be:
-
-	return software_node_get(software_node_fwnode(ref->swnode));
-
->  }
->  
->  static struct fwnode_handle *
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 50b26589dd70d1756f3b8644255c24a011e2617c..272bfbdea7bf4ab1143159fa49fc29dcdde0ef9d 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -355,19 +355,26 @@ struct software_node;
->  
->  /**
->   * struct software_node_ref_args - Reference property with additional arguments
-> - * @node: Reference to a software node
-> + * @swnode: Reference to a software node
-> + * @fwnode: Alternative reference to a firmware node handle
->   * @nargs: Number of elements in @args array
->   * @args: Integer arguments
->   */
->  struct software_node_ref_args {
-> -	const struct software_node *node;
-> +	const struct software_node *swnode;
-> +	struct fwnode_handle *fwnode;
->  	unsigned int nargs;
->  	u64 args[NR_FWNODE_REFERENCE_ARGS];
->  };
->  
->  #define SOFTWARE_NODE_REFERENCE(_ref_, ...)			\
->  (const struct software_node_ref_args) {				\
-> -	.node = _ref_,						\
-> +	.swnode = _Generic(_ref_,				\
-> +			   const struct software_node *: _ref_,	\
-> +			   default: NULL),			\
-> +	.fwnode = _Generic(_ref_,				\
-> +			   struct fwnode_handle *: _ref_,	\
-> +			   default: NULL),			\
->  	.nargs = COUNT_ARGS(__VA_ARGS__),			\
->  	.args = { __VA_ARGS__ },				\
->  }
-> 
-
--- 
-Kind regards,
-
-Sakari Ailus
 
