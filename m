@@ -1,107 +1,100 @@
-Return-Path: <linux-acpi+bounces-18579-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18580-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705BCC3AE19
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 13:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA92C3B1F8
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 14:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E690F4E55DC
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 12:23:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD21A50293E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 13:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BA52DAFA7;
-	Thu,  6 Nov 2025 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F30322C98;
+	Thu,  6 Nov 2025 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRcHpc5w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzv8VfOt"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2B12D9ED9;
-	Thu,  6 Nov 2025 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CE2820AC;
+	Thu,  6 Nov 2025 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762431804; cv=none; b=EqylDfXFUXWe7+/xRWn93QhQvIHvguL6FHTuZXbmZu7w3uTL8i82b58kckNQQiaHIJsJC0x4/jnoRAafiFionoHo2QWX/nkvVwgl1lOJy3PRaXAEyOQSbXyYoUkGOp3x+b0m/eZkkAqwNY4GbF9x2gMVW7a5q0kgFcE5mAM8AKA=
+	t=1762434327; cv=none; b=bT4vB+HkhzmwuBseAh8bPQ67RXQ2EYP1sL/tXNoUjVUJMJzh7TCFY/g+7V391QR1X83ITTqnVe7HlW52mzYC7hs7XuGsAYL1l9IQ11Bl/BbQbjWRRfbX7t+e92PYTVYD35LA/HBPf+8ETVazdxeeklm1pkWlaLanP7o+0mu7Gyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762431804; c=relaxed/simple;
-	bh=CfdplLLZ3uS6sdtTkc+Ag4tdALAgrLAPud/T2gMLCkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OGX2LunwnLyiAjNtGqAt8yb67PG+FkYy/cqcCBS1fMqd12ZH1W1/AEMDy3wAtvNaoovHZPNO9X09Q13u2gtQWOJ0MCLXRoIKPq6ALWNYb0WGWpjm2mMh5vTEQcb3aK3FqFfu/LzdsSguJxjpQHQpME4w8pBn7Rvn+K6/L64MCRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRcHpc5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD58C4CEFB;
-	Thu,  6 Nov 2025 12:23:22 +0000 (UTC)
+	s=arc-20240116; t=1762434327; c=relaxed/simple;
+	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=toJ/rRBJ+n10U7zDGvSv3vBkkMSkxY+T338Y7BZWRK9vLiS9oyA6cXBXeVtQg8eyfO0GSciTo+aaGWOaR8qPO1DnAT/Nsi4TsCVGhowZVv6+BVoBff9acvPc12RycK/kPA196sgEHOxyOUJXvLAEuvEO8IO4EbkuHUgYcsWJ9qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzv8VfOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7966C4CEF7;
+	Thu,  6 Nov 2025 13:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762431804;
-	bh=CfdplLLZ3uS6sdtTkc+Ag4tdALAgrLAPud/T2gMLCkY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MRcHpc5wJhgA7lSN/x7KuT8cVuTptJQFtzF0vO1pdrmH02Z0uq/FggTUHew0CWAsf
-	 bVEBo3bC4d5CwYMsZGyNCAtmkBwJYECoMWdDfWbFbfLk7KPm01qOLSyaQUk6P06mnd
-	 qEK2aQTKWQSP4Kw8aCTb/9jooyBfD7j4oIz87jjxzVuaMqcZ6xfT7uoBNqvbEi3Do7
-	 HyrPbxuCnegUyqoR0byL+w93pkPxAoAz+6vW67dS2zHRq8VV2pzYvKYj/liOAC9pbX
-	 kzawL5EIKScetv1eYD0Dt2DylYEfvngde+8PCfOXNqo4C78T/mXzPIkN4S4OVepTHH
-	 3dgxV8l/n8CBw==
-Message-ID: <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
-Date: Thu, 6 Nov 2025 13:23:21 +0100
+	s=k20201202; t=1762434327;
+	bh=tyPnkBqS2IRKn0BX1hOVQKSWQFZ9GJ9UpVno1t1C2pM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jzv8VfOtPdu1QaOc79gAmHKCNRM89n8eIfaAInyUzKUTTC4CDL/Ksag+0AptmdbOV
+	 DC99z6Z+xZsaMQgIgzIJq0Zb3lqdv9X4EWGcN7dCSpfei0WtgJnRELjPbmvqLDmBLD
+	 VRzd/BGOXItW/JukwgchgPbH5E+poy0YNT0A0bi1dPeFtHbVapGZS6bmFwMP1m/FY3
+	 OCrw0JHHQLx66mrEh1TsHiYlKC5axtEMEDJfraKP91RIxutIsP0nNPYlHNzRtOSDO3
+	 qDa85IO8JOEVM49mkT/utqkKZVwlyBSSozvOD/otR6j+rh8gfc6UjPbXX8D3h81Ons
+	 ZW9zLZZ3GL8/w==
+Date: Thu, 6 Nov 2025 13:05:23 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
+Message-ID: <aQydE1pSmCcDwCPO@finisterre.sirena.org.uk>
+References: <20251102190921.30068-1-hansg@kernel.org>
+ <176242886085.2357454.1138821772017853306.b4-ty@kernel.org>
+ <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: Try to get ACPI GPIO IRQ earlier
-To: Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andy@kernel.org>, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, stable@vger.kernel.org
-References: <20251102190921.30068-1-hansg@kernel.org>
- <176242886085.2357454.1138821772017853306.b4-ty@kernel.org>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <176242886085.2357454.1138821772017853306.b4-ty@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Hi Mark,
-
-On 6-Nov-25 12:34 PM, Mark Brown wrote:
-> On Sun, 02 Nov 2025 20:09:21 +0100, Hans de Goede wrote:
->> Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
->> acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
->> on the SPI device.
->>
->> If there is no driver for the SPI device then the move to spi_probe()
->> results in acpi_dev_gpio_irq_get() never getting called. This may
->> cause problems by leaving the GPIO pin floating because this call is
->> responsible for setting up the GPIO pin direction and/or bias according
->> to the values from the ACPI tables.
->>
->> [...]
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-> 
-> Thanks!
-> 
-> [1/1] spi: Try to get ACPI GPIO IRQ earlier
->       commit: 3cd2018e15b3d66d2187d92867e265f45ad79e6f
-
-Thank you.
-
-I believe that Andy's Reviewed-by was intended for a v2 with extending
-the comment with an extra paragraph with something like:
-
-"TODO: ideally the setup of the GPIO should be handled in a generic manner
-in the ACPI/gpiolib core code".
-
-Since you've already merged this now l'll prepare a follow-up patch
-to extend the comment with that info.
-
-Regards,
-
-Hans
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FPjVcJTpgg+5Ndqb"
+Content-Disposition: inline
+In-Reply-To: <935e8578-1c25-4015-bd6e-a41cd0f07c81@kernel.org>
+X-Cookie: If in doubt, mumble.
 
 
+--FPjVcJTpgg+5Ndqb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Thu, Nov 06, 2025 at 01:23:21PM +0100, Hans de Goede wrote:
+
+> I believe that Andy's Reviewed-by was intended for a v2 with extending
+> the comment with an extra paragraph with something like:
+
+Possibly, but that got sent well after I'd got things into CI anyway and
+I didn't see it till after the CI had run.
+
+> Since you've already merged this now l'll prepare a follow-up patch
+> to extend the comment with that info.
+
+Sure.
+
+--FPjVcJTpgg+5Ndqb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkMnQ0ACgkQJNaLcl1U
+h9DUwQf9EvJuDvVEn1XNm633osZNAi4GjExAe/IwGNcXMzkbFi45RMWmr/SJrKvI
+mBxkUcPrBK15kI848zQcPPgXO3j34jSS4ne/6rF92EBk0tzEw5YZQenf2DfTde6I
+DzNysK3Hohje8jcd16WpJ4SDcRSWGFb4UudPe31G3e2t41b6HcMIXdeklwIk18Ga
+R1tiXBo8hOW+qkKXUZ5MRkXcX+LZnk/Ofh1HA10Xxq0o0qXnm3VzCN8pOJpZ7HQt
+Mjxv2cIlLuYnHH/qGIkXfuLPySm6s6uSOiJVELK2x1U5Ls6mKajNeixP1H+kUlek
+gzAQruJfutn62isNb/tGZPp9Lu5RFQ==
+=uVud
+-----END PGP SIGNATURE-----
+
+--FPjVcJTpgg+5Ndqb--
 
