@@ -1,233 +1,313 @@
-Return-Path: <linux-acpi+bounces-18603-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18604-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4D2C3D461
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 20:46:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513F2C3D5A1
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 21:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A1EC14E4577
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 19:46:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C49561891F91
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 20:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A78D346787;
-	Thu,  6 Nov 2025 19:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B852FB62C;
+	Thu,  6 Nov 2025 20:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="0GI3xgSD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cXWUc2pU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012007.outbound.protection.outlook.com [52.101.53.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584F7340DA6
-	for <linux-acpi@vger.kernel.org>; Thu,  6 Nov 2025 19:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762458411; cv=none; b=smYZhJZXKXuLGN+3rUO9QQLUK/aaJmJ/RpbmoIVvRnnmPtu1zy1thcEO4BzV2D+Gre39KQNGNPw9QqRf+vzjS2ev79sX8DROV8YSVCQocn9+gaUkMf/XXpJnlZC34sexm9WIuzVUepgIG36ifRsSvyDsFZ39hJKzzQqRUA2L2pw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762458411; c=relaxed/simple;
-	bh=pLcdBJdtxI020Yns4EoqATEpJwIN1bvrdTtAjdOjufo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jMhJStjQjoGv5hsKdiW0LcngJyAyJszx1gvzyY8/QK68L7/I06TepZtjacTeA7U0j9ygWqQ6eqrOmO6qxvCKNXila1l4dpZ6jCb2zPRGhupvYDxtxAPBm8eB+cNLK88Imeb5UKWfCjVEgCLKgsU9xAR9lJBcH9fxpgnaZo+svcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=0GI3xgSD; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-934f0e9d4afso623241.1
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Nov 2025 11:46:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1762458408; x=1763063208; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zvo45XTSArxSuHNskpjA6d1ja2PsdeMrkLdrewsq6J8=;
-        b=0GI3xgSDoZO5AFiCMj+so0HdD/yEIyHLjChgE3HoFoR73GxPyp3WA/PaISdbH8fknZ
-         gYOGsN6BnNOOspaztdTE/qj3wMfAoZe2XFv/f6qgaJ2ZhSjWAqbfFabHa1pjoYJ/WKUX
-         wtwxbOt6BEJenaaLrqJht+8wGIT/zZC0+1C60qerneIis0yRxT0J/bbYrpPZD86ka0cQ
-         yUm/J+l11/29prY4A2lcnYOpTwZ81CvVcx6UN+n9Z3U2eobe+PhoEVh3poqKxgh/Ctnv
-         eleeGSWfbiNBTi8BNQKG6fKuqvVXEeSbS7/wWFOGOrI5XhG/gSlTyWx1FsAUMKVxxcT5
-         uzrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762458408; x=1763063208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Zvo45XTSArxSuHNskpjA6d1ja2PsdeMrkLdrewsq6J8=;
-        b=BFfRFtd+u25W3LT+wnEtRC+dOhrXKzMUdn+L6MRTlewJzpX11XcUVyh1PWSjhBPz+r
-         ADj8MDbygPhQvUHRuWnESwy4wqk+n7xWbmM+Xw4MdqvpAqKFzNfkP91+MrwQ5aSdmFqN
-         ffNOY7KB7ub5rJxlxlhnm3u/tRefVvjLHfZxb4kPbVwn+hl6FQuxlSlhowF1hsT3MJRC
-         7WFfVNKkHkJjZemM+GPi1ZkzijFaWDXM9QjpSyFaJn403k0qGkY7XleF/+beNicAz1GK
-         lUnCaElvu7jLelslJ/Sa+pRlt53HQP2QDWjm0uNKG9dtEWKX1mV7s+rz0BJGrd/ctvuy
-         phRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTyT9f+vXC3yk6UdVd3LQxXXteg5TyDVfSGyzkcOXlsXuLRY9+7wJdKWBSTGJYVV8zMcRoKcl+bcno@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6LBEsVuhRtBIIvHYl97wZaY19PIr6NcbFxRS+xbWuVCxhcGl8
-	DEgGiPbEPPlc+cX111em5R5bvsIzJfbj2q6Jks1ie1Zbnh3KQbz0ntDPJMxVjdoPiFYQG3IjhD9
-	HRUhDPd85wQ0Tjz3IVWxYN4sfGss4Ycfh88hrWMTTwQ==
-X-Gm-Gg: ASbGncvozCMrXXmaD1Io0+WeFa5nZ/Q7g9hSQpucDoqcAnHHw5aVBGqI+NENLcYdlAx
-	tgcLRv8lFG+g8neB0FWBnEmtHFtSGnSZOOJHUiPRz0kyINK4vCDdXQfaFKPNU0nOypEG4VKM/qu
-	UJsFUH8i61f79ZbYYkcyTTsGBgHMNNwGdeM1EKhOdForF1YWdyNIWCDOF6RYI/8Kobv/S3O+YG6
-	pEpxe4vAxxRwWtNHjcfaTtp1nSCSwuuHHCSuLor6W7gZ4wYGI6tbw8ni0RhJNUEie6+Za8jg1Pd
-	l3HI614hByCHmsf1AUs=
-X-Google-Smtp-Source: AGHT+IGLtJekpkk3yXHMbJWNgjahkQWvswgacd9ut97nQ463dZZHMYcqw3XIkR+lZuNAlK/z5Xwvqh/uWvzfN1qQpYI=
-X-Received: by 2002:a05:6102:c05:b0:5db:e297:2c6c with SMTP id
- ada2fe7eead31-5ddb22db849mr283178137.42.1762458408082; Thu, 06 Nov 2025
- 11:46:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C239A2FC02D;
+	Thu,  6 Nov 2025 20:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762460886; cv=fail; b=RvRHE2eB0zqvVssrYpbbRnwr654nljj+7T0kBzzfj76Y93msH3GQTy0EfbXGL/OMAbYBuVV1pKGsH7TDdshiwvWwA/XFEkVEuxBeQmfXge82dPjLBHKv1l9gItRHyKy1mJ3qNP1Yxe1WOzS1eZg68Mlitw6uV7QLLvCPlk3m3K8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762460886; c=relaxed/simple;
+	bh=q63L8HQny6ODf6RH+lS+aIr8HiaoiKMHqwIqdQ4yFxU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=m1W+J2I8i3SAEBjV5EpNeDKuHQev531cgipCMf3bohlVbgkMC+EIspCVY0BCXF+ZdPuCeSfF1ctHErA7RnyMIT4zyFiA6u94doUjL1Ylmk5+y/roJUy9Tzr/IgpF5F99lv/HksCBzhdMa+bR3UbK8HCo/w+lqzI9Ar7ggnnn8wY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cXWUc2pU; arc=fail smtp.client-ip=52.101.53.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bTOivv+HZ9SA9NwA+DW8t5yhvoBlqAiTNHeFf3rLUC0d0zhIH6lhj2KtyoL3WU8iwX4OFXxiAdGIQgUmXYpUMwj/70ijJpN4tc8Uf3+T3f97H6tZfRegM2vpHiqztYq/kI/Ptwco4Xljlo6qju7nYAHmOwTfn6rJ0dBCigMtappA8+4aWV4dqxVJPszNKoHL1MVolwCnzOvFnQwXpXaqzq32fsWTPg9+J8wUlU4/RoUvXPSb14HadodC7GFEX/DoPsEcjfzVIvSx/OTuw1KX+4keF7qrcAoyMZ+bfxU/xRzILfQz1qVy6/7F/VqOQl+ncUCfngAC0gMe8LnhgqThgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u1cCcJV8Fs6hJ8q3U0JW/7KpVpQBbRUZ00Dc3/XN1Co=;
+ b=LksWYmm/86+2wQYiBCvm+vwYgT0CeVnQLVDm7hGG3Y44TdLuVWQcC8Qm5ibjTUD1b+3DAzz8blJ7gqFdAz6de2kKbBAT9UqYahLhxGlRgZllfqMzZmsw1WhV+pt+CL/dLePztul0BnJELHypBebm4bLFIW9Wz+hVm1xQZJ7faESFNbRFRtxqGUoN9gfl9btJs09CVZhQXjZ2yWsW2k1RugPnZyEMUBaTyCI0S4PSNNBMwptkIwV6hyEAkKf2ieOGN3wIQqojTE0x9ZhlvYv7UewU+o9iUMoOrjImCgWRQC6Oed8T2Ip8QTlOG1iyEAPQjiTyNUbToa9akQrHlVQz7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u1cCcJV8Fs6hJ8q3U0JW/7KpVpQBbRUZ00Dc3/XN1Co=;
+ b=cXWUc2pU6d0ESks4SzkVidxFDROrUhfET8ua7bIkfKyvxulWQaPhkOPpMc3dtsKyxEept1/AKqGNiN6nny4F8Q+OaXcCaU4FubcGpKHRDi29wonCwP0UdeCihqdbGSCfwg7WINK7nX+z6aCgHQht3DHkeqXckAElU+SwBaFBQHo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from LV8PR12MB9714.namprd12.prod.outlook.com (2603:10b6:408:2a0::5)
+ by SA5PPF6CDAEAF48.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8cf) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Thu, 6 Nov
+ 2025 20:28:01 +0000
+Received: from LV8PR12MB9714.namprd12.prod.outlook.com
+ ([fe80::c18e:2d2:3255:7a8c]) by LV8PR12MB9714.namprd12.prod.outlook.com
+ ([fe80::c18e:2d2:3255:7a8c%4]) with mapi id 15.20.9298.010; Thu, 6 Nov 2025
+ 20:28:00 +0000
+Message-ID: <eb2e7040-539b-4406-9d14-3ffd261b07cf@amd.com>
+Date: Thu, 6 Nov 2025 12:27:58 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] acpi/hmat: Fix lockdep warning for
+ hmem_register_resource()
+To: Dave Jiang <dave.jiang@intel.com>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc: dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
+ rafael@kernel.org
+References: <20251105234851.81589-1-dave.jiang@intel.com>
+ <20251105234851.81589-6-dave.jiang@intel.com>
+Content-Language: en-US
+From: "Koralahalli Channabasappa, Smita" <skoralah@amd.com>
+In-Reply-To: <20251105234851.81589-6-dave.jiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR05CA0025.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::38) To LV8PR12MB9714.namprd12.prod.outlook.com
+ (2603:10b6:408:2a0::5)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250517223323.6e13bf58@kf-m2g5> <3761c1edef2c431a65f5fba2c5c64a2a882060cb.camel@linux.intel.com>
-In-Reply-To: <3761c1edef2c431a65f5fba2c5c64a2a882060cb.camel@linux.intel.com>
-From: Aaron Rainbolt <arainbolt@kfocus.org>
-Date: Thu, 6 Nov 2025 13:46:11 -0600
-X-Gm-Features: AWmQ_blpaCJmSSqoW4zTZG1eaIVp23NsRHAqyblE0U9xhoM6kGXt8I-ruymqG2Q
-Message-ID: <CAHuw_Q4FP24p=Hjr0R=50DFEfnmBeHV-pXdp7jk-Thw+EB8p0g@mail.gmail.com>
-Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
- detected on Arrow Lake hardware
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: lenb@kernel.org, rjw@rjwysocki.net, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, kernel-team@lists.ubuntu.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9714:EE_|SA5PPF6CDAEAF48:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8f3dcc9-b52f-45a5-a622-08de1d72fa87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bWU4bERPb05iYTVJVDAwdjhDUEV2Y3JwdzVQZWxZS0t1U2ZoMnAwOXVoelV1?=
+ =?utf-8?B?bXFFUzlUdzdlMjZMSUoyb05BTWozdjJTYkVWMkRXcE00S3lsQ2JDbThLcHFY?=
+ =?utf-8?B?dC9IYWtOQW1tanNNLzBuc01ITmwzYmFLOXhlMit1OTFneFUzRTZzWFFzSnJl?=
+ =?utf-8?B?TmhzTXYyRm40NTJiMU1HVGliYVVoNUlUUWpzV0Myb2xZWW1obFJTRFJsQThT?=
+ =?utf-8?B?dkZYazBiTExsT1lMZ3M5Y0h1MkhNWWVpMTUzeThldktNaXY4N2lqUEhmSURk?=
+ =?utf-8?B?akQ4MXgwd1RUYXBoQUtjNnFEVVhJeVZJMW5lbW5rY2VrWklIZ0lyWk9XRGUw?=
+ =?utf-8?B?SCsvaGlPeXVYa3o5Q1dvVDBwaCswdW16ZEJTZWVneEUyVmZFMUFvSzZ3VlAw?=
+ =?utf-8?B?Mms5ekdaRjBBV09yUlY1ako0Q0ZQNWV3RFlMT0Z3QVZ1b28rcmpnaWQxNzhV?=
+ =?utf-8?B?MVZ6N2pkbUpBTkFiZlkyOTBJN3BBSUk1WW4zNXIzSXI4SHdqREk5eS93UDBZ?=
+ =?utf-8?B?eWNoV080UzhFYXdYQWVSc0h6Zk0wb09EOG04MStNclV3NjZqYzY1d09LSHQ5?=
+ =?utf-8?B?cnhYQUYwL0pXTXg3RHJmY1hUcWVTcmxXYjFYa2JuclRRc2hGVjREOC84Mjdv?=
+ =?utf-8?B?OXhmd1RNR3VYbCtuNVMwcmh1N1JIR2xyYTJSbHlqcjVDKzR1N000eWtIaDN6?=
+ =?utf-8?B?b1dsTUI5VjRvc01Oc3RhMXFCajdPU00zd25BQURuMXZmVkExUUhIdkVlZ0ZZ?=
+ =?utf-8?B?SXk2Y3lsRWNTMFg2WWdJTVl4VGN1eSs5bnNEY1FlMEVTUUNwSC9oZHRHSGJY?=
+ =?utf-8?B?OXdhS1R2eFpKTThmT1dpNFlBdVg0K2JIN3VoWk81RDRoaHJUMDlzVlMrR1Ev?=
+ =?utf-8?B?SU8wTW44K1p1cDlCdTJhN21kcnkxVm9wNkU1SGh4WDVMMmYwRlNVdmpLckkv?=
+ =?utf-8?B?WXFnSlBLTTVONDBsWlZXSFVaQnhsR2tvbFF2NzRlbDJ0TTVzeUZaYnZNL243?=
+ =?utf-8?B?WmFJczJpOTRmTVZpMStmVWU5ZUNmaXRTdnJOZVMxYTd3YjBMcDVtYjZNNlI4?=
+ =?utf-8?B?emljUm80VFAwUjV2eFpnL1RwWG8zcVk1bGRaSEdTOVNBM2tqUEgyZjB4TEcw?=
+ =?utf-8?B?bmZhcFNlOGd2bDZYYk9WYS9uVEVPbTF0SVQ2RnBRTHQ5eGVJVTNhZjVadWtY?=
+ =?utf-8?B?NU9zRGN5RkV6RjFNaWNDZGRHZkxoenYrTXIwT2JPZmlZNncyamlQVllqK21O?=
+ =?utf-8?B?aGhvbUtUME52KzVIREJjajBkQmpvaW1zSlJ2OWcyRHl2U2I5b2JuZjhkLzBj?=
+ =?utf-8?B?R2N5WEFia3h5SUNUT1BhQndUcnhNRDdXNHNyS0ZVYVhqQVZWTlJXR0w1VXJ5?=
+ =?utf-8?B?T3hIeDdwcnROK2tYVjJmM3NDV1FabmxFNWFrRi8ycjkxYVhnSXVPc2p2TUtu?=
+ =?utf-8?B?dUgvcWVZMGVoYjVrV3F2dWhZdjRJR1FicDQrbEkwYndiSnlUUnNuWXlHclFt?=
+ =?utf-8?B?K1ZnN2xNY0pzYW8vTURaTFdiR2RiWkNpTVFVcEdPSGQ0anR0RlN3RDZaeDR4?=
+ =?utf-8?B?ejF3L1FFeUlST3pFM0dYWCtXZlUvTmdmWDBNNHprMGNpRm1QekpaRWlRYmtu?=
+ =?utf-8?B?bDdNcWh5cnJIR0xKYXByUlNvTXRMN3NkdnpVREVkejY1UWVCTlJzZGNSSmd6?=
+ =?utf-8?B?L084eDFKbUtydUdjSTZuSHU2YWJLR3hPaWxnbHBBc0ZnZndIUnJGVzQ0YkVz?=
+ =?utf-8?B?b0hxMXFKckxLODQ3VVRFMmVuUFpOKy8raDhPY2ZpVWFEM3ZickhFUDg1TmpT?=
+ =?utf-8?B?YzlwNHlEWHFaek5PU2dDYUhvZUsxY25KOWFYTUxXWk4yS1pOZmtaS0xlL1RV?=
+ =?utf-8?B?YnJMNUhKcEtsVUFJcFNIdFoyejMwNnpoNDg1OE1xTEgrM3o4UjVHOHY1L0hF?=
+ =?utf-8?Q?eBdXTtgRArLU7mAQpQ4pFcj+6rcMILmQ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9714.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WWEwQjMzcWlGQUs3U1ROV0lGZHJVMWJhTEtpZ3hrVTBTTjlUUUp6SnhwMkFy?=
+ =?utf-8?B?QVl5QUs3Ni92SlhYcjNyR0JkbUVXN2FMeHZ0NHhLZFJNajhiZjNYcUw5RkRP?=
+ =?utf-8?B?VlNLNWs0c2xYa1VpZXJoc2dXdVhEcUFHWFNHamhDMWErUFRwZ3h0WmFQaWJ0?=
+ =?utf-8?B?UFhjV0pQbDYzaTlSczFCWnBiMG1XMjB3OXNSS0hQUVRaTmJoWTI0Zk1mVDRO?=
+ =?utf-8?B?RFJiV2lpMlZHd2xoRGllWlRMUXl6d08xckx6azlBVTlhMVIwd1RDWmZlWUF5?=
+ =?utf-8?B?OGVPMGdhakN2U2h5VTN3ZG1vN0xYNndDam1RaGY0b05WZUNIeXd5VWgxWUJh?=
+ =?utf-8?B?RnNyS2VBV0k5dmFSbERTRS9HazdQY0RxQUhzZXRrUHR6aWhuSFExTXNtOTVM?=
+ =?utf-8?B?cUcrM1V2WlVqbk5RWEI3TjliOHh5VUdwQkVEQ3ZsY3hGV3paSDhibkk3WEhm?=
+ =?utf-8?B?dEIreGV5VFdIc2RuTkJEY2Z3VzJlQ01WT1lhQnhXNkVKVks0bXBCU3IzT2Ur?=
+ =?utf-8?B?SVZtMjNjNnMzNnJuOVVUcU9YOG9XMG9rSnJnOTRGYlpXTEEwd2NHTit0WnNq?=
+ =?utf-8?B?MWtkN0xzOS9mNzBzWENmSktCdkxIR2tIWlRrYkRTb2VScmF4NW1KU2VZMlRu?=
+ =?utf-8?B?eEZDdVN3N24rT1ZnNkhRVmJDTk83TUdVaVdhQkh3QVV5UGtNZkVWMHdyQTFC?=
+ =?utf-8?B?cExFQ0RrVkJ2UHp6RTBwWmV0V1lyZHo1LzZYQ1IwdmRsWksrYXdlOGUzYWtQ?=
+ =?utf-8?B?emdIRTByNlR4b1k2OFMwTUZSRU5WYWlVYzZxL25XVnc4Q0NxWkNzY1BEOWtO?=
+ =?utf-8?B?aTlySUZyWURZZ1Y3ZTRwK0xONEFQM0J1SzBPajJSK3ovQ0NVbHA3TXRza3kv?=
+ =?utf-8?B?NEY1UlFhcFZjU1VGamwycGJXM0h1ZllBL1psTEVtaUV1ZVd1R2lwNi85R2l3?=
+ =?utf-8?B?Zm5QMmdEd0hrcFdGRjJBdG9iYmdyYXlsUXB1YmE0N010MmQxd2tyVGE5ZlpW?=
+ =?utf-8?B?TVMvSEZrR0RLMXpPZDkwU3pBaXlCaUFCc1FVUVhyS3RpVGE0QWU2MGdLNEFr?=
+ =?utf-8?B?UFowQThNZVpkKzdJc2JCZ1VES0d1TjVLY0dYbTV0Q3QvQlFhMVRpcUk5dlZD?=
+ =?utf-8?B?MS83VnVFeW52VXZFM01IOHpQT2NHMVB5NS9PRGcxcThEaExIRWxoY3psOUV6?=
+ =?utf-8?B?T1FIOHpLMnhtam53TWUxdkdVdDZPMGFsd21ma1o4dWhGc1ZPU2llTXFwMU9R?=
+ =?utf-8?B?SGRCZDVIUDF0YU5uNWc4aDVHZW44RzRubUlBcHk1U3BYN2s5QmRWUlU1NU4x?=
+ =?utf-8?B?eGZVcWJJK01oK0gvTWozYzhHTjlvcWl4dVpvVkROTll5bWhGNkdiWGVPUFBB?=
+ =?utf-8?B?dG4rQ3hXWG8rRjF2VkVOaitFck5Nc1hMQzV6bnVrSS9IZVJsUDU5MXQzYTdV?=
+ =?utf-8?B?bEZTZVJFbnNEclRDU1R1VDVpRTMrWEV5cTIrL0xzWnNGQS9UWnBsWlYvU0Rv?=
+ =?utf-8?B?ME5FaFEzVm8yTncxMVg0b2tSaXZsdE5USGpsT3NUaTMyQm5nb1h4dXBPYlhh?=
+ =?utf-8?B?b2dpKzdqVHIzVjJxbE14R0syM1BlTjcwYTJFV2dLcG5EcVJZQ3R6YjFTcVNS?=
+ =?utf-8?B?NTBzK1BpMXZzNnhJcVJxL1F5OEJvZzIrVHdpeThBNlpoeXVlWFpLbGVEdUx6?=
+ =?utf-8?B?bktrcWlsVTd1TFdnY3prM2cyREZqUDJ6b2N2M0x3cmhmRG5OSW5JTzhHYlp3?=
+ =?utf-8?B?S3dDakc3SkVQTkFHaXZNU1Fpc21iTWpaMWE2ZkgydXNiZjZCRFBFNTB3YWFY?=
+ =?utf-8?B?bFQwUTRYQXhLSlhpWWVzYVVmV0RyeHorcEVFQ3BXK0lmSnFQbHRjT0M3SU1D?=
+ =?utf-8?B?YVIwNHJXY0VpSDJZZlJ2R3pzTTNqMHNxaFJvM29NV2dYaDZtSXhFcjEvZk9j?=
+ =?utf-8?B?T0tIR1BuS2NCbGNxTHR6aUlrOVdaTjRaeElJdEhGdm9nQm1EelptOG5hQXhF?=
+ =?utf-8?B?V3JYN3Erejl1QmFhM1R5UWp5TFRYSE1JSEFWQi85L2xFbHhGKzJueXZnS1JI?=
+ =?utf-8?B?WjE3aytFU3h6QVBqRTlaZ3JxZlArbWsvM1JuSEN0dEdRa1NXd0drZDZYSEFG?=
+ =?utf-8?Q?onqeoMt85aNETtxsAW5KLoj5V?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8f3dcc9-b52f-45a5-a622-08de1d72fa87
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9714.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 20:28:00.1708
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EIRkAe8syl2QC1hslV1YboifHs5NwApiRbyPnEzLUJ6Almt4gU0AHI/eaAOT0bKh2vty21T4WWACn/X5rDM4Tw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF6CDAEAF48
 
-On Mon, May 19, 2025 at 7:48=E2=80=AFAM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
->
-> On Sat, 2025-05-17 at 22:33 -0500, Aaron Rainbolt wrote:
-> > We have tested three systems with Arrow Lake CPUs, and all of them
-> > report incorrect max and base frequencies. Two systems have Ultra 9
-> > 275
-> > HX CPUs, and one has an Ultra 5 225 H. The problem occurs with both
-> > the
-> > Ubuntu 6.11 kernel and the 6.14.6 mainline kernel.
-> >
-> > How these values are misreported appears to depend on the CPU. On the
-> > Ultra 9 275HX systems when running Ubuntu=E2=80=99s 6.11.0-1015-oem ker=
-nel,
-> > the
-> > max reported frequency on a golden core is 5000000; however, the CPU
-> > spec says it should be 5400000. In contrast, on an Ultra 5 225H
-> > system,
-> > the max reported frequency on a golden core is 6200000;  however, the
-> > spec says it should be 4900000.
-> >
->
-> I think this is similar to
-> https://lkml.indiana.edu/2504.3/04971.html
->
-> The issue is the BIOS didn't program frequencies correctly in ACPI
-> CPPC. So frequency limits will be wrong.
->
-> You can dump the following values and also the details about the system
-> under test (OEM, model etc).
->
-> grep -r . /sys/devices/system/cpu/cpu*/acpi_cppc/*
->
->
-> Thanks,
-> Srinivas
+Hi Dave,
 
-I am so sorry to have missed this for literally months. Somehow this
-never ended up in my inbox,
-Gmail stuffed it in some other folder I don't ever look at, and my
-normal email client (Claws)
-refuses to show it to me. Hopefully sending this will make it show up
-where it should...
+On 11/5/2025 3:48 PM, Dave Jiang wrote:
+> The following lockdep splat was observed while kernel auto-online a CXL
+> memory region:
+> 
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 6.17.0djtest+ #53 Tainted: G        W
+> ------------------------------------------------------
+> systemd-udevd/3334 is trying to acquire lock:
+> ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
+> 
+> but task is already holding lock:
+> ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
+> 
+> which lock already depends on the new lock.
+> [..]
+> Chain exists of:
+>    hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
+> 
+>   Possible unsafe locking scenario:
+> 
+>         CPU0                    CPU1
+>         ----                    ----
+>    rlock((node_chain).rwsem);
+>                                 lock(mem_hotplug_lock);
+>                                 lock((node_chain).rwsem);
+>    lock(hmem_resource_lock);
+> 
+> The lock ordering can cause potential deadlock. There are instances
+> where hmem_resource_lock is taken after (node_chain).rwsem, and vice
+> versa.
+> 
+> Split out the target update section of hmat_register_target() so that
+> hmat_callback() only envokes that section instead of attempt to register
+> hmem devices that it does not need to.
+> 
+> Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
 
-I'll try to get some model information and logs soon. Thanks for your
-patience, and sorry about the
-probably ridiculous-looking followup email from July.
+Thanks for this fix.
 
-> > This bug is troublesome to end users because many CPU monitoring apps
-> > will report the CPU is running quite a bit slower or faster than the
-> > spec. Tools such as cpupower-gui, cpufreq-info, and cpufreq-set all
-> > show incorrect values because they read cpuinfo_max_freq and
-> > base_frequency, and write scaling_max_freq values in
-> > /sys/devices/system/cpu/cpufreq/policy* directories.
-> >
-> > The following bash script shows the incorrect values read from the
-> > cpuinfo_max_freq and base_frequency files. It also shows how the
-> > actual
-> > max frequencies attained are as expected. The example values shown
-> > come
-> > from an Ultra 9 275 HX CPU.
-> >
-> >     echo; echo '=3D=3D BEGIN =3D=3D';
-> >     echo 'Ensure turbo is on';
-> >     cd /sys/devices/system/cpu;
-> >     echo '0' |sudo tee intel_pstate/no_turbo > /dev/null;
-> >     if grep -q '0' intel_pstate/no_turbo; then echo 'Turbo is on'; fi
-> >
-> >     echo; echo 'Find top 2 golden cores';
-> >     cd /sys/devices/system/cpu/cpufreq/;
-> >     grep . policy*/cpuinfo_max_freq \
-> >       | awk -F: '{print $2" "$1}' |sort -rn | head -n2;
-> >     #> 5000000 policy2/cpuinfo_max_freq
-> >     #> 5000000 policy3/cpuinfo_max_freq
-> >
-> >     echo; echo 'Confirm misreporting: per spec, this should be
-> > 5400000!';
-> >     grep . policy2/cpuinfo_max_freq; # 500000
-> >
-> >     echo; echo 'Confirm misreporting: per spec, this should be
-> > 2700000!'
-> >     grep . policy2/base_frequency; # 2500000
-> >
-> >     echo; echo '# Run a CPU benchmark now, then press [ Enter ] to
-> > see top 3 freqs.';
-> >     echo 'This will take 6 seconds to complete.';
-> >     read -r -p '# You should see that the freqs match the CPU specs.
-> > ';\
-> >     for i in {0..5}; do
-> >       grep . policy*/scaling_cur_freq | awk -F: '{print $2" "$1}';
-> >       sleep 1;
-> >     done |sort -rn |head -n3
-> >     #> 5400000 policy2/scaling_cur_freq
-> >     #> 5320159 policy2/scaling_cur_freq
-> >     #> 5241886 policy3/scaling_cur_freq
-> >
-> >     echo; echo '=3D=3D END   =3D=3D'; echo;
-> >
-> > The actual results, when running the above script, shows the
-> > cpuinfo_max_freq and base_frequencies values do not match those
-> > specified by Intel. With the 6.11.0-1021-oem Ubuntu Kernel, we see
-> > the
-> > following:
-> >
-> > > Turbo? | Core | Freq (spec) | Freq (report) | Freq (actual) |
-> > > Yes    | P    | 5.4 GHz     | 5.0 GHz       | 5.4 GHz       |
-> > > No     | P    | 2.7 GHz     | 2.5 GHz       | 2.7 GHz       |
-> > > Yes    | E    | 4.6 GHz     | 4.6 GHz       | 4.6 GHz       |
-> > > No     | E    | 2.1 GHz     | 2.1 GHz       | 2.1 GHz       |
-> >
-> > We have verified the cores are operating at their specified
-> > frequencies
-> > by running a demanding CPU benchmark while graphing frequencies with
-> > KDE System Monitor, on all 3 systems. This tool appeared to graph
-> > scaling_cur_freq values. Notice E-cores appear to be correctly
-> > reported. Also, all systems misinterpret values written to
-> > scaling_max_req with the apparent same error deltas: on the Ultra 9
-> > 275
-> > HX, setting this value to 5000000 results in actual max frequencies
-> > of
-> > 5400000. Setting it to 2500000 results in max 2700000. Setting it to
-> > 1650000 results in max 2100000.
-> >
-> > The behavior with the 6.14.6 kernel is worse than with 6.11, with all
-> > values under-reported. Actual frequencies were not tested on 6.14.6:
-> >
-> > > Turbo? | Core | Freq (spec) | Freq (report) |
-> > > Yes    | P    | 5.4 GHz     | 3.9 GHz       |
-> > > No     | P    | 2.7 GHz     | 2.0 GHz       |
-> > > Yes    | E    | 4.6 GHz     | 3.3 GHz       |
-> > > No     | E    | 2.1 GHz     | 1.5 GHz       |
-> >
-> > Is it possible the math currently used for calculating CPU
-> > frequencies
-> > is no longer correct for Arrow Lake CPUs? This seems similar to the
-> > issue that was fixed by commit f5c8cf2 (cpufreq: intel_pstate:
-> > hybrid:
-> > Use known scaling factor for P-cores).
->
+This resolves a deadlock I was hitting while working on the Soft 
+Reserved series.
+
+Before this change, the HMEM deferred work path could hold 
+hmem_resource_lock while eventually triggering memory onlining where 
+udev holds mem_hotplug_lock.
+
+Tested-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+
+> v4:
+> - Fix fixes tag. (Jonathan)
+> - Refactor hmat_hotplug_target(). (Jonathan)
+> ---
+>   drivers/acpi/numa/hmat.c | 47 ++++++++++++++++++++++------------------
+>   1 file changed, 26 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 1dc73d20d989..d10cbe93c3a7 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -874,10 +874,33 @@ static void hmat_register_target_devices(struct memory_target *target)
+>   	}
+>   }
+>   
+> -static void hmat_register_target(struct memory_target *target)
+> +static void hmat_hotplug_target(struct memory_target *target)
+>   {
+>   	int nid = pxm_to_node(target->memory_pxm);
+>   
+> +	/*
+> +	 * Skip offline nodes. This can happen when memory
+> +	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+> +	 * to all the memory in a proximity domain leading to
+> +	 * the node being marked offline / unplugged, or if
+> +	 * memory-only "hotplug" node is offline.
+> +	 */
+> +	if (nid == NUMA_NO_NODE || !node_online(nid))
+> +		return;
+> +
+> +	guard(mutex)(&target_lock);
+> +	if (target->registered)
+> +		return;
+> +
+> +	hmat_register_target_initiators(target);
+> +	hmat_register_target_cache(target);
+> +	hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
+> +	hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
+> +	target->registered = true;
+> +}
+> +
+> +static void hmat_register_target(struct memory_target *target)
+> +{
+>   	/*
+>   	 * Devices may belong to either an offline or online
+>   	 * node, so unconditionally add them.
+> @@ -896,25 +919,7 @@ static void hmat_register_target(struct memory_target *target)
+>   		}
+>   	}
+>   
+> -	/*
+> -	 * Skip offline nodes. This can happen when memory
+> -	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+> -	 * to all the memory in a proximity domain leading to
+> -	 * the node being marked offline / unplugged, or if
+> -	 * memory-only "hotplug" node is offline.
+> -	 */
+> -	if (nid == NUMA_NO_NODE || !node_online(nid))
+> -		return;
+> -
+> -	mutex_lock(&target_lock);
+> -	if (!target->registered) {
+> -		hmat_register_target_initiators(target);
+> -		hmat_register_target_cache(target);
+> -		hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
+> -		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
+> -		target->registered = true;
+> -	}
+> -	mutex_unlock(&target_lock);
+> +	hmat_hotplug_target(target);
+>   }
+>   
+>   static void hmat_register_targets(void)
+> @@ -940,7 +945,7 @@ static int hmat_callback(struct notifier_block *self,
+>   	if (!target)
+>   		return NOTIFY_OK;
+>   
+> -	hmat_register_target(target);
+> +	hmat_hotplug_target(target);
+>   	return NOTIFY_OK;
+>   }
+>   
+
 
