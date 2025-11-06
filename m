@@ -1,347 +1,405 @@
-Return-Path: <linux-acpi+bounces-18591-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18592-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AA1C3BC94
-	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 15:36:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D777C3BFDC
+	for <lists+linux-acpi@lfdr.de>; Thu, 06 Nov 2025 16:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349F11B21251
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 14:35:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5FCE342C97
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Nov 2025 15:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4225433E349;
-	Thu,  6 Nov 2025 14:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168E525C6E2;
+	Thu,  6 Nov 2025 15:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="nkvlScTR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2tZ3/SK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D2A32BF33
-	for <linux-acpi@vger.kernel.org>; Thu,  6 Nov 2025 14:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F326225C810
+	for <linux-acpi@vger.kernel.org>; Thu,  6 Nov 2025 15:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762439582; cv=none; b=Lvd7Nn/paYZW3K+MgQevF6zvPclX8Kf1wsXM19vumZWMicuOGMMfhZZni7lZvMZBlzn0bPKo7qabV+99GhtJANM8dnvodGiNmVGkfaFqfqGl78ja2xmjpsES6TFG0o/XtUquyjZx4Numx3osgtDzhjYeG7OCplSF3cCshdiQVS8=
+	t=1762442345; cv=none; b=UsGilmdop7T4RSs/DTYVPI4gSUu38E4DPMiBMtX7gPddOVeXr5KNkCGZFatVQeygpsHPnB1m2f06bETJVbirKIG4rrn3x7HVUUhC+776hCH7oJYKPwteNIoeV9hcB8ejc4Xyf7Z9qdcVA9/sNYggPKre0pHzzTMLdQvDkttZc+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762439582; c=relaxed/simple;
-	bh=EkDE/RRl4qMOJOD0OLRUX9GMdTma2ZJklCXyTifECNk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qhyqlD+/oVXFvFK2Mx5kTa5XD5+5SBTcfN7q27NzIruEg9LWpkbCH+PSk70rzPdEmioVx1sYnbFLsnnwQbMsEya3IDRy6tdYtC7iT9ylOxSDHoTK/2IVYocdxHTSOgGwfJJxF8eovJz4OxCBbw5aRZcfYrJvJy3POU3Fjsluevw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=nkvlScTR; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47721743fd0so5104785e9.2
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Nov 2025 06:32:58 -0800 (PST)
+	s=arc-20240116; t=1762442345; c=relaxed/simple;
+	bh=Kj/nfYUAcDS/356GAgAZWyqIIaaqZPCTfPRT8pbIEac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SutD6UayjASXSD8rzVCE3NwCq5VXXLALX3Qpb9CNzV5/F7NR16PMZiEa0BD5uGsjnSYz7G1XXNU4HD4px5xvAw6K7yk8jLqcrs2cHDc623Bt8Rp2U+p5srAArb+iuKenwUL8A9r+JKkLOGyTmzG6orVnpVxtFfLhRK7D+WVcdy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2tZ3/SK; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-640e9f5951aso3712253a12.1
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Nov 2025 07:19:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762439577; x=1763044377; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CBRf3veqjGbG6h9bzDEg53CibEdBQaqM7ZKj7lD8TRM=;
-        b=nkvlScTRD+gKTlpPAdn/0OCmXug29C7ilQgcG9KXvAPpC8wf0dBthdneI44yy2K+fk
-         pbaYKPMzl1nELw39e3wjx2DOIcOGZeT64hFfAedyVASzYU0KxAbz0YEqa0q8+LJhRhs6
-         Yc5fN9BO+8VU+M0hMQEvS0pheYnxrlMkQu0XdR+SHB9HgTOSOtPpV+KbuSqBnZKV0D4+
-         P2TbVxvuLxRbk1N+LrI54yyePhaFmw3Mt5IDWoMfOCVhd70II/nfXNDFNbEhiDTlGwjv
-         uit2F7rpz5yTUvdsXOJTNQ/vFwMw/Vvi/ICOZUg26eSZKjfOlx3Desgy/f1OAlnbT6+x
-         qxbw==
+        d=google.com; s=20230601; t=1762442340; x=1763047140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/A/N8vcwKdT8TcSs16ZitfAWE/4Ic1WBoYeYHx9o7uA=;
+        b=E2tZ3/SKvzxDjqjDaZHBUeSVzJmS+qZqHuywJiwW2Vyf0U9AftDe61fj4JMohDKAVS
+         9ddUeh4hGiHTscfZGLS0b3XWfknaYgQgpnqCfbrtWY4Gdvhu2mSDDq5fkA3kwWZgsjqu
+         GMrqYrNO2CQRn0ZaXLYGa+Z9gtZOGShJUj25w99cukzGXuHv2veOC8WQd08AoQbgTAeC
+         I48MxEShdX6oz23I6NIYuG+mdbELfuXo8HOYzndz7/c8rkbXkNfTR8Bzi1BOmdDRSIK3
+         lBTSdM2CX4+tNiuOdq01PSb9Lsovj3IeVAV+1+YU+yDhkDThTnkNG0xkBHtNWAEh4AhA
+         eOCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762439577; x=1763044377;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1762442340; x=1763047140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CBRf3veqjGbG6h9bzDEg53CibEdBQaqM7ZKj7lD8TRM=;
-        b=X/GTTcrVCvBO8RmjpEyk3Uy915pURxHJamHaqKi7nc8YzoVRK52psRW2RDv7eqV4kj
-         /8WdBdF2Ow6O18WMFaTe0mYI1Dqa37aTikXGy6nG59MJBVILqP0bG6EjMhhyb4O6l4Do
-         ACaaOXQLyZRsNU1RgfohIaziaPSqvFcQZ2USliq8SUFQ+B7ntJ3lUUr+VKxxqBoG5n9T
-         fNkv5AdNms68yIGYEFwnXARaXdIGoyFTMWAAQwCg/gd55o0tnubyCat1HWT0TWmmhKs6
-         700+7AOIwltqWj33+sUHyiLTOTIJt9IqmnjBLL4YdA5bToKJ6h0MCepRS0I+GjQcBcaH
-         E52Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU852lYTUUGlsaIbbTSWeUfV1+PnP4iE1aQJUJw2Y1h4Zl1AZJWzgCD33gC0KA4FIYXFbna5SW2F7Ng@vger.kernel.org
-X-Gm-Message-State: AOJu0YxboSJuzpTAqkv9UsoiW6J059a8ZW+oocewzFAsOXIilcdQEZff
-	GygOOofFzt7qX+RxTQqa576EhQi+z8XrGfDhULHjF9/B4XFtcHI2cTuTsoZu+qIKBhk=
-X-Gm-Gg: ASbGncuphk2u2Erp1TiOLxp8cEyPtL1YMf0KYd8zh5GbZB8TAr/SVxeWQsHPwQh5qez
-	gg2mCtKZtHwKBhF2MSNCC53zLaEb6igO/w9PW7A11jvUHHvzSRFEeg50qaVOnV4ba0EzJ2wr1Xa
-	Q35fh2rIFao0pCynLxU76FG3yZoVLOzAZGcUZU7UxwF/8tuKJl0oOJI1I9KvJf5XfDMxXq+8HBx
-	rxosnIvaUaoCUYsldivIYCQ9tBdRI9WBlKcNFEAl/FF5lHxDUihM4W8Oj8oMxv5f0EWYxg/qpnZ
-	dSuq6lChkhLxfFln91MClzKdx+w3K6k3WglFMowOyPM4gYmQc2h9iaVMZHD/sXSNBDcWMdGes8i
-	3AAhPNnEOKRqaYyGKsaQD2A4QAnc90Vjb2NGvoUrj/RMguPbWuU57SEX8jKCrlIY1E41Sr2HN3s
-	TSDyMgSUY/lb0xuw==
-X-Google-Smtp-Source: AGHT+IHO3UylNl2KGxiz9gPrA6WTwUQSCel+a1JiWOuL3mx9boSALuIzdlOj9fKcjI5KOqgGUztaRQ==
-X-Received: by 2002:a05:600c:348d:b0:46e:5100:326e with SMTP id 5b1f17b1804b1-4775cdf54b9mr51652505e9.23.1762439576626;
-        Thu, 06 Nov 2025 06:32:56 -0800 (PST)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:d9de:4038:a78:acab])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47763de4fb5sm18871515e9.2.2025.11.06.06.32.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 06:32:55 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 06 Nov 2025 15:32:37 +0100
-Subject: [PATCH v6 8/8] reset: gpio: use software nodes to setup the GPIO
- lookup
+        bh=/A/N8vcwKdT8TcSs16ZitfAWE/4Ic1WBoYeYHx9o7uA=;
+        b=BYGVYcy2x58ba+gzKThoI2zZIK4JI28KqF2uBkWFSfHkT8ZRP1TQsBDAeXaoEXGO4k
+         08rOy/WZRzNTp01M4EXN9sDWYggTOY0Kxjx+67xfw1xXsXRLcghUCNz8QNX0X7SBYoAo
+         Yo822SrlG2TyvGzCYqRedkYZlWSrRvKtqoJSne5aBgqGZi8vOWIWQD+zVQKBP/NGQJ3I
+         HWoeNU3zjq7p2/ZYFUIMzkAyxXOAYuj+NneI4l3ShEQ/A2pcRYCE1hVBozJIZeC1RzUb
+         UPI+B6MFNSkKCeD66yFaTdmY3fxFfPHLdnEg9hG/+U+MHnDuoS42cemuxTob0skGISh+
+         2jqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVT+BSR5cxti4TERMFJ9G7rMJ9YdgeafwTu5YTpEnMbrhjjcE03LRg97MnM3U7m9rurYmZRWwTOTyuk@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr/j4I5OOW0johiLCrjfdUz0vcOJGsOihvwykXXJIcFLzTuu/a
+	obQBTHUglMKei5rPUrBtPwShmq9LumtVKHTGuaKDOGx6TR8qWc1IUXiBsCswdMxIdvuT6JDRkQx
+	HEhJ1pw2qC1kAgY7WdwCO9CszAks4miWQ1QgbHD8Y
+X-Gm-Gg: ASbGnctsevg6rWqcIATHXKqWf07x8GoRrQYy0hs/Dw+SswORV7BpTKBZHqOM3dPOM2H
+	pn70A8agazHGdeZjQsehHNhfD5kk8JVE9QGa8koa/Gb1qFGSaGO3IGWFMq4twLa91OxDJviFIJ9
+	kwHJAIkeULX6BonmZlt+Rh06dpHOv7sM+wedPW81eKmbg2Gg191b6StLUOKxBGWh2C5RuyqD9kQ
+	AoTer4JL3TkAlwpsE7e6KRH6v6O0ZSOkyiTrAMyFQ568WLFJg1XgUyB7cjMw0wUjRNuQoaK96+o
+	ocwl/iUCNfhOQ81hjSU4KPLfEg==
+X-Google-Smtp-Source: AGHT+IF6Lll39KroNtxrdzA3gXGbJk/g7xVSYA1QFmn3GNRu2l+pGUrp6SFXaJvuJgPAcXhUpJgSt6CYI17zoKm2B0Y=
+X-Received: by 2002:a17:907:3d4c:b0:b4a:e7c9:84c1 with SMTP id
+ a640c23a62f3a-b72893578ecmr431586766b.7.1762442339871; Thu, 06 Nov 2025
+ 07:18:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-reset-gpios-swnodes-v6-8-69aa852de9e4@linaro.org>
-References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
-In-Reply-To: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-acpi@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7011;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=Ao31mIgVUzpFpWDEWy5gl0RAjMbjdGgDZiop4RFld+8=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBpDLGISK9diTWRcRc155/yr0n9uTHC0fqEsEKj1
- hLZNW8R8OOJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaQyxiAAKCRARpy6gFHHX
- ctBqEACEOpOe4DMcGGg/2LAjcBGy/1ZSWig3u5pjB1TpSklhF9Zv7sfHAg7t6MTffVdoBkKP+TU
- UY4lJUvRlngckYoFB0WwZU4toQTLZato+0DR4jWeaNkBIyLMFabaNyxHU55zEyc0OJFE2ucQjvs
- Pe0Ce/IRMl8vMev7Ge1dtcrPXfc6OV5xMfg3U6EuTmeaBQ9QL5yld5QyFRMw7i7jnHU6cu/Bgpb
- 6VY6X2G/f32vDv8xYVQimAWQZlcy+5lGAN+7GVI8a2EWcy6vF9yXp+bvnOhNnlDwZwy7F+PMkx1
- v2FQ7morG3A1o4wVaoU1U4D8Kf8ueh5j0Vu7vzc5g8o0dY2pDDtdqZwKjbZ19OjfOndnNTEkPqJ
- 1FAQE0VP29lV9uu3oowVF2q4qCmAb8refNErjiJmsroLnV8JltEzUv6QXIPBgpe1UJCOAiLFNgI
- cENbRETaGRt2V7PMNNNg6S5kEyYnJnLy0EECi958hPJVK1mwC/IoX2x0IAgaXuthGJUqxdb7oMV
- 9VqAqahRCPWqbr2V+Ntm3gNgAN+dLWwj/ffR/uu7Ynn2v6TjCphxUOSIzKbD4lIIdN4aY5xswy4
- 0DAMqamXrZSn27IxbouxToz+mZKNcuzdX8BRiJlGBXWF5+CeULMDis6x4hX27uF4HZXqNiA6f41
- vpkjJP6iU7XChJw==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+References: <20251017185645.26604-1-james.morse@arm.com> <20251017185645.26604-27-james.morse@arm.com>
+In-Reply-To: <20251017185645.26604-27-james.morse@arm.com>
+From: Peter Newman <peternewman@google.com>
+Date: Thu, 6 Nov 2025 16:18:47 +0100
+X-Gm-Features: AWmQ_bkGOrB1RKIT7idbIMCPIItvAN0p_zrVirGPYYJwN3Yf4xWvxB7PQou8e6U
+Message-ID: <CALPaoCgO+NW9Hnb0x-eL7oR-Yj75V14hOW=LxAEYUEeK9SMCUA@mail.gmail.com>
+Subject: Re: [PATCH v3 26/29] arm_mpam: Use long MBWU counters if supported
+To: James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-acpi@vger.kernel.org, 
+	D Scott Phillips OS <scott@os.amperecomputing.com>, carl@os.amperecomputing.com, 
+	lcherian@marvell.com, bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com, 
+	baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>, 
+	Xin Hao <xhao@linux.alibaba.com>, dfustini@baylibre.com, amitsinght@marvell.com, 
+	David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com, baisheng.gao@unisoc.com, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring <robh@kernel.org>, 
+	Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, Gavin Shan <gshan@redhat.com>, 
+	Ben Horgan <ben.horgan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi James,
 
-GPIO machine lookup is a nice mechanism for associating GPIOs with
-consumers if we don't know what kind of device the GPIO provider is or
-when it will become available. However in the case of the reset-gpio, we
-are already holding a reference to the device and so can reference its
-firmware node. Let's setup a software node that references the relevant
-GPIO and attach it to the auxiliary device we're creating.
+On Fri, Oct 17, 2025 at 8:59=E2=80=AFPM James Morse <james.morse@arm.com> w=
+rote:
+>
+> From: Rohit Mathew <rohit.mathew@arm.com>
+>
+> Now that the larger counter sizes are probed, make use of them.
+>
+> Callers of mpam_msmon_read() may not know (or care!) about the different
+> counter sizes. Allow them to specify mpam_feat_msmon_mbwu and have the
+> driver pick the counter to use.
+>
+> Only 32bit accesses to the MSC are required to be supported by the
+> spec, but these registers are 64bits. The lower half may overflow
+> into the higher half between two 32bit reads. To avoid this, use
+> a helper that reads the top half multiple times to check for overflow.
+>
+> Signed-off-by: Rohit Mathew <rohit.mathew@arm.com>
+> [morse: merged multiple patches from Rohit, added explicit counter select=
+ion ]
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> ---
+> Changes since v2:
+>  * Removed mpam_feat_msmon_mbwu as a top-level bit for explicit 31bit cou=
+nter
+>    selection.
+>  * Allow callers of mpam_msmon_read() to specify mpam_feat_msmon_mbwu and=
+ have
+>    the driver pick a supported counter size.
+>  * Rephrased commit message.
+>
+> Changes since v1:
+>  * Only clear OFLOW_STATUS_L on MBWU counters.
+>
+> Changes since RFC:
+>  * Commit message wrangling.
+>  * Refer to 31 bit counters as opposed to 32 bit (registers).
+> ---
+>  drivers/resctrl/mpam_devices.c | 134 ++++++++++++++++++++++++++++-----
+>  1 file changed, 116 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_device=
+s.c
+> index f4d07234ce10..c207a6d2832c 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -897,6 +897,48 @@ struct mon_read {
+>         int                             err;
+>  };
+>
+> +static bool mpam_ris_has_mbwu_long_counter(struct mpam_msc_ris *ris)
+> +{
+> +       return (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, &ris->pr=
+ops) ||
+> +               mpam_has_feature(mpam_feat_msmon_mbwu_44counter, &ris->pr=
+ops));
+> +}
+> +
+> +static u64 mpam_msc_read_mbwu_l(struct mpam_msc *msc)
+> +{
+> +       int retry =3D 3;
+> +       u32 mbwu_l_low;
+> +       u64 mbwu_l_high1, mbwu_l_high2;
+> +
+> +       mpam_mon_sel_lock_held(msc);
+> +
+> +       WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz=
+);
+> +       WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessib=
+ility));
+> +
+> +       mbwu_l_high2 =3D __mpam_read_reg(msc, MSMON_MBWU_L + 4);
+> +       do {
+> +               mbwu_l_high1 =3D mbwu_l_high2;
+> +               mbwu_l_low =3D __mpam_read_reg(msc, MSMON_MBWU_L);
+> +               mbwu_l_high2 =3D __mpam_read_reg(msc, MSMON_MBWU_L + 4);
+> +
+> +               retry--;
+> +       } while (mbwu_l_high1 !=3D mbwu_l_high2 && retry > 0);
+> +
+> +       if (mbwu_l_high1 =3D=3D mbwu_l_high2)
+> +               return (mbwu_l_high1 << 32) | mbwu_l_low;
+> +       return MSMON___NRDY_L;
+> +}
+> +
+> +static void mpam_msc_zero_mbwu_l(struct mpam_msc *msc)
+> +{
+> +       mpam_mon_sel_lock_held(msc);
+> +
+> +       WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz=
+);
+> +       WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessib=
+ility));
+> +
+> +       __mpam_write_reg(msc, MSMON_MBWU_L, 0);
+> +       __mpam_write_reg(msc, MSMON_MBWU_L + 4, 0);
+> +}
+> +
+>  static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+>                                    u32 *flt_val)
+>  {
+> @@ -924,7 +966,9 @@ static void gen_msmon_ctl_flt_vals(struct mon_read *m=
+, u32 *ctl_val,
+>                                                ctx->csu_exclude_clean);
+>
+>                 break;
+> -       case mpam_feat_msmon_mbwu:
+> +       case mpam_feat_msmon_mbwu_31counter:
+> +       case mpam_feat_msmon_mbwu_44counter:
+> +       case mpam_feat_msmon_mbwu_63counter:
+>                 *ctl_val |=3D MSMON_CFG_MBWU_CTL_TYPE_MBWU;
+>
+>                 if (mpam_has_feature(mpam_feat_msmon_mbwu_rwbw, &m->ris->=
+props))
+> @@ -946,7 +990,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read *=
+m, u32 *ctl_val,
+>                 *ctl_val =3D mpam_read_monsel_reg(msc, CFG_CSU_CTL);
+>                 *flt_val =3D mpam_read_monsel_reg(msc, CFG_CSU_FLT);
+>                 return;
+> -       case mpam_feat_msmon_mbwu:
+> +       case mpam_feat_msmon_mbwu_31counter:
+> +       case mpam_feat_msmon_mbwu_44counter:
+> +       case mpam_feat_msmon_mbwu_63counter:
+>                 *ctl_val =3D mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
+>                 *flt_val =3D mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
+>                 return;
+> @@ -959,6 +1005,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read =
+*m, u32 *ctl_val,
+>  static void clean_msmon_ctl_val(u32 *cur_ctl)
+>  {
+>         *cur_ctl &=3D ~MSMON_CFG_x_CTL_OFLOW_STATUS;
+> +
+> +       if (FIELD_GET(MSMON_CFG_x_CTL_TYPE, *cur_ctl) =3D=3D MSMON_CFG_MB=
+WU_CTL_TYPE_MBWU)
+> +               *cur_ctl &=3D ~MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L;
+>  }
+>
+>  static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+> @@ -978,10 +1027,15 @@ static void write_msmon_ctl_flt_vals(struct mon_re=
+ad *m, u32 ctl_val,
+>                 mpam_write_monsel_reg(msc, CSU, 0);
+>                 mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val | MSMON_C=
+FG_x_CTL_EN);
+>                 break;
+> -       case mpam_feat_msmon_mbwu:
+> +       case mpam_feat_msmon_mbwu_44counter:
+> +       case mpam_feat_msmon_mbwu_63counter:
+> +               mpam_msc_zero_mbwu_l(m->ris->vmsc->msc);
+> +               fallthrough;
+> +       case mpam_feat_msmon_mbwu_31counter:
+>                 mpam_write_monsel_reg(msc, CFG_MBWU_FLT, flt_val);
+>                 mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
+>                 mpam_write_monsel_reg(msc, MBWU, 0);
+> +
+>                 mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_=
+CFG_x_CTL_EN);
+>
+>                 mbwu_state =3D &m->ris->mbwu_state[m->ctx->mon];
+> @@ -993,10 +1047,19 @@ static void write_msmon_ctl_flt_vals(struct mon_re=
+ad *m, u32 ctl_val,
+>         }
+>  }
+>
+> -static u64 mpam_msmon_overflow_val(struct mpam_msc_ris *ris)
+> +static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
+>  {
+> -       /* TODO: scaling, and long counters */
+> -       return GENMASK_ULL(30, 0);
+> +       /* TODO: implement scaling counters */
+> +       switch (type) {
+> +       case mpam_feat_msmon_mbwu_63counter:
+> +               return GENMASK_ULL(62, 0);
+> +       case mpam_feat_msmon_mbwu_44counter:
+> +               return GENMASK_ULL(43, 0);
+> +       case mpam_feat_msmon_mbwu_31counter:
+> +               return GENMASK_ULL(30, 0);
+> +       default:
+> +               return 0;
+> +       }
+>  }
+>
+>  /* Call with MSC lock held */
+> @@ -1037,11 +1100,24 @@ static void __ris_msmon_read(void *arg)
+>                         nrdy =3D now & MSMON___NRDY;
+>                 now =3D FIELD_GET(MSMON___VALUE, now);
+>                 break;
+> -       case mpam_feat_msmon_mbwu:
+> -               now =3D mpam_read_monsel_reg(msc, MBWU);
+> -               if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops=
+))
+> -                       nrdy =3D now & MSMON___NRDY;
+> -               now =3D FIELD_GET(MSMON___VALUE, now);
+> +       case mpam_feat_msmon_mbwu_31counter:
+> +       case mpam_feat_msmon_mbwu_44counter:
+> +       case mpam_feat_msmon_mbwu_63counter:
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/reset/core.c | 126 +++++++++++++++++++++++++++++----------------------
- 1 file changed, 73 insertions(+), 53 deletions(-)
+Should you check for one of these three features instead of
+mpam_feat_msmon_mbwu further up in this function when checking for
+reset_on_next_read?
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index cefeff10f6c82f5aef269a6d3a58d9d204ed6b7e..8262879e3f0d9ce67683c6baa00d9eea9e3c3ca3 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -14,6 +14,7 @@
- #include <linux/export.h>
- #include <linux/gpio/driver.h>
- #include <linux/gpio/machine.h>
-+#include <linux/gpio/property.h>
- #include <linux/idr.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-@@ -77,10 +78,12 @@ struct reset_control_array {
- /**
-  * struct reset_gpio_lookup - lookup key for ad-hoc created reset-gpio devices
-  * @of_args: phandle to the reset controller with all the args like GPIO number
-+ * @swnode: Software node containing the reference to the GPIO provider
-  * @list: list entry for the reset_gpio_lookup_list
-  */
- struct reset_gpio_lookup {
- 	struct of_phandle_args of_args;
-+	struct fwnode_handle *swnode;
- 	struct list_head list;
- };
- 
-@@ -822,52 +825,45 @@ static void __reset_control_put_internal(struct reset_control *rstc)
- 	kref_put(&rstc->refcnt, __reset_control_release);
- }
- 
--static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int id,
--					 struct device_node *np,
--					 unsigned int gpio,
--					 unsigned int of_flags)
-+static void reset_gpio_aux_device_release(struct device *dev)
- {
--	unsigned int lookup_flags;
--	const char *label_tmp;
-+	struct auxiliary_device *adev = to_auxiliary_dev(dev);
- 
--	/*
--	 * Later we map GPIO flags between OF and Linux, however not all
--	 * constants from include/dt-bindings/gpio/gpio.h and
--	 * include/linux/gpio/machine.h match each other.
--	 */
--	if (of_flags > GPIO_ACTIVE_LOW) {
--		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
--		       of_flags, gpio);
--		return -EINVAL;
-+	kfree(adev);
-+}
-+
-+static int reset_add_gpio_aux_device(struct device *parent,
-+				     struct fwnode_handle *swnode,
-+				     int id, void *pdata)
-+{
-+	struct auxiliary_device *adev;
-+	int ret;
-+
-+	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
-+	if (!adev)
-+		return -ENOMEM;
-+
-+	adev->id = id;
-+	adev->name = "gpio";
-+	adev->dev.parent = parent;
-+	adev->dev.platform_data = pdata;
-+	adev->dev.release = reset_gpio_aux_device_release;
-+	device_set_node(&adev->dev, swnode);
-+
-+	ret = auxiliary_device_init(adev);
-+	if (ret) {
-+		kfree(adev);
-+		return ret;
- 	}
- 
--	label_tmp = gpio_device_get_label(gdev);
--	if (!label_tmp)
--		return -EINVAL;
-+	ret = __auxiliary_device_add(adev, "reset");
-+	if (ret) {
-+		auxiliary_device_uninit(adev);
-+		kfree(adev);
-+		return ret;
-+	}
- 
--	char *label __free(kfree) = kstrdup(label_tmp, GFP_KERNEL);
--	if (!label)
--		return -ENOMEM;
--
--	/* Size: one lookup entry plus sentinel */
--	struct gpiod_lookup_table *lookup __free(kfree) = kzalloc(struct_size(lookup, table, 2),
--								  GFP_KERNEL);
--	if (!lookup)
--		return -ENOMEM;
--
--	lookup->dev_id = kasprintf(GFP_KERNEL, "reset.gpio.%d", id);
--	if (!lookup->dev_id)
--		return -ENOMEM;
--
--	lookup_flags = GPIO_PERSISTENT;
--	lookup_flags |= of_flags & GPIO_ACTIVE_LOW;
--	lookup->table[0] = GPIO_LOOKUP(no_free_ptr(label), gpio, "reset",
--				       lookup_flags);
--
--	/* Not freed on success, because it is persisent subsystem data. */
--	gpiod_add_lookup_table(no_free_ptr(lookup));
--
--	return 0;
-+	return ret;
- }
- 
- /*
-@@ -875,8 +871,10 @@ static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int id,
-  */
- static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- {
-+	struct property_entry properties[2] = { };
-+	unsigned int offset, of_flags, lflags;
- 	struct reset_gpio_lookup *rgpio_dev;
--	struct auxiliary_device *adev;
-+	struct device *parent;
- 	int id, ret;
- 
- 	/*
-@@ -895,6 +893,23 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 	 */
- 	lockdep_assert_not_held(&reset_list_mutex);
- 
-+	offset = args->args[0];
-+	of_flags = args->args[1];
-+
-+	/*
-+	 * Later we map GPIO flags between OF and Linux, however not all
-+	 * constants from include/dt-bindings/gpio/gpio.h and
-+	 * include/linux/gpio/machine.h match each other.
-+	 *
-+	 * FIXME: Find a better way of translating OF flags to GPIO lookup
-+	 * flags.
-+	 */
-+	if (of_flags > GPIO_ACTIVE_LOW) {
-+		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
-+		       of_flags, offset);
-+		return -EINVAL;
-+	}
-+
- 	struct gpio_device *gdev __free(gpio_device_put) =
- 		gpio_device_find_by_fwnode(of_fwnode_handle(args->np));
- 	if (!gdev)
-@@ -909,6 +924,10 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 		}
- 	}
- 
-+	lflags = GPIO_PERSISTENT | (of_flags & GPIO_ACTIVE_LOW);
-+	parent = gpio_device_to_device(gdev);
-+	properties[0] = PROPERTY_ENTRY_GPIO("reset-gpios", parent->fwnode, offset, lflags);
-+
- 	id = ida_alloc(&reset_gpio_ida, GFP_KERNEL);
- 	if (id < 0)
- 		return id;
-@@ -920,11 +939,6 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 		goto err_ida_free;
- 	}
- 
--	ret = __reset_add_reset_gpio_lookup(gdev, id, args->np, args->args[0],
--					    args->args[1]);
--	if (ret < 0)
--		goto err_kfree;
--
- 	rgpio_dev->of_args = *args;
- 	/*
- 	 * We keep the device_node reference, but of_args.np is put at the end
-@@ -932,19 +946,25 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
- 	 * Hold reference as long as rgpio_dev memory is valid.
- 	 */
- 	of_node_get(rgpio_dev->of_args.np);
--	adev = auxiliary_device_create(gpio_device_to_device(gdev), "reset",
--				       "gpio", &rgpio_dev->of_args, id);
--	ret = PTR_ERR_OR_ZERO(adev);
-+
-+	rgpio_dev->swnode = fwnode_create_software_node(properties, NULL);
-+	ret = PTR_ERR(rgpio_dev->swnode);
- 	if (ret)
--		goto err_put;
-+		goto err_put_of_node;
-+
-+	ret = reset_add_gpio_aux_device(parent, rgpio_dev->swnode, id,
-+					&rgpio_dev->of_args);
-+	if (ret)
-+		goto err_del_swnode;
- 
- 	list_add(&rgpio_dev->list, &reset_gpio_lookup_list);
- 
- 	return 0;
- 
--err_put:
-+err_del_swnode:
-+	fwnode_remove_software_node(rgpio_dev->swnode);
-+err_put_of_node:
- 	of_node_put(rgpio_dev->of_args.np);
--err_kfree:
- 	kfree(rgpio_dev);
- err_ida_free:
- 	ida_free(&reset_gpio_ida, id);
+-       if (m->type =3D=3D mpam_feat_msmon_mbwu) {
++       switch (m->type) {
++       case mpam_feat_msmon_mbwu_31counter:
++       case mpam_feat_msmon_mbwu_44counter:
++       case mpam_feat_msmon_mbwu_63counter:
+                mbwu_state =3D &ris->mbwu_state[ctx->mon];
+                if (mbwu_state) {
+                        reset_on_next_read =3D mbwu_state->reset_on_next_re=
+ad;
+                        mbwu_state->reset_on_next_read =3D false;
+                }
++               break;
++       default:
++               break;
+        }
 
--- 
-2.51.0
+> +               if (m->type !=3D mpam_feat_msmon_mbwu_31counter) {
+> +                       now =3D mpam_msc_read_mbwu_l(msc);
+> +                       if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy=
+, rprops))
+> +                               nrdy =3D now & MSMON___NRDY_L;
+> +
+> +                       if (m->type =3D=3D mpam_feat_msmon_mbwu_63counter=
+)
+> +                               now =3D FIELD_GET(MSMON___LWD_VALUE, now)=
+;
+> +                       else
+> +                               now =3D FIELD_GET(MSMON___L_VALUE, now);
+> +               } else {
+> +                       now =3D mpam_read_monsel_reg(msc, MBWU);
+> +                       if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy=
+, rprops))
+> +                               nrdy =3D now & MSMON___NRDY;
+> +                       now =3D FIELD_GET(MSMON___VALUE, now);
+> +               }
+>
+>                 if (nrdy)
+>                         break;
+> @@ -1050,7 +1126,7 @@ static void __ris_msmon_read(void *arg)
+>
+>                 /* Add any pre-overflow value to the mbwu_state->val */
+>                 if (mbwu_state->prev_val > now)
+> -                       overflow_val =3D mpam_msmon_overflow_val(ris) - m=
+bwu_state->prev_val;
+> +                       overflow_val =3D mpam_msmon_overflow_val(m->type)=
+ - mbwu_state->prev_val;
+>
+>                 mbwu_state->prev_val =3D now;
+>                 mbwu_state->correction +=3D overflow_val;
+> @@ -1106,13 +1182,26 @@ static int _msmon_read(struct mpam_component *com=
+p, struct mon_read *arg)
+>         return any_err;
+>  }
+>
+> +static enum mpam_device_features mpam_msmon_choose_counter(struct mpam_c=
+lass *class)
+> +{
+> +       struct mpam_props *cprops =3D &class->props;
+> +
+> +       if (mpam_has_feature(mpam_feat_msmon_mbwu_44counter, cprops))
+> +               return mpam_feat_msmon_mbwu_44counter;
+> +       if (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, cprops))
+> +               return mpam_feat_msmon_mbwu_63counter;
+> +
+> +       return mpam_feat_msmon_mbwu_31counter;
+> +}
+> +
+>  int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+>                     enum mpam_device_features type, u64 *val)
+>  {
+>         int err;
+>         struct mon_read arg;
+>         u64 wait_jiffies =3D 0;
+> -       struct mpam_props *cprops =3D &comp->class->props;
+> +       struct mpam_class *class =3D comp->class;
+> +       struct mpam_props *cprops =3D &class->props;
+>
+>         might_sleep();
+>
+> @@ -1129,9 +1218,12 @@ int mpam_msmon_read(struct mpam_component *comp, s=
+truct mon_cfg *ctx,
+>         };
+>         *val =3D 0;
+>
+> +       if (type =3D=3D mpam_feat_msmon_mbwu)
+> +               type =3D mpam_msmon_choose_counter(class);
 
+`type` was already recorded in arg->type, so the result of this lookup
+will be ignored on the first call to _msmon_read()
+
+If mpam_feat_msmon_mbwu can somehow still result in -EBUSY, then the
+repeat call may use the right type.
+
+Thanks,
+-Peter
 
