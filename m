@@ -1,280 +1,187 @@
-Return-Path: <linux-acpi+bounces-18621-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18622-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C53C3F4A3
-	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 11:01:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F0FC3F4BE
+	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 11:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ED47188B2F2
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 10:01:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3CE188BD1C
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 10:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FD62F746F;
-	Fri,  7 Nov 2025 10:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="alNAL/7p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F253D2C326A;
+	Fri,  7 Nov 2025 10:01:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010059.outbound.protection.outlook.com [52.101.61.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD7A3016E8;
-	Fri,  7 Nov 2025 10:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762509651; cv=fail; b=AqyMUxP4ue7P9TGqzeWS8Bl3zezCDGNnEG0WEZAOxxkmVe6vU7wQbFD17klnoLgbG12WnBt2RYS+b41Cd5UezagenACrSkVqYvAew0//6HcCThJu5Mndu2Qluh9oOsfinJuVYlzr3noQuDWS+zkO+vIGfig00hZ82Mragn/1TYY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762509651; c=relaxed/simple;
-	bh=Cu8HqoPh0lLsy0VRrPhRoiGmEltqATAkc0dW+b0Mnys=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qh6rhfvWu7ltySl2Hh1hc0dvTcM/zuwkhLj6yB9IpA5dp9p6p9/bUECst8yxnukLYzpLEAH7u55GVSC8HleTn1i7PxYbglMsrDXnSKWc4dLBPexDUPR9T0APFkxTilqD7WctwGUZ82Rh8pmXVNNzr836xYP9Wcctu3cWK7B/b8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=alNAL/7p; arc=fail smtp.client-ip=52.101.61.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XwwUs7LG7jamBqpAdbfJOqq82fe8HAwmo83D/e1TS34PEbTMDE/2PKWwSbH1jJVgDNuDyWZLrLrynHXcErTct50xVERN3pmr7bE+LEFvFK67jxbx/s2mgRD9SfHo6zTAyCXefwQGNA0WpXoDbN8u/X2LLyERVo/s2eLdX9v3MxKxy8tMisl6ytdVjdxiGhvAxtgEnxAqt/A4PWwa1fmG31UDf7UgT1XHoDqQk8REqd3TqeT18pGE8bzpt8C2tzzfRKYefK89bOva/rXHAbGDt5PjCGNh0lvOS8o9fTJfmjVewNmD1KlqTMgAMI1/K1TBDsS8mLmD02UMFZPZeAMR/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AGj75tNPlwuSSfm+hx5EKcfQdIW/thgUwgJ6nEGzT/Q=;
- b=dBu/EidW2SKxqVAmmmEbL5AVadFF1DEDtcTr2SLU9IszIfe7eLncLOW0RaN53Nyh+01eoA4qcfjCRVp/9nl6qog9E4vdc0wx5+c3x4r5Ntld0INiVAmDY58iJgHn1cXFcmXl+HOIxUTH3dZfchwMWeXbzxPx0lrzj84oZuJhRrGLX/G78qEjJn5HblJ0vPk5fUvg1miDOB255oSyAxuR9sRMM26Qb9f7UTgqPjQZY60hTTmT2DPhCDpGLAHSF6bqNUopdtpm3Ool6rs0wE7KHzWNa+of0ya98gDGqKTBRzUeK6k9LO+ycX/YOA8KqgrgvN+n7Dba+kNKMLlmZHDKMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AGj75tNPlwuSSfm+hx5EKcfQdIW/thgUwgJ6nEGzT/Q=;
- b=alNAL/7pW6dGkWJ/kEDihPJqpXyb7q5ynnKhWAK49RuS6DFdlBpomNbM4Lv8rlHb8ihCR6G0R5LQ1QBybDib5xypI9e3ZumMRfxCf8KMt5BUqyFx5FEPEDxuwRPH1HLcurF9ej7rBpGAqqV+tbeaHr6huSbt3Vz9i3TJvgMVGrK5Zeq3Olx9Cy2P5HxaGzqbHgIkIow1cZW3MjDs2ei1nuv7s1abkF3+Brc18ZLyoK5nfh0F/q61ugDCm97eUORnfPOc4HASocm9NaE/jkOmHVU91+wDPyMthFsQz1oFF+CjuwzBBRJLWrhKALpIE0qJKb65Iipc50fiR2oU0x3ctw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com (2603:10b6:408:11c::18)
- by DM6PR12MB4354.namprd12.prod.outlook.com (2603:10b6:5:28f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.13; Fri, 7 Nov
- 2025 10:00:42 +0000
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::44e5:415d:e1a8:6e42]) by BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::44e5:415d:e1a8:6e42%7]) with mapi id 15.20.9298.012; Fri, 7 Nov 2025
- 10:00:42 +0000
-Message-ID: <be696cb5-7d0d-44f6-970b-e417c2f89a8e@nvidia.com>
-Date: Fri, 7 Nov 2025 15:30:30 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface for
- min/max_perf
-To: kernel test robot <lkp@intel.com>, rafael@kernel.org,
- viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
- corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com,
- rdunlap@infradead.org, ray.huang@amd.com, gautham.shenoy@amd.com,
- mario.limonciello@amd.com, perry.yuan@amd.com, ionela.voinescu@arm.com,
- zhanjie9@hisilicon.com, linux-pm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
- acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, sumitg@nvidia.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
- vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
- nhartman@nvidia.com, bbasu@nvidia.com
-References: <20251105113844.4086250-5-sumitg@nvidia.com>
- <202511061802.lIq09jwh-lkp@intel.com>
-Content-Language: en-US
-From: Sumit Gupta <sumitg@nvidia.com>
-In-Reply-To: <202511061802.lIq09jwh-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0090.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d4::14) To BN9PR12MB5179.namprd12.prod.outlook.com
- (2603:10b6:408:11c::18)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D90156661;
+	Fri,  7 Nov 2025 10:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762509696; cv=none; b=U5Cfh42UeK23H+AywrVydX78SS5mgFCKocbG9l9PsiZYHXo09GmueknRwonILg/syk/cv/ZjYG6r6dkm/BddnMWbPhbn6RSlpMsukCVro03rTaORfm6dz0yIVQE5p+5fMHmF/FZOS+xg34m43D1GLSbqerYYUOpq7ZTVLxxPfic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762509696; c=relaxed/simple;
+	bh=I3SvcWbt5UCgbtrbH4LHKbVopaxMAOlYurhZkaJBqkY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XRvN+iqmViyfEyOl/ZHqUTN4InRczjwMGsZCANu+9W7VoG3yOaC7VROQzKvEZPBNMAixILhb9vKuAX4xc4izDIqu0p9GQ4SlJjfwGbV24BUrrG1IG1fTOcHHL7H5L4Le9JCWIsZlNQmOb+pLJ2WIJOU+P6WQsrmKjEKPsDJxkwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88C5614BF;
+	Fri,  7 Nov 2025 02:01:25 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC1013F66E;
+	Fri,  7 Nov 2025 02:01:28 -0800 (PST)
+Message-ID: <44ce4a5b-b210-4fd0-9676-51173d5f5b8c@arm.com>
+Date: Fri, 7 Nov 2025 10:01:27 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5179:EE_|DM6PR12MB4354:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19d80857-eae7-4e07-9f63-08de1de4831d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dTBjdUg3Vk5XQitrWkhrSFA5NzlrVnRBR1paYVhtNnhUWm15TlBLODFoTTRB?=
- =?utf-8?B?dXZ1VXJTMXY3azAwVEVJZXlqYVYvOW1ldkVLSTNEMStlYVVwRjJNL3gwSkdB?=
- =?utf-8?B?SlpFZUpRQlRsVW5aRWxNR0p2V1JhTmRmK0dreGdyRXZUcDAzVDI3YVB0QWNK?=
- =?utf-8?B?L0wzUis4RUVLbG45bUsvZjI2OVJCczhNclhDWjJmREZ4T0JvODlNd2NUdzFx?=
- =?utf-8?B?TkFKZ085a2VlSElTVjd5Z3pHaEpHRUFYUlBUc3pYblNITWcvSTlKQms3Y3Y5?=
- =?utf-8?B?ZWxnamhVVE5acE85VXkvckdnL21RWjhCVStMQ1V4YWdyS2xpQ0RxbFZ5SWVE?=
- =?utf-8?B?emxndld5MHF6OFRTb1lsNEdSUzgwSjhiSk5WTjNqcjIxZjFJcnd3YnlINnht?=
- =?utf-8?B?MHpuNUJVVHIwTHlGeWxPYTlBRXA5NDZpU045K0hzV253Tmx3TnpxZEVJQ2ow?=
- =?utf-8?B?K2ZadkVJeTlnY1JrcDdUVmgrblljWWQ1SGtyRy9Od3A1M3hVTHZvWldnYXJy?=
- =?utf-8?B?bkhNSURzdTE3K085QlhxMkxTZjFjc2tpMDBiS3BxdEdmSWJGN0tQbXBWVldq?=
- =?utf-8?B?bzA0eFFoV1pJdjJMeFhhTExSdk8wQjVydm5QMUhoL21PUDU4cDlQMHBuVklP?=
- =?utf-8?B?d3ZyQVNvOHUrUmNOcm5SRUJKZ1NJeEJiZTg5dUdzaDJxZ1Y2cjdULzd1UlhM?=
- =?utf-8?B?eURwQU9zTE5KcHZtaGxlZEtlN2xUYUVIRTBvd0g5QnJLWTF6N2ovTWhJazBr?=
- =?utf-8?B?NzZNVSsxM202SFhsNW1CRjRLRnRXbmJMYjFxRFRMa0tndlNjeGMvZUFWVDRM?=
- =?utf-8?B?d3ducFpVcHg2SzBZTmQ1RVJBMkhlZk0yTkYzR21RbnZpUkNqSlgxc0dtL2Vj?=
- =?utf-8?B?WGdlOWN2WkMvamF5RUpDdXhJblppYVRIeFNmUUhUWkZpTllTa0FGWmxJQTBs?=
- =?utf-8?B?bGxpRnRzZlI4NVNCcVRjMjBBZlJMM1g2aXAzSVhscnJDM3J1TFhEZlA0bnRo?=
- =?utf-8?B?cmtGZzBJRlJKN0tBUTdTS2RxRHVSMHhsUzB1cU5zckRPN0dKQVlmNjFjWnVJ?=
- =?utf-8?B?TE1BMkZlL3VvUjgyR2hrTzdTYjFnNGdPQ2FJS2NrcFFxRURUYU90aU5FeFZS?=
- =?utf-8?B?Nm5jMlpnUHRxLzlCRUl3Y3VFTkVCc0d1cHc2Z1puV1lteU1ZbExYeU1hMElu?=
- =?utf-8?B?SFFnUDQzY2RoL2EvV2FJdVhrQ1kxM0VMYVlrSS92bnl3NFErRTYydnd4ZjR5?=
- =?utf-8?B?LzA0cFd1K01iMHlGbnprbW4zZGkyMElwbzZMd0E1WnIyL0xnZ0M4Q0ljQ0k3?=
- =?utf-8?B?NXNkMTd1bTBSbERMZHl0QjROdW02di8rQW5zeWwzZ09tcGZIRTl2NE0vNkdS?=
- =?utf-8?B?bFNTYy9SUEtrN0pUeGxyZ3V6TWYrUGljMk16VE51ZExPRTJrQ0N6SW91aUxk?=
- =?utf-8?B?anowTmtxRi9jV1dKNGRSbGY3RkpENGRwRkYvSmhrVnZrSGkxeVlSa2FiTGtw?=
- =?utf-8?B?dzNjbnJWZzYxZ2E2SzkxRHh4U3hIUFFYcDIrbGgxYjhvRUhGR3ZzMzZkU1c3?=
- =?utf-8?B?L1cxNlJVY1RteXlJU01xTzBxeUFYKy9ScVhNdWE4d1VpRytnRGk4M2VvOGEx?=
- =?utf-8?B?dW5iUWgxcGoyVWVxN2pzQys2clFSeGJ5Mlg4UjQzQ2FWUUpESWxDVzA5ZG4z?=
- =?utf-8?B?cWQ4UTNiMVlNL0ZVcHdlUER0TXkzMGhPaWxXVUs0VTVFSitVYWVqZFlYTWc4?=
- =?utf-8?B?YmhHclVvSHZ0aGRLTFBoVTFBSXV3ZUQyTlE0dlNzaHNmclpPeXRWaWJUdkV5?=
- =?utf-8?B?cVpnMXEwaDZZdnNLTHlIKzhKdHN5SmVQUzhFODAzNDIySFNxVTlTTFQ0bzFK?=
- =?utf-8?B?WlNSUDNJNCtMZXZGQmZlSUQyUEs5VzMxTkpuVHArWlpkZm5aMFV1a0RuRjF3?=
- =?utf-8?B?SUNRK1FZaHdBRE1sSG4wNzNqWDltQXM4RXBKUGp2UE1xZHk1clFSN3VJdXpZ?=
- =?utf-8?B?TWRBMGNhM2lrMDN0eFlQTFpDQlpnSzN4TGUrWU1tVXgrYUpoVnozWTl2S2FB?=
- =?utf-8?Q?OA86k+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Rklzenc4c2s4bU9zSjg2b2p3NmlZWEFpbnFYSlZiTHdEbjQzbmQxckVFbGtC?=
- =?utf-8?B?VnRxMlBWL3NMRjFhYWRMNWRFUnlTbEFhV0NTS1d3bE83MUkydDFNc2FKVkZT?=
- =?utf-8?B?SHpCRFEwK1hVajFnVGd4b3RXODhNN1ZjcDB3RFJQOWljdFlKaitTNlZ3UnZk?=
- =?utf-8?B?bVRHaWxoVjAxZFVML1N4d2RwTndYSWJEaElWN1NoNzlQdFZoeTJnMGFXRnRu?=
- =?utf-8?B?LzVuOCtBUUtOVk52aklCb2VleE9iSGJwQi9JWEljdUw5R1lrYnZNK2RnYy9F?=
- =?utf-8?B?djJiM1dBbVlEVUdvcnFMZ1pNOC9rTDdDQU15U3FtU2lNa3g2M29YU1g2Y2E4?=
- =?utf-8?B?TUo1ZTQrVjkzK1AvbnBKWEc5d2RUdDNtTlJ1WXV0V0ZXb0ZMR0Z1Z0RtNHJW?=
- =?utf-8?B?RXlORExVY0M5TGFJYUxqYkRVQVBFR1RDc3haUkpXcHJxeHQvZk9XWWM5QytI?=
- =?utf-8?B?RWkxNnJMdGQvUlZ2cEM2UmhVT2ZqK3dJNTBXY2ZLN1Q2a2dEOGNvTkxVeEZa?=
- =?utf-8?B?K1RtSXFRZU94R0lSKzNWV2Q5VXl3a2FwMStycGQ0ZEh5SDFBZVdVcElTKzQv?=
- =?utf-8?B?SVpPNFhMRVUxQVBhRzBIMCthaW1DWDVsWmNmbDhlYjg2SEdlN1ZGTktwOFla?=
- =?utf-8?B?dW9UZWN4SGc5d2NrY05McmhteXVrUGYxS21YRThNTUR6VVhkYmMydUxVdmQv?=
- =?utf-8?B?MGZCeVAxWTBGV3ZhM2tpYXZmYk1CZWQvWUNLWUdKTEUzREtTMDZFejhEMCtR?=
- =?utf-8?B?RDRadnREaUlkRnI3RmE3dEVmZlVicDRVcVRzNzIvL1E4RzE0MTNoL3RsR0h5?=
- =?utf-8?B?Um5TN3JDQVFybFVPYkNPSERNSGtFckExcEtWWHBwTnJ6Q25RTnZYQmJaOVFK?=
- =?utf-8?B?MXkvUGFwUDlqK29GL1NDdEhMdW9JSlgyVk5tc3pPL1NjSzlwbEJJSW0yVWI1?=
- =?utf-8?B?OWtsYXExc2FxWHJmdFFtc2tHZUk2NFRqV3gxVDRHZHN0RldlWnlab2xZOVph?=
- =?utf-8?B?RlFhZXJmSW5rdHhPeGRTaWJXRDB1RUFQOVhjWWExd0RCeitFSm5qalc4Q1Rl?=
- =?utf-8?B?OWY0K1dxdkRMRjFFKzlHNUY3Z1VFMFBaaVFFV016T1N1ZmFLMmlFM3RCNUU5?=
- =?utf-8?B?MHVzVnZGR0NtKzlOUm9jdG5NZGprT0tTTWR6SnBxMElBZEl5WnJnZGtONGNI?=
- =?utf-8?B?NDVrL3I3S2V2cnhkNHVrQUU4STZpSXVQNEFTN1dCYXRvaFpsUHczcTdhTUdr?=
- =?utf-8?B?Y2NBNDR6UEI5TE9XelJsUHNodVJYSTRKMzZSdzRxMHE4V1VyNThXRktZODg5?=
- =?utf-8?B?SUhEWllPZm9ndkNWU0pzcDMybWNsSUp1WGxvODkrakQ2dVJZSnZBbmttbmtw?=
- =?utf-8?B?d0JnRDNKV0JaZ0U3WWlBbGh0K1pkR0FmTDYxbVU5VWI4NHNKZmZuWTVBSjZt?=
- =?utf-8?B?dUdGMDZ0KzMweTRuZytxaDdLU0lVblIxWXJsQU9CWVVKcEg1REUzZEllU0ow?=
- =?utf-8?B?Q1I2dkdIZ1c1ZXhJQURWMmdhV3JzN3l5Zjg1ejVqdUpGZkxCb0hEdnhvcU5T?=
- =?utf-8?B?aVJnalluTlMzbHZQb3ZsZmJsZmpaNXVYQzViU0Z2bHdCQWJvejE1VzhGNzNq?=
- =?utf-8?B?bXlNVFhPMkhpOGxpSm1oKzh0SWJYQSt6bllWbzdYSTNCOGdWZ0J5ZXNDOTlQ?=
- =?utf-8?B?aWtrRVlZcEZ1SzM4YUQvTFZOMHM0aFl0eUFpZ0Q5VnRXMEpJdGo5dnA5OVd0?=
- =?utf-8?B?WThKWTFQUnR1WFc5TGpWWE80dDBMVVB6T2RDaU0vRGc3SHppbjhCY2pSc2tm?=
- =?utf-8?B?ZWlxRm9NUnRFTXg1RVlVOXJHOVBnUXFNNkJxOTBYdlpTdm5wS0ZraDlEa1hN?=
- =?utf-8?B?elUvcFlYOWQ3MGdNWitJbjh1S1J0UG82MGpSb21HcjAyS0FyZHlnMWpBQ0o3?=
- =?utf-8?B?aURwcmcyRm5HRmFBaDFJY21SMi9vMWl5RjVrUVJSMFpPcGJRZ0VRNVJrZ0JH?=
- =?utf-8?B?TnlMNWNoQ1VpRk5qaHA2VmIybkpJUHE5ejFxOEIwdCtsaHd3VVVKblgyMzYz?=
- =?utf-8?B?a3ZHZndHVzBJbThDVzFLSTdjc0dVV2FhMFZVaDcweHhYa1I0VWZLelNvRGd6?=
- =?utf-8?Q?F8K7dqz4os1RAJ6irfun9SIxk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19d80857-eae7-4e07-9f63-08de1de4831d
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5179.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 10:00:42.6692
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mRcxtKUdSq4PMFLltOBpnVixNYU+FQhsLv83I7Ho1bL3mz7FSegKuzgEocDRHJ3nNnHR5/lAsfqojvIOjuEPrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4354
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 23/29] arm_mpam: Add mpam_msmon_read() to read monitor
+ value
+To: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
+ 'James Morse' <james.morse@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ "carl@os.amperecomputing.com" <carl@os.amperecomputing.com>,
+ "lcherian@marvell.com" <lcherian@marvell.com>,
+ "bobo.shaobowang@huawei.com" <bobo.shaobowang@huawei.com>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ Jamie Iles <quic_jiles@quicinc.com>, Xin Hao <xhao@linux.alibaba.com>,
+ "peternewman@google.com" <peternewman@google.com>,
+ "dfustini@baylibre.com" <dfustini@baylibre.com>,
+ "amitsinght@marvell.com" <amitsinght@marvell.com>,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "fenghuay@nvidia.com" <fenghuay@nvidia.com>,
+ "baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-24-james.morse@arm.com>
+ <OSZPR01MB8798C425E5A820C2E0AAA7BC8BC5A@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+ <597d479f-4f1d-4cae-b15f-21ecc73a35bf@arm.com>
+ <OSZPR01MB8798EEEF42B16AD8F35DE8EE8BC3A@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <OSZPR01MB8798EEEF42B16AD8F35DE8EE8BC3A@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi Shaopeng,
+
+On 11/7/25 05:01, Shaopeng Tan (Fujitsu) wrote:
+> Hi Ben,
+> 
+>> Hi Shaopeng,
+>>
+>> On 11/5/25 08:32, Shaopeng Tan (Fujitsu) wrote:
+>>> Hello James,
+>>>
+>>>> Reading a monitor involves configuring what you want to monitor, and
+>>>> reading the value. Components made up of multiple MSC may need values
+>>>> from each MSC. MSCs may take time to configure, returning 'not ready'.
+>>>> The maximum 'not ready' time should have been provided by firmware.
+>>>>
+>>>> Add mpam_msmon_read() to hide all this. If (one of) the MSC returns
+>>>> not ready, then wait the full timeout value before trying again.
+>>>>
+>>>> CC: Shanker Donthineni <sdonthineni@nvidia.com>
+>>>> Signed-off-by: James Morse <james.morse@arm.com>
+>> [...]
+>>>> +/* Call with MSC lock held */
+>>>> +static void __ris_msmon_read(void *arg) {
+>>>> +	u64 now;
+>>>> +	bool nrdy = false;
+>>>> +	struct mon_read *m = arg;
+>>>> +	struct mon_cfg *ctx = m->ctx;
+>>>> +	struct mpam_msc_ris *ris = m->ris;
+>>>> +	struct mpam_props *rprops = &ris->props;
+>>>> +	struct mpam_msc *msc = m->ris->vmsc->msc;
+>>>> +	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
+>>>> +
+>>>> +	if (!mpam_mon_sel_lock(msc)) {
+>>>> +		m->err = -EIO;
+>>>> +		return;
+>>>> +	}
+>>>> +	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL,
+>>>> ctx->mon) |
+>>>> +		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+>>>> +	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
+>>>> +
+>>>> +	/*
+>>>> +	 * Read the existing configuration to avoid re-writing the same values.
+>>>> +	 * This saves waiting for 'nrdy' on subsequent reads.
+>>>> +	 */
+>>>> +	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
+>>>> +	clean_msmon_ctl_val(&cur_ctl);
+>>>> +	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+>>>> +	if (cur_flt != flt_val || cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN))
+>>>> +		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
+>>>
+>>> When reading the CSU counter of a different control group, the counter is
+>> cleared to 0 by the write_msmon_ctl_flt_vals().
+>>>
+>>>> +	switch (m->type) {
+>>>> +	case mpam_feat_msmon_csu:
+>>>> +		now = mpam_read_monsel_reg(msc, CSU);
+>>>> +		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy,
+>>>> rprops))
+>>>> +			nrdy = now & MSMON___NRDY;
+>>>> +		break;
+>>>
+>>> The first time read the counter(MSMON_CSU), all bits except nrdy are 0.
+>>
+>>
+>> I'm trying to understand your problem. Isn't what you are describing the
+>> intended behaviour of the nrdy bit? It takes some time to get a count of the
+>> cache utilization so if it's not ready this is set and the driver retries.
+> 
+> I apologize for not explain it correctly.
+> The key point is that for some SOC chip, if `mpam_feat_msmon_csu_hw_nrdy` is false,
+> the NRDY bit value of counter(MSMON_CSU) cannot be set to 'nrdy'.
+> 'nrdy' will keep its initial value(false).
+
+Ok, so if I understand correctly, your hardware takes some time to
+generate the csu monitor value but doesn't have a hardware control of
+the nrdy bit to mark the value as unreliable. When this bit is under
+software control then the behaviour is implementation defined. Some what
+wierdly the spec says "If a monitor does not support automatic behavior
+of NRDY, software can use this bit for any purpose.". I would expect a
+quirk for your platform could be added to delay after CSU configuration
+but this is out of scope for this series.
 
 
-On 06/11/25 16:00, kernel test robot wrote:
-> External email: Use caution opening links or attachments
->
->
-> Hi Sumit,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on rafael-pm/linux-next]
-> [also build test WARNING on rafael-pm/bleeding-edge linus/master v6.18-rc4 next-20251106]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Sumit-Gupta/cpufreq-CPPC-Add-generic-helpers-for-sysfs-show-store/20251105-194715
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-> patch link:    https://lore.kernel.org/r/20251105113844.4086250-5-sumitg%40nvidia.com
-> patch subject: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
-> config: riscv-defconfig (https://download.01.org/0day-ci/archive/20251106/202511061802.lIq09jwh-lkp@intel.com/config)
-> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project d2625a438020ad35330cda29c3def102c1687b1b)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511061802.lIq09jwh-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511061802.lIq09jwh-lkp@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:954 function parameter 'policy' not described in 'show_min_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:954 function parameter 'buf' not described in 'show_min_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'policy' not described in 'store_min_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'buf' not described in 'store_min_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'count' not described in 'store_min_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:1003 function parameter 'policy' not described in 'show_max_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:1003 function parameter 'buf' not described in 'show_max_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'policy' not described in 'store_max_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'buf' not described in 'store_max_perf'
->>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'count' not described in 'store_max_perf'
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+> 
+>>> This means when check the cache monitoring value the first time, cat
+>>> mon_data/mon_L3_0*/llc_occupancy the result will be 0.
+>>> From the second time, the result will return to normal.
+>>
+>> This is not expected. On creating a new ctrl_mon group, generating some
+>> memory traffic and checking the llc_occumpancy I see a non-zero value on my
+>> setup. Not sure why you wouldn't.
+> 
+> Best regards,
+> Shaopeng TAN
+> 
 
+Thanks,
 
-Thank you for the report.
-Below change to comments seem to be fixing this warning.
-
--------------------------------------------------------
-   /**
-   * show_min_perf - Show minimum performance as frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-   *
-   * Reads the MIN_PERF register and converts the performance value to
-   * frequency (kHz) for user-space consumption.
-@@ -1117,6 +1119,9 @@ static ssize_t show_min_perf(struct cpufreq_policy 
-*policy, char *buf)
-
-  /**
-   * store_min_perf - Set minimum performance from frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-+ * @count: size of @buf
-   *
-   * Converts the user-provided frequency (kHz) to a performance value
-   * and writes it to the MIN_PERF register.
-@@ -1144,6 +1149,8 @@ static ssize_t store_min_perf(struct 
-cpufreq_policy *policy, const char *buf, si
-
-  /**
-   * show_max_perf - Show maximum performance as frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-   *
-   * Reads the MAX_PERF register and converts the performance value to
-   * frequency (kHz) for user-space consumption.
-@@ -1166,6 +1173,9 @@ static ssize_t show_max_perf(struct cpufreq_policy 
-*policy, char *buf)
-
-  /**
-   * store_max_perf - Set maximum performance from frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-+ * @count: size of @buf
--------------------------------------------------------
-
-
-Thank you,
-Sumit Gupta
-
+Ben
 
 
