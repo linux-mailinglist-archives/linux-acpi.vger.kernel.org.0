@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-18660-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18661-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4C6C400A9
-	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 14:09:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296F1C40FB3
+	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 18:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6DB3D4E1F35
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 13:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B847642089E
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 17:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1897E72604;
-	Fri,  7 Nov 2025 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F1F32ED47;
+	Fri,  7 Nov 2025 17:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="wiJdXsVg"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="qoGasUuB"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9492BDC34;
-	Fri,  7 Nov 2025 13:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015C1A9F96;
+	Fri,  7 Nov 2025 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762520978; cv=none; b=M6PhUku/TcmChr2umLRseWfTA6rD4GNsLwCEMepdAgSN2RW13Poc3dti400F0cK00SPGC2qN/ctpAipzsp8mFZAqjmJij7NgSvNOAei36SQ7ZCQ+1h9VNC65Geqzm6cDRMykXdYdyOBbJBo8y0eAVrEUwnkS5x5nxsHcQFKleHc=
+	t=1762535421; cv=none; b=SdrwyvyvhkB2qnfbI8Xzmbe/+5i/V5n7FfZcoqb0kfIhZqzl6+IdqBOy9ktNSxiMXb8uw3YAHnZuXYBEsx9NyuEMBmZKTo/G+KwFZpRfwLYwD5rYVEabn9yNsHppVbNVVtVlkpBtm7pO5lP/i4+t6tB+oOi2PM6/ptPpRT43RAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762520978; c=relaxed/simple;
-	bh=4Ddae25sqG738EaVw5RvrZNH1hBC2JAp7XDsKznyjlg=;
+	s=arc-20240116; t=1762535421; c=relaxed/simple;
+	bh=Q4iZVFIWDajlVqYZQyoAIORebj7pus8kKZIBIi+Th0I=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cA5avrOqk/mlzIGji5463E9M5vzen5Qu21R4at0YHqTB1kLJgkmaoZgalSD85ODiwQjB75YpvX07Xn8jwzagylBI6jU25K1OBrbuzsoGMBNtXoLlEXZlnbHvMreAEVFbHgZRNAg9jg3HpnNep4rRAzX20wZro/qDxu6A5e+3yKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=wiJdXsVg; arc=none smtp.client-ip=217.72.192.78
+	 Content-Type:MIME-Version; b=oB+64EBl+pmDfJmuJV+rM4M1loiWpx5994l+Cj6/eWYRoRthTiyhgwnePl4qhecVhVotlIrhikgslw2hNRXjERXqO9fzefCDLdXeSL59xe4WreeY1pCU7Oz7BckmUEANAL65n1wr7oS+TKhz8rNV1I/IEuAd9eF1olrcwRPNdHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=qoGasUuB; arc=none smtp.client-ip=217.72.192.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1762520960; x=1763125760; i=spasswolf@web.de;
-	bh=C8JSblNcI1zOZZ07ilFFhicMfhhYHjHHDyckzH5IIxQ=;
+	s=s29768273; t=1762535395; x=1763140195; i=spasswolf@web.de;
+	bh=SKEK1JrL+/0p/+OIRqKOxtvvs0duYiZVtOLyFdp51kU=;
 	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
 	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=wiJdXsVg5xGXRmSRup6oB6Yu+BJVKbDkCrbfGndCkEnamI07ZSCQbTNq8koKbF3g
-	 e8UwEwUdveVS+rN1+Jke6MInZeB5r7ZXft/QctwM5ed/EAfX4L7vwjESTdSCbyfxA
-	 YHnB4NF4xs/unnpLI9OV98ZMqDU5PHUGFfDblV+x2aqobRXxBBHf3Mqm8MjRLYR/W
-	 8HamPKJimIoQ1DqOfp/p+73Gmn3O5eW7VlZ5GrEuqosPmT3ywD/DkSm++DLiLD8nA
-	 pT2pb+fOCNiV+5cnVj1DX8QFg9Sf/ObR8r5/A7ov0CJnBuRGKOLoDZhPgZV+7dEGD
-	 lMmzXdZKyr+udcpzxQ==
+	b=qoGasUuB8tzthdF3u/5mI57zW8Fq1BTps/LxqkECusiEnpRjJBvUMrhlOUXN8rrL
+	 OpimuGMrRvHPheBhqPdsnKc4PYqJOqqQyGjBju0xQDZ+ivJ/dEcBsThyiYQi3ZmiR
+	 r5VLkX9XRySWrHRies3jX+kUNJlXaRIC79T7sYygp/oIK7NnQf7umKev8e+JonONE
+	 lTg7P8RJDcCmZqSVDIoxBECjNXfOET2XBOmPeQVEQq4V31t9LMqb6Rlfiazt4IPwE
+	 Uk3zRy525fADCR6XtcJo3n7r9SWQSPb8rQ+0TWHEJ7Z1psWdo0VRRpTSaeanwo6e7
+	 hVtNBIvMTpyD9OVEwg==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MkVwi-1vwPz732Ja-00jVXB; Fri, 07
- Nov 2025 14:09:19 +0100
-Message-ID: <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOUtg-1vZeeL01cc-00Oi0K; Fri, 07
+ Nov 2025 18:09:55 +0100
+Message-ID: <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
 Subject: Re: [REGRESSION 00/04] Crash during resume of pcie bridge
 From: Bert Karwatzki <spasswolf@web.de>
 To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>, Christian
@@ -57,19 +57,20 @@ To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>, Christian
 Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev, 
 	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
 	 <rafael.j.wysocki@intel.com>, spasswolf@web.de
-Date: Fri, 07 Nov 2025 14:09:17 +0100
-In-Reply-To: <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
+Date: Fri, 07 Nov 2025 18:09:53 +0100
+In-Reply-To: <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
 References: <20251006120944.7880-1-spasswolf@web.de>
-	 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
-	 <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
-	 <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
-	 <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
-	 <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
-	 <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
-	 <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
-	 <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
-	 <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
-	 <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
+		 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
+		 <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
+		 <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
+		 <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
+		 <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
+		 <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
+		 <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
+		 <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
+		 <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
+		 <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
+	 <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
@@ -79,134 +80,166 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cwwvGof3jLSNg0rClU314UgVju483p/vCHF2hs6IGVaZu/tjpEv
- XLagxUR8bhCzzajJaLzlAKYtzmaruWxVp4Gv1Uws9IWnKUJhmdCOJLVLKM3qUc+8Kx8hiDI
- LN9PFB3l1bRaURgD8sYwx1QdB2z6xRj7N3kNcBSHQbRC1IxZamXN4E/p9kVNJX4FZPHPB3P
- RvcbovRRut/r8NhgyCmwA==
+X-Provags-ID: V03:K1:QLOBqZlUoVkFkBzybM3FNXJ8fgpyENig0SB6XsCI12/QxXFEKx4
+ V2xRXZBzSPdWgNW4d25HB8up32yn8VQEBeoETymJgm8g4nGdPnAka0DRAyt0e9l8fNXOwL2
+ YI5iLAU3bRcYaRtFSnvY8Mmuv9hgB4IJeJxG6zOwRaC9n0sHZcIoiwx6y8JDGrBkLk2Y2Jw
+ gtvJ5eCvN4tYPpOlQozfQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:I79Uwc4qfLM=;wmwGdeNP/11VC+9fY1jHMNQ9YD4
- 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
+UI-OutboundReport: notjunk:1;M01:P0:ImZ0DGL/Uw4=;kMMHkIJJ1hrfkaJf5lBJ1vo+zKU
+ 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
+ 3ziyOKsvS9qpdd/fI=
 
-Am Mittwoch, dem 05.11.2025 um 15:31 -0600 schrieb Mario Limonciello (AMD)=
- (kernel.org):
+Am Freitag, dem 07.11.2025 um 14:09 +0100 schrieb Bert Karwatzki:
 >=20
-> Once you're done with your bisect I'd be really interested if you can=20
-> still reproduce the splats and NULL pointer on the recovery path using=
-=20
-> amd-staging-drm-next.
-> >=20
-
-There are good news and bad news on this:
-
-The good news: I found out that one can generate a large number of ACPI GP=
-P0 events
-and resumes by scrolling through a large pdf (1305 pages - Gravitation by =
-Wheeler, Misner and Thorne)
-using the arrow keys. This can generate these crashes quite fast.
-
-The bad news: Using the method above I could generate these crashes in v6.=
-13 and v6.14,
-so all the previous bisecting was completely useless.
-
-Version v6.12 has not (yet, ...) crashed so I might be able to bisect betw=
-een v6.12 and v6.13.
-
-Here's a short log of the recent tests and time to crash (with number of G=
-PP0 wakeup events and GPU resumes)
-
-Retest:
-6.14.0-stable		booted 18:11:24, 6.11.2025, crashed 18:45:30 (~34min, 588 G=
-PP0 events, 210 resumes)
-
-Retest:
-6.14.11-stable		booted 19:09:33, 6.11.2025, crashed 19:17:42 (~8min (new r=
-ecord!), 122 GPP0 events, 44 resumes)
-
-Testing (this was tested by the old method of starting evolution by script=
-):	=09
-v6.13			booted 23:46:21, 6.11.2025, GPU lost 4:38, 7.11.2025 (~5h, 760 GPP=
-0 events, 807 resumes) no crash
-
-Retest:
-v6.13			booted 9:12, 7.11.2025 crashed 11:25, 7.11.2025 (~1.25h, 351 GPP0 =
-events, 330 resumes)
-
-Testing:
-v6.12.52		booted 11:27, 7.11.2025 no crash after 1h, 735 GPP0 events, 301 =
+> Testing:
+> v6.12			booted 13:00, 7.11.2025 no crash after 1h, 890 GPP0 events, 287 =
 resumes
+>=20
+>=20
+> Bert Karwatzki
 
-Testing:
-v6.12			booted 13:00, 7.11.2025 no crash after 1h, 890 GPP0 events, 287 re=
-sumes
+v6.12 crashed after 2h, 946 GPP0 events and 499 resumes. So there's no bas=
+e
+for a bisection.=C2=A0
+
+But the crash from v6.14.11 gave this error in netconsole:
+
+2025-11-06T19:17:34.967439+01:00 T370;[drm] PCIE GART of 512M enabled (tab=
+le at 0x00000081FEB00000).
+2025-11-06T19:17:34.967439+01:00 T370;amdgpu 0000:03:00.0: amdgpu: PSP is =
+resuming...#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:03:00.0
+2025-11-06T19:17:34.967588+01:00 T12;pci_bus 0000:03: Allocating resources=
+#012 SUBSYSTEM=3Dpci_bus#012 DEVICE=3D+pci_bus:0000:03
+2025-11-06T19:17:35.143353+01:00 T370;amdgpu 0000:03:00.0: amdgpu: reserve=
+ 0xa00000 from 0x81fd000000 for PSP TMR#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+=
+pci:0000:03:00.0
+2025-11-06T19:17:35.226021+01:00 T370;amdgpu 0000:03:00.0: amdgpu: RAS: op=
+tional ras ta ucode is not available#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci=
+:0000:03:00.0
+2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SECURED=
+ISPLAY: securedisplay ta ucode is not available#012 SUBSYSTEM=3Dpci#012
+DEVICE=3D+pci:0000:03:00.0
+2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU is =
+resuming...#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:03:00.0
+2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: smu dri=
+ver if version =3D 0x0000000f, smu fw if version =3D 0x00000013, smu fw pr=
+ogram =3D 0,
+version =3D 0x003b3100 (59.49.0)#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:000=
+0:03:00.0
+2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU dri=
+ver if version not matched#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:03:0=
+0.0
+2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU: re=
+sponse:0xFFFFFFFF for index:6 param:0x00000000 message:EnableAllSmuFeature=
+s?#012
+SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:03:00.0
+2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: Failed =
+to enable requested dpm features!#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:00=
+00:03:00.0
+2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: Failed =
+to setup smc hw!#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:03:00.0
+2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: resume =
+of IP block <smu> failed -121#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000:0=
+3:00.0
+2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: amdgpu_=
+device_ip_resume failed (-121).#012 SUBSYSTEM=3Dpci#012 DEVICE=3D+pci:0000=
+:03:00.0
+2025-11-06T19:17:36.114889+01:00 C8;INFO: NMI handler (perf_event_nmi_hand=
+ler) took too long to run: 35.314 msecs
+2025-11-06T19:17:36.114889+01:00 C8;perf: interrupt took too long (275880 =
+> 2500), lowering kernel.perf_event_max_sample_rate to 1000
+2025-11-06T19:17:37.930799+01:00 C4;INFO: NMI handler (perf_event_nmi_hand=
+ler) took too long to run: 152.914 msecs
+2025-11-06T19:17:37.930799+01:00 C4;perf: interrupt took too long (1194640=
+ > 344850), lowering kernel.perf_event_max_sample_rate to 1000
+2025-11-06T19:17:38.939845+01:00 C14;INFO: NMI handler (perf_event_nmi_han=
+dler) took too long to run: 197.312 msecs
+2025-11-06T19:17:38.939845+01:00 C14;perf: interrupt took too long (154152=
+1 > 1493300), lowering kernel.perf_event_max_sample_rate to 1000
+
+These 4 lines have not been recorded previously, so perhaps I have to look
+for a NULL pointer dereference in an error path:
+
+2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: AE_TIME, Returned by Ha=
+ndler for [EmbeddedControl] (20240827/evregion-301)
+2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Timeout from EC hardwar=
+e or EC device driver (20240827/evregion-311)
+2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Aborting method \x5c_SB=
+.PCI0.SBRG.EC.BAT1.UPBS due to previous error (AE_TIME) (20240827/psparse-=
+529)
+2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Aborting method \x5c_SB=
+.PCI0.SBRG.EC.BAT1._BST due to previous error (AE_TIME) (20240827/psparse-=
+529)=20
 
 
 Bert Karwatzki
