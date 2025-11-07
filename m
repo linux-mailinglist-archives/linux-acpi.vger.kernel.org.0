@@ -1,152 +1,130 @@
-Return-Path: <linux-acpi+bounces-18666-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18670-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6CAC414D8
-	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 19:42:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212BAC41525
+	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 19:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AA91896AA1
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 18:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC43A3A9050
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 18:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E503396E6;
-	Fri,  7 Nov 2025 18:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5638128A705;
+	Fri,  7 Nov 2025 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQNzbHKt"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TiRtsq9p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B5F3385A0;
-	Fri,  7 Nov 2025 18:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4254416F0FE;
+	Fri,  7 Nov 2025 18:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762540931; cv=none; b=hleYBn21L8r3r2n9I2uazRdJy+7Oz4u2E8thjdV78IbHSuaqRat45EkBlZ2GQzcvZ8/QcRMUepv/aWY3e8au1nFzbRVqwv2djGxeegh2Wa+rmImr+1ARPmxsj0M6Lx8+z2B5jcN3zUNCYKli5Sq0A3c6JtPeB2AVTCbQuLmv60Q=
+	t=1762541122; cv=none; b=TFiZ7rueLfZN9/6l6+fW9dFInjIPbFrfivT+WfUjLCtjJuLY3ir4ZL0z7LcC+Bg82+EeSAE4h8Z6/8kboAieeyYrJkUQ+O23bKv8f9I1ZG9De0iaDigbJNyEXSdcB7Jy7zPmjIqEgllo9yPoqyBGtVrOcGeTKvoqJkf+jX9aLYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762540931; c=relaxed/simple;
-	bh=NlugFQaxO5tLMHoPMN31XhYC2vMgdbP47ZSDQKZvL0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W2GPQY51/PLrpIhWGkt9uLL4cg8xp+KtTZyHoofpFuGnE1A46ebZ2sgKKUETOQYp7w2k4WwYM6ZNg/r5gw6OMuVnv5ImdY+8cR0Nynpr+1knwdM1YyGqu0b3+fmllwwuWogrDCKBrLMucCXBEhkybn4XXyOYjMNWjBf9FgTtjqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQNzbHKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B5CC4CEF5;
-	Fri,  7 Nov 2025 18:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762540930;
-	bh=NlugFQaxO5tLMHoPMN31XhYC2vMgdbP47ZSDQKZvL0I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQNzbHKtKHNWf1dP8O1k9eugI4hPWZcWfut0pzsBj28OxIw2Jq3+zrI+v6kiO2duD
-	 XgJdGYuuafIeEFkvZXMo30MSVKnLgeOnQNdYK3azpw2apWByBnd6bCI9HMG2DVjQ4h
-	 wSwrMN+TFCbjGcEM+5O/2YEN6V78xlrEb/YHoWj8BdHhfqghDC7Vz3j6o/AhIZO3O2
-	 GAbnIQNjI6KLYqRfbdoXmb7ZP/plpEqf1S2DWQWxHxu8kjnn27AILtOla2mUK5DE2t
-	 dIjECMvt5LmLl6TN3vIzEMTVeRQBuLjvs5n24iLB4jR0c9JfKzx4q6V/mdXtwNnKgE
-	 S2LE5pRiwuujA==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Takashi Iwai <tiwai@suse.de>,
- LKML <linux-kernel@vger.kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>,
- Frank Li <Frank.Li@nxp.com>, Dhruva Gole <d-gole@ti.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>
-Subject:
- [PATCH v1 3/3] ACPI: TAD: Use PM_RUNTIME_ACQUIRE()/PM_RUNTIME_ACQUIRE_ERR
-Date: Fri, 07 Nov 2025 19:41:54 +0100
-Message-ID: <7873589.EvYhyI6sBW@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <13883374.uLZWGnKmhe@rafael.j.wysocki>
-References: <13883374.uLZWGnKmhe@rafael.j.wysocki>
+	s=arc-20240116; t=1762541122; c=relaxed/simple;
+	bh=Q8FxDt7eqtqgy06pFP3/HPIuhZ8Iv+3Mro4qoktzN3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q9r1Db7IUjUTxooEo0rqj3+GL0QKOLMFzQ4IeNgE5ioBt5V0+9e/1EI9LxbLPB6g5IgtRP0KUYpHDG1MoXN7Le/Dh+eZbKtIfd6yHifwlyXvbWlN7CeJXf63rpFmsi+N1PaT6GoM5hlr2fqas+2Cuc06ecS0fnQEkLie2wtxAuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TiRtsq9p; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1762541118;
+	bh=Q8FxDt7eqtqgy06pFP3/HPIuhZ8Iv+3Mro4qoktzN3w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TiRtsq9pJ9kLRQvjImXlQJgHfqr764uE+hd5JomnbPu1ggma/VmwO/56Rjb9/ipxs
+	 vm5dlLweg8uJi45h1sICfLYKKkB3win1IPPw+HcvcnKYMIi+CR1tQ+DUfZ7aVj7Rdr
+	 UOpH1AgHw58QDgGpOFfYZfXLX3Ohk5J7/E7KKScLxSmcwo366tU2rgVwLdFHC4dSko
+	 h/nFfrv8ZQTHK/L7RpdMD/ueJwNYW260Bb/uJWrThBkAkVu4tCKXysj5uqZssCgZgH
+	 9ehJIYvEHv8hLOSvFNvXBdli0IlyknqpoJ6vZDHPdNm1nT3SpeimDNWSPBM61Y65r3
+	 sEOgb1zHJGdLA==
+Received: from mt.tail9873f4.ts.net (unknown [144.48.130.189])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3E54317E0927;
+	Fri,  7 Nov 2025 19:45:14 +0100 (CET)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-input@vger.kernel.org
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com,
+	superm1@kernel.org
+Subject: [PATCH 0/4] PM: Hibernate: Add hibernation cancellation support
+Date: Fri,  7 Nov 2025 23:44:27 +0500
+Message-ID: <20251107184438.1328717-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On a normal laptop/PC, the hibernation takes 15-20 seconds which is
+considerable time. Once hibernation is triggered from command line or by
+some GUI option, the hibernation cannot be cancelled until completed.
+Its not a blocker, but poor user experience.
 
-Use new PM_RUNTIME_ACQUIRE() and PM_RUNTIME_ACQUIRE_ERR wrapper macros
-to make the code look more straightforward.
+When power button is pressed during hibernation, it generates interrupt
+and then the event is routed to userspace. If systemd is being used, the
+logind handles these events and performs the specific action.
 
-No intentional functional impact.
+During hibernation, the first stage is to freeze the userspace. Hence
+even if the power button is pressed, it doesn't aborts the hibernation
+as user space daemon is frozen.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+My device takes ~19 seconds to hibernate. When I was testing hibernation
+using rtcwake with timeout of 10 seconds, I found out that hibernation
+gets canceled around 10 seconds mark when the interrupt fires.
+
+In this series, the idea is to find a way to cancel the hibernation.
+With this series applied, the hibernation gets cancelled gracefully.
+
+The hibernation cancellation support isn't present in very last stage
+just before power_down(). I've not been able to handle the error paths
+correctly there yet as logs aren't available from that stage. I'll send
+that patch separately when it works.
+
+Cc: rafael@kernel.org
+Cc: superm1@kernel.org
 ---
- drivers/acpi/acpi_tad.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+Changes since RFC:
+- Update description of patches
+- Use pm_sleep_transition_in_progress() instead of
+  hibernation_in_progress()
 
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -90,8 +90,8 @@ static int acpi_tad_set_real_time(struct
- 	args[0].buffer.pointer = (u8 *)rt;
- 	args[0].buffer.length = sizeof(*rt);
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	status = acpi_evaluate_integer(handle, "_SRT", &arg_list, &retval);
-@@ -137,8 +137,8 @@ static int acpi_tad_get_real_time(struct
- {
- 	int ret;
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	ret = acpi_tad_evaluate_grt(dev, rt);
-@@ -275,8 +275,8 @@ static int acpi_tad_wake_set(struct devi
- 	args[0].integer.value = timer_id;
- 	args[1].integer.value = value;
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	status = acpi_evaluate_integer(handle, method, &arg_list, &retval);
-@@ -322,8 +322,8 @@ static ssize_t acpi_tad_wake_read(struct
- 
- 	args[0].integer.value = timer_id;
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	status = acpi_evaluate_integer(handle, method, &arg_list, &retval);
-@@ -377,8 +377,8 @@ static int acpi_tad_clear_status(struct
- 
- 	args[0].integer.value = timer_id;
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	status = acpi_evaluate_integer(handle, "_CWS", &arg_list, &retval);
-@@ -417,8 +417,8 @@ static ssize_t acpi_tad_status_read(stru
- 
- 	args[0].integer.value = timer_id;
- 
--	ACQUIRE(pm_runtime_active_try, pm)(dev);
--	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ERR)
- 		return -ENXIO;
- 
- 	status = acpi_evaluate_integer(handle, "_GWS", &arg_list, &retval);
+Muhammad Usama Anjum (4):
+  PM: hibernate: export pm_sleep_transition_in_progress()
+  ACPI: button: Cancel hibernation if button is pressed during
+    hibernation
+  Input: Ignore the KEY_POWER events if hibernation is in progress
+  PM: sleep: clear pm_abort_suspend at suspend
 
+ drivers/acpi/button.c     | 12 +++++++++---
+ drivers/base/power/main.c |  2 ++
+ drivers/input/input.c     |  6 ++++++
+ kernel/cpu.c              |  1 +
+ kernel/power/hibernate.c  |  5 ++++-
+ kernel/power/main.c       |  1 +
+ kernel/power/process.c    |  1 +
+ 7 files changed, 24 insertions(+), 4 deletions(-)
 
+-- 
+2.47.3
 
 
