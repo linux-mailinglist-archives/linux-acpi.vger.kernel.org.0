@@ -1,216 +1,202 @@
-Return-Path: <linux-acpi+bounces-18676-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18677-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F06C417D3
-	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 20:59:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38147C41848
+	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 21:08:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 455284EE0CD
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 19:59:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6215188E47D
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 20:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD62339709;
-	Fri,  7 Nov 2025 19:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F838303A2F;
+	Fri,  7 Nov 2025 20:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V/UL/MF2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MK4ExjfM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E71224AF7;
-	Fri,  7 Nov 2025 19:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383C32FCC10
+	for <linux-acpi@vger.kernel.org>; Fri,  7 Nov 2025 20:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762545550; cv=none; b=F7OwPwiObkgcPqGe3pd06r/yBSuy0UVsRI0TvhH+wyKtOBC0GMcNBei/0LjkA+yze3V8Nw9Db3t5xC42a7ZtxnBWXHr1rqyjSMIMTAPQB427OwHW/Vtd8u/NVeJrHUfREoBN0PK1iGEgf3Vl2kKQUwqLrkaHtePU4mbcsVRtHWU=
+	t=1762546133; cv=none; b=rfU3GqNny/R0oA9RrKRbl4PeqTXDfC7sTF2XPoj9n98I50wxG1K/b2BU3WF/2c89iieyw331MCS5G14EGYL4iLdOaeLi8kw/SQQAsFeulxc1Gx8zzvA/G04g6t7EQ1aszejEjAxmjAaCU6pG+ilaXOhwYedHCc+Y6yVGBgKXhf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762545550; c=relaxed/simple;
-	bh=o6sCKaIr+Mcsm7DmCaTJx6MhTkgDqm5CM83QolZ5QBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qOe3Kf9ECy15HZsqfzYBc8argxOv9pEdWPMXzZxBgq1xvzAQIxb+4jot7H1hUIHwC+vVPfzFyg6Ieme04jZufPCss9fG9ZRF4gylzjy+3hbfoDZ77DLsad0at6bf6pyB77hPbzypOQJP2CFMjj9Em36YOqCgNmEtxKUEgVporT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V/UL/MF2; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762545549; x=1794081549;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=o6sCKaIr+Mcsm7DmCaTJx6MhTkgDqm5CM83QolZ5QBY=;
-  b=V/UL/MF2Fk6EqDevXEbtY5iJx6iqZAJVzLiJit3mNWRoCCadPvcCWQd6
-   tgiAA9MpgdBt25EZxMn/S+6obswZx41rZGPa+B+xqlPFEkorfmpNcpGqW
-   4w+8FneJmpqkusOx2hIMXN2SRNCFptU5KpDBx3cfdN+z1TW5YmFJd4jGH
-   /T1jhYXwoATEs8mjW+YA/YniNLxB1DdTiTKC7QTSq6KiqE8R0Y9W4HNT4
-   uQVKSLxEYG3GyBYqeN/0OPjHMXC8K/GSveJi7eLbLb+EYuhHqch9Xu6Bf
-   ZESM21VD3pj9syOUx3oohSZmKKegWcmRO334kkiylNqMjDeL0Ernfttik
-   g==;
-X-CSE-ConnectionGUID: 4QJBB2sZS9OGEOmAas+YvQ==
-X-CSE-MsgGUID: p23x5m/TT5CTIAuNY1dUlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="64737458"
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="64737458"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 11:59:08 -0800
-X-CSE-ConnectionGUID: WQraglFVTdSNTqRT+O0OdA==
-X-CSE-MsgGUID: vV07ZoEeSlaSEo5q+8IIjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="187370899"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.112]) ([10.125.111.112])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 11:59:07 -0800
-Message-ID: <85fa077c-0c69-452b-9503-0cd7f3e1b363@intel.com>
-Date: Fri, 7 Nov 2025 12:59:05 -0700
+	s=arc-20240116; t=1762546133; c=relaxed/simple;
+	bh=szesQpSM5oo7OsiDU5UKtOwtIL9eGv7CnUXjP7KFeos=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tUaoVVpMiDKi4Sj+Hu8y8NNFVYqOdoC4ysudb5rsO7NsqanGRvoL+9igdtgvoSXrZtK15OK1qtiRQ0N40ySpX2fklzAM2k1dD6wObKesiG/eUKXrIiuf1lBDCOFslU/1H4wI8bldVQIFTXOQyQDzJm03Ryy3EyeAB5DV4iFIxaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MK4ExjfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBBFC4AF0D
+	for <linux-acpi@vger.kernel.org>; Fri,  7 Nov 2025 20:08:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762546133;
+	bh=szesQpSM5oo7OsiDU5UKtOwtIL9eGv7CnUXjP7KFeos=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MK4ExjfMOWhtxaY36/EOJRaYXFbTHV0SGPpxdCQJWplE4xG4HgiJ/ylwJc787Sksa
+	 z4vyAEvMqm8NrQX0OlAizkMW8wjEZuNS5Wp+5v1eINEQeTr/blBsc7Dp74Ss+XFGm8
+	 ZP1vf2pa6AmEiaf541pEAg1rJiD2UJua1uBPdy34Z4A95X4npaz4LhFWjqwfhFnZig
+	 XS16qV7a8Numgked/F2/VWMeyKLyvY5hZhj9WSzJIhZ6vCWdvnFQOjkBEy59h3YFPM
+	 PslUlvQWGzFdNo/n3EMnmg0yoii6ECsU+V8Obkcrp0Zd7XhalC2zIu801ciyFm7KuX
+	 XWI6a6XH/tzRw==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-656cd6c1c5eso487100eaf.0
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Nov 2025 12:08:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUzoHusSB35nIL/m+jcFQQ7i/H/HPYdYOEGkYJmvL46smrzEzQzIoXZm2P3e6JPDqK7bK/FEGTDMmDP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3gvHYVeQMZKBczLNARvUZiNu9tM2yeQTZfaTQpdSwNif68QVo
+	b1uL/M0Q/Iopd9aKVHwCiCD0SjnCt+/OkTOoZZYgeVVT07aIEATsUikA+Fms4fKFRi8LEn59Jql
+	nPQrwD0A2R/g7PlWZg9sWwBHKOq7jgXA=
+X-Google-Smtp-Source: AGHT+IGA04jm71Ij9xeQJEzJY7AxE62iCGgrrBQyNvtjVXE70OmsxBr7+clNSkaS9F9EzCSb46Qp9YHiGNZGj0RJ2fQ=
+X-Received: by 2002:a05:6820:16a6:b0:656:8360:3906 with SMTP id
+ 006d021491bc7-656d8ea527dmr426344eaf.8.1762546131960; Fri, 07 Nov 2025
+ 12:08:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6 v7] ACPI: extlog: Trace CPER CXL Protocol Error
- Section
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- linux-cxl@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
- <20251104182446.863422-7-fabio.m.de.francesco@linux.intel.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20251104182446.863422-7-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251105113844.4086250-5-sumitg@nvidia.com> <202511061802.lIq09jwh-lkp@intel.com>
+ <be696cb5-7d0d-44f6-970b-e417c2f89a8e@nvidia.com>
+In-Reply-To: <be696cb5-7d0d-44f6-970b-e417c2f89a8e@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 7 Nov 2025 21:08:40 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j8bQm+00+m75rmpKpm8yVumvYsWzCdYyCPwksnebY__A@mail.gmail.com>
+X-Gm-Features: AWmQ_bnyTo8wfwCEW9lyu_1xYl179djStUEiTR_5ulbMLWD8CjXHhBWwog1DvlU
+Message-ID: <CAJZ5v0j8bQm+00+m75rmpKpm8yVumvYsWzCdYyCPwksnebY__A@mail.gmail.com>
+Subject: Re: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: kernel test robot <lkp@intel.com>, rafael@kernel.org, viresh.kumar@linaro.org, 
+	lenb@kernel.org, robert.moore@intel.com, corbet@lwn.net, 
+	pierre.gondois@arm.com, zhenglifeng1@huawei.com, rdunlap@infradead.org, 
+	ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com, 
+	perry.yuan@amd.com, ionela.voinescu@arm.com, zhanjie9@hisilicon.com, 
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com, 
+	ksitaraman@nvidia.com, sanjayc@nvidia.com, nhartman@nvidia.com, 
+	bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 7, 2025 at 11:00=E2=80=AFAM Sumit Gupta <sumitg@nvidia.com> wro=
+te:
+>
+>
+> On 06/11/25 16:00, kernel test robot wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > Hi Sumit,
+> >
+> > kernel test robot noticed the following build warnings:
+> >
+> > [auto build test WARNING on rafael-pm/linux-next]
+> > [also build test WARNING on rafael-pm/bleeding-edge linus/master v6.18-=
+rc4 next-20251106]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Sumit-Gupta/cpuf=
+req-CPPC-Add-generic-helpers-for-sysfs-show-store/20251105-194715
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm=
+.git linux-next
+> > patch link:    https://lore.kernel.org/r/20251105113844.4086250-5-sumit=
+g%40nvidia.com
+> > patch subject: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface =
+for min/max_perf
+> > config: riscv-defconfig (https://download.01.org/0day-ci/archive/202511=
+06/202511061802.lIq09jwh-lkp@intel.com/config)
+> > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project=
+ d2625a438020ad35330cda29c3def102c1687b1b)
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
+hive/20251106/202511061802.lIq09jwh-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202511061802.lIq09jwh-l=
+kp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>):
+> >
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:954 function parameter 'polic=
+y' not described in 'show_min_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:954 function parameter 'buf' =
+not described in 'show_min_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'polic=
+y' not described in 'store_min_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'buf' =
+not described in 'store_min_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:976 function parameter 'count=
+' not described in 'store_min_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:1003 function parameter 'poli=
+cy' not described in 'show_max_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:1003 function parameter 'buf'=
+ not described in 'show_max_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'poli=
+cy' not described in 'store_max_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'buf'=
+ not described in 'store_max_perf'
+> >>> Warning: drivers/cpufreq/cppc_cpufreq.c:1025 function parameter 'coun=
+t' not described in 'store_max_perf'
+> > --
+> > 0-DAY CI Kernel Test Service
+> > https://github.com/intel/lkp-tests/wiki
+>
+>
+> Thank you for the report.
+> Below change to comments seem to be fixing this warning.
 
+So can you please send a new version of this patch with the changes
+below folded in?
 
-On 11/4/25 11:22 AM, Fabio M. De Francesco wrote:
-> When Firmware First is enabled, BIOS handles errors first and then it
-> makes them available to the kernel via the Common Platform Error Record
-> (CPER) sections (UEFI 2.11 Appendix N.2.13). Linux parses the CPER
-> sections via one of two similar paths, either ELOG or GHES. The errors
-> managed by ELOG are signaled to the BIOS by the I/O Machine Check
-> Architecture (I/O MCA).
-> 
-> Currently, ELOG and GHES show some inconsistencies in how they report to
-> userspace via trace events.
-> 
-> Therefore, make the two mentioned paths act similarly by tracing the CPER
-> CXL Protocol Error Section.
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> -------------------------------------------------------
+>    /**
+>    * show_min_perf - Show minimum performance as frequency (kHz)
+> + * @policy: cpufreq policy
+> + * @buf: buffer to write the frequency value to
+>    *
+>    * Reads the MIN_PERF register and converts the performance value to
+>    * frequency (kHz) for user-space consumption.
+> @@ -1117,6 +1119,9 @@ static ssize_t show_min_perf(struct cpufreq_policy
+> *policy, char *buf)
+>
+>   /**
+>    * store_min_perf - Set minimum performance from frequency (kHz)
+> + * @policy: cpufreq policy
+> + * @buf: buffer to write the frequency value to
+> + * @count: size of @buf
+>    *
+>    * Converts the user-provided frequency (kHz) to a performance value
+>    * and writes it to the MIN_PERF register.
+> @@ -1144,6 +1149,8 @@ static ssize_t store_min_perf(struct
+> cpufreq_policy *policy, const char *buf, si
+>
+>   /**
+>    * show_max_perf - Show maximum performance as frequency (kHz)
+> + * @policy: cpufreq policy
+> + * @buf: buffer to write the frequency value to
+>    *
+>    * Reads the MAX_PERF register and converts the performance value to
+>    * frequency (kHz) for user-space consumption.
+> @@ -1166,6 +1173,9 @@ static ssize_t show_max_perf(struct cpufreq_policy
+> *policy, char *buf)
+>
+>   /**
+>    * store_max_perf - Set maximum performance from frequency (kHz)
+> + * @policy: cpufreq policy
+> + * @buf: buffer to write the frequency value to
+> + * @count: size of @buf
+> -------------------------------------------------------
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
->  drivers/acpi/Kconfig       |  1 +
->  drivers/acpi/acpi_extlog.c | 22 ++++++++++++++++++++++
->  drivers/cxl/core/ras.c     |  3 ++-
->  include/cxl/event.h        |  2 ++
->  4 files changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index be02634f2320..c2ad24e77ddf 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -498,6 +498,7 @@ config ACPI_EXTLOG
->  	select ACPI_APEI
->  	select ACPI_APEI_PCIEAER
->  	select UEFI_CPER
-> +	select CXL_BUS
->  	help
->  	  Certain usages such as Predictive Failure Analysis (PFA) require
->  	  more information about the error than what can be described in
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index b3976ceb4ee4..e6fb25395984 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -12,6 +12,7 @@
->  #include <linux/ratelimit.h>
->  #include <linux/edac.h>
->  #include <linux/ras.h>
-> +#include <cxl/event.h>
->  #include <acpi/ghes.h>
->  #include <asm/cpu.h>
->  #include <asm/mce.h>
-> @@ -160,6 +161,21 @@ static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
->  	pci_dev_put(pdev);
->  }
->  
-> +static void
-> +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				int severity)
-> +{
-> +	struct cxl_cper_prot_err_work_data wd;
-> +
-> +	if (cxl_cper_sec_prot_err_valid(prot_err))
-> +		return;
-> +
-> +	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-> +		return;
-> +
-> +	cxl_cper_handle_prot_err(&wd);
-> +}
-> +
->  static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			void *data)
->  {
-> @@ -211,6 +227,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
-> +			struct cxl_cper_sec_prot_err *prot_err =
-> +				acpi_hest_get_payload(gdata);
-> +
-> +			extlog_cxl_cper_handle_prot_err(prot_err,
-> +							gdata->error_severity);
->  		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->  			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
-> index 2731ba3a0799..a90480d07c87 100644
-> --- a/drivers/cxl/core/ras.c
-> +++ b/drivers/cxl/core/ras.c
-> @@ -63,7 +63,7 @@ static int match_memdev_by_parent(struct device *dev, const void *uport)
->  	return 0;
->  }
->  
-> -static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
-> +void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
->  {
->  	unsigned int devfn = PCI_DEVFN(data->prot_err.agent_addr.device,
->  				       data->prot_err.agent_addr.function);
-> @@ -104,6 +104,7 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
->  	else
->  		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
->  }
-> +EXPORT_SYMBOL_GPL(cxl_cper_handle_prot_err);
->  
->  static void cxl_cper_prot_err_work_fn(struct work_struct *work)
->  {
-> diff --git a/include/cxl/event.h b/include/cxl/event.h
-> index 94081aec597a..ff97fea718d2 100644
-> --- a/include/cxl/event.h
-> +++ b/include/cxl/event.h
-> @@ -340,4 +340,6 @@ cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
->  }
->  #endif
->  
-> +void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *wd);
-> +
->  #endif /* _LINUX_CXL_EVENT_H */
+As for the whole series, I generally need ARM folks to review it and
+tell me that it is fine.
 
+Thanks!
 
