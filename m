@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-18652-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18653-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AEAC3FF28
-	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 13:41:14 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A08C3FF22
+	for <lists+linux-acpi@lfdr.de>; Fri, 07 Nov 2025 13:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC597189A69E
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 12:41:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7003134F850
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Nov 2025 12:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A6331E0E1;
-	Fri,  7 Nov 2025 12:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD4C32C937;
+	Fri,  7 Nov 2025 12:37:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079F332C336;
-	Fri,  7 Nov 2025 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F1320CC2;
+	Fri,  7 Nov 2025 12:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762519072; cv=none; b=TjEJp5eWNV9wAU/eKrvIys6mPq9W97h8G20JTsKsQui3qfAjf7gs6k0S/3+PeiYuM5+dyAg8AKBCqNoIOta5ZZUIrvprWTlgE1Gi9PhBcicmIj47APSMFrtvf1RE+zs+A5O7X48IXgYoK2n4B6hiDgsP3cxsU7XBkjdH0UHHG9k=
+	t=1762519076; cv=none; b=Vg2xJSimv0l9tUxzupGJz12Cd7scckLIAiO5qaw9q5qSebmINYfV1iuZPDJiHxpTeTB0K1ZyJ78XLWF1g8cDD/1gsAXuV2y35OTh0X0LrXkdIEBYXrtRWfLuJ/OEK1A4mDlP9pQrrjk+zu+aD1IfjPA+Ko8BNNpaUYSYVM8SUT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762519072; c=relaxed/simple;
-	bh=az4KHcsAUFT+6xgHfgnLDqyAZpUIaVXdeA/iOUIbinc=;
+	s=arc-20240116; t=1762519076; c=relaxed/simple;
+	bh=jS5CqKJ88zY/tuVY5narOdQKecf9/diuai9hdjdly8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELHXkwndBe4udcX4kXpf1ZSdDA9zVKpLiK3kyAcNT48Xfv0DqwBB8ZIrIRpb0H+P8Rg44WEb8MLJaYjd/6dKU/sJtaCEBEHuj2g68I99upq+fn0fRExOO7VEooPOkMcrtxrM65xTcK2b5fUWlFMg+l9kaZVxOSzkkvUmkSXoJfI=
+	 MIME-Version; b=ruz4tqZWXc5+diEFxglLoYasgMS/OLHo706K6oi/8jG6Wx4a+d/bVzWQnoRvDFjV1ipBzuyDLupeavuwYAVKPtFAgZsAh9XfojVizTrjuk5HLsrVVJIAFNHyv3CPWm8xrg4+Bn1YWem1TtncHbxi8tS9hq4tbOgxd1fcHqCsgBA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D042D1515;
-	Fri,  7 Nov 2025 04:37:41 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E7161A2D;
+	Fri,  7 Nov 2025 04:37:47 -0800 (PST)
 Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A927E3F66E;
-	Fri,  7 Nov 2025 04:37:44 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DC06C3F66E;
+	Fri,  7 Nov 2025 04:37:49 -0800 (PST)
 From: Ben Horgan <ben.horgan@arm.com>
 To: james.morse@arm.com
 Cc: amitsinght@marvell.com,
@@ -69,11 +69,11 @@ Cc: amitsinght@marvell.com,
 	tan.shaopeng@fujitsu.com,
 	will@kernel.org,
 	xhao@linux.alibaba.com,
-	Zeng Heng <zengheng4@huawei.com>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH 27/33] arm_mpam: Track bandwidth counter state for power management
-Date: Fri,  7 Nov 2025 12:34:44 +0000
-Message-ID: <20251107123450.664001-28-ben.horgan@arm.com>
+	Ben Horgan <ben.horgan@arm.com>,
+	Zeng Heng <zengheng4@huawei.com>
+Subject: [PATCH 28/33] arm_mpam: Consider overflow in bandwidth counter state
+Date: Fri,  7 Nov 2025 12:34:45 +0000
+Message-ID: <20251107123450.664001-29-ben.horgan@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251107123450.664001-1-ben.horgan@arm.com>
 References: <20251107123450.664001-1-ben.horgan@arm.com>
@@ -85,273 +85,93 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: James Morse <james.morse@arm.com>
+Use the overflow status bit to track overflow on each bandwidth counter
+read and add the counter size to the correction when overflow is detected.
 
-Bandwidth counters need to run continuously to correctly reflect the
-bandwidth.
-
-Save the counter state when the hardware is reset due to CPU hotplug.
-Add struct mbwu_state to track the bandwidth counter. Support for
-tracking overflow with the same structure will be added in a
-subsequent commit.
+This assumes that only a single overflow has occurred since the last read
+of the counter. Overflow interrupts, on hardware that supports them could
+be used to remove this limitation.
 
 Cc: Zeng Heng <zengheng4@huawei.com>
-Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 ---
-Changes since v3:
-Drop tags
-Fix correction accounting
-Split out overflow checking
----
- drivers/resctrl/mpam_devices.c  | 126 +++++++++++++++++++++++++++++++-
- drivers/resctrl/mpam_internal.h |  21 +++++-
- 2 files changed, 145 insertions(+), 2 deletions(-)
+ drivers/resctrl/mpam_devices.c  | 24 ++++++++++++++++++++++--
+ drivers/resctrl/mpam_internal.h |  3 ++-
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index 86abbac5e1ad..2d1cef824b8e 100644
+index 2d1cef824b8e..eea082dfcddc 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -994,6 +994,7 @@ static void __ris_msmon_read(void *arg)
+@@ -986,11 +986,18 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+ 	}
+ }
+ 
++static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
++{
++	/* TODO: scaling, and long counters */
++	return BIT_ULL(hweight_long(MSMON___VALUE));
++}
++
+ static void __ris_msmon_read(void *arg)
+ {
+ 	u64 now;
+ 	bool nrdy = false;
+ 	bool config_mismatch;
++	bool overflow;
  	struct mon_read *m = arg;
  	struct mon_cfg *ctx = m->ctx;
  	struct mpam_msc_ris *ris = m->ris;
-+	struct msmon_mbwu_state *mbwu_state;
- 	struct mpam_props *rprops = &ris->props;
- 	struct mpam_msc *msc = m->ris->vmsc->msc;
- 	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
-@@ -1024,11 +1025,21 @@ static void __ris_msmon_read(void *arg)
- 		now = mpam_read_monsel_reg(msc, CSU);
- 		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
- 			nrdy = now & MSMON___NRDY;
-+		now = FIELD_GET(MSMON___VALUE, now);
- 		break;
- 	case mpam_feat_msmon_mbwu:
- 		now = mpam_read_monsel_reg(msc, MBWU);
- 		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
- 			nrdy = now & MSMON___NRDY;
-+		now = FIELD_GET(MSMON___VALUE, now);
+@@ -1012,13 +1019,20 @@ static void __ris_msmon_read(void *arg)
+ 	 * This saves waiting for 'nrdy' on subsequent reads.
+ 	 */
+ 	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
++	overflow = cur_ctl & MSMON_CFG_x_CTL_OFLOW_STATUS;
 +
-+		if (nrdy)
-+			break;
+ 	clean_msmon_ctl_val(&cur_ctl);
+ 	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+ 	config_mismatch = cur_flt != flt_val ||
+ 			  cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
+ 
+-	if (config_mismatch)
++	if (config_mismatch) {
+ 		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
++		overflow = false;
++	} else if (overflow) {
++		mpam_write_monsel_reg(msc, CFG_MBWU_CTL,
++				      cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS);
++	}
+ 
+ 	switch (m->type) {
+ 	case mpam_feat_msmon_csu:
+@@ -1038,7 +1052,13 @@ static void __ris_msmon_read(void *arg)
+ 
+ 		mbwu_state = &ris->mbwu_state[ctx->mon];
+ 
+-		/* Include bandwidth consumed before the last hardware reset */
++		if (overflow)
++			mbwu_state->correction += mpam_msmon_overflow_val(m->type);
 +
-+		mbwu_state = &ris->mbwu_state[ctx->mon];
-+
-+		/* Include bandwidth consumed before the last hardware reset */
-+		now += mbwu_state->correction;
++		/*
++		 * Include bandwidth consumed before the last hardware reset and
++		 * a counter size increment for each overflow.
++		 */
+ 		now += mbwu_state->correction;
  		break;
  	default:
- 		m->err = -EINVAL;
-@@ -1041,7 +1052,6 @@ static void __ris_msmon_read(void *arg)
- 		return;
- 	}
- 
--	now = FIELD_GET(MSMON___VALUE, now);
- 	*m->val += now;
- }
- 
-@@ -1239,6 +1249,67 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
- 	mutex_unlock(&msc->part_sel_lock);
- }
- 
-+/* Call with msc cfg_lock held */
-+static int mpam_restore_mbwu_state(void *_ris)
-+{
-+	int i;
-+	struct mon_read mwbu_arg;
-+	struct mpam_msc_ris *ris = _ris;
-+
-+	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
-+		if (ris->mbwu_state[i].enabled) {
-+			mwbu_arg.ris = ris;
-+			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
-+			mwbu_arg.type = mpam_feat_msmon_mbwu;
-+
-+			__ris_msmon_read(&mwbu_arg);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* Call with MSC cfg_lock held */
-+static int mpam_save_mbwu_state(void *arg)
-+{
-+	int i;
-+	u64 val;
-+	struct mon_cfg *cfg;
-+	u32 cur_flt, cur_ctl, mon_sel;
-+	struct mpam_msc_ris *ris = arg;
-+	struct msmon_mbwu_state *mbwu_state;
-+	struct mpam_msc *msc = ris->vmsc->msc;
-+
-+	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
-+		mbwu_state = &ris->mbwu_state[i];
-+		cfg = &mbwu_state->cfg;
-+
-+		if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
-+			return -EIO;
-+
-+		mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, i) |
-+			  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
-+		mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
-+
-+		cur_flt = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
-+		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
-+		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
-+
-+		val = mpam_read_monsel_reg(msc, MBWU);
-+		mpam_write_monsel_reg(msc, MBWU, 0);
-+
-+		cfg->mon = i;
-+		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
-+		cfg->match_pmg = FIELD_GET(MSMON_CFG_x_CTL_MATCH_PMG, cur_ctl);
-+		cfg->partid = FIELD_GET(MSMON_CFG_x_FLT_PARTID, cur_flt);
-+		mbwu_state->correction += val;
-+		mbwu_state->enabled = FIELD_GET(MSMON_CFG_x_CTL_EN, cur_ctl);
-+		mpam_mon_sel_unlock(msc);
-+	}
-+
-+	return 0;
-+}
-+
- static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
- {
- 	*reset_cfg = (struct mpam_config) {
-@@ -1310,6 +1381,9 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
- 		 * for non-zero partid may be lost while the CPUs are offline.
- 		 */
- 		ris->in_reset_state = online;
-+
-+		if (mpam_is_enabled() && !online)
-+			mpam_touch_msc(msc, &mpam_save_mbwu_state, ris);
- 	}
- 	mutex_unlock(&msc->cfg_lock);
- }
-@@ -1364,6 +1438,9 @@ static void mpam_reprogram_msc(struct mpam_msc *msc)
- 			mpam_touch_msc(msc, __write_config, &arg);
- 		}
- 		ris->in_reset_state = reset;
-+
-+		if (mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
-+			mpam_touch_msc(msc, &mpam_restore_mbwu_state, ris);
- 	}
- 	mutex_unlock(&msc->cfg_lock);
- }
-@@ -2117,7 +2194,22 @@ static void mpam_unregister_irqs(void)
- 
- static void __destroy_component_cfg(struct mpam_component *comp)
- {
-+	struct mpam_msc *msc;
-+	struct mpam_vmsc *vmsc;
-+	struct mpam_msc_ris *ris;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
- 	add_to_garbage(comp->cfg);
-+	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
-+		msc = vmsc->msc;
-+
-+		if (mpam_mon_sel_lock(msc)) {
-+			list_for_each_entry(ris, &vmsc->ris, vmsc_list)
-+				add_to_garbage(ris->mbwu_state);
-+			mpam_mon_sel_unlock(msc);
-+		}
-+	}
- }
- 
- static void mpam_reset_component_cfg(struct mpam_component *comp)
-@@ -2141,6 +2233,8 @@ static void mpam_reset_component_cfg(struct mpam_component *comp)
- 
- static int __allocate_component_cfg(struct mpam_component *comp)
- {
-+	struct mpam_vmsc *vmsc;
-+
- 	mpam_assert_partid_sizes_fixed();
- 
- 	if (comp->cfg)
-@@ -2158,6 +2252,36 @@ static int __allocate_component_cfg(struct mpam_component *comp)
- 
- 	mpam_reset_component_cfg(comp);
- 
-+	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
-+		struct mpam_msc *msc;
-+		struct mpam_msc_ris *ris;
-+		struct msmon_mbwu_state *mbwu_state;
-+
-+		if (!vmsc->props.num_mbwu_mon)
-+			continue;
-+
-+		msc = vmsc->msc;
-+		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
-+			if (!ris->props.num_mbwu_mon)
-+				continue;
-+
-+			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
-+					     sizeof(*ris->mbwu_state),
-+					     GFP_KERNEL);
-+			if (!mbwu_state) {
-+				__destroy_component_cfg(comp);
-+				return -ENOMEM;
-+			}
-+
-+			init_garbage(&mbwu_state[0].garbage);
-+
-+			if (mpam_mon_sel_lock(msc)) {
-+				ris->mbwu_state = mbwu_state;
-+				mpam_mon_sel_unlock(msc);
-+			}
-+		}
-+	}
-+
- 	return 0;
- }
- 
 diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index d8f8e29987e0..1f2b04b7703e 100644
+index 1f2b04b7703e..7c99d4f3dc9c 100644
 --- a/drivers/resctrl/mpam_internal.h
 +++ b/drivers/resctrl/mpam_internal.h
-@@ -91,7 +91,10 @@ struct mpam_msc {
- 	 */
- 	struct mutex		part_sel_lock;
- 
--	/* cfg_lock protects the msc configuration. */
-+	/*
-+	 * cfg_lock protects the msc configuration and guards against mbwu_state
-+	 * and save and restore racing.
-+	 */
- 	struct mutex		cfg_lock;
+@@ -209,7 +209,8 @@ struct msmon_mbwu_state {
+ 	struct mon_cfg	cfg;
  
  	/*
-@@ -200,6 +203,19 @@ struct mon_cfg {
- 	enum mon_filter_options opts;
- };
- 
-+/* Changes to msmon_mbwu_state are protected by the msc's mon_sel_lock. */
-+struct msmon_mbwu_state {
-+	bool		enabled;
-+	struct mon_cfg	cfg;
-+
-+	/*
-+	 * The value to add to the new reading to account for power management.
-+	 */
-+	u64		correction;
-+
-+	struct mpam_garbage	garbage;
-+};
-+
- struct mpam_class {
- 	/* mpam_components in this class */
- 	struct list_head	components;
-@@ -293,6 +309,9 @@ struct mpam_msc_ris {
- 	/* parent: */
- 	struct mpam_vmsc	*vmsc;
- 
-+	/* msmon mbwu configuration is preserved over reset */
-+	struct msmon_mbwu_state	*mbwu_state;
-+
- 	struct mpam_garbage	garbage;
- };
+-	 * The value to add to the new reading to account for power management.
++	 * The value to add to the new reading to account for power management,
++	 * and overflow.
+ 	 */
+ 	u64		correction;
  
 -- 
 2.43.0
