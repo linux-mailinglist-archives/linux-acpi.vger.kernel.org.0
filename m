@@ -1,101 +1,101 @@
-Return-Path: <linux-acpi+bounces-18682-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18683-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638B1C426F2
-	for <lists+linux-acpi@lfdr.de>; Sat, 08 Nov 2025 05:32:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5663AC42743
+	for <lists+linux-acpi@lfdr.de>; Sat, 08 Nov 2025 05:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1EC63A1A09
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Nov 2025 04:31:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 49FA44E18F0
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Nov 2025 04:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB922D7DE1;
-	Sat,  8 Nov 2025 04:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2178E285CB3;
+	Sat,  8 Nov 2025 04:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EV952JTz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kwN//YEL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RKrx+32v";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uLbvyqag"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2774124EF76
-	for <linux-acpi@vger.kernel.org>; Sat,  8 Nov 2025 04:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA6A2D063A
+	for <linux-acpi@vger.kernel.org>; Sat,  8 Nov 2025 04:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762576310; cv=none; b=FVOU8lX49Wv5TJiPdfZIOxwBtamrYSgfTM1wbnKnNtRVnHEk7wlRb6Ozx3VkIIwHJ0q/UvPMypUMeUqc/yOMwqXqOp/GraovNhw6a7lxMDtWEc4laLDm7Ww55whkScZpV6C2HHiBNTmNOF3nmkXMTZEgW0XsryvP29E0+U2AwZo=
+	t=1762577708; cv=none; b=chkNfsWfZEb1uzjSJuO8wsO1oamRC/2A2sPjlNghHjH7dwIic6pC27+L2KcEbjPcz42z3YG8MXdwH2sJbOfrMAx2UsI+gdgSl1GVmrHu1ItoaCsltjqkDfu8tWhBJvUKGJlmKvHqYaGh1QX8bYGzBUp+7f3vbqUwp9sAwXvqO08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762576310; c=relaxed/simple;
-	bh=Q/AN2q4B+8KYquEvvEbpRI1ceQuCQ64SKRyzXK6Kxhs=;
+	s=arc-20240116; t=1762577708; c=relaxed/simple;
+	bh=fztmZ2NtnDGZ0i3RuA8+1RQoxH1Z4Y3n9GPoa8qnJj0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJUyjbJAnsoMJgEnJibGL+yNJRFuCZEUVaYlkY7TTluUTXtdHQTJOvmwVm9TjhdaAFuQQe4Z1fpgnGLrq8y+2dpPT4m0PdK+VIJLiUy2NhLHVBDALWv2fcUqp9bDWhe4pilDvY0CrJNs3NeweR+a9fjI+C0j7iOdzsCIgWMQ0yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EV952JTz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kwN//YEL; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=YAzt3qs/L4PAK/0DN6beMnNSnWAhC3c/1kIclzIfu+hpG61yStTjqWcOrAxXkUf0XrvgCAAabppEsqWQrVRKdicrB77hpp6mB2gbAQoFjKWBNFb2QcUt9uE4HLsWiLtgIJ3sc0kAPQym3ZhPcydqKfPh9fNk3vLfsfqOYRZzdQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RKrx+32v; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uLbvyqag; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762576307;
+	s=mimecast20190719; t=1762577705;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gf3dtK9whnvoieMQrk7xUOMK4ZkLioSOkS+mxb2q8k8=;
-	b=EV952JTzgMuyo17Opt5AmJUkel2RjcjeyEsdD/+fR6J7meEZ1OWndSxP3TK2T4gebvBV3K
-	s1p2NJMjghkcuyc1ayvcamuTInkAHN8RpsoL0ryPErWQl0XrkY9p3x0V11auVOrh2fc3wp
-	/quJcQEYiKeUiPRhujKmwCSv7s+15TY=
+	bh=aPnyFv8U6G66adg5n2qIg2Qs8rioO43BmGrTfO9DwVw=;
+	b=RKrx+32vaaeIW1WquxE9Cf3Y80lPh337l5u71BGte3Rj5UhRc9hzdWPWDxLD19xJCexCgt
+	06UJSb742+C/dSXWy6/CCcop/W0JgeQq1TL4pkCjo68YP6b0MUTg27Va4Xjbl86wSWtMYU
+	Of7tilbXJDMRSRoL9ynSCmkEVgmO7mM=
 Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
  [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-205-jGGBuX5aOTC4IJd1Sspdfg-1; Fri, 07 Nov 2025 23:31:43 -0500
-X-MC-Unique: jGGBuX5aOTC4IJd1Sspdfg-1
-X-Mimecast-MFC-AGG-ID: jGGBuX5aOTC4IJd1Sspdfg_1762576303
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2956a694b47so18841245ad.1
-        for <linux-acpi@vger.kernel.org>; Fri, 07 Nov 2025 20:31:43 -0800 (PST)
+ us-mta-687-mOE90QzbPYyI5pfRKKenIg-1; Fri, 07 Nov 2025 23:55:03 -0500
+X-MC-Unique: mOE90QzbPYyI5pfRKKenIg-1
+X-Mimecast-MFC-AGG-ID: mOE90QzbPYyI5pfRKKenIg_1762577703
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2952cb6f51bso35313325ad.2
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Nov 2025 20:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762576303; x=1763181103; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1762577702; x=1763182502; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gf3dtK9whnvoieMQrk7xUOMK4ZkLioSOkS+mxb2q8k8=;
-        b=kwN//YELf14PWedULYyHKMhjdDjuV60cGc0C06Gy8soXEKO6OpWqlbqU66+65eyjym
-         JIUCKDf4iaJZYzOyTv2w4noCWnNDk3O7sn6YLzgAiK2v3vG7x30/zncj19+JD0WAh0T6
-         2+IsfOReuU3gD3OiPVIvPHUKLSt0H7gn7R5VQYQHbwvRepOPhkMP474fkxji4uGbTm57
-         DT6tMvQMck0puF+zLboBqnXOaTsHQiOSvOv7s8mt1tYK4eq04oEfjyh6nE/79ieAM5lZ
-         PGtG2nLshjm4kIGODvLR1ncdsrB5wZitS9IfIIN9D04A+BoqoNPbDq/ukpapOQImq0+D
-         LCyQ==
+        bh=aPnyFv8U6G66adg5n2qIg2Qs8rioO43BmGrTfO9DwVw=;
+        b=uLbvyqagyJBLJVQ7hW2oQDtx1ys7RiMZ3M9TmNXhq/DuXLlpgMalWTNQw/ueIsXsEW
+         3hrhy56Q1nA4nQBfu/T1wUBprifJQCNcN5UwGta7oMr3eSAkzSvnWUHoTKULBMUwtP6P
+         LqqgTWnXgwS06mHN7I2WtaT5Z0SJMyFa1vyCYAJh/0afYr8AO+r6DjcLqOflag17PP3y
+         VlUBcV1ynD+rKmPTQdUZ/HeoZ3HxlERKh9X9P7yBnS+Up//xE/Me1JFMiUtqvD2BNz+i
+         2y+TnhlT3wmRKhgpTVAsGpq3ROaPOdZQZhdN2gr9R0V95GvO4pJg7u5klm6tXkjI3vMs
+         A1Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762576303; x=1763181103;
+        d=1e100.net; s=20230601; t=1762577702; x=1763182502;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Gf3dtK9whnvoieMQrk7xUOMK4ZkLioSOkS+mxb2q8k8=;
-        b=n5PZRtSwKRqSx85p0FOelktOtBM+WeGBs+apTkvZY9GH70ScQh5/kSeaDqE55i1PHq
-         DjTURmPoAo1hQPbNAAqFt0rJUBXf0BxJIArXnlLIQNPQtd4IH7mVZje4q5SGZBY7lt4i
-         wHqDFO/AiFOcaX3i3oqUpNTc2UFn3FaF9wFOUkzu0S3OUcJBbKX1fT3ZHZp02g9QcIZf
-         0F6LDNoV33RnhG7BM6Px3Wnjen9QlOAeNWS2hMPT/NlzdXofNmVDiqGwPmUmiHg6ABHT
-         RpmbpQ1QbhYSd640bIDC571WNz+icasRq6mhxcvWSVciGiZVkg4eNI1OHj+NU/+BbiiR
-         u6Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzjJzD5yDENUcnSfNapXXiS5yF6YXUvbm9RtrU+IS23SF/RudFViAKNVVF3uoFeO8rkyoGu3iQNS11@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrP6Ay6VPosDwWzghu/wNvdj8DxSGA3JEvLyimxc9UoQGk+j4e
-	9cbtCqnVIRFATHsZGC/CqHBeiHkf67qAG5y/G/5PR9L5bZlbjuYVy2Sl1LMFLE0SGNQx6HGRYUM
-	yhs60vyXkirhnmFxf5XWt82D8PulaDxzUCyg1c5PcmXsLvWfMzi7lm2w648vJyvA=
-X-Gm-Gg: ASbGncvh9LakPLi/8oXWU6isGES7N0jNkTYUz2vNZIujap1ybPyn7Bi5g738izPDHOX
-	Fio95Tyfa5u24iNnW6yomhj6CSrZMR2IVH2T0U003D5JuS+c8YAiMHkmMFWTrT7IKwaAT0LBxw4
-	tfYsQiGPmSqLvaKQaPSZgZYV1TCw3V64kzmGMBTv4tsBuuVxlcVwa1v/UyfSEC/gfpeZlHozZcS
-	u4AQgTC4GYJMEr5fGMNhM+bk0A3+eQg70UC/3pc/PdlNr9UclhIZw98IYxVnUHNUZR5dlJ2UXU5
-	fd+4uk6DKB/V2kSOBn6l06mNhmmLiB6ajURrAvY47ouq2Gx5ruYK+EHij2i2B8T4gSVe9vDW3yU
-	hUqVyVlChhuLHvZ3ZYDArs2BIT2otM3vuFxR6R0w=
-X-Received: by 2002:a17:903:40c9:b0:295:56da:62a4 with SMTP id d9443c01a7336-297e56caea4mr15886685ad.45.1762576302813;
-        Fri, 07 Nov 2025 20:31:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQTitOB0enfK3OsnV3JV6rJIse5pQU20FSNU11DFWBQoFKK5PuvCsMDdw2vNkdjw8y8BgN8Q==
-X-Received: by 2002:a17:903:40c9:b0:295:56da:62a4 with SMTP id d9443c01a7336-297e56caea4mr15886445ad.45.1762576302385;
-        Fri, 07 Nov 2025 20:31:42 -0800 (PST)
+        bh=aPnyFv8U6G66adg5n2qIg2Qs8rioO43BmGrTfO9DwVw=;
+        b=luLxlvVE66hEerJvH9hhgU1acwdTn+fACudIQBINEW4sdNv9St+sOZ37bqMmWKRgF1
+         +NQpDFv/YgadkP9GaA9vLtY+XMu+TEVs1v58i2D4kpTfM0QUqqna8UZnktuGoq5riYxd
+         3wY51JEi/U00q6GOIEFvTD0nuPoC9biIYVCG3kgiwT5TrdFmdnHTU/xGc7rkYsSngBBO
+         ofzZ36cyKULMcNpgMq8BS5OP5eXDKKDFYog3fDqftiaMYAztElCbNIWg8xpsns99S5xG
+         B07At3jIuOCtTvy0uqHyqWgzPbCbXte66j4dJ4pqP7IeolPnAwpkydtvXz1uKt2W9b91
+         nSNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxmBXvSwqp5+E9SKgMQoM+ieGNvHF8MeIDEIO2OSJu3JUwkvLj7UjjTzK17I1aymXfFjumpn/4hLSP@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXGuHPsfY14+sWRVrAaIYjWO0gG5MAnN5NRMkkYqqSa7j+EKLw
+	ZVw4YKnqWVxO6dTdi3ditpMICC7SL1bZwR6YAdeS2vtHZeB/HWIzWQKWujxnXiInzeMs2cU2NUx
+	+fykuGbr8+KQyYE1RRZxPFYfSWSV/KUJfXIX+9Hg2wAaP7qZPtY55G2nflztsztw=
+X-Gm-Gg: ASbGncslg/NJK9E6U9hYzxcfOngSr21pzA/ODDpyFP7sFoKyatiOOhxfH6873NYs/DN
+	W2jTmvbier2VxC5/tR/CpCS9E4bq9dA/P3yZEhfH3XMmlQxTXwUYGME/ZdOUFepXUUmKF4sKLwJ
+	/QOVAeZLwM9EfCRQf5NIDaSttJyZndMaIbXxhi5UwOKAl0wvm3And60KhkHEeaty8supc+maLxs
+	OP34G4Sw5TiJTNZeIDllBkaHz61rmd/SmX1DSinp9W0kCXeh4eHV7FEHRvLk0lsW3xkO1H4XaRu
+	DgiPLqItHw/RJHzdA/KzdClwVV5ElHqADZJcnG/7BW3tlYei5TLrmOT4ANNa/kPTPyzV7B99lfz
+	zdZuiPYULgWJJVZvJVhjAA8bQzBwLU0AUNqTNY/U=
+X-Received: by 2002:a17:902:ecc5:b0:295:565b:c691 with SMTP id d9443c01a7336-297e5629152mr20796565ad.17.1762577702538;
+        Fri, 07 Nov 2025 20:55:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGya/hov+kDTTbyz8MZCYFlylL8RVAqfShmc9QBbP+PajCzXW2szwcwQFDnifPj4C/Lm/ZDIw==
+X-Received: by 2002:a17:902:ecc5:b0:295:565b:c691 with SMTP id d9443c01a7336-297e5629152mr20795995ad.17.1762577702044;
+        Fri, 07 Nov 2025 20:55:02 -0800 (PST)
 Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29651cd0ee9sm76355185ad.112.2025.11.07.20.31.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3434c31d86esm4320142a91.8.2025.11.07.20.54.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 20:31:41 -0800 (PST)
-Message-ID: <11f80800-2e0b-4f41-a022-a88ad9792da8@redhat.com>
-Date: Sat, 8 Nov 2025 14:31:28 +1000
+        Fri, 07 Nov 2025 20:55:01 -0800 (PST)
+Message-ID: <04f4c2f6-19ff-413f-96fb-86432d53830e@redhat.com>
+Date: Sat, 8 Nov 2025 14:54:48 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -103,8 +103,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/33] ACPI / PPTT: Add a helper to fill a cpumask from a
- processor container
+Subject: Re: [PATCH 03/33] ACPI / PPTT: Add acpi_pptt_cache_v1_full to use
+ pptt cache as one structure
 To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
 Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
@@ -117,205 +117,263 @@ Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
  rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
  scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
 References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-2-ben.horgan@arm.com>
+ <20251107123450.664001-4-ben.horgan@arm.com>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20251107123450.664001-2-ben.horgan@arm.com>
+In-Reply-To: <20251107123450.664001-4-ben.horgan@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi Ben,
 
 On 11/7/25 10:34 PM, Ben Horgan wrote:
-> From: James Morse <james.morse@arm.com>
+> In actbl2.h, struct acpi_pptt_cache describes the fields in the original
+> cache type structure. In PPTT table version 3 a new field was added at the
+> end, cache_id. This is described in struct acpi_pptt_cache_v1. Introduce
+> the new, acpi_pptt_cache_v1_full to contain both these structures. Update
+> the existing code to use this new struct. This simplifies the code, removes
+> a non-standard use of ACPI_ADD_PTR and allows using the length in the
+> header to check if the cache_id is valid.
 > 
-> The ACPI MPAM table uses the UID of a processor container specified in
-> the PPTT to indicate the subset of CPUs and cache topology that can
-> access each MPAM System Component (MSC).
-> 
-> This information is not directly useful to the kernel. The equivalent
-> cpumask is needed instead.
-> 
-> Add a helper to find the processor container by its id, then walk
-> the possible CPUs to fill a cpumask with the CPUs that have this
-> processor container as a parent.
-> 
-> CC: Dave Martin <dave.martin@arm.com>
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-> Tested-by: Peter Newman <peternewman@google.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
 > Changes since v3:
-> Refer to processor hierarchy in comments (Jonathan)
-> Fix indent (Jonathan)
+> New patch
 > ---
->   drivers/acpi/pptt.c  | 85 ++++++++++++++++++++++++++++++++++++++++++++
->   include/linux/acpi.h |  3 ++
->   2 files changed, 88 insertions(+)
+>   drivers/acpi/pptt.c | 104 ++++++++++++++++++++++++--------------------
+>   1 file changed, 58 insertions(+), 46 deletions(-)
 > 
 
-Two nitpicks below...
+Two nitpicks below. LGTM in either way.
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
 > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 54676e3d82dd..69917cc6bd2f 100644
+> index 1027ca3566b1..1ed2099c0d1a 100644
 > --- a/drivers/acpi/pptt.c
 > +++ b/drivers/acpi/pptt.c
-> @@ -817,3 +817,88 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->   	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
->   					  ACPI_PPTT_ACPI_IDENTICAL);
->   }
-> +
-> +/**
-> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
-> + * processor hierarchy node
-> + *
-> + * @table_hdr:		A reference to the PPTT table
-> + * @parent_node:	A pointer to the processor hierarchy node in the
-> + *			table_hdr
-> + * @cpus:		A cpumask to fill with the CPUs below @parent_node
-> + *
-> + * Walks up the PPTT from every possible CPU to find if the provided
-> + * @parent_node is a parent of this CPU.
-> + */
-> +static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
-> +				     struct acpi_pptt_processor *parent_node,
-> +				     cpumask_t *cpus)
-> +{
-> +	struct acpi_pptt_processor *cpu_node;
-> +	u32 acpi_id;
-> +	int cpu;
-> +
-> +	cpumask_clear(cpus);
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		acpi_id = get_acpi_id_for_cpu(cpu);
-> +		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
-> +
-> +		while (cpu_node) {
-> +			if (cpu_node == parent_node) {
-> +				cpumask_set_cpu(cpu, cpus);
-> +				break;
-> +			}
-> +			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
-> +		}
-> +	}
-> +}
-> +
-> +/**
-> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
-> + *                                       processor container
-> + * @acpi_cpu_id:	The UID of the processor container
-> + * @cpus:		The resulting CPU mask
-> + *
-> + * Find the specified Processor Container, and fill @cpus with all the cpus
-> + * below it.
-> + *
-> + * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
-> + * or a Processor Container, they may exist purely to describe a
-> + * Private resource. CPUs have to be leaves, so a Processor Container
-> + * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
-> + */
-> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
-> +{
-> +	struct acpi_table_header *table_hdr;
-> +	struct acpi_subtable_header *entry;
-> +	unsigned long table_end;
-> +	u32 proc_sz;
-> +
-> +	cpumask_clear(cpus);
-> +
-> +	table_hdr = acpi_get_pptt();
-> +	if (!table_hdr)
-> +		return;
-> +
-> +	table_end = (unsigned long)table_hdr + table_hdr->length;
-> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-> +			     sizeof(struct acpi_table_pptt));
-> +	proc_sz = sizeof(struct acpi_pptt_processor);
-> +	while ((unsigned long)entry + proc_sz <= table_end) {
-> +
-
-Unnecessary blank line here.
-
-> +		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
-> +			struct acpi_pptt_processor *cpu_node;
-> +
-> +			cpu_node = (struct acpi_pptt_processor *)entry;
-> +			if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
-> +			    !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
-> +			    cpu_node->acpi_processor_id == acpi_cpu_id) {
-> +				acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
-> +				break;
-> +			}
-> +		}
-> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
-> +				     entry->length);
-
-Need we to check if @cpu_node does crosses the boundary (@table_end), as what's
-doing in acpi_find_processor_node()? Actually, the similar hunk of code from
-the function can be reused here.
-
-static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_header *table_hdr,
-                                                             u32 acpi_cpu_id)
-{
-		:
-	while ((unsigned long)entry + proc_sz <= table_end) {
-                 cpu_node = (struct acpi_pptt_processor *)entry;
-
-                 if (entry->length == 0) {
-                         pr_warn("Invalid zero length subtable\n");
-                         break;
-                 }
-
-                 /* entry->length may not equal proc_sz, revalidate the processor structure length */
-                 if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
-                     acpi_cpu_id == cpu_node->acpi_processor_id &&
-                     (unsigned long)entry + entry->length <= table_end &&
-                     entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
-                      acpi_pptt_leaf_node(table_hdr, cpu_node)) {
-                         return (struct acpi_pptt_processor *)entry;
-                 }
-
-                 entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
-                                      entry->length);
-	}
-
-		:
-}
-
-
-> +	}
-> +}
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 5ff5d99f6ead..4752ebd48132 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
->   int find_acpi_cpu_topology_cluster(unsigned int cpu);
->   int find_acpi_cpu_topology_package(unsigned int cpu);
->   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
-> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
->   #else
->   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
->   {
-> @@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->   {
->   	return -EINVAL;
->   }
-> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
-> +						     cpumask_t *cpus) { }
->   #endif
+> @@ -21,6 +21,11 @@
+>   #include <linux/cacheinfo.h>
+>   #include <acpi/processor.h>
 >   
->   void acpi_arch_init(void);
+> +struct acpi_pptt_cache_v1_full {
+> +	struct acpi_pptt_cache		f;
+> +	struct acpi_pptt_cache_v1	extra;
+> +} __packed;
+> +
+>   static struct acpi_subtable_header *fetch_pptt_subtable(struct acpi_table_header *table_hdr,
+>   							u32 pptt_ref)
+>   {
+> @@ -50,10 +55,24 @@ static struct acpi_pptt_processor *fetch_pptt_node(struct acpi_table_header *tab
+>   	return (struct acpi_pptt_processor *)fetch_pptt_subtable(table_hdr, pptt_ref);
+>   }
+>   
+> -static struct acpi_pptt_cache *fetch_pptt_cache(struct acpi_table_header *table_hdr,
+> -						u32 pptt_ref)
+> +static struct acpi_pptt_cache_v1_full *fetch_pptt_cache(struct acpi_table_header *table_hdr,
+> +							u32 pptt_ref)
+>   {
+> -	return (struct acpi_pptt_cache *)fetch_pptt_subtable(table_hdr, pptt_ref);
+> +	return (struct acpi_pptt_cache_v1_full *)fetch_pptt_subtable(table_hdr, pptt_ref);
+> +}
+> +
+> +#define ACPI_PPTT_CACHE_V1_LEN sizeof(struct acpi_pptt_cache_v1_full)
+> +
+> +/*
+> + * From PPTT table version 3, a new field cache_id was added at the end of
+> + * the cache type structure.  We now use struct acpi_pptt_cache_v1_full,
+> + * containing the cache_id, everywhere but must check validity before accessing
+> + * the cache_id.
+> + */
+> +static bool acpi_pptt_cache_id_is_valid(struct acpi_pptt_cache_v1_full *cache)
+> +{
+> +	return (cache->f.header.length >= ACPI_PPTT_CACHE_V1_LEN &&
+> +		cache->f.flags & ACPI_PPTT_CACHE_ID_VALID);
+>   }
+>   
+
+This function is nice fit to 'inline'. Besides, I'm not sure if we can just
+use sizeof(*cache) instead of ACPI_PPTT_CACHE_V1_LEN, which is used for once
+in pptt.c
+
+>   static struct acpi_subtable_header *acpi_get_pptt_resource(struct acpi_table_header *table_hdr,
+> @@ -103,30 +122,30 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
+>   					 unsigned int local_level,
+>   					 unsigned int *split_levels,
+>   					 struct acpi_subtable_header *res,
+> -					 struct acpi_pptt_cache **found,
+> +					 struct acpi_pptt_cache_v1_full **found,
+>   					 unsigned int level, int type)
+>   {
+> -	struct acpi_pptt_cache *cache;
+> +	struct acpi_pptt_cache_v1_full *cache;
+>   
+>   	if (res->type != ACPI_PPTT_TYPE_CACHE)
+>   		return 0;
+>   
+> -	cache = (struct acpi_pptt_cache *) res;
+> +	cache = (struct acpi_pptt_cache_v1_full *)res;
+>   	while (cache) {
+>   		local_level++;
+>   
+> -		if (!(cache->flags & ACPI_PPTT_CACHE_TYPE_VALID)) {
+> -			cache = fetch_pptt_cache(table_hdr, cache->next_level_of_cache);
+> +		if (!(cache->f.flags & ACPI_PPTT_CACHE_TYPE_VALID)) {
+> +			cache = fetch_pptt_cache(table_hdr, cache->f.next_level_of_cache);
+>   			continue;
+>   		}
+>   
+>   		if (split_levels &&
+> -		    (acpi_pptt_match_type(cache->attributes, ACPI_PPTT_CACHE_TYPE_DATA) ||
+> -		     acpi_pptt_match_type(cache->attributes, ACPI_PPTT_CACHE_TYPE_INSTR)))
+> +		    (acpi_pptt_match_type(cache->f.attributes, ACPI_PPTT_CACHE_TYPE_DATA) ||
+> +		     acpi_pptt_match_type(cache->f.attributes, ACPI_PPTT_CACHE_TYPE_INSTR)))
+>   			*split_levels = local_level;
+>   
+>   		if (local_level == level &&
+> -		    acpi_pptt_match_type(cache->attributes, type)) {
+> +		    acpi_pptt_match_type(cache->f.attributes, type)) {
+>   			if (*found != NULL && cache != *found)
+>   				pr_warn("Found duplicate cache level/type unable to determine uniqueness\n");
+>   
+> @@ -138,12 +157,12 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
+>   			 * cache node.
+>   			 */
+>   		}
+> -		cache = fetch_pptt_cache(table_hdr, cache->next_level_of_cache);
+> +		cache = fetch_pptt_cache(table_hdr, cache->f.next_level_of_cache);
+>   	}
+>   	return local_level;
+>   }
+>   
+> -static struct acpi_pptt_cache *
+> +static struct acpi_pptt_cache_v1_full *
+>   acpi_find_cache_level(struct acpi_table_header *table_hdr,
+>   		      struct acpi_pptt_processor *cpu_node,
+>   		      unsigned int *starting_level, unsigned int *split_levels,
+> @@ -152,7 +171,7 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
+>   	struct acpi_subtable_header *res;
+>   	unsigned int number_of_levels = *starting_level;
+>   	int resource = 0;
+> -	struct acpi_pptt_cache *ret = NULL;
+> +	struct acpi_pptt_cache_v1_full *ret = NULL;
+>   	unsigned int local_level;
+>   
+>   	/* walk down from processor node */
+> @@ -324,14 +343,14 @@ static u8 acpi_cache_type(enum cache_type type)
+>   	}
+>   }
+>   
+> -static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *table_hdr,
+> -						    u32 acpi_cpu_id,
+> -						    enum cache_type type,
+> -						    unsigned int level,
+> -						    struct acpi_pptt_processor **node)
+> +static struct acpi_pptt_cache_v1_full *acpi_find_cache_node(struct acpi_table_header *table_hdr,
+> +							    u32 acpi_cpu_id,
+> +							    enum cache_type type,
+> +							    unsigned int level,
+> +							    struct acpi_pptt_processor **node)
+>   {
+>   	unsigned int total_levels = 0;
+> -	struct acpi_pptt_cache *found = NULL;
+> +	struct acpi_pptt_cache_v1_full *found = NULL;
+>   	struct acpi_pptt_processor *cpu_node;
+>   	u8 acpi_type = acpi_cache_type(type);
+>   
+> @@ -355,7 +374,6 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
+>    * @this_leaf: Kernel cache info structure being updated
+>    * @found_cache: The PPTT node describing this cache instance
+>    * @cpu_node: A unique reference to describe this cache instance
+> - * @revision: The revision of the PPTT table
+>    *
+>    * The ACPI spec implies that the fields in the cache structures are used to
+>    * extend and correct the information probed from the hardware. Lets only
+> @@ -364,23 +382,20 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
+>    * Return: nothing. Side effect of updating the global cacheinfo
+>    */
+>   static void update_cache_properties(struct cacheinfo *this_leaf,
+> -				    struct acpi_pptt_cache *found_cache,
+> -				    struct acpi_pptt_processor *cpu_node,
+> -				    u8 revision)
+> +				    struct acpi_pptt_cache_v1_full *found_cache,
+> +				    struct acpi_pptt_processor *cpu_node)
+>   {
+> -	struct acpi_pptt_cache_v1* found_cache_v1;
+> -
+>   	this_leaf->fw_token = cpu_node;
+> -	if (found_cache->flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
+> -		this_leaf->size = found_cache->size;
+> -	if (found_cache->flags & ACPI_PPTT_LINE_SIZE_VALID)
+> -		this_leaf->coherency_line_size = found_cache->line_size;
+> -	if (found_cache->flags & ACPI_PPTT_NUMBER_OF_SETS_VALID)
+> -		this_leaf->number_of_sets = found_cache->number_of_sets;
+> -	if (found_cache->flags & ACPI_PPTT_ASSOCIATIVITY_VALID)
+> -		this_leaf->ways_of_associativity = found_cache->associativity;
+> -	if (found_cache->flags & ACPI_PPTT_WRITE_POLICY_VALID) {
+> -		switch (found_cache->attributes & ACPI_PPTT_MASK_WRITE_POLICY) {
+> +	if (found_cache->f.flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
+> +		this_leaf->size = found_cache->f.size;
+> +	if (found_cache->f.flags & ACPI_PPTT_LINE_SIZE_VALID)
+> +		this_leaf->coherency_line_size = found_cache->f.line_size;
+> +	if (found_cache->f.flags & ACPI_PPTT_NUMBER_OF_SETS_VALID)
+> +		this_leaf->number_of_sets = found_cache->f.number_of_sets;
+> +	if (found_cache->f.flags & ACPI_PPTT_ASSOCIATIVITY_VALID)
+> +		this_leaf->ways_of_associativity = found_cache->f.associativity;
+> +	if (found_cache->f.flags & ACPI_PPTT_WRITE_POLICY_VALID) {
+> +		switch (found_cache->f.attributes & ACPI_PPTT_MASK_WRITE_POLICY) {
+>   		case ACPI_PPTT_CACHE_POLICY_WT:
+>   			this_leaf->attributes = CACHE_WRITE_THROUGH;
+>   			break;
+> @@ -389,8 +404,8 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
+>   			break;
+>   		}
+>   	}
+> -	if (found_cache->flags & ACPI_PPTT_ALLOCATION_TYPE_VALID) {
+> -		switch (found_cache->attributes & ACPI_PPTT_MASK_ALLOCATION_TYPE) {
+> +	if (found_cache->f.flags & ACPI_PPTT_ALLOCATION_TYPE_VALID) {
+> +		switch (found_cache->f.attributes & ACPI_PPTT_MASK_ALLOCATION_TYPE) {
+>   		case ACPI_PPTT_CACHE_READ_ALLOCATE:
+>   			this_leaf->attributes |= CACHE_READ_ALLOCATE;
+>   			break;
+> @@ -415,13 +430,11 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
+>   	 * specified in PPTT.
+>   	 */
+>   	if (this_leaf->type == CACHE_TYPE_NOCACHE &&
+> -	    found_cache->flags & ACPI_PPTT_CACHE_TYPE_VALID)
+> +	    found_cache->f.flags & ACPI_PPTT_CACHE_TYPE_VALID)
+>   		this_leaf->type = CACHE_TYPE_UNIFIED;
+>   
+> -	if (revision >= 3 && (found_cache->flags & ACPI_PPTT_CACHE_ID_VALID)) {
+> -		found_cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> -	                                      found_cache, sizeof(struct acpi_pptt_cache));
+> -		this_leaf->id = found_cache_v1->cache_id;
+> +	if (acpi_pptt_cache_id_is_valid(found_cache)) {
+> +		this_leaf->id = found_cache->extra.cache_id;
+>   		this_leaf->attributes |= CACHE_ID;
+>   	}
+>   }
+> @@ -429,7 +442,7 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
+>   static void cache_setup_acpi_cpu(struct acpi_table_header *table,
+>   				 unsigned int cpu)
+>   {
+> -	struct acpi_pptt_cache *found_cache;
+> +	struct acpi_pptt_cache_v1_full *found_cache;
+>   	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+>   	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+>   	struct cacheinfo *this_leaf;
+> @@ -445,8 +458,7 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
+>   		pr_debug("found = %p %p\n", found_cache, cpu_node);
+>   		if (found_cache)
+>   			update_cache_properties(this_leaf, found_cache,
+> -						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)),
+> -						table->revision);
+> +						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)));
+>   
+>   		index++;
+>   	}
 
 Thanks,
 Gavin
