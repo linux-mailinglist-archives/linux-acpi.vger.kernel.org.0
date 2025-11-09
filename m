@@ -1,101 +1,101 @@
-Return-Path: <linux-acpi+bounces-18704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFACC448F4
-	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 23:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BA6C448FA
+	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 23:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 005971883DB2
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 22:19:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2801887297
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 22:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF6624A049;
-	Sun,  9 Nov 2025 22:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55E0263F5F;
+	Sun,  9 Nov 2025 22:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OvFz2vBN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bxgiBrhT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QjfgvLd6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P+PDUrU9"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A831723C4E9
-	for <linux-acpi@vger.kernel.org>; Sun,  9 Nov 2025 22:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B2123D28B
+	for <linux-acpi@vger.kernel.org>; Sun,  9 Nov 2025 22:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762726753; cv=none; b=MjtN9F7RdWId9YUhed8Z+sz0YFYgfTtfyGIup4ep9xE4fImCA0w3+BN+lUR2knUgOnwK1njIb3+xxRvjVneVmLiCB5dqNSoR8DseBR1jYhncK431gyi+ejSDA/AYVEvCK++eIP7JdFXXUi3RQo+zYAKdwInwZa22oRuWZUmz8vk=
+	t=1762726832; cv=none; b=HCj9nbuOxTSJE2Rs7dHuA29j+AqjdjmUIa2KvLq3xf9B52AQ9+ZF21DPbgK2Uw0+TPat0w7D6GGTQYtTTB0Sho+hcVnnn/uFEpdSdRMaEQyItNu+7OVJHvPVsH/btV1gKLUDs9lVTaSgUzEe1X6gHB3GRziMXnRNYLJL6hFZInI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762726753; c=relaxed/simple;
-	bh=QE/+0abjW5eoE71Zxfuin2niGVpl9T4KA+kCsri14Xg=;
+	s=arc-20240116; t=1762726832; c=relaxed/simple;
+	bh=9luPoLzeiDoXjZ1ghvRixZ9O4UWqQdIzzwf5oTAyncI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M4RqpIofquN6yYi2b4RdlLd6PzwiiZMbxpGZJfStoZuJDHOpcSL7EzzMl+NrAioq0CM5VWJtJu2b06VeXipIvnxH7WljkkAvTQRn7Kk4K880qKSBMm1ugl52y1+EMW4CUTU42fLm/oB2wLbFFYwIVhvLR3Xc4dO8UIDZLiRvIXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OvFz2vBN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bxgiBrhT; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=AUjNAl7rW1DuUUQbPwzND1a0jIOVbXWMk40a10f9M0O61P4DcuwfwXHstd/cypX/J+bmTpc7MI9zHdRtl+y/mgpoeyZE+eVSsH3Pte+lGC82gZAvv5uz2fENwLEibymsi9Um3JJuuq6wncOW+HoblNDQhn8mMf3phYkQcw1izEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QjfgvLd6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P+PDUrU9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762726750;
+	s=mimecast20190719; t=1762726830;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oKM7r/eHjTb0/Gou42j2GR7IW3Ghd2XntavEBYW+1Ys=;
-	b=OvFz2vBNQSBAiS6u3tdJiFcbI9Zt4Y1FlZPFJZz9sx5TIkQ7GgFAt8smzjn5NE7bcN82z4
-	ey9QtcNpJk1bT6Whx47GBhS15O5gxADZ6+EQoBj9d7dKIVW5sy1lWZuOuGuAzdJ6ranuVW
-	V36sLMa6zDvI/zyMRHIlyY770AuvAdA=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Z9Vrh4hLm6Gal4VfKPd/BvcKzpt3wbNXvBBiFNbMLpY=;
+	b=QjfgvLd672QWUWqDpV2bHwa6+jHSUIYZ1Zt2AWp/yEMdHXFrOY9EuBXpwH9J0uFEcEfNJQ
+	3cxiGnvkSxwFDJW7IFafVyQX5cgKpUB91q7NsX5osi/SuQnQdZp0AEM1PBeQSlVCh9grPL
+	7P2Tmya0kmp+3aUr5qYJmfJ+aezB3gI=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-xPYZzly7NROPxSzEquqg2g-1; Sun, 09 Nov 2025 17:19:09 -0500
-X-MC-Unique: xPYZzly7NROPxSzEquqg2g-1
-X-Mimecast-MFC-AGG-ID: xPYZzly7NROPxSzEquqg2g_1762726748
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7afd7789d4cso3287785b3a.2
-        for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 14:19:08 -0800 (PST)
+ us-mta-623-Lidy5uNaPaasZM86UiHakw-1; Sun, 09 Nov 2025 17:20:28 -0500
+X-MC-Unique: Lidy5uNaPaasZM86UiHakw-1
+X-Mimecast-MFC-AGG-ID: Lidy5uNaPaasZM86UiHakw_1762726828
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b6ceeea4addso2156681a12.1
+        for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 14:20:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762726748; x=1763331548; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1762726827; x=1763331627; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=oKM7r/eHjTb0/Gou42j2GR7IW3Ghd2XntavEBYW+1Ys=;
-        b=bxgiBrhTtPkzwhX8XHVAP+x+k3iXYXSj+bCml/jz5i5dyd5Ja/ZQlSQfRP2GSwqN3l
-         fHc2ve2ul4E7nRbvcmVjpHrIyrzI9fEFrXvgbBo97dN7PKzuBY8UQKFZTbJl0KgcOM0V
-         USjTJEQY7I+DoVqXIdmKLQecyKAKyX/8chLPTnM74RFUzCAQQyMc9dw9Hxsd9IExWMCC
-         R1fZO3ZzyRcxPEXuMZIDvsN+4n6+4y6Td1l0jFjN/Vv0sSLyYEeqjX+95Y8qcLKcvwjZ
-         9Eu2V3KjYvwXgaIlsn+fSfa8c44cCuc9Sf78vD1RX/bl1zPrNOUhao+RBqV7UQCoQbK6
-         MecQ==
+        bh=Z9Vrh4hLm6Gal4VfKPd/BvcKzpt3wbNXvBBiFNbMLpY=;
+        b=P+PDUrU9oqsaTb0jWZjyVemEm9K4cJGex8JFYXM1v0Q0CZ37rrGYUU9A2cEObRiKoE
+         GnCwg28TEVUtFjTrL1mW9bAIGBW/JQYnnu2NAiZPV8yTJDKZdgGLA8zTmIWQMAvAdlfX
+         hF23sXUrvDG1wAQRDbOIwpgvGiw5maQMyH702TP2ifz88H6o+ilIqErcNC/ZWvuj5B1A
+         jTWVFGoi+RL6c4BLm4RkeAA+5RBCTMZnTvNZfG6qf47m1e2JVH9Ljrm/VPu67GqH4O0R
+         dKEdoSJ+d9rKN4/LLJDxGv6qMlhKVdSaIGvEQ9zM2wpYvYwDhOD4kzkWV+2ko3BYjbN2
+         QfXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762726748; x=1763331548;
+        d=1e100.net; s=20230601; t=1762726827; x=1763331627;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oKM7r/eHjTb0/Gou42j2GR7IW3Ghd2XntavEBYW+1Ys=;
-        b=q+nAxn/i0Wvu2LyFWgVC1HmVtXZS1WkIj2bOLzynRNyytU4NiomdlTgnj6rZjG+ypB
-         q/JCMwBgNfvBSezxFGfsas3m+1K/zntG5pi4xcbS2hHXKcrQVJxCEzOKInX8/GM/IzCh
-         H830wu2s8DQFd2qKzIBei1WgpNhxLrhVq5X4io31fprG3RKcOhLWF5cC1rGhOo2yqHLF
-         FpzB9eK0P2/o4oIWqrlO33ovCgMJFYyNDHpIoIc3Mo6M6ECfJcjEgUdiV3ZAPw1Ix8Cn
-         p2E6vqOYu7VNp2KEsVb8GMmZ4gRgZdtSJDs+Qu++FlT2I4W1ffqFPFzEhN5ktVSe+txZ
-         MG+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVtH3yUJTjPp9dDdOApLo1bEEnQ5lo15g1t0gxZrN1yrdlbky6Sp3gHLX9VIH7U/6oWqhRmvcfvYxTs@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv42QRVximkJZOQMeeBGjHWNPBRtNMW7xCVNydVQJdNX83Ynjp
-	3g84P4KweSpoRQHDdvTadyddasPhYv9hLTD6UhqDT5TGU7Pjf0jpva8SnFgxvib4Q1LfMR+rzCp
-	j96uXoxesIebQzQ7sd3yjjmN6CDWJ4qKbXZIUMkPQKScNREfh83onjrHBCEYKcVs=
-X-Gm-Gg: ASbGncsk9/ySWQb9PRIe74jlLKzuARQNERJvAB+2UQ9VN8gOtsoEBv9xIwtQdkcGfhe
-	79ph5gN37meikHzrfMHEVPlS6s/5upgeo8JnbWq5jN1NwJ9wSxKHIsOklrI+3ujbFbcUliCN5AV
-	CFVor/bN0JvNyoYwlmn4XitFSZA/pDESwfnQbcJM2Cd2fZ/zRySqvwZ6ytGRK5te5qm5ibSZ8S1
-	ne1vWr1u7b30JhU+hjBikeySiwFuGV7iwoPm5QQ2srgZbXsMYRID0DXSFeYMlm2e1+ZgmRaU9CT
-	oOcanF9m2eFx70yuqFiua4NCI0GL0XTaEc9dKIzW4HMA4XF79/lrAcD7KfRPLGDupoh7BnRBiwt
-	oxgifjWXneGnzj/ok60VyTQp0gpqtxV8l4U+Z/EU=
-X-Received: by 2002:a05:6a00:1745:b0:7a2:882b:61b7 with SMTP id d2e1a72fcca58-7b2271831efmr8565500b3a.32.1762726748087;
-        Sun, 09 Nov 2025 14:19:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3MMgt07dX68/canq5/Ysh2apHwPj31+tbrluUxA4S3hEDS8XL1dRUO8GV8pg/gcyqccPa0w==
-X-Received: by 2002:a05:6a00:1745:b0:7a2:882b:61b7 with SMTP id d2e1a72fcca58-7b2271831efmr8565468b3a.32.1762726747711;
-        Sun, 09 Nov 2025 14:19:07 -0800 (PST)
+        bh=Z9Vrh4hLm6Gal4VfKPd/BvcKzpt3wbNXvBBiFNbMLpY=;
+        b=uSmzNbSJI5C/OebJmAfZ4z0AmvSGWNsREuzL1wW+7dDWSAufP4hqOUmV5OmNLRbo8x
+         Dr0D7m+RHa1GihQTDVB7U3vQ31T6zDsfUY0ka8SpU1x0gcq3CP9f5CmhHEyDpAfS5RSG
+         vHLkJ5YFbXvkeJXsgIwbwb7VmYmcbXvENiE2yETAVRTvn2aHVuUbKaSXLuQiCsMzYXHT
+         PBlWIT2pE6PZSDp3RcIvN9vqJ+o7ibVWWhQX1J8ZJ0eApBVmko1DKcNORcweyoucBXZa
+         Ef5p2szRZejYXU8+1zn9X27Xw8sTDG2t75znmwwZc+JNV37Q1cpvlIEHBpPLq8Dp7u48
+         E/xA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2ZwS9+M8qBgcsrs3g7doJuw+ATf5cltlILRx97PSqoNFpYg6uMdmlEL0FP9liunLt66fgQ+PYIe1c@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCIY3uD0ejlfTKJMHuA3h5TdRbWprcpXbSEAKr0q+f4dOfB8D0
+	u9ACegaP1pL0emoNJkjAeiY+ex5BkHBRlYrr/5LPKythzGX/wkM7t5qD1AwiVUvO2nINtzSjQLa
+	V1M7TIJhJnPbktdsFyEfcawuBPiCjee4ogI1hu144WbKDNE3yCGqdpj4xf1J+IuQ=
+X-Gm-Gg: ASbGnct32soQXvx9t93E5ZTlAyqVVa99ZSK9ChAXjAtRUsulYqVkmNtvYd6fG5gddcO
+	qVhVWHzBs04WEghAASDa5617giCnhIAJ1x4gEJbPJeW1ofD9vG5ZdMgAvXOPdUdyb7HtAEmikrP
+	yCCwMglYeZtFgPmf5V9YP/0pdlp4itr3io6fZ6ZlCRDjQnvS2TlPJEuKmexbGBqd1+q7UBUmHEx
+	LGTXnPX2a/oG0PpV37hcp32qNta8uRXvgqdrPf5uzEV7uT99F2dMJNKjGr/85QtAU3oY8bBzMSQ
+	HlQZXByA/en2ecvRzJGu7x0AlsOsItoRhzOCMhjuW+p6XIkve1bCoa/3IcnQPqVsCt4VZG0F2Rq
+	UV3AYpLlfNVjf5f1qdTRfZSEtuKdp+iIcdGRIfnE=
+X-Received: by 2002:a17:902:e5cb:b0:295:b7a3:30e6 with SMTP id d9443c01a7336-297e562871cmr79572435ad.18.1762726827624;
+        Sun, 09 Nov 2025 14:20:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHwTISJ2La5PhmrXo8AgSy/Yt85FoIYmCW5lG5+yT/l4xv4t8A7YS357AfTy+jnJLHP7TlYiQ==
+X-Received: by 2002:a17:902:e5cb:b0:295:b7a3:30e6 with SMTP id d9443c01a7336-297e562871cmr79571975ad.18.1762726827220;
+        Sun, 09 Nov 2025 14:20:27 -0800 (PST)
 Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0c9632e15sm9508628b3a.14.2025.11.09.14.18.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2965096b90asm121886565ad.23.2025.11.09.14.20.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Nov 2025 14:19:06 -0800 (PST)
-Message-ID: <9ae6ab72-e714-44d5-847f-f2b1253ce4fe@redhat.com>
-Date: Mon, 10 Nov 2025 08:18:53 +1000
+        Sun, 09 Nov 2025 14:20:25 -0800 (PST)
+Message-ID: <0d3b5565-4f38-4af5-80b6-66d230b68edc@redhat.com>
+Date: Mon, 10 Nov 2025 08:20:12 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -103,7 +103,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/33] arm_mpam: Register and enable IRQs
+Subject: Re: [PATCH 22/33] arm_mpam: Use a static key to indicate when mpam is
+ enabled
 To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
 Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
@@ -119,51 +120,41 @@ Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
  Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-22-ben.horgan@arm.com>
+ <20251107123450.664001-23-ben.horgan@arm.com>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20251107123450.664001-22-ben.horgan@arm.com>
+In-Reply-To: <20251107123450.664001-23-ben.horgan@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 11/7/25 10:34 PM, Ben Horgan wrote:
 > From: James Morse <james.morse@arm.com>
 > 
-> Register and enable error IRQs. All the MPAM error interrupts indicate a
-> software bug, e.g. out of range partid. If the error interrupt is ever
-> signalled, attempt to disable MPAM.
+> Once all the MSC have been probed, the system wide usable number of
+> PARTID is known and the configuration arrays can be allocated.
 > 
-> Only the irq handler accesses the MPAMF_ESR register, so no locking is
-> needed. The work to disable MPAM after an error needs to happen at process
-> context as it takes mutex. It also unregisters the interrupts, meaning
-> it can't be done from the threaded part of a threaded interrupt.
-> Instead, mpam_disable() gets scheduled.
+> After this point, checking all the MSC have been probed is pointless,
+> and the cpuhp callbacks should restore the configuration, instead of
+> just resetting the MSC.
 > 
-> Enabling the IRQs in the MSC may involve cross calling to a CPU that
-> can access the MSC.
+> Add a static key to enable this behaviour. This will also allow MPAM
+> to be disabled in response to an error, and the architecture code to
+> enable/disable the context switch of the MPAM system registers.
 > 
-> Once the IRQ is requested, the mpam_disable() path can be called
-> asynchronously, which will walk structures sized by max_partid. Ensure
-> this size is fixed before the interrupt is requested.
-> 
-> CC: Rohit Mathew <rohit.mathew@arm.com>
-> Tested-by: Rohit Mathew <rohit.mathew@arm.com>
-> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
 > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 > Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 > Tested-by: Peter Newman <peternewman@google.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
-> Changes since v3:
-> Add tag, thanks!
-> Whitespace changes
-> Use devm_mutex_init()
-> ---
->   drivers/resctrl/mpam_devices.c  | 280 ++++++++++++++++++++++++++++++++
->   drivers/resctrl/mpam_internal.h |  13 ++
->   2 files changed, 293 insertions(+)
+>   drivers/resctrl/mpam_devices.c  | 12 ++++++++++++
+>   drivers/resctrl/mpam_internal.h |  8 ++++++++
+>   2 files changed, 20 insertions(+)
 > 
+
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 
 
