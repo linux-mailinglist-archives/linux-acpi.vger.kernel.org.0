@@ -1,101 +1,101 @@
-Return-Path: <linux-acpi+bounces-18700-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18701-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E6EC44892
-	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 22:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F4AC448BA
+	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 23:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4BB188B511
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 22:00:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DEEA1883895
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 22:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35390262D0C;
-	Sun,  9 Nov 2025 21:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F02323C4E9;
+	Sun,  9 Nov 2025 22:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gOQ4A1a/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MglZBJ2a"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H3y9m4tb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8/MTURF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BF91EDA03
-	for <linux-acpi@vger.kernel.org>; Sun,  9 Nov 2025 21:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B94822652D
+	for <linux-acpi@vger.kernel.org>; Sun,  9 Nov 2025 22:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762725592; cv=none; b=mlSXuwgvpEmMgMrd7iocqboavpMTJn0+uILLzNdiB/quKvoIUX67I4wYDQft2jf7cBCRV0dsFkuEtBv3pzD9giAocT/MWhG+KyNceGQXY1Lh4RIo3zzcDM3qSF455WGhUyERrt1xlpJP1NMmod2G+wZ6Qkxgy4YqbrJtwagCACM=
+	t=1762726307; cv=none; b=Plqmim3AgVQPnkC0v1xRVbCJwOK4ooNpD2Uw5n0g9vgsJhIepETB5mNtxrNVcRPL6USxHlgjKDZzoTjhZuVHwTm3bdDFlC4SNDemSa24NVRD56KYYb/xCrmtLTzMo9cxNdOardAsbs2xCXOCKV2v+kASI5nTWxNN59nw8Kc34i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762725592; c=relaxed/simple;
-	bh=IU3Eeybi/pAl8nQm4Ma+Clpr7lyLy/AS2VPSGSRA6Tk=;
+	s=arc-20240116; t=1762726307; c=relaxed/simple;
+	bh=EhAKRO7WMDbjstmS/+6wn2u687jYKO5Z31A7AViGYek=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pMRNaiiqX0NbtfMY5KEr1GVL0VaaePbqduy55zFQH8ktF833oBuqUKu/TMsS0JmB7ssyu7fwbF2WsLn/B+din4hh/rOp13r1VHWVULNNLzxMiXKWs3WyUDkN4HGps9Lql90w1SD9iUPStGbt45QKJ0rQfR2OA81/d6TxJjJztGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gOQ4A1a/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MglZBJ2a; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=X4Im1GueGtjHw0SxE8g26t1UuxM5hrnC6JoV5ZLKv99l4vd3Fad8prQtbretIi2BoqzkVelshmLliA4vYPwlrosWi9b4NgiLlPLy3SLbdkySf0VR6ZmxPUvGmS0U6B6Kq4pRbA4KvMHRxy5cG17Z9hdSvwTBbNycEc/CPPdLR0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H3y9m4tb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8/MTURF; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762725589;
+	s=mimecast20190719; t=1762726304;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vrkp13U75D5ocju9TrltPfjNVc3UEKucGVy+HHM/EeY=;
-	b=gOQ4A1a/UAuGOK5LcwsV/NZYUX4ILfNNRnLZFnCSFGk98XcVWIW5iPRnt8DaYGpqj/9Tvi
-	X6N15TEIbC22Kkdnr+ik4NcKqaGfsHvMwm5Ii/WucvYsxJ5zqgkBerDJRUEAdnEn9JkL+r
-	ALO0tgNZlmzdkCEmiIk6jKXndu0ZJX8=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=torA9iD+O5YccAO+gDgO+OReSyG8Lrsf/jD8r76xtZI=;
+	b=H3y9m4tboWoN6il60IqgvrfxB0vmJTtOyiSwVxPGrzQLbQCb5pHYKTGZnLcAb+UREHql7z
+	E5E9Fy4tvbBY+yfdXWCaXMSRz6OffnVQA+2GVnl9XrZRN3nGXxGhclaa2NQ86EJFqgSlqE
+	AI5T+7tXHt9ohUfVlefoSUFCGZEtR6A=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-Sp1rnqATPgKjaiqmUXEF2w-1; Sun, 09 Nov 2025 16:59:48 -0500
-X-MC-Unique: Sp1rnqATPgKjaiqmUXEF2w-1
-X-Mimecast-MFC-AGG-ID: Sp1rnqATPgKjaiqmUXEF2w_1762725587
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-340c07119bfso5822035a91.2
-        for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 13:59:48 -0800 (PST)
+ us-mta-599-8nMaaDfuNce3vmHp2NkAYA-1; Sun, 09 Nov 2025 17:11:43 -0500
+X-MC-Unique: 8nMaaDfuNce3vmHp2NkAYA-1
+X-Mimecast-MFC-AGG-ID: 8nMaaDfuNce3vmHp2NkAYA_1762726302
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3407734d98bso3022457a91.3
+        for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 14:11:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762725587; x=1763330387; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1762726302; x=1763331102; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vrkp13U75D5ocju9TrltPfjNVc3UEKucGVy+HHM/EeY=;
-        b=MglZBJ2aOxaDK6Oyfpd/BMUZz1n7fd345BUxyNBXOrHTYXDkxQCULW2b3CLUrcS/mJ
-         G81pMDYRrly2/87ucqloIyiX1iM6ZQvUMGBltSyWdSDMNgtssB6rPiZq84Zbcvcn7WpY
-         iUeJSWm0EWbRgKcGoAxMU5VeAJB5J3hRUq6OGH1oqBbCVmjBGwFtRYqdLGB/7X51IN4U
-         D5rEsbBYPvnJ4zS4s06mo5rvCtyWJ2U5+E28carkujVJrTAvEq8btCaPQx7uiDzksBUh
-         Kc/slDUaQScCSj5AiPLJBhqVU9qp1LZ121h0jzJgUvpDLsAuXIP8TrQVEeNDhqSL/vPz
-         qAAQ==
+        bh=torA9iD+O5YccAO+gDgO+OReSyG8Lrsf/jD8r76xtZI=;
+        b=T8/MTURFE8+I91YBXFIZft6kqCdFWRbqjPxQVa+0grGvSn2KJZoLfD++oF9ZWlOT4Y
+         zxdh5MarVOPONf15MagbeUdPdqqSPqm7qY9xwQQMhv7lFAzBA/xUqdvcVV3cjmLwtU7Y
+         ZRLIYVMeCxaK5BJi3N4r13ZgJDMoyFuo/o5LmRr73WkvPj4oXrkj7tQv+SptVMm5LFLD
+         hqK/0x1Z/mZCcmfw3b5+QNfJOKlJWegHgKgSS03sIq0mskQ3ULw+K+9w2bdiq6kZtso3
+         GOanm7QXFRbjSolvcin6tfLL+kmoBbycTWzSsK/Vi4+/yZrpM2Mo49spYosgr9fg6zMx
+         IA9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762725587; x=1763330387;
+        d=1e100.net; s=20230601; t=1762726302; x=1763331102;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Vrkp13U75D5ocju9TrltPfjNVc3UEKucGVy+HHM/EeY=;
-        b=DtAvyTYy76w2eecIXgWD7I8zowNCrvhf0c9gj1+PHcp9DxEeGAkORpH2U3sWog+qah
-         Z/5LEGGYBWRWkTORHAefN9SXOCyTbp3+Bs0RWAyNLxWoEO5vMPm49CP2DJ7n98XKB+eO
-         715Megsv9Zh8zNvZ9CuEGege+dF8Z1OFQvIq9vh+aHQ/4HWev0+LJZHsdbqsvfmoU8u9
-         zhDRbJBgPTERZ7Mf6L6O6iHM9/VOgTyutf4TN0V+Sx9NLzCMKTn/aZYIHwX5TcTPMSOr
-         jIV01W1keehY9NYPZghtR+KeBYvuksUAE5tcv6z7bSQtnGxSv6bGSyXKYOGsqdCRAv/L
-         1n/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUf/lZa7VogojgFDUPMetuIzkoUXL9onr3DCl+yKLGuN0gra+TX1VUkN5J6H0TffLyMm1h05ckw437x@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw++PXBQvZImjKnajjXbzweb/Y3IuamUdO7YdIMfQd5V+kI/Qyd
-	RPKcQ5matI6t0tLQgltWxgqyjPOE677Cr5P0+sBi/PHWJGtwVXa0Xq3Z0fCo0v9UVIE1QMU4In6
-	hf316dKwQkIBv0G63g1RjKeFhSgiam6ppKoFKeWzq8St0+ixdyueT7yDdMuIx5KA=
-X-Gm-Gg: ASbGncuKGU5tc/NqfAElFnwe9dMNHvgPaUIzWyZDzh2NZ41z0msT8KReGE5gDizHPzN
-	g+UMej39rClzZh0NFskGcjG1cXBaN7Lz4Ua3OyDaFKC0Q35BwdlplbLXFv0rPoLWW9Xwko96Obi
-	35cO4gCWIICmeOBoDrrlzBDtiEULHrSGxSwQMpdEaR4bM60tY1bZjmGQMCbgAOCrDHwQVpEC8K0
-	xA3ycca9FCgVp3NwQsBJLwehYLp7grssMduKsgjw8WSZRPuqXnB/9syFRTbrNQBJL34wSmBR94/
-	PFnJhOar1OiR/5+QKcoZ9s51uoZJxyg3iNc0p6QHe2zDrp7tvx0oCd6icEidK0cpiVZXAYlxN68
-	yA7bgptTDp6o4XViWWiP1Xi03tJ6lQjT6ugeEYqI=
-X-Received: by 2002:a17:90a:ec84:b0:340:b86b:39c7 with SMTP id 98e67ed59e1d1-3436cb91cdbmr8688586a91.11.1762725587161;
-        Sun, 09 Nov 2025 13:59:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3A3I4/3RLhYe1QQYreru6FNEuBJIm7pFjvEZOnSNhvwUxUwbVCr6B7zDVjGaDu7x0cbLDOA==
-X-Received: by 2002:a17:90a:ec84:b0:340:b86b:39c7 with SMTP id 98e67ed59e1d1-3436cb91cdbmr8688543a91.11.1762725586835;
-        Sun, 09 Nov 2025 13:59:46 -0800 (PST)
+        bh=torA9iD+O5YccAO+gDgO+OReSyG8Lrsf/jD8r76xtZI=;
+        b=hgH9oTHLjkfTsVqQrHKByP60EDxRXQZmMhB8hRU0ACTh+wo94IF8MdCEdqtXjAlZeM
+         GKtfow4C81coi34kt5b7E2n/Eadygrr6v0GM61MJjv4t8KAEbRR5m6hGMikg4H0CHSm0
+         C0QX4lsbOyhaOuls1q9W6Y41JE4qJ5cqGfjrCXQc0iqKUar1RtpAVznyM11iYtfaEQox
+         5qRWJ3srA7o9NSLYBlYBlkdiwM460EDsLS/PW1Gqf281SYPcyQQTbdAa8VyJFkvYkrTn
+         InP3ZUtn0NMuTlpYJE+bozS7zslZgSWqUuMu2pH1vL4ODhNfy2QxAL+cV70YofOfA1XI
+         neTA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6wQ8Ol9dPHTkbBdAWz5kHD5sNhQb43noJW9z6mkaK1SjmMhDzIqBBpx60a/T4dmTrVdSAEOuC3J7z@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOdC90MsqflqOa9a2e1lBDV+SqCcb0i6SS3180jIG/X5pJHR6S
+	IDvwnlWqWCFE7EiN8NCNy5/PS0OpAhZbXEGw0gzAYyPKTg9auDtV8/sVj2JYb02savsa6Ybxt/E
+	Z43VnVtFLPvdDsrYQWXoznPjarzwR33aFMZBzgIaISFstV4t83eKBAiJoEvIvsWc=
+X-Gm-Gg: ASbGncuWywQm1XgbB4V1YDY3QVk+0VY31raWQXW0V2HcklUgYOnhCrOqvdbTTN6AMZw
+	ADEvZEQdSkClFYYLXM6MSp77V4SM54NxZInA1CmPNcrRkijq1KhFxh3uHvWTkblXWsVqRH0duAr
+	AkpSk0WIjIzfLNe9NwWVcmOsdpe6wKrH38x//RIfNk3b2LYfZxtP0VhHM/qaOiMDwucsC50Pfj9
+	W0OlS6N6vQ/otYUiHMUJQ9FjGfFLSshpcUjmf/b6tmpu6zYqwpbXWMYQfdwzr3xHSz0CjVD8aJY
+	D/EiXMVNKvt68FPCECFwM4dM75Y9EJBGzy69aC9aSS3uk28DvX3ojyQczCvpYG7eW/hikksPDUg
+	gtRmYA/2GvdYv3GsMMMJQ7yqi9Ek3640R6U07xbQ=
+X-Received: by 2002:a17:90b:3811:b0:330:7ff5:2c58 with SMTP id 98e67ed59e1d1-3436cb7a977mr8352230a91.7.1762726302244;
+        Sun, 09 Nov 2025 14:11:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkgqRagTj1BsYFqTTiIN11rDYYz+ULLJjYUpCoKdSxULvZJZQzp6ZykLD3a8LycOtC3JeYVA==
+X-Received: by 2002:a17:90b:3811:b0:330:7ff5:2c58 with SMTP id 98e67ed59e1d1-3436cb7a977mr8352208a91.7.1762726301879;
+        Sun, 09 Nov 2025 14:11:41 -0800 (PST)
 Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a699d6dfsm15532033a91.16.2025.11.09.13.59.34
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3436c3d7dddsm5430819a91.7.2025.11.09.14.11.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Nov 2025 13:59:46 -0800 (PST)
-Message-ID: <f7b7ffd7-8674-4368-aee4-4376d127b0da@redhat.com>
-Date: Mon, 10 Nov 2025 07:59:33 +1000
+        Sun, 09 Nov 2025 14:11:41 -0800 (PST)
+Message-ID: <a4ee3610-5a5a-494c-b994-28447535f25c@redhat.com>
+Date: Mon, 10 Nov 2025 08:11:28 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -103,8 +103,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/33] arm_mpam: Merge supported features during
- mpam_enable() into mpam_class
+Subject: Re: [PATCH 18/33] arm_mpam: Reset MSC controls from cpuhp callbacks
 To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
 Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
@@ -120,45 +119,53 @@ Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
  Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-18-ben.horgan@arm.com>
+ <20251107123450.664001-19-ben.horgan@arm.com>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20251107123450.664001-18-ben.horgan@arm.com>
+In-Reply-To: <20251107123450.664001-19-ben.horgan@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 11/7/25 10:34 PM, Ben Horgan wrote:
 > From: James Morse <james.morse@arm.com>
 > 
-> To make a decision about whether to expose an mpam class as
-> a resctrl resource we need to know its overall supported
-> features and properties.
+> When a CPU comes online, it may bring a newly accessible MSC with
+> it. Only the default partid has its value reset by hardware, and
+> even then the MSC might not have been reset since its config was
+> previously dirtied. e.g. Kexec.
 > 
-> Once we've probed all the resources, we can walk the tree
-> and produce overall values by merging the bitmaps. This
-> eliminates features that are only supported by some MSC
-> that make up a component or class.
+> Any in-use partid must have its configuration restored, or reset.
+> In-use partids may be held in caches and evicted later.
 > 
-> If bitmap properties are mismatched within a component we
-> cannot support the mismatched feature.
+> MSC are also reset when CPUs are taken offline to cover cases where
+> firmware doesn't reset the MSC over reboot using UEFI, or kexec
+> where there is no firmware involvement.
 > 
-> Care has to be taken as vMSC may hold mismatched RIS.
+> If the configuration for a RIS has not been touched since it was
+> brought online, it does not need resetting again.
 > 
+> To reset, write the maximum values for all discovered controls.
+> 
+> CC: Rohit Mathew <Rohit.Mathew@arm.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 > Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 > Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 > Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 > Tested-by: Peter Newman <peternewman@google.com>
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
->   drivers/resctrl/mpam_devices.c  | 214 ++++++++++++++++++++++++++++++++
+> Changes since v3:
+> Add tags - thanks!
+> ---
+>   drivers/resctrl/mpam_devices.c  | 109 ++++++++++++++++++++++++++++++++
 >   drivers/resctrl/mpam_internal.h |   3 +
->   2 files changed, 217 insertions(+)
+>   2 files changed, 112 insertions(+)
 > 
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
+
 
 
 
