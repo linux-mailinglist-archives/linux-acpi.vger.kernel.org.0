@@ -1,202 +1,161 @@
-Return-Path: <linux-acpi+bounces-18694-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18695-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BE3C43850
-	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 05:10:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11314C44192
+	for <lists+linux-acpi@lfdr.de>; Sun, 09 Nov 2025 16:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 682DE4E02DA
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 04:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37BC3B1502
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Nov 2025 15:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B9720013A;
-	Sun,  9 Nov 2025 04:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40652FDC47;
+	Sun,  9 Nov 2025 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hvEsrjst"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mWpO+C6O";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PJXNhCv3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A8EBA34;
-	Sun,  9 Nov 2025 04:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05CD2FB61C
+	for <linux-acpi@vger.kernel.org>; Sun,  9 Nov 2025 15:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762661438; cv=none; b=Bosogi4pR9lkZQPAsH3g1a0WMTOrjAPwgLNlqxNrI1isPKbqp2u8+y6tfK1HHlOJJmslWvf/gBMPCyq2pE4CtFC2wYvqBSwDe0EeygLQPkQ0G+xn1Bb3KjZxlICEt4ANo8dR8W5vN+jzvv1S1jtz0hw6yHtaJQ8gtiQKq1+4kMI=
+	t=1762703625; cv=none; b=A2KTxMzwdw+dOjBVe7BxbT51qYP48Z+0Hn0Kn3wtLfqJ7s4utURdeoPcXwQmdbKW4dDptFt3XUGx2d7Sd62DiStxHpUr5MPnqlmolP5NsC8gcvBn1YHOaoel0vPAE88zyXZbw5xPs5EcUDS0ZVDcv2/z7m2gviKojH1KB7TjOTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762661438; c=relaxed/simple;
-	bh=J3c9aIu00ysxUwCMR6R+RYh+sA9Jlld8OazAez6iKQw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=g21xolu4bDoZDYof8KWaMM9M0XRyI4rjluwnFREKsWGI+aSvSZBVC4S9Xsk8HQpA/NcmFMuhSKFuKnbUFKjQUmiOCSprx1XCcTE9yO624zr7mHGojnq1uh8/PZDu+jDLwAT9EsSUCSTiwWs8mJJTUUDcVtOQ/T0XMMRZ1OLnP2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hvEsrjst; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762661436; x=1794197436;
-  h=date:from:to:cc:subject:message-id;
-  bh=J3c9aIu00ysxUwCMR6R+RYh+sA9Jlld8OazAez6iKQw=;
-  b=hvEsrjstD/ZtFCTYv/rHKnnWVBvxmh4tuXSTlS7HzXicdG9RGJ5vtsBE
-   uqGk/XGAjolXqjd3QHzH7XrraEbECURgYLzse5bzlariypogga9h2jyin
-   d7MA+UGDdDjHVG8E0+rLou5oBol9OjE4/CPvPpexnrWozeTJS9qoQAZYw
-   VrZLIz9NtMjYhSqU2+HjdpiQA3ubz8TEySX/DrBP2OTPV1C1mJ6BPgjGh
-   EtaK7SBZwRTYkxlqPdxc4rrdi8HaM+74FyvBtvhv3rAhQxfplpO86HgZ2
-   3MItFLlPaaCKOEy949gJw0Pq1PR7wT+H/zva1nXIvyuPkYb9IxIz/TOvy
-   w==;
-X-CSE-ConnectionGUID: W+Bk4v2OTSWJrTiWgJdrqQ==
-X-CSE-MsgGUID: x+jYuEIZRwm+HcD7G8SHZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11607"; a="64637582"
-X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
-   d="scan'208";a="64637582"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2025 20:10:36 -0800
-X-CSE-ConnectionGUID: eD3eWDZVROSaWuarjc6X4w==
-X-CSE-MsgGUID: Z0B5P32fSSipRQHC4AN8Xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
-   d="scan'208";a="188638422"
-Received: from lkp-server01.sh.intel.com (HELO 6ef82f2de774) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Nov 2025 20:10:34 -0800
-Received: from kbuild by 6ef82f2de774 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vHwl6-0001kp-1L;
-	Sun, 09 Nov 2025 04:10:32 +0000
-Date: Sun, 09 Nov 2025 12:09:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 6030c3f9f689fd5e1f23e9cc721da9b55bf8fde0
-Message-ID: <202511091232.8N3jdohr-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1762703625; c=relaxed/simple;
+	bh=KQnezTdDom0hsWENXoHj5Ie0hLWZqEuMHNiHb/oWtCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=guGCWTad9h0rsdBHPUWWl1QgEwPd8Z35h3Oo7nsxl0pRh5gTFRbMtgV0D15InPwReBktNj7IFfx/fec1sX3FRjdQkvn9d7uUUmnKTeJqzIhz5vSh+33cotx1tYsJr02nA1vfaihWPS6msnkUmdtSF0bNYlXv+Q2cGkL35plt2NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mWpO+C6O; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PJXNhCv3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A96csNw034841
+	for <linux-acpi@vger.kernel.org>; Sun, 9 Nov 2025 15:53:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=ad5t/trqWzBhM8TQYF+OEfs7U4Sg5TTK3ZP
+	9EeDm70g=; b=mWpO+C6ODxREI/Ja7/UhHiKkTn4Jtvs+lGySbj6708Uy5iEsEQ8
+	+45MS1uyqyus7Pev7Dc4Q/x4NL73cqJmQCwPmQwmvjN7txYgI0Fi9FOluTWjW+k7
+	OfJ1jSkiOvWpJ8+9qFQULfDusiAA5PHQ7xDRZFMI8JXOx7xfgfDHvCO1ilzvmZBy
+	T75HxJ94BVtajWNS6LMrM8yxrA3YVoNjNihbP9StjmqBvsTyygJEKrrBzF9lHtcj
+	2FzS7Gk61xsaSsZl+vnEUhGIgiA3pmPckU07/M01HSfwSHpAUhdUVApiUVWHZxXF
+	y3tLMQpZWnbOGC4BkOtYBZq2ZufGbCsmsTA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a9xwfjb5f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 15:53:42 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4e8b33c1d8eso68191101cf.2
+        for <linux-acpi@vger.kernel.org>; Sun, 09 Nov 2025 07:53:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1762703622; x=1763308422; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ad5t/trqWzBhM8TQYF+OEfs7U4Sg5TTK3ZP9EeDm70g=;
+        b=PJXNhCv3SEqoDS6dEOWS51zN7LvC0UaOGZspduZU+MKZWPGs5Huuywbo6SgvRIyKH1
+         W1sFG1c+JOu9n5yZkzl6eL6XroAButfSnFTmUiknm7NN2eWAHaFeuVoNrCgr1HyFMjQp
+         HZ2n7NYYBz8GAxK4KuZTb1wk+go0VpPH1GHOtleVEyVYQPQ2hkHawZPyoz+35I8eSTYn
+         YR9hy9vGSAIjgasQPJsJW8hI06zQRJCtzyaYSAOQs70jBuLBaSygyOuDNCdjt0igkDUA
+         tbEu/JgtC5m85Nu9P/5xfveZJuX//Xis6qWuJ3EjO79X01O0hu78nNv3WDyy6uARt2Xg
+         OLGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762703622; x=1763308422;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ad5t/trqWzBhM8TQYF+OEfs7U4Sg5TTK3ZP9EeDm70g=;
+        b=wFHSoKRvIwYeUqtBK+l7mCeCA03IFSJfXQ1RpdTmNWJMS7LNGpHGAFGOl6xt0+b99+
+         OxTKapyUXhaa7GsXIB48TqPn9Sc1oqfpPCJd8+TjwA/hJgP8WCZ1SaasUjveoJnHlbgM
+         DtDM+wM6cjK2cX5HqGwO38v933ov3niUQ/iPf7J9jiOKqfoLu03/6QfQRO9RkVkGRMLq
+         7qaaBxpT/dCdVCDV43gMhTSsaD+5VXYZJx9B7OMG5UfXIHlldnRftT3Lb8W+BVxhMROo
+         4HOTcHQXl0xwBSgEKgUF42A/qjQcZ/ZKfE/TAkIQSQhPKf0VsornT/vcB5c4Jf5BnrJQ
+         w1oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgq4yEF7JMDC0lJUrciEFdyMiOokWj8QGoVFsZglc5RTAeO4qh+X4bXbxJuHl2KtZcloYiDUPlS5rn@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcuGjXu0y8T5CalKuKVzsXAY8eEN3KJGJvZ9VbBbAJ/F8K4tuj
+	9n2vIzug4EOJkE+jrULbWvtL68VUZbKxB+4mCPC5izrOcnKJ+7oj+syImdMULLfRphJDGUL2MUd
+	B7q9I7Fi75Yt+Wj3fmxMgdwuN+7dIS4iNo/gqIg3Iv+Rox3Iq+xu4M40OZZFmstSJ
+X-Gm-Gg: ASbGncsmnBx3uj8ROIqAvCTyzKDc8rQf7tn0tZt2zOu5qBFCN53pScUl21HZ1x8PdcS
+	ZDPrptGYFQXlTzJROH9LGT+oJUMyx1hDeHKDfkDMrmdNWIzLz6Gm9ZmYUybJxnz9C2Vq4oDCm1r
+	KqmzU9/r6nwOzxY/epQgHn1GBCB6qJR+njgGpaSS2I2V1Pi6bAym8piMxhPBJVJ/KBSnbyYKY9n
+	J+i+a/mestZ1U0Ot7RwoU4ZsX3WS7lYvCbZlaF6ipu8vZb+LUYyHybkWY9cUIMx1MIHIM8a8fET
+	JKUDtWmKniChtWy9FqzyFg9hHSSvkWaCwnG7yR/xZy7nh+kj3hWw0aj29DX7sekr0gYW3AZgv3P
+	DpSOTijuclH5GY4NcBZaerY7um+bqPTuiIJL7sCW8uK1QyRQbUmyIOi7peI3HDHCDsVRGbt84Mh
+	JVDe8c5rU4LpA+Pg==
+X-Received: by 2002:ac8:598b:0:b0:4ec:f1a4:5511 with SMTP id d75a77b69052e-4eda4fc3b6amr64345091cf.65.1762703622162;
+        Sun, 09 Nov 2025 07:53:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF8TVYNMH9gjdSp4eih1C2sC7MPmmTtAovB2I0o9oJc5rZmDsiTsFIUZfhO6uKj8LvMxca1Jg==
+X-Received: by 2002:ac8:598b:0:b0:4ec:f1a4:5511 with SMTP id d75a77b69052e-4eda4fc3b6amr64344851cf.65.1762703621703;
+        Sun, 09 Nov 2025 07:53:41 -0800 (PST)
+Received: from shalem (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9bd72bsm830838366b.49.2025.11.09.07.53.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Nov 2025 07:53:41 -0800 (PST)
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+To: Mark Brown <broonie@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] spi: Add TODO comment about ACPI GPIO setup
+Date: Sun,  9 Nov 2025 16:53:39 +0100
+Message-ID: <20251109155340.26199-1-johannes.goede@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: h2UdSUbpUSK_ClkktpLdQHxZ6x4rd9OH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA5MDEzOSBTYWx0ZWRfX3VZrHMi47DY3
+ akKRBzz9RnDs4cD7EzoSx+eN+erDrrrNLAgCdxNeVFnUE/GRgnJ6ZEjYYsVJnVL0N++Qiur+Dul
+ w1Se8zbyIPvriFGj+dkxq/fDDxGMPO9+4mzVRNHU50OsxIhGBvaQtWHIkln3Ml0IB1eGmVDZImL
+ lO4IC+/gfQmxxALwsV4rF855hDOYolm+1SJroJkpjm8jXj1ozj2qoGeZgYKyWs0Xn+w+c7x2YYx
+ rpxpYtJb/cDBDpFolMfTCYFmTr1BubkSnZuiXDLc338EUUmImSc+S8UEvPYREGSWCNmDpCCC0QG
+ 9kN/eW8UJq+F6eYIm3Tvx9EiWtrhk6bTXRsUpxtO7HrCqYAPh1TtUC4Ed8JxyuaL63iP4g1RD63
+ sgE9+rS4Dw0Oh3sNOWjZhS42XdoQGQ==
+X-Authority-Analysis: v=2.4 cv=LaoxKzfi c=1 sm=1 tr=0 ts=6910b906 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=_g9i7aCbpyJZyCEgokwA:9 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: h2UdSUbpUSK_ClkktpLdQHxZ6x4rd9OH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-09_06,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 spamscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511090139
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 6030c3f9f689fd5e1f23e9cc721da9b55bf8fde0  Merge branch 'testing' into bleeding-edge
+Add a TODO comment that ideally the ACPI/gpiolib core code should take care
+of setting GPIO direction and/or bias according to ACPI GPIO resources.
 
-elapsed time: 1843m
+If this TODO gets implemented then the acpi_dev_gpio_irq_get() call in
+acpi_register_spi_device() can be dropped.
 
-configs tested: 109
-configs skipped: 2
+Suggested-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+---
+ drivers/spi/spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8588e8562220..e25df9990f82 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2857,6 +2857,8 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	 * here too, because this call sets the GPIO direction and/or bias.
+ 	 * Setting these needs to be done even if there is no driver, in which
+ 	 * case spi_probe() will never get called.
++	 * TODO: ideally the setup of the GPIO should be handled in a generic
++	 * manner in the ACPI/gpiolib core code.
+ 	 */
+ 	if (spi->irq < 0)
+ 		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+-- 
+2.51.1
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                        nsimosci_defconfig    gcc-15.1.0
-arc                   randconfig-001-20251108    gcc-12.5.0
-arc                   randconfig-002-20251108    gcc-8.5.0
-arc                           tb10x_defconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                            qcom_defconfig    clang-22
-arm                   randconfig-001-20251108    gcc-14.3.0
-arm                   randconfig-002-20251108    gcc-15.1.0
-arm                   randconfig-003-20251108    clang-22
-arm                   randconfig-004-20251108    gcc-10.5.0
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20251109    gcc-15.1.0
-arm64                 randconfig-002-20251109    gcc-12.5.0
-arm64                 randconfig-003-20251109    clang-19
-arm64                 randconfig-004-20251109    gcc-8.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20251109    gcc-14.3.0
-csky                  randconfig-002-20251109    gcc-11.5.0
-hexagon                           allnoconfig    clang-22
-hexagon               randconfig-001-20251108    clang-22
-hexagon               randconfig-002-20251108    clang-22
-i386                             alldefconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20251109    gcc-14
-i386        buildonly-randconfig-002-20251109    gcc-13
-i386        buildonly-randconfig-003-20251109    clang-20
-i386        buildonly-randconfig-004-20251109    clang-20
-i386        buildonly-randconfig-005-20251109    clang-20
-i386        buildonly-randconfig-006-20251109    clang-20
-i386                  randconfig-001-20251109    clang-20
-i386                  randconfig-002-20251109    gcc-14
-i386                  randconfig-003-20251109    clang-20
-i386                  randconfig-004-20251109    clang-20
-i386                  randconfig-005-20251109    gcc-14
-i386                  randconfig-006-20251109    clang-20
-i386                  randconfig-007-20251109    clang-20
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251108    gcc-12.5.0
-loongarch             randconfig-002-20251108    gcc-12.5.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                        m5272c3_defconfig    gcc-15.1.0
-m68k                        m5307c3_defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251108    gcc-8.5.0
-nios2                 randconfig-002-20251108    gcc-9.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251108    gcc-8.5.0
-parisc                randconfig-002-20251108    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc               randconfig-001-20251108    gcc-8.5.0
-powerpc               randconfig-002-20251108    gcc-9.5.0
-powerpc64             randconfig-001-20251108    gcc-8.5.0
-powerpc64             randconfig-002-20251108    gcc-8.5.0
-riscv                             allnoconfig    gcc-15.1.0
-riscv                 randconfig-001-20251108    clang-19
-riscv                 randconfig-002-20251108    gcc-12.5.0
-s390                              allnoconfig    clang-22
-s390                  randconfig-001-20251108    clang-22
-s390                  randconfig-002-20251108    gcc-8.5.0
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20251108    gcc-15.1.0
-sh                    randconfig-002-20251108    gcc-13.4.0
-sh                          sdk7780_defconfig    gcc-15.1.0
-sh                           se7722_defconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20251109    gcc-8.5.0
-sparc                 randconfig-002-20251109    gcc-15.1.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251109    gcc-8.5.0
-sparc64               randconfig-002-20251109    gcc-14.3.0
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251109    gcc-13
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20251109    clang-20
-x86_64      buildonly-randconfig-002-20251109    gcc-14
-x86_64      buildonly-randconfig-003-20251109    clang-20
-x86_64      buildonly-randconfig-004-20251109    clang-20
-x86_64      buildonly-randconfig-005-20251109    clang-20
-x86_64      buildonly-randconfig-006-20251109    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-011-20251109    gcc-14
-x86_64                randconfig-012-20251109    clang-20
-x86_64                randconfig-013-20251109    gcc-14
-x86_64                randconfig-014-20251109    clang-20
-x86_64                randconfig-015-20251109    clang-20
-x86_64                randconfig-016-20251109    clang-20
-x86_64                randconfig-071-20251109    clang-20
-x86_64                randconfig-072-20251109    clang-20
-x86_64                randconfig-073-20251109    gcc-14
-x86_64                randconfig-074-20251109    clang-20
-x86_64                randconfig-075-20251109    gcc-14
-x86_64                randconfig-076-20251109    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
