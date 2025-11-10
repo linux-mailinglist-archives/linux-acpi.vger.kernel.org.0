@@ -1,94 +1,138 @@
-Return-Path: <linux-acpi+bounces-18721-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18722-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E503FC457E4
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 10:03:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B2DC4613F
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 11:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 616893AD3E9
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 09:02:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61EDC189359B
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 10:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5A32FD693;
-	Mon, 10 Nov 2025 09:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAC3307AE9;
+	Mon, 10 Nov 2025 10:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gKaBLUd8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB472F7465
-	for <linux-acpi@vger.kernel.org>; Mon, 10 Nov 2025 09:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C251306D47
+	for <linux-acpi@vger.kernel.org>; Mon, 10 Nov 2025 10:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762765355; cv=none; b=g/mBAoSvXd6GBDX+fI7yhdDR6rvgt3lecE5+oQCTSzsOdYfRm8EvnilL4Ou5gROrUcr4VhUQYD/fJ7StMYps+0ILdovkrTGikwLrMJMtQo4QZ14cp+lrCJAqvYGKkcMPrJ3+irWUJaXYVvqCnKXwODQSo1A7GWPWgVfhcNqG14w=
+	t=1762772181; cv=none; b=umXgahuVGpjYNBmbGpAzS+jecZ4rqFE51qkQ3cRawAHrlrrFthMXgTNwR+v972BjM9wsOlk8f/qRJY9uAAiNA/EltLpYAdUfkbxZBr2tJtjI2acPPauZLlILyePjPMGHFzL9M1wnBEIZJr48XSnvJQZ1YKcVcMuqLDbeGFrENzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762765355; c=relaxed/simple;
-	bh=QrFufJ2w86tkFP9rhjXVQJ64Rz+v5CeknBLF0SvhWU4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=s0hIZow8BxARwHXV9oUEVHzydw1QZQ2phNA4G1QCwYmdjlEL3FXdzg6KyKmbllrzeTws23nH3yWt7h0a6U0P4mkUzYgnqkwWnp4dj1MRSjZVEMR1l1ftZ5MBEsuC8mb4WWDoALtQjEDpflDqEP5xqkADU3rkSJdSlD+kv4m3KzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINmu-0001r0-SM; Mon, 10 Nov 2025 10:02:12 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINmu-007zao-01;
-	Mon, 10 Nov 2025 10:02:12 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINmt-000000005Cz-3qn7;
-	Mon, 10 Nov 2025 10:02:11 +0100
-Message-ID: <e0e81310332cfdc075bf13f66d7be712b42964ed.camel@pengutronix.de>
-Subject: Re: [PATCH v6 0/8] reset: rework reset-gpios handling
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij	
- <linus.walleij@linaro.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus	
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"	 <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski	 <krzk@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Mon, 10 Nov 2025 10:02:11 +0100
-In-Reply-To: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
-References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1762772181; c=relaxed/simple;
+	bh=dEl+crxWx0Ue6Eap9IyJQOsh+WWdfuIJZKBgNUUOskU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bK4nsf/JCJ92yZ/jFM1AO29DqaH4Ku5BKGkCUegl5r5e/KJU0I45lbO5szCc4KpesprAT/MhYDQJtBzJYQyaxLqnZI7UBh1enCJk5z093RegeG6VIPeqoOo2qklkYUx9X8xvi8ex9ljSjz2JaeuI8oS3B/nvdepO/YXY5n468sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gKaBLUd8; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a435a3fc57so3001140b3a.1
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Nov 2025 02:56:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762772178; x=1763376978; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOTgQEUB8GcmpUQcmIkml8fFvXO2yWgEKzXQF7vCTcc=;
+        b=gKaBLUd8yrvPVoLyJ80CXi/2i4l/MtEV6mMzBU+Z3JHKX6VOOOfpEhRPfPP8aXEGG2
+         TUcf/VMxLyuXljSA+kw8vdEhmUvbjSYf6E7jMeKqHx+HRb9kL7LhIry6g0WMkUFe7x4+
+         kRUdnLOR+EjcklQaG5iJ/fCBbmUbZLJy96sQZDrHS/cmCJPfPqJNlZzyt/ytOGIoMISw
+         1Lir7UTb14vlK3asD6EnW+PeZmBiZiCNKY6gjsxcrEaX9B6kFcukVIMxH4TqeKLqjyuQ
+         uEZNNfA9wkKrK0oKfqqA6g5mOeLXvfHGWgIxeSkkg/qkB+A6ExHOdwDy9v/KaL3/AnNo
+         eoUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762772178; x=1763376978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HOTgQEUB8GcmpUQcmIkml8fFvXO2yWgEKzXQF7vCTcc=;
+        b=vlaqKcvBOHfPVlqjZOUSk4FL/Z7dNOf15Py88Inlq2pnCRzCGJ6NqIkT31GVz3XEOl
+         2cemhshV43YF+m9Lz1+8+JIfdpcVrwN0ph5qWIQ7yr2kffF7TDwb8J8KN6D3Qkdu5/R7
+         bgxqv2bYrVbi6Pkagd0WrRXWeCHQoXT6F2CG30FSNAYq6KZ+kov5ub/b0WXj3fy3pGLQ
+         TZi0WjHwUU0bS3G/z2Yi+8/56riT/A09qEPyBpZZs9WT3z3R697pY4EsoBDehHLRshHz
+         IiwmGgmVhS0LO+Tlbw9gwd0VwvGrgGvyuEDeIWfO7ZQ2du2rV6EjW8Yvwo1i7jBXqEJe
+         g0jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5vrlSgCSWSYMlsE9IgpDsjUUWZJclT7EjenkYp4qRD8T56aUx76HL5IRn/CLV3KP4OiUzkouJDBDA@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVa+vVkJkbJJquKhlvAcDfbm8sAz9d3z0HUzdp8TIcWd/CrtTC
+	bLPx2ue+h0QgCJ2XSqn915ZGX2ZhWKylPtdbQ2cpSK4c/PR9Sk/Q2phKsAAw8RL8z08=
+X-Gm-Gg: ASbGncuQCBxxkt9UQDZvSaMr6cXFKtWW2zGRUjFaxnDJsZLmdVJ+RybZAiHGXAzrS4S
+	Bm8Cm0ICP6651cY+3LLkRin18da67+3mHLPgsW6F0JKrUd8ZYspYcTDfmE1kr3ls7PQj8Aju5qg
+	6kDt1OoIIIBMggyDWfiHckx3l6V/BJccHDddXAjdYxv9GfWhnLZEqHK3H8et7Ll9dhnV1+c3Emm
+	j8QPxVpGHe4KNSY8CbJdqrf9wkkl0fSSHoJmZoOYA0lUdbgNqELd8AiOKCzou+bf9ClLK1jdQEt
+	0cBW9lFqxfrfwQAlPrN+T6DZM2Wwj1wEpB0JOTarnb1aTuD3yumlYvpO0NHalclGIt9p+8a2hkP
+	R/6GfvtE8c2gB2zPNWIjuauxylJ88sAJ6oKyHdErhuvYcUT4pwqQJJP4d5f291MGaGxgY64GPBi
+	CJflbRoS5Bowg=
+X-Google-Smtp-Source: AGHT+IELCZjjS9db2GOOi5gG1D3fReIWK6Fsulo/YaMjMnn+TlgjP5Y2DF6HQCR7hzQBYtF9UG4Urg==
+X-Received: by 2002:a17:902:d551:b0:27e:ec72:f6d with SMTP id d9443c01a7336-297e53e7af3mr99902655ad.11.1762772178225;
+        Mon, 10 Nov 2025 02:56:18 -0800 (PST)
+Received: from localhost ([122.172.86.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-297fe688c96sm49938925ad.58.2025.11.10.02.56.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 02:56:17 -0800 (PST)
+Date: Mon, 10 Nov 2025 16:26:15 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
+	corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com, 
+	rdunlap@infradead.org, ray.huang@amd.com, gautham.shenoy@amd.com, 
+	mario.limonciello@amd.com, perry.yuan@amd.com, ionela.voinescu@arm.com, 
+	zhanjie9@hisilicon.com, linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com, 
+	ksitaraman@nvidia.com, sanjayc@nvidia.com, nhartman@nvidia.com, bbasu@nvidia.com
+Subject: Re: [PATCH v4 1/8] cpufreq: CPPC: Add generic helpers for sysfs
+ show/store
+Message-ID: <s5xt53i6c5wryje5x6zlq75r3lx6nxb7pat6umnghpnldi4p2h@jaeew4iimdd3>
+References: <20251105113844.4086250-1-sumitg@nvidia.com>
+ <20251105113844.4086250-2-sumitg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105113844.4086250-2-sumitg@nvidia.com>
 
-On Do, 2025-11-06 at 15:32 +0100, Bartosz Golaszewski wrote:
-> NOTE: I've picked up commit e5d527be7e69 ("gpio: swnode: don't use the
-> swnode's name as the key for GPIO lookup") into my fixes branch and will
-> send it upstream by the end of this week. It will be part of v6.18-rc5
-> which tag will need to be the base for the future immutable branch
-> created by Philipp.
->=20
-> Software node maintainers: if this versions is good to go, can you leave
-> your Acks under patches 1-3 and allow Philipp to take it through the
-> reset tree, provided he creates an immutable branch you can pull from
-> for v6.19?
+On 05-11-25, 17:08, Sumit Gupta wrote:
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> -static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
+> +static ssize_t cppc_cpufreq_sysfs_show_u64(unsigned int cpu, int (*get_func)(int, u64 *), char *buf)
+>  {
+>  	u64 val;
+> -	int ret;
+> -
+> -	ret = cppc_get_auto_act_window(policy->cpu, &val);
+> +	int ret = get_func(cpu, &val);
 
-Now that -rc5 is out, could I get an Ack to create an immutable branch
-with this series on top of v6.18-rc5 (and merge it into reset/next)?
+Why no casting required here, when you need it ... 
 
-regards
-Philipp
+> -static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
+> -				     const char *buf, size_t count)
+> +static ssize_t cppc_cpufreq_sysfs_store_u64(unsigned int cpu, int (*set_func)(int, u64),
+> +					    const char *buf, size_t count)
+>  {
+> -	u64 usec;
+> +	u64 val;
+>  	int ret;
+>  
+> -	ret = kstrtou64(buf, 0, &usec);
+> +	ret = kstrtou64(buf, 0, &val);
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = cppc_set_auto_act_window(policy->cpu, usec);
+> -	if (ret)
+> -		return ret;
+> +	ret = set_func((int)cpu, val);
+
+... here ?
+
+-- 
+viresh
 
