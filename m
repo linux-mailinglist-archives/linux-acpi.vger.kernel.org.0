@@ -1,248 +1,361 @@
-Return-Path: <linux-acpi+bounces-18726-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18727-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69D6C46E76
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 14:33:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93939C47044
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 14:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72CD8188DA71
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 13:33:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E53D188F123
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 13:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8CD26FA6E;
-	Mon, 10 Nov 2025 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468763043CB;
+	Mon, 10 Nov 2025 13:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="y5GCRxoF"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="Vt7rxr9y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA27D199E9D;
-	Mon, 10 Nov 2025 13:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762781605; cv=fail; b=ewBUJAWLPmhIqq2zacaTqMc4sEVdPZMYqEVXolzA73pfpNLlX7QLYYiA9DXwjw8iNJJad1Y2zmxjrBS/UJluuAjAppTWS2Tq5jDiFiKm1NsmJ0T2BElRbituwZAzckFumrm2pmNOj36xkK/dc9Yj+Yf1NA6ImCGsFzu2pFXZQfk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762781605; c=relaxed/simple;
-	bh=U2MMeZEfegi6kN3LRAPt4uD2QqgfifZSW5H5VfzAeIE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=HQKOidDK8XW/5nUV/EgggGXFQ/gZj2aEAUdj8iZOGDcHXJAmvytUTOW5lUUXCLFV+IHWy29NMKTeyJh3uoGQJwlD0XVwYCL2ZD/255DRLfU0adeVuRQAjW/KpFBCAkVzzo5oNHJ/Lp5kWjqOwl4iRcMvgHjU7T0xna5G/b6b7/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=y5GCRxoF; arc=fail smtp.client-ip=52.101.85.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A1SAyZkkkTbclGS59rLEKoGrEQMbnUVa0eAqlEUplZ4Ddp8B42J7Iexpv9xkiNPsaBct+SNeNeIbqCgYgF55De1GzpQaAZIhLyWom1Fvk7t8lVY+gpKTL4qA89X+hze2at+b/goajzkXYqaiy7HFmA4fAAr/oL4wdM0NzACwUoHPNNY5hjETuoYUXLv3aALTYM29eGWM0spfcdmvSDc5GcOKeuIBoHhCWf7t45N2Egvb2n75kxpUqANTeN89ZmdWXnN6a5Cz/GHSX+yivp6r8Z2EaFh3b8Hq8N0WmMXweV1/Hw4EN6k7zA/U5jxUodb/qneK65FAw96ysd4qvYI1IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uUrkmBiRXX9k235vCITJ3mB04M1pdRmUPQToFbrBiyY=;
- b=kBgPU5gvq/vYCzqkmUY6LI7/IdEzMXn5WcVDaaBkqXSVC0sKk14QVtzOlKcs4X2ArEdmLChUQmiLy93lelCSeVAO5vmMxn5PZhB20J/b8uq99vO4HVvBUXjnCFzhGzDdMZ5kSTxwRW1jVGURDQkXt16wVy3hGEJHDsP22AxZBnXtO3kf4YZ/Ky+nZnqM05onImAvp1Ovl5Ur27ROWXyzWsO5EWbdRfDdLmmElQ+g0UGeOpZZu7wiNpGTkQYsJyqa8d4VqGKi3gljFxCCroUam6DCt91k8u7IUqrV8hX5uA+AhJB1rsPv3D1ca4Me6T9no8e0Zruw14OedBollqKnSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uUrkmBiRXX9k235vCITJ3mB04M1pdRmUPQToFbrBiyY=;
- b=y5GCRxoFNU5hR+T0ylyPFjsqQZtjOgoP2Sp9wBnLF3SdvyU70tZ8+o+a0ilIbQ8Ki1MbxGC/xoO7sLFb+2PloHZDcmq9BmTZQcAj/B61raV1+JHTO8mzvaaXYXdb2FqhXvHutRkqQEy4ZolvVmktUJ4td4n+6DL33z3LFVMrFO4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by LV8PR12MB9155.namprd12.prod.outlook.com (2603:10b6:408:183::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 13:33:21 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 13:33:21 +0000
-Message-ID: <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
-Date: Mon, 10 Nov 2025 14:33:07 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION 00/04] Crash during resume of pcie bridge
-To: Bert Karwatzki <spasswolf@web.de>,
- "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
- linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev,
- linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20251006120944.7880-1-spasswolf@web.de>
- <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
- <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
- <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
- <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
- <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
- <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
- <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
- <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
- <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
- <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
- <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
- <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0355.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::8) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C8122D780;
+	Mon, 10 Nov 2025 13:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762782614; cv=none; b=GuBypmOFQ1RUirNhcRPbHSUpBYu1c5ZMwPrLgEvgMTMUOo2OLJFY9ncBF4ErziDIVwrL97X5VRBmET2GEcG/25OygxBNu0w6al0LMakOuP39JiBNCcSyIIfPK4U94qPjNqhJIBAB2L3yWV/gQkxXa7b6CUyp55ZrkoKFTBeMDwY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762782614; c=relaxed/simple;
+	bh=Q1vfMEWT+/80joba6qHktsyG/cY+VJpox6T5VrT9i7I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f/6w3XA3uZu7GbshQCiKe+gE9hqPzxRHYm0R/pkv0rlXy2dGRFBH8CNLzrHs96FhxoMRmaNQhy3Bw4mpiIutGmh/ws2JkYwcSZnM3lhUI36Vgx3CVtVexHHQMpVvH789YzlamAlZwrc4VGUZQzJLEKoQ2dY1/HQi3k5IRI3Psa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=Vt7rxr9y; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=JTcllefIDFbLHCSJNKSkBkO445PdDjgPicwZz27z1iQ=;
+	b=Vt7rxr9yOpYt9SpAUvhOrcwZ75y5/B3/F1X/ujAadSjXaVvVUNJ1SXo5FpEnYDnrVLFcDAtJR
+	NvohO846M89UdKiu9boC0JYpEARv2130NHTnXlkec9FNQR0iGIi0gAD0MKXCal26wWkbksRKYd8
+	pgM4yoPzBGrWdARMN8VK+KU=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4d4rbS59HFzRhRK;
+	Mon, 10 Nov 2025 21:48:20 +0800 (CST)
+Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
+	by mail.maildlp.com (Postfix) with ESMTPS id 96DBE140146;
+	Mon, 10 Nov 2025 21:49:58 +0800 (CST)
+Received: from [10.174.178.24] (10.174.178.24) by
+ kwepemf100008.china.huawei.com (7.202.181.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 10 Nov 2025 21:49:56 +0800
+Message-ID: <b6046b29-580e-a75b-1fe7-4d76127d7829@huawei.com>
+Date: Mon, 10 Nov 2025 21:49:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|LV8PR12MB9155:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bdbb4d2-613e-4c32-0cc3-08de205db73c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aUxBRE9zMXhvbGNOWGh5UXZiY0JZcjVkaE1RS0tmRjB4OW0wbWV6R3RJRVRp?=
- =?utf-8?B?Y3pxSWpETEhnWmE0NXplUlhCRGZwd1BIZWRDRWNjK2FSeTdHWDJSbjJPeWxK?=
- =?utf-8?B?cGc2WWtVZk9GTC9TUEpwRmNYUnhEdU5mamo3emVMMXNtNVJCcng5RHI1Yjg5?=
- =?utf-8?B?aC9QdHBiT0lBcnhySE82RTlvQmdMWnVVK09WQnJjTWN4WEYvWm9DMTlZVFZ1?=
- =?utf-8?B?Q2NRUytsOGNzb0h1dnYyNkN6dy9Bd0NJb2lMZEpwTmFLMHNXSHdqeENCckJM?=
- =?utf-8?B?RE9SeWs3RjIxY2l6bzZVWTluSEcxQWIvdHNLQlBoRm1acUVNQUhBQTNCemo1?=
- =?utf-8?B?ZWwrS1kxNmw4VUFSL3Q1anQzYXhvTlFLTHI0aXB0MjYzeGpKaFBQMG12UXRP?=
- =?utf-8?B?ekJsbkdkeVlFSjV6M0FzRW9YNFR5OEZpNlZZMVFGMTM3Wmk1dXVlVUlEa202?=
- =?utf-8?B?azFmdnZJKyswREpJd2VWcHlrWUlEMzU3a3ZWL0ZOcWxSVmNQaEUvSVNYTlVy?=
- =?utf-8?B?WEIzazZRVlZDUHVuR09QcVIxRzVFN3VMdHcrcytIYUZwdXA1dzQ3SWFURjRi?=
- =?utf-8?B?ekpSR3g1MWFsWGxFaUFCVVBQSFpJcTk3Y1ZHbDJFaUhyYWlmMDc1a0V1V0xS?=
- =?utf-8?B?cmNnMTBnRHFka0VIOTh4dkFkZks5QmdRYVN2bERoZjZxUkhxS0xEZFFwVHR2?=
- =?utf-8?B?cVhYaExzek5lMXN1R3YyaUpySGxlcXJDaElYQUxwOHJMVkRVZEk2WEJ1Nnpm?=
- =?utf-8?B?SWV6SEVleGNqTUJ3Wit3THVJRDVQNWw1RjZZY21VZHlHWFZES2xEU0JtK29Z?=
- =?utf-8?B?MGwyaDVkeU91dFpjYUlOZTBLWFp1VGhGN3M0SGZIZDNwSlozUjhGTTlSUitW?=
- =?utf-8?B?OWZBb3hiMFZpdmMvdDNHWVkxNFNFaHRJcXZJb0YralRUamNmYkNPcVR0bjBS?=
- =?utf-8?B?K1RIRkF5M0ZBN0JJNzJ6U2owZmZxdGlWY3lkKytFdmltc0JISTZOaTBleFRn?=
- =?utf-8?B?NnpSeGZFSUVSUC9NNTgyTGx6alJXNGppMSt2M0FqUkdUOUxldTNhUUlWaFJK?=
- =?utf-8?B?S21OVWpmUnFlcjczRXB0WDdGaHZSd2VHMVZvRTJ1bXdWSGlWcGFhZXlLNFVl?=
- =?utf-8?B?WmhsZkU0VkpUWVpuQ2orVWp4ZllhUHhRTVhBR3hRYmc4QkEzYkV4akN1UU1F?=
- =?utf-8?B?cFg0SEpoTFBHcXltMUR3dndxR2t1V05JbWlQMEpxbit3US9WZFAwZ01ZTVVn?=
- =?utf-8?B?aE5lT0JPVGswUGpZY0ExZGMwSUJSdzg3eDB1Qlk0Q0RMdWFSSXorbTRKdDFj?=
- =?utf-8?B?S0E2VllhQkxlZjRvSUJvK24yUnVBSzNhWWV0RnJFV2FUK2o4bFpiNEZXY045?=
- =?utf-8?B?MlJRYnJxa3AxbDZRRVhyd21VUHloTjhzRkxkSmRSL1ZIc3hZbjFvUDNBcURr?=
- =?utf-8?B?SU1NYUttRDhQbUR1cEFpQjhNdWFzbjB1d3ZFeEovTnV2aUcrZG96YXJ1NjQx?=
- =?utf-8?B?blVOTWVXN3J2Y2RaUXRpb0R4ZXFrSnVEQmVYZHh1MEFGLzNPbEZXL2xhUTI5?=
- =?utf-8?B?WjYvSHdhVGJyckhURWMvL3ZrMktacUQvNWdzaWZOWUdGMHgzb2lmVFd6ZUd0?=
- =?utf-8?B?M2tNa3c5WkQ1bTR3VVQxOUJWMExtTDIwdnc4M0tMMzdoNm0wOGtHL0ZWUlRU?=
- =?utf-8?B?ZU9YSUVKd1VzM2JkVCt5Z042YTRnMUhoaGw2T1IzTFpKNHl6SlVnVm9SVXcz?=
- =?utf-8?B?SnZVeTVsNnFKa3NwZU1yVzhEWmlRYVJaQUhhcEkrcis1UFY0WUpkZFM5QXFP?=
- =?utf-8?B?KzhlWkU0V2tJVmdxdVpuQUU1M0x3TnQwVmhkOXUxVmRPQmh0MTkxVlpyMHVp?=
- =?utf-8?B?akErWjdCeS9HTXpLMWF6Z1RPMzh6SWhGbjVMRlBJaTNEWHN0SmQ3aUtRTUNY?=
- =?utf-8?Q?pejuWsCLr4MtisVg5uB8nWrmt2flwIV4?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dGdmM05tVGpDVHN0NXFvcWQ1QnZpL3k1T1hlU29MS2hZdDJzRng3KzVxWkIr?=
- =?utf-8?B?Y1FudDQwU3VqMy9WUlJodVlzUUowYU5RNmRCdnhkNERuK1hRcW8rYlZBZW1m?=
- =?utf-8?B?bWo2N2o2YWdiRVRuN2lVTkYxWDZySlVUTXVHbUM5RFdSWkNTc3hMSWJiWUxD?=
- =?utf-8?B?S1RXOXFmWms2Qk9QMXNJRW1vdGEvY05WbUVUbUV0YUxTVjJlSytKQTlYNS8r?=
- =?utf-8?B?Y2J3WTdjV1JUK2pGdnVuaHFlMUNRdHNTVC9SR3F3MXczN1NxLzBPbHdVWVlW?=
- =?utf-8?B?WTFRTzdJQ0ozcVRBaHI5akpvL05DNjEzcjFpK0dXR3dKbThzdnd1Wi9CWG1P?=
- =?utf-8?B?VTNQUnN4N3lGcGpKS2VRUkpVSTJGcVBGdDZKUkhqNEY1ZEcwejB6RDVEcmxa?=
- =?utf-8?B?U1hJQllISFZXRUpIbUVXSm5INlFJSzI4ejFNT0g1bS9weGJmNHFta1pGY1Qx?=
- =?utf-8?B?TDNha29laXc3TEVBV2VWdEJuU2RqcjhpSzMrZnhDbjFPbHQ1MVBubDBrUWxG?=
- =?utf-8?B?MFdIUTFMUjAwV3gyRHhYbFdIZFRxNEkySUFxMDlxZG5iaTFsWVYzNDBqTVNX?=
- =?utf-8?B?UlVtVGl4WnUvcmdIN0FpVnNpSjdIVUhlNVgxbGNvbVVVVXB1UmRZS2hKSHlM?=
- =?utf-8?B?Wno4b09MUktUYjI4UWVrSWFDZEx1MTlZVnhiN3htT0RTU2c5Y2VSTWFxS29Q?=
- =?utf-8?B?MzZETUFaLzh5S0kwR3lsSm00OEV1OUhIdkpEMldocGhQUjVSeVFVRkYzZDd6?=
- =?utf-8?B?LzJrQnVsRThqQmxhSi9ua2tZQkdtVDdCdFhuVURFNG1rbS80eWR6SkowR0JB?=
- =?utf-8?B?TVRRVThlbkZCalM1SEJtakdrZ1FmZzNXa0h4VWYwQ2JEUDhtZGEyM1ZaVU95?=
- =?utf-8?B?T1JBNXB6WHYzdG9qbVlTSGZsTTJSRlBueitTT1hQbXczMlNuTmI0VXZycno1?=
- =?utf-8?B?Qk9FbkpsR2daNnM0RkpaVlVtR1hKRHlMdFNvRXVKa2dsbytUY0FqZWxrNEdj?=
- =?utf-8?B?SjMzS0RncEdVT1dYbkxtbzNneTBqbTdqMDBscDcvN1diSzQwNXl1bCtKZGcz?=
- =?utf-8?B?Z3h4MzZqYTE4OTZJNllFQjVSeURTVlVVbHN2NmNSRlZSbWg0a08xZ3pzT1RI?=
- =?utf-8?B?bFI2Um45ZXNWWW1YSEVJYjBpdTlzT3lQRGdCS0FIeUtCUE1EemRmYWkzeXV6?=
- =?utf-8?B?b3V2STVhUzZHQi8wUmp2SU5YTHVHQ2tlZ2I5Q010WEYrNHRWZ05WQ0Uvd1pw?=
- =?utf-8?B?V0oxMXJqWXd3MWZCTW1OTlNoU3M1Ny8vWFJpV0c3ZWppQldtRDE1dWRNRUM1?=
- =?utf-8?B?K3VScGV1a3FpR1FNdkdneW0zeE9mT0k2amZkS3NuUWhJU0t2bVd6Wm9YQVlT?=
- =?utf-8?B?bDQyZmtrb1VOTDJwRUY4NUpSaDJ0K01rMm5kSTdWeVA1K2VZSWdUN3pzczZS?=
- =?utf-8?B?TlFxK05jR0tFSG41T0Y4QitaR3hpWjRxUTFGdmtjMTU1RkFCM1oyUUQxaTdC?=
- =?utf-8?B?WTZtZzY1VWVXNFNCRXNlZnFSaDA1d2Q2WWI0VTZDVUhpYzJ5TXk1VVlNa1My?=
- =?utf-8?B?K2IwcGF4SkpwV08xV05Ka2VSMU02QzBnY1k4czBmeDRCSVhxNjRPNXlJdXVE?=
- =?utf-8?B?MmNKK2xkeklQTEd3OGxESlpKQnI3a0ZMWjEvNzlRakN3U2FuR1o2ZVNRQWZB?=
- =?utf-8?B?aGd5cXA0U25vdE9KL3JqMVJwS25kTDRJcG8vU2FTMFNUK2QwaGh5SW1OT0xQ?=
- =?utf-8?B?TFcvSlFxS2pmcGJ2ZURta25VazBaQmwxVmZCS3VtWGVsdlY4SllybVZ1WjBJ?=
- =?utf-8?B?NnZtZkwrQzh2N0x6Z1Nac0lqaHpHdmtSTjMyQ1ZhQ004K1Z2V3FmZzAyMVg1?=
- =?utf-8?B?dTI1MFVMbmZFeHJvSFpTRjl5TXNsc0Zqc0ZKb2MyU1ZKSWxXdkRZN2J6eTEx?=
- =?utf-8?B?djhCcjVQbXcxdm5sUjB6L0I0OXBXR0Z3Njc4SEIyN0xLVlJRNlU5bW1VdGEy?=
- =?utf-8?B?YVFzMmJ4d1Z1dGhXaXl3bGF4dEVjbXkxYXdCRElrc014MGl3VGV2Y2trR0xV?=
- =?utf-8?B?aVBGY29oYW9DMCtVamlPQU96MGN6STJVZGdydG9USjNoZ3NUc0JDMW0rUW9o?=
- =?utf-8?Q?Rpbo=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bdbb4d2-613e-4c32-0cc3-08de205db73c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 13:33:21.5501
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YR/EfmU2vWKTrsTngsbTyTtJT7vxhqu8tQzxqag46vpG7FhqX6ehQnBw5EMn7m4n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9155
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 27/33] arm_mpam: Track bandwidth counter state for power
+ management
+Content-Language: en-US
+To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
+CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
+	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
+	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
+	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
+	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
+	<guohanjun@huawei.com>, <jeremy.linton@arm.com>,
+	<jonathan.cameron@huawei.com>, <kobak@nvidia.com>, <lcherian@marvell.com>,
+	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-28-ben.horgan@arm.com>
+From: Zeng Heng <zengheng4@huawei.com>
+In-Reply-To: <20251107123450.664001-28-ben.horgan@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemf100008.china.huawei.com (7.202.181.222)
 
-Hi Bert,
 
-well sorry to say that but from your dumps it looks more and more like you just have faulty HW.
 
-An SMU response of 0xFFFFFFFF means that the device has spontaneously fallen of the bus while trying to resume it.
+On 2025/11/7 20:34, Ben Horgan wrote:
+> From: James Morse <james.morse@arm.com>
+> 
+> Bandwidth counters need to run continuously to correctly reflect the
+> bandwidth.
+> 
+> Save the counter state when the hardware is reset due to CPU hotplug.
+> Add struct mbwu_state to track the bandwidth counter. Support for
+> tracking overflow with the same structure will be added in a
+> subsequent commit.
+> 
+> Cc: Zeng Heng <zengheng4@huawei.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+> ---
+> Changes since v3:
+> Drop tags
+> Fix correction accounting
+> Split out overflow checking
+> ---
+>   drivers/resctrl/mpam_devices.c  | 126 +++++++++++++++++++++++++++++++-
+>   drivers/resctrl/mpam_internal.h |  21 +++++-
+>   2 files changed, 145 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 86abbac5e1ad..2d1cef824b8e 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -994,6 +994,7 @@ static void __ris_msmon_read(void *arg)
+>   	struct mon_read *m = arg;
+>   	struct mon_cfg *ctx = m->ctx;
+>   	struct mpam_msc_ris *ris = m->ris;
+> +	struct msmon_mbwu_state *mbwu_state;
+>   	struct mpam_props *rprops = &ris->props;
+>   	struct mpam_msc *msc = m->ris->vmsc->msc;
+>   	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
+> @@ -1024,11 +1025,21 @@ static void __ris_msmon_read(void *arg)
+>   		now = mpam_read_monsel_reg(msc, CSU);
+>   		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
+>   			nrdy = now & MSMON___NRDY;
+> +		now = FIELD_GET(MSMON___VALUE, now);
+>   		break;
+>   	case mpam_feat_msmon_mbwu:
+>   		now = mpam_read_monsel_reg(msc, MBWU);
+>   		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+>   			nrdy = now & MSMON___NRDY;
+> +		now = FIELD_GET(MSMON___VALUE, now);
+> +
+> +		if (nrdy)
+> +			break;
+> +
+> +		mbwu_state = &ris->mbwu_state[ctx->mon];
+> +
+> +		/* Include bandwidth consumed before the last hardware reset */
+> +		now += mbwu_state->correction;
+>   		break;
+>   	default:
+>   		m->err = -EINVAL;
+> @@ -1041,7 +1052,6 @@ static void __ris_msmon_read(void *arg)
+>   		return;
+>   	}
+>   
+> -	now = FIELD_GET(MSMON___VALUE, now);
+>   	*m->val += now;
+>   }
+>   
+> @@ -1239,6 +1249,67 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+>   	mutex_unlock(&msc->part_sel_lock);
+>   }
+>   
+> +/* Call with msc cfg_lock held */
+> +static int mpam_restore_mbwu_state(void *_ris)
+> +{
+> +	int i;
+> +	struct mon_read mwbu_arg;
+> +	struct mpam_msc_ris *ris = _ris;
+> +
+> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
+> +		if (ris->mbwu_state[i].enabled) {
+> +			mwbu_arg.ris = ris;
+> +			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
+> +			mwbu_arg.type = mpam_feat_msmon_mbwu;
+> +
+> +			__ris_msmon_read(&mwbu_arg);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* Call with MSC cfg_lock held */
+> +static int mpam_save_mbwu_state(void *arg)
+> +{
+> +	int i;
+> +	u64 val;
+> +	struct mon_cfg *cfg;
+> +	u32 cur_flt, cur_ctl, mon_sel;
+> +	struct mpam_msc_ris *ris = arg;
+> +	struct msmon_mbwu_state *mbwu_state;
+> +	struct mpam_msc *msc = ris->vmsc->msc;
+> +
+> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
+> +		mbwu_state = &ris->mbwu_state[i];
+> +		cfg = &mbwu_state->cfg;
+> +
+> +		if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
+> +			return -EIO;
+> +
+> +		mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, i) |
+> +			  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+> +		mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
+> +
+> +		cur_flt = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
+> +		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
+> +		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
+> +
+> +		val = mpam_read_monsel_reg(msc, MBWU);
+> +		mpam_write_monsel_reg(msc, MBWU, 0);
+> +
+> +		cfg->mon = i;
+> +		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
+> +		cfg->match_pmg = FIELD_GET(MSMON_CFG_x_CTL_MATCH_PMG, cur_ctl);
+> +		cfg->partid = FIELD_GET(MSMON_CFG_x_FLT_PARTID, cur_flt);
+> +		mbwu_state->correction += val;
+> +		mbwu_state->enabled = FIELD_GET(MSMON_CFG_x_CTL_EN, cur_ctl);
+> +		mpam_mon_sel_unlock(msc);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
+>   {
+>   	*reset_cfg = (struct mpam_config) {
+> @@ -1310,6 +1381,9 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
+>   		 * for non-zero partid may be lost while the CPUs are offline.
+>   		 */
+>   		ris->in_reset_state = online;
+> +
+> +		if (mpam_is_enabled() && !online)
+> +			mpam_touch_msc(msc, &mpam_save_mbwu_state, ris);
+>   	}
+>   	mutex_unlock(&msc->cfg_lock);
+>   }
+> @@ -1364,6 +1438,9 @@ static void mpam_reprogram_msc(struct mpam_msc *msc)
+>   			mpam_touch_msc(msc, __write_config, &arg);
+>   		}
+>   		ris->in_reset_state = reset;
+> +
+> +		if (mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
+> +			mpam_touch_msc(msc, &mpam_restore_mbwu_state, ris);
+>   	}
+>   	mutex_unlock(&msc->cfg_lock);
+>   }
+> @@ -2117,7 +2194,22 @@ static void mpam_unregister_irqs(void)
+>   
+>   static void __destroy_component_cfg(struct mpam_component *comp)
+>   {
+> +	struct mpam_msc *msc;
+> +	struct mpam_vmsc *vmsc;
+> +	struct mpam_msc_ris *ris;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+>   	add_to_garbage(comp->cfg);
+> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+> +		msc = vmsc->msc;
+> +
+> +		if (mpam_mon_sel_lock(msc)) {
+> +			list_for_each_entry(ris, &vmsc->ris, vmsc_list)
+> +				add_to_garbage(ris->mbwu_state);
+> +			mpam_mon_sel_unlock(msc);
+> +		}
+> +	}
+>   }
+>   
+>   static void mpam_reset_component_cfg(struct mpam_component *comp)
+> @@ -2141,6 +2233,8 @@ static void mpam_reset_component_cfg(struct mpam_component *comp)
+>   
+>   static int __allocate_component_cfg(struct mpam_component *comp)
+>   {
+> +	struct mpam_vmsc *vmsc;
+> +
+>   	mpam_assert_partid_sizes_fixed();
+>   
+>   	if (comp->cfg)
+> @@ -2158,6 +2252,36 @@ static int __allocate_component_cfg(struct mpam_component *comp)
+>   
+>   	mpam_reset_component_cfg(comp);
+>   
+> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+> +		struct mpam_msc *msc;
+> +		struct mpam_msc_ris *ris;
+> +		struct msmon_mbwu_state *mbwu_state;
+> +
+> +		if (!vmsc->props.num_mbwu_mon)
+> +			continue;
+> +
+> +		msc = vmsc->msc;
+> +		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
+> +			if (!ris->props.num_mbwu_mon)
+> +				continue;
+> +
+> +			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
+> +					     sizeof(*ris->mbwu_state),
+> +					     GFP_KERNEL);
+> +			if (!mbwu_state) {
+> +				__destroy_component_cfg(comp);
+> +				return -ENOMEM;
+> +			}
+> +
+> +			init_garbage(&mbwu_state[0].garbage);
+> +
+> +			if (mpam_mon_sel_lock(msc)) {
+> +				ris->mbwu_state = mbwu_state;
+> +				mpam_mon_sel_unlock(msc);
+> +			}
+> +		}
+> +	}
+> +
+>   	return 0;
+>   }
+>   
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> index d8f8e29987e0..1f2b04b7703e 100644
+> --- a/drivers/resctrl/mpam_internal.h
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -91,7 +91,10 @@ struct mpam_msc {
+>   	 */
+>   	struct mutex		part_sel_lock;
+>   
+> -	/* cfg_lock protects the msc configuration. */
+> +	/*
+> +	 * cfg_lock protects the msc configuration and guards against mbwu_state
+> +	 * and save and restore racing.
+> +	 */
+>   	struct mutex		cfg_lock;
+>   
+>   	/*
+> @@ -200,6 +203,19 @@ struct mon_cfg {
+>   	enum mon_filter_options opts;
+>   };
+>   
+> +/* Changes to msmon_mbwu_state are protected by the msc's mon_sel_lock. */
+> +struct msmon_mbwu_state {
+> +	bool		enabled;
+> +	struct mon_cfg	cfg;
+> +
+> +	/*
+> +	 * The value to add to the new reading to account for power management.
+> +	 */
+> +	u64		correction;
+> +
+> +	struct mpam_garbage	garbage;
+> +};
+> +
+>   struct mpam_class {
+>   	/* mpam_components in this class */
+>   	struct list_head	components;
+> @@ -293,6 +309,9 @@ struct mpam_msc_ris {
+>   	/* parent: */
+>   	struct mpam_vmsc	*vmsc;
+>   
+> +	/* msmon mbwu configuration is preserved over reset */
+> +	struct msmon_mbwu_state	*mbwu_state;
+> +
+>   	struct mpam_garbage	garbage;
+>   };
+>   
 
-My educated guess is that this is caused by a faulty power management, but basically it could be anything.
-
-Regards,
-Christian.
-
-On 11/7/25 18:09, Bert Karwatzki wrote:
-> Am Freitag, dem 07.11.2025 um 14:09 +0100 schrieb Bert Karwatzki:
->>
->> Testing:
->> v6.12			booted 13:00, 7.11.2025 no crash after 1h, 890 GPP0 events, 287 resumes
->>
->>
->> Bert Karwatzki
-> 
-> v6.12 crashed after 2h, 946 GPP0 events and 499 resumes. So there's no base
-> for a bisection. 
-> 
-> But the crash from v6.14.11 gave this error in netconsole:
-> 
-> 2025-11-06T19:17:34.967439+01:00 T370;[drm] PCIE GART of 512M enabled (table at 0x00000081FEB00000).
-> 2025-11-06T19:17:34.967439+01:00 T370;amdgpu 0000:03:00.0: amdgpu: PSP is resuming...#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:34.967588+01:00 T12;pci_bus 0000:03: Allocating resources#012 SUBSYSTEM=pci_bus#012 DEVICE=+pci_bus:0000:03
-> 2025-11-06T19:17:35.143353+01:00 T370;amdgpu 0000:03:00.0: amdgpu: reserve 0xa00000 from 0x81fd000000 for PSP TMR#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.226021+01:00 T370;amdgpu 0000:03:00.0: amdgpu: RAS: optional ras ta ucode is not available#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SECUREDISPLAY: securedisplay ta ucode is not available#012 SUBSYSTEM=pci#012
-> DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU is resuming...#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: smu driver if version = 0x0000000f, smu fw if version = 0x00000013, smu fw program = 0,
-> version = 0x003b3100 (59.49.0)#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.237386+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU driver if version not matched#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: SMU: response:0xFFFFFFFF for index:6 param:0x00000000 message:EnableAllSmuFeatures?#012
-> SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: Failed to enable requested dpm features!#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: Failed to setup smc hw!#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: resume of IP block <smu> failed -121#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:35.509600+01:00 T370;amdgpu 0000:03:00.0: amdgpu: amdgpu_device_ip_resume failed (-121).#012 SUBSYSTEM=pci#012 DEVICE=+pci:0000:03:00.0
-> 2025-11-06T19:17:36.114889+01:00 C8;INFO: NMI handler (perf_event_nmi_handler) took too long to run: 35.314 msecs
-> 2025-11-06T19:17:36.114889+01:00 C8;perf: interrupt took too long (275880 > 2500), lowering kernel.perf_event_max_sample_rate to 1000
-> 2025-11-06T19:17:37.930799+01:00 C4;INFO: NMI handler (perf_event_nmi_handler) took too long to run: 152.914 msecs
-> 2025-11-06T19:17:37.930799+01:00 C4;perf: interrupt took too long (1194640 > 344850), lowering kernel.perf_event_max_sample_rate to 1000
-> 2025-11-06T19:17:38.939845+01:00 C14;INFO: NMI handler (perf_event_nmi_handler) took too long to run: 197.312 msecs
-> 2025-11-06T19:17:38.939845+01:00 C14;perf: interrupt took too long (1541521 > 1493300), lowering kernel.perf_event_max_sample_rate to 1000
-> 
-> These 4 lines have not been recorded previously, so perhaps I have to look
-> for a NULL pointer dereference in an error path:
-> 
-> 2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: AE_TIME, Returned by Handler for [EmbeddedControl] (20240827/evregion-301)
-> 2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Timeout from EC hardware or EC device driver (20240827/evregion-311)
-> 2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Aborting method \x5c_SB.PCI0.SBRG.EC.BAT1.UPBS due to previous error (AE_TIME) (20240827/psparse-529)
-> 2025-11-06T19:17:42.571252+01:00 T1896;ACPI Error: Aborting method \x5c_SB.PCI0.SBRG.EC.BAT1._BST due to previous error (AE_TIME) (20240827/psparse-529) 
-> 
-> 
-> Bert Karwatzki
-
+Reviewed-by: Zeng Heng <zengheng4@huawei.com>
 
