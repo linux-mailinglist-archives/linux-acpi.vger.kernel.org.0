@@ -1,134 +1,150 @@
-Return-Path: <linux-acpi+bounces-18723-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18724-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8921C46182
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 12:01:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38D8C462B4
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 12:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60EFA3A68B4
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 11:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACDD23AD361
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 11:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC73306D48;
-	Mon, 10 Nov 2025 11:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53A43074A0;
+	Mon, 10 Nov 2025 11:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MoITomXm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YT1dcY47"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA26306B00
-	for <linux-acpi@vger.kernel.org>; Mon, 10 Nov 2025 11:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A36221542;
+	Mon, 10 Nov 2025 11:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762772458; cv=none; b=S+1yUHHxN4vcg0TquCn3Zhk98hBLlrUJkX0LYf8R50u4EBbsQ+lJJxn/eGpe3VmB4KdiPVM3WW6e25oYSTskoego6y0Ue6+e/DXJe4km7IdYZsdtkAXsjfTmvgDPAVxQ0Wtn00pIRFADaDgOZoJMoDaG49OEESPmA/fRNcV/7kc=
+	t=1762773260; cv=none; b=UsRpbvaUcVhmmLbZt6Zn2fmx5JIvj4Wr5/7JnAEHb1lBz5kbc9AbO4Pau4TddZlUHOFeSayFE5WS/cPFoETmIk3bWtMr+RozynTBo22yMhEnwwbplCebl7L9+Ge2sefOoujsQXS0oIF5+aTK6UI8QbGeeBFbbOOy3//YDZIc778=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762772458; c=relaxed/simple;
-	bh=j/sDhA1BE/crBk5MB3jz5Gyqsa0mwcEpYJuOnY+51Ws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dZBcHE4xawL2Ct+JBnjZRPy29MzUFZ+fJOxva2wtWRUXF/obBga8ybnnD0d/3vEDUMO2rJA9U7OUmg4ZaKgvu1MSjJilYhBYS38S9+L2QjMwMZH+eIRKRSmXetoWwbYoz8fFLfI8eS2UfqcwMzF+5nTf7cJXhIQDO9OPJgrhPEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MoITomXm; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7af6a6f20easo2257361b3a.0
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Nov 2025 03:00:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762772455; x=1763377255; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YrIRy6Lhq+4eE5yPFjSN9IOBDP8Cyczj9KXwJvvJFlc=;
-        b=MoITomXmIdl0l9mMoc4ILl2St6hK1A4HMUb0F493E4DjqRtYRaaHWITxuqAxyq4ZMt
-         Eux6VA/tuOY/Phh+AcSizGAkdWdmdFpuWDuTX4jh4eLo+zxAkadFZO+DnDH9dLRMMPvw
-         KM5rJ8gPZho8vx/xWz9zYmHpGbiQ0u+pNqXNNOG+Ohb69SzBHy7dy9Deb0Mh1kyi6bDr
-         BLIjiHLZZrloc2S58aturYja41JAsiGJcgCQg1UGb0GcsXEDi64d/pQE6WK7V4y/SvN6
-         HDod5am68vwzf1U+U9hlWeSGUECILkPgFoMuE3rFPrySIu3Ue/zZb9jRtE69mO6FLLwU
-         5Hag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762772455; x=1763377255;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YrIRy6Lhq+4eE5yPFjSN9IOBDP8Cyczj9KXwJvvJFlc=;
-        b=IYHN7G6LmrUt28OXIQJlZ7zsEJ5nRHNq25CEAErYdBItNTbNGHNVtubapvrGwL4SBA
-         AVg4fg7KE44x4a1Sk7wrs7IdXmHeqfZtceos/RpzvD8b+Y7F4w5cEeVVheHrKFyQ3AAK
-         HHJHI3+G6XWVECiPPw8STW9HlHgpNZ2QVOCfrCCGJRThcHursxulGMF/hA20C+qkE1kK
-         oz+SYAH1R3vDLbK8dKLxclZ3ND4wsV/WHK/QXxmGKm5JPBc4BDpn4W4fyl/zMQYT+ipR
-         7J5VmdXXA5J1Hs7cnmU6vQRVYjcD4MRCPwtAxPHRR0JZL/+sEubRSzF2wyxA4wPc87XA
-         K6SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXU6W/95a+vB/N8OM8ja5cdZ+9sXJRmrYDM92S5ANccKLlJmiQKOXDrOqDnx7x/VVyTYvLoy1A/eZSX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOaMNwDRsx+A0Ft1Tw58xmsHT1tqVS7PxXuAC1RD+lsY063l9h
-	AHBTR7C1jxy2DlzEJUapZUJE2WF1t/t37zkrpNFH1pP9KzFiqO8Nf4kXYIVDEJe3IeA=
-X-Gm-Gg: ASbGncuHW/es+NPXA8WmK9XX6U9fNUwMievksMdRBrgCw622DhZUxaVjO729onT3J/B
-	qk83JvNVZHIsoimgk5sLNIHkSSwYry6J8DOpYTQVGL7R8JL8je4Eivc/QokfHKvD/1DhGssfnBN
-	bx1Mh7YZHd45E4KWh9Btb1koG3cMirNB17uMzqwO27U2TEEtKzy1UUiEXPLN43xfIhkbxXDWWFz
-	L5amBJRPwteGSwtRoORZtIcIIxtc+I+A8sS3XcarryKwZowQAlN7VGpR4PdwuEgF85h+cOhqxtu
-	ZIpI1LeKQasMeu6Vu10UK74f2schY1SYN5g3jpgbELgEa5HUP6ZsqLi0O0yusvEvvLMrFEsfFmJ
-	NxzWLB0HVmvbsVHgjcKfqZPIWG1R+VHcIo68kW7bXvrjg4FTx+l3Z86UNP+tb4kuawj39GhoWnj
-	LKkdoOfVBraLw=
-X-Google-Smtp-Source: AGHT+IGOFDbu7mquDmNhSqV97BdY6cG6MLgvb5Xp7QodBHXn8La7j+gNEL/xmdVl7cozIyrmwIAy9g==
-X-Received: by 2002:a05:6a21:3291:b0:350:1872:7023 with SMTP id adf61e73a8af0-353a4163b2bmr9937463637.55.1762772455121;
-        Mon, 10 Nov 2025 03:00:55 -0800 (PST)
-Received: from localhost ([122.172.86.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0c963586fsm11304602b3a.10.2025.11.10.03.00.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 03:00:54 -0800 (PST)
-Date: Mon, 10 Nov 2025 16:30:52 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Sumit Gupta <sumitg@nvidia.com>, pierre.gondois@arm.com, 
-	zhanjie9@hisilicon.com, ionela.voinescu@arm.com, beata.michalska@arm.com
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
-	corbet@lwn.net, zhenglifeng1@huawei.com, rdunlap@infradead.org, 
-	ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com, 
-	perry.yuan@amd.com, linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com, 
-	ksitaraman@nvidia.com, sanjayc@nvidia.com, nhartman@nvidia.com, bbasu@nvidia.com
-Subject: Re: [PATCH v4 0/8] Enhanced autonomous selection and improvements
-Message-ID: <hjrcoq7dapqcodk3iiyvjeuq3cwvyccqr4wnlcoi6eduqg5ahf@tszrjvfnkjux>
-References: <20251105113844.4086250-1-sumitg@nvidia.com>
+	s=arc-20240116; t=1762773260; c=relaxed/simple;
+	bh=Tb3gGuGtl8j/1gHHLyftk/wWI4ks/TnsXd/Czi8Q01M=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=AiEEOg32og8bYlIIhSeUEL5WHUR+TyN+YlNBW+b2JKcCt26lpqbA6W5a7htDTiMmQakOTuy+m01CfaHMt62YAL3cqsoxNFpbULv3z36JQ/vCqe9+uZKqJOFsUtn7VZ7nIr7jb9Jdt3Y4a0gWSg8EPZDfL8ZDOI7X9xsK5PoMmDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YT1dcY47; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762773258; x=1794309258;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Tb3gGuGtl8j/1gHHLyftk/wWI4ks/TnsXd/Czi8Q01M=;
+  b=YT1dcY47my/X4QLBPSbuMKIo+3Sdym2+IUzAHausngiDw5Tum/8qYPw0
+   NeMgnllVyYY1G7vjb0OpzL4hcPPnIMLqSUuYHSx91RXC0r7gt85l/CtMY
+   bFo83KLE182h9S5RQL/xkhYsaJKQQ3S6vDkyfSmWuDeq8KWq4Po9VtZ7S
+   0OY0BS10Z5j3M5VfzMyogBjeZFuM2GPRw8A6lR0WL7XJKVzxaSDLy2a7K
+   tuQsKYB7sjT/EfPYuBUe3CmipyPavK0DQ4sm4MUiUJ3ECD0ph9tZANUaX
+   oUGQjfw2WSG8luGqyU1kk0HEkEMTkJKmogYiT524bcK3ipBt+gvRaIwik
+   g==;
+X-CSE-ConnectionGUID: /eBAel49SLqPcfGyqr/c8A==
+X-CSE-MsgGUID: vINU1X54TGOxoCX7wdGuxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="75507021"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="75507021"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 03:14:17 -0800
+X-CSE-ConnectionGUID: qa1zIVn6QxG/ucqV7AEW3Q==
+X-CSE-MsgGUID: bSXtiLKeRPaXy0gb8YYAEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="192757513"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.13])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 03:14:12 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 10 Nov 2025 13:14:07 +0200 (EET)
+To: "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+    Mario Limonciello <superm1@kernel.org>, Hans de Goede <hansg@kernel.org>
+cc: Armin Wolf <W_Armin@gmx.de>, Len Brown <lenb@kernel.org>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+    Zhixin Zhang <zhangzx36@lenovo.com>, Mia Shao <shaohz1@lenovo.com>, 
+    Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>, 
+    Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org, 
+    linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] acpi: platform_profile - Add Extreme profile
+ option
+In-Reply-To: <20251106212121.447030-2-derekjohn.clark@gmail.com>
+Message-ID: <701898dd-3310-e86d-7499-fca5a445447a@linux.intel.com>
+References: <20251106212121.447030-1-derekjohn.clark@gmail.com> <20251106212121.447030-2-derekjohn.clark@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105113844.4086250-1-sumitg@nvidia.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On 05-11-25, 17:08, Sumit Gupta wrote:
-> This patch series enhances the ACPI CPPC CPUFREQ driver with
-> comprehensive support for autonomous performance selection, expanded
-> runtime control interfaces and improvements.
-> 
-> It adds support for below:
-> - Expose sysfs to read/write the Minimum/Maximum Performance Registers
->   using frequency (kHz), with internal conversion to performance values.
->   Also, update the policy min/max accordingly.
->     /sys/.../cpufreq/policy*/min_perf and max_perf
-> 
-> - Expose sysfs to read/write the Performance Limited Register.
->     /sys/.../cpufreq/policy*/perf_limited
-> 
-> - When toggling autonomous selection, synchronize the policy limits
->   by updating the policy min/max.
-> 
-> - System-wide autonomous mode configuration via 'auto_sel_mode' boot
->   parameter. Mode can be switched dynamically on individual CPUs.
-> 
-> - Generic sysfs helper functions to reduce code duplication.
-> 
-> The patches are grouped as below:
-> - Patch 1, 2 & 3: Improvements. Can be applied independently.
-> - Patch 4: Sysfs to update min/max_perf. Can be applied independently.
-> - Patch 5: Sysfs to update perf_limited. Can be applied independently.
-> - Patch 6: add sysfs documentation. Depends on 'Patch 4 and 5'.
-> - Patch 7: sync policy min/max with auto_select. Depends on 'Patch 4'.
-> - Patch 8: Boot Parameter Support. Depends on 'Patch 4 and 7'.
+On Thu, 6 Nov 2025, Derek J. Clark wrote:
 
-Beata/Ionela/Jie, any feedback on the CPPC changes ?
+> Some devices, namely Lenovo Legion devices, have an "extreme" mode where
+> power draw is at the maximum limit of the cooling hardware. Add a new
+> "extreme" platform profile to properly reflect this operating mode.
+> 
+> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+> Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+> Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+> ---
+>  Documentation/ABI/testing/sysfs-class-platform-profile | 2 ++
+>  drivers/acpi/platform_profile.c                        | 1 +
+>  include/linux/platform_profile.h                       | 1 +
+>  3 files changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
+> index dc72adfb830a..9bee8deb4dc9 100644
+> --- a/Documentation/ABI/testing/sysfs-class-platform-profile
+> +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
+> @@ -23,6 +23,8 @@ Description:	This file contains a space-separated list of profiles supported
+>  					power consumption with a slight bias
+>  					towards performance
+>  		performance		High performance operation
+> +		extreme			Higher performance operation that may exceed
+> +					internal battery draw limits when on AC power
+>  		custom			Driver defined custom profile
+>  		====================	========================================
+>  
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index b43f4459a4f6..78da17e16d9b 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -37,6 +37,7 @@ static const char * const profile_names[] = {
+>  	[PLATFORM_PROFILE_BALANCED] = "balanced",
+>  	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] = "balanced-performance",
+>  	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
+> +	[PLATFORM_PROFILE_EXTREME] = "extreme",
+>  	[PLATFORM_PROFILE_CUSTOM] = "custom",
+>  };
+>  static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> index a299225ab92e..2bf178bde2b5 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -24,6 +24,7 @@ enum platform_profile_option {
+>  	PLATFORM_PROFILE_BALANCED,
+>  	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+>  	PLATFORM_PROFILE_PERFORMANCE,
+> +	PLATFORM_PROFILE_EXTREME,
+>  	PLATFORM_PROFILE_CUSTOM,
+>  	PLATFORM_PROFILE_LAST, /*must always be last */
+>  };
+> 
+
+I wonder if "extreme" is the best name for this? Given the description you 
+gave above, perhaps "max-power" would be more descriptive (and we already 
+have "low-power" so it kind of feels fitting the theme too).
+
+I don't have strong opinion on this so if you guys feel this suggestion 
+would not make things better, feel free to voice it. :-)
 
 -- 
-viresh
+ i.
+
 
