@@ -1,55 +1,66 @@
-Return-Path: <linux-acpi+bounces-18727-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18728-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93939C47044
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 14:50:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB82C47050
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 14:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E53D188F123
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 13:50:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 871D14EB5EF
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 13:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468763043CB;
-	Mon, 10 Nov 2025 13:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826AF30E858;
+	Mon, 10 Nov 2025 13:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="Vt7rxr9y"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="UD0fhW2S";
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="UD0fhW2S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C8122D780;
-	Mon, 10 Nov 2025 13:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EECD223DF9;
+	Mon, 10 Nov 2025 13:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762782614; cv=none; b=GuBypmOFQ1RUirNhcRPbHSUpBYu1c5ZMwPrLgEvgMTMUOo2OLJFY9ncBF4ErziDIVwrL97X5VRBmET2GEcG/25OygxBNu0w6al0LMakOuP39JiBNCcSyIIfPK4U94qPjNqhJIBAB2L3yWV/gQkxXa7b6CUyp55ZrkoKFTBeMDwY=
+	t=1762782653; cv=none; b=But4LUBVZMiKJRCfwwZYSaKzvslDqP9Ru2HcYIGras9JHeqJBs8LzKRXdUILRwEZOzd1GULBWKxmWpV0Zvy82Xw+ViYv1v2Thzv2jeWstuN3DzAJXUx2c3Bq3ajBMPpX4RHYnt8zuTSVJ10FqozlfuRdu5GIi6+XyAaajJmXUKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762782614; c=relaxed/simple;
-	bh=Q1vfMEWT+/80joba6qHktsyG/cY+VJpox6T5VrT9i7I=;
+	s=arc-20240116; t=1762782653; c=relaxed/simple;
+	bh=51j2eBq86PpSEVOcai+wKv7GjF/Cj/f4soVhV6QLva8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f/6w3XA3uZu7GbshQCiKe+gE9hqPzxRHYm0R/pkv0rlXy2dGRFBH8CNLzrHs96FhxoMRmaNQhy3Bw4mpiIutGmh/ws2JkYwcSZnM3lhUI36Vgx3CVtVexHHQMpVvH789YzlamAlZwrc4VGUZQzJLEKoQ2dY1/HQi3k5IRI3Psa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=Vt7rxr9y; arc=none smtp.client-ip=113.46.200.221
+	 In-Reply-To:Content-Type; b=YjihRhH5KxmW9EKHk1kfF/6mzEafPla0UmKFdao6tFDdZOsEtME6VUsXTKd1MUyQJMTCQJw0/OoqOoqxp6HjJ/eouV+Oj83ILaAvdPHD5W33JeebupTcV+9UpttB/0oie0794aT3+1K7gCO957D7+FY5DqeJvo2gRlzl80aKokM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=UD0fhW2S; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=UD0fhW2S; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=JTcllefIDFbLHCSJNKSkBkO445PdDjgPicwZz27z1iQ=;
-	b=Vt7rxr9yOpYt9SpAUvhOrcwZ75y5/B3/F1X/ujAadSjXaVvVUNJ1SXo5FpEnYDnrVLFcDAtJR
-	NvohO846M89UdKiu9boC0JYpEARv2130NHTnXlkec9FNQR0iGIi0gAD0MKXCal26wWkbksRKYd8
-	pgM4yoPzBGrWdARMN8VK+KU=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4d4rbS59HFzRhRK;
-	Mon, 10 Nov 2025 21:48:20 +0800 (CST)
+	bh=tTVZptE9yhavDPYFhKzpNou/6CcU7o9cuxLzEmT1XSo=;
+	b=UD0fhW2SqX/JSAcOaD/yxVnfiTA5qPzfQCSMIKBD5kQ+/8y535cdK8FU+D6oTTQR7986lK/F4
+	glg5leKC1YVV7GuuX7ZnqNDQ04yxpOLe98GImTY3O2iRCtWyxGwTwQtQhT14zE5S6quiKbeS7Mk
+	8kTvaLMU37O54CGhjIWb51M=
+Received: from canpmsgout09.his.huawei.com (unknown [172.19.92.135])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4d4rds4lxHz1BGLl;
+	Mon, 10 Nov 2025 21:50:25 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=tTVZptE9yhavDPYFhKzpNou/6CcU7o9cuxLzEmT1XSo=;
+	b=UD0fhW2SqX/JSAcOaD/yxVnfiTA5qPzfQCSMIKBD5kQ+/8y535cdK8FU+D6oTTQR7986lK/F4
+	glg5leKC1YVV7GuuX7ZnqNDQ04yxpOLe98GImTY3O2iRCtWyxGwTwQtQhT14zE5S6quiKbeS7Mk
+	8kTvaLMU37O54CGhjIWb51M=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4d4rcB1Ddgz1cyPS;
+	Mon, 10 Nov 2025 21:48:58 +0800 (CST)
 Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
-	by mail.maildlp.com (Postfix) with ESMTPS id 96DBE140146;
-	Mon, 10 Nov 2025 21:49:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DAC661A0188;
+	Mon, 10 Nov 2025 21:50:36 +0800 (CST)
 Received: from [10.174.178.24] (10.174.178.24) by
  kwepemf100008.china.huawei.com (7.202.181.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 10 Nov 2025 21:49:56 +0800
-Message-ID: <b6046b29-580e-a75b-1fe7-4d76127d7829@huawei.com>
-Date: Mon, 10 Nov 2025 21:49:56 +0800
+ 15.2.1544.11; Mon, 10 Nov 2025 21:50:34 +0800
+Message-ID: <7df04942-5afa-604d-3573-ec54a2c89945@huawei.com>
+Date: Mon, 10 Nov 2025 21:50:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +69,8 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 27/33] arm_mpam: Track bandwidth counter state for power
- management
+Subject: Re: [PATCH 28/33] arm_mpam: Consider overflow in bandwidth counter
+ state
 Content-Language: en-US
 To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
 CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
@@ -77,9 +88,9 @@ CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
 	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
 	<xhao@linux.alibaba.com>
 References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-28-ben.horgan@arm.com>
+ <20251107123450.664001-29-ben.horgan@arm.com>
 From: Zeng Heng <zengheng4@huawei.com>
-In-Reply-To: <20251107123450.664001-28-ben.horgan@arm.com>
+In-Reply-To: <20251107123450.664001-29-ben.horgan@arm.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
@@ -88,273 +99,93 @@ X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
 
 
 On 2025/11/7 20:34, Ben Horgan wrote:
-> From: James Morse <james.morse@arm.com>
+> Use the overflow status bit to track overflow on each bandwidth counter
+> read and add the counter size to the correction when overflow is detected.
 > 
-> Bandwidth counters need to run continuously to correctly reflect the
-> bandwidth.
-> 
-> Save the counter state when the hardware is reset due to CPU hotplug.
-> Add struct mbwu_state to track the bandwidth counter. Support for
-> tracking overflow with the same structure will be added in a
-> subsequent commit.
+> This assumes that only a single overflow has occurred since the last read
+> of the counter. Overflow interrupts, on hardware that supports them could
+> be used to remove this limitation.
 > 
 > Cc: Zeng Heng <zengheng4@huawei.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
-> Changes since v3:
-> Drop tags
-> Fix correction accounting
-> Split out overflow checking
-> ---
->   drivers/resctrl/mpam_devices.c  | 126 +++++++++++++++++++++++++++++++-
->   drivers/resctrl/mpam_internal.h |  21 +++++-
->   2 files changed, 145 insertions(+), 2 deletions(-)
+>   drivers/resctrl/mpam_devices.c  | 24 ++++++++++++++++++++++--
+>   drivers/resctrl/mpam_internal.h |  3 ++-
+>   2 files changed, 24 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 86abbac5e1ad..2d1cef824b8e 100644
+> index 2d1cef824b8e..eea082dfcddc 100644
 > --- a/drivers/resctrl/mpam_devices.c
 > +++ b/drivers/resctrl/mpam_devices.c
-> @@ -994,6 +994,7 @@ static void __ris_msmon_read(void *arg)
+> @@ -986,11 +986,18 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+>   	}
+>   }
+>   
+> +static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
+> +{
+> +	/* TODO: scaling, and long counters */
+> +	return BIT_ULL(hweight_long(MSMON___VALUE));
+> +}
+> +
+>   static void __ris_msmon_read(void *arg)
+>   {
+>   	u64 now;
+>   	bool nrdy = false;
+>   	bool config_mismatch;
+> +	bool overflow;
 >   	struct mon_read *m = arg;
 >   	struct mon_cfg *ctx = m->ctx;
 >   	struct mpam_msc_ris *ris = m->ris;
-> +	struct msmon_mbwu_state *mbwu_state;
->   	struct mpam_props *rprops = &ris->props;
->   	struct mpam_msc *msc = m->ris->vmsc->msc;
->   	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
-> @@ -1024,11 +1025,21 @@ static void __ris_msmon_read(void *arg)
->   		now = mpam_read_monsel_reg(msc, CSU);
->   		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
->   			nrdy = now & MSMON___NRDY;
-> +		now = FIELD_GET(MSMON___VALUE, now);
->   		break;
->   	case mpam_feat_msmon_mbwu:
->   		now = mpam_read_monsel_reg(msc, MBWU);
->   		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
->   			nrdy = now & MSMON___NRDY;
-> +		now = FIELD_GET(MSMON___VALUE, now);
+> @@ -1012,13 +1019,20 @@ static void __ris_msmon_read(void *arg)
+>   	 * This saves waiting for 'nrdy' on subsequent reads.
+>   	 */
+>   	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
+> +	overflow = cur_ctl & MSMON_CFG_x_CTL_OFLOW_STATUS;
 > +
-> +		if (nrdy)
-> +			break;
+>   	clean_msmon_ctl_val(&cur_ctl);
+>   	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+>   	config_mismatch = cur_flt != flt_val ||
+>   			  cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
+>   
+> -	if (config_mismatch)
+> +	if (config_mismatch) {
+>   		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
+> +		overflow = false;
+> +	} else if (overflow) {
+> +		mpam_write_monsel_reg(msc, CFG_MBWU_CTL,
+> +				      cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS);
+> +	}
+>   
+>   	switch (m->type) {
+>   	case mpam_feat_msmon_csu:
+> @@ -1038,7 +1052,13 @@ static void __ris_msmon_read(void *arg)
+>   
+>   		mbwu_state = &ris->mbwu_state[ctx->mon];
+>   
+> -		/* Include bandwidth consumed before the last hardware reset */
+> +		if (overflow)
+> +			mbwu_state->correction += mpam_msmon_overflow_val(m->type);
 > +
-> +		mbwu_state = &ris->mbwu_state[ctx->mon];
-> +
-> +		/* Include bandwidth consumed before the last hardware reset */
-> +		now += mbwu_state->correction;
+> +		/*
+> +		 * Include bandwidth consumed before the last hardware reset and
+> +		 * a counter size increment for each overflow.
+> +		 */
+>   		now += mbwu_state->correction;
 >   		break;
 >   	default:
->   		m->err = -EINVAL;
-> @@ -1041,7 +1052,6 @@ static void __ris_msmon_read(void *arg)
->   		return;
->   	}
->   
-> -	now = FIELD_GET(MSMON___VALUE, now);
->   	*m->val += now;
->   }
->   
-> @@ -1239,6 +1249,67 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
->   	mutex_unlock(&msc->part_sel_lock);
->   }
->   
-> +/* Call with msc cfg_lock held */
-> +static int mpam_restore_mbwu_state(void *_ris)
-> +{
-> +	int i;
-> +	struct mon_read mwbu_arg;
-> +	struct mpam_msc_ris *ris = _ris;
-> +
-> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
-> +		if (ris->mbwu_state[i].enabled) {
-> +			mwbu_arg.ris = ris;
-> +			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
-> +			mwbu_arg.type = mpam_feat_msmon_mbwu;
-> +
-> +			__ris_msmon_read(&mwbu_arg);
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/* Call with MSC cfg_lock held */
-> +static int mpam_save_mbwu_state(void *arg)
-> +{
-> +	int i;
-> +	u64 val;
-> +	struct mon_cfg *cfg;
-> +	u32 cur_flt, cur_ctl, mon_sel;
-> +	struct mpam_msc_ris *ris = arg;
-> +	struct msmon_mbwu_state *mbwu_state;
-> +	struct mpam_msc *msc = ris->vmsc->msc;
-> +
-> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
-> +		mbwu_state = &ris->mbwu_state[i];
-> +		cfg = &mbwu_state->cfg;
-> +
-> +		if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
-> +			return -EIO;
-> +
-> +		mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, i) |
-> +			  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
-> +		mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
-> +
-> +		cur_flt = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
-> +		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
-> +		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
-> +
-> +		val = mpam_read_monsel_reg(msc, MBWU);
-> +		mpam_write_monsel_reg(msc, MBWU, 0);
-> +
-> +		cfg->mon = i;
-> +		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
-> +		cfg->match_pmg = FIELD_GET(MSMON_CFG_x_CTL_MATCH_PMG, cur_ctl);
-> +		cfg->partid = FIELD_GET(MSMON_CFG_x_FLT_PARTID, cur_flt);
-> +		mbwu_state->correction += val;
-> +		mbwu_state->enabled = FIELD_GET(MSMON_CFG_x_CTL_EN, cur_ctl);
-> +		mpam_mon_sel_unlock(msc);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
->   {
->   	*reset_cfg = (struct mpam_config) {
-> @@ -1310,6 +1381,9 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
->   		 * for non-zero partid may be lost while the CPUs are offline.
->   		 */
->   		ris->in_reset_state = online;
-> +
-> +		if (mpam_is_enabled() && !online)
-> +			mpam_touch_msc(msc, &mpam_save_mbwu_state, ris);
->   	}
->   	mutex_unlock(&msc->cfg_lock);
->   }
-> @@ -1364,6 +1438,9 @@ static void mpam_reprogram_msc(struct mpam_msc *msc)
->   			mpam_touch_msc(msc, __write_config, &arg);
->   		}
->   		ris->in_reset_state = reset;
-> +
-> +		if (mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
-> +			mpam_touch_msc(msc, &mpam_restore_mbwu_state, ris);
->   	}
->   	mutex_unlock(&msc->cfg_lock);
->   }
-> @@ -2117,7 +2194,22 @@ static void mpam_unregister_irqs(void)
->   
->   static void __destroy_component_cfg(struct mpam_component *comp)
->   {
-> +	struct mpam_msc *msc;
-> +	struct mpam_vmsc *vmsc;
-> +	struct mpam_msc_ris *ris;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
->   	add_to_garbage(comp->cfg);
-> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
-> +		msc = vmsc->msc;
-> +
-> +		if (mpam_mon_sel_lock(msc)) {
-> +			list_for_each_entry(ris, &vmsc->ris, vmsc_list)
-> +				add_to_garbage(ris->mbwu_state);
-> +			mpam_mon_sel_unlock(msc);
-> +		}
-> +	}
->   }
->   
->   static void mpam_reset_component_cfg(struct mpam_component *comp)
-> @@ -2141,6 +2233,8 @@ static void mpam_reset_component_cfg(struct mpam_component *comp)
->   
->   static int __allocate_component_cfg(struct mpam_component *comp)
->   {
-> +	struct mpam_vmsc *vmsc;
-> +
->   	mpam_assert_partid_sizes_fixed();
->   
->   	if (comp->cfg)
-> @@ -2158,6 +2252,36 @@ static int __allocate_component_cfg(struct mpam_component *comp)
->   
->   	mpam_reset_component_cfg(comp);
->   
-> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
-> +		struct mpam_msc *msc;
-> +		struct mpam_msc_ris *ris;
-> +		struct msmon_mbwu_state *mbwu_state;
-> +
-> +		if (!vmsc->props.num_mbwu_mon)
-> +			continue;
-> +
-> +		msc = vmsc->msc;
-> +		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
-> +			if (!ris->props.num_mbwu_mon)
-> +				continue;
-> +
-> +			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
-> +					     sizeof(*ris->mbwu_state),
-> +					     GFP_KERNEL);
-> +			if (!mbwu_state) {
-> +				__destroy_component_cfg(comp);
-> +				return -ENOMEM;
-> +			}
-> +
-> +			init_garbage(&mbwu_state[0].garbage);
-> +
-> +			if (mpam_mon_sel_lock(msc)) {
-> +				ris->mbwu_state = mbwu_state;
-> +				mpam_mon_sel_unlock(msc);
-> +			}
-> +		}
-> +	}
-> +
->   	return 0;
->   }
->   
 > diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-> index d8f8e29987e0..1f2b04b7703e 100644
+> index 1f2b04b7703e..7c99d4f3dc9c 100644
 > --- a/drivers/resctrl/mpam_internal.h
 > +++ b/drivers/resctrl/mpam_internal.h
-> @@ -91,7 +91,10 @@ struct mpam_msc {
->   	 */
->   	struct mutex		part_sel_lock;
->   
-> -	/* cfg_lock protects the msc configuration. */
-> +	/*
-> +	 * cfg_lock protects the msc configuration and guards against mbwu_state
-> +	 * and save and restore racing.
-> +	 */
->   	struct mutex		cfg_lock;
+> @@ -209,7 +209,8 @@ struct msmon_mbwu_state {
+>   	struct mon_cfg	cfg;
 >   
 >   	/*
-> @@ -200,6 +203,19 @@ struct mon_cfg {
->   	enum mon_filter_options opts;
->   };
->   
-> +/* Changes to msmon_mbwu_state are protected by the msc's mon_sel_lock. */
-> +struct msmon_mbwu_state {
-> +	bool		enabled;
-> +	struct mon_cfg	cfg;
-> +
-> +	/*
-> +	 * The value to add to the new reading to account for power management.
-> +	 */
-> +	u64		correction;
-> +
-> +	struct mpam_garbage	garbage;
-> +};
-> +
->   struct mpam_class {
->   	/* mpam_components in this class */
->   	struct list_head	components;
-> @@ -293,6 +309,9 @@ struct mpam_msc_ris {
->   	/* parent: */
->   	struct mpam_vmsc	*vmsc;
->   
-> +	/* msmon mbwu configuration is preserved over reset */
-> +	struct msmon_mbwu_state	*mbwu_state;
-> +
->   	struct mpam_garbage	garbage;
->   };
+> -	 * The value to add to the new reading to account for power management.
+> +	 * The value to add to the new reading to account for power management,
+> +	 * and overflow.
+>   	 */
+>   	u64		correction;
 >   
 
 Reviewed-by: Zeng Heng <zengheng4@huawei.com>
