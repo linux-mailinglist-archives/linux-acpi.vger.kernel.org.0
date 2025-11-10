@@ -1,321 +1,294 @@
-Return-Path: <linux-acpi+bounces-18748-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18749-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D059CC483DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 18:14:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BF9C48423
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 18:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27EB54EE8D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 17:00:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43E8A4EBABD
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Nov 2025 17:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9720B296BD5;
-	Mon, 10 Nov 2025 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346082EC090;
+	Mon, 10 Nov 2025 17:10:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CAE296BB5;
-	Mon, 10 Nov 2025 17:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F05828B7DB;
+	Mon, 10 Nov 2025 17:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762794017; cv=none; b=ne3KBTv6Ll2brvDXahRncfKVhaigilBh2jE0MbXJGCxEMuWDiBrc4dQMvrXIso3welgnGP2HHRtLyN4qj4y1U20XO1+ozdVhi1E5rfdA3Dcce3cE1lf1f+n+XjFBHJ8ZXVTULXYS4crPtmhpQ6453hur6HV24ExwG0LhFc5mXko=
+	t=1762794650; cv=none; b=k3byTsrG/xzmcSaeEe2ykftYAqCmRCGxCvxISjJhd/QrTq6FjkIwBY2p7djV9eP4nEVvGedrkc7rTL9Idu68fyJ0RGRQKfEVpnAM1T0vxX/IaJbXkPLCghrq3/O9Hs3UV0/yGJ8vf4NBahsWdzpEWDSUuf1pEXFMkpNDVU4/ls0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762794017; c=relaxed/simple;
-	bh=pDf7LbWyoHkC5rxCj0kcxjkoV8JYdSXrz/xA+piMIko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HZM+jJmE252OhTfh3LcsG1BgW7XjtFl2R3edhfbb/7Dr62wTl+dlVYQnZjK9itYjknLcb7VA5A4QjiTpVRVqJ+x8/N1LVVRFPtCzPypj3iu3L+YTDfF7Dje+kCEOwqYQbAbV8r59Jc7oZ1mOsGl5qXBzdlDlxTiMTrzJzN5WXpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B45482B;
-	Mon, 10 Nov 2025 09:00:06 -0800 (PST)
-Received: from [192.168.20.93] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 743DC3F66E;
-	Mon, 10 Nov 2025 09:00:01 -0800 (PST)
-Message-ID: <1a52079f-e12f-430b-b3c5-cb184f73c6c7@arm.com>
-Date: Mon, 10 Nov 2025 11:00:00 -0600
+	s=arc-20240116; t=1762794650; c=relaxed/simple;
+	bh=Ye6ocu0lmBSHiBTs1d/lW5RA6u4Q8y6J4PsoIWQwW6c=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CXZ4zycPEI8FxUbKE9KfcTw2mJMwZ0uxH4OG1JbRz3nGQDUfVeMWcxuM/mZyr6wp/lMztO+dCznstV6U2sC9S0VKrsZyUir0b7ZidyNrR71GPOwwcvXIK7sTZ+ffQIQhYdcqDuSM0bAmh4RACcDWxk+ufXAxTF/qV9mnhAVjVrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d4x4h1wTRzHnGfG;
+	Tue, 11 Nov 2025 01:10:28 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id BA68B14033C;
+	Tue, 11 Nov 2025 01:10:43 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 10 Nov
+ 2025 17:10:42 +0000
+Date: Mon, 10 Nov 2025 17:10:41 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Ben Horgan <ben.horgan@arm.com>
+CC: <james.morse@arm.com>, <amitsinght@marvell.com>,
+	<baisheng.gao@unisoc.com>, <baolin.wang@linux.alibaba.com>,
+	<bobo.shaobowang@huawei.com>, <carl@os.amperecomputing.com>,
+	<catalin.marinas@arm.com>, <dakr@kernel.org>, <dave.martin@arm.com>,
+	<david@redhat.com>, <dfustini@baylibre.com>, <fenghuay@nvidia.com>,
+	<gregkh@linuxfoundation.org>, <gshan@redhat.com>, <guohanjun@huawei.com>,
+	<jeremy.linton@arm.com>, <kobak@nvidia.com>, <lcherian@marvell.com>,
+	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>, "Shaopeng Tan" <tan.shaopeng@jp.fujitsu.com>
+Subject: Re: [PATCH 11/33] arm_mpam: Add the class and component structures
+ for firmware described ris
+Message-ID: <20251110171041.00000a0d@huawei.com>
+In-Reply-To: <20251107123450.664001-12-ben.horgan@arm.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+	<20251107123450.664001-12-ben.horgan@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/33] ACPI / PPTT: Add acpi_pptt_cache_v1_full to use
- pptt cache as one structure
-To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
- guohanjun@huawei.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
-References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-4-ben.horgan@arm.com>
-Content-Language: en-US
-From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <20251107123450.664001-4-ben.horgan@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-Hi,
+On Fri,  7 Nov 2025 12:34:28 +0000
+Ben Horgan <ben.horgan@arm.com> wrote:
 
-On 11/7/25 6:34 AM, Ben Horgan wrote:
-> In actbl2.h, struct acpi_pptt_cache describes the fields in the original
-> cache type structure. In PPTT table version 3 a new field was added at the
-> end, cache_id. This is described in struct acpi_pptt_cache_v1. Introduce
-> the new, acpi_pptt_cache_v1_full to contain both these structures. Update
-> the existing code to use this new struct. This simplifies the code, removes
-> a non-standard use of ACPI_ADD_PTR and allows using the length in the
-> header to check if the cache_id is valid.
+> From: James Morse <james.morse@arm.com>
 > 
+> An MSC is a container of resources, each identified by their RIS index.
+> Some RIS are described by firmware to provide their position in the system.
+> Others are discovered when the driver probes the hardware.
+> 
+> To configure a resource it needs to be found by its class, e.g. 'L2'.
+> There are two kinds of grouping, a class is a set of components, which
+> are visible to user-space as there are likely to be multiple instances
+> of the L2 cache. (e.g. one per cluster or package)
+> 
+> Add support for creating and destroying structures to allow a hierarchy
+> of resources to be created.
+> 
+> CC: Ben Horgan <ben.horgan@arm.com>
+Hi Ben,
+
+Remember to clear out CC'ing yourself.
+
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Peter Newman <peternewman@google.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
 > Changes since v3:
-> New patch
+> Jonathan:
+> Code reordering.
+
+I'm guessing I may have sent things in a slightly less than ideal directly.
+
+Why can't we have ordering as follows (with no forwards declarations)
+
+mpam_class_alloc()
+mpam_class_destroy()
+//maybe other mpam_class stuff here
+mpam_component_alloc()
+mpam_component_destroy() - needs mpam_class_destroy()
+//maybe other mpam_component stuff here
+mpam_vmsc_alloc()
+mpam_vmsc_destroy() - needs mpam_component_destroy()
+//other mpam_vmsc here
+mpam_ris_create_locked() - needs all the destroys.
+mpam_ris_destroy() - needs mpam vmsc_destroy()
+
+I may well have missed a more complex dependency chain.
+
+Other than that, LGTM. Given any change in ordering can be trivially verified
+by building it and Gavin's comments seem simple to resolve.
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+
+> Comments.
 > ---
->   drivers/acpi/pptt.c | 104 ++++++++++++++++++++++++--------------------
->   1 file changed, 58 insertions(+), 46 deletions(-)
+>  drivers/resctrl/mpam_devices.c  | 393 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |  94 ++++++++
+>  include/linux/arm_mpam.h        |   5 +
+>  3 files changed, 491 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 1027ca3566b1..1ed2099c0d1a 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -21,6 +21,11 @@
->   #include <linux/cacheinfo.h>
->   #include <acpi/processor.h>
->   
-> +struct acpi_pptt_cache_v1_full {
-> +	struct acpi_pptt_cache		f;
-> +	struct acpi_pptt_cache_v1	extra;
-> +} __packed;
-
-This presumably won't match an acpia change, right? Those structures 
-appear to repeat the fields in the newer structure definitions.
-
-Maybe its best to keep this as close to an acpica change and do a quick 
-patch posting for acpica to assure they are onboard with the eventual 
-structure (IIRC it was fast a few years ago when I had a similar problem).
-
-That would avoid a bunch of the churn here of adding the 'f'/'extra' 
-dereferene which would then potentailly have to be reverted at some 
-point when acpica corrects the original structure.
-
-
-
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 6c6be133d73a..48a344d5cb43 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -36,6 +36,384 @@ struct srcu_struct mpam_srcu;
+>   */
+>  static atomic_t mpam_num_msc;
+>  
+> +/*
+> + * An MSC is a physical container for controls and monitors, each identified by
+> + * their RIS index. These share a base-address, interrupts and some MMIO
+> + * registers. A vMSC is a virtual container for RIS in an MSC that control or
+> + * monitor the same thing. Members of a vMSC are all RIS in the same MSC, but
+> + * not all RIS in an MSC share a vMSC.
+> + * Components are a group of vMSC that control or monitor the same thing but
+> + * are from different MSC, so have different base-address, interrupts etc.
+> + * Classes are the set components of the same type.
+> + *
+> + * The features of a vMSC is the union of the RIS it contains.
+> + * The features of a Class and Component are the common subset of the vMSC
+> + * they contain.
+> + *
+> + * e.g. The system cache may have bandwidth controls on multiple interfaces,
+> + * for regulating traffic from devices independently of traffic from CPUs.
+> + * If these are two RIS in one MSC, they will be treated as controlling
+> + * different things, and will not share a vMSC/component/class.
+> + *
+> + * e.g. The L2 may have one MSC and two RIS, one for cache-controls another
+> + * for bandwidth. These two RIS are members of the same vMSC.
+> + *
+> + * e.g. The set of RIS that make up the L2 are grouped as a component. These
+> + * are sometimes termed slices. They should be configured the same, as if there
+> + * were only one.
+> + *
+> + * e.g. The SoC probably has more than one L2, each attached to a distinct set
+> + * of CPUs. All the L2 components are grouped as a class.
+> + *
+> + * When creating an MSC, struct mpam_msc is added to the all mpam_all_msc list,
+> + * then linked via struct mpam_ris to a vmsc, component and class.
+> + * The same MSC may exist under different class->component->vmsc paths, but the
+> + * RIS index will be unique.
+> + */
+> +LIST_HEAD(mpam_classes);
 > +
->   static struct acpi_subtable_header *fetch_pptt_subtable(struct acpi_table_header *table_hdr,
->   							u32 pptt_ref)
->   {
-> @@ -50,10 +55,24 @@ static struct acpi_pptt_processor *fetch_pptt_node(struct acpi_table_header *tab
->   	return (struct acpi_pptt_processor *)fetch_pptt_subtable(table_hdr, pptt_ref);
->   }
->   
-> -static struct acpi_pptt_cache *fetch_pptt_cache(struct acpi_table_header *table_hdr,
-> -						u32 pptt_ref)
-> +static struct acpi_pptt_cache_v1_full *fetch_pptt_cache(struct acpi_table_header *table_hdr,
-> +							u32 pptt_ref)
->   {
-> -	return (struct acpi_pptt_cache *)fetch_pptt_subtable(table_hdr, pptt_ref);
-> +	return (struct acpi_pptt_cache_v1_full *)fetch_pptt_subtable(table_hdr, pptt_ref);
+> +/* List of all objects that can be free()d after synchronise_srcu() */
+> +static LLIST_HEAD(mpam_garbage);
+> +
+> +static inline void init_garbage(struct mpam_garbage *garbage)
+> +{
+> +	init_llist_node(&garbage->llist);
 > +}
 > +
-> +#define ACPI_PPTT_CACHE_V1_LEN sizeof(struct acpi_pptt_cache_v1_full)
+> +#define add_to_garbage(x)				\
+> +do {							\
+> +	__typeof__(x) _x = (x);				\
+> +	_x->garbage.to_free = _x;			\
+> +	llist_add(&_x->garbage.llist, &mpam_garbage);	\
+> +} while (0)
 > +
-> +/*
-> + * From PPTT table version 3, a new field cache_id was added at the end of
-> + * the cache type structure.  We now use struct acpi_pptt_cache_v1_full,
-> + * containing the cache_id, everywhere but must check validity before accessing
-> + * the cache_id.
-> + */
-> +static bool acpi_pptt_cache_id_is_valid(struct acpi_pptt_cache_v1_full *cache)
+> +static void mpam_free_garbage(void)
 > +{
-> +	return (cache->f.header.length >= ACPI_PPTT_CACHE_V1_LEN &&
-> +		cache->f.flags & ACPI_PPTT_CACHE_ID_VALID);
->   }
->   
->   static struct acpi_subtable_header *acpi_get_pptt_resource(struct acpi_table_header *table_hdr,
-> @@ -103,30 +122,30 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
->   					 unsigned int local_level,
->   					 unsigned int *split_levels,
->   					 struct acpi_subtable_header *res,
-> -					 struct acpi_pptt_cache **found,
-> +					 struct acpi_pptt_cache_v1_full **found,
->   					 unsigned int level, int type)
->   {
-> -	struct acpi_pptt_cache *cache;
-> +	struct acpi_pptt_cache_v1_full *cache;
->   
->   	if (res->type != ACPI_PPTT_TYPE_CACHE)
->   		return 0;
->   
-> -	cache = (struct acpi_pptt_cache *) res;
-> +	cache = (struct acpi_pptt_cache_v1_full *)res;
->   	while (cache) {
->   		local_level++;
->   
-> -		if (!(cache->flags & ACPI_PPTT_CACHE_TYPE_VALID)) {
-> -			cache = fetch_pptt_cache(table_hdr, cache->next_level_of_cache);
-> +		if (!(cache->f.flags & ACPI_PPTT_CACHE_TYPE_VALID)) {
-> +			cache = fetch_pptt_cache(table_hdr, cache->f.next_level_of_cache);
->   			continue;
->   		}
->   
->   		if (split_levels &&
-> -		    (acpi_pptt_match_type(cache->attributes, ACPI_PPTT_CACHE_TYPE_DATA) ||
-> -		     acpi_pptt_match_type(cache->attributes, ACPI_PPTT_CACHE_TYPE_INSTR)))
-> +		    (acpi_pptt_match_type(cache->f.attributes, ACPI_PPTT_CACHE_TYPE_DATA) ||
-> +		     acpi_pptt_match_type(cache->f.attributes, ACPI_PPTT_CACHE_TYPE_INSTR)))
->   			*split_levels = local_level;
->   
->   		if (local_level == level &&
-> -		    acpi_pptt_match_type(cache->attributes, type)) {
-> +		    acpi_pptt_match_type(cache->f.attributes, type)) {
->   			if (*found != NULL && cache != *found)
->   				pr_warn("Found duplicate cache level/type unable to determine uniqueness\n");
->   
-> @@ -138,12 +157,12 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
->   			 * cache node.
->   			 */
->   		}
-> -		cache = fetch_pptt_cache(table_hdr, cache->next_level_of_cache);
-> +		cache = fetch_pptt_cache(table_hdr, cache->f.next_level_of_cache);
->   	}
->   	return local_level;
->   }
->   
-> -static struct acpi_pptt_cache *
-> +static struct acpi_pptt_cache_v1_full *
->   acpi_find_cache_level(struct acpi_table_header *table_hdr,
->   		      struct acpi_pptt_processor *cpu_node,
->   		      unsigned int *starting_level, unsigned int *split_levels,
-> @@ -152,7 +171,7 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
->   	struct acpi_subtable_header *res;
->   	unsigned int number_of_levels = *starting_level;
->   	int resource = 0;
-> -	struct acpi_pptt_cache *ret = NULL;
-> +	struct acpi_pptt_cache_v1_full *ret = NULL;
->   	unsigned int local_level;
->   
->   	/* walk down from processor node */
-> @@ -324,14 +343,14 @@ static u8 acpi_cache_type(enum cache_type type)
->   	}
->   }
->   
-> -static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *table_hdr,
-> -						    u32 acpi_cpu_id,
-> -						    enum cache_type type,
-> -						    unsigned int level,
-> -						    struct acpi_pptt_processor **node)
-> +static struct acpi_pptt_cache_v1_full *acpi_find_cache_node(struct acpi_table_header *table_hdr,
-> +							    u32 acpi_cpu_id,
-> +							    enum cache_type type,
-> +							    unsigned int level,
-> +							    struct acpi_pptt_processor **node)
->   {
->   	unsigned int total_levels = 0;
-> -	struct acpi_pptt_cache *found = NULL;
-> +	struct acpi_pptt_cache_v1_full *found = NULL;
->   	struct acpi_pptt_processor *cpu_node;
->   	u8 acpi_type = acpi_cache_type(type);
->   
-> @@ -355,7 +374,6 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
->    * @this_leaf: Kernel cache info structure being updated
->    * @found_cache: The PPTT node describing this cache instance
->    * @cpu_node: A unique reference to describe this cache instance
-> - * @revision: The revision of the PPTT table
->    *
->    * The ACPI spec implies that the fields in the cache structures are used to
->    * extend and correct the information probed from the hardware. Lets only
-> @@ -364,23 +382,20 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
->    * Return: nothing. Side effect of updating the global cacheinfo
->    */
->   static void update_cache_properties(struct cacheinfo *this_leaf,
-> -				    struct acpi_pptt_cache *found_cache,
-> -				    struct acpi_pptt_processor *cpu_node,
-> -				    u8 revision)
-> +				    struct acpi_pptt_cache_v1_full *found_cache,
-> +				    struct acpi_pptt_processor *cpu_node)
->   {
-> -	struct acpi_pptt_cache_v1* found_cache_v1;
-> -
->   	this_leaf->fw_token = cpu_node;
-> -	if (found_cache->flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
-> -		this_leaf->size = found_cache->size;
-> -	if (found_cache->flags & ACPI_PPTT_LINE_SIZE_VALID)
-> -		this_leaf->coherency_line_size = found_cache->line_size;
-> -	if (found_cache->flags & ACPI_PPTT_NUMBER_OF_SETS_VALID)
-> -		this_leaf->number_of_sets = found_cache->number_of_sets;
-> -	if (found_cache->flags & ACPI_PPTT_ASSOCIATIVITY_VALID)
-> -		this_leaf->ways_of_associativity = found_cache->associativity;
-> -	if (found_cache->flags & ACPI_PPTT_WRITE_POLICY_VALID) {
-> -		switch (found_cache->attributes & ACPI_PPTT_MASK_WRITE_POLICY) {
-> +	if (found_cache->f.flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
-> +		this_leaf->size = found_cache->f.size;
-> +	if (found_cache->f.flags & ACPI_PPTT_LINE_SIZE_VALID)
-> +		this_leaf->coherency_line_size = found_cache->f.line_size;
-> +	if (found_cache->f.flags & ACPI_PPTT_NUMBER_OF_SETS_VALID)
-> +		this_leaf->number_of_sets = found_cache->f.number_of_sets;
-> +	if (found_cache->f.flags & ACPI_PPTT_ASSOCIATIVITY_VALID)
-> +		this_leaf->ways_of_associativity = found_cache->f.associativity;
-> +	if (found_cache->f.flags & ACPI_PPTT_WRITE_POLICY_VALID) {
-> +		switch (found_cache->f.attributes & ACPI_PPTT_MASK_WRITE_POLICY) {
->   		case ACPI_PPTT_CACHE_POLICY_WT:
->   			this_leaf->attributes = CACHE_WRITE_THROUGH;
->   			break;
-> @@ -389,8 +404,8 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
->   			break;
->   		}
->   	}
-> -	if (found_cache->flags & ACPI_PPTT_ALLOCATION_TYPE_VALID) {
-> -		switch (found_cache->attributes & ACPI_PPTT_MASK_ALLOCATION_TYPE) {
-> +	if (found_cache->f.flags & ACPI_PPTT_ALLOCATION_TYPE_VALID) {
-> +		switch (found_cache->f.attributes & ACPI_PPTT_MASK_ALLOCATION_TYPE) {
->   		case ACPI_PPTT_CACHE_READ_ALLOCATE:
->   			this_leaf->attributes |= CACHE_READ_ALLOCATE;
->   			break;
-> @@ -415,13 +430,11 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
->   	 * specified in PPTT.
->   	 */
->   	if (this_leaf->type == CACHE_TYPE_NOCACHE &&
-> -	    found_cache->flags & ACPI_PPTT_CACHE_TYPE_VALID)
-> +	    found_cache->f.flags & ACPI_PPTT_CACHE_TYPE_VALID)
->   		this_leaf->type = CACHE_TYPE_UNIFIED;
->   
-> -	if (revision >= 3 && (found_cache->flags & ACPI_PPTT_CACHE_ID_VALID)) {
-> -		found_cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
-> -	                                      found_cache, sizeof(struct acpi_pptt_cache));
-> -		this_leaf->id = found_cache_v1->cache_id;
-> +	if (acpi_pptt_cache_id_is_valid(found_cache)) {
-> +		this_leaf->id = found_cache->extra.cache_id;
->   		this_leaf->attributes |= CACHE_ID;
->   	}
->   }
-> @@ -429,7 +442,7 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
->   static void cache_setup_acpi_cpu(struct acpi_table_header *table,
->   				 unsigned int cpu)
->   {
-> -	struct acpi_pptt_cache *found_cache;
-> +	struct acpi_pptt_cache_v1_full *found_cache;
->   	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
->   	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
->   	struct cacheinfo *this_leaf;
-> @@ -445,8 +458,7 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
->   		pr_debug("found = %p %p\n", found_cache, cpu_node);
->   		if (found_cache)
->   			update_cache_properties(this_leaf, found_cache,
-> -						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)),
-> -						table->revision);
-> +						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)));
->   
->   		index++;
->   	}
+> +	struct mpam_garbage *iter, *tmp;
+> +	struct llist_node *to_free = llist_del_all(&mpam_garbage);
+> +
+> +	if (!to_free)
+> +		return;
+> +
+> +	synchronize_srcu(&mpam_srcu);
+> +
+> +	llist_for_each_entry_safe(iter, tmp, to_free, llist) {
+> +		if (iter->pdev)
+> +			devm_kfree(&iter->pdev->dev, iter->to_free);
+> +		else
+> +			kfree(iter->to_free);
+> +	}
+> +}
+> +
+> +static struct mpam_vmsc *
+> +mpam_vmsc_alloc(struct mpam_component *comp, struct mpam_msc *msc)
+> +{
+> +	struct mpam_vmsc *vmsc;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	vmsc = kzalloc(sizeof(*vmsc), GFP_KERNEL);
+> +	if (!vmsc)
+> +		return ERR_PTR(-ENOMEM);
+> +	init_garbage(&vmsc->garbage);
+> +
+> +	INIT_LIST_HEAD_RCU(&vmsc->ris);
+> +	INIT_LIST_HEAD_RCU(&vmsc->comp_list);
+> +	vmsc->comp = comp;
+> +	vmsc->msc = msc;
+> +
+> +	list_add_rcu(&vmsc->comp_list, &comp->vmsc);
+> +
+> +	return vmsc;
+> +}
+> +
+> +static void mpam_component_destroy(struct mpam_component *comp);
+> +
+> +static void mpam_vmsc_destroy(struct mpam_vmsc *vmsc)
+> +{
+> +	struct mpam_component *comp = vmsc->comp;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	list_del_rcu(&vmsc->comp_list);
+> +	add_to_garbage(vmsc);
+> +
+> +	if (list_empty(&comp->vmsc))
+> +		mpam_component_destroy(comp);
+> +}
+> +
+> +static struct mpam_vmsc *
+> +mpam_vmsc_find(struct mpam_component *comp, struct mpam_msc *msc)
+> +{
+> +	struct mpam_vmsc *vmsc;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+> +		if (vmsc->msc->id == msc->id)
+> +			return vmsc;
+> +	}
+> +
+> +	return mpam_vmsc_alloc(comp, msc);
+> +}
+> +
+> +static struct mpam_component *
+> +mpam_component_alloc(struct mpam_class *class, int id)
+> +{
+> +	struct mpam_component *comp;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	comp = kzalloc(sizeof(*comp), GFP_KERNEL);
+> +	if (!comp)
+> +		return ERR_PTR(-ENOMEM);
+> +	init_garbage(&comp->garbage);
+> +
+> +	comp->comp_id = id;
+> +	INIT_LIST_HEAD_RCU(&comp->vmsc);
+> +	/* affinity is updated when ris are added */
+> +	INIT_LIST_HEAD_RCU(&comp->class_list);
+> +	comp->class = class;
+> +
+> +	list_add_rcu(&comp->class_list, &class->components);
+> +
+> +	return comp;
+> +}
+
+
 
 
