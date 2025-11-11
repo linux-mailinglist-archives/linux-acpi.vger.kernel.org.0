@@ -1,235 +1,348 @@
-Return-Path: <linux-acpi+bounces-18773-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18774-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077B8C4D634
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 12:25:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8EDC4D6A9
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 12:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59A974F6BC3
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 11:20:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 988643A6F65
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 11:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9983502A6;
-	Tue, 11 Nov 2025 11:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WtNyA4/d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7043570B7;
+	Tue, 11 Nov 2025 11:30:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010024.outbound.protection.outlook.com [40.93.198.24])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB9335071;
-	Tue, 11 Nov 2025 11:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762860018; cv=fail; b=IPzrER8Qv3Pq5138I0RY1GWSLGZXnYRNeCunWNMheP6tu29QLo1Yg8jqP91wjjlvtbHKA6Zx7KoNZCbRcVRBGcV0uAcK25VaH1v7yunBh+qNF8qL7nUoNsy7jZpxbe192C69h8AJPKb5eYgSjzj4LY2ZS1bn2mu2uNsvK2M1Ld4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762860018; c=relaxed/simple;
-	bh=7dZhR3ccJ6BW0q3VoQPkWh2cdNrNT0Y75O1j8KPJXXU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gkGcYa+niS2OrRufvCAI/rKmimzRkfj3tCOgLjElUoT6f0ktdx4Ye0W3dOp08I4kLU1hKd3d7+FNEBDjtDglw0FS1ysAqnRm6dN69UnOk72XcWDwuCbxPGqyDwFT4Qd8WJygAWAuP3KFGJ/zrkLKeuIyh5+iuTGjY4b6SP8Dx1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WtNyA4/d; arc=fail smtp.client-ip=40.93.198.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e7C3DQ0qvBSLSyG+IMfxNgREA0hMYbM3t5gnboXGeLqWWIwgBvjOJBdWqL6ukll12GqU/mzO3ptgvr64HfEW570Uluru+Td6QqxzjWf2TIA6TT/shony5CQLoyPjwX96KeTfzu6OmbfkmPGurLw2aIHsBwQJAuWRjQyKS8E6KOELGHpiT4s7ftd5Dg+AmwL9NYyIo9qMjnuZ6+fc/D3iAr/jfg4RjcOyOnr1QMy3JpGCtwi22RqyocTgkPN0XKhDZse4QQQYqcGpx8iCOV9GC6TEEpLGTiriwBlURe3A4lXLY4uNIx7dUChD0cfix5kyiaDEEnloEfUOeDXb9b5MKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V5xrnzSjvtjycs8BSdoTQsRO5lGbbBaow81YVOkGl+k=;
- b=ulU6OiPFF/7aMmEhzIr5yJTMvhz+bw1lHRvBmclcVAyxiVgrVJdPlHMzl3kBpDgpPXwx06lTW8/ijCNJeonYbvoqArO5U/lWea8LicCWXNvukbiCef85tKC8W8/PAOeXk5twPvgQwQCVL74wKquBGHWnKzAn7Vy9sbOCld6PNrXvlkUWXCxLJ27cj7NaD7rSG/gXAddjwHW58haBjKLf9M3oUYP480fZhEMu3H1MK1p0OCW5M3cQnFhJ580Trfhv9miOVWcmS37/iUS0TMg+7ShGpv5Vbj8ziMeFZPP8rCE1662VKFb0NGvsp338W8baTC/NA819GtVvzEa5HNowbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V5xrnzSjvtjycs8BSdoTQsRO5lGbbBaow81YVOkGl+k=;
- b=WtNyA4/dhk9aCjt2KbC/03wZ8km3fv/CeHFJyfwBAPsry+3Kr862AlDdL8la5lvaJCx0fKxSTuG8ns2pwPA27ISEOAjarCop/4dQRiy6kYZC0RhFSq9iM0lLX8oHkZkM1Pc6oOSR9d8eFJr1ROHzMY+lRDEGOlDPH0mpgpO7KYFito6UsGawgD+NM+Lvo6/zv4g2Xc39ly7PDlEKIrzLllHKtw8qD+02E9MwKA3MDGdyeuE0EyCD6UK2C+NEn0X2rWgNe6dRSUmGjgXkCxS7zb9mKTNUrC7w4YdkShQrwKzBlhkJDPykOwFFnqvYy6ifszIIN5eYv9i3WJeU+bFQnw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com (2603:10b6:408:11c::18)
- by IA1PR12MB8189.namprd12.prod.outlook.com (2603:10b6:208:3f0::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 11:20:12 +0000
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::44e5:415d:e1a8:6e42]) by BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::44e5:415d:e1a8:6e42%7]) with mapi id 15.20.9320.013; Tue, 11 Nov 2025
- 11:20:12 +0000
-Message-ID: <69767b5b-8699-4d45-8ab7-b8965d750bc2@nvidia.com>
-Date: Tue, 11 Nov 2025 16:50:00 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/8] cpufreq: CPPC: Add generic helpers for sysfs
- show/store
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
- corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com,
- rdunlap@infradead.org, ray.huang@amd.com, gautham.shenoy@amd.com,
- mario.limonciello@amd.com, perry.yuan@amd.com, ionela.voinescu@arm.com,
- zhanjie9@hisilicon.com, linux-pm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
- acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
- vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
- nhartman@nvidia.com, bbasu@nvidia.com, sumitg@nvidia.com
-References: <20251105113844.4086250-1-sumitg@nvidia.com>
- <20251105113844.4086250-2-sumitg@nvidia.com>
- <s5xt53i6c5wryje5x6zlq75r3lx6nxb7pat6umnghpnldi4p2h@jaeew4iimdd3>
-Content-Language: en-US
-From: Sumit Gupta <sumitg@nvidia.com>
-In-Reply-To: <s5xt53i6c5wryje5x6zlq75r3lx6nxb7pat6umnghpnldi4p2h@jaeew4iimdd3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0065.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ad::9) To BN9PR12MB5179.namprd12.prod.outlook.com
- (2603:10b6:408:11c::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC92FD1CE;
+	Tue, 11 Nov 2025 11:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762860625; cv=none; b=aI4PWKZ40wIOSJaY3oLd3pS9tdIX6+v83n3bXBPTrtTEq7Gy+hjMEyxPI7G6HtNFtDHgHPRIRsd/hBiLOXtvlQm2HpYchq7S5kXHxqn2PbVaQ1dw/4+0Uemj+pIlbIK3Ibxk6aLLi2gh7jrxT1h9wG2i1BYV8OmOKwi5A+wLfpg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762860625; c=relaxed/simple;
+	bh=mMDVYG9hHoSFptMqJptOJhed/7/j/h46E4OUb7rvRgQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kyJknIYi/qxk+WJ2GMUmrKQYdJwUVibgBdK6OjGKmw/KFfmE0FccR4lKSlylDQ9B3OaOzzk5z4vsHNkPRPKFachNfxUq8qm/jIq/xFVV4DuJOKb5AHutMBJK88OSbpDkvgyv3eogR52m9Hn8CKf73k5olETvLz1f1Q6cTc1aJps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4d5PRY3JTXzcZyM;
+	Tue, 11 Nov 2025 19:28:25 +0800 (CST)
+Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4457D14027A;
+	Tue, 11 Nov 2025 19:30:13 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
+ (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 11 Nov
+ 2025 19:30:11 +0800
+Message-ID: <e439d370-48a3-40c3-ae54-67d2f844bae5@hisilicon.com>
+Date: Tue, 11 Nov 2025 19:30:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5179:EE_|IA1PR12MB8189:EE_
-X-MS-Office365-Filtering-Correlation-Id: be94955e-c082-405e-295f-08de2114479c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L3IrVlRMUHN2REIxUmRQUjIvYW40bUVWdDNaNjJMUkx6eHhYaGxncVZHREtH?=
- =?utf-8?B?M0tCT2poNnhreWRvekx5MzhOUU9oVVNyeWlHU3VVc0d1K0NRY25XcEoyT1lq?=
- =?utf-8?B?MlhvRjd1VkFrTkNHMDlSa2NIT1RyaEhUYjFRSVBpZjhRZ1huZ2NFb1lXRlJh?=
- =?utf-8?B?c0lwSmZzNlZZdjJGSHBRKzZ6RXo4MTczbDN6UGRFZisrNHZacGxRdVZmaFNa?=
- =?utf-8?B?amt6MHN0WGdLSXBNcFpzVG56TitVSTVrdUcxdi9rSm1UZ01XSFJaU3FsVTlB?=
- =?utf-8?B?YWphVVhRell2bkJwbmdsWVoxYWdlK2lseTFpdUtrUHp3dmhLNWo2WnZ1c2o2?=
- =?utf-8?B?WkdhSkNNUUg3dzcyMjRRWi9BMFVFcUhqOWMzbHhCK1VSUUFuZXhCckdjdE9j?=
- =?utf-8?B?Yitld2doNmo5cHdMd2ZoeGxJNlRuVW02RDNEMUUyNUVGbTZjNFExSDhmUHgv?=
- =?utf-8?B?aGdUUDF6VVFxeTRmNVVGU1BWVm1HNEVmSmdxYjk2Ri84TUY4L29oTUtLS3Jy?=
- =?utf-8?B?RHdrandTOFpuYU0zT1NKTktFQ1NOMVNHV3UwUittMHhOZnQ2R1pQYi9KeFRI?=
- =?utf-8?B?bDF1cFBPRmo5YmZERjVnMkVYSlVhN2g4eDNIKzNNbDBIaEc3Y2NDdmswZjJv?=
- =?utf-8?B?WmVTVUpDOERLTXYwUEIrWkkzSjJiL0JsWmhYOC83Zk12N2lhZVQzejZFRmRa?=
- =?utf-8?B?UzgrSVk4NWF3ZndLd2dsOFdSQUNVMy9kNHcrQkhuS3NsR0ZWa0ZkSkFIQXpa?=
- =?utf-8?B?Y0tHQVhhNTZDSStPMUtUWXFPNVJzSWlzS3N2VEFPcUZiYSthVmZWRmVsd1Iw?=
- =?utf-8?B?eldZWXZ6L0F4T2F4S1NjdW1wNjBCUDkxbHFQZ3lDSk0wZ3ZIT3AzVjhQb1pZ?=
- =?utf-8?B?Q0FqN2wwV045YUJoM1ZLbnU2UDVDZHArYkFHS0xvaGNWQ051eHphNHdjZzVr?=
- =?utf-8?B?V1RKVTBrR21mc1JobXg3Q3hpQjI4WWhGaTV6Yi8vclZpd0ExdUhaT0EvOXJJ?=
- =?utf-8?B?bm1tRFB2TjE1YllzcklKeW05RXhWOURpWjR1elE2b1cwUFpHaTE3RGtRSHNk?=
- =?utf-8?B?VUM2OFJQeEQ0LzhnN3RGU1E0OXNkVk9TbmxVaEhYNjJDWHpGWTJUNm1TYjU0?=
- =?utf-8?B?cUNsTHFnY3ByN0ZKQUlNd2s4RUJQVnpZZWxRTFVEc250cUpwcXc0blFBd2Vq?=
- =?utf-8?B?SkhnRUU1U3dtZ3A4MzlJNmZOUmlMdWVraFV4SmlYOWpjcXZGMmpyK25tOTVQ?=
- =?utf-8?B?Z1YrN3RrWVgyRHhSdzl3Z05YOE5JQ1pTOVI0Mk1jZXVUQ011em03c0JNRjgz?=
- =?utf-8?B?Z0psY01uM2xXTkZUdmFYOFgxVGxBNUt4dC94U2Q1NWxmSkM5Nk0rRkt1T281?=
- =?utf-8?B?bThWTzEzUmI2Z0xUYk9qU0dWVXdLYURBVTlCME12WnprcW05azE2UDViTURH?=
- =?utf-8?B?dkh2ekZlOXcvUWFTS3QyS25pMWdSY1hMR2YrK2NJeTVrcUI3Zmg2SWgvK29i?=
- =?utf-8?B?NHVSZ2tzMnBscURCUW1uZlI2THplemFqenJNZlJiVjYzQTYvemFjb3MyaDdy?=
- =?utf-8?B?alNMU2dRUlFyaTVBQUFHcEp6bE1DTEdDbHFzYTBpVlBNSVFkTnZpWGc2ZURW?=
- =?utf-8?B?MkNSRUl3RHVVSmUyUzJOaGFRNVdlbTdDVDFXYmxCaGI3RVI3cFlNRXhpcmww?=
- =?utf-8?B?OTVBNzZLN2Y3S2pBamcvdk9TUVppbmxpaFVycU9NWVZZN000MGNVQ1Eva2xG?=
- =?utf-8?B?ekZKcEFUZmZHdUJtc1RMMmhPWU1ib3Z5ZE51SEVpaE8wd1U1Y25SZkxmRmlG?=
- =?utf-8?B?bUtUQm9KbXpBNkdKTW4zc1owZXZ0c2RkNGxucHpFYmV4ZllwZnVISjhJMnkr?=
- =?utf-8?B?NjkwaEUwUGdmNjJmOXk0b2oxTko0SlhOV1hIS3ptcFZteXN6ZWZ1a2NUT25N?=
- =?utf-8?Q?y6PFiJTe+V1LER+gLDgDXQhVwevZp+ZN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a2FBcDJ3S0hQSlZKTjRCK24vOCt3WEIzMUh4RFhZeDkrWCsxdUFpcFNQRzZK?=
- =?utf-8?B?YUtEUklSSGwxZ0gzSUdCOXZ3cUFqeGNSOG1ZM3JrUisxVTRtck1Hb0VnZk5Z?=
- =?utf-8?B?encyVFhxaWYxNW5EMlF3RldDYlpuV1pTUGVDa05MZGxFNy9Ed05NOHlxZ3Ax?=
- =?utf-8?B?Q0xUZWk3VkVuc2dPNGZzeVd2dXExVzVpSkNnUDE3bXVxRUt6dkM3bDhwNFBF?=
- =?utf-8?B?QlRDVEZOU2FycXRONllsVG5XSFB1VUYrMHRFVzl4NmRyOFFPcXBiTFU1MGph?=
- =?utf-8?B?ZlRWVHpBS3V0YStWc2UvYk0rVXk4U0NockdDaUtBQ3ZPNHUwMmI3OVR4aUdM?=
- =?utf-8?B?VlltaXZ4Wmd6S2hwSzdpUHo2ZENzVDFxRUs5QXRla0NlOVpmeVpZZHJlUEJY?=
- =?utf-8?B?ZkhvVmdUZlY2RnA5SWwrQ2pUWTV5bVFKNVNPWFN3R1dvZGVFY0FMUGkwRE5Z?=
- =?utf-8?B?Q3NpY1QyUUxaWURMOWVOREVjVXNaWWl5Z2IwTGNoMVkvSjEvcGovcWRZY2pi?=
- =?utf-8?B?OVpFM1RyaUt0ZTQ5aDNHSUppUkovdFRaazZxNHhKMWdNKzE2ZnFwb24xYzNo?=
- =?utf-8?B?TjRSWGlXYjU0eU15TVpoTnBvZlJIMG9XcXhIekl6TWtmaDY3YmppdGdHYU8z?=
- =?utf-8?B?TjRpSjFLR1NQVXlhR055TmFrZkRmS3FTSEtwc0U1VUdrdkduVEd6ZndpLzZI?=
- =?utf-8?B?OEsrNlMwc01BS21nTWdzVnl5ZDhSWXI2b0l3a0JGSW5rU2ZEWHJwZjV6Q1RQ?=
- =?utf-8?B?a3k5QlJQYWk2RlI2RHlCNk1KaEQ3UFl0NG9YTkFta1Y4cFJiQlhqNEludUZE?=
- =?utf-8?B?eWtPMSs0a3ViZGk5WU1yNHdMa0tlWGNoZ2tQOE5FYU5JanpILzJ6SDNadFVX?=
- =?utf-8?B?ZGdlODdMYmxVZ05NMitJNUMxSVRldW5pVkVZbC9QRGw0RjNsZ3FNYnNJbFFI?=
- =?utf-8?B?QUx2aDlyNlB2clFWVE9tOE5wL2xxODZPNGY3RlpzS0hPQkZxQ0VXR2NtUWpT?=
- =?utf-8?B?cUFvY096QlowTUh2eUJCQzJ4QnZUSmNUOThzNXJwTWNqYWN6T0ROanBVaEdR?=
- =?utf-8?B?S3p4eVdsNWlVc2hISXJaT1FTaHVpVnA0akRmTFZOaHlPVVFERkxWa0g4VXor?=
- =?utf-8?B?Vko0R245N1BWSnc4Yis4NHp1Nnk5b0VsQkRBbUNteUJhb3M3b0ZTaVV4bHV6?=
- =?utf-8?B?aWRqcXg5R3kxTFJnL0Z6RWFGTGFKc2JEWlR4cjRxOGZiL3hrMS96U0Nla3FP?=
- =?utf-8?B?Znd6TDRtMXNUUlV1VjQrZ3ZiZzgvNkZVNzFueVZqcmNEdVFkRnlacXgvbi9P?=
- =?utf-8?B?Tzdncis5bzN6em05dXZCbDNlWUxYVFk0MGxQZnd0Z09CbE5YMCtPUC9zZE5k?=
- =?utf-8?B?VGdjNGlTaU5mVXNUdkwxdHJuUWJLLzl3VEZaS2JyRm1vNUpjV282ZW54aG9u?=
- =?utf-8?B?S3pyYjJ0WGVqcyt4eCsvMFhqY2FXODV3aW5BY2pEU0Jhd2N5NHoybWN1ci9O?=
- =?utf-8?B?bUcxcHF6L3RqanYyZEVheG10ckJqWFlqZkpwOForbmVleFc0SVl5MDZFbjVG?=
- =?utf-8?B?aGloT2gwaTZJQnlEVGw1d1pvSkpSVDBtZHNteXVyWlladFNzVzJEVzAzaHpJ?=
- =?utf-8?B?Uzk5T3Q5SEZkcURJcVRTai8yS3ROMEpQTitKVmFmS3hscTdwcFBOU1RRSWZi?=
- =?utf-8?B?d0lBUjlqdmcrZEptUkdYWUxqVkV2bFVTOFE1UzRjS0laQ0JObi85Mk9XVlFp?=
- =?utf-8?B?ZDAvZ3Y4ZEw2aUkwWWVQWEowL0swaXhMQUlUMHFzUnhDc29iZklKQnVKYWJU?=
- =?utf-8?B?cHR3cGtkY1hlTC9kTFQ5a1ZXYitqNlNZWFh2TUkwcFJNM3orUmNrNEtmV3hp?=
- =?utf-8?B?UlRsWXQwQTZWVVozMGdTT2tmbXA5dXV0OUpFOGR1Wmt4QTJDc3Y4eVlCYmpB?=
- =?utf-8?B?d21MN3RIOGtIbmZ6YWVGRGlaY3BjM2NKckM1Nys5YzJjdUxFK3FaMGh3ZThz?=
- =?utf-8?B?R2Q1YW9ua3hZMVV0SlFCakNTSDhldE82SGQyeDJ5enlUYytuVDZKK3hCcnEr?=
- =?utf-8?B?ckY1WEJVcXcybHBRZFBWbDBTYWZySHlndk9CblpPV1UyQkJtRndvRGkvSlFH?=
- =?utf-8?Q?etUbYdQQKbaicmly8hukBj/fn?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be94955e-c082-405e-295f-08de2114479c
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5179.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2025 11:20:12.1107
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8Po7pqdRtPExnQafUhhgkYwW6V9Q0BM8OXLB0c0dH1/fu2NwufAozXDtbHAWuVjv/9wLDsm26MX3q3RV6gFpbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8189
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] cpufreq: CPPC: Update FIE arch_freq_scale in ticks for
+ non-PCC regs
+To: Beata Michalska <beata.michalska@arm.com>
+CC: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
+	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+	<zhenglifeng1@huawei.com>, <prime.zeng@hisilicon.com>,
+	<jonathan.cameron@huawei.com>
+References: <20251104065039.1675549-1-zhanjie9@hisilicon.com>
+ <aRIXlSOPzAy1nXUQ@arm.com>
+From: Jie Zhan <zhanjie9@hisilicon.com>
+Content-Language: en-US
+In-Reply-To: <aRIXlSOPzAy1nXUQ@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr500004.china.huawei.com (7.202.195.141)
 
 
-On 10/11/25 16:26, Viresh Kumar wrote:
-> External email: Use caution opening links or attachments
->
->
-> On 05-11-25, 17:08, Sumit Gupta wrote:
->> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->> -static ssize_t show_auto_act_window(struct cpufreq_policy *policy, char *buf)
->> +static ssize_t cppc_cpufreq_sysfs_show_u64(unsigned int cpu, int (*get_func)(int, u64 *), char *buf)
->>   {
->>        u64 val;
->> -     int ret;
->> -
->> -     ret = cppc_get_auto_act_window(policy->cpu, &val);
->> +     int ret = get_func(cpu, &val);
-> Why no casting required here, when you need it ...
 
-Will add casting here.
-
-     int ret = get_func((int)cpu, &val);
-
->> -static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
->> -                                  const char *buf, size_t count)
->> +static ssize_t cppc_cpufreq_sysfs_store_u64(unsigned int cpu, int (*set_func)(int, u64),
->> +                                         const char *buf, size_t count)
->>   {
->> -     u64 usec;
->> +     u64 val;
->>        int ret;
+On 11/11/2025 12:49 AM, Beata Michalska wrote:
+> Hi Jie,
+> On Tue, Nov 04, 2025 at 02:50:39PM +0800, Jie Zhan wrote:
+>> Currently, the CPPC Frequency Invariance Engine (FIE) is invoked from the
+>> scheduler tick but defers the update of arch_freq_scale to a separate
+>> thread because cppc_get_perf_ctrs() would sleep if the CPC regs are in PCC.
 >>
->> -     ret = kstrtou64(buf, 0, &usec);
->> +     ret = kstrtou64(buf, 0, &val);
->>        if (ret)
->>                return ret;
+>> However, this deferred update mechanism is unnecessary and introduces extra
+>> overhead for non-PCC register spaces (e.g. System Memory or FFH), where
+>> accessing the regs won't sleep and can be safely performed from the tick
+>> context.
 >>
->> -     ret = cppc_set_auto_act_window(policy->cpu, usec);
->> -     if (ret)
->> -             return ret;
->> +     ret = set_func((int)cpu, val);
-> ... here ?
->
-> --
-> viresh
+>> Furthermore, with the CPPC FIE registered, it throws repeated warnings of
+>> "cppc_scale_freq_workfn: failed to read perf counters" on our platform with
+>> the CPC regs in System Memory and a power-down idle state enabled.  That's
+>> because the remote CPU can be in a power-down idle state, and reading its
+>> perf counters returns 0.  Moving the FIE handling back to the scheduler
+>> tick process makes the CPU handle its own perf counters, so it won't be
+>> idle and the issue would be inherently solved.
+>>
+>> To address the above issues, update arch_freq_scale directly in ticks for
+>> non-PCC regs and keep the deferred update mechanism for PCC regs.
+> Something about it just didn’t sit right with me, and apparently, it needed some
+> time to settle down - thus the delay.
+> 
+> It all looks sensible though it might be worth to considered applying
+> the change on a per-CPU basis, as, in theory at least, different address
+> spaces are allowed for different registers (at least according to the ACPI
+> spec, if I read it right).
+> So I was thinking about smth along the lines of:
+Beata,
 
-Checked this and the current change looks correct.
+Right, I see what you want to do.
+Some comments inline.
 
-Thank you.
-Sumit Gupta
+Would you like to make it a full patch so I can include it in the next
+version? or some other way?
 
+Jie
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 6c684e54fe01..07f4e59f2f0a 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1431,38 +1431,47 @@ EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+>   *
+>   * Return: true if any of the counters are in PCC regions, false otherwise
+>   */
+> -bool cppc_perf_ctrs_in_pcc(void)
+> +bool cppc_perf_ctrs_in_pcc(unsigned int cpu)
+>  {
+> -	int cpu;
+> +	struct cpc_register_resource *ref_perf_reg;
+> +	struct cpc_desc *cpc_desc;
+>  
+> -	for_each_present_cpu(cpu) {
+> -		struct cpc_register_resource *ref_perf_reg;
+> -		struct cpc_desc *cpc_desc;
+> +	cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+>  
+> -		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +	if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+> +		return true;
+>  
+> -		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> -		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> -		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+> -			return true;
+>  
+> +	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+>  
+> -		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+> +	/*
+> +	 * If reference perf register is not supported then we should
+> +	 * use the nominal perf value
+> +	 */
+> +	if (!CPC_SUPPORTED(ref_perf_reg))
+> +		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+Though not related to this issue, I'm confused that this sort of workaround
+appears here - it should be in some init function.
+>  
+> -		/*
+> -		 * If reference perf register is not supported then we should
+> -		 * use the nominal perf value
+> -		 */
+> -		if (!CPC_SUPPORTED(ref_perf_reg))
+> -			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+> +	if (CPC_IN_PCC(ref_perf_reg))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+>  
+> -		if (CPC_IN_PCC(ref_perf_reg))
+> +bool cppc_any_perf_ctrs_in_pcc(void)
+> +{
+> +	int cpu;
+> +
+> +	for_each_present_cpu(cpu) {
+> +		if (cppc_perf_ctrs_in_pcc(cpu))
+>  			return true;
+>  	}
+>  
+>  	return false;
+>  }
+> -EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+> +EXPORT_SYMBOL_GPL(cppc_any_perf_ctrs_in_pcc);
+>  
+>  /**
+>   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 4fcaec7e2034..fdf5a49c04ed 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -48,7 +48,6 @@ struct cppc_freq_invariance {
+>  };
+>  
+>  static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
+> -static bool perf_ctrs_in_pcc;
+>  static struct kthread_worker *kworker_fie;
+>  
+>  static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+> @@ -132,7 +131,12 @@ static void cppc_scale_freq_tick_pcc(void)
+>  
+>  static void cppc_scale_freq_tick(void)
+>  {
+> -	__cppc_scale_freq_tick(&per_cpu(cppc_freq_inv, smp_processor_id()));
+> +	unsigned int cpu = smp_processor_id();
+> +
+> +	cppc_perf_ctrs_in_pcc(cpu) ? cppc_scale_freq_tick_pcc()
+Calling cppc_perf_ctrs_in_pcc() could be expensive here.
+I'd prefer something like a static branch or a determined callback for each
+cpu.
+> +				   : __cppc_scale_freq_tick(
+> +				   			&per_cpu(cppc_freq_inv,
+> +				   				 cpu));
+>  }
+>  
+>  static struct scale_freq_data cppc_sftd = {
+> @@ -152,7 +156,7 @@ static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
+>  		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
+>  		cppc_fi->cpu = cpu;
+>  		cppc_fi->cpu_data = policy->driver_data;
+> -		if (perf_ctrs_in_pcc) {
+> +		if (cppc_perf_ctrs_in_pcc(cpu)) {
+>  			kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
+>  			init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
+>  		}
+> @@ -193,10 +197,9 @@ static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
+>  	/* policy->cpus will be empty here, use related_cpus instead */
+>  	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
+>  
+> -	if (!perf_ctrs_in_pcc)
+> -		return;
+> -
+>  	for_each_cpu(cpu, policy->related_cpus) {
+> +		if (!cppc_perf_ctrs_in_pcc(cpu))
+> +			continue;
+>  		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
+>  		irq_work_sync(&cppc_fi->irq_work);
+>  		kthread_cancel_work_sync(&cppc_fi->work);
+> @@ -218,14 +221,11 @@ static void __init cppc_freq_invariance_init(void)
+>  		.sched_deadline = 10 * NSEC_PER_MSEC,
+>  		.sched_period	= 10 * NSEC_PER_MSEC,
+>  	};
+> +	bool perf_ctrs_in_pcc = cppc_any_perf_ctrs_in_pcc();
+>  	int ret;
+>  
+> -	perf_ctrs_in_pcc = cppc_perf_ctrs_in_pcc();
+> -
+>  	if (fie_disabled != FIE_ENABLED && fie_disabled != FIE_DISABLED) {
+> -		if (!perf_ctrs_in_pcc) {
+> -			fie_disabled = FIE_ENABLED;
+> -		} else {
+> +		if (perf_ctrs_in_pcc) {
+>  			pr_info("FIE not enabled on systems with registers in PCC\n");
+>  			fie_disabled = FIE_DISABLED;
+>  		}
+> @@ -234,12 +234,12 @@ static void __init cppc_freq_invariance_init(void)
+>  	if (fie_disabled || !perf_ctrs_in_pcc)
+>  		return;
+>  
+> -	cppc_sftd.set_freq_scale = cppc_scale_freq_tick_pcc;
+>  
+>  	kworker_fie = kthread_run_worker(0, "cppc_fie");
+>  	if (IS_ERR(kworker_fie)) {
+>  		pr_warn("%s: failed to create kworker_fie: %ld\n", __func__,
+>  			PTR_ERR(kworker_fie));
+> +		kworker_fie = NULL;
+>  		fie_disabled = FIE_DISABLED;
+>  		return;
+>  	}
+> @@ -255,10 +255,8 @@ static void __init cppc_freq_invariance_init(void)
+>  
+>  static void cppc_freq_invariance_exit(void)
+>  {
+> -	if (fie_disabled || !perf_ctrs_in_pcc)
+> -		return;
+> -
+> -	kthread_destroy_worker(kworker_fie);
+> +	if (kworker_fie)
+> +		kthread_destroy_worker(kworker_fie);
+>  }
+>  
+>  #else
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 13fa81504844..3af503b12f60 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -154,7 +154,8 @@ extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+>  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+> -extern bool cppc_perf_ctrs_in_pcc(void);
+> +extern bool cppc_perf_ctrs_in_pcc(unsigned int cpu);
+> +extern bool cppc_any_perf_ctrs_in_pcc(void);
+would be slightly better to keep cppc_perf_ctrs_in_pcc(void) and add a new
+function, e.g. cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu), such that the
+old ABI is unchanged.
+>  extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf);
+>  extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq);
+>  extern bool acpi_cpc_valid(void);
+> @@ -204,7 +205,11 @@ static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> -static inline bool cppc_perf_ctrs_in_pcc(void)
+> +static inline bool cppc_perf_ctrs_in_pcc(unsigned int cpu)
+> +{
+> +	return false;
+> +}
+> +static inline bool cppc_any_perf_ctrs_in_pcc(void)
+>  {
+>  	return false;
+>  }
+> 
+> 
+> Additionally, it might be worth to get rid of (at least) some messages printed
+> on the path of reading the counters in case it is being done in tick context.
+Cool, will have a look.
+> 
+> Also , I do not have access to any machine using PCC, and it would be good to
+> double check that as well.
+> 
+> ---
+> BR
+> Beata
 
+>>
+>> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+>> ---
+>> We have tested this on Kunpeng SoCs with the CPC regs both in System Memory
+>> and FFH.  More tests on other platforms are welcome.
+>>
+>> Changelog:
+>>
+>> v3:
+>> - Stash the state of 'cppc_perf_ctrs_in_pcc' so it won't have to check the CPC
+>>   regs of all CPUs everywhere (Thanks to the suggestion from Beata Michalska).
+>> - Update the commit log, explaining more on the warning issue caused by
+>>   accessing perf counters on remote CPUs.
+>> - Drop Patch 1 that has been accepted, and rebase Patch 2 on that.
+>>
+>> v2:
+>> https://lore.kernel.org/linux-pm/20250828110212.2108653-1-zhanjie9@hisilicon.com/
+>> - Update the cover letter and the commit log based on v1 discussion
+>> - Update FIE arch_freq_scale in ticks for non-PCC regs
+>>
+>> v1:
+>> https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
+>> ---
+>>  drivers/cpufreq/cppc_cpufreq.c | 60 ++++++++++++++++++++++++----------
+>>  1 file changed, 42 insertions(+), 18 deletions(-)
+...
 
