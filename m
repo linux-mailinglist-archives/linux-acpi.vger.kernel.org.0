@@ -1,198 +1,127 @@
-Return-Path: <linux-acpi+bounces-18777-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18778-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1C8C4EE57
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 16:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08A0C4F1CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 17:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060553AE251
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 15:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E49853A9487
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 16:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DCA36B047;
-	Tue, 11 Nov 2025 15:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B338331A55B;
+	Tue, 11 Nov 2025 16:48:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E49E2D9ECB;
-	Tue, 11 Nov 2025 15:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AD02D979F;
+	Tue, 11 Nov 2025 16:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762876588; cv=none; b=sXOgEi+KIyIvLkHRJ9fyTGaDpuXOi1+3teHpMvoD34LpO54AyqkgVfolyqZ97vTwSx793dZzi0cySehxd1jcTAByfJJVezu2g0xRQe1D5MHENedN26x7u9UW5Sg4D6qD4hLGTAwlLwY2V2rOHEz6EFuH0M0kMS4mxw66sAFfS2c=
+	t=1762879690; cv=none; b=IK1R2EqMeGMzwrn442XJBvrPp0cjrAzSAVazxKzb2gH7EH2ehxFZQEn9Dz5jfP/dm+wfUJxACPDnUa4wCE5Bv6XB+R0rduSw1EYTiFEKr6DRjbJOffSP+08D+E56TKKIqe2HRO4WXMV6r+CNrPde0kqTGjbwe6//+/cLEhj/6Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762876588; c=relaxed/simple;
-	bh=W8CisLsHpplR32lGt4X7voHqYskVHjABt2aYWdACx0k=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N/xPb3GE74MprYoWNOk7Sc/S/GIbo37Llhw29Spw5uv7eMmVJLE3iZgnlTsUAG82Wz0nw9xPJgrrRTvbID/82hvAQwrArJf1FoR79F7gt13lyDvkZUN9Ygjn0zqiP+si/NOLsqbJX/1WehxStEfMIGH+gUyBR3GJKGTnro6iEuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d5WNP2bG3zHnGhp;
-	Tue, 11 Nov 2025 23:56:05 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id B3AB0140136;
-	Tue, 11 Nov 2025 23:56:22 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 11 Nov
- 2025 15:56:22 +0000
-Date: Tue, 11 Nov 2025 15:56:20 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dave Jiang <dave.jiang@intel.com>
-CC: <nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <rafael@kernel.org>
-Subject: Re: [RESEND PATCH v4 2/2] acpi/hmat: Fix lockdep warning for
- hmem_register_resource()
-Message-ID: <20251111155620.0000306e@huawei.com>
-In-Reply-To: <20251105235115.85062-3-dave.jiang@intel.com>
-References: <20251105235115.85062-1-dave.jiang@intel.com>
-	<20251105235115.85062-3-dave.jiang@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1762879690; c=relaxed/simple;
+	bh=G2bms5tb+3dQg7eVtbpOcHpMDtGN5EDLOO9gbb+Q4Q8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=slx5MBvzX6nGsZD2x3S1eBdXFuSCmz2ghQl74HG29AK39xRvf/i1oyK/D8zXNrpf9YYExW1nNBq2MLSxy5K1QGGwvG5Q6ECVBVI2JHeiFZbFLS+N4Xn+/noJXg1Dcj8cQETq/MgncO8WtZwHb8xHLiQ1ftmCqNHPiAH7OLUNzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BAC03497;
+	Tue, 11 Nov 2025 08:47:59 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBCD33F63F;
+	Tue, 11 Nov 2025 08:48:02 -0800 (PST)
+Message-ID: <0457614c-0f36-4427-835f-2645f3a67c9b@arm.com>
+Date: Tue, 11 Nov 2025 16:48:01 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/33] ACPI / PPTT: Add acpi_pptt_cache_v1_full to use
+ pptt cache as one structure
+To: Jeremy Linton <jeremy.linton@arm.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
+ guohanjun@huawei.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-4-ben.horgan@arm.com>
+ <1a52079f-e12f-430b-b3c5-cb184f73c6c7@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <1a52079f-e12f-430b-b3c5-cb184f73c6c7@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 5 Nov 2025 16:51:15 -0700
-Dave Jiang <dave.jiang@intel.com> wrote:
+Hi Jeremy,
 
-> The following lockdep splat was observed while kernel auto-online a CXL
-> memory region:
+On 11/10/25 17:00, Jeremy Linton wrote:
+> Hi,
 > 
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> 6.17.0djtest+ #53 Tainted: G        W
-> ------------------------------------------------------
-> systemd-udevd/3334 is trying to acquire lock:
-> ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
+> On 11/7/25 6:34 AM, Ben Horgan wrote:
+>> In actbl2.h, struct acpi_pptt_cache describes the fields in the original
+>> cache type structure. In PPTT table version 3 a new field was added at
+>> the
+>> end, cache_id. This is described in struct acpi_pptt_cache_v1. Introduce
+>> the new, acpi_pptt_cache_v1_full to contain both these structures. Update
+>> the existing code to use this new struct. This simplifies the code,
+>> removes
+>> a non-standard use of ACPI_ADD_PTR and allows using the length in the
+>> header to check if the cache_id is valid.
+>>
+>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+>> ---
+>> Changes since v3:
+>> New patch
+>> ---
+>>   drivers/acpi/pptt.c | 104 ++++++++++++++++++++++++--------------------
+>>   1 file changed, 58 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+>> index 1027ca3566b1..1ed2099c0d1a 100644
+>> --- a/drivers/acpi/pptt.c
+>> +++ b/drivers/acpi/pptt.c
+>> @@ -21,6 +21,11 @@
+>>   #include <linux/cacheinfo.h>
+>>   #include <acpi/processor.h>
+>>   +struct acpi_pptt_cache_v1_full {
+>> +    struct acpi_pptt_cache        f;
+>> +    struct acpi_pptt_cache_v1    extra;
+>> +} __packed;
 > 
-> but task is already holding lock:
-> ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
+> This presumably won't match an acpia change, right? Those structures
+> appear to repeat the fields in the newer structure definitions.
 > 
-> which lock already depends on the new lock.
-> [..]
-> Chain exists of:
->   hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
+> Maybe its best to keep this as close to an acpica change and do a quick
+> patch posting for acpica to assure they are onboard with the eventual
+> structure (IIRC it was fast a few years ago when I had a similar problem).
 > 
->  Possible unsafe locking scenario:
-> 
->        CPU0                    CPU1
->        ----                    ----
->   rlock((node_chain).rwsem);
->                                lock(mem_hotplug_lock);
->                                lock((node_chain).rwsem);
->   lock(hmem_resource_lock);
-> 
-> The lock ordering can cause potential deadlock. There are instances
-> where hmem_resource_lock is taken after (node_chain).rwsem, and vice
-> versa.
-> 
-> Split out the target update section of hmat_register_target() so that
-> hmat_callback() only envokes that section instead of attempt to register
-> hmem devices that it does not need to.
-> 
-> Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Trivial inline. I'm also fine with the version Dan posted.
+> That would avoid a bunch of the churn here of adding the 'f'/'extra'
+> dereferene which would then potentailly have to be reverted at some
+> point when acpica corrects the original structure.
+I've created a pull request on their github:
+https://github.com/acpica/acpica/pull/1059. This extends 'struct
+acpi_pptt_cache_v1' to include all the fields of the Cache Type
+Structure. I think this could be acceptable as there are other commits
+in the history which make breaking changes to structures in the headers.
+Let's see what they say. I got an immediate reply in Chinese but was
+just an out of office.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Thanks,
 
-> ---
-> v4:
-> - Fix fixes tag. (Jonathan)
-> - Refactor hmat_hotplug_target(). (Jonathan)
-> ---
->  drivers/acpi/numa/hmat.c | 47 ++++++++++++++++++++++------------------
->  1 file changed, 26 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 1dc73d20d989..d10cbe93c3a7 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -874,10 +874,33 @@ static void hmat_register_target_devices(struct memory_target *target)
->  	}
->  }
->  
-> -static void hmat_register_target(struct memory_target *target)
-> +static void hmat_hotplug_target(struct memory_target *target)
->  {
->  	int nid = pxm_to_node(target->memory_pxm);
->  
-> +	/*
-> +	 * Skip offline nodes. This can happen when memory
-> +	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-> +	 * to all the memory in a proximity domain leading to
-> +	 * the node being marked offline / unplugged, or if
-> +	 * memory-only "hotplug" node is offline.
-
-If this version goes forwards, rewrap closer to 80 chars. I guess it ended
-up short in some previous refactor.
-
-> +	 */
-> +	if (nid == NUMA_NO_NODE || !node_online(nid))
-> +		return;
-> +
-> +	guard(mutex)(&target_lock);
-> +	if (target->registered)
-> +		return;
-> +
-> +	hmat_register_target_initiators(target);
-> +	hmat_register_target_cache(target);
-> +	hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
-> +	hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
-> +	target->registered = true;
-> +}
-> +
-> +static void hmat_register_target(struct memory_target *target)
-> +{
->  	/*
->  	 * Devices may belong to either an offline or online
->  	 * node, so unconditionally add them.
-> @@ -896,25 +919,7 @@ static void hmat_register_target(struct memory_target *target)
->  		}
->  	}
->  
-> -	/*
-> -	 * Skip offline nodes. This can happen when memory
-> -	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-> -	 * to all the memory in a proximity domain leading to
-> -	 * the node being marked offline / unplugged, or if
-> -	 * memory-only "hotplug" node is offline.
-> -	 */
-> -	if (nid == NUMA_NO_NODE || !node_online(nid))
-> -		return;
-> -
-> -	mutex_lock(&target_lock);
-> -	if (!target->registered) {
-> -		hmat_register_target_initiators(target);
-> -		hmat_register_target_cache(target);
-> -		hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
-> -		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
-> -		target->registered = true;
-> -	}
-> -	mutex_unlock(&target_lock);
-> +	hmat_hotplug_target(target);
->  }
->  
->  static void hmat_register_targets(void)
-> @@ -940,7 +945,7 @@ static int hmat_callback(struct notifier_block *self,
->  	if (!target)
->  		return NOTIFY_OK;
->  
-> -	hmat_register_target(target);
-> +	hmat_hotplug_target(target);
->  	return NOTIFY_OK;
->  }
->  
+Ben
 
 
