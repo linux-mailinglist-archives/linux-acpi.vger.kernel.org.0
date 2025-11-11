@@ -1,99 +1,175 @@
-Return-Path: <linux-acpi+bounces-18769-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18770-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B31C4C2D9
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 08:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C30C4CAB7
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 10:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B3DA634F1E1
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 07:50:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E3E3934F274
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Nov 2025 09:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47206271462;
-	Tue, 11 Nov 2025 07:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118CB2EC0B4;
+	Tue, 11 Nov 2025 09:30:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C882D0292;
-	Tue, 11 Nov 2025 07:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A376C2EBBA8;
+	Tue, 11 Nov 2025 09:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762847441; cv=none; b=bMpw2TRy9qrX0HY3q4nFL5y5Ah5iFrIiw/NoOvvN6Arfc0Ptlnc4GfDAjUftS1uc8bYNzjFND9lDKuWRVQpZ4ywW4Gygfxdvs/2w7SEL/6/tDchvaVH7aTk4jKMoX833KNI2EL8gOEoqLWoO2DT3HpacJE+Np5TDD9O3lMQmTo4=
+	t=1762853445; cv=none; b=ImkFVkOH8nYxBz2ZDAG03KG2qYsSA5jFCDghiA4SuTs4SxKQSWBt+pLNJVUrae8CvVixIryAH7hlCnUQwe6pkeYfyMR8ub5KA8iHN3MhSVIJs5jBxrBRz9AJma+ilFXpqezDHqBezSwh/iXNzoLSIKuf7smGVjvsdQApxfGfzkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762847441; c=relaxed/simple;
-	bh=474upDe9XIRvjtyq93x2kr0Fjro4gxTBuXtuuyfX04w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PDAej3XqsrM1C74RhYvxQwkmAhYyIGy+kQfYuL3psx7+SpQErtInUoZU4WfTSoy6DgVyJgA9iJAVxXV/I4tGfAPJgg4vWS5c+FplvyeCP5Epk0NB0wkM7rR/3JM/LM6RaXPkpyGsxmyG65ESPF8Q+hMuIK6JIxX4crDiEvcsJg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowAAnvMvH6hJpTJVRAA--.3706S2;
-	Tue, 11 Nov 2025 15:50:33 +0800 (CST)
-From: Haotian Zhang <vulab@iscas.ac.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haotian Zhang <vulab@iscas.ac.cn>
-Subject: [PATCH] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
-Date: Tue, 11 Nov 2025 15:50:00 +0800
-Message-ID: <20251111075000.1828-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	s=arc-20240116; t=1762853445; c=relaxed/simple;
+	bh=6BWMhUaGJXcm2r6RkdFwVAQjXyKFudVYkHAINi3qE5Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tWYqRRa9+DLaGCSk0Q5YZ7G5PY2y9rZNI3Dzil9aP6YTXiWJ2nF8ZInhmClOlppdP45xyXAW1qxEeU83DKzg4UVYLfL1c8+ow07d0jkRZJpkt63EMSOeZonwvrFeLef2fTdfKOAVRMdYVAhfKvyNzLcMCaWPF6OmrxUg/HY2OCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DD9F2F;
+	Tue, 11 Nov 2025 01:30:28 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 48B9D3F66E;
+	Tue, 11 Nov 2025 01:30:31 -0800 (PST)
+Message-ID: <58e6a323-5c14-4c64-acb5-84bb8679404a@arm.com>
+Date: Tue, 11 Nov 2025 09:30:29 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/33] arm_mpam: Probe hardware to find the supported
+ partid/pmg values
+To: Gavin Shan <gshan@redhat.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, guohanjun@huawei.com,
+ jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
+ Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-15-ben.horgan@arm.com>
+ <7d0c73d3-1943-469f-813a-eba1dac38d4a@redhat.com>
+ <33f9822a-fbb5-47e1-ab5c-97b30511a97f@redhat.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <33f9822a-fbb5-47e1-ab5c-97b30511a97f@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAnvMvH6hJpTJVRAA--.3706S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw15ArW7tryDtw1xurW3KFg_yoWDZFgEgF
-	yqgrZ3Gr1kXrWIgrs7Cr9aga9Fyrn3WF98Ar4xKFWfA3WkAFW7JFy7ZFnxJryxuF43tF90
-	gw1vvw1rAw1IgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbs8FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
-	Jw1lc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI
-	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
-	xVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI
-	8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
-	aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
-	ZEXa7VUjb18PUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRADA2kSwWCiAAAAsh
 
-acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
-parent fwnode but returns without calling fwnode_handle_put() on it. This
-leads to a fwnode refcount leak and prevents the parent node from being
-released properly.
+Hi Gavin,
 
-Call fwnode_handle_put() on the parent fwnode before returning to
-fix the leak.
+On 11/10/25 23:26, Gavin Shan wrote:
+> Hi Ben,
+> 
+> On 11/9/25 10:43 AM, Gavin Shan wrote:
+>> On 11/7/25 10:34 PM, Ben Horgan wrote:
+>>> From: James Morse <james.morse@arm.com>
+>>>
+>>> CPUs can generate traffic with a range of PARTID and PMG values,
+>>> but each MSC may also have its own maximum size for these fields.
+>>> Before MPAM can be used, the driver needs to probe each RIS on
+>>> each MSC, to find the system-wide smallest value that can be used.
+>>> The limits from requestors (e.g. CPUs) also need taking into account.
+>>>
+>>> While doing this, RIS entries that firmware didn't describe are created
+>>> under MPAM_CLASS_UNKNOWN.
+>>>
+>>> This adds the low level MSC write accessors.
+>>>
+>>> While we're here, implement the mpam_register_requestor() call
+>>> for the arch code to register the CPU limits. Future callers of this
+>>> will tell us about the SMMU and ITS.
+>>>
+>>> Signed-off-by: James Morse <james.morse@arm.com>
+>>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>>> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+>>> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+>>> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+>>> Tested-by: Peter Newman <peternewman@google.com>
+>>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+>>> ---
+>>> Changes since v3:
+>>>  From Jonathan:
+>>> Stray comma in printk
+>>> Unnecessary braces
+>>> ---
+>>>   drivers/resctrl/mpam_devices.c  | 148 +++++++++++++++++++++++++++++++-
+>>>   drivers/resctrl/mpam_internal.h |   6 ++
+>>>   include/linux/arm_mpam.h        |  14 +++
+>>>   3 files changed, 167 insertions(+), 1 deletion(-)
+[...]
+>>>   static int mpam_msc_hw_probe(struct mpam_msc *msc)
+>>>   {
+>>>       u64 idr;
+>>> +    u16 partid_max;
+>>> +    u8 ris_idx, pmg_max;
+>>> +    struct mpam_msc_ris *ris;
+>>>       struct device *dev = &msc->pdev->dev;
+>>>       lockdep_assert_held(&msc->probe_lock);
+>>> @@ -464,6 +564,40 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
+>>>           return -EIO;
+>>>       }
+>>> +    /* Grab an IDR value to find out how many RIS there are */
+>>> +    mutex_lock(&msc->part_sel_lock);
+>>> +    idr = mpam_msc_read_idr(msc);
+>>> +    mutex_unlock(&msc->part_sel_lock);
+>>> +
+>>> +    msc->ris_max = FIELD_GET(MPAMF_IDR_RIS_MAX, idr);
+>>> +
+>>> +    /* Use these values so partid/pmg always starts with a valid
+>>> value */
+>>> +    msc->partid_max = FIELD_GET(MPAMF_IDR_PARTID_MAX, idr);
+>>> +    msc->pmg_max = FIELD_GET(MPAMF_IDR_PMG_MAX, idr);
+>>> +
+>>> +    for (ris_idx = 0; ris_idx <= msc->ris_max; ris_idx++) {
+>>> +        mutex_lock(&msc->part_sel_lock);
+>>> +        __mpam_part_sel(ris_idx, 0, msc);
+>>> +        idr = mpam_msc_read_idr(msc);
+>>> +        mutex_unlock(&msc->part_sel_lock);
+>>> +
+>>> +        partid_max = FIELD_GET(MPAMF_IDR_PARTID_MAX, idr);
+>>> +        pmg_max = FIELD_GET(MPAMF_IDR_PMG_MAX, idr);
+>>> +        msc->partid_max = min(msc->partid_max, partid_max);
+>>> +        msc->pmg_max = min(msc->pmg_max, pmg_max);
+>>> +
+>>> +        mutex_lock(&mpam_list_lock);
+>>> +        ris = mpam_get_or_create_ris(msc, ris_idx);
+>>> +        mutex_unlock(&mpam_list_lock);
+>>> +        if (IS_ERR(ris))
+>>> +            return PTR_ERR(ris);
+>>> +    }
+>>> +
+>>> +    spin_lock(&partid_max_lock);
+>>> +    mpam_partid_max = min(mpam_partid_max, msc->partid_max);
+>>> +    mpam_pmg_max = min(mpam_pmg_max, msc->pmg_max);
+>>> +    spin_unlock(&partid_max_lock);
+>>> +
+> 
+> mpam_register_requestor() could be used here to avoid the capacities
+> (maximal PARTIDs and PMGs) are unexpectedly lowered.
+> 
 
-Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
----
- drivers/acpi/property.c | 1 +
- 1 file changed, 1 insertion(+)
+I agree that this is somewhat surprising that without a requestor the
+driver supports 1 PARTID and 1 PMG, but it is intentional behaviour. The
+driver is only intended to be fully functional when a requestor
+(external to this base driver) registers itself and I don't want to add
+a dual meaning to this registration. This will be more obvious once the
+rest of the mpam support is added.
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 1b997a5497e7..7f8790e8dc4e 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1714,6 +1714,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
- 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
- 
-+	fwnode_handle_put(port_fwnode);
- 	return 0;
- }
- 
--- 
-2.25.1
+Thanks,
+
+Ben
 
 
