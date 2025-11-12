@@ -1,115 +1,80 @@
-Return-Path: <linux-acpi+bounces-18814-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18815-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFF3C539C2
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 18:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3242EC53CA3
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 18:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A490E500F98
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 16:49:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B5FF4F2048
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0831933F39A;
-	Wed, 12 Nov 2025 16:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60E0343201;
+	Wed, 12 Nov 2025 16:54:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C5C2D130C;
-	Wed, 12 Nov 2025 16:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A732D0EE;
+	Wed, 12 Nov 2025 16:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762966144; cv=none; b=r/Ym7fwG1Z7tawQ3VaaoWE8OUtWyorMaJkdMTqoZVY+XcGGqns0wIWULPzBzTgj5vdxotDC2f/mQqpwI9D4vOj9Mh8kL6VbvV0wdjB8G0MtjU/Tg/P2RyGkTVt05wSgODKzoiWUJsHWf8IqAw7ZoVfHBbyDAR3vVUeJ82Twldfo=
+	t=1762966469; cv=none; b=j117r0aTJ+UoC5bJgpGrKBTSYRAVrXoTSyYfvEiT36pLG937W3iFsmaaFthBGrk7fZdS9mkLmZYrDK9WTR8aN450YPykYXwaZ96y4i2Vfi2ITgb1RonopTUX6WojlJNQSrdDKWhDCKhniNKORZ8PC3FtnyhHaL3jCJoa3+aERb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762966144; c=relaxed/simple;
-	bh=DCABuo/lM5b9CfFj5tLkGlhYnZKy/VPRvWllwjqP8rA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=eGTbjyOPec85+qGhprliRJ3FpKIUMmFvY0oOSoJK4FjsrHj31QhBlPyyX65QFBhwljjdLagj3o3lDQJ5reNNW9Ma7+6qhPyAGlaxS/55q7SBXi5VMB3/PaYoQIhQi1oaHStiT3tdkjj/9sn31qswxaj7bcvgP+ARbZIJ1gqNiNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCC38497;
-	Wed, 12 Nov 2025 08:48:53 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B08343F63F;
-	Wed, 12 Nov 2025 08:48:56 -0800 (PST)
-Message-ID: <365d8625-17fc-41f1-b7ab-d7ef3ab06b92@arm.com>
-Date: Wed, 12 Nov 2025 16:48:55 +0000
+	s=arc-20240116; t=1762966469; c=relaxed/simple;
+	bh=Ar8sLDEP6ao3hnuDk21nkJshTTOkv4/mEY5l/CsvKmY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dmHkcysAZCid1Lj8PJwMuOc9pA3ypbTSKzwLWkl3Dk8zhCU78UR+kABKmkxZ6vuNhntHJ/eL/C/EOGiC7GHPaCOaXUKelajtWaQEQhdNoQoDH08NKLMtvCJXSaBmianStAGbft+aubZBbj7h6Dnbi+kJT+INCMc+aOGgBVhYwuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d68cb2jtjzJ46Zf;
+	Thu, 13 Nov 2025 00:53:51 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2A4451402F1;
+	Thu, 13 Nov 2025 00:54:24 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 12 Nov
+ 2025 16:54:23 +0000
+Date: Wed, 12 Nov 2025 16:54:21 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Mark
+ Rutland" <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
+ Kannan" <saravanak@google.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Sven Peter <sven@kernel.org>, Janne Grunau
+	<j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
+	<james.clark@linaro.org>, Jinjie Ruan <ruanjinjie@huawei.com>, "Alexandru
+ Elisei" <alexandru.elisei@arm.com>
+Subject: Re: [PATCH v4 05/26] irqchip/gic-v3: Add FW info retrieval support
+Message-ID: <20251112165421.00002480@huawei.com>
+In-Reply-To: <20251020122944.3074811-6-maz@kernel.org>
+References: <20251020122944.3074811-1-maz@kernel.org>
+	<20251020122944.3074811-6-maz@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/33] arm_mpam: Add the class and component structures
- for firmware described ris
-From: Ben Horgan <ben.horgan@arm.com>
-To: Gavin Shan <gshan@redhat.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- fenghuay@nvidia.com, gregkh@linuxfoundation.org, guohanjun@huawei.com,
- jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-12-ben.horgan@arm.com>
- <2c81664f-45c0-43e4-91e9-79d0c84376b6@redhat.com>
- <3350b73e-1021-4091-87f1-4b946da22f4e@arm.com>
-Content-Language: en-US
-In-Reply-To: <3350b73e-1021-4091-87f1-4b946da22f4e@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-Hi Gavin,
+On Mon, 20 Oct 2025 13:29:22 +0100
+Marc Zyngier <maz@kernel.org> wrote:
 
-I was a bit hasty on one of those changes.
-
-On 11/12/25 16:39, Ben Horgan wrote:
-> Hi Gavin,
+> Plug the new .get_fwspec_info() callback into the GICv3 core driver,
+> using some of the existing PPI affinity handling infrastructure.
 > 
-> On 11/9/25 00:07, Gavin Shan wrote:
->> Hi Ben,
->>
->> On 11/7/25 10:34 PM, Ben Horgan wrote:
->>> From: James Morse <james.morse@arm.com>
->>>
->>> An MSC is a container of resources, each identified by their RIS index.
->>> Some RIS are described by firmware to provide their position in the
->>> system.
->>> Others are discovered when the driver probes the hardware.
->>>
->>> To configure a resource it needs to be found by its class, e.g. 'L2'.
->>> There are two kinds of grouping, a class is a set of components, which
->>> are visible to user-space as there are likely to be multiple instances
->>> of the L2 cache. (e.g. one per cluster or package)
->>>
->>> Add support for creating and destroying structures to allow a hierarchy
->>> of resources to be created.
->>>
->>> CC: Ben Horgan <ben.horgan@arm.com>
->>> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
->>> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->>> Tested-by: Peter Newman <peternewman@google.com>
->>> Signed-off-by: James Morse <james.morse@arm.com>
->>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-
->> This function is only used in mpam_devices.c and won't be exposed in the
->> future, we can make it 'static' and 'inline'.
-> 
-> Done
-
-Gets used later in mpam_resctl.c so I'll keep as is.
-
-Thanks,
-
-Ben
-
+> Tested-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
