@@ -1,150 +1,212 @@
-Return-Path: <linux-acpi+bounces-18844-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18845-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFE2C54A2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 22:39:32 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333B7C54A80
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 22:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D79794E14D5
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 21:38:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 99CEB3442AA
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 21:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4042DC788;
-	Wed, 12 Nov 2025 21:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6018E2D0C9C;
+	Wed, 12 Nov 2025 21:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYDbErJu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ToRdpqbL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA9B2C21DB
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Nov 2025 21:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E33C2874F1;
+	Wed, 12 Nov 2025 21:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762983506; cv=none; b=JJ6z4ta6gzL2rPlXV7vgRNZGOp/7txk4HTcxCW95JMMTQD7Yzs8h3QW4hwZk+W+B5vGVfMkWK6D9Z3IDuUQbyb6bIgVQ1AHItLVnWLWrJdglv5HJnJ2nkkvjN7JPIiTlNKpxHBmeSX1zQ7p1QKIehQcT6OVGDz6IpLHRABpECiQ=
+	t=1762984019; cv=none; b=jvOQX1iNE4K6ipSlJ6CxLjJZmDcKGc0QCrk2tF3yWuRiFgfWxaMtyqDgtMtk3vrhNJ9ObonJ+JH6MAOiBf5MfP153Z7fOaQRt7JzuAQTBj4eSMq/LqGqvypaphfjfqGgw5+9fj2/P0rRE0151NFC3iZU83KTPyz/ZoKjGq/syR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762983506; c=relaxed/simple;
-	bh=kJuIkLvSHwWWhGY0rIDCqACoepGxKTwg++6iKoxpkgk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nb3rHJrt1AIG5i+NkMthqzmysu04dB3k9XxeuSCIYYJ7njwCxpnzx+bzxhc9OUexUIDboH/LAcxUFK7UrOn/QQ9iDHjAwZAH0iOSDfVRW8PD87EPH6PuWsLZpNP1KLnattyESanGV+Xr1nE8RB0WTMsofJPb477XvbsLPhQo+tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYDbErJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83736C116B1
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Nov 2025 21:38:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762983506;
-	bh=kJuIkLvSHwWWhGY0rIDCqACoepGxKTwg++6iKoxpkgk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UYDbErJunvhgKNYY4o6XrtmDW27UFy6msl6Ltd+gtUoyfxw5ENzkxV/hPuYvj+VCv
-	 E8sRox/M1T4+xe/ZHKSZfI+asyylw86McNk3XXUFNK2LskzXYS+AR2vqDGgsA0W5i1
-	 82VlsCYrqJZXGWN71TzHbPqL/QM7BsGbWgvlmcEFh6HRzA7mdW4V8o09O+QgdSeYGI
-	 L+yC9q1T2hyWFbNkkMNIuCD9u6VtXPYF4Eoz7SQxDLbW4zUKSBd9wCRUNSHtWOI2j9
-	 edGWBJ6405I3LJyFpCnmUtKbkRGOce2OPX40Hq4kSu1N9s7NSnvm3Re7HRPLxGOhF0
-	 mtb45TXqe93GQ==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-450154aa53fso42218b6e.2
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Nov 2025 13:38:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUmApprPVQLzbVgXPSoSRmHD1wHEuM+0+l/SzJWpeeyVQa0G5jiHpzepmHH5J2XWyi/8xAWPDNj6w3W@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqopZ07S5J5mlkmF82EqOJu5xDMHkyD4Tgoayt2wGn9Hv6RlfP
-	Vcny0gVzAZBcweNnqAAbvQusLtiBunKGMrqFWXYdTuIkP1ggf13jgCNhoVa+4wNI7FsWBMrxQgM
-	9uvZ01bnIrEUMGkY7fslabGP5+7eX2oU=
-X-Google-Smtp-Source: AGHT+IFr8y7vuGeeebfdU2FLfgfK72tZdHVnb7ogJwqZqUj0ziPfYWjBqjf3ijtTyjxZTHoh/HIfqSk5hx82HnviRxs=
-X-Received: by 2002:a05:6808:650a:b0:43f:b94a:14f2 with SMTP id
- 5614622812f47-4507445ca4emr2233847b6e.16.1762983505781; Wed, 12 Nov 2025
- 13:38:25 -0800 (PST)
+	s=arc-20240116; t=1762984019; c=relaxed/simple;
+	bh=73hOZus6bt7WW1nOCZjFEPbG31JqufaOom4uB2E5Lds=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=cp19Bk2tTLx3l64GRPYCzRldvxIqwQAqNbmmvYfW7RV48XPac+WSE2zl73Nkxa0rIMg9nvObws1ODDyhRbgs2y2c4Uo7DNMf1TcTlHEBmpesBCQU06kYIxRguG94ghrEet9LG2VxaMhLfzMo9oOboGgSBLsrR9X6czlgvOkfC3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ToRdpqbL; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762984018; x=1794520018;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=73hOZus6bt7WW1nOCZjFEPbG31JqufaOom4uB2E5Lds=;
+  b=ToRdpqbLswau2Xk1AIMNa+wrIRgwnLtOOJL3rIfT0HfdCLHmos/vxg0O
+   Qsg5uuXYHP0XjEcdBIx+nAlI09zixftkcLxktMkpJqG9f+Bt83biIbtFF
+   iFLOvnpAgXO+tXi5lNUn55RsxAs0TCH/IORi/tTGFYUf+WTzUZj0r23yQ
+   j8Kfpy/u40TPpK2pV678Y1afwhXS5xEoZydffKzQC7glNh5XqzhtuaCOd
+   U6VNYn4TlpPsNEZCII1JvHKTnCnnBIN7ovzBKph7wVGB49M0OEc9hWU2c
+   dgioZn+N1i9LOZIOrp3aSGhdNogSOC2HyPUMKJThy/ni8TLav8fZuAhRD
+   A==;
+X-CSE-ConnectionGUID: XLlqdu9ITmus4Xp1b8ww1A==
+X-CSE-MsgGUID: sSS1j3GLRQWEVdftoV3EvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="52620696"
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="52620696"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 13:46:57 -0800
+X-CSE-ConnectionGUID: Vq6SPGbNR1mtyKtxYQK6yw==
+X-CSE-MsgGUID: CH6M+xK4TKmRQNXPzyywsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="220085316"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.108.30]) ([10.125.108.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 13:46:56 -0800
+Message-ID: <87c9b0f7-77f8-4671-9c89-9b76107f4a39@intel.com>
+Date: Wed, 12 Nov 2025 14:46:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <13883374.uLZWGnKmhe@rafael.j.wysocki> <20251112063941.kbg44srt5f7rfkjb@lcpd911>
- <5068916.31r3eYUQgx@rafael.j.wysocki> <6914fbb5a6ce_1d911001b@dwillia2-mobl4.notmuch>
-In-Reply-To: <6914fbb5a6ce_1d911001b@dwillia2-mobl4.notmuch>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 12 Nov 2025 22:38:14 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i0U=BYFH+QmeVjSpcyrVhVR0zjke3Vve3wxnpNzcDcoQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bn6YDvmk2NX9_6zpWQoI1iGQ5XBQQj83W27xBkXn5nlh_3iGLtRjukhi6U
-Message-ID: <CAJZ5v0i0U=BYFH+QmeVjSpcyrVhVR0zjke3Vve3wxnpNzcDcoQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] PM: runtime: Wrapper macros for usage counter guards
-To: dan.j.williams@intel.com
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dhruva Gole <d-gole@ti.com>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Frank Li <Frank.Li@nxp.com>, 
-	Linux PM <linux-pm@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Takashi Iwai <tiwai@suse.de>, LKML <linux-kernel@vger.kernel.org>, 
-	Zhang Qilong <zhangqilong3@huawei.com>, Linux PCI <linux-pci@vger.kernel.org>, 
-	Bjorn Helgaas <helgaas@kernel.org>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v4 2/2] acpi/hmat: Fix lockdep warning for
+ hmem_register_resource()
+From: Dave Jiang <dave.jiang@intel.com>
+To: nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Cc: dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
+ rafael@kernel.org
+References: <20251105235115.85062-1-dave.jiang@intel.com>
+ <20251105235115.85062-3-dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20251105235115.85062-3-dave.jiang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 12, 2025 at 10:27=E2=80=AFPM <dan.j.williams@intel.com> wrote:
->
-> Rafael J. Wysocki wrote:
-> > On Wednesday, November 12, 2025 7:39:41 AM CET Dhruva Gole wrote:
-> > > On Nov 07, 2025 at 19:35:09 +0100, Rafael J. Wysocki wrote:
-> > > > Hi All,
-> > > >
-> > > > The runtime PM usage counter guards introduced recently:
-> > > >
-> > > > https://lore.kernel.org/linux-pm/6196611.lOV4Wx5bFT@rafael.j.wysock=
-i/
-> > > >
-> > > > and then fixed:
-> > > >
-> > > > https://lore.kernel.org/linux-pm/5943878.DvuYhMxLoT@rafael.j.wysock=
-i/
-> > > >
-> > > > should generally work, but using them feels sort of arcane and cryp=
-tic
-> > > > even though the underlying concept is relatively straightforward.
-> > > >
-> > > > For this reason, runtime PM wrapper macros around ACQUIRE() and
-> > > > ACQUIRE_ERR() involving the new guards are introduced in this serie=
-s
-> > > > (patch [1/3]) and then used in the code already using the guards (p=
-atches
-> > > > [2/3] and [3/3]) to make it look more straightforward.
-> > >
-> > > The patches look okay to me,
-> > > Reviewed-by: Dhruva Gole <d-gole@ti.com>
-> >
-> > Thank you and Jonathan for the tags, but since Frank is not convinced, =
-let me
-> > bounce one more idea off all of you.
-> >
-> > Namely, I think that Frank has a point when he wonders if PM_RUNTIME_AC=
-QUIRE_ERR
-> > hides too much information and I agree with Jonathan that may be misund=
-erstood,
-> > so what about defining the wrapper macros so they don't hide the guard =
-variable
-> > name, like in the patch below?
->
-> I had been reluctant about offering an enthusiastic tag on this series
-> given that information hiding, but with this change:
->
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
-Thanks!
 
-> However, I prefer that the scope variable declaration vs usage
-> (reference) cases should maintain visual separation with an operator,
-> i.e.:
->
->         PM_RUNTIME_ACQUIRE(dev, pm);
->         if (PM_RUNTIME_ACQUIRE_ERR(&pm))
->                 return -ENXIO;
->
-> Otherwise we have a case of different flavors of *_ACQUIRE_ERR
-> implementing various styles. I initially looked at hiding the '&':
->
-> http://lore.kernel.org/681ea7d5ea04b_2a2bb100cf@dwillia2-mobl4.notmuch
->
-> ...but it grew on me precisely because it provides a clue about how this
-> magic operates.
+On 11/5/25 4:51 PM, Dave Jiang wrote:
+> The following lockdep splat was observed while kernel auto-online a CXL
+> memory region:
+> 
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 6.17.0djtest+ #53 Tainted: G        W
+> ------------------------------------------------------
+> systemd-udevd/3334 is trying to acquire lock:
+> ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
+> 
+> but task is already holding lock:
+> ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
+> 
+> which lock already depends on the new lock.
+> [..]
+> Chain exists of:
+>   hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
+> 
+>  Possible unsafe locking scenario:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   rlock((node_chain).rwsem);
+>                                lock(mem_hotplug_lock);
+>                                lock((node_chain).rwsem);
+>   lock(hmem_resource_lock);
+> 
+> The lock ordering can cause potential deadlock. There are instances
+> where hmem_resource_lock is taken after (node_chain).rwsem, and vice
+> versa.
+> 
+> Split out the target update section of hmat_register_target() so that
+> hmat_callback() only envokes that section instead of attempt to register
+> hmem devices that it does not need to.
+> 
+> Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-Fair enough.
+Applied to cxl/fixes
+71cd75e2b101a31d09f031e132a6ad04c911e164
 
-I'll resend the series with this change then.
+> ---
+> v4:
+> - Fix fixes tag. (Jonathan)
+> - Refactor hmat_hotplug_target(). (Jonathan)
+> ---
+>  drivers/acpi/numa/hmat.c | 47 ++++++++++++++++++++++------------------
+>  1 file changed, 26 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 1dc73d20d989..d10cbe93c3a7 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -874,10 +874,33 @@ static void hmat_register_target_devices(struct memory_target *target)
+>  	}
+>  }
+>  
+> -static void hmat_register_target(struct memory_target *target)
+> +static void hmat_hotplug_target(struct memory_target *target)
+>  {
+>  	int nid = pxm_to_node(target->memory_pxm);
+>  
+> +	/*
+> +	 * Skip offline nodes. This can happen when memory
+> +	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+> +	 * to all the memory in a proximity domain leading to
+> +	 * the node being marked offline / unplugged, or if
+> +	 * memory-only "hotplug" node is offline.
+> +	 */
+> +	if (nid == NUMA_NO_NODE || !node_online(nid))
+> +		return;
+> +
+> +	guard(mutex)(&target_lock);
+> +	if (target->registered)
+> +		return;
+> +
+> +	hmat_register_target_initiators(target);
+> +	hmat_register_target_cache(target);
+> +	hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
+> +	hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
+> +	target->registered = true;
+> +}
+> +
+> +static void hmat_register_target(struct memory_target *target)
+> +{
+>  	/*
+>  	 * Devices may belong to either an offline or online
+>  	 * node, so unconditionally add them.
+> @@ -896,25 +919,7 @@ static void hmat_register_target(struct memory_target *target)
+>  		}
+>  	}
+>  
+> -	/*
+> -	 * Skip offline nodes. This can happen when memory
+> -	 * marked EFI_MEMORY_SP, "specific purpose", is applied
+> -	 * to all the memory in a proximity domain leading to
+> -	 * the node being marked offline / unplugged, or if
+> -	 * memory-only "hotplug" node is offline.
+> -	 */
+> -	if (nid == NUMA_NO_NODE || !node_online(nid))
+> -		return;
+> -
+> -	mutex_lock(&target_lock);
+> -	if (!target->registered) {
+> -		hmat_register_target_initiators(target);
+> -		hmat_register_target_cache(target);
+> -		hmat_register_target_perf(target, ACCESS_COORDINATE_LOCAL);
+> -		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
+> -		target->registered = true;
+> -	}
+> -	mutex_unlock(&target_lock);
+> +	hmat_hotplug_target(target);
+>  }
+>  
+>  static void hmat_register_targets(void)
+> @@ -940,7 +945,7 @@ static int hmat_callback(struct notifier_block *self,
+>  	if (!target)
+>  		return NOTIFY_OK;
+>  
+> -	hmat_register_target(target);
+> +	hmat_hotplug_target(target);
+>  	return NOTIFY_OK;
+>  }
+>  
 
-Thank you!
 
