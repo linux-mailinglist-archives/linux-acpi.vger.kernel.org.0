@@ -1,186 +1,290 @@
-Return-Path: <linux-acpi+bounces-18802-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18803-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29E0C5187B
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 11:00:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE01CC519EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 11:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5B8474F909C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 09:51:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 854BD3A480D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 10:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637092FFDE4;
-	Wed, 12 Nov 2025 09:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THXlsGbF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463812FFDC4;
+	Wed, 12 Nov 2025 10:14:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0122FFDE0;
-	Wed, 12 Nov 2025 09:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6D2280025;
+	Wed, 12 Nov 2025 10:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762941028; cv=none; b=de6/GxKzQt05ObQAOyzQpnGInJw/0hStdkB2NryoJcbRFPZHWtVVxGtcH2HEh+NW6b3VmhPI+PYGJarVWOPUXQJNyrNV8DAmYwrhtv+zqOmdTtkWOFAgW1FRoPKKUXzfjxG4m3mwoY5CtFmYSnvP8kUM9L6muo9IoUCMBYc+bU0=
+	t=1762942454; cv=none; b=Oj4ZK/8IiNQyXX/8MHbszy0vLZiyJ8+yfK7Kv3MJxJWB33R8puU1m+EDj54A/XMFhY/OXMd8XZ7WM4bX4h9UqR5IOYDnnhyrGy2NnM6L6N9OYpj9Q8Z6f7E65OQMcg6YQbiHlmaBfDsZHjkJ8RmiPvY0nEAwgsZk5vumP3UoJUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762941028; c=relaxed/simple;
-	bh=wKkYTwbaHODjzCytHEFDqnL5g4JxssRcsrQb6AjyIG4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s8XrxaaQ8OQxhXHF+qBUbqo9T7Tk605KnWJqcEYvMizxmxJlDSsrcMQ0Zg0MtmzHafmkH1hBgejFr1+Tc83V2wMXOssWc1ON+aW8fqwgbjuGkRLW1ThhNS/LkTC97gKzUe2B64JOVe85+PQqGyTOsellI/jB+AsU3QaJtlG+Hpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THXlsGbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0C7C4CEF8;
-	Wed, 12 Nov 2025 09:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762941027;
-	bh=wKkYTwbaHODjzCytHEFDqnL5g4JxssRcsrQb6AjyIG4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=THXlsGbFErwUFo1wXBwnqtZVc6BeYn6L2UE7CtZWfMJ4+KHQIlHtuc0TildUHh9Ob
-	 lbTpx2tKz/MJDGXzxMH3yv/POWUQ2aqZzG7HA94ie+/hvHaVTkNs0qr3mkXqf8MUl6
-	 3xQrouYjCT1oIZFDzLeMNz2k5X4HgsMojIK8wtRmO6zaaZSfFJSKTvA/atntB+Nvce
-	 UTg4ZNmTK0FKQW5hAT0TVEXQQv998uAJgquRdnYwTccyPWKJ4vmwWzDuutaq7NLM3K
-	 yO9dpZI9D2EUC6PxhSTPniAIx6r42xtWyAYBzgMBzkGIU3Q09/XJ3yR3XEsaBgw3Vc
-	 GTO/aG2ppFgmw==
-Date: Wed, 12 Nov 2025 10:50:19 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Charles Mirabile <cmirabil@redhat.com>
-Cc: fj1078ii@fujitsu.com, catalin.marinas@arm.com, fj2767dz@fujitsu.com,
-	guohanjun@huawei.com, ilkka@os.amperecomputing.com, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, rafael@kernel.org,
-	sudeep.holla@arm.com, will@kernel.org, tglx@linutronix.de,
-	maz@kernel.org
-Subject: Re: [PATCH v4] ACPI: AGDI: Add interrupt signaling mode support
-Message-ID: <aRRYW7UK7PWb6cpS@lpieralisi>
-References: <OSAPR01MB7669F9B9E145A50B38819E13D5CEA@OSAPR01MB7669.jpnprd01.prod.outlook.com>
- <20251112044239.4049011-1-cmirabil@redhat.com>
+	s=arc-20240116; t=1762942454; c=relaxed/simple;
+	bh=OhqdizDqUMSv1sLBX1ZxZKWQ0KFBOMmKlbnG45xQFpg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u740aD3Zs72jwsaDBdxIgI9yadDkSosdnuNMpgU+UZCuGMyDgWfckdHZhX2MJZzLp7JG6yREUuZzAvmF960Ip8oOrea2yBh1glX0EvudIfhjNnz/+KjFE4vvbG/OBb8O5SbdzqGBCuqpq0WYauLRHtzq2+znKg7yErfkX4u4MEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10E9C1515;
+	Wed, 12 Nov 2025 02:14:03 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C5DC3F5A1;
+	Wed, 12 Nov 2025 02:14:05 -0800 (PST)
+Message-ID: <ba2d4852-dd38-4d98-96fe-2716875ff199@arm.com>
+Date: Wed, 12 Nov 2025 10:14:04 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/33] ACPI / PPTT: Add a helper to fill a cpumask from a
+ processor container
+To: Gavin Shan <gshan@redhat.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, guohanjun@huawei.com,
+ jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
+ Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-2-ben.horgan@arm.com>
+ <11f80800-2e0b-4f41-a022-a88ad9792da8@redhat.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <11f80800-2e0b-4f41-a022-a88ad9792da8@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251112044239.4049011-1-cmirabil@redhat.com>
 
-[+cc Thomas, Marc]
+Hi Gavin,
 
-On Tue, Nov 11, 2025 at 11:42:37PM -0500, Charles Mirabile wrote:
-> Hi All—
+On 11/8/25 04:31, Gavin Shan wrote:
+> Hi Ben,
 > 
-> On Mon, Nov 10, 2025 at 07:38:17AM +0000, Kazuhiro Abe (Fujitsu) wrote:
-> > Hi Will,
-> > 
-> > > Hi Will,
-> > > 
-> > > > [You don't often get email from will@kernel.org. Learn why this is
-> > > > important at https://aka.ms/LearnAboutSenderIdentification ]
-> > > >
-> > > > On Mon, Oct 20, 2025 at 09:23:05PM +0800, Hanjun Guo wrote:
-> > > > > On 2025/10/17 15:39, Kazuhiro Abe wrote:
-> > > > > > AGDI has two types of signaling modes: SDEI and interrupt.
-> > > > > > Currently, the AGDI driver only supports SDEI.
-> > > > > > Therefore, add support for interrupt signaling mode The interrupt
-> > > > > > vector is retrieved from the AGDI table, and call panic function
-> > > > > > when an interrupt occurs.
-> > > > > >
-> > > > > > Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-> > > > > > Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-> > > > > > ---
-> > > > > > Hanjun, I have addressed all your comments.
-> > > > > > Please review them.
-> > > > > >
-> > > > > > v3->v4
-> > > > > >   - Add a comment to the flags member.
-> > > > > >   - Fix agdi_interrupt_probe.
-> > > > > >   - Fix agdi_interrupt_remove.
-> > > > > >   - Add space in struct initializsation.
-> > > > > >   - Delete curly braces.
-> > > > >
-> > > > > Looks good to me,
-> > > > >
-> > > > > Acked-by: Hanjun Guo <guohanjun@huawei.com>
-> > > >
-> > > > I wasn't cc'd on the original patch but I couldn't figure out why it
-> > > > uses IRQF_NO_AUTOEN when requesting the irq given that the first thing
-> > > > it does is enable it.
-> > > 
-> > > I misunderstood the usage of request_irq and enable_irq.
-> > > Since there's no need to separate them, I will remove IRQF_NO_AUTOEN and the
-> > > enable_irq call, and send v5.
-> > 
-> > I found out when calling request_nmi, removing IRQF_NO_AUTOEN results in an error (-EINVAL).
-> > Therefore, I would like to keep IRQF_NO_AUTOEN specified.
-> > If you have any comments on this version, please let me know.
+> On 11/7/25 10:34 PM, Ben Horgan wrote:
+>> From: James Morse <james.morse@arm.com>
+>>
+>> The ACPI MPAM table uses the UID of a processor container specified in
+>> the PPTT to indicate the subset of CPUs and cache topology that can
+>> access each MPAM System Component (MSC).
+>>
+>> This information is not directly useful to the kernel. The equivalent
+>> cpumask is needed instead.
+>>
+>> Add a helper to find the processor container by its id, then walk
+>> the possible CPUs to fill a cpumask with the CPUs that have this
+>> processor container as a parent.
+>>
+>> CC: Dave Martin <dave.martin@arm.com>
+>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+>> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+>> Tested-by: Peter Newman <peternewman@google.com>
+>> Signed-off-by: James Morse <james.morse@arm.com>
+>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+>> ---
+>> Changes since v3:
+>> Refer to processor hierarchy in comments (Jonathan)
+>> Fix indent (Jonathan)
+>> ---
+>>   drivers/acpi/pptt.c  | 85 ++++++++++++++++++++++++++++++++++++++++++++
+>>   include/linux/acpi.h |  3 ++
+>>   2 files changed, 88 insertions(+)
+>>
 > 
-> Could it be that this is just a bug in `request_nmi`? I see the following:
+> Two nitpicks below...
 > 
-> if (!desc || (irq_settings_can_autoenable(desc) &&
->     !(irqflags & IRQF_NO_AUTOEN)) ||
->     !irq_settings_can_request(desc) ||
->     WARN_ON(irq_settings_is_per_cpu_devid(desc)) ||
->     !irq_supports_nmi(desc))
-> 	return -EINVAL;
+>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+>> index 54676e3d82dd..69917cc6bd2f 100644
+>> --- a/drivers/acpi/pptt.c
+>> +++ b/drivers/acpi/pptt.c
+>> @@ -817,3 +817,88 @@ int find_acpi_cpu_topology_hetero_id(unsigned int
+>> cpu)
+>>       return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+>>                         ACPI_PPTT_ACPI_IDENTICAL);
+>>   }
+>> +
+>> +/**
+>> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
+>> + * processor hierarchy node
+>> + *
+>> + * @table_hdr:        A reference to the PPTT table
+>> + * @parent_node:    A pointer to the processor hierarchy node in the
+>> + *            table_hdr
+>> + * @cpus:        A cpumask to fill with the CPUs below @parent_node
+>> + *
+>> + * Walks up the PPTT from every possible CPU to find if the provided
+>> + * @parent_node is a parent of this CPU.
+>> + */
+>> +static void acpi_pptt_get_child_cpus(struct acpi_table_header
+>> *table_hdr,
+>> +                     struct acpi_pptt_processor *parent_node,
+>> +                     cpumask_t *cpus)
+>> +{
+>> +    struct acpi_pptt_processor *cpu_node;
+>> +    u32 acpi_id;
+>> +    int cpu;
+>> +
+>> +    cpumask_clear(cpus);
+>> +
+>> +    for_each_possible_cpu(cpu) {
+>> +        acpi_id = get_acpi_id_for_cpu(cpu);
+>> +        cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
+>> +
+>> +        while (cpu_node) {
+>> +            if (cpu_node == parent_node) {
+>> +                cpumask_set_cpu(cpu, cpus);
+>> +                break;
+>> +            }
+>> +            cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +/**
+>> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all
+>> CPUs in a
+>> + *                                       processor container
+>> + * @acpi_cpu_id:    The UID of the processor container
+>> + * @cpus:        The resulting CPU mask
+>> + *
+>> + * Find the specified Processor Container, and fill @cpus with all
+>> the cpus
+>> + * below it.
+>> + *
+>> + * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
+>> + * or a Processor Container, they may exist purely to describe a
+>> + * Private resource. CPUs have to be leaves, so a Processor Container
+>> + * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
+>> + */
+>> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
+>> +{
+>> +    struct acpi_table_header *table_hdr;
+>> +    struct acpi_subtable_header *entry;
+>> +    unsigned long table_end;
+>> +    u32 proc_sz;
+>> +
+>> +    cpumask_clear(cpus);
+>> +
+>> +    table_hdr = acpi_get_pptt();
+>> +    if (!table_hdr)
+>> +        return;
+>> +
+>> +    table_end = (unsigned long)table_hdr + table_hdr->length;
+>> +    entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+>> +                 sizeof(struct acpi_table_pptt));
+>> +    proc_sz = sizeof(struct acpi_pptt_processor);
+>> +    while ((unsigned long)entry + proc_sz <= table_end) {
+>> +
 > 
-> Perhaps there is just a missing `!` before `irq_settings_can_autoenable`.
+> Unnecessary blank line here.
+
+Ack
+
 > 
-> As far as I can tell it has always been wrong - git blame points me to the
-> original commit where that code was introduced:
+>> +        if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
+>> +            struct acpi_pptt_processor *cpu_node;
+>> +
+>> +            cpu_node = (struct acpi_pptt_processor *)entry;
+>> +            if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
+>> +                !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
+>> +                cpu_node->acpi_processor_id == acpi_cpu_id) {
+>> +                acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
+>> +                break;
+>> +            }
+>> +        }
+>> +        entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+>> +                     entry->length);
 > 
-> b525903c254da ("genirq: Provide basic NMI management for interrupt lines")
+> Need we to check if @cpu_node does crosses the boundary (@table_end), as
+> what's
+> doing in acpi_find_processor_node()? Actually, the similar hunk of code
+> from
+> the function can be reused here.
 
-I don't think that's the right rationale (and I can't claim to understand
-it fully either - that's why I added Thomas/Marc in CC).
+As acpi_find_processor_node() is called from acpi_pptt_get_child_cpus()
+I don't think we need to duplicate the checking here.
 
-As per b525903c254da - IIUC NMI must not be autoenable-capable -
-enable/disable must be done using enable_nmi/disable_nmi_nosync explicitly.
-
-cbe16f35bee6 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
-added the logic checking the IRQF_NO_AUTOEN flag to request_nmi().
-
-Now, AFAICS irq_settings_can_autoenable(desc) returns true in this
-specific case - the IRQ is a GICv3 SPI.
-
-First question is - before commit cbe16f35bee6, how request_nmi() could
-have possibly succeeded - irq_settings_can_autoenable() would return
-true and request_nmi() would have failed.
-
-Come cbe16f35bee6:
-
-if (!desc || (irq_settings_can_autoenable(desc) && !(irqflags & IRQF_NO_AUTOEN)) ||
-	!irq_settings_can_request(desc) ||
-	WARN_ON(irq_settings_is_per_cpu_devid(desc)) ||
-	!irq_supports_nmi(desc))
-		return -EINVAL;
-
-Now the check passes _if_ you pass in irqflags IRQF_NO_AUTOEN.
-
-I agree with Will that's a bit counterintuitive - maybe we can force
-the irqdesc to be NOAUTOEN in request_nmi() directly ?
-
-Thomas and Marc know better so that's where I stop.
+> 
+> static struct acpi_pptt_processor *acpi_find_processor_node(struct
+> acpi_table_header *table_hdr,
+>                                                             u32
+> acpi_cpu_id)
+> {
+>         :
+>     while ((unsigned long)entry + proc_sz <= table_end) {
+>                 cpu_node = (struct acpi_pptt_processor *)entry;
+> 
+>                 if (entry->length == 0) {
+>                         pr_warn("Invalid zero length subtable\n");
+>                         break;
+>                 }
+> 
+>                 /* entry->length may not equal proc_sz, revalidate the
+> processor structure length */
+>                 if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+>                     acpi_cpu_id == cpu_node->acpi_processor_id &&
+>                     (unsigned long)entry + entry->length <= table_end &&
+>                     entry->length == proc_sz + cpu_node-
+>>number_of_priv_resources * sizeof(u32) &&
+>                      acpi_pptt_leaf_node(table_hdr, cpu_node)) {
+>                         return (struct acpi_pptt_processor *)entry;
+>                 }
+> 
+>                 entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+>                                      entry->length);
+>     }
+> 
+>         :
+> }
+> 
+> 
+>> +    }
+>> +}
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index 5ff5d99f6ead..4752ebd48132 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int
+>> level);
+>>   int find_acpi_cpu_topology_cluster(unsigned int cpu);
+>>   int find_acpi_cpu_topology_package(unsigned int cpu);
+>>   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+>> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t
+>> *cpus);
+>>   #else
+>>   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>>   {
+>> @@ -1562,6 +1563,8 @@ static inline int
+>> find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>>   {
+>>       return -EINVAL;
+>>   }
+>> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
+>> +                             cpumask_t *cpus) { }
+>>   #endif
+>>     void acpi_arch_init(void);
+> 
+> Thanks,
+> Gavin
+> 
 
 Thanks,
-Lorenzo
 
-> I looked and the only two callers are using `IRQF_NO_AUTOEN` so I guess it
-> just hasn't been noticed yet.
-> 
-> Happy to send a patch to fix it.
-> 
-> > 
-> > Best Regards,
-> > Kazuhiro Abe
-> > 
-> > > 
-> > > Best Regards,
-> > > Kazuhiro Abe
-> > > 
-> > > >
-> > > > Will
-> 
-> Best—Charlie
-> 
+Ben
+
 
