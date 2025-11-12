@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-18827-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18828-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588BAC53ECC
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 19:35:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4A6C53F5C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 19:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E0ABE3467ED
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 18:31:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 23E50348D56
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 18:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B6B352F8A;
-	Wed, 12 Nov 2025 18:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14746359FB8;
+	Wed, 12 Nov 2025 18:27:42 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8025F35293A;
-	Wed, 12 Nov 2025 18:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0951834DB7F;
+	Wed, 12 Nov 2025 18:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762971929; cv=none; b=Mw1HxeREJGFC/dbt2WiNkn/LQrMFzE/tWs+EJRD4SLB+R5OjIqtpA3PeqhgC8d8ZCyfWovdzN+bYw3dkIrJI9B9LBrVlcKQpfCpq9xvgoQBi4YwwmmNh0dChj7wLCioJ4IIUvtHfIPA58G2WaUfVZvzV1cs17k0/6EM/vuxAh3M=
+	t=1762972062; cv=none; b=KWQihmptsr210TxGrbct/0DOK027ukTSw4ButmFjm8u39cFHsBYSFKMGAXicQ6hl7dZ0zzAQo8EzAUj7whtFtz3kyfqYo9bI/ziijua8ovTguDWv8XF5lCjYhz2d72I/BITYYVAn9nXGmtOlxfbGqUh2rIWNHzn2nhuFlYfPHRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762971929; c=relaxed/simple;
-	bh=lizdUnDeduoQiKv5+ThT5MsgZaSyS7YSf7d07ugaIXY=;
+	s=arc-20240116; t=1762972062; c=relaxed/simple;
+	bh=lvk/smEJNeQBj0VHoIfrwk0u+PsEGYCtIbgwF2adYTQ=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OBjiCLxwniSQuyevLc7AIyJZJSH5tjLo0K2wgNZX7IJRw17T+pgjSAd24C1eQCE47GfwOcyvOYkpvIg/DR2ZS8WOrsFJdqR4C8okBo8gJzABeQSoyPLqDKifqgccLG3uncsS6WmANIiZ6gDW4InZox5KW8JOCag1bj634bcv4iA=
+	 MIME-Version:Content-Type; b=RYMU7JqbAbm97HU6VSn/ez3gFMARHr6hJNuhBWPk0+zEYfqxswfyYlk8OD3G030QOYSysuT4T88Ap4i4UT8srcLIOblZ6RThugJMD4Q9iz0l1oyZdZGRK5Ptt+k3OjxDK+Qn63UXAkdzoHN7MvoGDOAsA2Xite40FCXs5zWZQn4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d6BdZ5JZczJ46DR;
-	Thu, 13 Nov 2025 02:24:50 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d6BhP52h0zHnH4q;
+	Thu, 13 Nov 2025 02:27:17 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9C3491402F1;
-	Thu, 13 Nov 2025 02:25:23 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3B7011402FB;
+	Thu, 13 Nov 2025 02:27:37 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 12 Nov
- 2025 18:25:22 +0000
-Date: Wed, 12 Nov 2025 18:25:21 +0000
+ 2025 18:27:36 +0000
+Date: Wed, 12 Nov 2025 18:27:35 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Marc Zyngier <maz@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -51,12 +51,12 @@ CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
 	<james.clark@linaro.org>, Jinjie Ruan <ruanjinjie@huawei.com>, "Alexandru
  Elisei" <alexandru.elisei@arm.com>
-Subject: Re: [PATCH v4 16/26] genirq: Allow per-cpu interrupt sharing for
- non-overlapping affinities
-Message-ID: <20251112182521.000027ad@huawei.com>
-In-Reply-To: <20251020122944.3074811-17-maz@kernel.org>
+Subject: Re: [PATCH v4 17/26] genirq: Add request_percpu_irq_affinity()
+ helper
+Message-ID: <20251112182735.00001363@huawei.com>
+In-Reply-To: <20251020122944.3074811-18-maz@kernel.org>
 References: <20251020122944.3074811-1-maz@kernel.org>
-	<20251020122944.3074811-17-maz@kernel.org>
+	<20251020122944.3074811-18-maz@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -66,28 +66,23 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, 20 Oct 2025 13:29:33 +0100
+On Mon, 20 Oct 2025 13:29:34 +0100
 Marc Zyngier <maz@kernel.org> wrote:
 
-> Interrupt sharing for percpu-devid interrupts is forbidden, and
-> for good reasons. These are interrupts generated *from* a CPU and
-> handled by itself (timer, for example). Nobody in their right mind
-> would put two devices on the same pin (and if they have, they get to
-> keep the pieces...).
+> While it would be nice to simply make request_percpu_irq() take
+> an affinity mask, the churn is likely to be on the irritating side
+> given that most drivers do not give a damn about affinities.
+
+Only 37 instances. I'd have been tempted to do it anyway :)
+
 > 
-> But this also prevents more benign cases, where devices are connected
-> to groups of CPUs, and for which the affinities are not overlapping.
-> Effectively, the only thing they share is the interrupt number, and
-> nothing else.
+> So take the more innocuous path to provide a helper that parallels
+> request_percpu_irq(), with an affinity as a bonus argument.
 > 
-> Let's tweak the definition of IRQF_SHARED applied to percpu_devid
-> interrupts to allow this particular case. This results in extra
-> validation at the point of the interrupt being setup and freed,
-> as well as a tiny bit of extra complexity for interrupts at handling
-> time (to pick the correct irqaction).
+> Yes, request_percpu_irq_affinity() is a bit of a mouthful.
 > 
 > Tested-by: Will Deacon <will@kernel.org>
 > Signed-off-by: Marc Zyngier <maz@kernel.org>
