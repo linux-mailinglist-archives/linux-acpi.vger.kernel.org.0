@@ -1,170 +1,104 @@
-Return-Path: <linux-acpi+bounces-18785-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18786-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070B0C508E1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 05:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61864C509C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 06:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D7D3AA5A0
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 04:43:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34CC3AE710
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 05:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4915729BD8C;
-	Wed, 12 Nov 2025 04:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2760D2D876A;
+	Wed, 12 Nov 2025 05:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GvcUDq0O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CEPWaH13"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550D523BD1B
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Nov 2025 04:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6D1146588;
+	Wed, 12 Nov 2025 05:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762922579; cv=none; b=ZPZe2oEmzpI4KMNmwRJkilwfkGe8FgESEnmfmM2KkPiYVrTXlbTXvp0stFKra1OTB7BkbGoJoaGEGUlePeeKWOSSON3YBwVN23L5l6V1vI5Bko//lpynKIeDjAbA0wGqmxICEKyo1nYXQHuWvLLJHy8GHf2OGnxPc5Rf7zRwrQw=
+	t=1762925208; cv=none; b=qhX2KpYxvKDD5UI+L+1aQIWIOvImhdgVKC3sldCWDd4xxUUXEU22vCuDAvASfxupiflAcsYjpBEDk9BpeXsyV1Hl7++owt+X3Zf7xSMKPzQg3jovEKt6687WJ+ePFKsx9iP9wBaDANfhQ+/lYGQhoFunCF/ZEb2rFOHwBeMfYhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762922579; c=relaxed/simple;
-	bh=6HV5R0vQv4BNsQt+Yhsxf1lzNigzlSp6ywMkqsoT8N4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=COMZxvsSXyDKcm3UcKmeFEAMcxCyiTZkwhXMwlRc/eMlJv92JzGPxzPq9NqVkNAaPOR+ac3ApXqitp7cdbln0mE01lIuq/efYyPYMAazucYJbV2TxhJKRbJ/pXj9GUrGKoYgwq0wUZ3yoYUMpka+OBUyEqrf2qBLjcOGzSyytOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GvcUDq0O; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762922576;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k7wfzbMX9zppyyEMbKM6+79VccQHudzEP6zJVdKYqxo=;
-	b=GvcUDq0OAuk2vJfncANY7PT73KuQpU+5K8szr3Vycj7ofyUGXjzwTeBUU/oclT+xpEidZ9
-	GdmuhuTJAfNkwdTyQn3vKFGGPWcTXls27noZMIcS3ul7o+hZN2IdtCrhsY+gC24dYE9AXq
-	PI+NabMto3V214P6Fmb8eBZzDF/wcjo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-szULz0khMiy_j8U_Wp5yjw-1; Tue,
- 11 Nov 2025 23:42:50 -0500
-X-MC-Unique: szULz0khMiy_j8U_Wp5yjw-1
-X-Mimecast-MFC-AGG-ID: szULz0khMiy_j8U_Wp5yjw_1762922569
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 773831956089;
-	Wed, 12 Nov 2025 04:42:47 +0000 (UTC)
-Received: from cmirabil.redhat.com (unknown [10.22.65.154])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D57271955F1A;
-	Wed, 12 Nov 2025 04:42:43 +0000 (UTC)
-From: Charles Mirabile <cmirabil@redhat.com>
-To: fj1078ii@fujitsu.com
-Cc: catalin.marinas@arm.com,
-	fj2767dz@fujitsu.com,
-	guohanjun@huawei.com,
-	ilkka@os.amperecomputing.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lpieralisi@kernel.org,
-	rafael@kernel.org,
-	sudeep.holla@arm.com,
-	will@kernel.org
-Subject: Re: [PATCH v4] ACPI: AGDI: Add interrupt signaling mode support
-Date: Tue, 11 Nov 2025 23:42:37 -0500
-Message-ID: <20251112044239.4049011-1-cmirabil@redhat.com>
-In-Reply-To: <OSAPR01MB7669F9B9E145A50B38819E13D5CEA@OSAPR01MB7669.jpnprd01.prod.outlook.com>
-References: <OSAPR01MB7669F9B9E145A50B38819E13D5CEA@OSAPR01MB7669.jpnprd01.prod.outlook.com>
+	s=arc-20240116; t=1762925208; c=relaxed/simple;
+	bh=J2yCx8gANXEoEptcoVy/jvxBGR0sLdZaZJNtdCJDhDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gch/8+hOKsq8/aK41tX1OusqUI/zOYQfcoBoElxyUAIaQDstg3lv0lBnNhNVrXM+9k4kSJ0W1WOzvHEKPJKq0yQ3ARWueRpj+uctJgMroP2d8MpZOqVvHEtAWWi3xs3JkkzYHcVSxrCC1Ikf35xL40tr8/XSI+b7PSK2xxrSTs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CEPWaH13; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762925206; x=1794461206;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J2yCx8gANXEoEptcoVy/jvxBGR0sLdZaZJNtdCJDhDQ=;
+  b=CEPWaH13QuEHeyuMYIU1ab3uCDunT91ibG8+ITiwmGV/4rNBp0FVol4V
+   0z8xBgPDrfPVWk6HdgpC7Defilr/MJa2GtSZlzk/NFTxtJTK4UUlkOSsO
+   p4CnXaCDA+h8F/7Tf801CtamAQhuPe5m4e5ACvbPLk+MIlzHAn7QU+Og6
+   uyfLG5LJSqBnGZkt3qk2HDAHbCGwgxZkk9c9KUjcFXz+5NeM5QArLRCYk
+   BeMQu+wJlrIl3ov+RTlVM+ko2m6a07fPGEKkiiHhCu7le1LXoNVBDOZrQ
+   Qpvk2HC/+VA3cRMgMFkeYN5WIAK95wLxmoWU7QPM3X7qInRxl7nYBrbmB
+   w==;
+X-CSE-ConnectionGUID: 0XBEb4WGQSm14BHCoeKlrw==
+X-CSE-MsgGUID: 4RcpEAYDR3qVrZgGX7I63A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="76331295"
+X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
+   d="scan'208";a="76331295"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 21:26:45 -0800
+X-CSE-ConnectionGUID: 2KuqqVv9TuS5cZ/Ryocc5Q==
+X-CSE-MsgGUID: jYiQEfIURoe/1ab0ampM7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; 
+   d="scan'208";a="189381942"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 21:26:41 -0800
+Message-ID: <f6e4ca74-2b76-4662-97eb-a1c5eab62c9a@linux.intel.com>
+Date: Wed, 12 Nov 2025 13:22:38 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/5] iommu: Tiny domain for iommu_setup_dma_ops()
+To: Nicolin Chen <nicolinc@nvidia.com>, joro@8bytes.org, afael@kernel.org,
+ bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com
+Cc: will@kernel.org, robin.murphy@arm.com, lenb@kernel.org,
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev,
+ pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org,
+ etzhao1900@gmail.com
+References: <cover.1762835355.git.nicolinc@nvidia.com>
+ <431cccb8279eb84376c641981f57e9ceece8febf.1762835355.git.nicolinc@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <431cccb8279eb84376c641981f57e9ceece8febf.1762835355.git.nicolinc@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi All—
-
-On Mon, Nov 10, 2025 at 07:38:17AM +0000, Kazuhiro Abe (Fujitsu) wrote:
-> Hi Will,
+On 11/11/25 13:12, Nicolin Chen wrote:
+> This function can only be called on the default_domain. Trivally pass it
+> in. In all three existing cases, the default domain was just attached to
+> the device.
 > 
-> > Hi Will,
-> > 
-> > > [You don't often get email from will@kernel.org. Learn why this is
-> > > important at https://aka.ms/LearnAboutSenderIdentification ]
-> > >
-> > > On Mon, Oct 20, 2025 at 09:23:05PM +0800, Hanjun Guo wrote:
-> > > > On 2025/10/17 15:39, Kazuhiro Abe wrote:
-> > > > > AGDI has two types of signaling modes: SDEI and interrupt.
-> > > > > Currently, the AGDI driver only supports SDEI.
-> > > > > Therefore, add support for interrupt signaling mode The interrupt
-> > > > > vector is retrieved from the AGDI table, and call panic function
-> > > > > when an interrupt occurs.
-> > > > >
-> > > > > Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-> > > > > Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-> > > > > ---
-> > > > > Hanjun, I have addressed all your comments.
-> > > > > Please review them.
-> > > > >
-> > > > > v3->v4
-> > > > >   - Add a comment to the flags member.
-> > > > >   - Fix agdi_interrupt_probe.
-> > > > >   - Fix agdi_interrupt_remove.
-> > > > >   - Add space in struct initializsation.
-> > > > >   - Delete curly braces.
-> > > >
-> > > > Looks good to me,
-> > > >
-> > > > Acked-by: Hanjun Guo <guohanjun@huawei.com>
-> > >
-> > > I wasn't cc'd on the original patch but I couldn't figure out why it
-> > > uses IRQF_NO_AUTOEN when requesting the irq given that the first thing
-> > > it does is enable it.
-> > 
-> > I misunderstood the usage of request_irq and enable_irq.
-> > Since there's no need to separate them, I will remove IRQF_NO_AUTOEN and the
-> > enable_irq call, and send v5.
+> This avoids iommu_setup_dma_ops() calling iommu_get_domain_for_dev() the
+> that will be used by external callers.
 > 
-> I found out when calling request_nmi, removing IRQF_NO_AUTOEN results in an error (-EINVAL).
-> Therefore, I would like to keep IRQF_NO_AUTOEN specified.
-> If you have any comments on this version, please let me know.
+> Suggested-by: Jason Gunthorpe<jgg@nvidia.com>
+> Signed-off-by: Nicolin Chen<nicolinc@nvidia.com>
+> ---
+>   drivers/iommu/dma-iommu.h | 5 +++--
+>   drivers/iommu/dma-iommu.c | 4 +---
+>   drivers/iommu/iommu.c     | 6 +++---
+>   3 files changed, 7 insertions(+), 8 deletions(-)
 
-Could it be that this is just a bug in `request_nmi`? I see the following:
-
-if (!desc || (irq_settings_can_autoenable(desc) &&
-    !(irqflags & IRQF_NO_AUTOEN)) ||
-    !irq_settings_can_request(desc) ||
-    WARN_ON(irq_settings_is_per_cpu_devid(desc)) ||
-    !irq_supports_nmi(desc))
-	return -EINVAL;
-
-Perhaps there is just a missing `!` before `irq_settings_can_autoenable`.
-
-As far as I can tell it has always been wrong - git blame points me to the
-original commit where that code was introduced:
-
-b525903c254da ("genirq: Provide basic NMI management for interrupt lines")
-
-I looked and the only two callers are using `IRQF_NO_AUTOEN` so I guess it
-just hasn't been noticed yet.
-
-Happy to send a patch to fix it.
-
-> 
-> Best Regards,
-> Kazuhiro Abe
-> 
-> > 
-> > Best Regards,
-> > Kazuhiro Abe
-> > 
-> > >
-> > > Will
-
-Best—Charlie
-
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
