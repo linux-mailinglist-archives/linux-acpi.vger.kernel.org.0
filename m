@@ -1,177 +1,137 @@
-Return-Path: <linux-acpi+bounces-18805-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18806-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7531C52E12
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 16:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5E5C52E20
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 16:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182944257F0
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 14:26:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDF74A6B97
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Nov 2025 14:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4F22C234B;
-	Wed, 12 Nov 2025 14:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AD432C93E;
+	Wed, 12 Nov 2025 14:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4iXCp4z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mMrqqJnV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24ED28A701;
-	Wed, 12 Nov 2025 14:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A912C0291;
+	Wed, 12 Nov 2025 14:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762957595; cv=none; b=YyeFQAhQmhtzqfxbtxW7R4RobDeZ3/Lt3aVVoasmI0hxj7pZE1aNpuldL73QA73bUU8RvBw5fm1hHtQyc0OTzYr9xwIngyjqNMAThd29G2grah7kUkSDYQR2PSUXTxuEw7NFeRHma4a6M8vYkpvkFSkS8aUgAeGiIq6YHhJXkn8=
+	t=1762958548; cv=none; b=ZxQWi6Vyrc8uhSrbb2kWLKB+UWENagMJB4pfVj0eVe2S+a+58jM3EsYiiGCy1WKuha2LJiJr2olfv4YXpXdhVMiPdqJ/su8qdh170NOe0djGqiXEsThBEHvoJJnyDdSThVC9KUIJqcrNzVszN2soGaB0GXt84ByC0SGhyzv+F+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762957595; c=relaxed/simple;
-	bh=bNLqGrg/bxt16UHYQqXWyzLbnJanuTnn/DSzlHMqam8=;
+	s=arc-20240116; t=1762958548; c=relaxed/simple;
+	bh=2xPu+tGjTlqnZqdYCqpWi5WR088t5dU8WW6n7sq6sr8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtqkH8KDJQJjkvIg1VxhtdsslmxVSp+JzGZ1eDETk9gLV+3LtC3LZ3UfqxclgnpUPBMBb8ad4aCUNoASSQGa2qV+3aNDjYGnnGss44naSBPz6mMissH6LIF12GL1+ggN/qHjUppwErkbg/iMjZ2pObPxB6Uq57GyoG6Vy5fG0Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4iXCp4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02366C19422;
-	Wed, 12 Nov 2025 14:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762957594;
-	bh=bNLqGrg/bxt16UHYQqXWyzLbnJanuTnn/DSzlHMqam8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m4iXCp4znKZvCzYkjhXZu1JL4COAdGb7yAm9UmEyz0xmhqXKj2K9504lPVGuTy2Jw
-	 oIs3gFjFC88Pg6vs33x0Y9J4Rt1LUAOWf+RlfjFyxs91gx9kSFDB51FMvZyE5chPXE
-	 aGtArRih0bDKoqGUZ1CFOq9Z1gR5u0u7H+Ia54U4ZgBoOw6F7RHwsyZbtTo73P+YtI
-	 MlFexT96E5ZxLwczc2sajdvyTdAl2dfa5pilRItuDN9x8WGEYbXAh10Kg5gBAGhHeA
-	 FzJ4mZv2YeFA2oWEIhZbh7ljpXAZyuUSAV7u6Cyu3iLC+0hy5axy54UvXp2gQgfYvb
-	 AydcA8t3H0Huw==
-Date: Wed, 12 Nov 2025 08:26:32 -0600
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=YS2TMiy2PVMxLMdjuJf+m2yCqMu3ccQB5gdWaHX9RcewuI7WASRhjf0LknXREwmmQrza76OVIdwdcFGmuvXXNKU55uyUy7CpyuozriwyClWCE4gURbXG+m5Tp+icOO2H2g6YQzKLnIZnVg6bnc9LgwCfP0owEloE+vMBmsQsCeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mMrqqJnV; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762958547; x=1794494547;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=2xPu+tGjTlqnZqdYCqpWi5WR088t5dU8WW6n7sq6sr8=;
+  b=mMrqqJnVYwVLDCWik7NS0F8d5XhF19WO3dZa73h0GJKBMxUXbqemP7YX
+   WH7UtBntZWOE1CS0jLvU/sO4Egg0om3dt4+AWs0B521cBOzY1TA0AjWH+
+   QSTj3qTlWtA5ArV6Y/S0P1Cnoa3eU1MC/V0O/TePNCYrHZmVA3MMr/wU+
+   PFGXsI6uC2Hrnvs/F1FClfSN81SVitWFj7RwlArQRhJScIoKkoAobDpKE
+   MVwoWw3ny+5nDWIga7bzVjQ6nLq7xL4KxQIdpizKxYoMIjWH19tJ7IaQk
+   fF9rVZNPzQ2L/a7NU8WuExdtfHMi7IB00pA9yodPeQQETa7NJ8MjJ74Bt
+   Q==;
+X-CSE-ConnectionGUID: IQwL43rYRuGkTHTXlENM5A==
+X-CSE-MsgGUID: vVCZY85bR328s3jjwno6DA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="76479664"
+X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
+   d="scan'208";a="76479664"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 06:42:26 -0800
+X-CSE-ConnectionGUID: HVgINgL/Q6ymdYwvsk1bCA==
+X-CSE-MsgGUID: 43gqJIMmRKqPPW5U2Zvjug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
+   d="scan'208";a="193628214"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.214])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 06:42:25 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 8F57D12055E;
+	Wed, 12 Nov 2025 16:42:21 +0200 (EET)
+Date: Wed, 12 Nov 2025 16:42:21 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Haotian Zhang <vulab@iscas.ac.cn>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
-Message-ID: <20251112142632.GA1610836-robh@kernel.org>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-6-herve.codina@bootlin.com>
- <20251030141448.GA3853761-robh@kernel.org>
- <20251031162004.180d5e3f@bootlin.com>
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: property: Fix fwnode refcount leak in
+ acpi_fwnode_graph_parse_endpoint()
+Message-ID: <aRSczeIXvymTQN3D@kekkonen.localdomain>
+References: <20251111075000.1828-1-vulab@iscas.ac.cn>
+ <CAJZ5v0gs8nor-fgwcY8x4bkd9Swiu8yJn9296U7RHRnQUYDpdA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251031162004.180d5e3f@bootlin.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gs8nor-fgwcY8x4bkd9Swiu8yJn9296U7RHRnQUYDpdA@mail.gmail.com>
 
-On Fri, Oct 31, 2025 at 04:20:04PM +0100, Herve Codina wrote:
-> Hi Rob,
+Hi Rafael, Haotian,
+
+On Wed, Nov 12, 2025 at 02:48:30PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Nov 11, 2025 at 8:50 AM Haotian Zhang <vulab@iscas.ac.cn> wrote:
+> >
+> > acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
+> > parent fwnode but returns without calling fwnode_handle_put() on it. This
+> > leads to a fwnode refcount leak and prevents the parent node from being
+> > released properly.
+> >
+> > Call fwnode_handle_put() on the parent fwnode before returning to
+> > fix the leak.
+> >
+> > Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
+> > Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+> > ---
+> >  drivers/acpi/property.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > index 1b997a5497e7..7f8790e8dc4e 100644
+> > --- a/drivers/acpi/property.c
+> > +++ b/drivers/acpi/property.c
+> > @@ -1714,6 +1714,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+> >         if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
+> >                 fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
+> >
+> > +       fwnode_handle_put(port_fwnode);
+
+I'd add a newline here.
+
+> >         return 0;
+> >  }
+> >
+> > --
 > 
-> On Thu, 30 Oct 2025 09:14:48 -0500
-> Rob Herring <robh@kernel.org> wrote:
-> 
-> > On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
-> > > A Simple Platform Bus is a transparent bus that doesn't need a specific
-> > > driver to perform operations at bus level.
-> > > 
-> > > Similar to simple-bus, a Simple Platform Bus allows to automatically
-> > > instantiate devices connected to this bus.
-> > > 
-> > > Those devices are instantiated only by the Simple Platform Bus probe
-> > > function itself.  
-> > 
-> > Don't let Greg see this... :)
-> > 
-> > I can't say I'm a fan either. "Platform bus" is a kernel thing, and the 
-> > distinction here between the 2 compatibles is certainly a kernel thing.
-> > 
-> > I think this needs to be solved within the kernel.
-> 
-> I fully agree with that.
-> 
-> > 
-> > What I previously said is define a list of compatibles to not 
-> > instantiate the child devices. This would essentially be any case having 
-> > a specific compatible and having its own driver. So if someone has 
-> > 'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if 
-> > they add a driver for "vendor,not-so-simple-bus", then they have to add 
-> > the compatible to the list in the simple-pm-bus driver. I wouldn't 
-> > expect this to be a large list. There's only a handful of cases where 
-> > "simple-bus" has a more specific compatible. And only a few of those 
-> > have a driver. A more general and complicated solution would be making 
-> > linux handle 2 (or more) drivers matching a node and picking the driver 
-> > with most specific match. That gets complicated with built-in vs. 
-> > modules. I'm not sure we really need to solve that problem.
-> 
-> Right. Let discard the "more general and complicated solution" and focus
-> on the list of compatible to avoid child devices instantiation.
-> 
-> Do you mean that, for "simple-bus" compatible we should:
->  - Remove the recursive device instantiation from of_platform_populate().
+> Andy, Sakari, this looks like a genuine fix to me, any comments?
 
-That may be a problem I hadn't considered. While we've solved most probe 
-ordering issues, I think some may remain. Even when of_platform_populate() 
-is called affects this. For example, I tried removing various arm32 
-of_platform_.*populate() calls which run earlier than the default call, 
-but that broke some platforms. (Looking at the list of remaining ones, I 
-fixed the at91 pinctrl/gpio drivers, but never tried to remove the 
-calls again.)
+Thanks for cc'ing me.
 
-Maybe this can be restricted to cases which are not recursively created 
-from the root node. Not sure how we detect that. Perhaps no OF_POPULATED 
-flag on the parent node? Or we could just enable this for OF_DYNAMIC 
-nodes? That should be sufficient for your usecase.
+On ACPI fwnode_handle_put() is a nop, and presumably a parent of an ACPI
+node is an ACPI node as well. So this doesn't change fwnode refcounting but
+is nevertheless a good thing to do for API usage correctness.
 
-I would like to solve this more generally though. So we could try it in 
-kernelci and/or linux-next and see what happens.
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
->  - In simple-bus probe(), check the device we probe against the
->    'no_instantiate_children' list
->       - If it matches, do not instantiate chidren
->       - If it doesn't match instantiate children
+-- 
+Kind regards,
 
-Right.
-
-Rob
+Sakari Ailus
 
