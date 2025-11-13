@@ -1,153 +1,148 @@
-Return-Path: <linux-acpi+bounces-18863-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18864-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21A1C577A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384F4C57CE6
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 14:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2CC33BA962
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45814426E1B
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C234F478;
-	Thu, 13 Nov 2025 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4D61DE8AF;
+	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8M7ts+k"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3838E34DCFE;
-	Thu, 13 Nov 2025 12:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD56514D29B;
+	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763037687; cv=none; b=p4hqVoprkvjeQZgtLqMXdAEzaXDCiapcTNSb1M7DBlwbjkKVb5WZ+R+4QgXDcZBzTidmgBFgYlSnoNtZmOJZ7V1JhW0ATFsnZyFT9yp3Xze0RuaBsB/xZQKIJYd2HRAP+Bb6PE00I/vVcjnSArRZI9mX87fL1229oxROnG6oJis=
+	t=1763041069; cv=none; b=Zauc6k0Kp017eKIEv544ukQpWaZcFPfjnuRs3UCw0tcaVUJwCDFroG2wn9gQFjCfhlU2Az1ZIF/9I7F5gpVLNT55Alt2Lxh9+KYan7/NEQB5hqnGg4pUYkZ2BGO5OGvCndk35VM5JUotaPenDBLs5frTcHYTvA/okRAGPrIBLdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763037687; c=relaxed/simple;
-	bh=XaTNNB/CqGz+V+OMzj/mIjV+mLYVDACn92ZqVORRSbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gGQtwWGpvSRE3rZqCBr6YsDBZ3xf5YJjR/31CnDfvrFvoKlulf3pdhMFqyaf9pndTijPryqI1+Sl8BNoznQ79X6gyczOnvN/SLxfGwvlpxMcM11y5AGpJAYr+JPoV+i0nTzbgeRd4q47eDfelLUNoyB4upBvvsRJxB+jHgOuBv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C26B012FC;
-	Thu, 13 Nov 2025 04:41:16 -0800 (PST)
-Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.80.58])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 026C73F5A1;
-	Thu, 13 Nov 2025 04:41:24 -0800 (PST)
-Date: Thu, 13 Nov 2025 12:41:19 +0000
-From: Ionela Voinescu <ionela.voinescu@arm.com>
-To: Sumit Gupta <sumitg@nvidia.com>
-Cc: rafael@kernel.org, viresh.kumar@linaro.org, lenb@kernel.org,
-	robert.moore@intel.com, corbet@lwn.net, pierre.gondois@arm.com,
-	zhenglifeng1@huawei.com, rdunlap@infradead.org, ray.huang@amd.com,
-	gautham.shenoy@amd.com, mario.limonciello@amd.com,
-	perry.yuan@amd.com, zhanjie9@hisilicon.com,
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-	treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com,
-	ksitaraman@nvidia.com, sanjayc@nvidia.com, nhartman@nvidia.com,
-	bbasu@nvidia.com
-Subject: Re: [PATCH v4 6/8] cpufreq: CPPC: Add sysfs for min/max_perf and
- perf_limited
-Message-ID: <aRXR7yKyG6l1Agfq@arm.com>
-References: <20251105113844.4086250-1-sumitg@nvidia.com>
- <20251105113844.4086250-7-sumitg@nvidia.com>
+	s=arc-20240116; t=1763041069; c=relaxed/simple;
+	bh=hMDqncVTMGAeoVR3a3d7f5yNX81QBpwoNu17uq0iXMc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YGa98cHjRA+3+lIWCufVKVTKE8J2pHWz/2BpRGdlcG6esm67KNwM5qJrlrZ8B3aP/ohSXlintfuxjqWjVmN6+G6hcGzDi09rUJeM6E5GjDpr9EDe4M63LeAWVOcvPh7hngvzcsAQuoTAp36zMkH4nIC+zuBn2hX2SAVRV465VyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8M7ts+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC4C19422;
+	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763041069;
+	bh=hMDqncVTMGAeoVR3a3d7f5yNX81QBpwoNu17uq0iXMc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U8M7ts+kjRsY7U3j2SeaXDYLHevxWSv17TMsi68DyHZDAV2PUEwaypzEkPEPqo3GW
+	 Pj7u3jgYXvBEcN+VGLMzcJhJORvQaVdP+qfSSmaJhCx6YHCsbe0/1W8qPJUalrVIh5
+	 QP0oxUgqXp+pzxC3XSzcSydqil9ZeCfoKYWShNZljp325WqBTIZGzvfppkkvqrpyDB
+	 X+EEJBQay1hIhfXTx25b1PNLYb3BRmcP7cThJnVaHgWwvPKisfA9va3vhIO6P6uvVM
+	 gsyTHFH+lT5WO2hvnp4aWdkNxI5rLuPSWMkatVGsejdrjO1oganuMGQ2G5y0P/FWk2
+	 v2qErzM5INOcw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vJXWF-00000004t2S-0Lup;
+	Thu, 13 Nov 2025 13:37:47 +0000
+Date: Thu, 13 Nov 2025 13:37:46 +0000
+Message-ID: <86ms4qt5n9.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Mark\
+ Rutland" <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J.\
+ Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	"Saravana\
+ Kannan" <saravanak@google.com>,
+	Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau
+	<j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark
+	<james.clark@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	"Alexandru\
+ Elisei" <alexandru.elisei@arm.com>
+Subject: Re: [PATCH v4 14/26] genirq: Add affinity to percpu_devid interrupt requests
+In-Reply-To: <20251112181318.000064be@huawei.com>
+References: <20251020122944.3074811-1-maz@kernel.org>
+	<20251020122944.3074811-15-maz@kernel.org>
+	<20251112181318.000064be@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105113844.4086250-7-sumitg@nvidia.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: jonathan.cameron@huawei.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, ruanjinjie@huawei.com, alexandru.elisei@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi,
-
-On Wednesday 05 Nov 2025 at 17:08:42 (+0530), Sumit Gupta wrote:
-> Add sysfs interfaces for Minimum Performance, Maximum Performance
-> and Performance Limited Register in the cppc_cpufreq driver.
+On Wed, 12 Nov 2025 18:13:18 +0000,
+Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
 > 
-> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-> ---
->  .../ABI/testing/sysfs-devices-system-cpu      | 46 +++++++++++++++++++
->  1 file changed, 46 insertions(+)
+> On Mon, 20 Oct 2025 13:29:31 +0100
+> Marc Zyngier <maz@kernel.org> wrote:
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> index 8aed6d94c4cd..6f1f70696000 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> @@ -327,6 +327,52 @@ Description:	Energy performance preference
->  
->  		This file is only present if the cppc-cpufreq driver is in use.
->  
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/min_perf
-> +Date:		December 2025
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Minimum Performance Frequency
-> +
-> +		Read/write a frequency value in kHz from/to this file. This
-> +		file conveys the minimum performance level (as frequency) at
-> +		which the platform may run. The frequency value is internally
-> +		converted to a performance value and must correspond to a
-> +		performance level in the range [Lowest Performance, Highest
-> +		Performance], inclusive. The minimum must be less than or equal
-> +		to the maximum performance. The performance range can be checked
-> +		from nodes:
-> +			/sys/devices/system/cpu/cpuX/acpi_cppc/highest_perf
-> +			/sys/devices/system/cpu/cpuX/acpi_cppc/lowest_perf
+> > Add an affinity field to both the irqaction structure and the interrupt
+> > request primitives. Nothing is making use of it yet, and the only value
+> > used it NULL, which is used as a shorthand for cpu_possible_mask.
+> 
+> used is NULL
+> 
+> > 
+> > This will shortly get used with actual affinities.
+> > 
+> > Tested-by: Will Deacon <will@kernel.org>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> 
+> With trivial bit of documentation added
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> 
+> > ---
+> >  include/linux/interrupt.h |  5 +++--
+> >  kernel/irq/manage.c       | 14 ++++++++++----
+> >  2 files changed, 13 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+> > index 0ec1a71ab4e84..52147d5f432b3 100644
+> > --- a/include/linux/interrupt.h
+> > +++ b/include/linux/interrupt.h
+> > @@ -125,6 +125,7 @@ struct irqaction {
+> >  		void		*dev_id;
+> >  		void __percpu	*percpu_dev_id;
+> >  	};
+> > +	const struct cpumask	*affinity;
+> 
+> This structure has kernel-doc that needs an update.
+> 
+> >  	struct irqaction	*next;
+> >  	irq_handler_t		thread_fn;
+> >  	struct task_struct	*thread;
 
-I think information on highest/lowest performance is irrelevant here. If
-the user is expected to provide a frequency value, it should only care
-about it being in the range [cpuinfo_min_freq, cpuinfo_max_freq].
-
-I think ideally all of these controls (auto-select, EPP, min, max, etc.)
-would have been better placed under
-/sys/devices/system/cpu/cpuX/acpi_cppc, but I suppose the intention
-was/is to have all performance related controls under cpufreq. But that
-means that the user should not be concerned about the underlying CPPC
-scale and only use /sys/devices/system/cpu/cpuX/acpi_cppc for
-information purposes.
+See 68c4c159a0db4 ("genirq: Fix percpu_devid irq affinity
+documentation") in -next for the merged fix.
 
 Thanks,
-Ionela.
 
-> +
-> +		This file is only present if the cppc-cpufreq driver is in use.
-> +
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/max_perf
-> +Date:		December 2025
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Maximum Performance Frequency
-> +
-> +		Read/write a frequency value in kHz from/to this file. This
-> +		file conveys the maximum performance level (as frequency) at
-> +		which the platform may run. The frequency value is internally
-> +		converted to a performance value and must correspond to a
-> +		performance level in the range [Lowest Performance, Highest
-> +		Performance], inclusive. The performance range can be checked
-> +		from nodes:
-> +			/sys/devices/system/cpu/cpuX/acpi_cppc/highest_perf
-> +			/sys/devices/system/cpu/cpuX/acpi_cppc/lowest_perf
-> +
-> +		This file is only present if the cppc-cpufreq driver is in use.
-> +
-> +What:		/sys/devices/system/cpu/cpuX/cpufreq/perf_limited
-> +Date:		December 2025
-> +Contact:	linux-pm@vger.kernel.org
-> +Description:	Performance Limited
-> +
-> +		Read/write a 32 bits value from/to this file. This file indicates
-> +		to OSPM that an unpredictable event has limited processor
-> +		performance, and the delivered performance may be less than
-> +		desired/minimum performance.
-> +
-> +		This file is only present if the cppc-cpufreq driver is in use.
->  
->  What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
->  Date:		August 2008
-> -- 
-> 2.34.1
-> 
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
