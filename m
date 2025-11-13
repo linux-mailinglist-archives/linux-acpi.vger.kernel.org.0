@@ -1,220 +1,370 @@
-Return-Path: <linux-acpi+bounces-18859-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18860-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FDFC5739C
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65858C57567
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2D564E8093
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 11:35:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E2B24E26D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F33D345CAC;
-	Thu, 13 Nov 2025 11:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="lTEIC8r2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC8334CFCE;
+	Thu, 13 Nov 2025 12:10:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011029.outbound.protection.outlook.com [52.101.52.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DAA33F39C;
-	Thu, 13 Nov 2025 11:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763033741; cv=fail; b=KROH+airv0tcmW2pgWdG4DiKAayVD+RSruw6Lvm4fYXIK0xSjdngvKhCw5dP9IxmbSgu1dF5uzkr/xDBzXSWw/XnH3Pp+s202YdDnzIgA0CdaZl7Knqbc8FKmIwFKZnfqW/g5tbhkbxYHhE8NYV2c18S9X1xd52PpQqxqyfe8xA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763033741; c=relaxed/simple;
-	bh=prjBgq7/SDZxLUzTxA39yc9eriA7xZUxRXFUcXV3pnQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y51Pv79TY1ie9FevWc/Cqu5tDN75tqKrvV+3hKj3Rjh41xgbLceHfeXvoIsZkpXKJFO76Idhj+rdEDtqTh14CDJH9RpYmEgklWwIejU1iRETLj/KzLxdzjiCXLJcQ/owujsfdXEeWtkaphYsoE2sQ9+tqDCjLsI/niwA18xqwCs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=lTEIC8r2; arc=fail smtp.client-ip=52.101.52.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EkIriy+25gudBPdPu5GXg9auc4+0Ean8hhmYSxluGg7iuRXTDQPngqdp6o7dtRVfEM3493YEBH8g3mUjQU4U1kMT9Mpq0uHrcojoohe4W2ZtzAh4HmfPWk/enYosWBpzQVAO3QonWtbw7gVAP4qdb1a7SB1pCWO7v0iuVQ1Fl+2UDqvYLeVyjukIGGEHZZNW7ghoPC7EJy6kBaQ2DkzmYp8tExqhBEE9kdHLzOldGI1GeeCGPxWvGLTENGOYxet8HTp8XAccQGwtbnn98W47ywyw+2lB63XOnRxI1knskpLytBl38mxXcu4oVxLnqeljgggngSv/l3Yzct2Fce5v7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UlJpM91DpHF071MBk/f1rHUjKm81sFMTcQoOO4bR2p8=;
- b=AvoUvruDtJw0c0hZvQ+I9mVHpBbojtriHjbZ3DNHDMV8L+walTVX0EeoRuoiI4EnfvREh9eDGPdzSQyDyIZujVYYlcmJzrkUTQPKuG8g7sWUb2VKfRZwxNTV7f2GskkKHtIswZB/t9zVkJ/pXYULd0WSFOCc/98dNL9iYQb423UjClR5WbDZSRaorfhRLDt1VqgIDlzTRTe5cIKkNCy9rKCr0/uPAcT6kNZYjk/bDy2riogVMZTinKsmk8d4VTuH45fZf2dBbJvnuyPftrMLLC6UGvjOKS7WTRzNNE6c5aXJhSM17rSwoUnlW14e+zcMlFM2mtYPkoV7bwZcUoHh/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=redhat.com smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UlJpM91DpHF071MBk/f1rHUjKm81sFMTcQoOO4bR2p8=;
- b=lTEIC8r2fEgI7gx2A0kYXQHn/F6DYJk+31oowuLBo3pY5gj6n8T06zSw3M2BIc+RXSyTTB0ogA3Szg82RVX//4DMAeN5RwxrETYjSSnWXwaa9sC2QL9vXvbIHbkAzeCaOo8STnfesNqgcGqpsSqAcNSa2nLqf8eEqRJH7sSj/Ho=
-Received: from DM6PR14CA0039.namprd14.prod.outlook.com (2603:10b6:5:18f::16)
- by DM4PR10MB6135.namprd10.prod.outlook.com (2603:10b6:8:b6::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.17; Thu, 13 Nov 2025 11:35:35 +0000
-Received: from CY4PEPF0000EE3F.namprd03.prod.outlook.com
- (2603:10b6:5:18f:cafe::ca) by DM6PR14CA0039.outlook.office365.com
- (2603:10b6:5:18f::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.17 via Frontend Transport; Thu,
- 13 Nov 2025 11:35:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- CY4PEPF0000EE3F.mail.protection.outlook.com (10.167.242.17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Thu, 13 Nov 2025 11:35:35 +0000
-Received: from DLEE100.ent.ti.com (157.170.170.30) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.2.2562.20; Thu, 13 Nov
- 2025 05:35:31 -0600
-Received: from DLEE207.ent.ti.com (157.170.170.95) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 13
- Nov 2025 05:35:30 -0600
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE207.ent.ti.com
- (157.170.170.95) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 13 Nov 2025 05:35:30 -0600
-Received: from localhost (lcpd911.dhcp.ti.com [172.24.233.130])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5ADBZTNL196701;
-	Thu, 13 Nov 2025 05:35:30 -0600
-Date: Thu, 13 Nov 2025 17:05:29 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: <dan.j.williams@intel.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Frank Li <Frank.Li@nxp.com>, Linux PM
-	<linux-pm@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, "Takashi
- Iwai" <tiwai@suse.de>, LKML <linux-kernel@vger.kernel.org>, Zhang Qilong
-	<zhangqilong3@huawei.com>, Linux PCI <linux-pci@vger.kernel.org>, "Bjorn
- Helgaas" <helgaas@kernel.org>, Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH v1 0/3] PM: runtime: Wrapper macros for usage counter
- guards
-Message-ID: <20251113113529.vnfvc6cqmk2ct4kl@lcpd911>
-References: <13883374.uLZWGnKmhe@rafael.j.wysocki>
- <20251112063941.kbg44srt5f7rfkjb@lcpd911>
- <5068916.31r3eYUQgx@rafael.j.wysocki>
- <6914fbb5a6ce_1d911001b@dwillia2-mobl4.notmuch>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0783234AB09;
+	Thu, 13 Nov 2025 12:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763035806; cv=none; b=FAzefpBvQABErs/7GE3qfGKaXRhek1u00BIk84wn/a4cfSmONFSJSY1bMmP6VIOhJ75TvCDkAQ4E7LFFYiSqQ9mFaKFf95XFGpUDRADJrZ+vgUqBzYd0bP20j6LrcNq6jcR5H5ElJVyClfHMxU2aNB9pMf9aWn2PXxOEAVZWrpQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763035806; c=relaxed/simple;
+	bh=QE3OY4AETodcvC/5PU4dsR+k4aeF9N9nFjpYGIfZldA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e/IQ3Rf0+l1Duxxfj6TizYgv6S8TDIrKXPBWK0As8jLQnqjI6oiippSqlq5D65u6Gf6Cam3Khz6N8+nRqS/cx7/UM0gGDJNnKZd1niATDwXe6LJ9CtzeEEWQjz6uLYL7iQF6IBOkbp/rCR9biCafpWvotLbE157JVhyfx6++CPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5889512FC;
+	Thu, 13 Nov 2025 04:09:55 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3115F3F5A1;
+	Thu, 13 Nov 2025 04:09:58 -0800 (PST)
+Message-ID: <d9694bdf-ab58-4706-8e1e-8266d7ac2ecd@arm.com>
+Date: Thu, 13 Nov 2025 12:09:56 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <6914fbb5a6ce_1d911001b@dwillia2-mobl4.notmuch>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3F:EE_|DM4PR10MB6135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a8ac5fd-9ee8-4562-d863-08de22a8c303
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SM3TMchYjPnnnHjKIVSZPDFx6b1VOTQKr0EL8i4pU5LTZRwshaGXv6OmASwv?=
- =?us-ascii?Q?iWa+gQSCbRKQzmGUY3EuCOGvtBEcwzvBeKHerTVz0z0DoYlNFVumve6KmAoy?=
- =?us-ascii?Q?POJ2t/Jp/4dV0uYGBpHaQQPn71LDqxXwZiwJj0pdUNGGUM5Vk9V2gD09Td81?=
- =?us-ascii?Q?k7iddO8ZHytjgpkkSEfUtXM4qraGimVMiN2ubBwivUf5PMYZ6S+JRWSgJ7x5?=
- =?us-ascii?Q?7pD7ggW0M7DcwKQakTKCY4lY9WxMuHiguZibnWjitvm39dX5bMyWp71e/vVD?=
- =?us-ascii?Q?az6g3or4q+/2Y4FVfgmFx/v6SawZTqpjDVBeDUKOUafR24PbAV8QSWusVNt7?=
- =?us-ascii?Q?y7G9orQuu6HQ7PBImkjkVbecXWeAJ2D/C5SLgLYbyfDOzh6TFY0sfr2xPZXi?=
- =?us-ascii?Q?K+XQU5ycBVkHO3ghJlQ3rgyKSTQ7lktobV8qdtHvh5AWJtZNfTAAmJ1XD8Dv?=
- =?us-ascii?Q?c+W2qy44w7bJXsfCAkhXLgu+guBdxhHgZJZgSVfmjrGp0HTCxFS9/gNOZzIw?=
- =?us-ascii?Q?ZQAcOMf0tqLO0wwEnXPUz+A3HXof2LRVUeWOYzQjkMQbeVpw5OCE66AhLxVH?=
- =?us-ascii?Q?9Ik8ktQlBItVR3s+byy2zH8VFdobE/9MXL4ih+djqvKjNL11m6gL2g2r/4dZ?=
- =?us-ascii?Q?f5AJX9WLZvJLpN0Gf/YwEgwd8EKDknTUbe2IcN+WWZZgsXZLT8AztbztoQBS?=
- =?us-ascii?Q?G+JnvlW5uskzVcUKsinIh1fUMbmCDhpmm0aJBOKx4zv4ttuntIro7DWVDc0p?=
- =?us-ascii?Q?o2UWs/97PEZfq5+wR5C21lFhOqn2cJv0f8QWTv84XZOm+JGxrdkpRPrlrVQV?=
- =?us-ascii?Q?KXi81QVrT8YyHtmsRgoBjuezWf2Bju/44tJJcn+mF125A37GGvtHibniXvZq?=
- =?us-ascii?Q?2Szz9fYymO36ixcWpHhBs06V/2VZU01/XcfhnDeM4+pwtkZEcMpnPhWn4v+q?=
- =?us-ascii?Q?re5RbpWW5gBdu8D1+ZmETsU/gReOGJTVkHJMSOGjNV4IEouIC1BOC2YNpyCl?=
- =?us-ascii?Q?9B0kgwVUWfM+WlUUCVWVpxezGcDxwRMS7t0X6hSUonY9LP3fRN3QzafmaTkw?=
- =?us-ascii?Q?tp7FBDoyg/miw48sSipUgxEtNlocvZey4/cN5hvNRhW4HKEpgGjd8a80yvbF?=
- =?us-ascii?Q?2zFFS6yy4qU4UMhtqXitUwESZjGRM/ZQp8Lmj7IfeaROcvucRuRr0ZBo6vES?=
- =?us-ascii?Q?G3uppeNeINDCH7nlAASfrIrqeuz0LFPcZAYFGFm/+l/+P4KMgfCfIkpJk7Uj?=
- =?us-ascii?Q?qHK7vH8QhpoLVQdplJ3oLX8/cEwNBDPurxW9xnisgXx8YDVkaua1OH4D7iv5?=
- =?us-ascii?Q?03F0Q6hL3Lrg4Csx1O/MK4eWBpDXusG6uqNsHWXT1IAIZnoTGwNsbPztP5Rt?=
- =?us-ascii?Q?Okd40E2eTvfNAMs0PNAJKpzGOdB6c95JlDQxvZyiHqi4v7ZJ+8zP4ZZf+r1n?=
- =?us-ascii?Q?gPY6P4mgd8VPk+vxrEQKe57TOYx4ki8BEVhnF5NRt6dUAtF6C0kbHQ3KUCOl?=
- =?us-ascii?Q?dcKvq4DVZzCX/nOvqITVnQ5nnWl3+98UNfrK2s/f3o20Qp1DScA+IEhRIvrQ?=
- =?us-ascii?Q?lqsrve4YlsmBejU0ZjY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 11:35:35.3915
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a8ac5fd-9ee8-4562-d863-08de22a8c303
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE3F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6135
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/33] ACPI / MPAM: Parse the MPAM table
+To: Fenghua Yu <fenghuay@nvidia.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ gregkh@linuxfoundation.org, gshan@redhat.com, guohanjun@huawei.com,
+ jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
+ Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-10-ben.horgan@arm.com>
+ <26396142-4f14-4175-85ba-2e8d780abbd9@nvidia.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <26396142-4f14-4175-85ba-2e8d780abbd9@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Nov 12, 2025 at 13:27:17 -0800, dan.j.williams@intel.com wrote:
-> Rafael J. Wysocki wrote:
-> > On Wednesday, November 12, 2025 7:39:41 AM CET Dhruva Gole wrote:
-> > > On Nov 07, 2025 at 19:35:09 +0100, Rafael J. Wysocki wrote:
-> > > > Hi All,
-> > > > 
-> > > > The runtime PM usage counter guards introduced recently:
-> > > > 
-> > > > https://lore.kernel.org/linux-pm/6196611.lOV4Wx5bFT@rafael.j.wysocki/
-> > > > 
-> > > > and then fixed:
-> > > > 
-> > > > https://lore.kernel.org/linux-pm/5943878.DvuYhMxLoT@rafael.j.wysocki/
-> > > > 
-> > > > should generally work, but using them feels sort of arcane and cryptic
-> > > > even though the underlying concept is relatively straightforward.
-> > > > 
-> > > > For this reason, runtime PM wrapper macros around ACQUIRE() and
-> > > > ACQUIRE_ERR() involving the new guards are introduced in this series
-> > > > (patch [1/3]) and then used in the code already using the guards (patches
-> > > > [2/3] and [3/3]) to make it look more straightforward.
-> > > 
-> > > The patches look okay to me,
-> > > Reviewed-by: Dhruva Gole <d-gole@ti.com>
-> > 
-> > Thank you and Jonathan for the tags, but since Frank is not convinced, let me
-> > bounce one more idea off all of you.
-> > 
-> > Namely, I think that Frank has a point when he wonders if PM_RUNTIME_ACQUIRE_ERR
-> > hides too much information and I agree with Jonathan that may be misunderstood,
-> > so what about defining the wrapper macros so they don't hide the guard variable
-> > name, like in the patch below?
-> 
-> I had been reluctant about offering an enthusiastic tag on this series
-> given that information hiding, but with this change:
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> However, I prefer that the scope variable declaration vs usage
-> (reference) cases should maintain visual separation with an operator,
-> i.e.:
-> 
->         PM_RUNTIME_ACQUIRE(dev, pm);
->         if (PM_RUNTIME_ACQUIRE_ERR(&pm))
->                 return -ENXIO;
-> 
-> Otherwise we have a case of different flavors of *_ACQUIRE_ERR
-> implementing various styles. I initially looked at hiding the '&':
-> 
-> http://lore.kernel.org/681ea7d5ea04b_2a2bb100cf@dwillia2-mobl4.notmuch
-> 
-> ...but it grew on me precisely because it provides a clue about how this
-> magic operates.
+Hi Fenghua,
 
-Yeah you're right, I agree. Having users explicitly pass on the '&' provides much
-more clarity on what's going on than hiding it internally.
+On 11/13/25 02:16, Fenghua Yu wrote:
+> Hi, Ben and James,
+> 
+> On 11/7/25 04:34, Ben Horgan wrote:
+>> From: James Morse <james.morse@arm.com>
+>>
+>> Add code to parse the arm64 specific MPAM table, looking up the cache
+>> level from the PPTT and feeding the end result into the MPAM driver.
+>>
+>> This happens in two stages. Platform devices are created first for the
+>> MSC devices. Once the driver probes it calls acpi_mpam_parse_resources()
+>> to discover the RIS entries the MSC contains.
+>>
+>> For now the MPAM hook mpam_ris_create() is stubbed out, but will update
+>> the MPAM driver with optional discovered data about the RIS entries.
+>>
+>> CC: Carl Worth <carl@os.amperecomputing.com>
+>> Link: https://developer.arm.com/documentation/den0065/3-0bet/?lang=en
+>> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+>> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+>> Tested-by: Peter Newman <peternewman@google.com>
+>> Signed-off-by: James Morse <james.morse@arm.com>
+>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+[...]
 
--- 
-Best regards,
-Dhruva Gole
-Texas Instruments Incorporated
+>> +        if (nid == NUMA_NO_NODE) {
+>> +            pr_debug("Bad proxmity domain %lld, using node 0 instead\n",
+> 
+> Typo.
+> s/proxmity/proximity/
+
+Done.
+
+> 
+>> +                 res->locator.memory_locator.proximity_domain);
+>> +            nid = 0;
+>> +        }
+>> +        return mpam_ris_create(msc, res->ris_index, MPAM_CLASS_MEMORY,
+>> +                       255, nid);
+>> +    default:
+>> +        /* These get discovered later and are treated as unknown */
+>> +        return 0;
+>> +    }
+>> +}
+>> +
+>> +int acpi_mpam_parse_resources(struct mpam_msc *msc,
+>> +                  struct acpi_mpam_msc_node *tbl_msc)
+>> +{
+>> +    int i, err;
+>> +    char *ptr, *table_end;
+>> +    struct acpi_mpam_resource_node *resource;
+>> +
+>> +    ptr = (char *)(tbl_msc + 1);
+>> +    table_end = ptr + tbl_msc->length;
+> 
+> tbl_msc->length equals size of the ENTIRE msc node. ptr points to the
+> end of tbl_msc. ptr + tbl_msc->length is past the end of the msc node.
+> This will access data outside of this MSC node.
+> 
+> Better to change to:
+> +    table_end = (char *)tbl_msc + tbl_msc->length;
+
+Yes, makes sense.
+
+> 
+>> +    for (i = 0; i < tbl_msc->num_resource_nodes; i++) {
+>> +        u64 max_deps, remaining_table;
+>> +
+>> +        if (ptr + sizeof(*resource) > table_end)
+>> +            return -EINVAL;
+>> +
+>> +        resource = (struct acpi_mpam_resource_node *)ptr;
+>> +
+>> +        remaining_table = table_end - ptr;
+>> +        max_deps = remaining_table / sizeof(struct acpi_mpam_func_deps);
+>> +        if (resource->num_functional_deps > max_deps) {
+>> +            pr_debug("MSC has impossible number of functional
+>> dependencies\n");
+>> +            return -EINVAL;
+>> +        }
+>> +
+>> +        err = acpi_mpam_parse_resource(msc, resource);
+>> +        if (err)
+>> +            return err;
+>> +
+>> +        ptr += sizeof(*resource);
+>> +        ptr += resource->num_functional_deps * sizeof(struct
+>> acpi_mpam_func_deps);
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +/*
+>> + * Creates the device power management link and returns true if the
+>> + * acpi id is valid and usable for cpu affinity.  This is the case
+>> + * when the linked device is a processor or a processor container.
+>> + */
+>> +static bool __init parse_msc_pm_link(struct acpi_mpam_msc_node *tbl_msc,
+>> +                     struct platform_device *pdev,
+>> +                     u32 *acpi_id)
+>> +{
+>> +    char hid[sizeof(tbl_msc->hardware_id_linked_device) + 1] = { 0 };
+>> +    bool acpi_id_valid = false;
+>> +    struct acpi_device *buddy;
+>> +    char uid[11];
+>> +    int len;
+>> +
+>> +    memcpy(hid, &tbl_msc->hardware_id_linked_device,
+>> +           sizeof(tbl_msc->hardware_id_linked_device));
+>> +
+>> +    if (!strcmp(hid, ACPI_PROCESSOR_CONTAINER_HID)) {
+>> +        *acpi_id = tbl_msc->instance_id_linked_device;
+>> +        acpi_id_valid = true;
+>> +    }
+>> +
+>> +    len = snprintf(uid, sizeof(uid), "%u",
+>> +               tbl_msc->instance_id_linked_device);
+>> +    if (len >= sizeof(uid)) {
+>> +        pr_debug("Failed to convert uid of device for power
+>> management.");
+>> +        return acpi_id_valid;
+>> +    }
+>> +
+>> +    buddy = acpi_dev_get_first_match_dev(hid, uid, -1);
+>> +    if (buddy)
+>> +        device_link_add(&pdev->dev, &buddy->dev, DL_FLAG_STATELESS);
+> 
+> Refcount leak here?
+> 
+> Refcount of the device object pointed by buddy is not released and
+> refcount leaks.
+> > Better to change to:
+> +    if (buddy) {
+> +        device_link_add(...);
+> +        acpi_dev_put(buddy);  <====== release refcount here
+> +    }
+
+
+Yes, device_link_add() calls get_device() to increment the refcount and
+so the acpi_dev_put() is required.
+
+> 
+> or free refcount automatically:
+> +DEFINE_FREE(acpi_dev_put, struct acpi_device *, if (_T) acpi_dev_put(_T))
+> ...
+> +    struct acpi_device *buddy __free(acpi_dev_put);
+> ...
+> 
+>> +
+>> +    return acpi_id_valid;
+>> +}
+>> +
+>> +static int decode_interface_type(struct acpi_mpam_msc_node *tbl_msc,
+>> +                 enum mpam_msc_iface *iface)
+>> +{
+>> +    switch (tbl_msc->interface_type) {
+>> +    case ACPI_MPAM_MSC_IFACE_MMIO:
+>> +        *iface = MPAM_IFACE_MMIO;
+>> +        return 0;
+>> +    case ACPI_MPAM_MSC_IFACE_PCC:
+>> +        *iface = MPAM_IFACE_PCC;
+>> +        return 0;
+>> +    default:
+>> +        return -EINVAL;
+>> +    }
+>> +}
+>> +
+>> +static struct platform_device * __init acpi_mpam_parse_msc(struct
+>> acpi_mpam_msc_node *tbl_msc)
+>> +{
+>> +    struct platform_device *pdev __free(platform_device_put) =
+>> +        platform_device_alloc("mpam_msc", tbl_msc->identifier);
+>> +    int next_res = 0, next_prop = 0, err;
+>> +    /* pcc, nrdy, affinity and a sentinel */
+>> +    struct property_entry props[4] = { 0 };
+>> +    /* mmio, 2xirq, no sentinel. */
+>> +    struct resource res[3] = { 0 };
+>> +    struct acpi_device *companion;
+>> +    enum mpam_msc_iface iface;
+>> +    char uid[16];
+>> +    u32 acpi_id;
+>> +
+>> +    if (!pdev)
+>> +        return ERR_PTR(-ENOMEM);
+>> +
+>> +    /* Some power management is described in the namespace: */
+>> +    err = snprintf(uid, sizeof(uid), "%u", tbl_msc->identifier);
+>> +    if (err > 0 && err < sizeof(uid)) {
+>> +        companion = acpi_dev_get_first_match_dev("ARMHAA5C", uid, -1);
+>> +        if (companion)
+>> +            ACPI_COMPANION_SET(&pdev->dev, companion);
+> 
+> Ditto. companion's refcount leak here as well?
+
+Looks like it. Added a acpi_dev_put().
+
+> 
+>> +        else
+>> +            pr_debug("MSC.%u: missing namespace entry\n",
+>> +                 tbl_msc->identifier);
+>> +    }
+>> +
+>> +    if (decode_interface_type(tbl_msc, &iface)) {
+>> +        pr_debug("MSC.%u: unknown interface type\n", tbl_msc-
+>> >identifier);
+>> +        return ERR_PTR(-EINVAL);
+>> +    }
+>> +
+>> +    if (iface == MPAM_IFACE_MMIO)
+>> +        res[next_res++] = DEFINE_RES_MEM_NAMED(tbl_msc->base_address,
+>> +                               tbl_msc->mmio_size,
+>> +                               "MPAM:MSC");
+>> +    else if (iface == MPAM_IFACE_PCC)
+>> +        props[next_prop++] = PROPERTY_ENTRY_U32("pcc-channel",
+>> +                            tbl_msc->base_address);
+>> +
+>> +    acpi_mpam_parse_irqs(pdev, tbl_msc, res, &next_res);
+>> +
+>> +    WARN_ON_ONCE(next_res > ARRAY_SIZE(res));
+> 
+> Not sure if this WARN_ON_ONCE() is really helpful.
+> 
+> Even before this WARN happens, previously res[next_res] accesseing
+> outside of res[] may hit panic or data corruption already.
+> 
+> Maybe it's better to add a helper to access res[] and report error when
+> accessing out of res[] scope. A few places can call the helper to access
+> res[]:
+
+This warning looks to be there just to catch programming errors. There
+are 3 places next_res could be incremented and res[] has 3 entries so I
+don't see how an out of bounds access could occur without code changes
+and as accesses are made using res[next_res++], or equivalent, it is
+likely this warning would be hit if a new res is added without
+remembering to increase the size of the array. Given this, I'll keep
+this code as it is.
+
+> 
+> +static int add_resource(struct resource *res, int *idx, int max,
+> +            struct resource new_res)
+> +{
+> +    if (*idx >= max) {
+> +        pr_err("Too many resources (max %d)\n", max);
+> +        return -ENOSPC;
+> +    }
+> +    res[(*idx)++] = new_res;
+> +    return 0;
+> +}
+> 
+> Then can call the helper to replace res[next_res++]:
+> +    if (iface == MPAM_IFACE_MMIO) {
+> +        err = add_resource(res, &next_res, ARRAY_SIZE(res),
+> +                 DEFINE_RES_MEM_NAMED(tbl_msc->base_address,
+> +                               tbl_msc, +                           
+> mmio_size,
+> +                               "MPAM:MSC"));
+> +        if (err)
+> +            return ERR_PTR(-ENOSPC);
+> +    }
+> 
+>> +    err = platform_device_add_resources(pdev, res, next_res);
+>> +    if (err)
+>> +        return ERR_PTR(err);
+>> +
+>> +    props[next_prop++] = PROPERTY_ENTRY_U32("arm,not-ready-us",
+>> +                        tbl_msc->max_nrdy_usec);
+>> +
+>> +    /*
+>> +     * The MSC's CPU affinity is described via its linked power
+>> +     * management device, but only if it points at a Processor or
+>> +     * Processor Container.
+>> +     */
+>> +    if (parse_msc_pm_link(tbl_msc, pdev, &acpi_id))
+>> +        props[next_prop++] = PROPERTY_ENTRY_U32("cpu_affinity",
+>> acpi_id);
+>> +
+>> +    WARN_ON_ONCE(next_prop > ARRAY_SIZE(props));
+> 
+> Ditto for this WARN here?
+
+Similarly to above, this is just guarding against later adding more
+properties. This one can be tightened though as
+device_create_managed_software_node() expects a zero terminated array.
+Changing to:
+
+WARN_ON_ONCE(next_prop > ARRAY_SIZE(props) - 1);
+
+> 
+> [SNIP]
+> 
+> Thanks.
+> 
+> -Fenghua
+Thanks,
+
+Ben
+
 
