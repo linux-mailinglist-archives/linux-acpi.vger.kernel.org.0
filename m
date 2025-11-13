@@ -1,370 +1,150 @@
-Return-Path: <linux-acpi+bounces-18860-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18861-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65858C57567
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:10:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F22C575A9
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:16:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E2B24E26D2
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F57F3B5674
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC8334CFCE;
-	Thu, 13 Nov 2025 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47F22E22BE;
+	Thu, 13 Nov 2025 12:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="j57X4rR/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0783234AB09;
-	Thu, 13 Nov 2025 12:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB99F334C17
+	for <linux-acpi@vger.kernel.org>; Thu, 13 Nov 2025 12:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763035806; cv=none; b=FAzefpBvQABErs/7GE3qfGKaXRhek1u00BIk84wn/a4cfSmONFSJSY1bMmP6VIOhJ75TvCDkAQ4E7LFFYiSqQ9mFaKFf95XFGpUDRADJrZ+vgUqBzYd0bP20j6LrcNq6jcR5H5ElJVyClfHMxU2aNB9pMf9aWn2PXxOEAVZWrpQ=
+	t=1763036172; cv=none; b=j5+8v95hf7L3SgcCH6VvLU73XhSF6Z20ug1T/aRpN1ynSdywMvlQ3q5xSeTiQIfXp1pKYw7Skag9g6jJq7ZLx0+pyw2rMUm0eqroZvaDuhJbB9dBEzKFUC01L5ycHp3lEkLyzaWY426i4IwRj8PQsskH/PSsmaA5N8TXofSaBE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763035806; c=relaxed/simple;
-	bh=QE3OY4AETodcvC/5PU4dsR+k4aeF9N9nFjpYGIfZldA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e/IQ3Rf0+l1Duxxfj6TizYgv6S8TDIrKXPBWK0As8jLQnqjI6oiippSqlq5D65u6Gf6Cam3Khz6N8+nRqS/cx7/UM0gGDJNnKZd1niATDwXe6LJ9CtzeEEWQjz6uLYL7iQF6IBOkbp/rCR9biCafpWvotLbE157JVhyfx6++CPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5889512FC;
-	Thu, 13 Nov 2025 04:09:55 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3115F3F5A1;
-	Thu, 13 Nov 2025 04:09:58 -0800 (PST)
-Message-ID: <d9694bdf-ab58-4706-8e1e-8266d7ac2ecd@arm.com>
-Date: Thu, 13 Nov 2025 12:09:56 +0000
+	s=arc-20240116; t=1763036172; c=relaxed/simple;
+	bh=vU0vVcdj7jCdwUcv/gue+zO1DQjdA2TBS31EUlfSDg0=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JD/HFceBIaO0d1NHeMFn73Oic6Y2a9cpsQj8IT7oBI05M+Hfi8TD2h/HtlaJqmiFUulHDI2VlBlfKrudnPfBkQHRNzKIK4+weQVZrwzG+/6NYws8DeI+2FH+RGBaIopBTH0NAZmUMi3K08CaGpeMTOZB0AUyse6nFwmVQlCDJnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=j57X4rR/; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-595819064cdso632349e87.0
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Nov 2025 04:16:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763036169; x=1763640969; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:references
+         :mime-version:in-reply-to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l60Ejo2T3NWsKQGzNLhTDzj0QFomTxhzdJot6ahjhjk=;
+        b=j57X4rR/BDRd2kJENJ8TIEaMBnzBplNYPwmy2+vUZTr1WArZI1gRwzQGeVTraqEnY/
+         NpDD+F0rXpRMJtss17Ofv3EXj8b1fN5CLeuwzV54qL1cwcepclHYlECVFWiwfkX1a4t+
+         KzE0HC62ggt51dy9l2iboOERT5XVhguwKKn7L51ozbYra7nHvfUNZ60z35XSxrBKmlY0
+         SQlT80QbXai0A/00YtDahUmQzhhsPZpsb3vRqFctM9cI43/H0+jbeCVNW1sqhEfNvBxL
+         c/IkhpCJ1Kj+NZXml7nS02vE6KRcmu0K9jSzQgeknWz0N1L1mTjaqeR8Cm3nQ04nM7Sm
+         5nwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763036169; x=1763640969;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:references
+         :mime-version:in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l60Ejo2T3NWsKQGzNLhTDzj0QFomTxhzdJot6ahjhjk=;
+        b=kgCBR0hsSJ9uyIdxUkRz1MpNR6s8RNTF5E6PG764Ys3hG9bo/8oAzcYWk804ujtwVc
+         sRMDLzPRsEQM+v26nTToecTRFcGr69xZFZGe81KrJ5gEHXhVsDsGJYbxpYv5UnHqyx3y
+         QpLNoemtJ/1LtLxXIDxY52lWJUwxWnlNw3mAOPzXhFXq0CML2lWR9rAuSenrEAT296UM
+         Zy5xNqpOsrCFxwwCzB+ZYvLFR/LhTORXPe//hbzrkwMkyGguZVY9s/cimj+5CVzRpKaA
+         cQNiGyMASGJUbdYEic7k0Ymavm9Xca/B00oBUpwZjqvRF7ul2FDsS5UJpVHMV12hrEdO
+         FDfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVwEPOe8t6TZ5aLC5cGiowcxZBe2tMLCk99SxQIBnzcHdmXsBCLd9gLJ1rBv3C+cpto5qCjworhgCK@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5CcUZI7BhD8d17dMhIEW/esKfVek6bMXnP7dMiAoUzgi7ypBt
+	oKVd0wTTUJYr1N559W+4FllS3YBo0/lCOUAjZTyR4Oh+To9G1rYh8RipdWPLG41q5iNLXSN6ADQ
+	k/WD66vnzJa9rQgPx4/0Fn9M8+bEODcO4/iP05Dzc6Q==
+X-Gm-Gg: ASbGncvqC2x6Xeb78RPHUAqVSgkrUCjRn8Lm2dZHQ/55Fq9Qj+VaiOIM8HNV6zMa7tB
+	D8lOUCtXazJ4CzKW8pyx3aF7ZuQMeXklaxAUNAaMUsaotQhDd0t09HEb/Lp42cBIkqZ/tWpi+0H
+	8mvKYkXhKOSE9Q4+YD3bFUae3C9c3+c54xOE4ui7FB+p/0ajSDRLfk8glLI6zBBvveIgv/9Httj
+	guTxdHQAIPy8n5X57MiYI7vgal1W5GktsEKlngMbNSvJqqCywwDRAqtVYkql5Ojc6vQjIcIDDLm
+	nmSsBGNn4Ssp7fFWvG8g8t1eeFs=
+X-Google-Smtp-Source: AGHT+IG+SB5V0nyOHRjdiqtQoBEkzTsyBhfKzRDkBcnIkyOZxi4eXUP7KS/OG7XRhpbxBrkJtFZ01bW/wXaiRrz2LfU=
+X-Received: by 2002:a05:6512:ba3:b0:594:1279:dfc0 with SMTP id
+ 2adb3069b0e04-5957ecc4170mr813091e87.18.1763036168751; Thu, 13 Nov 2025
+ 04:16:08 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 13 Nov 2025 04:16:06 -0800
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 13 Nov 2025 04:16:06 -0800
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <7aa5a0ce599f86cc29e5075aa4e35155dfcd013e.camel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/33] ACPI / MPAM: Parse the MPAM table
-To: Fenghua Yu <fenghuay@nvidia.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- gregkh@linuxfoundation.org, gshan@redhat.com, guohanjun@huawei.com,
- jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-10-ben.horgan@arm.com>
- <26396142-4f14-4175-85ba-2e8d780abbd9@nvidia.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <26396142-4f14-4175-85ba-2e8d780abbd9@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
+	 <e0e81310332cfdc075bf13f66d7be712b42964ed.camel@pengutronix.de>
+	 <CAMRc=Mfcir56ZizXgZZpt4nQY234PA9jx3CQ24YCVQJFBQ7msA@mail.gmail.com> <7aa5a0ce599f86cc29e5075aa4e35155dfcd013e.camel@pengutronix.de>
+Date: Thu, 13 Nov 2025 04:16:06 -0800
+X-Gm-Features: AWmQ_bnrvTMvqLZX1u_e8HTISsh5pEaGIMQQeIw6rqdZq7jFkd3zAadXNSoff_g
+Message-ID: <CAMRc=Me3mOaFpn=xwpDwBzLWjOqS0Gx4rV0E=v_aEg6s_uJyvw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/8] reset: rework reset-gpios handling
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Fenghua,
-
-On 11/13/25 02:16, Fenghua Yu wrote:
-> Hi, Ben and James,
-> 
-> On 11/7/25 04:34, Ben Horgan wrote:
->> From: James Morse <james.morse@arm.com>
+On Thu, 13 Nov 2025 11:30:39 +0100, Philipp Zabel <p.zabel@pengutronix.de> =
+said:
+> On Mo, 2025-11-10 at 17:57 +0100, Bartosz Golaszewski wrote:
+>> On Mon, Nov 10, 2025 at 10:02=E2=80=AFAM Philipp Zabel <p.zabel@pengutro=
+nix.de> wrote:
+>> >
+>> > On Do, 2025-11-06 at 15:32 +0100, Bartosz Golaszewski wrote:
+>> > > NOTE: I've picked up commit e5d527be7e69 ("gpio: swnode: don't use t=
+he
+>> > > swnode's name as the key for GPIO lookup") into my fixes branch and =
+will
+>> > > send it upstream by the end of this week. It will be part of v6.18-r=
+c5
+>> > > which tag will need to be the base for the future immutable branch
+>> > > created by Philipp.
+>> > >
+>> > > Software node maintainers: if this versions is good to go, can you l=
+eave
+>> > > your Acks under patches 1-3 and allow Philipp to take it through the
+>> > > reset tree, provided he creates an immutable branch you can pull fro=
+m
+>> > > for v6.19?
+>> >
+>> > Now that -rc5 is out, could I get an Ack to create an immutable branch
+>> > with this series on top of v6.18-rc5 (and merge it into reset/next)?
+>> >
 >>
->> Add code to parse the arm64 specific MPAM table, looking up the cache
->> level from the PPTT and feeding the end result into the MPAM driver.
+>> Hi Philipp,
 >>
->> This happens in two stages. Platform devices are created first for the
->> MSC devices. Once the driver probes it calls acpi_mpam_parse_resources()
->> to discover the RIS entries the MSC contains.
->>
->> For now the MPAM hook mpam_ris_create() is stubbed out, but will update
->> the MPAM driver with optional discovered data about the RIS entries.
->>
->> CC: Carl Worth <carl@os.amperecomputing.com>
->> Link: https://developer.arm.com/documentation/den0065/3-0bet/?lang=en
->> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
->> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->> Tested-by: Peter Newman <peternewman@google.com>
->> Signed-off-by: James Morse <james.morse@arm.com>
->> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-[...]
+>> I assume the Reviewed-by tags by Andy and Sakari under patches 1-3
+>> make them good enough to go in?
+>
+> I assumed I also need an Acked-by by Greg or Rafael.
+>
 
->> +        if (nid == NUMA_NO_NODE) {
->> +            pr_debug("Bad proxmity domain %lld, using node 0 instead\n",
-> 
-> Typo.
-> s/proxmity/proximity/
+From MAINTAINERS:
 
-Done.
+SOFTWARE NODES AND DEVICE PROPERTIES
+R:      Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+R:      Daniel Scally <djrscally@gmail.com>
+R:      Heikki Krogerus <heikki.krogerus@linux.intel.com>
+R:      Sakari Ailus <sakari.ailus@linux.intel.com>
 
-> 
->> +                 res->locator.memory_locator.proximity_domain);
->> +            nid = 0;
->> +        }
->> +        return mpam_ris_create(msc, res->ris_index, MPAM_CLASS_MEMORY,
->> +                       255, nid);
->> +    default:
->> +        /* These get discovered later and are treated as unknown */
->> +        return 0;
->> +    }
->> +}
->> +
->> +int acpi_mpam_parse_resources(struct mpam_msc *msc,
->> +                  struct acpi_mpam_msc_node *tbl_msc)
->> +{
->> +    int i, err;
->> +    char *ptr, *table_end;
->> +    struct acpi_mpam_resource_node *resource;
->> +
->> +    ptr = (char *)(tbl_msc + 1);
->> +    table_end = ptr + tbl_msc->length;
-> 
-> tbl_msc->length equals size of the ENTIRE msc node. ptr points to the
-> end of tbl_msc. ptr + tbl_msc->length is past the end of the msc node.
-> This will access data outside of this MSC node.
-> 
-> Better to change to:
-> +    table_end = (char *)tbl_msc + tbl_msc->length;
+Looks like neither Greg nor Rafael are mentioned.
 
-Yes, makes sense.
-
-> 
->> +    for (i = 0; i < tbl_msc->num_resource_nodes; i++) {
->> +        u64 max_deps, remaining_table;
->> +
->> +        if (ptr + sizeof(*resource) > table_end)
->> +            return -EINVAL;
->> +
->> +        resource = (struct acpi_mpam_resource_node *)ptr;
->> +
->> +        remaining_table = table_end - ptr;
->> +        max_deps = remaining_table / sizeof(struct acpi_mpam_func_deps);
->> +        if (resource->num_functional_deps > max_deps) {
->> +            pr_debug("MSC has impossible number of functional
->> dependencies\n");
->> +            return -EINVAL;
->> +        }
->> +
->> +        err = acpi_mpam_parse_resource(msc, resource);
->> +        if (err)
->> +            return err;
->> +
->> +        ptr += sizeof(*resource);
->> +        ptr += resource->num_functional_deps * sizeof(struct
->> acpi_mpam_func_deps);
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +/*
->> + * Creates the device power management link and returns true if the
->> + * acpi id is valid and usable for cpu affinity.  This is the case
->> + * when the linked device is a processor or a processor container.
->> + */
->> +static bool __init parse_msc_pm_link(struct acpi_mpam_msc_node *tbl_msc,
->> +                     struct platform_device *pdev,
->> +                     u32 *acpi_id)
->> +{
->> +    char hid[sizeof(tbl_msc->hardware_id_linked_device) + 1] = { 0 };
->> +    bool acpi_id_valid = false;
->> +    struct acpi_device *buddy;
->> +    char uid[11];
->> +    int len;
->> +
->> +    memcpy(hid, &tbl_msc->hardware_id_linked_device,
->> +           sizeof(tbl_msc->hardware_id_linked_device));
->> +
->> +    if (!strcmp(hid, ACPI_PROCESSOR_CONTAINER_HID)) {
->> +        *acpi_id = tbl_msc->instance_id_linked_device;
->> +        acpi_id_valid = true;
->> +    }
->> +
->> +    len = snprintf(uid, sizeof(uid), "%u",
->> +               tbl_msc->instance_id_linked_device);
->> +    if (len >= sizeof(uid)) {
->> +        pr_debug("Failed to convert uid of device for power
->> management.");
->> +        return acpi_id_valid;
->> +    }
->> +
->> +    buddy = acpi_dev_get_first_match_dev(hid, uid, -1);
->> +    if (buddy)
->> +        device_link_add(&pdev->dev, &buddy->dev, DL_FLAG_STATELESS);
-> 
-> Refcount leak here?
-> 
-> Refcount of the device object pointed by buddy is not released and
-> refcount leaks.
-> > Better to change to:
-> +    if (buddy) {
-> +        device_link_add(...);
-> +        acpi_dev_put(buddy);  <====== release refcount here
-> +    }
-
-
-Yes, device_link_add() calls get_device() to increment the refcount and
-so the acpi_dev_put() is required.
-
-> 
-> or free refcount automatically:
-> +DEFINE_FREE(acpi_dev_put, struct acpi_device *, if (_T) acpi_dev_put(_T))
-> ...
-> +    struct acpi_device *buddy __free(acpi_dev_put);
-> ...
-> 
->> +
->> +    return acpi_id_valid;
->> +}
->> +
->> +static int decode_interface_type(struct acpi_mpam_msc_node *tbl_msc,
->> +                 enum mpam_msc_iface *iface)
->> +{
->> +    switch (tbl_msc->interface_type) {
->> +    case ACPI_MPAM_MSC_IFACE_MMIO:
->> +        *iface = MPAM_IFACE_MMIO;
->> +        return 0;
->> +    case ACPI_MPAM_MSC_IFACE_PCC:
->> +        *iface = MPAM_IFACE_PCC;
->> +        return 0;
->> +    default:
->> +        return -EINVAL;
->> +    }
->> +}
->> +
->> +static struct platform_device * __init acpi_mpam_parse_msc(struct
->> acpi_mpam_msc_node *tbl_msc)
->> +{
->> +    struct platform_device *pdev __free(platform_device_put) =
->> +        platform_device_alloc("mpam_msc", tbl_msc->identifier);
->> +    int next_res = 0, next_prop = 0, err;
->> +    /* pcc, nrdy, affinity and a sentinel */
->> +    struct property_entry props[4] = { 0 };
->> +    /* mmio, 2xirq, no sentinel. */
->> +    struct resource res[3] = { 0 };
->> +    struct acpi_device *companion;
->> +    enum mpam_msc_iface iface;
->> +    char uid[16];
->> +    u32 acpi_id;
->> +
->> +    if (!pdev)
->> +        return ERR_PTR(-ENOMEM);
->> +
->> +    /* Some power management is described in the namespace: */
->> +    err = snprintf(uid, sizeof(uid), "%u", tbl_msc->identifier);
->> +    if (err > 0 && err < sizeof(uid)) {
->> +        companion = acpi_dev_get_first_match_dev("ARMHAA5C", uid, -1);
->> +        if (companion)
->> +            ACPI_COMPANION_SET(&pdev->dev, companion);
-> 
-> Ditto. companion's refcount leak here as well?
-
-Looks like it. Added a acpi_dev_put().
-
-> 
->> +        else
->> +            pr_debug("MSC.%u: missing namespace entry\n",
->> +                 tbl_msc->identifier);
->> +    }
->> +
->> +    if (decode_interface_type(tbl_msc, &iface)) {
->> +        pr_debug("MSC.%u: unknown interface type\n", tbl_msc-
->> >identifier);
->> +        return ERR_PTR(-EINVAL);
->> +    }
->> +
->> +    if (iface == MPAM_IFACE_MMIO)
->> +        res[next_res++] = DEFINE_RES_MEM_NAMED(tbl_msc->base_address,
->> +                               tbl_msc->mmio_size,
->> +                               "MPAM:MSC");
->> +    else if (iface == MPAM_IFACE_PCC)
->> +        props[next_prop++] = PROPERTY_ENTRY_U32("pcc-channel",
->> +                            tbl_msc->base_address);
->> +
->> +    acpi_mpam_parse_irqs(pdev, tbl_msc, res, &next_res);
->> +
->> +    WARN_ON_ONCE(next_res > ARRAY_SIZE(res));
-> 
-> Not sure if this WARN_ON_ONCE() is really helpful.
-> 
-> Even before this WARN happens, previously res[next_res] accesseing
-> outside of res[] may hit panic or data corruption already.
-> 
-> Maybe it's better to add a helper to access res[] and report error when
-> accessing out of res[] scope. A few places can call the helper to access
-> res[]:
-
-This warning looks to be there just to catch programming errors. There
-are 3 places next_res could be incremented and res[] has 3 entries so I
-don't see how an out of bounds access could occur without code changes
-and as accesses are made using res[next_res++], or equivalent, it is
-likely this warning would be hit if a new res is added without
-remembering to increase the size of the array. Given this, I'll keep
-this code as it is.
-
-> 
-> +static int add_resource(struct resource *res, int *idx, int max,
-> +            struct resource new_res)
-> +{
-> +    if (*idx >= max) {
-> +        pr_err("Too many resources (max %d)\n", max);
-> +        return -ENOSPC;
-> +    }
-> +    res[(*idx)++] = new_res;
-> +    return 0;
-> +}
-> 
-> Then can call the helper to replace res[next_res++]:
-> +    if (iface == MPAM_IFACE_MMIO) {
-> +        err = add_resource(res, &next_res, ARRAY_SIZE(res),
-> +                 DEFINE_RES_MEM_NAMED(tbl_msc->base_address,
-> +                               tbl_msc, +                           
-> mmio_size,
-> +                               "MPAM:MSC"));
-> +        if (err)
-> +            return ERR_PTR(-ENOSPC);
-> +    }
-> 
->> +    err = platform_device_add_resources(pdev, res, next_res);
->> +    if (err)
->> +        return ERR_PTR(err);
->> +
->> +    props[next_prop++] = PROPERTY_ENTRY_U32("arm,not-ready-us",
->> +                        tbl_msc->max_nrdy_usec);
->> +
->> +    /*
->> +     * The MSC's CPU affinity is described via its linked power
->> +     * management device, but only if it points at a Processor or
->> +     * Processor Container.
->> +     */
->> +    if (parse_msc_pm_link(tbl_msc, pdev, &acpi_id))
->> +        props[next_prop++] = PROPERTY_ENTRY_U32("cpu_affinity",
->> acpi_id);
->> +
->> +    WARN_ON_ONCE(next_prop > ARRAY_SIZE(props));
-> 
-> Ditto for this WARN here?
-
-Similarly to above, this is just guarding against later adding more
-properties. This one can be tightened though as
-device_create_managed_software_node() expects a zero terminated array.
-Changing to:
-
-WARN_ON_ONCE(next_prop > ARRAY_SIZE(props) - 1);
-
-> 
-> [SNIP]
-> 
-> Thanks.
-> 
-> -Fenghua
-Thanks,
-
-Ben
-
+Bart
 
