@@ -1,163 +1,153 @@
-Return-Path: <linux-acpi+bounces-18862-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18863-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00A4C57766
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:41:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21A1C577A8
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3A5E14E6189
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:40:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2CC33BA962
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 12:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6434834FF55;
-	Thu, 13 Nov 2025 12:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="k70PRfsx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C234F478;
+	Thu, 13 Nov 2025 12:41:27 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1734DCFE
-	for <linux-acpi@vger.kernel.org>; Thu, 13 Nov 2025 12:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3838E34DCFE;
+	Thu, 13 Nov 2025 12:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763037604; cv=none; b=Nhp7vOE9R00OnGPBp+e+Y60RqClWY5mKuDVleO8xzj7FpRgvHmazFwq704/7eg7eJ0LiXaOlBijZ0wxXCfNwa5DxrCfP1IliyZeXqr9F5OlPmCZpxq1rnnWtKqQntVwcIlUKldysrMxOVP2vNwwKak8FxfEdyxJSxwQ+NQawEKA=
+	t=1763037687; cv=none; b=p4hqVoprkvjeQZgtLqMXdAEzaXDCiapcTNSb1M7DBlwbjkKVb5WZ+R+4QgXDcZBzTidmgBFgYlSnoNtZmOJZ7V1JhW0ATFsnZyFT9yp3Xze0RuaBsB/xZQKIJYd2HRAP+Bb6PE00I/vVcjnSArRZI9mX87fL1229oxROnG6oJis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763037604; c=relaxed/simple;
-	bh=+kTwDuwG6rspdkZ99dNoC1BLBNHio/t4Ku94BnnhqRs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JbxP9o9z3zZx2T2hvnak57QbjMe2mPoFHJpUsb27gHIUfUkbw5sUrbvaxDTvK+j+1cYDnq3to/RsftpBs8OJ4E+5Pmbdmww5CEQzy67jIPG16SpgHk0YZyTu6dVSGYwLGXyHGGeoC+CkvJ46hXrpe0fn4qq1raYSXjzaEQy+vCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=k70PRfsx; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37a3d86b773so8348411fa.0
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Nov 2025 04:40:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763037600; x=1763642400; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AUOrtPsGub1HhpXyzrUpFchIESa38qs85WIyjbHg4K8=;
-        b=k70PRfsxSapODP2hSfOJ/F/sCO3uVA5pmXnaBQcvEkzOkrmmaBgIMLdKvCB+GjKFhg
-         DHsWqidK96RQgK80hLFLKn8nbDnEnRAr7avhDtWujfGOLfFdfCNodLgos8wYgp+7v1+p
-         Aiu/OK5XSqJZyEwCA4xYQ1XazUzGGHwajHC/6EQ1w0E0KzdqLFPSTxZUJogI+93I0xOP
-         P4ZugIH4/7WVZZuklJyhwmIbYkYJ+gpGNSmwfIwbcdqiCaPC4E3PhjqkMPgWMWM4v40q
-         uS93wPY0UOD90sqXNt/OXYWk3xKuvblwxguwJNUzpCwYTbn7cryMGcJmhsGCo+4WPMeO
-         sHeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763037600; x=1763642400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AUOrtPsGub1HhpXyzrUpFchIESa38qs85WIyjbHg4K8=;
-        b=PdpJNyJJVf3xYDmkUq3f+veYjGczpWU4swG9g+hS83ACZ4aaIqFmtaGUboGyGZ4hIZ
-         nmBaCc0FBjtODJQxYX/0Hsth0PPwGUCaoBT/5biZw+8mz9JKwcFqyPdo9ulesIKIGC7v
-         mr6ya/T2mrE8dSr2VelGL0WmZnVexYA+SSObVQHCIiPzpfljBm0GAcNm4N/fek6IIkf3
-         Xndf6v53syBD3JwH+3HCboFjQ7EmmPmM+3WB06/2z102Vmb+RgefJc4HlOoscs5bJqi3
-         l4vFirshJtOVuPepNIhXh38dppaCwOIIyUuGTm1EseLgvx9AFpPZdCK1iEF3GGA0uDZN
-         3c1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVaHqBhVseopiC7n5hP+Qr0oDlbnJpU9p/cjJwFqrNJ0tG/92vyWqgu53vQs8WejOUIyO0MOjYo9XME@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEzhFf5BIY/osBXG/ly1qXiB+xhDEtpjuhkEZyU9GPZicRkm/7
-	BYXf518Ppu2jF15l9MBggXyrn0qsjPU/z2M9UsJsIlUcUI7sSb5pNFnAdlRxvzTbtoMV5EqQqIL
-	xcr5+24rL9WsO0EZYa4r3MYTHPMGC2VjO7TMpny9RrQ==
-X-Gm-Gg: ASbGncsdT9R838llSWICehIq2LzwJafdSpw1w+DktI/+QbWalroCpUkXZBtWvthZz+S
-	ipYCjTfKW4LRCmoSO4XGCuSSzEvoh1kBOxGUv96L+RL9h4XRZexbqFkInRdGN7Xiv8RrTVbdUk/
-	PdhILvBZm+fETA89hzliemUIduxjL4n2GdyZvePjoo61iv7ZrbKaLcyF4mj18eApme9fa5X/sHU
-	LQohXcMbYnoa3UwDuliy7JYn/VQttGiwyZymwPhClGQ6GOvwut3LTrS+HaRZw9jtQVzF/YiQch3
-	zaouYhTxX1HIjSU7
-X-Google-Smtp-Source: AGHT+IEwidGHoNOMaYo4htt19dYp1oulw6jtGUPFtCAr2wRYS9NFrgMFss39wedYdFqyQ0XIZvSRls+UzQXDbZ99yYM=
-X-Received: by 2002:a05:6512:3b1e:b0:594:51ac:13e with SMTP id
- 2adb3069b0e04-59576df8da4mr2157404e87.17.1763037600276; Thu, 13 Nov 2025
- 04:40:00 -0800 (PST)
+	s=arc-20240116; t=1763037687; c=relaxed/simple;
+	bh=XaTNNB/CqGz+V+OMzj/mIjV+mLYVDACn92ZqVORRSbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gGQtwWGpvSRE3rZqCBr6YsDBZ3xf5YJjR/31CnDfvrFvoKlulf3pdhMFqyaf9pndTijPryqI1+Sl8BNoznQ79X6gyczOnvN/SLxfGwvlpxMcM11y5AGpJAYr+JPoV+i0nTzbgeRd4q47eDfelLUNoyB4upBvvsRJxB+jHgOuBv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C26B012FC;
+	Thu, 13 Nov 2025 04:41:16 -0800 (PST)
+Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.80.58])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 026C73F5A1;
+	Thu, 13 Nov 2025 04:41:24 -0800 (PST)
+Date: Thu, 13 Nov 2025 12:41:19 +0000
+From: Ionela Voinescu <ionela.voinescu@arm.com>
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, lenb@kernel.org,
+	robert.moore@intel.com, corbet@lwn.net, pierre.gondois@arm.com,
+	zhenglifeng1@huawei.com, rdunlap@infradead.org, ray.huang@amd.com,
+	gautham.shenoy@amd.com, mario.limonciello@amd.com,
+	perry.yuan@amd.com, zhanjie9@hisilicon.com,
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	treding@nvidia.com, jonathanh@nvidia.com, vsethi@nvidia.com,
+	ksitaraman@nvidia.com, sanjayc@nvidia.com, nhartman@nvidia.com,
+	bbasu@nvidia.com
+Subject: Re: [PATCH v4 6/8] cpufreq: CPPC: Add sysfs for min/max_perf and
+ perf_limited
+Message-ID: <aRXR7yKyG6l1Agfq@arm.com>
+References: <20251105113844.4086250-1-sumitg@nvidia.com>
+ <20251105113844.4086250-7-sumitg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
- <e0e81310332cfdc075bf13f66d7be712b42964ed.camel@pengutronix.de>
- <CAMRc=Mfcir56ZizXgZZpt4nQY234PA9jx3CQ24YCVQJFBQ7msA@mail.gmail.com>
- <7aa5a0ce599f86cc29e5075aa4e35155dfcd013e.camel@pengutronix.de> <CAMRc=Me3mOaFpn=xwpDwBzLWjOqS0Gx4rV0E=v_aEg6s_uJyvw@mail.gmail.com>
-In-Reply-To: <CAMRc=Me3mOaFpn=xwpDwBzLWjOqS0Gx4rV0E=v_aEg6s_uJyvw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 13 Nov 2025 13:39:47 +0100
-X-Gm-Features: AWmQ_blTF4bGHOPBFto4bdAeuDnTVCZ4z2kdDUSFoogNBWSvY3rUo6lXRjR-7mU
-Message-ID: <CAMRc=Men0Dc3rokguW-ghsViyMmJzLgvJZtx9ACur5h7U4z_7w@mail.gmail.com>
-Subject: Re: [PATCH v6 0/8] reset: rework reset-gpios handling
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105113844.4086250-7-sumitg@nvidia.com>
 
-On Thu, Nov 13, 2025 at 1:16=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
->
-> On Thu, 13 Nov 2025 11:30:39 +0100, Philipp Zabel <p.zabel@pengutronix.de=
-> said:
-> > On Mo, 2025-11-10 at 17:57 +0100, Bartosz Golaszewski wrote:
-> >> On Mon, Nov 10, 2025 at 10:02=E2=80=AFAM Philipp Zabel <p.zabel@pengut=
-ronix.de> wrote:
-> >> >
-> >> > On Do, 2025-11-06 at 15:32 +0100, Bartosz Golaszewski wrote:
-> >> > > NOTE: I've picked up commit e5d527be7e69 ("gpio: swnode: don't use=
- the
-> >> > > swnode's name as the key for GPIO lookup") into my fixes branch an=
-d will
-> >> > > send it upstream by the end of this week. It will be part of v6.18=
--rc5
-> >> > > which tag will need to be the base for the future immutable branch
-> >> > > created by Philipp.
-> >> > >
-> >> > > Software node maintainers: if this versions is good to go, can you=
- leave
-> >> > > your Acks under patches 1-3 and allow Philipp to take it through t=
-he
-> >> > > reset tree, provided he creates an immutable branch you can pull f=
-rom
-> >> > > for v6.19?
-> >> >
-> >> > Now that -rc5 is out, could I get an Ack to create an immutable bran=
-ch
-> >> > with this series on top of v6.18-rc5 (and merge it into reset/next)?
-> >> >
-> >>
-> >> Hi Philipp,
-> >>
-> >> I assume the Reviewed-by tags by Andy and Sakari under patches 1-3
-> >> make them good enough to go in?
-> >
-> > I assumed I also need an Acked-by by Greg or Rafael.
-> >
->
-> From MAINTAINERS:
->
-> SOFTWARE NODES AND DEVICE PROPERTIES
-> R:      Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> R:      Daniel Scally <djrscally@gmail.com>
-> R:      Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> R:      Sakari Ailus <sakari.ailus@linux.intel.com>
->
-> Looks like neither Greg nor Rafael are mentioned.
->
+Hi,
 
-Ah but also:
+On Wednesday 05 Nov 2025 at 17:08:42 (+0530), Sumit Gupta wrote:
+> Add sysfs interfaces for Minimum Performance, Maximum Performance
+> and Performance Limited Register in the cppc_cpufreq driver.
+> 
+> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  .../ABI/testing/sysfs-devices-system-cpu      | 46 +++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+> index 8aed6d94c4cd..6f1f70696000 100644
+> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
+> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+> @@ -327,6 +327,52 @@ Description:	Energy performance preference
+>  
+>  		This file is only present if the cppc-cpufreq driver is in use.
+>  
+> +What:		/sys/devices/system/cpu/cpuX/cpufreq/min_perf
+> +Date:		December 2025
+> +Contact:	linux-pm@vger.kernel.org
+> +Description:	Minimum Performance Frequency
+> +
+> +		Read/write a frequency value in kHz from/to this file. This
+> +		file conveys the minimum performance level (as frequency) at
+> +		which the platform may run. The frequency value is internally
+> +		converted to a performance value and must correspond to a
+> +		performance level in the range [Lowest Performance, Highest
+> +		Performance], inclusive. The minimum must be less than or equal
+> +		to the maximum performance. The performance range can be checked
+> +		from nodes:
+> +			/sys/devices/system/cpu/cpuX/acpi_cppc/highest_perf
+> +			/sys/devices/system/cpu/cpuX/acpi_cppc/lowest_perf
 
-DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS
-M:      Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-M:      "Rafael J. Wysocki" <rafael@kernel.org>
-M:      Danilo Krummrich <dakr@kernel.org>
+I think information on highest/lowest performance is irrelevant here. If
+the user is expected to provide a frequency value, it should only care
+about it being in the range [cpuinfo_min_freq, cpuinfo_max_freq].
 
-So depending how we look at it. Greg, Rafael, Danilo: can you leave an Ack =
-here?
+I think ideally all of these controls (auto-select, EPP, min, max, etc.)
+would have been better placed under
+/sys/devices/system/cpu/cpuX/acpi_cppc, but I suppose the intention
+was/is to have all performance related controls under cpufreq. But that
+means that the user should not be concerned about the underlying CPPC
+scale and only use /sys/devices/system/cpu/cpuX/acpi_cppc for
+information purposes.
 
-Bartosz
+Thanks,
+Ionela.
+
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+> +
+> +What:		/sys/devices/system/cpu/cpuX/cpufreq/max_perf
+> +Date:		December 2025
+> +Contact:	linux-pm@vger.kernel.org
+> +Description:	Maximum Performance Frequency
+> +
+> +		Read/write a frequency value in kHz from/to this file. This
+> +		file conveys the maximum performance level (as frequency) at
+> +		which the platform may run. The frequency value is internally
+> +		converted to a performance value and must correspond to a
+> +		performance level in the range [Lowest Performance, Highest
+> +		Performance], inclusive. The performance range can be checked
+> +		from nodes:
+> +			/sys/devices/system/cpu/cpuX/acpi_cppc/highest_perf
+> +			/sys/devices/system/cpu/cpuX/acpi_cppc/lowest_perf
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+> +
+> +What:		/sys/devices/system/cpu/cpuX/cpufreq/perf_limited
+> +Date:		December 2025
+> +Contact:	linux-pm@vger.kernel.org
+> +Description:	Performance Limited
+> +
+> +		Read/write a 32 bits value from/to this file. This file indicates
+> +		to OSPM that an unpredictable event has limited processor
+> +		performance, and the delivered performance may be less than
+> +		desired/minimum performance.
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+>  
+>  What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
+>  Date:		August 2008
+> -- 
+> 2.34.1
+> 
 
