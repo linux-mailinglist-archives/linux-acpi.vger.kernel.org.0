@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-18864-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18865-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384F4C57CE6
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 14:56:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C5AC57C29
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 14:45:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45814426E1B
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:39:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5FA5835A0B6
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Nov 2025 13:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4D61DE8AF;
-	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D761F461D;
+	Thu, 13 Nov 2025 13:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8M7ts+k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4Jbw+/R"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD56514D29B;
-	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD313BB48;
+	Thu, 13 Nov 2025 13:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763041069; cv=none; b=Zauc6k0Kp017eKIEv544ukQpWaZcFPfjnuRs3UCw0tcaVUJwCDFroG2wn9gQFjCfhlU2Az1ZIF/9I7F5gpVLNT55Alt2Lxh9+KYan7/NEQB5hqnGg4pUYkZ2BGO5OGvCndk35VM5JUotaPenDBLs5frTcHYTvA/okRAGPrIBLdM=
+	t=1763041195; cv=none; b=do+Wn6kttnO/ScrdZIJ43FuSSMCESrx67voUgWs4muTxVEyCOYFp5eYNZKskzuGbAGV7MrPWRE65JKYbdBBouiUiXEx7ZGlhewszHHuUNOVssb3fjqunfIWU574JIDRgEe/ln5S0IpF6GqX5eU5oduoEZ1knV3ICUwyJHcIVHvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763041069; c=relaxed/simple;
-	bh=hMDqncVTMGAeoVR3a3d7f5yNX81QBpwoNu17uq0iXMc=;
+	s=arc-20240116; t=1763041195; c=relaxed/simple;
+	bh=qZNTS+SsKyGq5cJUoJdNddEpiS/NdktIA7Wmi47YSI0=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YGa98cHjRA+3+lIWCufVKVTKE8J2pHWz/2BpRGdlcG6esm67KNwM5qJrlrZ8B3aP/ohSXlintfuxjqWjVmN6+G6hcGzDi09rUJeM6E5GjDpr9EDe4M63LeAWVOcvPh7hngvzcsAQuoTAp36zMkH4nIC+zuBn2hX2SAVRV465VyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8M7ts+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC4C19422;
-	Thu, 13 Nov 2025 13:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iZDQ2WwUJhBTJuRiceIuRzlvJuevjRZZWnJFllJ5idAwyCaXq9r0RaJh3FNGcxozm/wKF+0HJMisFiMj1MVH7DvJZtznqC8vUW8f1vEJRllljqiBx9edPTHyGSyu1Tv6F4OC9BSeyWtnDxifuDKGEq2Hr+PY2jql7iwjxR5uxZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4Jbw+/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ED7C116D0;
+	Thu, 13 Nov 2025 13:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763041069;
-	bh=hMDqncVTMGAeoVR3a3d7f5yNX81QBpwoNu17uq0iXMc=;
+	s=k20201202; t=1763041195;
+	bh=qZNTS+SsKyGq5cJUoJdNddEpiS/NdktIA7Wmi47YSI0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U8M7ts+kjRsY7U3j2SeaXDYLHevxWSv17TMsi68DyHZDAV2PUEwaypzEkPEPqo3GW
-	 Pj7u3jgYXvBEcN+VGLMzcJhJORvQaVdP+qfSSmaJhCx6YHCsbe0/1W8qPJUalrVIh5
-	 QP0oxUgqXp+pzxC3XSzcSydqil9ZeCfoKYWShNZljp325WqBTIZGzvfppkkvqrpyDB
-	 X+EEJBQay1hIhfXTx25b1PNLYb3BRmcP7cThJnVaHgWwvPKisfA9va3vhIO6P6uvVM
-	 gsyTHFH+lT5WO2hvnp4aWdkNxI5rLuPSWMkatVGsejdrjO1oganuMGQ2G5y0P/FWk2
-	 v2qErzM5INOcw==
+	b=A4Jbw+/R6bIUOmh0jqAwRGsgWCRKFxO621Q7LcuzoqI95D9gOWCq0i7jLqALA9eKw
+	 3pDvyLMVjs+tFz72NZ7yrLPUVFG/dkNvZiZlOC8Wb7IBDeuXzjU4n0Db9VvRUospVJ
+	 34PXNkYqCZEk3L8FaNtWm+nSQcd+86h6+jzaVlGG6CI3lk9T4boNvVj10y3+sxPxwI
+	 Bvtl/SJH/8JVRELMIF1VQFIs5TouKlYTVZ6fMAlmL+pWnRDNNivWbrTlBg37UEWx5z
+	 ykRTsgmqW2ZbETjDOHlxN3sDkflRjEnngr0g9Uv/wc71ZJmUkP0uJjBlr82LF1w8CV
+	 Ge8RBzRYY6BGg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1vJXWF-00000004t2S-0Lup;
-	Thu, 13 Nov 2025 13:37:47 +0000
-Date: Thu, 13 Nov 2025 13:37:46 +0000
-Message-ID: <86ms4qt5n9.wl-maz@kernel.org>
+	id 1vJXYG-00000004t5r-3WS5;
+	Thu, 13 Nov 2025 13:39:52 +0000
+Date: Thu, 13 Nov 2025 13:39:52 +0000
+Message-ID: <86ldkat5jr.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: <linux-kernel@vger.kernel.org>,
@@ -74,11 +74,11 @@ Cc: <linux-kernel@vger.kernel.org>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
 	"Alexandru\
  Elisei" <alexandru.elisei@arm.com>
-Subject: Re: [PATCH v4 14/26] genirq: Add affinity to percpu_devid interrupt requests
-In-Reply-To: <20251112181318.000064be@huawei.com>
+Subject: Re: [PATCH v4 17/26] genirq: Add request_percpu_irq_affinity() helper
+In-Reply-To: <20251112182735.00001363@huawei.com>
 References: <20251020122944.3074811-1-maz@kernel.org>
-	<20251020122944.3074811-15-maz@kernel.org>
-	<20251112181318.000064be@huawei.com>
+	<20251020122944.3074811-18-maz@kernel.org>
+	<20251112182735.00001363@huawei.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -94,50 +94,31 @@ X-SA-Exim-Rcpt-To: jonathan.cameron@huawei.com, linux-kernel@vger.kernel.org, li
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 12 Nov 2025 18:13:18 +0000,
+On Wed, 12 Nov 2025 18:27:35 +0000,
 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
 > 
-> On Mon, 20 Oct 2025 13:29:31 +0100
+> On Mon, 20 Oct 2025 13:29:34 +0100
 > Marc Zyngier <maz@kernel.org> wrote:
 > 
-> > Add an affinity field to both the irqaction structure and the interrupt
-> > request primitives. Nothing is making use of it yet, and the only value
-> > used it NULL, which is used as a shorthand for cpu_possible_mask.
+> > While it would be nice to simply make request_percpu_irq() take
+> > an affinity mask, the churn is likely to be on the irritating side
+> > given that most drivers do not give a damn about affinities.
 > 
-> used is NULL
+> Only 37 instances. I'd have been tempted to do it anyway :)
+
+I'm leaving this as an exercise for people who enjoy cross-subsystem
+patch series!
+
 > 
 > > 
-> > This will shortly get used with actual affinities.
+> > So take the more innocuous path to provide a helper that parallels
+> > request_percpu_irq(), with an affinity as a bonus argument.
+> > 
+> > Yes, request_percpu_irq_affinity() is a bit of a mouthful.
 > > 
 > > Tested-by: Will Deacon <will@kernel.org>
 > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> 
-> With trivial bit of documentation added
 > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> 
-> > ---
-> >  include/linux/interrupt.h |  5 +++--
-> >  kernel/irq/manage.c       | 14 ++++++++++----
-> >  2 files changed, 13 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-> > index 0ec1a71ab4e84..52147d5f432b3 100644
-> > --- a/include/linux/interrupt.h
-> > +++ b/include/linux/interrupt.h
-> > @@ -125,6 +125,7 @@ struct irqaction {
-> >  		void		*dev_id;
-> >  		void __percpu	*percpu_dev_id;
-> >  	};
-> > +	const struct cpumask	*affinity;
-> 
-> This structure has kernel-doc that needs an update.
-> 
-> >  	struct irqaction	*next;
-> >  	irq_handler_t		thread_fn;
-> >  	struct task_struct	*thread;
-
-See 68c4c159a0db4 ("genirq: Fix percpu_devid irq affinity
-documentation") in -next for the merged fix.
 
 Thanks,
 
