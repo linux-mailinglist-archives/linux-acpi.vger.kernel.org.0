@@ -1,247 +1,246 @@
-Return-Path: <linux-acpi+bounces-18890-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18891-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F23C5B1F5
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 04:26:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCCAC5B544
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 05:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 260824E64AA
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 03:25:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D126F4E44E4
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 04:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BAA25F98B;
-	Fri, 14 Nov 2025 03:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0F3299AAA;
+	Fri, 14 Nov 2025 04:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Z9GFXIEi"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="VLXlHeAg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011061.outbound.protection.outlook.com [40.107.74.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F714232395;
-	Fri, 14 Nov 2025 03:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763090701; cv=none; b=KeJvgX5+WZ8GQq4FXWq6nLEGyFzbK900O3sKjwrU1NFveMHOXAd6mg3/wjo9vVbiUcdU23+JTXh28nlalEJ0MLClSh0YgHL2NypLG68KqLC6y4EqBh6f0BrwQhuKHU9VvLOXsYmiI4Dlw/OSnyG5xSGMjGReaiN4965sfWvQAKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763090701; c=relaxed/simple;
-	bh=6loHyEaeMv3gumdYQyO6TUKabvYbZ86nco/F9hoRSvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=n6y2/VyD6ZOtA+LKxno9Hwj1dLlzts+X76YRX5eSddHCxEgIOeAWsV5fDjrKQVdQpTY6Lf29tW/Ppzuk6Ul7D8KO806pxQHrdQOUJjbQf9RzkF2Qpy0qzJwGVb22rggqP9CdoxDc8yRhmgzlzxfu1wStvKb1SJbhIiJFaNNT+xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Z9GFXIEi; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1763090652; x=1763695452; i=w_armin@gmx.de;
-	bh=eaVKqe10jzGoKFaLYje3vU37/s2NKQBvZXfmlKCsGAc=;
-	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Z9GFXIEiHD6GIQIfXsMI4ndi0xeystmd+2fQGVLSOpHDISyy/7h/qiqsCv7i25Wy
-	 z4j0p14XnJEGt5Z8dUqTKoXqG1SdzA8Kyals3GRZIoH7QlJyw/tKCL/4qNtNwp97l
-	 iDnhEc4Olz0I2ltP1lwYM6V2+GQ2bG+hB51FV5d7QGh+5ExIYYrucEg1fBen8XAtw
-	 1giP6F8l7QpCD9KJJHOMHpBRXQ3+/20tNBp7NHnOftsI+6hh8j14AHHv3Xv22Uyv1
-	 RyncRUfh7xaezaE3tCuVB/ymca+9jJOZDtKEc3H+TeOVKO2yz5M0xQ3Q2XnwWAfA8
-	 /6JESqnKWIq2BWjL+g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [127.0.0.1] ([93.202.247.91]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKKYx-1vcFwC23YN-00MX1X; Fri, 14
- Nov 2025 04:24:11 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-Date: Fri, 14 Nov 2025 04:23:04 +0100
-Subject: [PATCH RFC 3/8] ACPI: processor: Stop creating "device" sysfs link
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5E6274B3C;
+	Fri, 14 Nov 2025 04:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763095039; cv=fail; b=jBD7p1WNpa3R/TFNYsYPWNAHYz9pgqs1lfM6BDK//DfEANws8nMRKhTyrsCFM82bxv0RXvQXPZ1pJe3SEQ71beOEZhaLxYidHXLVPz4IymVx62Vowo82ic5J0GIuEz44Y3ySgBciAfK+HT8+8KfHwTHyQsiswS7TarfLNE0v4fw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763095039; c=relaxed/simple;
+	bh=I0DYUFS9bgx4S5FRG8Jc4KLZOadtORppRCS7r92n57c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XvJPJdrUO6RY8KbMBJwT5pztBs4/mS0hYs2sFbN5rxk1FnqmWXKCDiJaEU9+/E3hfZu6wAI9Z5O8lippkn/hooFNvRwKCRkbqU6qLYPY81WyhUkcJjMF2rhC/Ept9hS/hIGb19C5N1HtQ03qKeIzrT3Tg77jHb+64pZFDgzmNBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=VLXlHeAg; arc=fail smtp.client-ip=40.107.74.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x7WXdZbDSq6bHfgkzmVwbKIyn/jQRRXkuqSwvbl1ef+r8A9DRqzBrRkGxRaSKzILg5RuSEeRGnL4eqLyawa+pCjoFnHAxVnBmWJ3JNR7znnzeD9uxQs6uDywcRCH1qB/3zelEL5S0Hj2YEMw3IXmkLpvrvi1F3Fxtg+J7upEFBp7RgexLCpv/kJNa/Gc6dBUJlbmKQpVF/W/S4KZ0kph9MW2pi2cHS1tYHBS/fD7vBxGZhKq6vbEvdgNgA2k8JQxOzcvRaa2nsntJ/1OLqJov6lKAYwPoHreAKNgzplrszPiHeXPtKhrDsXiDtakX/XoqtitUyT5s6mwTpRrEdSzYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I0DYUFS9bgx4S5FRG8Jc4KLZOadtORppRCS7r92n57c=;
+ b=QVtZnIFpmDe28pBQDLh9mNPWRbZFRvCI+zP/dsdUU/gWESu0LuHu4+E+AE0wi9iebmpZCk+OWCo4/HUz99ce9zxBRFk7kQA1TBdyqxe91M/pxKS9Dddid3ZM3KEKmxJyWDxaJHrkES276ul4KavM1QXqt+rk8lhtOm8RUMtjdFcbZLNowoMdw2FKXyNhO0Cm9GMRzEZEQp8xMDFCSxN60BmeuByyW3Rr7LgyLk4vcOpZP8xJaVlYK0VoK39fYI0KjCebzqR3P8P2HsaZ8GEZ3aq73u/Woyl/o0jm09WtzBv2BFmeSZ5UppAcmX1BrAV0hux86FzKbs5tHetxBWXUig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fujitsu.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I0DYUFS9bgx4S5FRG8Jc4KLZOadtORppRCS7r92n57c=;
+ b=VLXlHeAgNzi43K5wtXe5ryavvb7uWS2NGvoqgd/exhY5qesX1TH4kDNQRYYt43NallXokgRb6wWtJF0HP5qthuzT0rq30DXxCUGcngcUFWpmdXYw+TKRF8c3Y0S0Fu/tDELKM3Lk65s3Fe8A4DrK++axWAoIXFBlF2bc+yz3v31PhKyP3/v6nc0XfW2pJj/8POb73MB3quTt99o3FzQz+pMQ0f2Nc+wzhEOtwBJJMFjqU8woSxqgGpyfvUDoCiWGtk3PFpgk4Sbe+PsEdiOWayZPhgHaTIGQIVZKOgDzeQEm2fLXTr4xOdvYkCnwnnXX4Y9JH90Ee5DF2wSCU3lk0A==
+Received: from OSZPR01MB8798.jpnprd01.prod.outlook.com (2603:1096:604:15f::6)
+ by OS3PR01MB6935.jpnprd01.prod.outlook.com (2603:1096:604:120::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 04:37:15 +0000
+Received: from OSZPR01MB8798.jpnprd01.prod.outlook.com
+ ([fe80::e366:d390:4474:8cfa]) by OSZPR01MB8798.jpnprd01.prod.outlook.com
+ ([fe80::e366:d390:4474:8cfa%6]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 04:37:15 +0000
+From: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>
+To: 'Ben Horgan' <ben.horgan@arm.com>, "james.morse@arm.com"
+	<james.morse@arm.com>
+CC: "amitsinght@marvell.com" <amitsinght@marvell.com>,
+	"baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"bobo.shaobowang@huawei.com" <bobo.shaobowang@huawei.com>,
+	"carl@os.amperecomputing.com" <carl@os.amperecomputing.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "dakr@kernel.org"
+	<dakr@kernel.org>, "dave.martin@arm.com" <dave.martin@arm.com>,
+	"david@redhat.com" <david@redhat.com>, "dfustini@baylibre.com"
+	<dfustini@baylibre.com>, "fenghuay@nvidia.com" <fenghuay@nvidia.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "gshan@redhat.com"
+	<gshan@redhat.com>, "guohanjun@huawei.com" <guohanjun@huawei.com>,
+	"jeremy.linton@arm.com" <jeremy.linton@arm.com>,
+	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+	"kobak@nvidia.com" <kobak@nvidia.com>, "lcherian@marvell.com"
+	<lcherian@marvell.com>, "lenb@kernel.org" <lenb@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, "peternewman@google.com" <peternewman@google.com>,
+	"quic_jiles@quicinc.com" <quic_jiles@quicinc.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"rohit.mathew@arm.com" <rohit.mathew@arm.com>, "scott@os.amperecomputing.com"
+	<scott@os.amperecomputing.com>, "sdonthineni@nvidia.com"
+	<sdonthineni@nvidia.com>, "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "xhao@linux.alibaba.com"
+	<xhao@linux.alibaba.com>
+Subject: RE: [PATCH 22/33] arm_mpam: Use a static key to indicate when mpam is
+ enabled
+Thread-Topic: [PATCH 22/33] arm_mpam: Use a static key to indicate when mpam
+ is enabled
+Thread-Index: AQHcT+NJmPlATbo5E0ezPi0JCYGvarTxoKlg
+Date: Fri, 14 Nov 2025 04:37:15 +0000
+Message-ID:
+ <OSZPR01MB879841CA355A781965B7FEFA8BCAA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-23-ben.horgan@arm.com>
+In-Reply-To: <20251107123450.664001-23-ben.horgan@arm.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_ActionId=90883146-95a7-4f0f-9ce7-9c57c135353b;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_ContentBits=0;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Enabled=true;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Method=Standard;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Name=FUJITSU-RESTRICTED?;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_SetDate=2025-11-14T04:36:18Z;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_SiteId=a19f121d-81e1-4858-a9d8-736e267fd4c7;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OSZPR01MB8798:EE_|OS3PR01MB6935:EE_
+x-ms-office365-filtering-correlation-id: 2fd4c420-7721-44a4-9d0c-08de23377c7a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021|1580799027;
+x-microsoft-antispam-message-info:
+ =?iso-2022-jp?B?L29XVkR4OUxuWnhrZUdsVTVYTFNNa3NPcmZwTm1mdi9iWlVBVHhmd3RM?=
+ =?iso-2022-jp?B?M2o5QzIrQXFySVRnWGVXVnBiU1VhUG1lUmdtOEw0Q2N1cWJHT2hsN1ZJ?=
+ =?iso-2022-jp?B?cVhaYWc3Vkg5ZUVHbW5oSHBLNzgwSVZkSGpzTm5kaWR6ZHc2QzZGSVMw?=
+ =?iso-2022-jp?B?b0hVRFhBRHJFVUNSVjI5ditvbUh5aHVaZ3VtTGwwcldJSjhmQi84NWVa?=
+ =?iso-2022-jp?B?cDVKcHg5WlE0ZGJGTm14NktKdVZHMGUvekg5bURTRWlSRGQ2T0poUitu?=
+ =?iso-2022-jp?B?VkNzSU13Qm5lWnN1Y0tBelVudHNsZ09FQWR5UmR1NHdHelVjZW4rVzlj?=
+ =?iso-2022-jp?B?bXpncUEvU0Fwbm1zNHR0UE02T283VkNsaG5lYjRJcUZzVXplUXllZ0Z5?=
+ =?iso-2022-jp?B?UXFCRHBGRFRMbng5eGRrbkF6dVpvdmQvUzV1TlZLS2NWRzBYaWx1bUR4?=
+ =?iso-2022-jp?B?bnJ2Rk1oTEdDN1RUVk4yMU9lZVdoY3lzRlFZQitXVWhxM3VrRTRabFdi?=
+ =?iso-2022-jp?B?dC9SaFc4VlVEN0hPVEpNZGFzOHRXY2ZueEtJUDVBdnVwMW5hQkxpaTVJ?=
+ =?iso-2022-jp?B?b1BmQTBiY21SUStRMnc3YXhGRnhVdFVxUDZUeVk3d1Y5NUx3Zks3N1do?=
+ =?iso-2022-jp?B?UWVsSnZtUTV2ZnZTTHRuV1A1dFlxOUxvN0E1NlNwYWIzaEVtMlQ4UmtT?=
+ =?iso-2022-jp?B?NStJdSt3VlFjQnhaNXRyV3BrY0pxTTdUZXVTeHhxUzBmWDl1eWdRQmpS?=
+ =?iso-2022-jp?B?dkxZNTlick1RbTMydFliYUlER1NvbW9FOGlCOFlnYUJWSUVwbmRnUldi?=
+ =?iso-2022-jp?B?MWpjeUt6YVVRTSt5c1I0aFdCeVFTa3lKRkFrbEYxZVpMTyt0cUtpYW4r?=
+ =?iso-2022-jp?B?bmlIZHEwWHhzMEpGaFVMMWJvVnFtazU2TmNOakk5c21UVFp2QmxRVUFI?=
+ =?iso-2022-jp?B?MW1xRlk3OFdhY0VHMUdvRDVrYlBEczJqdG1mdUlMbXAzOUJKM3ZhVTQ3?=
+ =?iso-2022-jp?B?UFpQRXc3eExnWnQ5MkxoVVN0ZTR4L3V3TXRoSmxoY1dTd1k0K0JnemlT?=
+ =?iso-2022-jp?B?ZlpJWUY3cUFKRDZnNVpzU2FqYS9yZ2xZVXZoMVhlRkRFcDl2LzJUcHcx?=
+ =?iso-2022-jp?B?eGRTamtPQVZvY1ViOEQvdE9ORmRrTUc4VVd6VzN2b0hpSlpwNlo1V3Js?=
+ =?iso-2022-jp?B?aTVCVU5zMU5kUGRCQjdLSXh6VDBENjVQZXJySHBpd0FGUmpVc0tSQk51?=
+ =?iso-2022-jp?B?NGR6dEZIL29VanB4N0Y2eHRJVDJFM0VZVjJBMmkvRHovZk9PemREMzdX?=
+ =?iso-2022-jp?B?eDlmM1ZyU3BmbkVaK0xRYjJTdHNYSlpPN1E2NlRLWEtiUXhtVzVheDln?=
+ =?iso-2022-jp?B?SEpXZEhLRkJieFAxQk1TeHVqUjcvTGh1MUhURFRiV2dwTU5CY1FuR3E5?=
+ =?iso-2022-jp?B?M3NOUDdHZzkrRHl2R1pCTUgxWVdGYzBxRnl0UlQyaGJNL3dDY2pBOWgw?=
+ =?iso-2022-jp?B?U0tEak4wNjdYdVVGVzl0YTVUTDBFamQvdnBQckp1a2krTStxQ0lyajNS?=
+ =?iso-2022-jp?B?Y0RWOXN3QUpsSUdXMlFZZStIUVl5OG1uSkduM2pDWUVFbnJuNlM1OVV1?=
+ =?iso-2022-jp?B?emZkSEZPZ3FJYW1pNnN3K1RGb0x0WEJUQUREQSswSklQa2lrY2NyMllH?=
+ =?iso-2022-jp?B?THQvOVQyRDNRZUdrZkVmR0k1ZVpQWXVHTHhEazlxbTVhL1c1MUFmT2Zv?=
+ =?iso-2022-jp?B?M2xCZkRROWk4cS91eUNhM2I0ZzIrSzdKNDBqS3hlZERnVzd4Q3QrQmly?=
+ =?iso-2022-jp?B?SmVoRXo2VVRkMEg2ajJuM3l2M2ZudlRaOTVsQnlEUE5BbzZicDZ3RlI1?=
+ =?iso-2022-jp?B?ZUhxMHNWQUZ3MXJrV1Fnek1YYjNuUWpjR2VaajBjUDM0Q1MrT3pnckI1?=
+ =?iso-2022-jp?B?Q1dXRm04UG5vUWxCaEJQcUJiM2dkZnUzSEVjSlR6WEJVb0E2RGxCU3gz?=
+ =?iso-2022-jp?B?aUY4SXBESjNJWlp5bXFuTnVMSTQzU21NcHV2enNEckJwL1ZMU2M5TXlu?=
+ =?iso-2022-jp?B?SEk2YXVHWlZUa0JuQitiRm1ueWd4dlI0Q3NGVDlCZ25UQ1RIZ0NscUl2?=
+ =?iso-2022-jp?B?Yk9uZEE3OHdCa1ppRjlMUGNJME5ZcS9ic3lKUG5kdWFraGE0VlRhSmd0?=
+ =?iso-2022-jp?B?eDJnTWVvUHY5aDlBVGhWWXN4azQvSVpPempEa1pOL3ZVMG13bW02ZHhG?=
+ =?iso-2022-jp?B?ZzZsUT09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZPR01MB8798.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021)(1580799027);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-2022-jp?B?VnRWbGV6WWNHN0RVNFBRaE9WYkZRK1lhcm9udEdZVFVjcmxQNmpVYVpl?=
+ =?iso-2022-jp?B?RFlTT2NlMUxaRnhCWEwwTmRqTjY2SUtMNHhQWjRyYkFTZ0pUQVBBSmhy?=
+ =?iso-2022-jp?B?NGZtQlZVSjB4SUxBVVJiTHA2VHA5SmZJVG1UUDkwZkJSaTcrZW9vbURr?=
+ =?iso-2022-jp?B?MVhWUEsxb1pDQWVLYXU2RDVxVDRGQjVGU0ZYcXgvRXdUbnNWNjl2alMy?=
+ =?iso-2022-jp?B?cVhnL0VUNkV0TlBtZnVnT05YdVF4SzgyUlZJNml4R2YrOVNzcUpMWmE5?=
+ =?iso-2022-jp?B?NVljTEpQUUdEOEJ5NU5hWFpZMW1aL09MZkhxTkN6WGNNaDBHSWI1UTBS?=
+ =?iso-2022-jp?B?YTNwMW01M0J1UHdNei9SeFBQVWF3cUt1dXpoazZwSkV4dkNNMXZ0Q3I0?=
+ =?iso-2022-jp?B?VktuTDh4VUl1SjlUTjFiQ3ZLNkJ5RCtKM2R5NVJickk1cGNmdVdxWXNJ?=
+ =?iso-2022-jp?B?Z21sWTFvODk3MXpBNWJMR254eDlCNFFEbjlvZXowcUEzZjVPelZjZzl3?=
+ =?iso-2022-jp?B?TUtoeDBLS0xTamFsVFQ5ektRTDNvYkVtOFA0eXJhVW1kYjN5SjZ2UmFt?=
+ =?iso-2022-jp?B?M0RDb3ptSFBMaWROK3gvazg0NWs2Z1lPZUlMc2ZOMTMxY1dTNjJuOGEw?=
+ =?iso-2022-jp?B?U09FNWYzUlRwRXV4eFhsMlZCZHMrMWl2MWZENUZ4VE8xd29laWpkRGRD?=
+ =?iso-2022-jp?B?SWVuY0xRZ0RqRXVXVkE2Qys0a2hRazRYbWp0R0dJaUJ3OTkyeGxvbkIy?=
+ =?iso-2022-jp?B?T050K1pTdzIyaTZteFBPUjB4eGN4b1g0L0hFU1VEa05kNUVCTFZoMHJ1?=
+ =?iso-2022-jp?B?NzcvR3VnT3dqeU9qeVkxNDloZm9wK1g2dUw2ZkRSK09Dc1JsaHIwQ0k3?=
+ =?iso-2022-jp?B?a0pIdFhyM1A2U3pQRXZnbGdyVElXTEFaMVVkZWJFOHEvOWQyWkN5VEZj?=
+ =?iso-2022-jp?B?SXU3YlhvUVN1TkdjT0I3bjJmZmdyUEovL2plMkFOZWtNcjNPRS9zdjFK?=
+ =?iso-2022-jp?B?QjlTWDNUbnNkZWhOYjMwUDNNc2NyMll4U25ZN0hkOGFFajU2Ulp3c0xY?=
+ =?iso-2022-jp?B?YVdXakpPUFNudm4zandEK3pLMUkxTWpxR2dGcHFiNVo0ajl6aFpxUzBi?=
+ =?iso-2022-jp?B?OHFPRTVjQStsaEpZY0NyYm5Xbk9nRzFHM1FEMVF3bklxREFXUHltcElS?=
+ =?iso-2022-jp?B?eDNNUHNaTDRoeHJNdVNLQ244NkgzcWx3YWR2YW04cE1GZnAvNUllTXZp?=
+ =?iso-2022-jp?B?ZURpRnBaY0NkaEFCOE92V0NHZCtJUmI5RTNjU0JNeWxndlRmZ3daK0hU?=
+ =?iso-2022-jp?B?bFdlbTRFZlpyRUhlQW14Z0N4eDFqNGNsWDh4OW5HSm9vSDUxai9FWkVZ?=
+ =?iso-2022-jp?B?VU5scmZjbFhObzFzRll6RGZEbHR1QUR6bld4RTRCbWFWYUpUQ0ZBT1lj?=
+ =?iso-2022-jp?B?KzNwczA3bmFyenNnZUl0Z1lHTS80MzJKTlMydm9mWWJhYUdEQnIrbHdw?=
+ =?iso-2022-jp?B?azRvQlV3bi9CVlF3WFdJYlN2VDU3ZE5FNWFkcTJkakNDcFdYaGc1ZldV?=
+ =?iso-2022-jp?B?Y1l1MWxlc1pueGJGK2c0eFRYcFdlZ1ltc1NIT3JQNyt5ZXpHRm5xMmt5?=
+ =?iso-2022-jp?B?MEhReG81QkhnYTVtRk56MlIwOXJZSUZiNWhwZHJvMHNFa0thMmRTY1hI?=
+ =?iso-2022-jp?B?V2NjcTBDVXlSR2V5NEVNdzNOY2Fqa0hrTGtsNURZOGJXMkRQeHRVU056?=
+ =?iso-2022-jp?B?d1JwVVFlR0FaSmpEUVcvL3RyS3NhUXJGYzF0cXl3NkQxeUV3NUJ2VGJU?=
+ =?iso-2022-jp?B?b00xTTVnM3h3S0paY0NBb2FMUE9RelhUaWFmL3ZWaHp2aW5JZGo3Q1FW?=
+ =?iso-2022-jp?B?cDJxTTk0OTljdkV3azlBcVRKZE9oRUd3QVNnbGV4SDdRdHNSWEJXQ2Rn?=
+ =?iso-2022-jp?B?SWdvdnVadHhQaVZxTm00MUhzN1N3OERkdWxhNEF2WW0rRi9uVWxTcVVE?=
+ =?iso-2022-jp?B?M1UvZTBKRmpYZWRzbDkwZk1yalZzQ2dETmRiVHc2UWtReHlCdWxtZ2Zq?=
+ =?iso-2022-jp?B?MGI5eXkwVE03VUs3cGEvMmUvclZFbzZYWVZqaHQyQ2pMYlIxSTBHcGEw?=
+ =?iso-2022-jp?B?UU8vT0JGVk5STVhwUnNKU0k0aFphRzRQZmZpQUI3NDNYQXRiSzlGRlBX?=
+ =?iso-2022-jp?B?Rk1zMjlQSjAyZm1NTEZLclFFVlpiakhBWVlMUHREMC9qUnEwblRKaEVz?=
+ =?iso-2022-jp?B?aVZpZ1Jpc3ZMdkZOem9UblI1Z0twMytONmVsWExKeTVWMS9tS1hsUUdJ?=
+ =?iso-2022-jp?B?NWY1T0dsRVp6UFEzNmZYcTM2K3VlL2xoYVE9PQ==?=
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20251114-thermal-device-v1-3-d8b442aae38b@gmx.de>
-References: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
-In-Reply-To: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Lucas Stach <l.stach@pengutronix.de>, 
- Russell King <linux+etnaviv@armlinux.org.uk>, 
- Christian Gmeiner <christian.gmeiner@gmail.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Amit Daniel Kachhap <amit.kachhap@gmail.com>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Len Brown <lenb@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, 
- Petr Machata <petrm@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jeff Johnson <jjohnson@kernel.org>, 
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Peter Kaestle <peter@piie.net>, Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Potnuri Bharat Teja <bharat@chelsio.com>, 
- Sebastian Reichel <sre@kernel.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Support Opensource <support.opensource@diasemi.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
- linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
- ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
- linux-pci@vger.kernel.org, imx@lists.linux.dev, 
- linux-renesas-soc@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Provags-ID: V03:K1:nPhVaIWI4Qq4tuVB45WFPPKBJ/CGwZWVPg6Gt8tmT9A+FbWxAtE
- Ga2PcMjf7l6TmkQjRQ3DFYFE90GnC+dErsnnwPmuKj78/C4sD9b5HrIRgH196Q1c0m0ofUi
- EBPGWPUk4nGDUtf4BPr+Xv0RNEWUzTg2mVcokune5EpyI2qHlLVTUkezu/BzR1w7FmlPmmH
- fMjnazZjMw5aYR76qC7wg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ptx3nKX2J4Y=;2pTj6jvcQKwkyuEufzs5HT6bowS
- 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
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB8798.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fd4c420-7721-44a4-9d0c-08de23377c7a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2025 04:37:15.1461
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xr8Aw20n3e0SQUCPy6nRzCtQUYfA1E93TO2cle2zEWIreXpwPHbt9yIhikg55i88D9AmsZmhlV9L56L1RoPWCq0GbB5XKWBbXhWc6kF5rXg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB6935
 
-The thermal core will soon automatically create sysfs links between
-the cooling device and its parent device. Stop manually creating
-the "device" sysfs link between the cooling device and the parent
-device to avoid a name collision. The "thermal_cooling" sysfs link
-however stays for backwards compatibility, as it does not suffer
-from a name collision.
+> From: James Morse <james.morse@arm.com>
+>=20
+> Once all the MSC have been probed, the system wide usable number of
+> PARTID is known and the configuration arrays can be allocated.
+>=20
+> After this point, checking all the MSC have been probed is pointless, and=
+ the
+> cpuhp callbacks should restore the configuration, instead of just resetti=
+ng the
+> MSC.
+>=20
+> Add a static key to enable this behaviour. This will also allow MPAM to b=
+e
+> disabled in response to an error, and the architecture code to enable/dis=
+able
+> the context switch of the MPAM system registers.
+>=20
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Peter Newman <peternewman@google.com>
+> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+> ---
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/acpi/processor_thermal.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
-
-diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_the=
-rmal.c
-index c7b1dc5687ec..1ff10321eac5 100644
-=2D-- a/drivers/acpi/processor_thermal.c
-+++ b/drivers/acpi/processor_thermal.c
-@@ -323,6 +323,7 @@ int acpi_processor_thermal_init(struct acpi_processor =
-*pr,
- 	dev_dbg(&device->dev, "registered as cooling_device%d\n",
- 		pr->cdev->id);
-=20
-+	/* For backwards compatibility */
- 	result =3D sysfs_create_link(&device->dev.kobj,
- 				   &pr->cdev->device.kobj,
- 				   "thermal_cooling");
-@@ -332,19 +333,8 @@ int acpi_processor_thermal_init(struct acpi_processor=
- *pr,
- 		goto err_thermal_unregister;
- 	}
-=20
--	result =3D sysfs_create_link(&pr->cdev->device.kobj,
--				   &device->dev.kobj,
--				   "device");
--	if (result) {
--		dev_err(&pr->cdev->device,
--			"Failed to create sysfs link 'device'\n");
--		goto err_remove_sysfs_thermal;
--	}
--
- 	return 0;
-=20
--err_remove_sysfs_thermal:
--	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
- err_thermal_unregister:
- 	thermal_cooling_device_unregister(pr->cdev);
-=20
-@@ -356,7 +346,6 @@ void acpi_processor_thermal_exit(struct acpi_processor=
- *pr,
- {
- 	if (pr->cdev) {
- 		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
--		sysfs_remove_link(&pr->cdev->device.kobj, "device");
- 		thermal_cooling_device_unregister(pr->cdev);
- 		pr->cdev =3D NULL;
- 	}
-
-=2D-=20
-2.39.5
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 
 
