@@ -1,104 +1,163 @@
-Return-Path: <linux-acpi+bounces-18905-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18906-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993CDC5C9A5
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 11:34:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD38C5D0A9
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 13:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41CE03AEFE4
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 10:33:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B7F3AFFDD
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 12:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7866A31194A;
-	Fri, 14 Nov 2025 10:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD105313E11;
+	Fri, 14 Nov 2025 12:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFCyGJ9I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E5C2C0F71;
-	Fri, 14 Nov 2025 10:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EA131352F
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Nov 2025 12:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763116401; cv=none; b=R6ct4Af2srqoGy32wHysusjOfJeFHOLlgJfVw1UhgxWNADk7o3goPozCm/g0B5kT30mQ55pcw/KWP7OWh/Er66zGnhU3ZVigcG8joR5P+8FAq9/yrHUsqHjlIMI23g6MV4CfxIndvZTUBBZ5nloBl94gRuqFEp+Ceu5USkJLD3o=
+	t=1763122405; cv=none; b=B6VXhZMujD667c1v6ARo5FFe04a0Bh/93Ki0/A6ubLIqkH5yMFbb237dv4GNCsGaCMwu/YqOXEBT9LKXvqrSdfnnK5/9jlzGbHxl+RjEaOyg/AyLQrUw5FJn89BnFtINW0M+BQhdo1WblVFJAykcxXBHXmC9miG7prDDMAltXpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763116401; c=relaxed/simple;
-	bh=3wL5EsjnQnxrKxwBjSep6FZUoReVIuDKn8e8RfWg8Q0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KshVW2QZJ/IAsJZnv591TOnS+B9zswsKCGYfsZKeL2GQZ2gD35ImUST+33ULIsqjWaIV8Zn829YHRintMxcTt38BOj2d5jV5KW24NQxYqnByhQuBsUNKERUrZeTkIcQ4Ab59yAHC2VVjwbjbfA+yVaXbqaOWp9muUgH7vVVBpRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EA821063;
-	Fri, 14 Nov 2025 02:33:10 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B28953F5A1;
-	Fri, 14 Nov 2025 02:33:13 -0800 (PST)
-Message-ID: <e4521b04-6c3c-418b-8cee-6be43d5ef17f@arm.com>
-Date: Fri, 14 Nov 2025 10:33:12 +0000
+	s=arc-20240116; t=1763122405; c=relaxed/simple;
+	bh=5I0F7Lk270HlfQS3v6Sw31jwqLfCir/VQOrCBc5zdi4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jih95ATlnCymO9qXM3prkxiO6hm3x2o5I44SCt+eG8ZUEM0yFjgYlZRYFPnM+xQLwNMI1d6zqbDE8T3WQXm403rgNWNr43S6nFAuiCYoGzYw0e/A8UFwj2VcWlcaHwzvtbO/M9YkPrfkvm/ygB/v8r4pvJN6H/ZppA3VWwCPrDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFCyGJ9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C4FC16AAE
+	for <linux-acpi@vger.kernel.org>; Fri, 14 Nov 2025 12:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763122405;
+	bh=5I0F7Lk270HlfQS3v6Sw31jwqLfCir/VQOrCBc5zdi4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vFCyGJ9IK/JNHwvQFMCw/BHNieBWTmjv3dMBHLRUH1QVfPIBEzFEMhp5fNPszRCwG
+	 IbOoJOmHcisOHy9lMOxQYQblP+DEh4AMnkzfZwncdrkbiyCN70ch4rBq0E1amHMSVI
+	 NwDzxls2anQR7oz9FHl1gCC2WMkkz5URK0GYhUs+4grlDF5lADeLEb20ht3BCP6vY0
+	 BbZxQkmX2t0fOJcwHav8XJpFXUW57J007LRZA6wSO7C52lX+Zj9bCXKbp5vIqwCjUX
+	 c++cAw3Cn5mdagh04K1BxhoAbdHiKEpEnupju0k+iLBLJZhOlkBF4/w9gQ2vF7fdGX
+	 lFSOt4sDo9xQg==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3e2f4c5b26dso445922fac.0
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Nov 2025 04:13:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVRj6UFbl8M3KYVP3uqUCPCmKOV4BXD1mTB0Il5GNWO4uSu2aqNZFaZ4UZel78QFtT/HXS1RSsH4K+Q@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM1L+6p3+BmuMS4nWar1jJOhIerUhNngDGtJ9Hb6Z0rLntvTJm
+	xnAUM+B8EkHJcDXFOGkRZBUkCicuXN5cPKeytAXE6eP9FGFpMqsheKRQOH2UPBNDUXlYQBg8JMY
+	Zm+WrwHYxUt1pZDPZ2558apr8L5nm8XI=
+X-Google-Smtp-Source: AGHT+IGrNkWHSVx3CmYADKr0S6TGq/XxOF6zay1uOoUOn8a60tpM1BgphUydUyCNyc9Vh0GmlV+21RabCzXA2tdcTXs=
+X-Received: by 2002:a05:6870:30f:b0:375:db59:20e4 with SMTP id
+ 586e51a60fabf-3e868ef8743mr1267901fac.13.1763122404195; Fri, 14 Nov 2025
+ 04:13:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/33] arm_mpam: Allow configuration to be applied and
- restored during cpu online
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: james.morse@arm.com, amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
- guohanjun@huawei.com, jeremy.linton@arm.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
-References: <20251107123450.664001-1-ben.horgan@arm.com>
- <20251107123450.664001-24-ben.horgan@arm.com>
- <20251110172724.00005675@huawei.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20251110172724.00005675@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
+In-Reply-To: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 14 Nov 2025 13:13:12 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gZ7+i+irhaq2jQpTt++HuVRjqz8==Ov9VmQ9Q1J1TM0w@mail.gmail.com>
+X-Gm-Features: AWmQ_bm6idj_L4n1xVkRGWkVqmFdJz-PXS5UU4gyN5tQNhsjMISGTiEJyqtTR8w
+Message-ID: <CAJZ5v0gZ7+i+irhaq2jQpTt++HuVRjqz8==Ov9VmQ9Q1J1TM0w@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/8] thermal: core: Allow setting the parent device of
+ thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Russell King <linux+etnaviv@armlinux.org.uk>, 
+	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Amit Daniel Kachhap <amit.kachhap@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Len Brown <lenb@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Peter Kaestle <peter@piie.net>, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Potnuri Bharat Teja <bharat@chelsio.com>, Sebastian Reichel <sre@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Support Opensource <support.opensource@diasemi.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jonathan,
+On Fri, Nov 14, 2025 at 4:24=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Drivers registering thermal zone/cooling devices are currently unable
+> to tell the thermal core what parent device the new thermal zone/
+> cooling device should have, potentially causing issues with suspend
+> ordering
 
-On 11/10/25 17:27, Jonathan Cameron wrote:
-> On Fri, 7 Nov 2025 12:34:40 +0000
-> Ben Horgan <ben.horgan@arm.com> wrote:
-> 
->> From: James Morse <james.morse@arm.com>
->>
->> When CPUs come online the MSC's original configuration should be restored.
->>
->> Add struct mpam_config to hold the configuration. This has a bitmap of
->> features that were modified. Once the maximum partid is known, allocate
-> 
-> I'm not following 'were modified'.  When?  Sometime in the past?
-> Perhaps "features that have been modified when XXX happens" or
+Do you have any examples of this?
 
-The intent of the features bitmp is to only update the configuration in
-hardware for the feautures that require it. On reset, this is all
-features, but for a user configuration change this is just the
-difference from what was previously set.
+> and making it impossible for user space appications to
+> associate a given thermal zone device with its parent device.
+>
+> This patch series aims to fix this issue by extending the functions
+> used to register thermal zone/cooling devices to also accept a parent
+> device pointer. The first six patches convert all functions used for
+> registering cooling devices, while the functions used for registering
+> thermal zone devices are converted by the remaining two patches.
+>
+> I tested this series on various devices containing (among others):
+> - ACPI thermal zones
+> - ACPI processor devices
+> - PCIe cooling devices
+> - Intel Wifi card
+> - Intel powerclamp
+> - Intel TCC cooling
+>
+> I also compile-tested the remaining affected drivers, however i would
+> still be happy if the relevant maintainers (especially those of the
+> mellanox ethernet switch driver) could take a quick glance at the
+> code and verify that i am using the correct device as the parent
+> device.
+>
+> This work is also necessary for extending the ACPI thermal zone driver
+> to support the _TZD ACPI object in the future.
 
-However, I don't think the difference part is currently working
-correctly; the bitmap always has all the bits set and so any update
-configures everything. I'll look into this.
+Can you please elaborate a bit here?
 
-> 
-> Having read the code I think this is something like "are modified as configuration
-> is read".
-> 
->> a configuration array for each component, and reprogram each RIS
->> configuration from this.
-Thanks,
+_TZD is a list of devices that belong to the given thermal zone, so
+how is it connected to the thermal zone parent?
 
-Ben
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+> Armin Wolf (8):
+>       thermal: core: Allow setting the parent device of cooling devices
+>       thermal: core: Set parent device in thermal_of_cooling_device_regis=
+ter()
+>       ACPI: processor: Stop creating "device" sysfs link
+>       ACPI: fan: Stop creating "device" sysfs link
+>       ACPI: video: Stop creating "device" sysfs link
+>       thermal: core: Set parent device in thermal_cooling_device_register=
+()
+>       ACPI: thermal: Stop creating "device" sysfs link
+>       thermal: core: Allow setting the parent device of thermal zone devi=
+ces
 
+I can only see the first three patches in the series ATM as per
+
+https://lore.kernel.org/linux-pm/20251114-thermal-device-v1-0-d8b442aae38b@=
+gmx.de/T/#r605b23f2e27e751d8406e7949dad6f5b5b112067
 
