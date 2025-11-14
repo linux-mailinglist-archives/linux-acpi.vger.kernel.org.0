@@ -1,43 +1,43 @@
-Return-Path: <linux-acpi+bounces-18914-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18915-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC62C5ECA2
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 19:14:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4C7C5EE34
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 19:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7BF274E5519
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 18:03:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CF3735433F
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 18:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40D52DA755;
-	Fri, 14 Nov 2025 18:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA07C34844B;
+	Fri, 14 Nov 2025 18:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UmIXN1Id"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BW7GYuWE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010004.outbound.protection.outlook.com [52.101.201.4])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010024.outbound.protection.outlook.com [52.101.56.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB872D8367;
-	Fri, 14 Nov 2025 18:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8F1343D8A;
+	Fri, 14 Nov 2025 18:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763143275; cv=fail; b=t90F7nPxn8m6F8PswGenDgdmpnXNaxBpCsx9UoM8PTp0m7CE771puvYnbUmXRmg3ND4bo4wqESDpp+ts7hBNVDECKAqZz+skpaqZoom5jy7CYkF6R+MYZy0hgZHgQCy5evlOhleHvZInS7ln/EYUCjo3MqDxrqH6ZVzJbFrEpkg=
+	t=1763144841; cv=fail; b=B9PMV9T/xKka0Z1c6YTVv3huiOxZb9Ho+G//Q/yDrH0OmLXicrHFTIXkTXyKoNKDjwtVFN5MRLmaeRrNW8gn7huEuuNHqMNafCBWyYNBos/OZbbEkkXD3wQRR2HzWFFaeBru3N2iT8wpxYIOmzIJ9Q+WoHeYl+mUyJyiVF9wYuA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763143275; c=relaxed/simple;
-	bh=dtth237SYBtmUoIOqVIaWBRtIhZ3TLKL5zBUYaI7H2Y=;
+	s=arc-20240116; t=1763144841; c=relaxed/simple;
+	bh=H1XJytw1gnKE8eGF0jPt9aJBxct3h5dupImCZj7r1Wg=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PlFOiOQDGKfSkbFsAefIYsuI1xqN485I2nyGHU25+GM/SiEDgYty5Y/x1vGessAiH2ikrxTcbJpE9EPojbo/llPDYt/Ss/L7PolaV9VXxApOk88gEnyxfou+gtzhkXF2zsPn8dGv0N6yo7URq4lysYv3K94Iwc19VQiGrFBuR3A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UmIXN1Id; arc=fail smtp.client-ip=52.101.201.4
+	 Content-Type:Content-Disposition:In-Reply-To; b=mZK0jiggBMgoXYmzFcCgsh5FwCLiqkq1GHFqT1UkIeapHnbeXdbHAKR9X1z818LvHdRZlRpVjL1zda/m8KYINndqRPaIjsTR5jft/+UnSZhT57+UhKiOV7jts1J5PRDC5rcwQONGubvYiPZ2Y2MF5Aeqhaxd+mC82U7CCw8qOlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BW7GYuWE; arc=fail smtp.client-ip=52.101.56.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g5Vg0WOlLO9QnVvpNoVyzBb5Q2LZMhi1DZBd/dmCysjgW+wjXPA87RjwCXPC4bd693t1CpiVaqfq+Nd1aIAv+ddfRdX/VXdbSwo5tIux3MJ4tl766XKqrVbhVUKEWlv75yXcLS0N1QP5qwjt4qnlYCFLBLzd/YbOGUcw41YbM9GMPcsl/QBF1YJxEuiWhpkcQFPAN12DEQiHf8qn2m40Zpdhj0sg3FsUOZu0kRQ5SCcIp7EuH0lk4X9jLLBYsnIdgcUqI3xWcZiH/epNe2rMNYq2i5U4w+80lxwDwpLryCRVBCy+eSpqe5whunGPOVOUGzddLTB4ClKRej3W2zixFA==
+ b=VrHv2QZNPmVEYGhc3hxI8eQpkgiq5pT4h/CEIkgu/oPcyPi5F0aAd2FJcsx1ZA7h2ptM3Bq4TfVij96stuHdLBRjhBuFO/6rb6bCN7JtoyyV4VGLiHjkXpS0+L4A1dKUphtmfZMjWaZH37lHHG/ton1BIDBYgaW5l2THngyLKTJR+d5bYfHCAAXCPp4faqqsG4uydG69Gi9yJ+al1/pzYff638aGvbMhBM9QMiB7N4CZ4Ec2qSQmBpU0JiFUlQa38MD9HhD/x3yI7fPWpcMLT0LBl/mFysuRtBOklZ5YVkZjMLVjJdMtn2/zkl3F3+LB7fZ+HrcroWuvVkEv8gsWyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fei2MTGWh2LdRoR3ef1akYdXBQVwcktqvwyxc7Hwx4s=;
- b=aMeF44ozu1YYvO2gsRPmVtmTkOpEwie8nJQthCAowLBsvT/m2+DeHFIqJYgIpVfgUqK8Z6VUxjPhA7xDuNR2/bjvg++asfjIZlCQqBiQJYsKTiuLysNdiTK5BEp6/rdVtCaBzy3D72Psg+0r31xMESMayHo5J6ppwTXoQQfv0sU3Am0sJWQSMsneeTaOjEhH85EnomonEWeexm8ztqd/G/Ah7wKHMapIwIvs0ZOxxQV2lo6YtDKNprZZGL7ANYSSyirkNdZTsL7ouF3z3NNoU+sYsiWsJuksd6B4rkusJYA1BXUsuN3PSyTZ1ctUbGSMnYii+w+5Q7mkvNpcO6MY4A==
+ bh=ppuqIv4DsEDyTPz5netDrHF9wd1yn/r5ilOVoAffbdg=;
+ b=KfueVNgpr1cScF0LbgrL8wmEoFvfCIt5zTeHnJZLT8IAy/Sb/wT0OMG2nDcyneicRg7qghQlYph7DlDCqG718J+S+BXq4j+xaTlDv/UVd79gYnLrV24CufYFM94d0lxHgLwN3WgqAHPkZZt0us6o0Q7Zt01OVf6g+h4d3e3bXdqI79QKdUlWGYKNcAjmYcKraCiUHV7q7LD8a1/iQ4QBCfu8IP1p0M+ya4QFyOrFJJzjjrjg5ets6MXe8pfy61kC/HehzBo4+oBN0bTnypCGZwSXJwjDrxqzdN2XXrbV374CglIKkB3zpZgJLUo+S+2ZWa+3z3YbjssXv0pMBnfHqQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -45,18 +45,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fei2MTGWh2LdRoR3ef1akYdXBQVwcktqvwyxc7Hwx4s=;
- b=UmIXN1Idh+MN1dHulHjI7RvMaAfEK500+LPrU+88FeSI1JSoamIo/7mD+o3fRjAAnMb1Vqvm6IGDnn5eY/mGsm9A6q40FgAMs88v4+MyNTX7Yw7o0R6LJK2lF0B6++0HBwZVHCN8pxO/EBgX6+lcd1ux/KbidigQso/AgM7ri5nIMMuDNdxVHJEV+01LilNOjkbvnp88hc8g1us3Rb9YQ2dw4EmcC9lNE2FEkl3GKSvRiQjNa8NnCtXdQ+vJbhtaQn/bTRt/yDO5SUp1Wu7cRknpfk7AoXISytMCnCSF7/4aK9nuCn7ZUzGE/QA44v2MGd4WNCiT2eFCfGKde9HE2w==
-Received: from SA9PR13CA0072.namprd13.prod.outlook.com (2603:10b6:806:23::17)
- by MW3PR12MB4412.namprd12.prod.outlook.com (2603:10b6:303:58::10) with
+ bh=ppuqIv4DsEDyTPz5netDrHF9wd1yn/r5ilOVoAffbdg=;
+ b=BW7GYuWEj8jUmTTdBRjnFJR2pzWr7SgjZ7idYv9GMLMvAi+UgTROEuKMkkTfASziGBrSjJpfqKmA91ODw/fnilYCQpzfma3H07fEstt1L8N9M3COYTEY83e6Y8uQewt4jLK6PBjYUABblyhUrpMg79iyId+J3Te2PaKA2fvzW5s9t+RYPWqA8gRxKQ0HIsn8gh8K5VAGxyeadinyRzigkBaWDPjotcvgQX/h4PcMKO9B4aP/kLk8GDejczd6ubjjVDRYdUv8/jND1IPJuM5i4YYtvUaGqmns4VsBYSXHLfwnq1h8WjryhX1HQPvGr3RnaPudJpaq9Kgi71pn2KH6Vg==
+Received: from CH5P221CA0006.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::19)
+ by CH2PR12MB4117.namprd12.prod.outlook.com (2603:10b6:610:ae::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Fri, 14 Nov
- 2025 18:01:06 +0000
-Received: from SA2PEPF00001507.namprd04.prod.outlook.com
- (2603:10b6:806:23:cafe::46) by SA9PR13CA0072.outlook.office365.com
- (2603:10b6:806:23::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.6 via Frontend Transport; Fri,
- 14 Nov 2025 18:01:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 18:27:14 +0000
+Received: from CH2PEPF0000009B.namprd02.prod.outlook.com
+ (2603:10b6:610:1f2:cafe::5a) by CH5P221CA0006.outlook.office365.com
+ (2603:10b6:610:1f2::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.18 via Frontend Transport; Fri,
+ 14 Nov 2025 18:27:10 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -64,22 +64,22 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ CH2PEPF0000009B.mail.protection.outlook.com (10.167.244.23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Fri, 14 Nov 2025 18:01:05 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ 15.20.9320.13 via Frontend Transport; Fri, 14 Nov 2025 18:27:14 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 14 Nov
- 2025 10:00:42 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 10:26:55 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 14 Nov
- 2025 10:00:41 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.10)
+ 2025 10:26:54 -0800
+Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.6)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Fri, 14 Nov 2025 10:00:40 -0800
-Date: Fri, 14 Nov 2025 10:00:38 -0800
+ Transport; Fri, 14 Nov 2025 10:26:53 -0800
+Date: Fri, 14 Nov 2025 10:26:52 -0800
 From: Nicolin Chen <nicolinc@nvidia.com>
 To: "Tian, Kevin" <kevin.tian@intel.com>
 CC: "joro@8bytes.org" <joro@8bytes.org>, "afael@kernel.org"
@@ -98,12 +98,12 @@ CC: "joro@8bytes.org" <joro@8bytes.org>, "afael@kernel.org"
 	<pjaroszynski@nvidia.com>, "Sethi, Vikram" <vsethi@nvidia.com>,
 	"helgaas@kernel.org" <helgaas@kernel.org>, "etzhao1900@gmail.com"
 	<etzhao1900@gmail.com>
-Subject: Re: [PATCH v5 5/5] pci: Suspend iommu function prior to resetting a
- device
-Message-ID: <aRduRi8zBHdUe4KO@Asurada-Nvidia>
+Subject: Re: [PATCH v5 4/5] iommu: Introduce iommu_dev_reset_prepare() and
+ iommu_dev_reset_done()
+Message-ID: <aRd0bIFlbRgIzGKs@Asurada-Nvidia>
 References: <cover.1762835355.git.nicolinc@nvidia.com>
- <a166b07a254d3becfcb0f86e4911af556acbe2a9.1762835355.git.nicolinc@nvidia.com>
- <BN9PR11MB52762516D6259BBD8C3740518CCAA@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <28af027371a981a2b4154633e12cdb1e5a11da4a.1762835355.git.nicolinc@nvidia.com>
+ <BN9PR11MB527683978D304128441125C68CCAA@BN9PR11MB5276.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -112,119 +112,183 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB52762516D6259BBD8C3740518CCAA@BN9PR11MB5276.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB527683978D304128441125C68CCAA@BN9PR11MB5276.namprd11.prod.outlook.com>
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|MW3PR12MB4412:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79b01a55-7513-4668-6b8b-08de23a7c85b
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009B:EE_|CH2PR12MB4117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 075dd32c-8e58-4923-ebfc-08de23ab6f63
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026;
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GC06iAck6zBl1Sz+YupLcRx2MHbSkkaxyu9R3/ugVzyDesKYrQfjLmYiUdcE?=
- =?us-ascii?Q?lhydIqSkPT6k5iRjsw8+gXbjasOUqkzpNterO9C88gBTbsOWv0JxIj4/z+qM?=
- =?us-ascii?Q?1UnPru33+nbO8uc6EaxsQNsIVvUP9c78J2IrMMVORQQhjVQmzqtPm6fcyzWZ?=
- =?us-ascii?Q?zksGe1dZEmojjUEWIlXD5gl5rP1S9aliKYiz7qmJqk+jMr0PcWpa4fxL2BEY?=
- =?us-ascii?Q?WZoMuCKncFgEkzMX9b3Pz8Syb2FmRIyvCgBsoJ3YuLvddEYXxtKPJlKK4BYA?=
- =?us-ascii?Q?MAlS1y/QgHOpcrzrfhcYMYlGQbCFM0pB3/2rqmHptsEwqCqYgpbbCC8dT8zb?=
- =?us-ascii?Q?/k0DEwebbjnuw6DPjXZPL+vZN6v6qJfy5/fKho7pWnfNpNu6wCUmBYlzb+vT?=
- =?us-ascii?Q?kzDaez9oVvK1WApjdCEhisNj3fkKcau7pcc5QPnl8DRJZ7SZCkMAnqVYilGX?=
- =?us-ascii?Q?8wPI1oc7Y+VcGl9WHN9SACN0eouAvtWMzG0NhzDdOPH5GQQIRhFMDR7mzXNE?=
- =?us-ascii?Q?QrfzSVpKkjyHwW37oE2HbND2llFFCJ9xI7+JyFRy5s4Ow+6G9cdk62yr42zL?=
- =?us-ascii?Q?B6A81AKApKS9KGLiXMd+Wbk1Z/dbbU6sRFGKvrGupj8WBO2RHegbtIl6825t?=
- =?us-ascii?Q?oCzP2qR92z5x39lQ8101sroCpoimZZTlJEi89rIweHnBMrRm5tXdWGfwmeSd?=
- =?us-ascii?Q?x8GUYYZ2MwRvsWkv1mLoN56YQkIJdZ95WQLz5RmCsnvLCfp+GJJ+a3v7RhbD?=
- =?us-ascii?Q?XMnSPBhyZnvIPS5atVKYvGjhKJbxvVFrwHtl1UiWG6AiwqTmwiqbHz3XM+B0?=
- =?us-ascii?Q?8A25VPdweIkX8qI9OUfrWL1p3E1YRQEfgZF7Kh11VTEsllR1lBkBfgIuZ1rG?=
- =?us-ascii?Q?d6QG827lFpAbai7qU7CbcyvdWeEuu/ypzpfclyudZ83zoBDPyapz+cNmnjqe?=
- =?us-ascii?Q?gFPJKH6vO6ybwCevln175/GoUfriscVW8F9+9Hr7JiE0O6JVWmlG6TlycCru?=
- =?us-ascii?Q?Ne0Xu6uTJv6Jwrml4zQSxSkZsQ0tGJ62peYs9TK8LGV3tqW1tVLFxpvDngNn?=
- =?us-ascii?Q?lHHQE35DpsIC/lGUXPClPhHgTZh95+v+eV4baWQPUCRNJld7TM342BaHJrmP?=
- =?us-ascii?Q?ANJCvGFkXIiYvKmxP1mjFBuO0B21hrNEMVfR0T1wJoTjW8dIF5Xwy9KUg8eG?=
- =?us-ascii?Q?n1zOqQyMV9CKS/WJx5FjrVtxegPFDI0igZZAFx4dHDTDGwjo1trhBPPS6tdU?=
- =?us-ascii?Q?wkx2mFsEnAgMhLPuvRpRtuY+fsKk8uo8lbNWrBS5yTRTbmvjCxZWl9U4jZiU?=
- =?us-ascii?Q?voYOjlhRHYYMJu7B7DbOBg0aU/TXFaf7BwFFj2LcCJBCPZ7uhMQQpC8WXagS?=
- =?us-ascii?Q?uwX+o4HerEo/i+QTYAOk+xqJj/MkAvb2hEKsbWHV3SqRZdWMChwNk4zKcbNV?=
- =?us-ascii?Q?GIoZAsX/5Ue19Ao+21eQCRO5T6bIs1m5mi/qzBkA/bJe7ZoE3MzaGVEiZ4sz?=
- =?us-ascii?Q?ou0p2PJSGc3OL2N+dLmTxqKtoaV+Gh1gct+gLXV4Q2BJmYYiAvFqdzC+vgpx?=
- =?us-ascii?Q?m69wpYNK75zt/K5ZGiw=3D?=
+	=?us-ascii?Q?5SFY8QV9193IyFQB7lRyx0xcbyHO6LyZPKfTly/bhfjA8pkBjiSwLNAxzhX6?=
+ =?us-ascii?Q?EASh8nYX4WUvIanQi9PMqFWftBXP+ceYG+Vt8apFL5PpAULabCbFr13bkr0F?=
+ =?us-ascii?Q?5QtDmebjd9CygipfS7lCDf7KkDtZBntv6ayiduJV1aoSMVKHFlgQGBANjmOb?=
+ =?us-ascii?Q?10szY2nG8ltT1RKFbJ05Ku3+Tlyi/gDGkjDcmdKcR5/FhtxXWZNvIRQd5Lav?=
+ =?us-ascii?Q?htTwRoH+GUEV24cstHPeldw85qNMgXUKTZymVYd3v2cctDsa53YsZFv8x/tc?=
+ =?us-ascii?Q?Ng+Mkncc3g03BbvHB3C7wiydkQBW+ooBLPSC4qt7E9M1MpfKsVb4EKmHElFd?=
+ =?us-ascii?Q?y70n7L4Fd71bCZ/lejMqrVV6gZyb5N4VaUBX1K7afgMw/CV5EdgTKOp/It91?=
+ =?us-ascii?Q?wXdjWfTZCdiZcW8Esw476DT+2bOAdL4QP5PAGvgxXUBazPfXCt6MTvOB2BkJ?=
+ =?us-ascii?Q?+cHZmb2z3YOsmn5MjwpmhYFWZk0pEjARupOPIlhAP2BjworkFZ9qNMSJjQUi?=
+ =?us-ascii?Q?EL3xP2Tft3NDpOfdb7udNV6dSZFrKwHSeVOpRZcC0RQ9gVn+ncFnVK9kPZZY?=
+ =?us-ascii?Q?1GytGot+LBTDD36ERYpYA4LO74mNBq4keM0VY9OHGdtS8i8hjv4TL1Cz0fV7?=
+ =?us-ascii?Q?CTpmkEt8p79lxn4QKh3uvwVsFeOYJy79IeLn28ejBynU4axw8biXgm2bK3KI?=
+ =?us-ascii?Q?ZAdKzxaBy76OhkAC4B31/iulLzpI7EifzFdHX/Gv5DMvSKa7lqbfaWOK17bC?=
+ =?us-ascii?Q?IP4lUYUnsUtfq8mhcTd2A5rOiKczXHZhihhOO5fTilMiZdUJWawsqYZDF6PA?=
+ =?us-ascii?Q?6dKPiOUzXPHzZJqTzaobaW6ktrHfaaHAfcVPixup17vUfRjnj5++CTxC6jtm?=
+ =?us-ascii?Q?8bJJU9lFZPmV77tPSMkbnoauwwCBjQ8G6TN2gkOpEbZYgXiB2666nQ2U7CLb?=
+ =?us-ascii?Q?+EXu03+RX5tF60/EgfMHJUK2OhXTjQAXi/CuBQqoIYrAai0SraLMP9pM/9zl?=
+ =?us-ascii?Q?RaDfpANMVqMcgNZw6VGj+NYRsmi35p0A7kxLlq50OZzKLaPl4FvIxEuJbCp/?=
+ =?us-ascii?Q?x97NQlmMtNMVt+MCBO1x+zGaF+M0JzSCIoyCzSC8Ry3v8R6rYHNzeZIegMOz?=
+ =?us-ascii?Q?DB2tfeNknCcYfLUBA+EuEkHqTzyEmKsfIu3i0n/kFcuqi+O2B3PeUlX+Rnej?=
+ =?us-ascii?Q?unksTwCDzEB16luNiZuc1KlZitgE4CtLq76S2vtWwclCKyEcvIFTPkX9GPCC?=
+ =?us-ascii?Q?qaJwIby8mU34SJnP7Azj24cFIDVPCBgLoqTDi4Uy/VHFeeMKbxpMhofgxDvA?=
+ =?us-ascii?Q?77bKmTJDpdqyRnf/PtpK750dLM2GASsJaTaxJzQ3E2E+hkxDx7QZZ88LKNW5?=
+ =?us-ascii?Q?KPNI5abMctYh+cvO9Fgtycvw5rWwGCk9qYHcmQUnp3fvOYlL71jUpRX/vBJg?=
+ =?us-ascii?Q?DmXcTNd4J45CA1JnPEzLE8zNjG6bqgHcZJsvdRED6+5ooTo7GY6vGDU8F5Et?=
+ =?us-ascii?Q?jYZTgGY5BY1pU2cX0O0mcVKuyw/Ti3Gc7GyQD50NxEwbqKkO2xZ3qJB7+XUJ?=
+ =?us-ascii?Q?RNw6VFqk0vCzjguECx3ejALtHrjt8t4LAvEKyxl5?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 18:01:05.9688
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 18:27:14.6630
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79b01a55-7513-4668-6b8b-08de23a7c85b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 075dd32c-8e58-4923-ebfc-08de23ab6f63
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001507.namprd04.prod.outlook.com
+	CH2PEPF0000009B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4412
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4117
 
-On Fri, Nov 14, 2025 at 09:45:31AM +0000, Tian, Kevin wrote:
+On Fri, Nov 14, 2025 at 09:37:27AM +0000, Tian, Kevin wrote:
 > > From: Nicolin Chen <nicolinc@nvidia.com>
-> > Sent: Tuesday, November 11, 2025 1:13 PM
+> > @@ -2195,6 +2200,12 @@ int iommu_deferred_attach(struct device *dev,
+> > struct iommu_domain *domain)
 > > 
-> > PCIe permits a device to ignore ATS invalidation TLPs, while processing a
-> > reset. This creates a problem visible to the OS where an ATS invalidation
-> > command will time out: e.g. an SVA domain will have no coordination with a
-> > reset event and can racily issue ATS invalidations to a resetting device.
+> >  	guard(mutex)(&dev->iommu_group->mutex);
 > > 
-> > The PCIe spec in sec 10.3.1 IMPLEMENTATION NOTE recommends to disable
-> > and
-> > block ATS before initiating a Function Level Reset. It also mentions that
-> > other reset methods could have the same vulnerability as well.
+> > +	/*
+> > +	 * This is a concurrent attach while a group device is resetting. Reject
+> > +	 * it until iommu_dev_reset_done() attaches the device to group-
+> > >domain.
+> > +	 */
+> > +	if (dev->iommu_group->resetting_domain)
+> > +		return -EBUSY;
+> 
+> It might be worth noting that failing a deferred attach leads to failing
+> the dma map operation. It's different from other explicit attaching paths,
+> but there is nothing more we can do here.
+
+OK.
+	/*
+	 * This is a concurrent attach while a group device is resetting. Reject
+	 * it until iommu_dev_reset_done() attaches the device to group->domain.
+	 *
+	 * Worth noting that this may fail the dma map operation. But there is
+	 * nothing more we can do here.
+	 */
+
+
+> > @@ -2253,6 +2264,16 @@ struct iommu_domain
+> > *iommu_driver_get_domain_for_dev(struct device *dev)
 > > 
-> > Now iommu_dev_reset_prepare/done() helpers are introduced for this
-> > matter.
-> > Use them in all the existing reset functions, which will attach the device
+> >  	lockdep_assert_held(&group->mutex);
+> > 
+> > +	/*
+> > +	 * Driver handles the low-level __iommu_attach_device(), including
+> > the
+> > +	 * one invoked by iommu_dev_reset_done(), in which case the driver
+> > must
+> > +	 * get the resetting_domain over group->domain caching the one
+> > prior to
+> > +	 * iommu_dev_reset_prepare(), so that it wouldn't end up with
+> > attaching
+> > +	 * the device from group->domain (old) to group->domain (new).
+> > +	 */
+> > +	if (group->resetting_domain)
+> > +		return group->resetting_domain;
 > 
-> looks pci_reset_bus_function() was missed?
+> It's a pretty long sentence. Let's break it.
 
-Will add that.
+OK.
+	/*
+	 * Driver handles the low-level __iommu_attach_device(), including the
+	 * one invoked by iommu_dev_reset_done() that reattaches the device to
+	 * the cached group->domain. In this case, the driver must get the old
+	 * domain from group->resetting_domain rather than group->domain. This
+	 * prevents it from reattaching the device from group->domain (old) to
+	 * group->domain (new).
+	 */
 
-> > @@ -971,6 +971,7 @@ void pci_set_acpi_fwnode(struct pci_dev *dev)
-> >  int pci_dev_acpi_reset(struct pci_dev *dev, bool probe)
-> >  {
-> >  	acpi_handle handle = ACPI_HANDLE(&dev->dev);
-> > +	int ret = 0;
+>> +int iommu_dev_reset_prepare(struct device *dev)
+>
+> If this is intended to be used by pci for now, it's clearer to have a 'pci'
+> word in the name. Later when there is a demand calling it from other
+> buses, discussion will catch eyes to ensure no racy of UAF etc.
+
+Well, if we make it exclusive for PCI. Perhaps just move these two
+from pci.c to iommu.c:
+
+int pci_reset_iommu_prepare(struct pci_dev *dev);
+void pci_reset_iommu_done(struct pci_dev *dev);
+
+> > +	/*
+> > +	 * Once the resetting_domain is set, any concurrent attachment to
+> > this
+> > +	 * iommu_group will be rejected, which would break the attach
+> > routines
+> > +	 * of the sibling devices in the same iommu_group. So, skip this case.
+> > +	 */
+> > +	if (dev_is_pci(dev)) {
+> > +		struct group_device *gdev;
+> > +
+> > +		for_each_group_device(group, gdev) {
+> > +			if (gdev->dev != dev)
+> > +				return 0;
+> > +		}
+> > +	}
 > 
-> no need to initialize it. ditto for other reset functions.
-
-Ack.
-
-> > +/*
-> > + * Per PCIe r6.3, sec 10.3.1 IMPLEMENTATION NOTE, software disables ATS
-> > before
-> > + * initiating a reset. Notify the iommu driver that enabled ATS.
-> > + */
-> > +int pci_reset_iommu_prepare(struct pci_dev *dev)
-> > +{
-> > +	if (pci_ats_supported(dev))
-> > +		return iommu_dev_reset_prepare(&dev->dev);
-> > +	return 0;
-> > +}
+> btw what'd be a real impact to reject concurrent attachment for sibling
+> devices? This series already documents the impact in uAPI for the device
+> under attachment, and the userspace already knows the restriction 
+> of devices in the group which must be attached to a same hwpt.
 > 
-> the comment says "driver that enabled ATS", but the code checks
-> whether ATS is supported.
+> Combining those knowledge I don't think there is a problem for 
+> userspace to be aware of that resetting a device in a multi-dev
+> group affects concurrent attachment of sibling devices...
+
+It's following Jason's remarks:
+https://lore.kernel.org/linux-iommu/20250915125357.GH1024672@nvidia.com/
+
+Perhaps we should add that to the uAPI, given the race condition
+that you mentioned below.
+
+> > +	/* Re-attach RID domain back to group->domain */
+> > +	if (group->domain != group->blocking_domain) {
+> > +		WARN_ON(__iommu_attach_device(group->domain, dev,
+> > +					      group->blocking_domain));
+> > +	}
 > 
-> which one is desired?
-
-The comments says "the iommu driver that enabled ATS". It doesn't
-conflict with what the PCI core checks here?
-
-> > +	/* Have to call it after waiting for pending DMA transaction */
-> > +	ret = pci_reset_iommu_prepare(dev);
-> > +	if (ret) {
-> > +		pci_err(dev, "failed to stop IOMMU\n");
+> Even if we disallow resetting on a multi-dev group, there is still a
+> corner case not taken care here.
 > 
-> the error message could be more informative.
+> It's possible that there is only one device in the group at prepare,
+> coming with a device hotplug added to the group in the middle,
+> then doing reset_done.
+> 
+> In this case the newly-added device will inherit the blocking domain.
+> 
+> Then reset_done should loop all devices in the group and re-attach
+> all of them to the cached domain.
 
-OK. Perhaps print the ret value.
+Oh, that's a good catch!
 
-Thanks!
+I will address all of your notes.
+
+Thank you
 Nicolin
 
