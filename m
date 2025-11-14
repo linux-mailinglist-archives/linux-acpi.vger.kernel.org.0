@@ -1,87 +1,123 @@
-Return-Path: <linux-acpi+bounces-18907-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18908-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265E3C5D495
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 14:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327EBC5DAD6
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 15:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1803035E015
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 13:10:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6DA5A366CE9
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 14:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670E1246798;
-	Fri, 14 Nov 2025 13:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303B8280CE5;
+	Fri, 14 Nov 2025 14:34:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C62A19E7D1;
-	Fri, 14 Nov 2025 13:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86BB1E7C18;
+	Fri, 14 Nov 2025 14:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763125839; cv=none; b=WOeg+w/dwpZWgHACJ2To0e0+BawZQGuDCZFKpwpOsh8Cr58vjBM3L/dpKDXGUqXymywPHH7uQlECysKbPjKFLKOKzy5ZYWidQLpiVCuj4GYWOX7raWWXY/jsd/EeJQ14q4X7yTmSkZ233ygElvKhGtTHl+kE3c4yKDP8jEPSXDU=
+	t=1763130884; cv=none; b=mQ5i4j+tMZ1TcW6SQaf7sE0dHezwt7v4FNkCVMK8y8EAIAcMmjCiFzO0FDZRHhe1jh/fqNh9C1rz8fsLEni1kDzr9rvsrX25gJDoYsXTWNMLXNNSNB0HNUHdlI0Ras16UEfIiY5Nn8ynmL0nIZCtqFvyjAQDlxPLkAfw6AR3sCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763125839; c=relaxed/simple;
-	bh=MgBSQa2bumLnFgtNpezo4aCHcSFNSfKwMYPmdsVHaHE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ag6Z0CVhC0QXhQxsEtyISx4qVIxt0i0bc8z6HIkl/s0AeAu/SDrWvKWDmqbWhqOkL1+imE16j1QwM9ssSqz2Wl0+U+tN4RJt1bv44hiYg1kH89N3uQGpXgFN2jSE+r3Jg+leYz5LH/M4r4E48YH730CL8OsIZ3G+8mpbbwjPCgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d7HYZ6MCmzHnH87;
-	Fri, 14 Nov 2025 21:10:10 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id E17811400FD;
-	Fri, 14 Nov 2025 21:10:33 +0800 (CST)
-Received: from localhost (10.126.173.232) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 14 Nov
- 2025 13:10:33 +0000
-Date: Fri, 14 Nov 2025 13:10:31 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Linux PM <linux-pm@vger.kernel.org>, Linux ACPI
-	<linux-acpi@vger.kernel.org>, Takashi Iwai <tiwai@suse.de>, LKML
-	<linux-kernel@vger.kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>, Frank
- Li <Frank.Li@nxp.com>, Dhruva Gole <d-gole@ti.com>, Dan Williams
-	<dan.j.williams@intel.com>, Linux PCI <linux-pci@vger.kernel.org>, "Bjorn
- Helgaas" <helgaas@kernel.org>
-Subject: Re: [PATCH v2 0/3] PM: runtime: Wrapper macros for usage counter
- guards
-Message-ID: <20251114131031.00003b60@huawei.com>
-In-Reply-To: <5959587.DvuYhMxLoT@rafael.j.wysocki>
-References: <5959587.DvuYhMxLoT@rafael.j.wysocki>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1763130884; c=relaxed/simple;
+	bh=C6xej7gbgx9rWFTnu4qMbIdd5TzFRa0VFArmEkUk5MQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=obKlKggT3+O29z1L9Lz+Dv8e+WNNTr4UBKNtmf6av0iWeJtKOv5eWUGgnxnL9Ljy6RQ0w5HkRuZvDulYptTN4Tw8KQi2VqYHx8PqFHAqVQVkHt5q0wjfj4t2NkDI9sLLEy2PnEzR+iBlJP1qRlmQt+0dJsr+/qk6l719F9PozDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E79A1063;
+	Fri, 14 Nov 2025 06:34:33 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EE873F5A1;
+	Fri, 14 Nov 2025 06:34:36 -0800 (PST)
+Message-ID: <acb7ee15-f0e5-4641-a377-71205e202f15@arm.com>
+Date: Fri, 14 Nov 2025 14:34:34 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 23/33] arm_mpam: Allow configuration to be applied and
+ restored during cpu online
+From: Ben Horgan <ben.horgan@arm.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: james.morse@arm.com, amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
+ guohanjun@huawei.com, jeremy.linton@arm.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+ <20251107123450.664001-24-ben.horgan@arm.com>
+ <20251110172724.00005675@huawei.com>
+ <e4521b04-6c3c-418b-8cee-6be43d5ef17f@arm.com>
+Content-Language: en-US
+In-Reply-To: <e4521b04-6c3c-418b-8cee-6be43d5ef17f@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Thu, 13 Nov 2025 20:24:57 +0100
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hi Jonathan,
 
-> Hi All,
+On 11/14/25 10:33, Ben Horgan wrote:
+> Hi Jonathan,
 > 
-> This supersedes
+> On 11/10/25 17:27, Jonathan Cameron wrote:
+>> On Fri, 7 Nov 2025 12:34:40 +0000
+>> Ben Horgan <ben.horgan@arm.com> wrote:
+>>
+>>> From: James Morse <james.morse@arm.com>
+>>>
+>>> When CPUs come online the MSC's original configuration should be restored.
+>>>
+>>> Add struct mpam_config to hold the configuration. This has a bitmap of
+>>> features that were modified. Once the maximum partid is known, allocate
+>>
+>> I'm not following 'were modified'.  When?  Sometime in the past?
+>> Perhaps "features that have been modified when XXX happens" or
 > 
-> https://lore.kernel.org/linux-pm/13883374.uLZWGnKmhe@rafael.j.wysocki/
+> The intent of the features bitmp is to only update the configuration in
+> hardware for the feautures that require it. On reset, this is all
+> features, but for a user configuration change this is just the
+> difference from what was previously set.
+
+I wasn't quite correct here. The feature bitmap for each component
+indicates which features have been changed (by user configuration) to a
+value different from their default. These bits aren't unset when the
+setting is changed back to the reset value. It can thus be used on power
+restoration to restore the user config. I think this is what James meant
+by "were modified".
+
 > 
-> as discussed here:
+> However, I don't think the difference part is currently working
+> correctly; the bitmap always has all the bits set and so any update
+> configures everything. I'll look into this.
 > 
-> https://lore.kernel.org/linux-pm/5068916.31r3eYUQgx@rafael.j.wysocki/
+>>
+>> Having read the code I think this is something like "are modified as configuration
+>> is read".
+>>
+>>> a configuration array for each component, and reprogram each RIS
+>>> configuration from this.
+> Thanks,
 > 
-> It adds runtime PM wrapper macros around ACQUIRE() and ACQUIRE_ERR() involving
-> the guards added recently (patch [1/3]) and then updates the code already
-> using those guards (patches [2/3] and [3/3]) to make it look more
-> straightforward.
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-for whole series. 
+> Ben
+> 
+> 
+
+-- 
+Thanks,
+
+Ben
+
 
