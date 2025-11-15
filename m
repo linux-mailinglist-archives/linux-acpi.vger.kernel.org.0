@@ -1,252 +1,296 @@
-Return-Path: <linux-acpi+bounces-18917-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18918-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCDFC5F352
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 21:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C565C60A99
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Nov 2025 21:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16C0B35B3FF
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Nov 2025 20:16:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 98929358077
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Nov 2025 20:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61BF346785;
-	Fri, 14 Nov 2025 20:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7553E30B502;
+	Sat, 15 Nov 2025 20:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oMDOpPAq"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="tYP9U+02"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013005.outbound.protection.outlook.com [40.107.162.5])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFC92561AE;
-	Fri, 14 Nov 2025 20:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763151366; cv=fail; b=jAwSBZX7i/6+pbNNyFsz6+fdfl+uLyGD9ZVAKgTN+6C9YjRvYelKIInAvS6+i2hzkQhY+DgN2Xt1urEPB1nzkMyiCFJ8H84wub0T/2/6dFKEr1NOKqGMUsLYZOEzx9M34v5ZJGkqiAe1SAjdfuEC+NWH3NSeE6pNJuCVSX92cHM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763151366; c=relaxed/simple;
-	bh=SiuJvX1+D9iAuNHt15paz0lcVszbaouB8hJhmkBKQFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RtrspewczvBkwFaBfMO2rvJZLI0GIbk5k8YQlI5MSqY+VkDJYA0zD+pu4RLhC6TPQw7zeDlO8juPeXvD66w/HG1fK+YuLrKyHXU4/EW0kEJYzgQKY/62f5qv6oKlTLcOsODHrhg80XMB538HYKvFnnspU4VfUgArVfWtFNCNrk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oMDOpPAq; arc=fail smtp.client-ip=40.107.162.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KnqLfX5IPRyhNnZhDBffXkN1bwUhXYnLewskVt4UVXcSVX+t/TLCnWTGlOdyd4ZjJ2rtx69j/1BA9S8ph6xkeKq+ji8uBnguBn1duWUDeQ3wtVrGAimU4aE2CvoJQt46X38YHIfhEgRYK2v1PSfRUwVS9afm45nr0vKtbnhGjVv/nZbV/INQioaEtIpkd8er3x4rJ7QJ77Srx19xjnwOO/IlY1Z3uTujqi4QuUsIsdgP9g4iK1TrgdVKSmSBqrsayr2sMP9otkbazX3Jxuvkc2SbLqVl8xgf+Yt1IdlrLldKURULsc2xZ9vtDTFol25yJV1M37PdtKIVkmDHhGPgCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BE4MSPjjMGMn3mIRc7ZCq2+/lv5G/flAGJmknJ2S1E4=;
- b=kVupjfYtkJrydZECfSMret4ymRUONrsJBRdRqNcBREAokmHrZWj1GQYcXi+Kzr259vNTP/4VzGJdCdJ9sV6wZuOWrQPm7EfOpjnx+T+Ze8May3t35BwFZaOBUvPSk496dIrmFN5dgWLPL8MKCpLaRBpR9M8vqKEkSEzUOSLejbqF3zs9OaZnil7xieRfuO0JFLVc90GTwAaYHHgyMYAnJ38B6eUh+vmUBaE93GKhl/1Ifhu+F4RE0yWPTdimsm86mbVeLT0nCqDu8w7+dyTth4dN2jVoqguChtvyCXVYiTdOJjDok5Ci/oSTLtdPsCeOiYbprsixzkBUtprKfQcYyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BE4MSPjjMGMn3mIRc7ZCq2+/lv5G/flAGJmknJ2S1E4=;
- b=oMDOpPAqufJ5kJqVIg5ZC36nH1jk9NuxT6nnhjTR926NYshkIAC1xpQZivfxAIQ9nkLF7Zu4FGpT2bOZBSGezyqgEZMAdsNbV0xb0IBKkJt+z1G34a7XmGPZJlp0ovzVGASn717FpHJzkLtF6u1Jf4nkd2vgXDtyA/sgqnbLcKVtoGcsOlkiCl3nsalMKUCpHQ1Jbt41RXtGkufxGK24WwwjcnNxBtaQ3yjWUXgDLiN794xMjoi+GMhAAJjLHyEhkCMnrOv+UqOFWIPOTeJyYBSemBfpfUREm8qim/foWbiOkDxmROChk5Iwbk+Te3+VAvCO3ajVthVXppA58XOtzg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM7PR04MB6999.eurprd04.prod.outlook.com (2603:10a6:20b:de::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 20:15:58 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 20:15:58 +0000
-Date: Fri, 14 Nov 2025 15:15:52 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Takashi Iwai <tiwai@suse.de>, LKML <linux-kernel@vger.kernel.org>,
-	Zhang Qilong <zhangqilong3@huawei.com>, Dhruva Gole <d-gole@ti.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Linux PCI <linux-pci@vger.kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2 1/3] PM: runtime: Wrapper macros for
- ACQUIRE()/ACQUIRE_ERR()
-Message-ID: <aReN+P5UZTnS1Tww@lizhi-Precision-Tower-5810>
-References: <5959587.DvuYhMxLoT@rafael.j.wysocki>
- <3400866.aeNJFYEL58@rafael.j.wysocki>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3400866.aeNJFYEL58@rafael.j.wysocki>
-X-ClientProxiedBy: SA1P222CA0169.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::12) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68CF27B348;
+	Sat, 15 Nov 2025 20:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763237267; cv=none; b=fUTSjHOhy1LNlGjp5OHy/uGMJmOZlmGwSS2I70B+ez5eZ15QTinc02O9CapMptH52Yk7upWmFx2CYMxFx6LEl8AQHWnnrqrr8uN8p433AwD4vHIxv+4vpTODVcg9Q+oPEcjCXOuwO6rmlU5S+pN1OBUjcbolDHnPShLH7mIXi1c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763237267; c=relaxed/simple;
+	bh=X4gmpbbqjlBmq0FWnZirOdiHnoyNJ96lOxiRI3HC1C8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pPRw0vfM+H1JpSS6L4NZ99tryGEEJ9NrM2sXfWKPYI3cVUdYp4NekAbuD5NlVSMLGnqVsQmjvW50f+xAnEO5zCnQuvYFuz7f96l75kAnXa/tmpd8vREn0SJ3BojNf2nN69wp8LI7yKszfkHB3pxq0TUNOoNBStRLSvVXUNpw7vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=tYP9U+02; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1763237247; x=1763842047; i=w_armin@gmx.de;
+	bh=RaeVW3zq9IhmwHqwYfn0HX7o/6ixtGAHmkl6HkNdVFc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=tYP9U+02Qs8IK2oWhxL+bgor6U+jtwWR7MScQiaKj7plr0LnQddpy7eCLp+1EG0N
+	 b4wu11qMYk7L9CS2dCPuhCl0Vf3pIDgMUA7Xq5KEghN7Q4UgySKnzfzTV/0I6DewD
+	 mplB0Dm6egzeb+7VMHVhOJRqf4LF1VSLfw+/GSMQBg1J5Z5cnPkfeqfiU3j5nFWwP
+	 AZWw9gLE4M2Np+MfHcb+qx+HYVH0djGTDmkgS2vBgcJtSVgJZKOQDGG0YgbBNZNRz
+	 GPU2XIdGzyGLyABm3nPGScUNiEC+mr0JfeszkS05J1by7xWkZlswE0yDjlwSk5t5W
+	 1SlCf4YPq8Mz+96/kQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([93.202.247.91]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDou-1w4KOc3E76-017Dzg; Sat, 15
+ Nov 2025 21:07:26 +0100
+Message-ID: <3ba7a573-9343-4ed4-b805-1fb8db8df2c6@gmx.de>
+Date: Sat, 15 Nov 2025 21:07:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM7PR04MB6999:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20ac6f6b-875a-453b-c20a-08de23ba9f76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?l3a/B/pmqnr2tXP5UZrHy+3smCcUTmXc4eM2oVtY866m5+k6nk5baLdQ6R6/?=
- =?us-ascii?Q?lt3Gwvrc1B0tDBSIdYj9reyA5DUjTYMbITU6AHomVYn2LwQmrHBxA8i5bGuB?=
- =?us-ascii?Q?c3M4/jo4CB/H7uJhRPcVkXy4UEHtDj4NhGWBBtvX6V/HRX5dgjGq0p9/tt5H?=
- =?us-ascii?Q?B/cuUa0qnOuwJgVAWDw7bO2H9bRFGkLV6CtIiAY0pNTHi7LhKpkdBMjmej5B?=
- =?us-ascii?Q?q1LGoJb67Rmc1VkQ1fPoeDj0Ii2s5dsN7ay1UcdKjbmQOpzafmLknVy4Yk4X?=
- =?us-ascii?Q?4rEQzyu7xi96usgluzaFhtp8W7QIGV6m5i5gsOD/KEdvCvCjU7Voqx5hX1F7?=
- =?us-ascii?Q?Nx0equQxX5xgcfMZVhX6cbfSSeNTxntFBB+YEfkzhNqHL81ieeoK8N0Jsapj?=
- =?us-ascii?Q?JoZboT3izuATuGFWlM2N1PNcaLgmT/Wrju35M390omOvPUeURyX5ssbc3XSo?=
- =?us-ascii?Q?OV3/ldQNh21LgaNqaxTBQ+5N3GFv/hAcQppuzGMrQaHDi/jACbYRZbMaGTnt?=
- =?us-ascii?Q?glI/V5dOA5L85nrQLCOkT97OXH9l7k8kn+9NDivbVXsyIsC0FyvcHQ/6J5zO?=
- =?us-ascii?Q?G92Qcb0i2zHs9bzkgk1lzW6hCZqrXzgomdTrGLSsqAalXUdQLsTLFVQZW1XW?=
- =?us-ascii?Q?UJMSJ4VqqGn/qc7P7rOXIX5eZoDtAjCovGFbqzRRjng+Kvza3Foo2JTb6LSZ?=
- =?us-ascii?Q?iw4x46Z4zcoXsAbMs9aebCNYULJoHG+zobuPBMz9MrunZym8wHmNfgu7kSEu?=
- =?us-ascii?Q?KfrPs7nt6ObdPQ5X1MNGdPMpULJOjhSAb7nG3a8We4DXLmRZnGCSywPjksg5?=
- =?us-ascii?Q?rq85tsHCOOuCKhkSz5o6oSzHBchheCa3TAT57CmCz+XVYkCLmCrkGhSeOa4P?=
- =?us-ascii?Q?97gCvtV4W1ahF8fv98WEF+y6waJxVqVWJFWu4Xvm0tcFCf07HwW2LKPv8ByF?=
- =?us-ascii?Q?+hR5+asEbd+YkJUBwTCDrrMuq/38O83wmUOuKO6psAh6Uu6vZVnGcQK2zzRd?=
- =?us-ascii?Q?DilscLZmt3QiI/63ZTTdzPgOmdtUDauCglW/RX3qDPPF6sZtOuDkDF+ciLCP?=
- =?us-ascii?Q?kYaDr6KacyB8/htuicJ5SFfaMKACNDyxDZMdm31Hu6vaFA3wzZ6eRZNhZkQd?=
- =?us-ascii?Q?D2Kvt2ofPJFe+gJDR8QWpU+UALxhac//0eaHVsbUEO5dE4IA/8P7SZE1zwxg?=
- =?us-ascii?Q?Shmt//kM9jYS1jcv5jfss6tUxt9q9P6Uvh4Cx9j7fzTAxjlyhu0XR4gC8Ee+?=
- =?us-ascii?Q?3E9jJjO3nz+0pll+rVFzI/fIYH+h11sSrc3hssT3fqRPZkY100KmJ5CFBcJK?=
- =?us-ascii?Q?d9vQf/oexa0xsI5P/RbmNC4IsTjCWebAWxIJh9krKvPrVOJsVhl4eO7rxSY4?=
- =?us-ascii?Q?ZpB97ioyP+KGzKL5m5M3Um1QecaDVgz9RH0m+6JoP1mlENojLxbBio8NFdfo?=
- =?us-ascii?Q?Uu7Vb6l18kqi+t7y6C+gYQc1PvLx7oLsDncsidUOHpvl7VPtX14pWRtZR0pS?=
- =?us-ascii?Q?MSfwnnjfXv8MazrW3fp5bgg0uQFhpOqZFziP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xYt+UwSAdnhMiabObyJLpHiJXBEzFdb2fIl01Dw1W0RueGFk7gOVfCM2oiit?=
- =?us-ascii?Q?ffTcQ+nvf6tkRgoOWr6O5Fk8fpsxlHEgjDJM0vMQsTCbeNHnpub1GY8c9pTc?=
- =?us-ascii?Q?uwm0qbjsni1nb73d5LYLeq5mFe8bznkjylPfzPtpo9hSHjUOjH1DoPamvMX3?=
- =?us-ascii?Q?Y0wqr5y0NFvf0tXjtVSaqd8c52Xop/Eb3iuOsONm9/xiBrQZKxRjVLD5jCJz?=
- =?us-ascii?Q?72itcfsBKuC9xTUNZi9E+lI6sc/045Py77yU2BdVWQnbiGbu+JOUoKHACExC?=
- =?us-ascii?Q?v12GtDSohPzqsyi1NSRMA+i/NCqFElQVFHc2T6+X76l1Mko/AAgF+WzL732i?=
- =?us-ascii?Q?QivUQtd/JUN/xuFPf1OaGsVVKwfWf5oLLGBU7cjPBMayYDJW7SJ+CxXX5obu?=
- =?us-ascii?Q?2OwlDC8StFafAYPvuhVB1Age050nhffw1h/724PdYSQXNeC10E357QK19EEQ?=
- =?us-ascii?Q?Gz2Pu3Q7e8Z+jJOCppGQAUZ7BunATM9vC8n8W06+1NlF5SUzGK1CBy+GwdJC?=
- =?us-ascii?Q?TZqrBpvX7C48/5YZzvACBemattRg/3zTE+iW9+ZhQboKnv3qRPxFx5ct76ZQ?=
- =?us-ascii?Q?0Yx/UI5Z74bP4YxnpKPgeWDlLOMh8TSvvIUZRb758wQJW8sztzHmMmUhY3UT?=
- =?us-ascii?Q?IGyWom1gYahzjbFR4XmHRL7xMZdM9okMtl9OCGYxWdpiUqjWUIfjpwUqLyl/?=
- =?us-ascii?Q?4u+6j9S6vzl61MNqmoLuTOXzYpAnpJLloCBaLsng2yvcZlT1DLv0O/vaYit5?=
- =?us-ascii?Q?5Lgkjv04RtSWCxX63gl6vzj5rLdArdHHKQ7nCj9CoTuppbpfGm5S76rdKhbd?=
- =?us-ascii?Q?xtmc94Y3tN/phNmDlmKIOTIhdpxEGj+uOkWW2+HmcP++lQby3/X0jJ9crV/A?=
- =?us-ascii?Q?bA1djLb1tYKoS6iBprI+5ZT72kUVOSew6hLofzx4ni9Drkk3eVyMIRaFulxH?=
- =?us-ascii?Q?lOtmMZN8L4uo5ZDNvWBYjzglMOwsRlMjwBiXjXdYZTcTRqQiFOK9Za2VHlP5?=
- =?us-ascii?Q?UWEy1J5urSxfsZmyVgPrTaTin7/dkuzbICR4WeHomnkYEGX8eyu2XVWdpswd?=
- =?us-ascii?Q?SYggoMONT3071Lb903xAbOb4yqxsNrJq9pTiYaprBOt4gWYQJKT4ENJHKzaP?=
- =?us-ascii?Q?Ga0SIAPxyCQEYtOjik+Ns/DtwZDCSJyNBSoT0l1I9a7U9vFDwifG+eFCuEpc?=
- =?us-ascii?Q?z3tVR3SNcAfoid4yN5FtJ/h1yCj15KaqdPrtrIHY/NpTTVPNS/+Dl8ijCVBw?=
- =?us-ascii?Q?oGro6uluOyeCWCJO/k1WXff2eOy1eWN95T2ctvfFUqlT4ob/bczZCjhdNQkd?=
- =?us-ascii?Q?6lpvDeqZO7dMrZSb4xnSkas9nefUfaOQI1AEfTgCgSO1ZlB+33CqMKxUUODa?=
- =?us-ascii?Q?Pd25I+j8mdBHltE7yd3QL/9N+eGZlV11cdsQn0h9UtzjzsV+k8JLMoXc/J63?=
- =?us-ascii?Q?KOVGFEIqBvchUmbUnWoyJ8iLbh2lOuEdUL5ebhfYFfaOqRdVdi72DPPBp9Aj?=
- =?us-ascii?Q?9l3BLelYxZ2XHOVR4UhAAKycNEuG0KRF+6XednqeCq95La5lkziVhJLCZyhR?=
- =?us-ascii?Q?MxmxxRonuwrFrj0ApsGoqMtqVVk0oQs8fnOckFsS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20ac6f6b-875a-453b-c20a-08de23ba9f76
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 20:15:58.2375
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xlwMIq6kx8Gi59qKs0ay/YpIRigWQSRh8hzTBZd+9CcR8Dg/+zFInvAjoHmOw5+aw/DLeTAXGyvU9FZYCKGVqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6999
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/8] thermal: core: Allow setting the parent device of
+ thermal zone/cooling devices
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+ Hans de Goede <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
+ <CAJZ5v0gZ7+i+irhaq2jQpTt++HuVRjqz8==Ov9VmQ9Q1J1TM0w@mail.gmail.com>
+ <CAJZ5v0h7vrqMquOgCAiBG1Pe7=mF4XGug6-CUT7=Y5daRDRt6w@mail.gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CAJZ5v0h7vrqMquOgCAiBG1Pe7=mF4XGug6-CUT7=Y5daRDRt6w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Fm4QCRyij1XnAj/sEPXzOT37DvnvhNpqYTjzglVMDz+aWXFkgPb
+ RO8cTAPJ9jKVTBfPaSRk1dYix9L51rZdNctJjLWbecxcPdvdCngY4bSm/k4rsEbChJ6gLvJ
+ sCax50GQVGGRfyFtAHMZmpqUFwFBvD/PdEHgdorDU6dSxQWel8RApIMMfJDu26XQCiYsOU0
+ gSqP4TtOqAsMICCNXROAA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+b6MOpwubX4=;ibxD5YalB8NjpekTKiJN/MnOgWe
+ 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
+ RmXBcHNoCs+5snWXr6ygPJr38tjT1
 
-On Thu, Nov 13, 2025 at 08:33:33PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Add wrapper macros for ACQUIRE()/ACQUIRE_ERR() and runtime PM
-> usage counter guards introduced recently: pm_runtime_active_try,
-> pm_runtime_active_auto_try, pm_runtime_active_try_enabled, and
-> pm_runtime_active_auto_try_enabled.
->
-> The new macros should be more straightforward to use.
->
-> For example, they can be used for rewriting a piece of code like below:
->
->         ACQUIRE(pm_runtime_active_try, pm)(dev);
->         if ((ret = ACQUIRE_ERR(pm_runtime_active_try, &pm)))
->                 return ret;
->
-> in the following way:
->
->         PM_RUNTIME_ACQUIRE(dev, pm);
->         if ((ret = PM_RUNTIME_ACQUIRE_ERR(&pm)))
->                 return ret;
->
-> If the original code does not care about the specific error code
-> returned when attepmting to resume the device:
->
->         ACQUIRE(pm_runtime_active_try, pm)(dev);
->         if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
->                 return -ENXIO;
->
-> it may be changed like this:
->
->         PM_RUNTIME_ACQUIRE(dev, pm);
->         if (PM_RUNTIME_ACQUIRE_ERR(&pm))
->                 return -ENXIO;
->
-> Link: https://lore.kernel.org/linux-pm/5068916.31r3eYUQgx@rafael.j.wysocki/
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->
-> v1 -> v2:
->    * The new macros take the guard variable name as a parameter.
->    * The new ERR macro takes a guard variable pointer as a parameter (Dan).
->    * Added underscore prefix to the macro parameter names.
+Am 14.11.25 um 21:10 schrieb Rafael J. Wysocki:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> CC list trimmed and I'd rather not use such an extensive one if I were y=
+ou.
+>
+> On Fri, Nov 14, 2025 at 1:13=E2=80=AFPM Rafael J. Wysocki <rafael@kernel=
+.org> wrote:
+>> On Fri, Nov 14, 2025 at 4:24=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+>>> Drivers registering thermal zone/cooling devices are currently unable
+>>> to tell the thermal core what parent device the new thermal zone/
+>>> cooling device should have, potentially causing issues with suspend
+>>> ordering
+>> Do you have any examples of this?
+> Especially for thermal zones.
 
->
-> ---
->  include/linux/pm_runtime.h |   24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> --- a/include/linux/pm_runtime.h
-> +++ b/include/linux/pm_runtime.h
-> @@ -637,6 +637,30 @@ DEFINE_GUARD_COND(pm_runtime_active_auto
->  DEFINE_GUARD_COND(pm_runtime_active_auto, _try_enabled,
->  		  pm_runtime_resume_and_get(_T), _RET == 0)
->
-> +/* ACQUIRE() wrapper macros for the guards defined above. */
-> +
-> +#define PM_RUNTIME_ACQUIRE(_dev, _var)			\
-> +	ACQUIRE(pm_runtime_active_try, _var)(_dev)
-> +
-> +#define PM_RUNTIME_ACQUIRE_AUTOSUSPEND(_dev, _var)	\
-> +	ACQUIRE(pm_runtime_active_auto_try, _var)(_dev)
-> +
-> +#define PM_RUNTIME_ACQUIRE_IF_ENABLED(_dev, _var)	\
-> +	ACQUIRE(pm_runtime_active_try_enabled, _var)(_dev)
-> +
-> +#define PM_RUNTIME_ACQUIRE_IF_ENABLED_AUTOSUSPEND(_dev, _var)	\
-> +	ACQUIRE(pm_runtime_active_auto_try_enabled, _var)(_dev)
-> +
-> +/*
-> + * ACQUIRE_ERR() wrapper macro for guard pm_runtime_active.
-> + *
-> + * Always check PM_RUNTIME_ACQUIRE_ERR() after using one of the
-> + * PM_RUNTIME_ACQUIRE*() macros defined above (yes, it can be used with
-> + * any of them) and if it is nonzero, avoid accessing the given device.
-> + */
-> +#define PM_RUNTIME_ACQUIRE_ERR(_var_ptr)	\
-> +	ACQUIRE_ERR(pm_runtime_active, _var_ptr)
-> +
->  /**
->   * pm_runtime_put_sync - Drop device usage counter and run "idle check" if 0.
->   * @dev: Target device.
->
->
->
+The device core suspends child devices before parent devices in order to a=
+void
+child devices accessing an already suspended parent device. Since thermal =
+zone
+and cooling devices have no parent, they could potentially suspended after=
+ their
+parent.
+
+I said "potentially" because currently the thermal subsystem handles suspe=
+nd/resume
+using a PM notifier, something that prevents the above problem from occurr=
+ing. We
+should however eventually migrate to dev_pm_ops for that, so the device co=
+re needs
+to know about parent-child dependencies between thermal zone/cooling devic=
+es and their
+respective parent devices.
+
+>>> and making it impossible for user space appications to
+>>> associate a given thermal zone device with its parent device.
+>>>
+>>> This patch series aims to fix this issue by extending the functions
+>>> used to register thermal zone/cooling devices to also accept a parent
+>>> device pointer. The first six patches convert all functions used for
+>>> registering cooling devices, while the functions used for registering
+>>> thermal zone devices are converted by the remaining two patches.
+>>>
+>>> I tested this series on various devices containing (among others):
+>>> - ACPI thermal zones
+>>> - ACPI processor devices
+>>> - PCIe cooling devices
+>>> - Intel Wifi card
+>>> - Intel powerclamp
+>>> - Intel TCC cooling
+>>>
+>>> I also compile-tested the remaining affected drivers, however i would
+>>> still be happy if the relevant maintainers (especially those of the
+>>> mellanox ethernet switch driver) could take a quick glance at the
+>>> code and verify that i am using the correct device as the parent
+>>> device.
+>>>
+>>> This work is also necessary for extending the ACPI thermal zone driver
+>>> to support the _TZD ACPI object in the future.
+>> Can you please elaborate a bit here?
+>>
+>> _TZD is a list of devices that belong to the given thermal zone, so
+>> how is it connected to the thermal zone parent?
+
+The ACPI thermal zone driver currently matches cooling devices by accessin=
+g their
+private drvdata and checking if it is a pointer to the correct ACPI device=
+. This
+work well enough for ACPI fans and processors, but will likely not work fo=
+r other
+cooling devices (like batteries). Such cooling devices are supposed to be =
+listed
+by the _TZD ACPI object, so we need a more generic matching algorithm befo=
+re adding
+support for said ACPI object.
+
+I as thinking of modifying the ACPI thermal zone driver to instead use the=
+ ACPI handle
+of the parent device for matching cooling devices. This would solve the pr=
+oblem described
+above-
+
+>>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>>> ---
+>>> Armin Wolf (8):
+>>>        thermal: core: Allow setting the parent device of cooling devic=
+es
+>>>        thermal: core: Set parent device in thermal_of_cooling_device_r=
+egister()
+>>>        ACPI: processor: Stop creating "device" sysfs link
+>>>        ACPI: fan: Stop creating "device" sysfs link
+>>>        ACPI: video: Stop creating "device" sysfs link
+>>>        thermal: core: Set parent device in thermal_cooling_device_regi=
+ster()
+>>>        ACPI: thermal: Stop creating "device" sysfs link
+> This will kind of break things because user space may rely on those, may=
+ it not?
+
+The driver core will create the "device" sysfs link for us as soon as we p=
+opulate the
+parent device pointer of the thermal zone/cooling device. So user space ap=
+plication
+relying on those links should continue to work.
+
+I even tested this on my devices.
+
+>>>        thermal: core: Allow setting the parent device of thermal zone =
+devices
+> For this last change, you need to define what it means for a thermal
+> zone to have a parent device.  In particular, in what way would a
+> thermal zone depend on its parent?
+
+1. A thermal zone should be suspended before the parent device is suspende=
+d. For this the
+    device core needs to know the parent device of a given thermal zone de=
+vice.
+2. Users space applications can determine the physical device behind a giv=
+en thermal zone device
+    if we enable the device core to automatically create a "device" sysfs =
+link.
+
+Other than that all current thermal zone devices do not depend on the pare=
+nt device pointer
+(because currently it is always NULL).
+
+>> I can only see the first three patches in the series ATM as per
+>>
+>> https://lore.kernel.org/linux-pm/20251114-thermal-device-v1-0-d8b442aae=
+38b@gmx.de/T/#r605b23f2e27e751d8406e7949dad6f5b5b112067
+> That's probably because of the excessive CC list.
+
+Yes, that was my mistake. I will prune the CC list and resend the series. =
+Do you think that i should include
+all maintainers of the affected drivers or only the subsystem maintainers?
+
+Thanks,
+Armin Wolf
+
 
