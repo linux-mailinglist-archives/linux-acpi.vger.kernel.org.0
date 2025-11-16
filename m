@@ -1,194 +1,344 @@
-Return-Path: <linux-acpi+bounces-18924-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18925-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383C2C61B2E
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 20:01:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050CDC61D44
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 22:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A1C84E301F
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 19:01:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98EC13A8919
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 21:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EA5221F34;
-	Sun, 16 Nov 2025 19:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53564247281;
+	Sun, 16 Nov 2025 21:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBApSxH2"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="TqPLhN/E"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E847D63B9
-	for <linux-acpi@vger.kernel.org>; Sun, 16 Nov 2025 19:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9032C1DED4C;
+	Sun, 16 Nov 2025 21:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763319680; cv=none; b=ilseXUsVU3Rmf5YK7jW7d/GHK5zDyhAvuJ/KWMrLRfU8CYV2cNMTNSOZVNfODe5jOUv7BuHkbKmbv8GMSelrGvts0ZYAufcfceEzB4gNxgiPOyQ0Nf7y48TgUyepMSOLCPdxoK0zWB4Ia8P7GOa3nPRmAKbo77BB8186P6tnw6o=
+	t=1763327350; cv=none; b=HgBfJmqIQkzscDjEzq8CPj/qTW71NNJOM1OlSzK+fvhBcLj4mlEz1GUxl+AdzFiJWSiqKO7beyiSSfm2uRSEZ7qZBNu2ZInaJWuh0UXJcYoEL3PVQXqIzyo7yybbcj0bwARXsbcS147bHJGQEmqYPqhVrYPn3ThluTjfzRkaYb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763319680; c=relaxed/simple;
-	bh=cZS0PxUQPTpcN54RYE/jYvXcW+/9c/VgJLoIs03CWoU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ZXrDNCdJ3q7toAcQ2exiI9oFALetQkn3TZfmnw0UWpLecvBJpj6xN9ZmpOqjGlW251oZ7iFEdHEbimwRWJq31a7MAMeGNyQsJtjspaQwI+mH9b9PYNmJgxNFAQ8I/jE7KhqU9HV96cGNO88DJX0gEmdAHVBSPVwe3WOEBvobwFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBApSxH2; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bc8ceb76c04so1302651a12.1
-        for <linux-acpi@vger.kernel.org>; Sun, 16 Nov 2025 11:01:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763319678; x=1763924478; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YOGEXFxwW48TjZB0mw3iozFgJleZ3SAxTi5WfDILBEc=;
-        b=KBApSxH29kpjdiofXPV4IApRHe+VlYIcX6RbMVFIjVygEWNxuv+Vz0J0zRHieNEXO8
-         zEIRrS5tm+ilpsC5fdQ4auOKc9vU/4vaFBoQd9Fcx5cCNTseselzk1F3rtaYU1gTCvo7
-         RFlouxWP/TGMiEz1SN9J39pk16sIVnqxzQTgeBxVUOLx4zQfXjVQRBumGJemYSsw2cK7
-         Sekemg45OyRwWsy6G3UBB0NncxLptr3mQjQEW1+rFY3Zl0gFcPANn70D1IqryFQqZ9B0
-         I41dO8HBTIXm/ffj5kmSeHOfmsINSIXb06ED/FYAcaIiWt+IggAwyJrpiT3qrba0em5f
-         77rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763319678; x=1763924478;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YOGEXFxwW48TjZB0mw3iozFgJleZ3SAxTi5WfDILBEc=;
-        b=njrh8IPjLuCU8YVPYAEcz13ORCArEKy9zG8CvmdL5Ti7/s12XLyMOR49b9R7lHXp0d
-         J4ThuO8mvGyXLOVvxZCLkajMXoCKpiHMHT7Woo1e1JQZgWG41H7Y8s9B0SBuhVQOgUlv
-         d3b49Fcnqq04e0qICJ3sCjNt0GlPxQGpyUmTys5mJfe4SJME8BMCd0/EcV0BKZEcOB+j
-         XyMVMMBvMNKobKIRBVnX3g2snVh6j2vJqC+NFEp1RSs2dSsNeh504MXF9x7ePCSbLzgf
-         ZD14cV+1InF27CgAmyzOkuWl0KCrtD4gQ8Vsch7YkbNeAeBb6Mwzq3Th1qknvfviPrXH
-         rMHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKQOJnSgtKGcJvliVeQTUdruFkATNuuA0rGTfQoE5f9b0hOwO7spWYg7LK+NX40KrtAgh+E0H7c4/A@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH59d6RhhGSWofoxpbKwcH7P4wgEhbai3FPs9LWI5EXrc3TMEg
-	Dn+dTHcPUbUBN5P7Pet5bxkh8DKl1Tt+iHGi7kt49svdWUq1hG5y6qnQ
-X-Gm-Gg: ASbGncvcXNU+hnZV7akqVOLN0NeZGWdOQDJtYqnafm6f7WvEtEYnya3GftiRrqGb6GW
-	bKfxFCpkYVpgRftEV5U3PTwSF7tiUuddUoSXwSJ2TEaioopydOvPFzl7yY8+C/kMZiYl1e2wrih
-	pi8IJi29OCkaUiI2KIcRSKNzUx2Ruu7goSsN1agZugn51fnv+0N2ezAM5naa8JKIgYM6yRlmw0A
-	urIxvoBCndWe0NYr1a67Z1pB9rs76YF/7RlbCikyHYO7jW2Uazx9JnvnPFLfiL2K7I+hTf+CdMg
-	HcgjnwgvrFkXAFuAN2BYlWp/SYw4VS5Rrd0fEKLrJSxAGroqFpcym9yszJSMAbUFcODH/7O+yBM
-	WXOE2gZpITNlYr5/vWv9o31Ah/5CELZBcM0rkcH8x/f04ktbgwN+zqzm1tXOiXT8PyDRwl5T0ow
-	2gPBOYsg5gUFykul1gis2Z8g==
-X-Google-Smtp-Source: AGHT+IGzAZalYPBCrBdPjLHParF3LDK8Sa973po1LUxsJ1+1Lsk5MmBi0pKSSk4XLoBThUNykmuT9g==
-X-Received: by 2002:a05:7301:4384:b0:2a4:3593:c7da with SMTP id 5a478bee46e88-2a4abd49e41mr3789692eec.26.1763319677891;
-        Sun, 16 Nov 2025 11:01:17 -0800 (PST)
-Received: from ehlo.thunderbird.net ([2607:fb91:1be4:38b7:ac39:c338:9a5e:57f4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a49db102f5sm29610809eec.4.2025.11.16.11.01.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Nov 2025 11:01:16 -0800 (PST)
-Date: Sun, 16 Nov 2025 11:01:13 -0800
-From: "Derek J. Clark" <derekjohn.clark@gmail.com>
-To: Armin Wolf <W_Armin@gmx.de>,
- =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Len Brown <lenb@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>
-CC: Mario Limonciello <superm1@kernel.org>, Zhixin Zhang <zhangzx36@lenovo.com>,
- Mia Shao <shaohz1@lenovo.com>, Mark Pearson <mpearson-lenovo@squebb.ca>,
- "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
- Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/3=5D_acpi=3A_platform=5Fpr?=
- =?US-ASCII?Q?ofile_-_Add_max-power_profile_option?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <7050cadc-9cb7-4f9b-8393-247bddb56965@gmx.de>
-References: <20251113212639.459896-1-derekjohn.clark@gmail.com> <20251113212639.459896-2-derekjohn.clark@gmail.com> <7050cadc-9cb7-4f9b-8393-247bddb56965@gmx.de>
-Message-ID: <CFD27662-0044-4AF3-8E66-65229324CECF@gmail.com>
+	s=arc-20240116; t=1763327350; c=relaxed/simple;
+	bh=hDbzqfWxD3g3Yjt2W/La7aCBsFh6EBwI3gv4abUoYrs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pcAnwXFx9HNSEz8TAx0DHRQgrij+TsKe5mrX75oPt70Fvpbb+fN7DVxESRDlMSZYyb9gkxJJ1uJhte+wJqYoLUFXuo+QSRHtKVhUah8p43E+uJIqsMSfN/ef4/mXkr+2REQz1g0IvfCDhoYw31niJZoG2qWrlebcPWIBiOF29Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=TqPLhN/E; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1763327336; x=1763932136; i=spasswolf@web.de;
+	bh=H34mB2us/ARTGeJI9/zWf+TinG8f+xy61EW5M3DNobQ=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=TqPLhN/Ex9Qya+ja+vKONU4PnhUh0FC1WdKYy2zHE8wGRcSz26PpzchRlKRA6/hF
+	 NbF39nGmUpckxaifKbSmJ8TNDmDF8ceqznE1gP1JrUXarI515Ud/9M0EeMpp9rhJ2
+	 S5VksJF8XZDRb5GwmSzFcxB+fRWnwTOrfv8q1iPR7XM0kqc1iF/AUa+i0PBHmHjYj
+	 vXliov0aqphWk0PEDsPfwjxMIiDicgrFuRZO4NYnw4rLPFfQ13HfonStumRR2/TIN
+	 YQ751XlBW5Avs0WIS+UE0PudFKSPnQsyK+/AB4mC8ZUGRFhpJw801KVBmtyNqnR53
+	 TTcueGCBjhoD4htExA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N4621-1wKman0DqL-011qDw; Sun, 16
+ Nov 2025 22:08:56 +0100
+Message-ID: <3f790ee59129e5e49dd875526cb308cc4d97b99d.camel@web.de>
+Subject: Re: Crash during resume of pcie bridge due to infinite loop in
+ ACPICA
+From: Bert Karwatzki <spasswolf@web.de>
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, "Mario
+ Limonciello (AMD) (kernel.org)"
+	 <superm1@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
+	 <rafael.j.wysocki@intel.com>, spasswolf@web.de,
+ acpica-devel@lists.linux.dev,  Robert Moore <robert.moore@intel.com>
+Date: Sun, 16 Nov 2025 22:08:54 +0100
+In-Reply-To: <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
+References: <20251006120944.7880-1-spasswolf@web.de>
+	 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
+	 <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
+	 <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
+	 <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
+	 <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
+	 <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
+	 <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
+	 <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
+	 <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
+	 <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
+	 <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
+	 <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
+	 <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5jb8xiLJso85XyLQcTc4dt4y5Sq7bFIMRmt4LVPzD9SK4tg3L5n
+ /XEyvRoMEqK5xr0VbUIM6H0IR/9xorOfvZj+FiM+eCf+gQr7MGKp7KVLVF9i2B1nUoyT6J6
+ c5JMHg+IuBBJZFDXkrW6p/n9zYUWBAYyLscq5WV93S6WEplCM2SKscUOD29HvnZMicx0mUb
+ D4dqfL6S7l0lYICNoSZoA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lQREV7KdzKc=;qxsGyEUsWcBl2G4dSvsgqJGuuK0
+ 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
+ IrHiDGPesjfh/8zK2rmbLAvJe1iC7
 
-On November 16, 2025 8:13:17 AM PST, Armin Wolf <W_Armin@gmx=2Ede> wrote:
->Am 13=2E11=2E25 um 22:26 schrieb Derek J=2E Clark:
->
->> Some devices, namely Lenovo Legion devices, have an "extreme" mode wher=
-e
->> power draw is at the maximum limit of the cooling hardware=2E Add a new
->> "max-power" platform profile to properly reflect this operating mode=2E
->>=20
->> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel=2Eorg>
->> Acked-by: Rafael J=2E Wysocki (Intel) <rafael@kernel=2Eorg>
->> Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
->> ---
->>   Documentation/ABI/testing/sysfs-class-platform-profile | 2 ++
->>   drivers/acpi/platform_profile=2Ec                        | 1 +
->>   include/linux/platform_profile=2Eh                       | 1 +
->>   3 files changed, 4 insertions(+)
->>=20
->> diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/D=
-ocumentation/ABI/testing/sysfs-class-platform-profile
->> index dc72adfb830a=2E=2Efcab26894ec3 100644
->> --- a/Documentation/ABI/testing/sysfs-class-platform-profile
->> +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
->> @@ -23,6 +23,8 @@ Description:	This file contains a space-separated lis=
-t of profiles supported
->>   					power consumption with a slight bias
->>   					towards performance
->>   		performance		High performance operation
->> +		max-power		Higher performance operation that may exceed
->> +					internal battery draw limits when on AC power
->
->I am not sure if it is a good idea to allow platform_profile_cycle() to c=
-ycle into this
->new max-power profile=2E The system could encounter a brownout if it is c=
-urrently operating
->on battery power when selecting max-power=2E
->
->Maybe we should prevent platform_profile_cylce() from selecting max-power=
-?
+Am Montag, dem 10.11.2025 um 14:33 +0100 schrieb Christian K=C3=B6nig:
+> Hi Bert,
+>=20
+> well sorry to say that but from your dumps it looks more and more like y=
+ou just have faulty HW.
+>=20
+> An SMU response of 0xFFFFFFFF means that the device has spontaneously fa=
+llen of the bus while trying to resume it.
+>=20
+> My educated guess is that this is caused by a faulty power management, b=
+ut basically it could be anything.
+>=20
+> Regards,
+> Christian.
 
-At least for Lenovo devices unplugging AC will automatically throttle the =
-ppt values to roughly equivalent to performance=2E It will look at a differ=
-ent WMI data block for the values when switched, so there's no risk for cyc=
-ling in this case=2E This seems like smart hardware design, but we've certa=
-inly seen bad hardware design so the concern is warranted=2E Perhaps it is =
-worth visiting if another vendor implements it differently? That being said=
-, what you're describing would match up with how the physical profile selec=
-tion button works, so it would align with consumer expectation=2E I have no=
- strong feelings either way, but I'm a little concerned about meeting the m=
-erge window as this series fixes a pretty disruptive bug affecting 6=2E17 u=
-sers=2E
+I think there may be more than one error here. The loss of the GPU (with S=
+MU respone log message) may be caused
+by faulty hardware but does not cause "the" crash (i.e. the crash which sh=
+owed no log messages and was so hard
+one of my nvme devices was missing temporarily afterward, and which caused=
+ me to investigate this in the first place ...).
 
-Regards,
-- Derek
+As bisection of the crash is impossible I went back to inserting printk()s=
+ into acpi_power_transition() and the
+functions called by it. To reduce log spam I created _debug suffixed copie=
+s of the original functions.
+The code is found here in branch amdgpu_suspend_resume:
+https://gitlab.freedesktop.org/spasswolf/linux-stable/-/commits/amdgpu_sus=
+pend_resume?ref_type=3Dheads
+(Should I post the debug patches to the list?)
 
->Other than that:
->Reviewed-by: Armin Wolf <W_Armin@gmx=2Ede>
->
->>   		custom			Driver defined custom profile
->>   		=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D	=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>   diff --git a/drivers/acpi/platform_profile=2Ec b/drivers/acpi/platfor=
-m_profile=2Ec
->> index b43f4459a4f6=2E=2Eaa1dce05121b 100644
->> --- a/drivers/acpi/platform_profile=2Ec
->> +++ b/drivers/acpi/platform_profile=2Ec
->> @@ -37,6 +37,7 @@ static const char * const profile_names[] =3D {
->>   	[PLATFORM_PROFILE_BALANCED] =3D "balanced",
->>   	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] =3D "balanced-performance",
->>   	[PLATFORM_PROFILE_PERFORMANCE] =3D "performance",
->> +	[PLATFORM_PROFILE_MAX_POWER] =3D "max-power",
->>   	[PLATFORM_PROFILE_CUSTOM] =3D "custom",
->>   };
->>   static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE_LAST)=
-;
->> diff --git a/include/linux/platform_profile=2Eh b/include/linux/platfor=
-m_profile=2Eh
->> index a299225ab92e=2E=2E855b28340e95 100644
->> --- a/include/linux/platform_profile=2Eh
->> +++ b/include/linux/platform_profile=2Eh
->> @@ -24,6 +24,7 @@ enum platform_profile_option {
->>   	PLATFORM_PROFILE_BALANCED,
->>   	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
->>   	PLATFORM_PROFILE_PERFORMANCE,
->> +	PLATFORM_PROFILE_MAX_POWER,
->>   	PLATFORM_PROFILE_CUSTOM,
->>   	PLATFORM_PROFILE_LAST, /*must always be last */
->>   };
+The last two commits finally cleared up what happens (but I've yet to find=
+ out why this happens).
 
+6.14.0-debug-00014-g2e933c56f3b6	booted 20:17, 15.11.2025 crashed 0:50, 16=
+.11.2025
+					(~4.5h, 518 GPP0 events, 393 GPU resumes)
+
+The interesting part of the instrumented code is this:
+
+acpi_status acpi_ps_parse_aml_debug(struct acpi_walk_state *walk_state)
+{
+	[...]
+	printk(KERN_INFO "%s: before walk loop\n", __func__);
+	while (walk_state) {
+		if (ACPI_SUCCESS(status)) {
+			/*
+			 * The parse_loop executes AML until the method terminates
+			 * or calls another method.
+			 */
+			status =3D acpi_ps_parse_loop(walk_state);
+		}
+	[...]
+	}
+	printk(KERN_INFO "%s: after walk loop\n", __func__);
+	[...]
+}
+
+This gives the following message in netconsole
+1. No crash:
+2025-11-16T00:50:35.634745+01:00 10.0.0.1 6,21514,16419759755,-,caller=3DT=
+59901;acpi_ps_execute_method_debug 329
+2025-11-16T00:50:35.634745+01:00 10.0.0.1 6,21515,16419759781,-,caller=3DT=
+59901;acpi_ps_parse_aml_debug: before walk loop
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21516,16420046219,-,caller=3DT=
+59901;acpi_ps_parse_aml_debug: after walk loop
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21517,16420046231,-,caller=3DT=
+59901;acpi_ps_execute_method_debug 331
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21518,16420046235,-,caller=3DT=
+59901;acpi_ns_evaluate_debug 475 METHOD
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21519,16420046240,-,caller=3DT=
+59901;acpi_evaluate_object_debug 255
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21520,16420046244,-,caller=3DT=
+59901;__acpi_power_on_debug 369
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21521,16420046248,-,caller=3DT=
+59901;acpi_power_on_unlocked_debug 446
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21522,16420046251,-,caller=3DT=
+59901;acpi_power_on_debug 471
+2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21523,16420046255,-,caller=3DT=
+59901;acpi_power_on_list_debug 642: result =3D 0
+Resume successful, normal messages from resuming GPU follow.
+
+2. Crash:
+2025-11-16T00:50:46.483555+01:00 10.0.0.1 6,21566,16430609060,-,caller=3DT=
+59702;acpi_ps_execute_method_debug 329
+2025-11-16T00:50:46.483555+01:00 10.0.0.1 6,21567,16430609083,-,caller=3DT=
+59702;acpi_ps_parse_aml_debug: before walk loop
+No more messages via netconsole due to crash.
+
+So here we can already say that the main loop in acpi_ps_parse_aml_debug()=
+ is not finishing properly.
+
+The next step is to put monitoring inside the loop:
+
+6.14.0-debug-00015-gc09fd8dd0492	booted 12:09, 16.11.2025 crashed 19:55, 1=
+6.11.2025=20
+					(~8h, 1539 GPP0 events, 587 GPU resumes) "infinite" walk loop
+
+The interesting part of the instrumented code is this:
+
+acpi_status acpi_ps_parse_aml_debug(struct acpi_walk_state *walk_state)
+{
+	[...]
+	printk(KERN_INFO "%s: before walk loop\n", __func__);
+	while (walk_state) {
+		if (ACPI_SUCCESS(status)) {
+			/*
+			 * The parse_loop executes AML until the method terminates
+			 * or calls another method.
+			 */
+			printk(KERN_INFO "%s: before parse loop\n", __func__);
+			status =3D acpi_ps_parse_loop(walk_state);
+			printk(KERN_INFO "%s: after parse loop\n", __func__);
+		}
+	[...]
+	}
+	printk(KERN_INFO "%s: after walk loop\n", __func__);
+	[...]
+}
+
+This gives the following message in netconsole
+1. No crash:
+2025-11-16T19:55:54.203765+01:00 localhost 6,5479352,28054924877,-,caller=
+=3DT5967;acpi_ps_execute_method_debug 329
+2025-11-16T19:55:54.203765+01:00 localhost 6,5479353,28054924889,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: before walk loop
+The next two lines are repeated 1500-1700 times (it varies a little ...):
+2025-11-16T19:55:54.203765+01:00 localhost 6,5479354,28054924894,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: before parse loop
+2025-11-16T19:55:54.203765+01:00 localhost 6,5479355,28054924908,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: after parse loop
+
+2025-11-16T19:55:54.498216+01:00 localhost 6,5482288,28055219778,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: after walk loop
+2025-11-16T19:55:54.498216+01:00 localhost 6,5482289,28055219782,-,caller=
+=3DT5967;acpi_ps_execute_method_debug 331
+2025-11-16T19:55:54.498233+01:00 localhost 6,5482290,28055219786,-,caller=
+=3DT5967;acpi_ns_evaluate_debug 475 METHOD
+2025-11-16T19:55:54.498233+01:00 localhost 6,5482291,28055219791,-,caller=
+=3DT5967;acpi_evaluate_object_debug 255
+2025-11-16T19:55:54.498233+01:00 localhost 6,5482292,28055219795,-,caller=
+=3DT5967;__acpi_power_on_debug 369
+2025-11-16T19:55:54.498247+01:00 localhost 6,5482293,28055219799,-,caller=
+=3DT5967;acpi_power_on_unlocked_debug 446
+2025-11-16T19:55:54.498247+01:00 localhost 6,5482294,28055219802,-,caller=
+=3DT5967;acpi_power_on_debug 471
+2025-11-16T19:55:54.498247+01:00 localhost 6,5482295,28055219806,-,caller=
+=3DT5967;acpi_power_on_list_debug 642: result =3D 0
+Resume successful, normal messages from resuming GPU follow.
+
+2. Crash:
+2025-11-16T19:56:24.213495+01:00 localhost 6,5483042,28084932950,-,caller=
+=3DT5967;acpi_ps_execute_method_debug 329
+2025-11-16T19:56:24.213495+01:00 localhost 6,5483043,28084932965,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: before walk loop
+The next two lines are repeated more than 30000 times, then the transmitio=
+n stops due to the crash:
+2025-11-16T19:56:24.213495+01:00 localhost 6,5483044,28084932971,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: before parse loop
+2025-11-16T19:56:24.213495+01:00 localhost 6,5483045,28084932991,-,caller=
+=3DT5967;acpi_ps_parse_aml_debug: after parse loop
+No more messages via netconsole due to crash.
+
+So there is some kind of infinite recursion happening inside the loop in a=
+cpi_ps_parse_aml(). Even if there is some kind
+of error in the hardware this shouldn't happen, I think.
+
+This bug is present in every kernel version I've tested so far, that is 6.=
+12.x, 6.13.x, 6.14.x,
+6.15.x, 6.16.x, 6.17.x (here I only tested the release candidates). 6.18 h=
+as not been tested, yet.
+
+To get to this result took several months of 24/7 test runs, I hope resolv=
+ing this will
+be faster.
+
+Bert Karwatzki
 
