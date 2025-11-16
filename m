@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-18920-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18921-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4657AC61833
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 17:13:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0C6C6183F
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 17:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA3544E2CA9
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 16:13:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B0A514E1E0D
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 16:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1892D8DB0;
-	Sun, 16 Nov 2025 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B523630CD91;
+	Sun, 16 Nov 2025 16:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="gN7li3/E"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="EUBzxqhP"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A5F1B87EB;
-	Sun, 16 Nov 2025 16:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6142A23B63C;
+	Sun, 16 Nov 2025 16:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763309608; cv=none; b=dQkTOh/PVOf8lzkR83kVW3XSqLUwHcvMhUQ+SuHo+MOKa/FktNKC11ZT6GjWdb7I5XHQRNpXbtDhYLCYyM5j5t5dQ7kXSeqF02bHvc4gqr+Y3cAzOp7LlR+alUebsrWx0EOgXQoVJURtYp4TYMuUlH0JFwMvIeBmfhd6eU8X3lE=
+	t=1763309674; cv=none; b=Fxi9EVZxHE9LUGzni9TQfg+SBbbnyaoubnwCFOWNEmXvPFT6VToU1EWc3EgkyiHlCfgRTF9OVQ6Jcbc5hwFXAtMC725zKvrhlILwAztCh5s8VuDDXgroN4R/TxWm1BNKuKFm5mq12H92fBhlwzfaw/vVIvUhBNJvUroal2uDupw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763309608; c=relaxed/simple;
-	bh=Zy+NvpVfCtMNygayaF4doQ3/9KnkYncazVL8q77+v3Y=;
+	s=arc-20240116; t=1763309674; c=relaxed/simple;
+	bh=KR3I0Lxry+3ncWlSaCjtdU51EkPLeOOSjCYTyVYxReI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pfmsu/zUv6caP/oe4CuNqatoxiikPjbuVboP4U4hvRLkeGSU5t0d7kUmWKreiOC9XgTvX+lkU46G263A+nW28Wxmy6/9INvOc7QGW18a1PZszNqFeMOp4ctO81GkuA+v5Wvy80ZZ2Us0V/OOdpJHHZPpTv1Sy3sumO1fR/S79o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=gN7li3/E; arc=none smtp.client-ip=212.227.15.18
+	 In-Reply-To:Content-Type; b=lyYMCVTJoy+FSmwpgHejWMTaNXok+F/E+HP2W3A+EfBgkbtqyR0UaOiCcC8rG6nfrGgJDX8VL1wATT9sFWuWTf1gSoq5sb2BmRn3e8zUKqZEbtxrAbOmDB60Gs9oC8ktyeDnvvfEzVjYNZdNHUCbRsH+hC1o+akeTquCilQ5iLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=EUBzxqhP; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1763309600; x=1763914400; i=w_armin@gmx.de;
-	bh=9cKNp6qlTLgM85Jqn0pIIWI8mNUTORXnUzHevT3dbrA=;
+	s=s31663417; t=1763309651; x=1763914451; i=w_armin@gmx.de;
+	bh=uopaM0YZk1wcWqVXfd70vgo1302+4LOzKmged/UWZFE=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=gN7li3/EkwXR6RKnsU6x3SzILUxBmtKfSePKeHLld7woKbWkKxP4hWrYRwpU7zTS
-	 nu/tZdg0kzyFgLTF+5No7wRA3iGH8vmiEYNoOPwcaO7Qx55vCNiOo+2yQ/Gy84p2i
-	 RhorHpNfzmL76r76EMtwgXXyGbCILr/g1qFFzH2doGTsfCOH89i3EyYYNp8azD3IH
-	 Scb52TC75/se6YesUOKV6jG85hNRujUmp1Epcsb37MH9qCFSl5zVwB6S4KxrWkGM7
-	 SDN0bcx9X+hzdSDwkHQ8WFyxm3LzOQfBCVBcYRzBH2QSMDMZ0iN7g/XHsImCQflzY
-	 d/XhULxijfsjRAikUQ==
+	b=EUBzxqhPANkNhz1gbUhUdvBbOksIzmSIRaIcD5STtaRYcjmDC5OBFTMnLdGn04x7
+	 BCBM0p27Wz/sZK0fdARxhCHCbl7QTgO4sT1k5CFoFpfFJYKpZELvhnGwCTpQm51km
+	 emEzHzZwp3SAjMNYMgonjpNB3CJppODy0fOIoLsyM72QW3C3FZmalMGJWU91jMgau
+	 BPQGMy6y/NslWr4HorfUMOHmUxqK5Krh0sH0DezspuzaOZGvDyJAd5UwABjR8Z+2l
+	 NMOktVO0zl8SfcyMnIrnddT+ap2j5wglfHDVZ+U/Wtcti6+gAalPwnaFJeZPSSkKQ
+	 zEtDTjRMorTerE5Wjw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.0.69] ([93.202.247.91]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDQeK-1vV5Us1hIc-002D4G; Sun, 16
- Nov 2025 17:13:20 +0100
-Message-ID: <7050cadc-9cb7-4f9b-8393-247bddb56965@gmx.de>
-Date: Sun, 16 Nov 2025 17:13:17 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1McH5a-1vschT0HPw-00iijT; Sun, 16
+ Nov 2025 17:14:11 +0100
+Message-ID: <3730c2dd-d96e-4905-9182-8752bcdc37da@gmx.de>
+Date: Sun, 16 Nov 2025 17:14:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] acpi: platform_profile - Add max-power profile
- option
+Subject: Re: [PATCH v3 2/3] platform/x86: lenovo-wmi-gamezone Use max-power
+ rather than balanced-performance
 To: "Derek J. Clark" <derekjohn.clark@gmail.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
  Len Brown <lenb@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -72,159 +72,226 @@ Cc: Mario Limonciello <superm1@kernel.org>,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org
 References: <20251113212639.459896-1-derekjohn.clark@gmail.com>
- <20251113212639.459896-2-derekjohn.clark@gmail.com>
+ <20251113212639.459896-3-derekjohn.clark@gmail.com>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20251113212639.459896-2-derekjohn.clark@gmail.com>
+In-Reply-To: <20251113212639.459896-3-derekjohn.clark@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:b2qAivA0sY8B/FqpX8lhQ77Ev66LWVOHdH7OXRgMcKIfIwexBUu
- rV+otpmHUeq5yMoDGhmD6/QTzKnB2YAX+PgcULvJOJtNJrI/in92HsZUa2vQm/8arI6n+q4
- rSTTwVUAk8/wS4sA9c6KqWwOgdSWyr+XLasBtSv54T87jOhnShZ2KUmQCvOkESmqJE/Of4f
- Mb9DFTBf0lVg79lOd0VzQ==
+X-Provags-ID: V03:K1:d4Q/LwbFZ0gV/krUxsiGb3adZtVR4ENcKvYnUA8YpXDa0LQGs3V
+ HvshP5dcbgDZkR2/RWi3JpM/8ZCTdBzvFR9RZ6LiXh2nUX46R/oI+hZbg5rzIfBlNCb6U+W
+ jibu/DGoNJ4DZlex5zd8H45pdU2yTrSuy6Epcn3NMwPOyjYzK1/RNj/WROh+8C/0PEXnWoi
+ zUuojQSVpCc+HyanbXc7Q==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:VGvFkbf6P7o=;V1bO+xjPu3JhroU0j4IwQETQC32
- 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
+UI-OutboundReport: notjunk:1;M01:P0:VdXhmRyZxEk=;LD4ZhKqooJu9EGUkTJWiYW4ziXT
+ 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
 
 Am 13.11.25 um 22:26 schrieb Derek J. Clark:
 
-> Some devices, namely Lenovo Legion devices, have an "extreme" mode where
-> power draw is at the maximum limit of the cooling hardware. Add a new
-> "max-power" platform profile to properly reflect this operating mode.
+> When developing the gamezone WMI drivers, "extreme mode" was matched to
+> the performance platform profile and "performance" was matched to the
+> balanced-performance platform profile, but only if extreme mode was
+> fully supported; otherwise performance was matched to the "performance"
+> platform profile. This has led to quite a bit of confusion with users
+> not understanding why the LED color indicating the platform profile
+> doesn't match their expectations.
 >
-> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+> To solve this, replace the confusing convention by using the new
+> max-power profile to represent "extreme mode". While add it, update the
+> documentation to reflect the expected LED colors in each operating mode.
+>
 > Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-> ---
->   Documentation/ABI/testing/sysfs-class-platform-profile | 2 ++
->   drivers/acpi/platform_profile.c                        | 1 +
->   include/linux/platform_profile.h                       | 1 +
->   3 files changed, 4 insertions(+)
->
-> diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Do=
-cumentation/ABI/testing/sysfs-class-platform-profile
-> index dc72adfb830a..fcab26894ec3 100644
-> --- a/Documentation/ABI/testing/sysfs-class-platform-profile
-> +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
-> @@ -23,6 +23,8 @@ Description:	This file contains a space-separated list=
- of profiles supported
->   					power consumption with a slight bias
->   					towards performance
->   		performance		High performance operation
-> +		max-power		Higher performance operation that may exceed
-> +					internal battery draw limits when on AC power
 
-I am not sure if it is a good idea to allow platform_profile_cycle() to cy=
-cle into this
-new max-power profile. The system could encounter a brownout if it is curr=
-ently operating
-on battery power when selecting max-power.
-
-Maybe we should prevent platform_profile_cylce() from selecting max-power?
-
-Other than that:
 Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 
->   		custom			Driver defined custom profile
->   		=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D	=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> driver
+> ---
+>   .../wmi/devices/lenovo-wmi-gamezone.rst       | 31 +++++++++----------
+>   drivers/platform/x86/lenovo/wmi-gamezone.c    | 18 +++--------
+>   2 files changed, 20 insertions(+), 29 deletions(-)
+>
+> diff --git a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst b/Documen=
+tation/wmi/devices/lenovo-wmi-gamezone.rst
+> index 997263e51a7d..1769ad3d57b9 100644
+> --- a/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
+> +++ b/Documentation/wmi/devices/lenovo-wmi-gamezone.rst
+> @@ -19,27 +19,26 @@ WMI GUID ``887B54E3-DDDC-4B2C-8B88-68A26A8835D0``
+>   The Gamezone Data WMI interface provides platform-profile and fan curv=
+e
+>   settings for devices that fall under the "Gaming Series" of Lenovo dev=
+ices.
+>   It uses a notifier chain to inform other Lenovo WMI interface drivers =
+of the
+> -current platform profile when it changes.
+> +current platform profile when it changes. The currently set profile can=
+ be
+> +determined by the user on the hardware by looking at the color of the p=
+ower
+> +or profile LED, depending on the model.
 >  =20
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
-file.c
-> index b43f4459a4f6..aa1dce05121b 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -37,6 +37,7 @@ static const char * const profile_names[] =3D {
->   	[PLATFORM_PROFILE_BALANCED] =3D "balanced",
->   	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] =3D "balanced-performance",
->   	[PLATFORM_PROFILE_PERFORMANCE] =3D "performance",
-> +	[PLATFORM_PROFILE_MAX_POWER] =3D "max-power",
->   	[PLATFORM_PROFILE_CUSTOM] =3D "custom",
->   };
->   static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE_LAST);
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_p=
-rofile.h
-> index a299225ab92e..855b28340e95 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -24,6 +24,7 @@ enum platform_profile_option {
->   	PLATFORM_PROFILE_BALANCED,
->   	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
->   	PLATFORM_PROFILE_PERFORMANCE,
-> +	PLATFORM_PROFILE_MAX_POWER,
->   	PLATFORM_PROFILE_CUSTOM,
->   	PLATFORM_PROFILE_LAST, /*must always be last */
->   };
+>   The following platform profiles are supported:
+> - - low-power
+> - - balanced
+> - - balanced-performance
+> - - performance
+> - - custom
+> + - low-power, blue LED
+> + - balanced, white LED
+> + - performance, red LED
+> + - max-power, purple LED
+> + - custom, purple LED
+>  =20
+> -Balanced-Performance
+> +Extreme Mode
+>   ~~~~~~~~~~~~~~~~~~~~
+>   Some newer Lenovo "Gaming Series" laptops have an "Extreme Mode" profi=
+le
+> -enabled in their BIOS. For these devices, the performance platform prof=
+ile
+> -corresponds to the BIOS Extreme Mode, while the balanced-performance
+> -platform profile corresponds to the BIOS Performance mode. For legacy
+> -devices, the performance platform profile will correspond with the BIOS
+> -Performance mode.
+> -
+> -For some newer devices the "Extreme Mode" profile is incomplete in the =
+BIOS
+> -and setting it will cause undefined behavior. A BIOS bug quirk table is
+> -provided to ensure these devices cannot set "Extreme Mode" from the dri=
+ver.
+> +enabled in their BIOS. When available, this mode will be represented by=
+ the
+> +max-power platform profile.
+> +
+> +For a subset of these devices the "Extreme Mode" profile is incomplete =
+in
+> +the BIOS and setting it will cause undefined behavior. A BIOS bug quirk=
+ table
+> +is provided to ensure these devices cannot set "Extreme Mode" from the =
+driver.
+>  =20
+>   Custom Profile
+>   ~~~~~~~~~~~~~~
+> diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platfo=
+rm/x86/lenovo/wmi-gamezone.c
+> index 0eb7fe8222f4..df475e52f79d 100644
+> --- a/drivers/platform/x86/lenovo/wmi-gamezone.c
+> +++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
+> @@ -171,14 +171,10 @@ static int lwmi_gz_profile_get(struct device *dev,
+>   		*profile =3D PLATFORM_PROFILE_BALANCED;
+>   		break;
+>   	case LWMI_GZ_THERMAL_MODE_PERFORMANCE:
+> -		if (priv->extreme_supported) {
+> -			*profile =3D PLATFORM_PROFILE_BALANCED_PERFORMANCE;
+> -			break;
+> -		}
+>   		*profile =3D PLATFORM_PROFILE_PERFORMANCE;
+>   		break;
+>   	case LWMI_GZ_THERMAL_MODE_EXTREME:
+> -		*profile =3D PLATFORM_PROFILE_PERFORMANCE;
+> +		*profile =3D PLATFORM_PROFILE_MAX_POWER;
+>   		break;
+>   	case LWMI_GZ_THERMAL_MODE_CUSTOM:
+>   		*profile =3D PLATFORM_PROFILE_CUSTOM;
+> @@ -218,16 +214,12 @@ static int lwmi_gz_profile_set(struct device *dev,
+>   	case PLATFORM_PROFILE_BALANCED:
+>   		mode =3D LWMI_GZ_THERMAL_MODE_BALANCED;
+>   		break;
+> -	case PLATFORM_PROFILE_BALANCED_PERFORMANCE:
+> -		mode =3D LWMI_GZ_THERMAL_MODE_PERFORMANCE;
+> -		break;
+>   	case PLATFORM_PROFILE_PERFORMANCE:
+> -		if (priv->extreme_supported) {
+> -			mode =3D LWMI_GZ_THERMAL_MODE_EXTREME;
+> -			break;
+> -		}
+>   		mode =3D LWMI_GZ_THERMAL_MODE_PERFORMANCE;
+>   		break;
+> +	case PLATFORM_PROFILE_MAX_POWER:
+> +		mode =3D LWMI_GZ_THERMAL_MODE_EXTREME;
+> +		break;
+>   	case PLATFORM_PROFILE_CUSTOM:
+>   		mode =3D LWMI_GZ_THERMAL_MODE_CUSTOM;
+>   		break;
+> @@ -338,7 +330,7 @@ static int lwmi_gz_platform_profile_probe(void *drvd=
+ata, unsigned long *choices)
+>  =20
+>   	priv->extreme_supported =3D lwmi_gz_extreme_supported(profile_support=
+_ver);
+>   	if (priv->extreme_supported)
+> -		set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, choices);
+> +		set_bit(PLATFORM_PROFILE_MAX_POWER, choices);
+>  =20
+>   	return 0;
+>   }
 
