@@ -1,37 +1,38 @@
-Return-Path: <linux-acpi+bounces-18931-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18932-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9C4C6556C
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 18:08:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B440DC6558A
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 18:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DD3284EEF6A
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 17:02:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45F654F0DED
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 17:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3783308F3B;
-	Mon, 17 Nov 2025 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0F730BF72;
+	Mon, 17 Nov 2025 17:00:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FC83081A3;
-	Mon, 17 Nov 2025 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBBE309EED;
+	Mon, 17 Nov 2025 17:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398832; cv=none; b=lrFDssLYXFVU9rOxL8feGxaUhqebC4QcxOsMlb7pyunaefkGp6N8cK2VzAiHmLWXBDxQ1wIDab2LiPKzGfzT/jMpwRhJuTEn7GLMhZaxI/W9q7NQ2Yj5C/LZWHrM5r6rHX4TPlsVsGKPMZvVA7t3CvzxgKv2v0duhcxC1hEfpOE=
+	t=1763398837; cv=none; b=o/6FQXVm2u1AyeXtimm864FenDxegU3em/nId4zVqIGtxsVe3PewIGDcmDRfpemQEnfO6RC0ZURiH1O79VDk30HZA4a3UpiSRtXuKxZsQbPXMtkoFRs7QQTOYEihOdC/1y4MD5BYXsr6/nb8y2g4Wn0MLJImnM95PURo3RdLpsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398832; c=relaxed/simple;
-	bh=1deISpGYFnErj8gLZ7+mOx7rE2oi+zQ37TMSa5741sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LhbwdQDZo/RiLKPodsn/zxPkm3yT/rQsCdfn0LzE4xKtmuP7v4RS7Q4jDYNUaykHP09lfqOW2NJEl+1u1lU/EZbqf9Ka2rdnR5keEfdkdBV5IZioMsLbcc8PTgD+FOdsqVlW7vfQsQpYDNL7QeuJDYGtM6pBbJ+mvnAwwu7WnE8=
+	s=arc-20240116; t=1763398837; c=relaxed/simple;
+	bh=aLien5MxtDJQTuxCi6SUwxUpRz9Ler3X/b+bhR9FCYQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S8/Rel1pQRsa+xira1V4K4LXMtYgff2vM5/EST9xAlFCjp89+2YrAZNW+PG03KxfI+ubFHxWREt+qJ53DAYXViWZyHv3O1/0yrzTXsBHJsW23MviZ5jN94qbDxaTt39/db0bWoIhuI6jEgU5WGijdMgLi/NU91zxbo8pGtCB+Bw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E355FEC;
-	Mon, 17 Nov 2025 09:00:21 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A0891007;
+	Mon, 17 Nov 2025 09:00:26 -0800 (PST)
 Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C422F3F66E;
-	Mon, 17 Nov 2025 09:00:23 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 150303F66E;
+	Mon, 17 Nov 2025 09:00:28 -0800 (PST)
 From: Ben Horgan <ben.horgan@arm.com>
 To: james.morse@arm.com
 Cc: amitsinght@marvell.com,
@@ -68,11 +69,15 @@ Cc: amitsinght@marvell.com,
 	tan.shaopeng@fujitsu.com,
 	will@kernel.org,
 	xhao@linux.alibaba.com,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Zeng Heng <zengheng4@huawei.com>,
 	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v5 00/34] arm_mpam: Add basic mpam driver
-Date: Mon, 17 Nov 2025 16:59:39 +0000
-Message-ID: <20251117170014.4113754-1-ben.horgan@arm.com>
+Subject: [PATCH v5 01/34] ACPI / PPTT: Add a helper to fill a cpumask from a processor container
+Date: Mon, 17 Nov 2025 16:59:40 +0000
+Message-ID: <20251117170014.4113754-2-ben.horgan@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251117170014.4113754-1-ben.horgan@arm.com>
+References: <20251117170014.4113754-1-ben.horgan@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -81,137 +86,158 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+From: James Morse <james.morse@arm.com>
 
-Not much substantial changed in this iteration. Some rework relating to
-acpi_pptt_cache and a related proposed fix in acpica. Lots of little tidy ups
-here and there.
+The ACPI MPAM table uses the UID of a processor container specified in
+the PPTT to indicate the subset of CPUs and cache topology that can
+access each MPAM System Component (MSC).
 
-Thanks for all the reviews and testing so far. As I mentioned before, it would be
-great to get this taken up quickly. There are lots more patches to come before
-we have a working MPAM story and this driver is hidden behind the expert
-config. See patches for changelogs and below for branches.
+This information is not directly useful to the kernel. The equivalent
+cpumask is needed instead.
 
-Ben
+Add a helper to find the processor container by its id, then walk
+the possible CPUs to fill a cpumask with the CPUs that have this
+processor container as a parent.
 
-Previous cover letter from James:
+CC: Dave Martin <dave.martin@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Tested-by: Peter Newman <peternewman@google.com>
+Tested-by: Carl Worth <carl@os.amperecomputing.com>
+Tested-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Zeng Heng <zengheng4@huawei.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+---
+Changes since v4:
+Remove blank line
 
-This is just enough MPAM driver for ACPI. DT got ripped out. If you need DT
-support - please share your DTS so the DT folk know the binding is what is
-needed.
-This doesn't contain any of the resctrl code, meaning you can't actually drive it
-from user-space yet. Because of that, its hidden behind CONFIG_EXPERT.
-This will change once the user interface is connected up.
+Changes since v3:
+Refer to processor hierarchy in comments (Jonathan)
+Fix indent (Jonathan)
+---
+ drivers/acpi/pptt.c  | 84 ++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/acpi.h |  3 ++
+ 2 files changed, 87 insertions(+)
 
-This is the initial group of patches that allows the resctrl code to be built
-on top. Including that will increase the number of trees that may need to
-coordinate, so breaking it up make sense.
-
-The locking got simplified, but is still strange - this is because of the 'mpam-fb'
-firmware interface specification that is still alpha. That thing needs to wait for
-an interrupt after every system register write, which significantly impacts the
-driver. Some features just won't work, e.g. reading the monitor registers via
-perf.
-
-I've not found a platform that can test all the behaviours around the monitors,
-so this is where I'd expect the most bugs.
-
-The MPAM spec that describes all the system and MMIO registers can be found here:
-https://developer.arm.com/documentation/ddi0598/db/?lang=en
-(Ignored the 'RETIRED' warning - that is just arm moving the documentation around.
- This document has the best overview)
-
-The expectation is this will go via the arm64 tree.
-
-This series is based on v6.18-rc4, and can be retrieved from:
-https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/driver/v5
-
-The rest of the driver can be found here:
-https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.18-rc4-v5
-
-What is MPAM? Set your time-machine to 2020:
-https://lore.kernel.org/lkml/20201030161120.227225-1-james.morse@arm.com/
-
-This series was previously posted here:
-[v4] https://lore.kernel.org/linux-arm-kernel/20251107123450.664001-1-ben.horgan@arm.com/
-[v3] https://lore.kernel.org/linux-arm-kernel/20251017185645.26604-1-james.morse@arm.com/
-[v2] lore.kernel.org/r/20250910204309.20751-1-james.morse@arm.com
-[v1] lore.kernel.org/r/20250822153048.2287-1-james.morse@arm.com
-[RFC] lore.kernel.org/r/20250711183648.30766-2-james.morse@arm.com
-
-Ben Horgan (5):
-  ACPI / PPTT: Add acpi_pptt_cache_v1_full to use pptt cache as one
-    structure
-  platform: Define platform_device_put cleanup handler
-  ACPI: Define acpi_put_table cleanup handler and acpi_get_table_ret()
-    helper
-  arm_mpam: Consider overflow in bandwidth counter state
-  MAINTAINERS: new entry for MPAM Driver
-
-James Morse (27):
-  ACPI / PPTT: Add a helper to fill a cpumask from a processor container
-  ACPI / PPTT: Stop acpi_count_levels() expecting callers to clear
-    levels
-  ACPI / PPTT: Find cache level by cache-id
-  ACPI / PPTT: Add a helper to fill a cpumask from a cache_id
-  arm64: kconfig: Add Kconfig entry for MPAM
-  ACPI / MPAM: Parse the MPAM table
-  arm_mpam: Add probe/remove for mpam msc driver and kbuild boiler plate
-  arm_mpam: Add the class and component structures for firmware
-    described ris
-  arm_mpam: Add MPAM MSC register layout definitions
-  arm_mpam: Add cpuhp callbacks to probe MSC hardware
-  arm_mpam: Probe hardware to find the supported partid/pmg values
-  arm_mpam: Add helpers for managing the locking around the mon_sel
-    registers
-  arm_mpam: Probe the hardware features resctrl supports
-  arm_mpam: Merge supported features during mpam_enable() into
-    mpam_class
-  arm_mpam: Reset MSC controls from cpuhp callbacks
-  arm_mpam: Add a helper to touch an MSC from any CPU
-  arm_mpam: Extend reset logic to allow devices to be reset any time
-  arm_mpam: Register and enable IRQs
-  arm_mpam: Use a static key to indicate when mpam is enabled
-  arm_mpam: Allow configuration to be applied and restored during cpu
-    online
-  arm_mpam: Probe and reset the rest of the features
-  arm_mpam: Add helpers to allocate monitors
-  arm_mpam: Add mpam_msmon_read() to read monitor value
-  arm_mpam: Track bandwidth counter state for power management
-  arm_mpam: Add helper to reset saved mbwu state
-  arm_mpam: Add kunit test for bitmap reset
-  arm_mpam: Add kunit tests for props_mismatch()
-
-Rohit Mathew (2):
-  arm_mpam: Probe for long/lwd mbwu counters
-  arm_mpam: Use long MBWU counters if supported
-
- MAINTAINERS                         |    8 +
- arch/arm64/Kconfig                  |   25 +
- drivers/Kconfig                     |    2 +
- drivers/Makefile                    |    1 +
- drivers/acpi/arm64/Kconfig          |    3 +
- drivers/acpi/arm64/Makefile         |    1 +
- drivers/acpi/arm64/mpam.c           |  411 ++++
- drivers/acpi/pptt.c                 |  282 ++-
- drivers/acpi/tables.c               |    2 +-
- drivers/resctrl/Kconfig             |   24 +
- drivers/resctrl/Makefile            |    4 +
- drivers/resctrl/mpam_devices.c      | 2723 +++++++++++++++++++++++++++
- drivers/resctrl/mpam_internal.h     |  656 +++++++
- drivers/resctrl/test_mpam_devices.c |  389 ++++
- include/linux/acpi.h                |   26 +
- include/linux/arm_mpam.h            |   66 +
- include/linux/platform_device.h     |    1 +
- 17 files changed, 4605 insertions(+), 19 deletions(-)
- create mode 100644 drivers/acpi/arm64/mpam.c
- create mode 100644 drivers/resctrl/Kconfig
- create mode 100644 drivers/resctrl/Makefile
- create mode 100644 drivers/resctrl/mpam_devices.c
- create mode 100644 drivers/resctrl/mpam_internal.h
- create mode 100644 drivers/resctrl/test_mpam_devices.c
- create mode 100644 include/linux/arm_mpam.h
-
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index 54676e3d82dd..b8248c0092fe 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -817,3 +817,87 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+ 	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+ 					  ACPI_PPTT_ACPI_IDENTICAL);
+ }
++
++/**
++ * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
++ * processor hierarchy node
++ *
++ * @table_hdr:		A reference to the PPTT table
++ * @parent_node:	A pointer to the processor hierarchy node in the
++ *			table_hdr
++ * @cpus:		A cpumask to fill with the CPUs below @parent_node
++ *
++ * Walks up the PPTT from every possible CPU to find if the provided
++ * @parent_node is a parent of this CPU.
++ */
++static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
++				     struct acpi_pptt_processor *parent_node,
++				     cpumask_t *cpus)
++{
++	struct acpi_pptt_processor *cpu_node;
++	u32 acpi_id;
++	int cpu;
++
++	cpumask_clear(cpus);
++
++	for_each_possible_cpu(cpu) {
++		acpi_id = get_acpi_id_for_cpu(cpu);
++		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
++
++		while (cpu_node) {
++			if (cpu_node == parent_node) {
++				cpumask_set_cpu(cpu, cpus);
++				break;
++			}
++			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
++		}
++	}
++}
++
++/**
++ * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
++ *                                       processor container
++ * @acpi_cpu_id:	The UID of the processor container
++ * @cpus:		The resulting CPU mask
++ *
++ * Find the specified Processor Container, and fill @cpus with all the cpus
++ * below it.
++ *
++ * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
++ * or a Processor Container, they may exist purely to describe a
++ * Private resource. CPUs have to be leaves, so a Processor Container
++ * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
++ */
++void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
++{
++	struct acpi_table_header *table_hdr;
++	struct acpi_subtable_header *entry;
++	unsigned long table_end;
++	u32 proc_sz;
++
++	cpumask_clear(cpus);
++
++	table_hdr = acpi_get_pptt();
++	if (!table_hdr)
++		return;
++
++	table_end = (unsigned long)table_hdr + table_hdr->length;
++	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
++			     sizeof(struct acpi_table_pptt));
++	proc_sz = sizeof(struct acpi_pptt_processor);
++	while ((unsigned long)entry + proc_sz <= table_end) {
++		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
++			struct acpi_pptt_processor *cpu_node;
++
++			cpu_node = (struct acpi_pptt_processor *)entry;
++			if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
++			    !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
++			    cpu_node->acpi_processor_id == acpi_cpu_id) {
++				acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
++				break;
++			}
++		}
++		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
++				     entry->length);
++	}
++}
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 5ff5d99f6ead..4752ebd48132 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
+ int find_acpi_cpu_topology_cluster(unsigned int cpu);
+ int find_acpi_cpu_topology_package(unsigned int cpu);
+ int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
++void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
+ #else
+ static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+ {
+@@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+ {
+ 	return -EINVAL;
+ }
++static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
++						     cpumask_t *cpus) { }
+ #endif
+ 
+ void acpi_arch_init(void);
 -- 
 2.43.0
 
