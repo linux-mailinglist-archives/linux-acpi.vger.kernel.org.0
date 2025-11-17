@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-18938-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18939-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E8CC65692
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 18:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F938C656AE
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 18:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 205023865B2
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 17:05:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 48E1335FF7E
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 17:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16772313283;
-	Mon, 17 Nov 2025 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068AB3074AD;
+	Mon, 17 Nov 2025 17:01:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E471307481;
-	Mon, 17 Nov 2025 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7904C3074A9;
+	Mon, 17 Nov 2025 17:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398869; cv=none; b=Z7OKdrIg3fu0O2/NNGBRmsOI34cbK0xOdneQIwKje8dENcAT/2oZbmUvU1hpHGBzgVLi8FMJFdcIQXnnOe4CHJ3cxY/PMs84GFvAB+ZOPwxwyxm3txIIa7s3W8If/cUoplbxbb6lBEEpCUe7QJBwviVWDIZuQUyV7MUrthVgN24=
+	t=1763398873; cv=none; b=BFyhGH8Kh6b/r4CIO1tkv5Gj5WzLSnP0NB8dXhKLqg2UrGL7yd8C0qy/YuvDAwXT82dIi2bdzdkvxmqDgO2H65wRzYiKgFxIg0sbzhCEHStb60FBesEKOwylALnOLOqEAX9/1Cdd9FKAOp05oPXYMhrniyOfjfLRTVcmiLLho1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398869; c=relaxed/simple;
-	bh=btjKQIA717Jpmy3ABgzfMFMtgfyRRLvYuVxkqVTSjls=;
+	s=arc-20240116; t=1763398873; c=relaxed/simple;
+	bh=gucB8uVQ9x9kSZGi9HFbH1Lpob0U6wIAr+Z1vVHfdp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXwaxqBq62A5AVs7/rNVT66cvhT6phkRn4S8O0iwqwlBHnpmfUv3xQyyn9AIgl+HemTieklZSQSxjRcJvIl6LRvUOf2F0YRy7BFBUoHuixeyA/nt5+nEOs4Vf8Lq1UTy5BlJ3zub2t0PJiE9ko+NLvis+1Mtlj/PcSVqTwdOufA=
+	 MIME-Version; b=j/4b7nnCo3hB4GKPWCDDbFmdpZ5VUYgeVLPAYAHR2nGM79bmo9PMjxl165HBlgLYgfKPTFWozJeYNVX11nhjHReWUxuEAsbBxEdXyXZs5yQlEQixuY/OHBht7fN7ChjdG1PkUdw4COWVNKx0Aim+mC5YkimNlU2/eWOwaBVUt64=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24EA81007;
-	Mon, 17 Nov 2025 09:00:59 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7AC4AFEC;
+	Mon, 17 Nov 2025 09:01:04 -0800 (PST)
 Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AF7113F66E;
-	Mon, 17 Nov 2025 09:01:01 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0CAFA3F66E;
+	Mon, 17 Nov 2025 09:01:06 -0800 (PST)
 From: Ben Horgan <ben.horgan@arm.com>
 To: james.morse@arm.com
 Cc: amitsinght@marvell.com,
@@ -70,11 +70,11 @@ Cc: amitsinght@marvell.com,
 	will@kernel.org,
 	xhao@linux.alibaba.com,
 	Ben Horgan <ben.horgan@arm.com>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Subject: [PATCH v5 07/34] platform: Define platform_device_put cleanup handler
-Date: Mon, 17 Nov 2025 16:59:46 +0000
-Message-ID: <20251117170014.4113754-8-ben.horgan@arm.com>
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Zeng Heng <zengheng4@huawei.com>
+Subject: [PATCH v5 08/34] ACPI: Define acpi_put_table cleanup handler and acpi_get_table_ret() helper
+Date: Mon, 17 Nov 2025 16:59:47 +0000
+Message-ID: <20251117170014.4113754-9-ben.horgan@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251117170014.4113754-1-ben.horgan@arm.com>
 References: <20251117170014.4113754-1-ben.horgan@arm.com>
@@ -86,15 +86,16 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Define a cleanup helper for use with __free to destroy platform devices
-automatically when the pointer goes out of scope. This is only intended to
-be used in error cases and so should be used with return_ptr() or
-no_free_ptr() directly to avoid the automatic destruction on success.
+Define a cleanup helper for use with __free to release the acpi table when
+the pointer goes out of scope. Also, introduce the helper
+acpi_get_table_ret() to simplify a commonly used pattern involving
+acpi_get_table().
 
-A first use of this is introduced in a subsequent commit.
+These are first used in a subsequent commit.
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 Tested-by: Carl Worth <carl@os.amperecomputing.com>
@@ -103,21 +104,39 @@ Tested-by: Zeng Heng <zengheng4@huawei.com>
 Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 ---
- include/linux/platform_device.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/acpi.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 074754c23d33..23a30ada2d4c 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -232,6 +232,7 @@ extern int platform_device_add_data(struct platform_device *pdev,
- extern int platform_device_add(struct platform_device *pdev);
- extern void platform_device_del(struct platform_device *pdev);
- extern void platform_device_put(struct platform_device *pdev);
-+DEFINE_FREE(platform_device_put, struct platform_device *, if (_T) platform_device_put(_T))
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index a9dbacabdf89..1124b7dc79fd 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -8,6 +8,7 @@
+ #ifndef _LINUX_ACPI_H
+ #define _LINUX_ACPI_H
  
- struct platform_driver {
- 	int (*probe)(struct platform_device *);
++#include <linux/cleanup.h>
+ #include <linux/errno.h>
+ #include <linux/ioport.h>	/* for struct resource */
+ #include <linux/resource_ext.h>
+@@ -221,6 +222,17 @@ void acpi_reserve_initial_tables (void);
+ void acpi_table_init_complete (void);
+ int acpi_table_init (void);
+ 
++static inline struct acpi_table_header *acpi_get_table_ret(char *signature, u32 instance)
++{
++	struct acpi_table_header *table;
++	int status = acpi_get_table(signature, instance, &table);
++
++	if (ACPI_FAILURE(status))
++		return ERR_PTR(-ENOENT);
++	return table;
++}
++DEFINE_FREE(acpi_put_table, struct acpi_table_header *, if (!IS_ERR_OR_NULL(_T)) acpi_put_table(_T))
++
+ int acpi_table_parse(char *id, acpi_tbl_table_handler handler);
+ int __init_or_acpilib acpi_table_parse_entries(char *id,
+ 		unsigned long table_size, int entry_id,
 -- 
 2.43.0
 
