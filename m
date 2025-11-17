@@ -1,344 +1,237 @@
-Return-Path: <linux-acpi+bounces-18925-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18926-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050CDC61D44
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 22:09:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227BCC61F2D
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 01:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98EC13A8919
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Nov 2025 21:09:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83C4C35BCA4
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Nov 2025 00:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53564247281;
-	Sun, 16 Nov 2025 21:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3281448E0;
+	Mon, 17 Nov 2025 00:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="TqPLhN/E"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="q9ETm0Ak"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9032C1DED4C;
-	Sun, 16 Nov 2025 21:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBC345C0B;
+	Mon, 17 Nov 2025 00:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763327350; cv=none; b=HgBfJmqIQkzscDjEzq8CPj/qTW71NNJOM1OlSzK+fvhBcLj4mlEz1GUxl+AdzFiJWSiqKO7beyiSSfm2uRSEZ7qZBNu2ZInaJWuh0UXJcYoEL3PVQXqIzyo7yybbcj0bwARXsbcS147bHJGQEmqYPqhVrYPn3ThluTjfzRkaYb4=
+	t=1763338900; cv=none; b=brxCp89ATILoH/F530qAYCqcIUN43qlpeIBu9XhF0HNE82LVwpjHBn9WrnAinz7+VkDdQnZANBl1rOYtCaskN9xHfrU/F8Xbs3HyZENTaH7SbYj19YSFcj18r8Ll6eGmsUVH2Rkd5P+ZtTa6dhstZZlPjEgudvFWN3sNHfRe21s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763327350; c=relaxed/simple;
-	bh=hDbzqfWxD3g3Yjt2W/La7aCBsFh6EBwI3gv4abUoYrs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pcAnwXFx9HNSEz8TAx0DHRQgrij+TsKe5mrX75oPt70Fvpbb+fN7DVxESRDlMSZYyb9gkxJJ1uJhte+wJqYoLUFXuo+QSRHtKVhUah8p43E+uJIqsMSfN/ef4/mXkr+2REQz1g0IvfCDhoYw31niJZoG2qWrlebcPWIBiOF29Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=TqPLhN/E; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1763327336; x=1763932136; i=spasswolf@web.de;
-	bh=H34mB2us/ARTGeJI9/zWf+TinG8f+xy61EW5M3DNobQ=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=TqPLhN/Ex9Qya+ja+vKONU4PnhUh0FC1WdKYy2zHE8wGRcSz26PpzchRlKRA6/hF
-	 NbF39nGmUpckxaifKbSmJ8TNDmDF8ceqznE1gP1JrUXarI515Ud/9M0EeMpp9rhJ2
-	 S5VksJF8XZDRb5GwmSzFcxB+fRWnwTOrfv8q1iPR7XM0kqc1iF/AUa+i0PBHmHjYj
-	 vXliov0aqphWk0PEDsPfwjxMIiDicgrFuRZO4NYnw4rLPFfQ13HfonStumRR2/TIN
-	 YQ751XlBW5Avs0WIS+UE0PudFKSPnQsyK+/AB4mC8ZUGRFhpJw801KVBmtyNqnR53
-	 TTcueGCBjhoD4htExA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N4621-1wKman0DqL-011qDw; Sun, 16
- Nov 2025 22:08:56 +0100
-Message-ID: <3f790ee59129e5e49dd875526cb308cc4d97b99d.camel@web.de>
-Subject: Re: Crash during resume of pcie bridge due to infinite loop in
- ACPICA
-From: Bert Karwatzki <spasswolf@web.de>
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, "Mario
- Limonciello (AMD) (kernel.org)"
-	 <superm1@kernel.org>, linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
-	 <rafael.j.wysocki@intel.com>, spasswolf@web.de,
- acpica-devel@lists.linux.dev,  Robert Moore <robert.moore@intel.com>
-Date: Sun, 16 Nov 2025 22:08:54 +0100
-In-Reply-To: <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
-References: <20251006120944.7880-1-spasswolf@web.de>
-	 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
-	 <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
-	 <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
-	 <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
-	 <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
-	 <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
-	 <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
-	 <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
-	 <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
-	 <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
-	 <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
-	 <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
-	 <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1763338900; c=relaxed/simple;
+	bh=K2XzxeRxAj4pQZnP5TrJovV8B20SAYmi6b+U1eqsstc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sgr/TwoQekMbWP5KgEy9VnQumYcIb2jehDjSUCdAzWGxFTV3iuelJtM1d5R6JNIKRcFIOwJ103utIOv3ia0ByFhXWfm+xVsXIDuUvxOl9soMKvXhWU3bxGtlwQYy3P7CAOiWYC2XuKT1P/jfMfSuKAk+1TjcY1CperKm4IRIIU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=q9ETm0Ak; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1763338883; x=1763943683; i=w_armin@gmx.de;
+	bh=HyST/SII1VyW6P5EddT1+goaN9hsWo1UjQqlI8D9dEc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=q9ETm0AkSASdebIeUGSOOekDqoueT6NEVb1za60PU8qAzeQftSOQ3567+XmSra7Z
+	 /MtH852whvgph3uSiMMVo43YJc0NDfRo7vyK5pm7RuxYkSu+G7B8/2DtCK7F9+iVF
+	 Ufglspy43BUg+cDxAbhHVHpbwUfNbJI8CguxDzFoVZS6uWAn0AMtPfYl+zsuw9dyX
+	 wOtOMymP8X9hPhcY9kVg4UulWdJxn+9fq1Jhz21SvodyGa5F7CAgf4P8xVDZrOrwN
+	 CshnAf5xhAw8S6D5sjPQJIOTLcdUalQH6+9Re0Fy2A49sP6sDvnRqBr9jtl3IhaKb
+	 gsL8reKqeXo59iGDnw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([93.202.247.91]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MG9kC-1vO4GV1JrY-008cgE; Mon, 17
+ Nov 2025 01:21:23 +0100
+Message-ID: <e801bef5-158e-4422-9c23-93dc2210f734@gmx.de>
+Date: Mon, 17 Nov 2025 01:21:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5jb8xiLJso85XyLQcTc4dt4y5Sq7bFIMRmt4LVPzD9SK4tg3L5n
- /XEyvRoMEqK5xr0VbUIM6H0IR/9xorOfvZj+FiM+eCf+gQr7MGKp7KVLVF9i2B1nUoyT6J6
- c5JMHg+IuBBJZFDXkrW6p/n9zYUWBAYyLscq5WV93S6WEplCM2SKscUOD29HvnZMicx0mUb
- D4dqfL6S7l0lYICNoSZoA==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] acpi: platform_profile - Add max-power profile
+ option
+To: "Derek J. Clark" <derekjohn.clark@gmail.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Len Brown <lenb@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: Mario Limonciello <superm1@kernel.org>,
+ Zhixin Zhang <zhangzx36@lenovo.com>, Mia Shao <shaohz1@lenovo.com>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
+ Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <20251113212639.459896-1-derekjohn.clark@gmail.com>
+ <20251113212639.459896-2-derekjohn.clark@gmail.com>
+ <7050cadc-9cb7-4f9b-8393-247bddb56965@gmx.de>
+ <CFD27662-0044-4AF3-8E66-65229324CECF@gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CFD27662-0044-4AF3-8E66-65229324CECF@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:CSGK0mezaJE1xhRq76VaK+U6B/Tz5/wfANA5pCeo8ZnSb5HkEji
+ O0CGfYyST0Fvf5j/M7oeVeCL6yF2Au05DoxCsXuBNQfTmneaM/CzgDo0/bc8DyB9cq3Z3rB
+ 7nqdL3+GYJ+pJ1xKuxwcOtozR9EfMl7SjmY1o/ejhLmq9DEAoX3vav5kr6DRdYUdxnwrB8r
+ aHh3jiHnV8PxmUQaJGwQw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lQREV7KdzKc=;qxsGyEUsWcBl2G4dSvsgqJGuuK0
- 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
- IrHiDGPesjfh/8zK2rmbLAvJe1iC7
+UI-OutboundReport: notjunk:1;M01:P0:SMJUWIVD0Io=;L7uUC+W5hY3sEJJfIY16w61Y1rb
+ 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
 
-Am Montag, dem 10.11.2025 um 14:33 +0100 schrieb Christian K=C3=B6nig:
-> Hi Bert,
->=20
-> well sorry to say that but from your dumps it looks more and more like y=
-ou just have faulty HW.
->=20
-> An SMU response of 0xFFFFFFFF means that the device has spontaneously fa=
-llen of the bus while trying to resume it.
->=20
-> My educated guess is that this is caused by a faulty power management, b=
-ut basically it could be anything.
->=20
+Am 16.11.25 um 20:01 schrieb Derek J. Clark:
+
+> On November 16, 2025 8:13:17 AM PST, Armin Wolf <W_Armin@gmx.de> wrote:
+>> Am 13.11.25 um 22:26 schrieb Derek J. Clark:
+>>
+>>> Some devices, namely Lenovo Legion devices, have an "extreme" mode where
+>>> power draw is at the maximum limit of the cooling hardware. Add a new
+>>> "max-power" platform profile to properly reflect this operating mode.
+>>>
+>>> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+>>> Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+>>> Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+>>> ---
+>>>    Documentation/ABI/testing/sysfs-class-platform-profile | 2 ++
+>>>    drivers/acpi/platform_profile.c                        | 1 +
+>>>    include/linux/platform_profile.h                       | 1 +
+>>>    3 files changed, 4 insertions(+)
+>>>
+>>> diff --git a/Documentation/ABI/testing/sysfs-class-platform-profile b/Documentation/ABI/testing/sysfs-class-platform-profile
+>>> index dc72adfb830a..fcab26894ec3 100644
+>>> --- a/Documentation/ABI/testing/sysfs-class-platform-profile
+>>> +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
+>>> @@ -23,6 +23,8 @@ Description:	This file contains a space-separated list of profiles supported
+>>>    					power consumption with a slight bias
+>>>    					towards performance
+>>>    		performance		High performance operation
+>>> +		max-power		Higher performance operation that may exceed
+>>> +					internal battery draw limits when on AC power
+>> I am not sure if it is a good idea to allow platform_profile_cycle() to cycle into this
+>> new max-power profile. The system could encounter a brownout if it is currently operating
+>> on battery power when selecting max-power.
+>>
+>> Maybe we should prevent platform_profile_cylce() from selecting max-power?
+> At least for Lenovo devices unplugging AC will automatically throttle the ppt values to roughly equivalent to performance. It will look at a different WMI data block for the values when switched, so there's no risk for cycling in this case. This seems like smart hardware design, but we've certainly seen bad hardware design so the concern is warranted. Perhaps it is worth visiting if another vendor implements it differently? That being said, what you're describing would match up with how the physical profile selection button works, so it would align with consumer expectation. I have no strong feelings either way, but I'm a little concerned about meeting the merge window as this series fixes a pretty disruptive bug affecting 6.17 users.
+>
 > Regards,
-> Christian.
+> - Derek
+>
+If the physical platform selection button does not automatically select the max-power profile under Windows, then we should copy this behavior i think.
+The changes necessary for that are fairly small, basically you only have to extend the handling of PLATFORM_PROFILE_CUSTOM inside platform_profile_cycle()
+to also include the max-power profile. So i would prefer if we modify platform_profile_cycle() now has doing this later might be seen as a regression.
 
-I think there may be more than one error here. The loss of the GPU (with S=
-MU respone log message) may be caused
-by faulty hardware but does not cause "the" crash (i.e. the crash which sh=
-owed no log messages and was so hard
-one of my nvme devices was missing temporarily afterward, and which caused=
- me to investigate this in the first place ...).
+Thanks,
+Armin Wolf
 
-As bisection of the crash is impossible I went back to inserting printk()s=
- into acpi_power_transition() and the
-functions called by it. To reduce log spam I created _debug suffixed copie=
-s of the original functions.
-The code is found here in branch amdgpu_suspend_resume:
-https://gitlab.freedesktop.org/spasswolf/linux-stable/-/commits/amdgpu_sus=
-pend_resume?ref_type=3Dheads
-(Should I post the debug patches to the list?)
-
-The last two commits finally cleared up what happens (but I've yet to find=
- out why this happens).
-
-6.14.0-debug-00014-g2e933c56f3b6	booted 20:17, 15.11.2025 crashed 0:50, 16=
-.11.2025
-					(~4.5h, 518 GPP0 events, 393 GPU resumes)
-
-The interesting part of the instrumented code is this:
-
-acpi_status acpi_ps_parse_aml_debug(struct acpi_walk_state *walk_state)
-{
-	[...]
-	printk(KERN_INFO "%s: before walk loop\n", __func__);
-	while (walk_state) {
-		if (ACPI_SUCCESS(status)) {
-			/*
-			 * The parse_loop executes AML until the method terminates
-			 * or calls another method.
-			 */
-			status =3D acpi_ps_parse_loop(walk_state);
-		}
-	[...]
-	}
-	printk(KERN_INFO "%s: after walk loop\n", __func__);
-	[...]
-}
-
-This gives the following message in netconsole
-1. No crash:
-2025-11-16T00:50:35.634745+01:00 10.0.0.1 6,21514,16419759755,-,caller=3DT=
-59901;acpi_ps_execute_method_debug 329
-2025-11-16T00:50:35.634745+01:00 10.0.0.1 6,21515,16419759781,-,caller=3DT=
-59901;acpi_ps_parse_aml_debug: before walk loop
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21516,16420046219,-,caller=3DT=
-59901;acpi_ps_parse_aml_debug: after walk loop
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21517,16420046231,-,caller=3DT=
-59901;acpi_ps_execute_method_debug 331
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21518,16420046235,-,caller=3DT=
-59901;acpi_ns_evaluate_debug 475 METHOD
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21519,16420046240,-,caller=3DT=
-59901;acpi_evaluate_object_debug 255
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21520,16420046244,-,caller=3DT=
-59901;__acpi_power_on_debug 369
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21521,16420046248,-,caller=3DT=
-59901;acpi_power_on_unlocked_debug 446
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21522,16420046251,-,caller=3DT=
-59901;acpi_power_on_debug 471
-2025-11-16T00:50:35.921210+01:00 10.0.0.1 6,21523,16420046255,-,caller=3DT=
-59901;acpi_power_on_list_debug 642: result =3D 0
-Resume successful, normal messages from resuming GPU follow.
-
-2. Crash:
-2025-11-16T00:50:46.483555+01:00 10.0.0.1 6,21566,16430609060,-,caller=3DT=
-59702;acpi_ps_execute_method_debug 329
-2025-11-16T00:50:46.483555+01:00 10.0.0.1 6,21567,16430609083,-,caller=3DT=
-59702;acpi_ps_parse_aml_debug: before walk loop
-No more messages via netconsole due to crash.
-
-So here we can already say that the main loop in acpi_ps_parse_aml_debug()=
- is not finishing properly.
-
-The next step is to put monitoring inside the loop:
-
-6.14.0-debug-00015-gc09fd8dd0492	booted 12:09, 16.11.2025 crashed 19:55, 1=
-6.11.2025=20
-					(~8h, 1539 GPP0 events, 587 GPU resumes) "infinite" walk loop
-
-The interesting part of the instrumented code is this:
-
-acpi_status acpi_ps_parse_aml_debug(struct acpi_walk_state *walk_state)
-{
-	[...]
-	printk(KERN_INFO "%s: before walk loop\n", __func__);
-	while (walk_state) {
-		if (ACPI_SUCCESS(status)) {
-			/*
-			 * The parse_loop executes AML until the method terminates
-			 * or calls another method.
-			 */
-			printk(KERN_INFO "%s: before parse loop\n", __func__);
-			status =3D acpi_ps_parse_loop(walk_state);
-			printk(KERN_INFO "%s: after parse loop\n", __func__);
-		}
-	[...]
-	}
-	printk(KERN_INFO "%s: after walk loop\n", __func__);
-	[...]
-}
-
-This gives the following message in netconsole
-1. No crash:
-2025-11-16T19:55:54.203765+01:00 localhost 6,5479352,28054924877,-,caller=
-=3DT5967;acpi_ps_execute_method_debug 329
-2025-11-16T19:55:54.203765+01:00 localhost 6,5479353,28054924889,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: before walk loop
-The next two lines are repeated 1500-1700 times (it varies a little ...):
-2025-11-16T19:55:54.203765+01:00 localhost 6,5479354,28054924894,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: before parse loop
-2025-11-16T19:55:54.203765+01:00 localhost 6,5479355,28054924908,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: after parse loop
-
-2025-11-16T19:55:54.498216+01:00 localhost 6,5482288,28055219778,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: after walk loop
-2025-11-16T19:55:54.498216+01:00 localhost 6,5482289,28055219782,-,caller=
-=3DT5967;acpi_ps_execute_method_debug 331
-2025-11-16T19:55:54.498233+01:00 localhost 6,5482290,28055219786,-,caller=
-=3DT5967;acpi_ns_evaluate_debug 475 METHOD
-2025-11-16T19:55:54.498233+01:00 localhost 6,5482291,28055219791,-,caller=
-=3DT5967;acpi_evaluate_object_debug 255
-2025-11-16T19:55:54.498233+01:00 localhost 6,5482292,28055219795,-,caller=
-=3DT5967;__acpi_power_on_debug 369
-2025-11-16T19:55:54.498247+01:00 localhost 6,5482293,28055219799,-,caller=
-=3DT5967;acpi_power_on_unlocked_debug 446
-2025-11-16T19:55:54.498247+01:00 localhost 6,5482294,28055219802,-,caller=
-=3DT5967;acpi_power_on_debug 471
-2025-11-16T19:55:54.498247+01:00 localhost 6,5482295,28055219806,-,caller=
-=3DT5967;acpi_power_on_list_debug 642: result =3D 0
-Resume successful, normal messages from resuming GPU follow.
-
-2. Crash:
-2025-11-16T19:56:24.213495+01:00 localhost 6,5483042,28084932950,-,caller=
-=3DT5967;acpi_ps_execute_method_debug 329
-2025-11-16T19:56:24.213495+01:00 localhost 6,5483043,28084932965,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: before walk loop
-The next two lines are repeated more than 30000 times, then the transmitio=
-n stops due to the crash:
-2025-11-16T19:56:24.213495+01:00 localhost 6,5483044,28084932971,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: before parse loop
-2025-11-16T19:56:24.213495+01:00 localhost 6,5483045,28084932991,-,caller=
-=3DT5967;acpi_ps_parse_aml_debug: after parse loop
-No more messages via netconsole due to crash.
-
-So there is some kind of infinite recursion happening inside the loop in a=
-cpi_ps_parse_aml(). Even if there is some kind
-of error in the hardware this shouldn't happen, I think.
-
-This bug is present in every kernel version I've tested so far, that is 6.=
-12.x, 6.13.x, 6.14.x,
-6.15.x, 6.16.x, 6.17.x (here I only tested the release candidates). 6.18 h=
-as not been tested, yet.
-
-To get to this result took several months of 24/7 test runs, I hope resolv=
-ing this will
-be faster.
-
-Bert Karwatzki
+>> Other than that:
+>> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+>>
+>>>    		custom			Driver defined custom profile
+>>>    		====================	========================================
+>>>    diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+>>> index b43f4459a4f6..aa1dce05121b 100644
+>>> --- a/drivers/acpi/platform_profile.c
+>>> +++ b/drivers/acpi/platform_profile.c
+>>> @@ -37,6 +37,7 @@ static const char * const profile_names[] = {
+>>>    	[PLATFORM_PROFILE_BALANCED] = "balanced",
+>>>    	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] = "balanced-performance",
+>>>    	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
+>>> +	[PLATFORM_PROFILE_MAX_POWER] = "max-power",
+>>>    	[PLATFORM_PROFILE_CUSTOM] = "custom",
+>>>    };
+>>>    static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+>>> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+>>> index a299225ab92e..855b28340e95 100644
+>>> --- a/include/linux/platform_profile.h
+>>> +++ b/include/linux/platform_profile.h
+>>> @@ -24,6 +24,7 @@ enum platform_profile_option {
+>>>    	PLATFORM_PROFILE_BALANCED,
+>>>    	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+>>>    	PLATFORM_PROFILE_PERFORMANCE,
+>>> +	PLATFORM_PROFILE_MAX_POWER,
+>>>    	PLATFORM_PROFILE_CUSTOM,
+>>>    	PLATFORM_PROFILE_LAST, /*must always be last */
+>>>    };
+>
 
