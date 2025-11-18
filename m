@@ -1,199 +1,246 @@
-Return-Path: <linux-acpi+bounces-19003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73091C682D3
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 09:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957A1C68399
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 09:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 054E94F0AD0
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 08:17:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5879E4E2D9F
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 08:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9F3246BA8;
-	Tue, 18 Nov 2025 08:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A6A3002B5;
+	Tue, 18 Nov 2025 08:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TLau1Is7"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="TQ2O7g5X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010005.outbound.protection.outlook.com [52.101.46.5])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70F83081D0;
-	Tue, 18 Nov 2025 08:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763453871; cv=fail; b=XQa64/ZyN5otxpDX0EGfKfVjvPeq9f7QcWkPejY8iXSTsm0IG8Mx09RpalkPijuuME1TEdQYpj25WnKGAtnN8KS+Wx781V0o5pTFQu+nQlQzK1SFk/I2AcgnILxEHZJGi6bZhwHtlfQ6iImtzlmHdUSv/g/64W6bnwAHVHPRzMo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763453871; c=relaxed/simple;
-	bh=jIcpdh9dBj4mqj+aIdR8y5lS+TWPMtDkMvKHnGVuvGM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O4nF3jP7gkd1Okup0idnPKc5reLdzIY5k2Qwd4804fLIxWacmV1MCLtXA5R6HTwbOW4Iayou7FoQYdaItlQqp4BJEdbQluuRkpKNO1W5vV+flj3dl60KmUuNiYxD/DSzJVz92+moQfuowSLrb0mOaz/n/EHPeJEqOllYQMy+/iU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TLau1Is7; arc=fail smtp.client-ip=52.101.46.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dnA/olFp1FR9jAmjA9pivnLy2Nf91cL9vd18ajy+4+bK7abxciUpYvhSNFbBbwVJcBMZbgFdD0iXEHystq+HUJbG54C/jaVgoiWP2KfTUJCxl+oV5yA+2aZnfj+uSkPrg4uQaq/g1ISJXqAh5fDwWHSAL/dQiRUqcVz6trsqrIpRhv3K9KrWcr8xdupLXhS9YSeAuJZ3eqE/sodb0xzgl1vynGo5bHjH6eoWSYwaH68KFjdNlBbgJiTjoD+6ZSJTgDvhTD1O3Ii2LDsDxRkrsMZUT34Ydo43kAwNk2JfdWUK3N1lwoyGY+gqRCVs9jbPSdQVefj2BwKWz9IGHlnWBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2+WJ8N2Cf9h1AXY4Va9cV50qzJBjWoeZwku+rFJoA0M=;
- b=HI21baN+PeaoS098+sCYQe/goty8SbeOOFmQxOhAdwPZoQ4IaamQ4bW1wnYFOPQy6DSVesAfQcDRWBLO+9czVdCiBxS0ZgS3IvH+OJpON+22zGIRh/iIMJkjNhnOa/bUVKJjCn649bR09E0I7XOw87SQi8pTBL1NwjUUGHkf2K5PBQfBjcTeI7HCOgFmVzbnhkwwGDRXMIitWG24dZbXE2WNKRf62shTaAFr7iq3pxYjCIYxisSO9B3w39VQl+ggvybUe2uXOYGuKKaeNaaQUAovg52x1uf05HKWMNWfZ+2bZ3NAa+rzybLSOc2lzLUXh6Zvn1/vPWRz3uvM5/PjTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2+WJ8N2Cf9h1AXY4Va9cV50qzJBjWoeZwku+rFJoA0M=;
- b=TLau1Is7NVz/4PbKautMkGaU3YMgf/BRqIVJLnrGnh395drg5iFzVtKageqt3D3D7ao9xsjlSAST9qJkeLe6CksW0VPv06lmUcM/tT30whuhWAxofc5EedNKrebIIHcJmCl6GKBMFZY0DBRFsRibu8WMHKdpfJQIFqucVsGVwGiqODgZoZ8hPOk1bN9XVQBcd9mF0VakI2l+Jf0swSbsEgr9l+kBeAYqXnk7Ua9pftLDtnM1KQ7iuAQtl0k1ICznYn4+7+3gjmU5CIvFJgyYqzExfktlEVmtCs0IENt7j59s/IW6XsVsZU2Y7e+Cxj2rfh+QxHYiqkUj1ShjVGjSdw==
-Received: from MW4PR04CA0279.namprd04.prod.outlook.com (2603:10b6:303:89::14)
- by IA0PR12MB8205.namprd12.prod.outlook.com (2603:10b6:208:400::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Tue, 18 Nov
- 2025 08:17:45 +0000
-Received: from SJ1PEPF000023D7.namprd21.prod.outlook.com
- (2603:10b6:303:89:cafe::87) by MW4PR04CA0279.outlook.office365.com
- (2603:10b6:303:89::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Tue,
- 18 Nov 2025 08:17:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000023D7.mail.protection.outlook.com (10.167.244.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.1 via Frontend Transport; Tue, 18 Nov 2025 08:17:44 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
- 2025 00:17:28 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
- 2025 00:17:27 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 18 Nov 2025 00:17:26 -0800
-Date: Tue, 18 Nov 2025 00:17:24 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-CC: "joro@8bytes.org" <joro@8bytes.org>, "afael@kernel.org"
-	<afael@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"alex@shazbot.org" <alex@shazbot.org>, "jgg@nvidia.com" <jgg@nvidia.com>,
-	"will@kernel.org" <will@kernel.org>, "robin.murphy@arm.com"
-	<robin.murphy@arm.com>, "lenb@kernel.org" <lenb@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "iommu@lists.linux.dev"
-	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, "Jaroszynski, Piotr"
-	<pjaroszynski@nvidia.com>, "Sethi, Vikram" <vsethi@nvidia.com>,
-	"helgaas@kernel.org" <helgaas@kernel.org>, "etzhao1900@gmail.com"
-	<etzhao1900@gmail.com>
-Subject: Re: [PATCH v5 5/5] pci: Suspend iommu function prior to resetting a
- device
-Message-ID: <aRwrlOfuFWa8ODQK@Asurada-Nvidia>
-References: <cover.1762835355.git.nicolinc@nvidia.com>
- <a166b07a254d3becfcb0f86e4911af556acbe2a9.1762835355.git.nicolinc@nvidia.com>
- <BN9PR11MB52762516D6259BBD8C3740518CCAA@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aRduRi8zBHdUe4KO@Asurada-Nvidia>
- <BN9PR11MB52761B6B1751BF64AEAA3F948CC9A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aRt2/0rcdjcGk1Z1@Asurada-Nvidia>
- <BN9PR11MB527649AD7D251EAAFDFB753A8CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aRvO9KWjWC5rk/Vx@Asurada-Nvidia>
- <BN9PR11MB527640AE172858646199B1888CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7A275864;
+	Tue, 18 Nov 2025 08:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763455033; cv=none; b=AwASo1ZaLlrqNaccTcSXHzoLH89tMX5BoweJvBjzJkp69BDcl2fMmAAE5x3weQ7z5m/HCxEaUt/kKZaL1S0NlVrtFlU7tFNDa2R67B0CvAr5ussJjmbWLuVAbgflhvm3jRH1yRUMfbffZ0J8DYFN74cIck5NOWv05+DrJQ64m7c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763455033; c=relaxed/simple;
+	bh=qZBvv8MHZVmFVly7ofZirZvZMW22qsYm6+uXTEzP1IU=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=FACEOL2L77qExp5weTbxydKOCWdQOsk+sfr9gnsF7+/AbgB1aXj9M6NMj7GnthoYnzYR0Yo3Eo3UtosCNH/FGtXkS0CqB0oSBi+G5z82h7kdJOzXH/5IXizLJdkP8dNJ/EFPoadhTgtdEKqYJua4XlWelStT/8RHrFEGXMCjMpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=TQ2O7g5X; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Yy9C49ZejqAJm2FW7rRPiyoMCvDACR9tlwxs5ZnUUPw=;
+	b=TQ2O7g5X9Qqe57sMVprvNFjQVcax8mdcseO0N46rhfiT1i5bi0JrSD86RDPO4WuHJQsUrmc+T
+	8CWteinUhIFbuQbC1ImfhIQU5kqYCSmDyc43ou40NT2je/wr2MaVsLuM+boXWyaIrXjRihuYdIa
+	lplaS96ofO8zCw++f5O6aYQ=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4d9dGh29hmzLlSt;
+	Tue, 18 Nov 2025 16:35:24 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 152DA180042;
+	Tue, 18 Nov 2025 16:37:07 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 18 Nov 2025 16:37:04 +0800
+Subject: Re: [PATCH v5 01/34] ACPI / PPTT: Add a helper to fill a cpumask from
+ a processor container
+To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
+CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
+	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
+	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
+	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
+	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
+	<jeremy.linton@arm.com>, <jonathan.cameron@huawei.com>, <kobak@nvidia.com>,
+	<lcherian@marvell.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>, Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Zeng
+ Heng <zengheng4@huawei.com>
+References: <20251117170014.4113754-1-ben.horgan@arm.com>
+ <20251117170014.4113754-2-ben.horgan@arm.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <3794ecac-b90e-875e-3cd0-5ebb6f9277b7@huawei.com>
+Date: Tue, 18 Nov 2025 16:37:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <BN9PR11MB527640AE172858646199B1888CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D7:EE_|IA0PR12MB8205:EE_
-X-MS-Office365-Filtering-Correlation-Id: 950c08ff-ef52-4026-6bf4-08de267af38b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qQowyPVVRLs4zpHmc+NHuAMSCwyJ01bJzJtC9IlERwOjtehcWpgrlAv7+3kt?=
- =?us-ascii?Q?0xJE7pOM+DaskhljOQXi7GZRAt9zud6dv2nXOdTMeiz8aMaQFztW0WoMrzR4?=
- =?us-ascii?Q?1qs45/JGnWFZxgER8dewf2zv+2ZDVJ/IfSpn5TnL73VRiwIYPZkFWjIFy8hT?=
- =?us-ascii?Q?EK162lf+fdsX5VH0Ik6wsaGdqe+BAmzWznzxH3aYMvFER5ILVvCNbwki+VtX?=
- =?us-ascii?Q?tv0347yOIfPzI85mWrhTEwmL0jBu5ESP31G9+X+t3bIw3/gJKF3YPxgTr+0w?=
- =?us-ascii?Q?cFLNE8Wmu01LdaHgI82+h9h+Kb0D0YqGS14SiV16GuKFoDVm3uEDpeM5Q8u5?=
- =?us-ascii?Q?fvgQdXiLPe7Cj03tmCy89Vl4s+Z7mT33AEgHwMqIMvvaj8jxRy66FxRq3pVW?=
- =?us-ascii?Q?TB/yWRzBScbzDUpfDWxnpY8bPWnGDDb/EhWfy5PKclqOATPpkGPjXKg2kKDt?=
- =?us-ascii?Q?a/hjBXQXinkMs+bbgBvoMnlWG1NpgWSIk42d1bbbWpkv69H51DVSil0pV4Il?=
- =?us-ascii?Q?OAcmczBdHdrRZk1ocju+PoAlGa2IS0Ja6DMNQ1owVs/Kl56MMWUTv6JNmyNE?=
- =?us-ascii?Q?NgAfPkf3A9CvwlC+0XKnwzHG5+enGOx+9BH7OdWKpjeOFRhUIqhsnnG21TF9?=
- =?us-ascii?Q?81cLrEratdNNXBa3DdK933IpzsHEaxQ/W4cAC4ZR0mz+//R6ViAhBt2fDCAc?=
- =?us-ascii?Q?DG7RnVJndWTUPh8ZmZ9c7XzFzHIHhaCkKyR7kZuONqdQTcKKRIDImj2L+xRn?=
- =?us-ascii?Q?mKtAj2/fObPl/eO9drdedi3FTQQpKu0qJKm1/ckamiCjEjNm9ee7rkczUW2h?=
- =?us-ascii?Q?yEvT0q6AsFLTd3DDADN8++mN44eT34p1YZcWRbKaQ4yaQyFzlWu4pkT0Bvyr?=
- =?us-ascii?Q?B6N8iK3JAZ90StJSavlE7bbS3I71o32qSFWGqYfTplCzIAI233LowfDntUTF?=
- =?us-ascii?Q?OQzhNfa8Q1pf4xpnRBMQoz3zP6u0qcl7us5ZqdKj+vVJNiS53YAcWk8ojdHe?=
- =?us-ascii?Q?Qck6nZ/LKLQ371WW+rHrgoOJMqoUvU88B/NXEiIj7ucLxotXUzVIHjFito2F?=
- =?us-ascii?Q?NjpZY4GOlszmmg0M0zgRciwcBOCUSHQuz3owKBx8qRPCqQbVryGPyvgZDFcK?=
- =?us-ascii?Q?v956ElxXtvH1EMpgzM+FdyX0cpSM6xfBAgnEcxFI2kVVnOVbtXlGqT9vMroJ?=
- =?us-ascii?Q?U0b2hUmhy3fHMyGN0xwO9AJV6QtDonAqaLojnHbgZbqJgCfk56DlDe5BxjX5?=
- =?us-ascii?Q?jCJkWXzZWqoPueppLws3apSzm8n3FwpA/EvFpWWtMFDz4YB0hhKO/qcfrVCk?=
- =?us-ascii?Q?7IRQvKmtVwEhyeHmAtHk0XtP5kHmHOmMaNjam04XZsuin9uKQi4OiaKXG2IZ?=
- =?us-ascii?Q?7EfdF5Zy2weXUl5aABYtHXp7k6lxZQMBcfOhi1Z5kJ9zAd86xXIpXIpGUk3j?=
- =?us-ascii?Q?mZ8fFvyqHzNRKB8va4VtlazZDtcqcs+9gZalcDdgK8CARynPvZAZ5aFKdG+U?=
- =?us-ascii?Q?9PjVMuK1xFvkbQSpbNrO7vk8wijevX8ljypDj4KJkT1Hg8eFGqbDbM6uhBF1?=
- =?us-ascii?Q?2HbdXphapdOTIdOlshU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 08:17:44.5813
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 950c08ff-ef52-4026-6bf4-08de267af38b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D7.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8205
+In-Reply-To: <20251117170014.4113754-2-ben.horgan@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Tue, Nov 18, 2025 at 07:53:27AM +0000, Tian, Kevin wrote:
-> > From: Nicolin Chen <nicolinc@nvidia.com>
-> > And how do you think of the followings?
-> > 
-> > /*
-> >  * Per PCIe r6.3, sec 10.3.1 IMPLEMENTATION NOTE, software disables ATS
-> > before
-> >  * initiating a reset. Though not all IOMMU drivers calls pci_enable_ats(), it
-> >  * only gets invoked in IOMMU driver. And it is racy to check dev-
-> > >ats_enabled
-> >  * here, as a concurrent IOMMU attachment can enable ATS right after this
-> > line.
-> >  *
-> >  * Notify the IOMMU driver to stop IOMMU translations until the reset is
-> > done,
-> >  * to ensure that the ATS function and its related invalidations are disabled.
-> >  */
-> > 
+On 2025/11/18 0:59, Ben Horgan wrote:
+> From: James Morse <james.morse@arm.com>
 > 
-> I'd remove the words between "Though not ..." and "after this line", which
-> could be explained in iommu side following Bjorn's suggestion to not check
-> pci_ats_supported() in pci core.
+> The ACPI MPAM table uses the UID of a processor container specified in
+> the PPTT to indicate the subset of CPUs and cache topology that can
+> access each MPAM System Component (MSC).
+> 
+> This information is not directly useful to the kernel. The equivalent
+> cpumask is needed instead.
+> 
+> Add a helper to find the processor container by its id, then walk
+> the possible CPUs to fill a cpumask with the CPUs that have this
+> processor container as a parent.
+> 
+> CC: Dave Martin <dave.martin@arm.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Peter Newman <peternewman@google.com>
+> Tested-by: Carl Worth <carl@os.amperecomputing.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Zeng Heng <zengheng4@huawei.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+> ---
+> Changes since v4:
+> Remove blank line
+> 
+> Changes since v3:
+> Refer to processor hierarchy in comments (Jonathan)
+> Fix indent (Jonathan)
+> ---
+>   drivers/acpi/pptt.c  | 84 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/linux/acpi.h |  3 ++
+>   2 files changed, 87 insertions(+)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 54676e3d82dd..b8248c0092fe 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -817,3 +817,87 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>   	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+>   					  ACPI_PPTT_ACPI_IDENTICAL);
+>   }
+> +
+> +/**
+> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
+> + * processor hierarchy node
+> + *
+> + * @table_hdr:		A reference to the PPTT table
+> + * @parent_node:	A pointer to the processor hierarchy node in the
+> + *			table_hdr
+> + * @cpus:		A cpumask to fill with the CPUs below @parent_node
+> + *
+> + * Walks up the PPTT from every possible CPU to find if the provided
+> + * @parent_node is a parent of this CPU.
+> + */
+> +static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
+> +				     struct acpi_pptt_processor *parent_node,
+> +				     cpumask_t *cpus)
+> +{
+> +	struct acpi_pptt_processor *cpu_node;
+> +	u32 acpi_id;
+> +	int cpu;
+> +
+> +	cpumask_clear(cpus);
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		acpi_id = get_acpi_id_for_cpu(cpu);
+> +		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
+> +
+> +		while (cpu_node) {
+> +			if (cpu_node == parent_node) {
+> +				cpumask_set_cpu(cpu, cpus);
+> +				break;
+> +			}
+> +			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
+> +		}
+> +	}
+> +}
+> +
+> +/**
+> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
+> + *                                       processor container
+> + * @acpi_cpu_id:	The UID of the processor container
+> + * @cpus:		The resulting CPU mask
+> + *
+> + * Find the specified Processor Container, and fill @cpus with all the cpus
+> + * below it.
+> + *
+> + * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
+> + * or a Processor Container, they may exist purely to describe a
+> + * Private resource. CPUs have to be leaves, so a Processor Container
+> + * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
+> + */
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
+> +{
+> +	struct acpi_table_header *table_hdr;
+> +	struct acpi_subtable_header *entry;
+> +	unsigned long table_end;
+> +	u32 proc_sz;
+> +
+> +	cpumask_clear(cpus);
+> +
+> +	table_hdr = acpi_get_pptt();
+> +	if (!table_hdr)
+> +		return;
+> +
+> +	table_end = (unsigned long)table_hdr + table_hdr->length;
+> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+> +			     sizeof(struct acpi_table_pptt));
+> +	proc_sz = sizeof(struct acpi_pptt_processor);
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+> +		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
+> +			struct acpi_pptt_processor *cpu_node;
+> +
+> +			cpu_node = (struct acpi_pptt_processor *)entry;
+> +			if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
+> +			    !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
+> +			    cpu_node->acpi_processor_id == acpi_cpu_id) {
+> +				acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
+> +				break;
+> +			}
+> +		}
+> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+> +				     entry->length);
+> +	}
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 5ff5d99f6ead..4752ebd48132 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
+>   int find_acpi_cpu_topology_cluster(unsigned int cpu);
+>   int find_acpi_cpu_topology_package(unsigned int cpu);
+>   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
+>   #else
+>   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>   {
+> @@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>   {
+>   	return -EINVAL;
+>   }
+> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
+> +						     cpumask_t *cpus) { }
+>   #endif
+>   
+>   void acpi_arch_init(void);
 
-OK. Thanks!
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Nicolin
+Thanks
+Hanjun
 
