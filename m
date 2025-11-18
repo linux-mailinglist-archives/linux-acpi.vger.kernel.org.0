@@ -1,313 +1,101 @@
-Return-Path: <linux-acpi+bounces-19030-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19031-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD53C6ABD6
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 17:51:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A217C6AC30
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 17:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D25E4F917B
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 16:46:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6BBE93A445B
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 16:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A298377E8C;
-	Tue, 18 Nov 2025 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCD536C596;
+	Tue, 18 Nov 2025 16:45:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101B03002C6
-	for <linux-acpi@vger.kernel.org>; Tue, 18 Nov 2025 16:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D19C34B402;
+	Tue, 18 Nov 2025 16:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763484325; cv=none; b=bIA9c0jvrydNOGg5oIn9Nd+EWqHy6QTopmz4x4G42B1zU+zttmJ0AqYKq2/Grnv1O9dutM6PzPyjmtSYh6Vk22JQwmIbU0LWsdUvHAcaSM7e4pVkptPN+wd0mjT8IkASzKm1nalvYG9dldpGA10zVCI+MDEed9pmas3dDEtcVOE=
+	t=1763484354; cv=none; b=rtY43Ra8VP6ftZZBkkgtcFeiY1Uy75B8tqg3UM+GKW4pswxURIZuL2c3k12+JvkID6ys0MY0e4JgVQdUaV6pSi92OcNZMd8sxnl6XlFYA2eym2vtsViRStjse5lA/uj8T1+jRJjp5UVUKcPLHDbD4jEVhfN1XN4HAEDykzEfT20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763484325; c=relaxed/simple;
-	bh=oQ7BOxq8Kr3JX0HJ0KIsH0NxlWew6O3eCfg3IQQNyiY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VszzW6EAphV1crneVziNXjbQoNchO37f6KA+4wWRYmum98rfjV34qr1HqA/rl0XKLkc8P2FY78Qr8kyPI8WlFkfcjd+YuTQJ4yRUj/OGwzqcq3LjeXW6jSAWL0d3WXPLCZ8iXvlT+3EIFFttiy+DKApSIP59c1PeouwY+7Dk60Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vLOoO-00029M-R3; Tue, 18 Nov 2025 17:44:12 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vLOoN-0016yC-1u;
-	Tue, 18 Nov 2025 17:44:11 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vLOoN-000000009ZX-26c4;
-	Tue, 18 Nov 2025 17:44:11 +0100
-Message-ID: <0d251a35a438ebf3e14c6762df7ece079ee1d164.camel@pengutronix.de>
-Subject: Re: [PATCH v6 8/8] reset: gpio: use software nodes to setup the
- GPIO lookup
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij	
- <linus.walleij@linaro.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus	
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"	 <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski	 <krzk@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Tue, 18 Nov 2025 17:44:11 +0100
-In-Reply-To: <20251106-reset-gpios-swnodes-v6-8-69aa852de9e4@linaro.org>
-References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
-	 <20251106-reset-gpios-swnodes-v6-8-69aa852de9e4@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1763484354; c=relaxed/simple;
+	bh=OLo/dVic+VGMInOF6wQSVWrpZObz+9U7rG/Q/RMvexw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hqWIl34QE3BtlhFhdGDINQZrkbgNan1h+H7tAMpqoFjkgXPsuTyLIBFdIxcqLgAca43Rc5yaKlt9skk660VviPOCMkv2lem+j0I+rFNj/t7hkOBAkBmqH6oewPsryA5VDXRoriCFE3J6+jUdNHB2oG//8+Kyaww0XFVQNBSLSPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02446497;
+	Tue, 18 Nov 2025 08:45:44 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 392483F740;
+	Tue, 18 Nov 2025 08:45:46 -0800 (PST)
+Date: Tue, 18 Nov 2025 16:45:43 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com,
+	amitsinght@marvell.com, baisheng.gao@unisoc.com,
+	baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+	carl@os.amperecomputing.com, dakr@kernel.org, dave.martin@arm.com,
+	david@redhat.com, dfustini@baylibre.com, fenghuay@nvidia.com,
+	gregkh@linuxfoundation.org, gshan@redhat.com, guohanjun@huawei.com,
+	jeremy.linton@arm.com, jonathan.cameron@huawei.com,
+	kobak@nvidia.com, lcherian@marvell.com, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, lpieralisi@kernel.org,
+	peternewman@google.com, quic_jiles@quicinc.com, robh@kernel.org,
+	rohit.mathew@arm.com, scott@os.amperecomputing.com,
+	sdonthineni@nvidia.com, sudeep.holla@arm.com,
+	tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Zeng Heng <zengheng4@huawei.com>
+Subject: Re: [PATCH v5 08/34] ACPI: Define acpi_put_table cleanup handler and
+ acpi_get_table_ret() helper
+Message-ID: <aRyit16Mrth-jjjg@arm.com>
+References: <20251117170014.4113754-1-ben.horgan@arm.com>
+ <20251117170014.4113754-9-ben.horgan@arm.com>
+ <CAJZ5v0hAPoE96C7=ynR=Ex4huPP3b896sBRNdBiLe=3Q9vKwHQ@mail.gmail.com>
+ <aRybF5PV_N2ODeiZ@arm.com>
+ <CAJZ5v0jA5vWi3JFRcCMFmvpWSu8jFT-jOWvSNLt59FeqKEk3iA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jA5vWi3JFRcCMFmvpWSu8jFT-jOWvSNLt59FeqKEk3iA@mail.gmail.com>
 
-On Do, 2025-11-06 at 15:32 +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> GPIO machine lookup is a nice mechanism for associating GPIOs with
-> consumers if we don't know what kind of device the GPIO provider is or
-> when it will become available. However in the case of the reset-gpio, we
-> are already holding a reference to the device and so can reference its
-> firmware node. Let's setup a software node that references the relevant
-> GPIO and attach it to the auxiliary device we're creating.
->=20
-> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->  drivers/reset/core.c | 126 +++++++++++++++++++++++++++++----------------=
-------
->  1 file changed, 73 insertions(+), 53 deletions(-)
->=20
-> diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-> index cefeff10f6c82f5aef269a6d3a58d9d204ed6b7e..8262879e3f0d9ce67683c6baa=
-00d9eea9e3c3ca3 100644
-> --- a/drivers/reset/core.c
-> +++ b/drivers/reset/core.c
-> @@ -14,6 +14,7 @@
->  #include <linux/export.h>
->  #include <linux/gpio/driver.h>
->  #include <linux/gpio/machine.h>
-> +#include <linux/gpio/property.h>
->  #include <linux/idr.h>
->  #include <linux/kernel.h>
->  #include <linux/kref.h>
-> @@ -77,10 +78,12 @@ struct reset_control_array {
->  /**
->   * struct reset_gpio_lookup - lookup key for ad-hoc created reset-gpio d=
-evices
->   * @of_args: phandle to the reset controller with all the args like GPIO=
- number
-> + * @swnode: Software node containing the reference to the GPIO provider
->   * @list: list entry for the reset_gpio_lookup_list
->   */
->  struct reset_gpio_lookup {
->  	struct of_phandle_args of_args;
-> +	struct fwnode_handle *swnode;
->  	struct list_head list;
->  };
-> =20
-> @@ -822,52 +825,45 @@ static void __reset_control_put_internal(struct res=
-et_control *rstc)
->  	kref_put(&rstc->refcnt, __reset_control_release);
->  }
-> =20
-> -static int __reset_add_reset_gpio_lookup(struct gpio_device *gdev, int i=
-d,
-> -					 struct device_node *np,
-> -					 unsigned int gpio,
-> -					 unsigned int of_flags)
-> +static void reset_gpio_aux_device_release(struct device *dev)
->  {
-> -	unsigned int lookup_flags;
-> -	const char *label_tmp;
-> +	struct auxiliary_device *adev =3D to_auxiliary_dev(dev);
-> =20
-> -	/*
-> -	 * Later we map GPIO flags between OF and Linux, however not all
-> -	 * constants from include/dt-bindings/gpio/gpio.h and
-> -	 * include/linux/gpio/machine.h match each other.
-> -	 */
-> -	if (of_flags > GPIO_ACTIVE_LOW) {
-> -		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
-> -		       of_flags, gpio);
-> -		return -EINVAL;
-> +	kfree(adev);
-> +}
-> +
-> +static int reset_add_gpio_aux_device(struct device *parent,
-> +				     struct fwnode_handle *swnode,
-> +				     int id, void *pdata)
-> +{
-> +	struct auxiliary_device *adev;
-> +	int ret;
-> +
-> +	adev =3D kzalloc(sizeof(*adev), GFP_KERNEL);
-> +	if (!adev)
-> +		return -ENOMEM;
-> +
-> +	adev->id =3D id;
-> +	adev->name =3D "gpio";
-> +	adev->dev.parent =3D parent;
-> +	adev->dev.platform_data =3D pdata;
-> +	adev->dev.release =3D reset_gpio_aux_device_release;
-> +	device_set_node(&adev->dev, swnode);
-> +
-> +	ret =3D auxiliary_device_init(adev);
-> +	if (ret) {
-> +		kfree(adev);
-> +		return ret;
->  	}
-> =20
-> -	label_tmp =3D gpio_device_get_label(gdev);
-> -	if (!label_tmp)
-> -		return -EINVAL;
-> +	ret =3D __auxiliary_device_add(adev, "reset");
-> +	if (ret) {
-> +		auxiliary_device_uninit(adev);
-> +		kfree(adev);
-> +		return ret;
-> +	}
-> =20
-> -	char *label __free(kfree) =3D kstrdup(label_tmp, GFP_KERNEL);
-> -	if (!label)
-> -		return -ENOMEM;
-> -
-> -	/* Size: one lookup entry plus sentinel */
-> -	struct gpiod_lookup_table *lookup __free(kfree) =3D kzalloc(struct_size=
-(lookup, table, 2),
-> -								  GFP_KERNEL);
-> -	if (!lookup)
-> -		return -ENOMEM;
-> -
-> -	lookup->dev_id =3D kasprintf(GFP_KERNEL, "reset.gpio.%d", id);
-> -	if (!lookup->dev_id)
-> -		return -ENOMEM;
-> -
-> -	lookup_flags =3D GPIO_PERSISTENT;
-> -	lookup_flags |=3D of_flags & GPIO_ACTIVE_LOW;
-> -	lookup->table[0] =3D GPIO_LOOKUP(no_free_ptr(label), gpio, "reset",
-> -				       lookup_flags);
-> -
-> -	/* Not freed on success, because it is persisent subsystem data. */
-> -	gpiod_add_lookup_table(no_free_ptr(lookup));
-> -
-> -	return 0;
-> +	return ret;
->  }
-> =20
->  /*
-> @@ -875,8 +871,10 @@ static int __reset_add_reset_gpio_lookup(struct gpio=
-_device *gdev, int id,
->   */
->  static int __reset_add_reset_gpio_device(const struct of_phandle_args *a=
-rgs)
->  {
-> +	struct property_entry properties[2] =3D { };
-> +	unsigned int offset, of_flags, lflags;
->  	struct reset_gpio_lookup *rgpio_dev;
-> -	struct auxiliary_device *adev;
-> +	struct device *parent;
->  	int id, ret;
-> =20
->  	/*
-> @@ -895,6 +893,23 @@ static int __reset_add_reset_gpio_device(const struc=
-t of_phandle_args *args)
->  	 */
->  	lockdep_assert_not_held(&reset_list_mutex);
-> =20
-> +	offset =3D args->args[0];
-> +	of_flags =3D args->args[1];
-> +
-> +	/*
-> +	 * Later we map GPIO flags between OF and Linux, however not all
-> +	 * constants from include/dt-bindings/gpio/gpio.h and
-> +	 * include/linux/gpio/machine.h match each other.
-> +	 *
-> +	 * FIXME: Find a better way of translating OF flags to GPIO lookup
-> +	 * flags.
-> +	 */
-> +	if (of_flags > GPIO_ACTIVE_LOW) {
-> +		pr_err("reset-gpio code does not support GPIO flags %u for GPIO %u\n",
-> +		       of_flags, offset);
-> +		return -EINVAL;
-> +	}
-> +
->  	struct gpio_device *gdev __free(gpio_device_put) =3D
->  		gpio_device_find_by_fwnode(of_fwnode_handle(args->np));
->  	if (!gdev)
-> @@ -909,6 +924,10 @@ static int __reset_add_reset_gpio_device(const struc=
-t of_phandle_args *args)
->  		}
->  	}
-> =20
-> +	lflags =3D GPIO_PERSISTENT | (of_flags & GPIO_ACTIVE_LOW);
-> +	parent =3D gpio_device_to_device(gdev);
-> +	properties[0] =3D PROPERTY_ENTRY_GPIO("reset-gpios", parent->fwnode, of=
-fset, lflags);
-> +
->  	id =3D ida_alloc(&reset_gpio_ida, GFP_KERNEL);
->  	if (id < 0)
->  		return id;
-> @@ -920,11 +939,6 @@ static int __reset_add_reset_gpio_device(const struc=
-t of_phandle_args *args)
->  		goto err_ida_free;
->  	}
-> =20
-> -	ret =3D __reset_add_reset_gpio_lookup(gdev, id, args->np, args->args[0]=
-,
-> -					    args->args[1]);
-> -	if (ret < 0)
-> -		goto err_kfree;
-> -
->  	rgpio_dev->of_args =3D *args;
->  	/*
->  	 * We keep the device_node reference, but of_args.np is put at the end
-> @@ -932,19 +946,25 @@ static int __reset_add_reset_gpio_device(const stru=
-ct of_phandle_args *args)
->  	 * Hold reference as long as rgpio_dev memory is valid.
->  	 */
->  	of_node_get(rgpio_dev->of_args.np);
-> -	adev =3D auxiliary_device_create(gpio_device_to_device(gdev), "reset",
-> -				       "gpio", &rgpio_dev->of_args, id);
-> -	ret =3D PTR_ERR_OR_ZERO(adev);
-> +
-> +	rgpio_dev->swnode =3D fwnode_create_software_node(properties, NULL);
-> +	ret =3D PTR_ERR(rgpio_dev->swnode);
+On Tue, Nov 18, 2025 at 05:21:07PM +0100, Rafael J. Wysocki wrote:
+> Hi Catalin,
+> 
+> On Tue, Nov 18, 2025 at 5:13 PM Catalin Marinas <catalin.marinas@arm.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Mon, Nov 17, 2025 at 08:46:52PM +0100, Rafael J. Wysocki wrote:
+> > > On Mon, Nov 17, 2025 at 6:01 PM Ben Horgan <ben.horgan@arm.com> wrote:
+> > > > +static inline struct acpi_table_header *acpi_get_table_ret(char *signature, u32 instance)
+> > >
+> > > Maybe call this acpi_get_table_pointer() ?
+> >
+> > Would you have time to look at the other ACPI patches in the series? If
+> > you are ok with them, happy to go in via the arm64 tree? Or we can put
+> > them on a common branch if there are conflicts with your tree.
+> 
+> I think that this is the only one touching ACPI code outside the MPAM
+> and PPTT parsers, and the other patches in the series are fine with
+> me.
+> 
+> Please feel free to take the entire lot.
 
-I'll apply this with the following patch squashed in:
+Thanks!
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 3edf04ae8a95..8a7b112a9a77 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -945,7 +945,7 @@ static int __reset_add_reset_gpio_device(const struct o=
-f_phandle_args *args)
-        of_node_get(rgpio_dev->of_args.np);
-=20
-        rgpio_dev->swnode =3D fwnode_create_software_node(properties, NULL)=
-;
--       ret =3D PTR_ERR(rgpio_dev->swnode);
-+       ret =3D PTR_ERR_OR_ZERO(rgpio_dev->swnode);
-        if (ret)
-                goto err_put_of_node;
-=20
-
-regards
-Philipp
+-- 
+Catalin
 
