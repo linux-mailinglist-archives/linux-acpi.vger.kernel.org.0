@@ -1,110 +1,101 @@
-Return-Path: <linux-acpi+bounces-19018-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19019-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ABEC69D82
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 15:12:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C14FC69E0A
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 15:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42B903460DD
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 14:10:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 89DF334BA67
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Nov 2025 14:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCFA34D91F;
-	Tue, 18 Nov 2025 14:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gzDSz+t8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BEA35E52C;
+	Tue, 18 Nov 2025 14:11:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2193115B5;
-	Tue, 18 Nov 2025 14:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4860235C1A5;
+	Tue, 18 Nov 2025 14:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763475051; cv=none; b=SmNBuhIqVVCBMb2YC8XMh+EO3RECdlm7F7LtfrJFS4mrZEXWnEMEo58QnlmLdBYr0JrmdHMiTQghtDflI2tZCo/Hro5t0Lu08RKwM8hWMfZf27gQNWw9BeMoX+lrvniBHVuJcPe+BXXhlJAyF10gOgZsxGWdyIiZyloMB+TwVPg=
+	t=1763475101; cv=none; b=NWbB/JySnMWi1Kp2muMrzIFAHmPQN6zwXR5lqm10EhQExP4xdg/AO9Z4q1oFxH/fbQLqFTLppK6nzxuQ5Xuwzp0RKqeadagXzP8CVzp4EbKehqk4TNtxzwypvRwsT36z3E4G4OSoELUmBiNivBetW6Tt4l0D1R6azWcr7gBD3sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763475051; c=relaxed/simple;
-	bh=KQ625rAMNORnM/wvTGLNBjB5LaLAlN08QsB0CW73NX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OsOQdlzxvWxwfNww3niLhbAkigJWbojpPZWXRaLZPusKWfHSwdDXKhVDsK96OebH8j437Q9XNAoz6qQvrdamQLaGtVfE+RQk7iLkU8os/K2s043O3OPjnNxwZQ3AsQZ4qGKZX7PcKdwAuAypHGZ/auYdO+2VmTbKrCcWkZ2FGsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gzDSz+t8; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8C2FF40E016E;
-	Tue, 18 Nov 2025 14:10:40 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id kqE8OtHje236; Tue, 18 Nov 2025 14:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1763475036; bh=9GD8fqgyRaRKCE/AY0roMXTzEL0vi/2D0Y4+wcNO0K8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gzDSz+t8y2W5ztKUxB2zKC8hvXpqWlIHWrKM18Ov/M9poPe8ZwILXR5W4V078i0Hu
-	 l4fmG0sRIkNQPQCqUlkbpQ2RjFB7rV9NkkMZrVIMhJJYeNyhbinqJsA/xixzgr7IKI
-	 QXfvIexTR17HxrYdZhGNzG93BEJgwLPzUpEzLSm0jWgfJ8JP665GEPVVKuAI5vGqvT
-	 7GyF4Hm5Ez28zvH6SDR6ltfmuWLFLAXxb6v20g5vA8qZagWUJrql3QLi7G0MipLw5/
-	 FT2qwDh4Ppd874MfgFEG0u4EGA6VUFIl9fICW8s/REdigd6f0t1OwASPOYdsCtm8rL
-	 27XQsNZV3tfqueCpE0JSzzW/OGl2OLxQO7Cc6Qj5+qLQJ7oPcgJ7NG2rFqnb+d90JY
-	 fKQkPBZactJdMwq6fpj9mh+8Q/DdSgRUQB4g4notdOEV2pRqsIfZa+Rebhwm0Xo+G9
-	 vZZzZYrzIqrIsPTx3GmmgconK0RAqYSUJZ4EjGEw0W/ZdxAOujIerrllTGeDYUmQYg
-	 sNRkw/GC8OPfjVfBjygiG3NqN2BRgM8JErLCmf9msXk3TKh5Ytm8BpVUM2jsgbBkzM
-	 fgR1Ooth9wlGU+wGUdaWKFPZH7/4U8p7VH6uY/Ih7++wGDSLbQxTbv+DbWXuQ42pWV
-	 YR8PsAW4U6JF9zUXCnPZyn+k=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 2BDBD40E0216;
-	Tue, 18 Nov 2025 14:10:09 +0000 (UTC)
-Date: Tue, 18 Nov 2025 15:10:02 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: tony.luck@intel.com, akpm@linux-foundation.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev, osandov@osandov.com,
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, kernel-team@meta.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
- errors
-Message-ID: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
-References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
- <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+	s=arc-20240116; t=1763475101; c=relaxed/simple;
+	bh=lnFjOA9F2o/b7zV8Wir53ekV4hSg9x8MBNlVqgmyT9U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EvcharG4IGsyQ3vb+7IxfUACerov2TGXkeIGwG4KNpZIlZA3cx7YVJVP1k/xkf4rvm1YuTWneVGcJk95OBqlbyvQOjJYWeQaoQ9bXf1zC3unyi3+klr4qgFijir2MMCJzXVFMUfTMmqmScxQsCkaxdCQrnsf7rfdq8RboJ1+n94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 994C1FEC;
+	Tue, 18 Nov 2025 06:11:30 -0800 (PST)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ADE73F740;
+	Tue, 18 Nov 2025 06:11:33 -0800 (PST)
+Message-ID: <753f4d26-efa9-4ffd-a820-7c2a53c0bc5f@arm.com>
+Date: Tue, 18 Nov 2025 14:11:31 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/33] arm_mpam: Add basic mpam driver
+To: Drew Fustini <fustini@kernel.org>
+Cc: james.morse@arm.com, amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
+ guohanjun@huawei.com, jeremy.linton@arm.com, jonathan.cameron@huawei.com,
+ kobak@nvidia.com, lcherian@marvell.com, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, lpieralisi@kernel.org, peternewman@google.com,
+ quic_jiles@quicinc.com, rafael@kernel.org, robh@kernel.org,
+ rohit.mathew@arm.com, scott@os.amperecomputing.com, sdonthineni@nvidia.com,
+ sudeep.holla@arm.com, tan.shaopeng@fujitsu.com, will@kernel.org,
+ xhao@linux.alibaba.com
+References: <20251107123450.664001-1-ben.horgan@arm.com> <aRoG+UptQg9mix+7@x1>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <aRoG+UptQg9mix+7@x1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
-> Do you know what is the right tree for this patch?
+Hi Drew,
+
+On 11/16/25 17:16, Drew Fustini wrote:
+> On Fri, Nov 07, 2025 at 12:34:17PM +0000, Ben Horgan wrote:
+>> Hi all,
+> [snip]
+>> The rest of the driver can be found here: (no updated version - based on v3)
+>> https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.18-rc1
 > 
-> I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
+> Does anyone know of a hosting platform that offers ARM machines that
+> have MPAM?
 
-I can take it if akpm wants me to...
+As far as I know there aren't any.
 
--- 
-Regards/Gruss,
-    Boris.
+There is some MPAM support in the Orion Radxa board which is likely the
+cheapest option. The MPAM acpi table isn't in the firmware though so
+you'd need to load a custom table. James has this working.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> I see there are Ampere systems on Oracle but I wasn't sure if those have
+> MPAM.
+> 
+> I'm getting a RISC-V QoS patch series ready (Ssqosid ext and CBQRI spec)
+> and I'd like to get a better understanding of how resctrl works on MPAM
+> in practice.
+> 
+> Thanks,
+> Drew
+
+
+Thanks,
+
+Ben
+
 
