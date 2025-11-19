@@ -1,146 +1,139 @@
-Return-Path: <linux-acpi+bounces-19063-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19064-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF65CC6CC9E
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 06:13:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B62C6D674
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 09:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 50646356367
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 05:13:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 35C364F3F53
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 08:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10B8283FFC;
-	Wed, 19 Nov 2025 05:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="kcHYALnV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2CB32779D;
+	Wed, 19 Nov 2025 08:20:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A072701C3;
-	Wed, 19 Nov 2025 05:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC81E2E228D
+	for <linux-acpi@vger.kernel.org>; Wed, 19 Nov 2025 08:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763529201; cv=none; b=MsIQi9FmBsgjDWTqDF9rdzCyK2NST3Vrh0P9rD1ThkUhBcdlTxuLirMHa1poBO3kBxNniVl3HtgWDdbwNWzhuKd5Vm6A64lyJvVbg29Wcu3V2F7HFDoosoKamx3MyDdxlojru0gvqxsf1t9Enc+U7Hs53mKHMkJZj+RN//wl4vs=
+	t=1763540414; cv=none; b=icPx05N7+PngyYN28+bfM5PYcAw1cl4IhcFPQMZlDYdpRMiOpK5u5vNxY6dLdgenx3LV/AUDLLpCOulX9bLGQaAms9sJ7FxCoD5MsvlgdEP5G5cSNR5U4KUZkUVwSUVOXIe5vBXVHjLkEaC3n7SfVF4hm8r2pD0JRIrhGAIq1yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763529201; c=relaxed/simple;
-	bh=yy8FaofX98dDgn7bPn7M65cjitpFXHEWiLhIZj8DOZo=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=mVISI7aizSkPEjVeN+0G4P+CFCVyjHgoWVlKlT6J4MoL40guYwkXGAte9CK6j8OlRizQ8pOU6cN72Q65F1rzwZV3ZtbhR8gLNvcxPvWgOdgzbRGfyJ7zRZol20HkFfXSed2glXvnSAlONoNv9sWxtpxEVMxO1NtaU4LzDsbbJSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=kcHYALnV; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QCKYYk/nJB19P+gNWH8tuQy1gyvupyswist/AiEgNgQ=;
-	b=kcHYALnVFMqTqvDB0wrOTz6XWMyevtGJc9y8Y7K6eDWC8uEBd+zOktjuW532AFAGpl3iOQEDN
-	5gHgabDCIpGeqsk8W3b1xI76aspLJfeFuoCEa7L9VA57i070mDw8TgPT4EMCAaQ3STrU+rA+qIQ
-	PYMGpKDhupqE+joNPZMqnwI=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dB8hd1y4SzcZy1;
-	Wed, 19 Nov 2025 13:11:13 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 370E6180BD0;
-	Wed, 19 Nov 2025 13:13:15 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 19 Nov 2025 13:13:12 +0800
-Subject: Re: [PATCH v5 03/34] ACPI / PPTT: Add acpi_pptt_cache_v1_full to use
- pptt cache as one structure
-To: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>
-CC: <amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
-	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
-	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
-	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
-	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
-	<jeremy.linton@arm.com>, <jonathan.cameron@huawei.com>, <kobak@nvidia.com>,
-	<lcherian@marvell.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
-	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
-	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
-	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
-	<xhao@linux.alibaba.com>
-References: <20251117170014.4113754-1-ben.horgan@arm.com>
- <20251117170014.4113754-4-ben.horgan@arm.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <73c55f0e-6c0c-63ec-d2d0-d60b28f8aff7@huawei.com>
-Date: Wed, 19 Nov 2025 13:13:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1763540414; c=relaxed/simple;
+	bh=7izO4jGvG7zAQewT9isaW9IXJG+kNjet9BQSQ1gu4Q8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RAfSvQNpO7pQJlEpVxN1loBdYgAWj3vs/CiMMsPVLC1BOV7ucuNklSEW+pBC66CIrxyc0WvWVpRentjtPw65IQ2exZe8J61hEir1GKliCBTniHbcP4SH+kGB2lc4Jhl5OeP+0dkSQgLCu03h9xNmaDKjjogRU0awXW0d/cVCHJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vLdPW-00004v-Tq; Wed, 19 Nov 2025 09:19:30 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vLdPW-001DRq-0g;
+	Wed, 19 Nov 2025 09:19:30 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vLdPW-000000001jH-0WqF;
+	Wed, 19 Nov 2025 09:19:30 +0100
+Message-ID: <c8aea0bd3907957a6f40078e1198959cd8c0d613.camel@pengutronix.de>
+Subject: Re: [PATCH v6 8/8] reset: gpio: use software nodes to setup the
+ GPIO lookup
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko	
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich	 <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ 	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>
+Date: Wed, 19 Nov 2025 09:19:30 +0100
+In-Reply-To: <CAMRc=MfAw-HyofSL52PY0H57rBJZAo215gryxWyS8x-d+wcjRg@mail.gmail.com>
+References: <20251106-reset-gpios-swnodes-v6-0-69aa852de9e4@linaro.org>
+	 <20251106-reset-gpios-swnodes-v6-8-69aa852de9e4@linaro.org>
+	 <0d251a35a438ebf3e14c6762df7ece079ee1d164.camel@pengutronix.de>
+	 <CAMRc=MfAw-HyofSL52PY0H57rBJZAo215gryxWyS8x-d+wcjRg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20251117170014.4113754-4-ben.horgan@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 
-On 2025/11/18 0:59, Ben Horgan wrote:
-> In actbl2.h, acpi_pptt_cache describes the fields in the original
-> Cache Type Structure. In PPTT table version 3 a new field was added at the
-> end, cache_id. This is described in acpi_pptt_cache_v1 but rather than
-> including all v1 fields it just includes this one.
-> 
-> In lieu of this being fixed in acpica, introduce acpi_pptt_cache_v1_full to
-> contain all the fields of the Cache Type Structure . Update the existing
-> code to use this new struct. This simplifies the code and removes a
-> non-standard use of ACPI_ADD_PTR.
-> 
-> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-> ---
-> I have opened a pull request to acpica to update acpi_pptt_cache_v1 to
-> include all fields. https://github.com/acpica/acpica/pull/1059
-> 
-> Change since v4:
-> Use fields directly in acpi_pptt_cache_v1_full
-> Delay the casting
-> 
-> Changes since v3:
-> New patch
-> ---
->   drivers/acpi/pptt.c | 47 +++++++++++++++++++++++++++++++++++----------
->   1 file changed, 37 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 2856254e29d7..53fde9bd8140 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -21,6 +21,25 @@
->   #include <linux/cacheinfo.h>
->   #include <acpi/processor.h>
->   
-> +/*
-> + * The acpi_pptt_cache_v1 in actbl2.h, which is imported from acpica,
-> + * only contains the cache_id field rather than all the fields of the
-> + * Cache Type Structure. Use this alternative structure until it is
-> + * resolved in acpica.
-> + */
-> +struct acpi_pptt_cache_v1_full {
-> +	struct acpi_subtable_header header;
-> +	u16 reserved;
-> +	u32 flags;
-> +	u32 next_level_of_cache;
-> +	u32 size;
-> +	u32 number_of_sets;
-> +	u8 associativity;
-> +	u8 attributes;
-> +	u16 line_size;
-> +	u32 cache_id;
-> +};
+On Di, 2025-11-18 at 18:08 +0100, Bartosz Golaszewski wrote:
+> On Tue, Nov 18, 2025 at 5:44=E2=80=AFPM Philipp Zabel <p.zabel@pengutroni=
+x.de> wrote:
+> >=20
+> > On Do, 2025-11-06 at 15:32 +0100, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >=20
+> > > GPIO machine lookup is a nice mechanism for associating GPIOs with
+> > > consumers if we don't know what kind of device the GPIO provider is o=
+r
+> > > when it will become available. However in the case of the reset-gpio,=
+ we
+> > > are already holding a reference to the device and so can reference it=
+s
+> > > firmware node. Let's setup a software node that references the releva=
+nt
+> > > GPIO and attach it to the auxiliary device we're creating.
+> > >=20
+> > > Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+> > > Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > ---
+> >=20
+> > I'll apply this with the following patch squashed in:
 
-I'm fine with removing this after acpica changes being accepted.
+Strike that, I'll have to wait for the SPI issue to be resolved.
 
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+> > diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+> > index 3edf04ae8a95..8a7b112a9a77 100644
+> > --- a/drivers/reset/core.c
+> > +++ b/drivers/reset/core.c
+> > @@ -945,7 +945,7 @@ static int __reset_add_reset_gpio_device(const stru=
+ct of_phandle_args *args)
+> >         of_node_get(rgpio_dev->of_args.np);
+> >=20
+> >         rgpio_dev->swnode =3D fwnode_create_software_node(properties, N=
+ULL);
+> > -       ret =3D PTR_ERR(rgpio_dev->swnode);
+> > +       ret =3D PTR_ERR_OR_ZERO(rgpio_dev->swnode);
+> >         if (ret)
+> >                 goto err_put_of_node;
+>=20
+> Huh? Why?
 
-Thanks
-Hanjun
+PTR_ERR(ptr) is just (long)ptr, so a valid swnode pointer makes ret
+non-zero and takes us into the error path. PTR_ERR_OR_ZERO() includes
+the IS_ERR() check and returns 0 for non-error pointers.
+
+And there is a (false-positive) sparse warning:
+
+ drivers/reset/core.c:978 __reset_add_reset_gpio_device() warn: passing zer=
+o to 'PTR_ERR'
+
+I think it would be better to return to the explicit IS_ERR() check
+from v5.
+
+regards
+Philipp
 
