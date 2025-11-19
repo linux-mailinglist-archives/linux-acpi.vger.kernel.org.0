@@ -1,270 +1,296 @@
-Return-Path: <linux-acpi+bounces-19052-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19053-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7748DC6C84C
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 04:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCE6C6CA1A
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 04:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54F024EA3B8
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 03:04:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 911244E3B18
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 03:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BA52DEA6B;
-	Wed, 19 Nov 2025 03:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B052E7623;
+	Wed, 19 Nov 2025 03:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NL5GiA/j"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RvOT+Jqy";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TOE38+1I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815442D9EF3;
-	Wed, 19 Nov 2025 03:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28BD25EFAE
+	for <linux-acpi@vger.kernel.org>; Wed, 19 Nov 2025 03:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763521436; cv=none; b=jU/dlClPQ4uX0rXwXFsoak7BwOWIgcb+TvPhfM34zNKhKh0J505CzrTydKMdfC49Mh4UP1gy/UwFF5dvZaEpciMX7MlLqAff1sZiYKHhVMwvCE4caCZH69nfTGy7GWC2M0FM5nXyOAuERwlgivNVDnSLhrTFHL/QoIaP4NF8AwE=
+	t=1763523324; cv=none; b=gP6WihMDo3TDRFlj2L6lbWWWi+OKU90GOU4rgE2bUkNYbzzTP8T39m1rjf/o+8vGWVL9flpSC4dXc/Dr3f5hexx4gHu6VXspcz0Npa2pFTjbSUMGkU8O1hMiIzXjAz4APIFR0tAXlzhPYoZyHacwOi83aNsS1wBMZqglgRECsnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763521436; c=relaxed/simple;
-	bh=pXsZhuxxB+kI3KzL5qT6v5f2HxideVTv+RifgqSeoW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=blfapRaS/wWy1XwHOGUl/XYl1VdnKoSe1pj6s2pWIuZueLxl4jFFDgwYNt/rLPKYT/TzlxN2qGNkPnvV7ubik9u5GHw6aKsaZc4ESUbGnMMQihRYNGuXKhWCLnbROqicy5poXD/yE9DBeKxz65NF9i590x2sInlcrPwjDz9zuos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NL5GiA/j; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763521435; x=1795057435;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pXsZhuxxB+kI3KzL5qT6v5f2HxideVTv+RifgqSeoW0=;
-  b=NL5GiA/jL0dBodDOKBDXEqb7M3ZohDxuUgjSevz8Sq+qzrPnG72J8Q6N
-   4Tl6RZn5HMDHJQsifZNnJdGaod2EWnR5e2EqiK8iKPGWwklxe7vcY0apy
-   QcHYKTTMo+xV43UwBNlUAHgNcFK2eLpbLKRpeZTq5b6EQH2VeVyB4KfEW
-   3pvpRpenGXxc/z1K54GYduFnAfdnvcA7ELCnLBWWDV20JO6E6ND2Gfemc
-   l5pyAPQnNfJK4NQEn+ePPKm4D9IDC4uFZNPp63CE5PeceS7OOX2rVB0s7
-   hO5J28RldvW9ZGURTHvu872O4qQxBq8jhy3XxdYZa7B0BX7mp3c9fAf+c
-   Q==;
-X-CSE-ConnectionGUID: MQBX9xmkSv2JwnC4MjfkNA==
-X-CSE-MsgGUID: WISKrYunTmaKvLGKeu6Lbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="83181392"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="83181392"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 19:03:54 -0800
-X-CSE-ConnectionGUID: svX445uPT3aJVISNNc1eYg==
-X-CSE-MsgGUID: ux192vFhRle5ZCI9piTKCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="190200915"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 18 Nov 2025 19:03:48 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vLYTy-0002Nn-09;
-	Wed, 19 Nov 2025 03:03:46 +0000
-Date: Wed, 19 Nov 2025 11:03:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nicolin Chen <nicolinc@nvidia.com>, robin.murphy@arm.com,
-	joro@8bytes.org, afael@kernel.org, bhelgaas@google.com,
-	alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com
-Cc: oe-kbuild-all@lists.linux.dev, will@kernel.org, lenb@kernel.org,
-	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev,
-	pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org,
-	etzhao1900@gmail.com
-Subject: Re: [PATCH v6 5/5] PCI: Suspend iommu function prior to resetting a
- device
-Message-ID: <202511191219.qIkZ1n2P-lkp@intel.com>
-References: <9f6caaedc278fe057aacb813d94f44a93d8cab3c.1763512374.git.nicolinc@nvidia.com>
+	s=arc-20240116; t=1763523324; c=relaxed/simple;
+	bh=FJS/HClEJ1jtK+rxMOC89uUQdfj4wsNu+wSDk1ZBbSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u3somGLmMXI5R5ShxMtFGtFEZvyrcNxOAlVWEEcq6Pdn8otlIci0Y1PRd5EaYCDrSk/8KkSiQKPv40Z29m25Sw1G8xh2zfOp8RVk/GBdnwBJ///P6Nyl3SSCeppOk8BmY8OTYNOw9RBg2FjjeTcxg7d70+ionYqK7V523et6fYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RvOT+Jqy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TOE38+1I; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763523320;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uvuRIi2ziKsR6xTkpv20Bt95OlEm10rLUXNQns1uoJU=;
+	b=RvOT+JqyJ2ZAocy2WlnPSxHwnWkcikq8xKPaMj0bK/4evhmfsshtGCoWJremcb6TcioTGf
+	VqMatlVv3t6KnFzWJlH9BgZtqmd1R1g9HzR2t48zI/Aa/BWCUIwPOFLBgvy1JRiWmk2/6M
+	kfaIE8f5iFjY3EbB+FGqo6z8XnJiQcw=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-w3RtDvr3NK6nvu1r9wZzvw-1; Tue, 18 Nov 2025 22:35:19 -0500
+X-MC-Unique: w3RtDvr3NK6nvu1r9wZzvw-1
+X-Mimecast-MFC-AGG-ID: w3RtDvr3NK6nvu1r9wZzvw_1763523318
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29809acd049so110184845ad.3
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Nov 2025 19:35:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1763523318; x=1764128118; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uvuRIi2ziKsR6xTkpv20Bt95OlEm10rLUXNQns1uoJU=;
+        b=TOE38+1I/JvwjYlvlL37OcRoGP3ktbHm0NNUYwPwr9+th4fgEeqOqoBDQWxdhPNWcQ
+         oY1V6S47BENPO7iGyiCAYQQaSWuvievXNgRGME3/Y6oxWb4pOtNqp7a9Hy2nyq0uu6bZ
+         98x1CC+paqCyoBmxBkMwm1bgJutrVXjfA/LlH74SlqJj+VCI/wrX4HK7h88Ui+tyjFiw
+         YyXh8nZHVXR1yCgpkOrGw6IbKPFXih+IBTDIfTiedjqa4LfjZiHT9sKRwkCUcyYThvEG
+         tdB4EdgV1dLphfvJ4aIyLAvpCr/jIQ0rt8Myk+pEpMYqQhPp6rV5wOOzqzeeaO9tG8X0
+         Id3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763523318; x=1764128118;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uvuRIi2ziKsR6xTkpv20Bt95OlEm10rLUXNQns1uoJU=;
+        b=AozPlVLu63biY0Ttw840GVUAWeDPQm/dXYttfEa0JAYs+8u6mvny15MfM73I+y6hxu
+         fDWajaiVNMF+/AzPXzYMTB9//Pk1aYuNJRN8434kWhWzXIxkSGK8RgTof/V5GK3uNJy2
+         aqpHU/SZMU3p+go699bEks6Qq2V/1ddV010uXGG9LqvzxU07cpBh52dCdi6QY3BeoW0V
+         A+0rL4q8qP9UaaANK8TO1uFM7l+ALdnrzWDwkPMvM+ESlAhf5hZDa3tLmor4FPzIzpsJ
+         NOH3BRZ7toA0x9SigWcdTAOClVx+NlfkE1J03vKdMqWffr7RogKcqXWO8I5y7KSx+I1b
+         6xYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlFTx5w+DUPo6aNNZyzWR9fJqBqXR06+73V78sIMsS4w99FYMenWdfZgiL/e0GRDPmCArKpDnqcPUK@vger.kernel.org
+X-Gm-Message-State: AOJu0YzefqBZKW63CkmYZ+6OtezXaZJ7L7gu7RuXfK2FjIi0TpkR8Usk
+	Tt2LA8N2njwYT9XYwScbZBJM3js40ha0lucAWLa/vENjzLwOrKoStZVuFIOHlvpFFWxBqDy1Y4H
+	VckusYUpaXosFOZ1SCtuWX7tb+y8gAqhAb3gW716mQaH7p1ZzpOyjDiRW2veagNI=
+X-Gm-Gg: ASbGnctVaFld/sEzyAV7uoNaizBX5MCw97TvOL73B4qXiY7z8Et3Hzof4sfvhwxmBcE
+	2VHw2dQxuPvMXgEL5txb7Q6KQJr7MTPn2lQ4e/8rBk6ZL+LY4aMfqd0LYCQXBbqQ8GexTMJ/kDj
+	ihH1WrAFQCNYAZu2mf0VeluLh3dyFDKptHuSNNyAXvIop/C3K/aSB5c90OAYDdaNxp2Hwe8bUeA
+	cqEybJ7COr34lweTq450R9+QnKa3KFakZHYc9bo9DCHqyRVuusR9TdEt2jCBGh/Noz0UneNYOUk
+	Wia7v7qvwwxwe8gRVNuzDs40DXKGnxAt8Od0VbTCxTKSqn0RvM4QphezSi15A8EZSXRiDqno6Rv
+	eWH6dE940tBOVk2V7t/Po7CIW8vBGBFSlQyFZoYTcUuc0gHoMoQ==
+X-Received: by 2002:a17:902:ebd2:b0:294:fc1d:9d0 with SMTP id d9443c01a7336-2986a750101mr236282225ad.40.1763523318236;
+        Tue, 18 Nov 2025 19:35:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3FthsHiIYHA1hbqE2+ofewwVDvuKvv9vofOfVLsaX5rxLiZRjK5scHiZUaUDJ/yZF94bAvA==
+X-Received: by 2002:a17:902:ebd2:b0:294:fc1d:9d0 with SMTP id d9443c01a7336-2986a750101mr236281645ad.40.1763523317726;
+        Tue, 18 Nov 2025 19:35:17 -0800 (PST)
+Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2346b8sm189887835ad.16.2025.11.18.19.35.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 19:35:17 -0800 (PST)
+Message-ID: <455c577a-2c6b-4d57-9547-8f55bfe1c126@redhat.com>
+Date: Wed, 19 Nov 2025 13:35:03 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f6caaedc278fe057aacb813d94f44a93d8cab3c.1763512374.git.nicolinc@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/34] ACPI / PPTT: Add a helper to fill a cpumask from
+ a processor container
+To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
+Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
+ baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
+ carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
+ dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
+ fenghuay@nvidia.com, gregkh@linuxfoundation.org, guohanjun@huawei.com,
+ jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
+ lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
+ rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
+ scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
+ Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Zeng Heng <zengheng4@huawei.com>
+References: <20251117170014.4113754-1-ben.horgan@arm.com>
+ <20251117170014.4113754-2-ben.horgan@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20251117170014.4113754-2-ben.horgan@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Nicolin,
+Hi Ben,
 
-kernel test robot noticed the following build errors:
+On 11/18/25 2:59 AM, Ben Horgan wrote:
+> From: James Morse <james.morse@arm.com>
+> 
+> The ACPI MPAM table uses the UID of a processor container specified in
+> the PPTT to indicate the subset of CPUs and cache topology that can
+> access each MPAM System Component (MSC).
+> 
+> This information is not directly useful to the kernel. The equivalent
+> cpumask is needed instead.
+> 
+> Add a helper to find the processor container by its id, then walk
+> the possible CPUs to fill a cpumask with the CPUs that have this
+> processor container as a parent.
+> 
+> CC: Dave Martin <dave.martin@arm.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+> Tested-by: Peter Newman <peternewman@google.com>
+> Tested-by: Carl Worth <carl@os.amperecomputing.com>
+> Tested-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Zeng Heng <zengheng4@huawei.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+> ---
+> Changes since v4:
+> Remove blank line
+> 
+> Changes since v3:
+> Refer to processor hierarchy in comments (Jonathan)
+> Fix indent (Jonathan)
+> ---
+>   drivers/acpi/pptt.c  | 84 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/linux/acpi.h |  3 ++
+>   2 files changed, 87 insertions(+)
+> 
 
-[auto build test ERROR on next-20251118]
-[cannot apply to pci/next pci/for-linus awilliam-vfio/next awilliam-vfio/for-linus rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v6.18-rc6 v6.18-rc5 v6.18-rc4 v6.18-rc6]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Since this series may need another respin, a nitpick below...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Nicolin-Chen/iommu-Lock-group-mutex-in-iommu_deferred_attach/20251119-085721
-base:   next-20251118
-patch link:    https://lore.kernel.org/r/9f6caaedc278fe057aacb813d94f44a93d8cab3c.1763512374.git.nicolinc%40nvidia.com
-patch subject: [PATCH v6 5/5] PCI: Suspend iommu function prior to resetting a device
-config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20251119/202511191219.qIkZ1n2P-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251119/202511191219.qIkZ1n2P-lkp@intel.com/reproduce)
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 54676e3d82dd..b8248c0092fe 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -817,3 +817,87 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>   	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+>   					  ACPI_PPTT_ACPI_IDENTICAL);
+>   }
+> +
+> +/**
+> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
+> + * processor hierarchy node
+> + *
+> + * @table_hdr:		A reference to the PPTT table
+> + * @parent_node:	A pointer to the processor hierarchy node in the
+> + *			table_hdr
+> + * @cpus:		A cpumask to fill with the CPUs below @parent_node
+> + *
+> + * Walks up the PPTT from every possible CPU to find if the provided
+> + * @parent_node is a parent of this CPU.
+> + */
+> +static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
+> +				     struct acpi_pptt_processor *parent_node,
+> +				     cpumask_t *cpus)
+> +{
+> +	struct acpi_pptt_processor *cpu_node;
+> +	u32 acpi_id;
+> +	int cpu;
+> +
+> +	cpumask_clear(cpus);
+> +
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511191219.qIkZ1n2P-lkp@intel.com/
+The CPU mask has been cleared in its only caller acpi_pptt_get_cpus_from_container(),
+no need to clear it again.
 
-All errors (new ones prefixed by >>):
+> +	for_each_possible_cpu(cpu) {
+> +		acpi_id = get_acpi_id_for_cpu(cpu);
+> +		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
+> +
+> +		while (cpu_node) {
+> +			if (cpu_node == parent_node) {
+> +				cpumask_set_cpu(cpu, cpus);
+> +				break;
+> +			}
+> +			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
+> +		}
+> +	}
+> +}
+> +
+> +/**
+> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
+> + *                                       processor container
+> + * @acpi_cpu_id:	The UID of the processor container
+> + * @cpus:		The resulting CPU mask
+> + *
+> + * Find the specified Processor Container, and fill @cpus with all the cpus
+> + * below it.
+> + *
+> + * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
+> + * or a Processor Container, they may exist purely to describe a
+> + * Private resource. CPUs have to be leaves, so a Processor Container
+> + * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
+> + */
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
+> +{
+> +	struct acpi_table_header *table_hdr;
+> +	struct acpi_subtable_header *entry;
+> +	unsigned long table_end;
+> +	u32 proc_sz;
+> +
+> +	cpumask_clear(cpus);
+> +
+> +	table_hdr = acpi_get_pptt();
+> +	if (!table_hdr)
+> +		return;
+> +
+> +	table_end = (unsigned long)table_hdr + table_hdr->length;
+> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+> +			     sizeof(struct acpi_table_pptt));
+> +	proc_sz = sizeof(struct acpi_pptt_processor);
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+> +		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
+> +			struct acpi_pptt_processor *cpu_node;
+> +
+> +			cpu_node = (struct acpi_pptt_processor *)entry;
+> +			if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
+> +			    !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
+> +			    cpu_node->acpi_processor_id == acpi_cpu_id) {
+> +				acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
+> +				break;
+> +			}
+> +		}
+> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+> +				     entry->length);
+> +	}
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 5ff5d99f6ead..4752ebd48132 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
+>   int find_acpi_cpu_topology_cluster(unsigned int cpu);
+>   int find_acpi_cpu_topology_package(unsigned int cpu);
+>   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
+>   #else
+>   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>   {
+> @@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>   {
+>   	return -EINVAL;
+>   }
+> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
+> +						     cpumask_t *cpus) { }
+>   #endif
+>   
+>   void acpi_arch_init(void);
 
-   drivers/pci/pci.c: In function 'pcie_flr':
->> drivers/pci/pci.c:4341:43: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4341 |         ret = pci_dev_reset_iommu_prepare(dev);
-         |                                           ^~~
-         |                                           |
-         |                                           struct pci_dev *
-   In file included from drivers/pci/pci.c:16:
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
->> drivers/pci/pci.c:4361:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4361 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c: In function 'pci_af_flr':
-   drivers/pci/pci.c:4418:43: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4418 |         ret = pci_dev_reset_iommu_prepare(dev);
-         |                                           ^~~
-         |                                           |
-         |                                           struct pci_dev *
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c:4439:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4439 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c: In function 'pci_pm_reset':
-   drivers/pci/pci.c:4476:43: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4476 |         ret = pci_dev_reset_iommu_prepare(dev);
-         |                                           ^~~
-         |                                           |
-         |                                           struct pci_dev *
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c:4493:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4493 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c: In function 'pci_reset_bus_function':
-   drivers/pci/pci.c:4922:42: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4922 |         rc = pci_dev_reset_iommu_prepare(dev);
-         |                                          ^~~
-         |                                          |
-         |                                          struct pci_dev *
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c:4934:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4934 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c: In function 'cxl_reset_bus_function':
-   drivers/pci/pci.c:4959:42: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4959 |         rc = pci_dev_reset_iommu_prepare(dev);
-         |                                          ^~~
-         |                                          |
-         |                                          struct pci_dev *
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
-   drivers/pci/pci.c:4979:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4979 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
---
-   drivers/pci/quirks.c: In function '__pci_dev_specific_reset':
->> drivers/pci/quirks.c:4237:43: error: passing argument 1 of 'pci_dev_reset_iommu_prepare' from incompatible pointer type [-Wincompatible-pointer-types]
-    4237 |         ret = pci_dev_reset_iommu_prepare(dev);
-         |                                           ^~~
-         |                                           |
-         |                                           struct pci_dev *
-   In file included from drivers/pci/quirks.c:24:
-   include/linux/iommu.h:1519:62: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1519 | static inline int pci_dev_reset_iommu_prepare(struct device *dev)
-         |                                               ~~~~~~~~~~~~~~~^~~
->> drivers/pci/quirks.c:4244:34: error: passing argument 1 of 'pci_dev_reset_iommu_done' from incompatible pointer type [-Wincompatible-pointer-types]
-    4244 |         pci_dev_reset_iommu_done(dev);
-         |                                  ^~~
-         |                                  |
-         |                                  struct pci_dev *
-   include/linux/iommu.h:1524:60: note: expected 'struct device *' but argument is of type 'struct pci_dev *'
-    1524 | static inline void pci_dev_reset_iommu_done(struct device *dev)
-         |                                             ~~~~~~~~~~~~~~~^~~
+Thanks,
+Gavin
 
-
-vim +/pci_dev_reset_iommu_prepare +4341 drivers/pci/pci.c
-
-  4325	
-  4326	/**
-  4327	 * pcie_flr - initiate a PCIe function level reset
-  4328	 * @dev: device to reset
-  4329	 *
-  4330	 * Initiate a function level reset unconditionally on @dev without
-  4331	 * checking any flags and DEVCAP
-  4332	 */
-  4333	int pcie_flr(struct pci_dev *dev)
-  4334	{
-  4335		int ret;
-  4336	
-  4337		if (!pci_wait_for_pending_transaction(dev))
-  4338			pci_err(dev, "timed out waiting for pending transaction; performing function level reset anyway\n");
-  4339	
-  4340		/* Have to call it after waiting for pending DMA transaction */
-> 4341		ret = pci_dev_reset_iommu_prepare(dev);
-  4342		if (ret) {
-  4343			pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
-  4344			return ret;
-  4345		}
-  4346	
-  4347		pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_DEVCTL_BCR_FLR);
-  4348	
-  4349		if (dev->imm_ready)
-  4350			goto done;
-  4351	
-  4352		/*
-  4353		 * Per PCIe r4.0, sec 6.6.2, a device must complete an FLR within
-  4354		 * 100ms, but may silently discard requests while the FLR is in
-  4355		 * progress.  Wait 100ms before trying to access the device.
-  4356		 */
-  4357		msleep(100);
-  4358	
-  4359		ret = pci_dev_wait(dev, "FLR", PCIE_RESET_READY_POLL_MS);
-  4360	done:
-> 4361		pci_dev_reset_iommu_done(dev);
-  4362		return ret;
-  4363	}
-  4364	EXPORT_SYMBOL_GPL(pcie_flr);
-  4365	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
