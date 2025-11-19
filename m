@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-19112-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19113-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0E9C70346
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 17:48:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160C1C703AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 17:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D9B70361416
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 16:29:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 58C8A3C4792
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 16:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C8734D4D2;
-	Wed, 19 Nov 2025 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D262365A04;
+	Wed, 19 Nov 2025 16:29:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FF82BE632;
-	Wed, 19 Nov 2025 16:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD56327C0C;
+	Wed, 19 Nov 2025 16:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763569544; cv=none; b=Dip7cMEosGqmS6RmFqhiRIqOGGFG5FyssmcyCSiU2QhgjrFMgrX+V2tIBuxssjbAchyMvrY2Z+PSbi8XRpp4I4W+O7OyTzQlSD4YlVyIBjRqAPzWB6u8zAdpLuOMZihw6aKGq799Ie8qJ9zPpyJS+sx0mGihpyAKpauG/mqrZkU=
+	t=1763569742; cv=none; b=ivJ0iuM80hjUz6CGUtgrkyLMRX4tNlEuZf37mzMV8F8x6XDwKhU/MZUCaixc8721eLXWbCOacSmvU1RYcqzt+lNQ8/hTX2GS+TT69+bziFuzi9ljXYE3Lyc3yZbNE/OhKzDWSl8uqHJoVpnenX0QyLnuuTxz0s0gtx5P33GVO3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763569544; c=relaxed/simple;
-	bh=Ga0lixxhrYPZE4SSZzD+XzBKaMqZs4tC/kSZx/TQHXM=;
+	s=arc-20240116; t=1763569742; c=relaxed/simple;
+	bh=CbPl1GcCTT9GBH1V91ksu+RqYmqIugRN1KAFeIcAw2A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LTGYVwdDVjeb95vC096vvF/HnHrlMEqCbuN4SLdpMUItJRDzMXDSvYYuLOjZ+52WLKm4vqT1em7LivC9ZvJ92A9GyqjBIcjC8mUmIP0DXte1ddKUyuzT5EaPbfXrFNpgSHWh9ki9UCTtXICEhGcRJb8gRJsIXrMPJTuaRB88j8w=
+	 In-Reply-To:Content-Type; b=cyPcouYBlFsSSPmiZsM3/mZQRkfYUcmNysCK4fqKX0oDyUFBanp+GEusR8k+lRs+c10ubIWI8kpFObngJtVjZdJurxlsTG/UwFH0B9MyJNBl16ku5hOqBHBV4i0JeFjT7Z0eLkqPcfCNjxQjDkHg5nSyRGpN5BG3K6YxyoDozVE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 58B4BFEC;
-	Wed, 19 Nov 2025 08:25:34 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D597AFEC;
+	Wed, 19 Nov 2025 08:28:51 -0800 (PST)
 Received: from [172.27.42.169] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BFC43F740;
-	Wed, 19 Nov 2025 08:25:38 -0800 (PST)
-Message-ID: <e08b021c-5db9-49a8-b95d-0b3f957fedca@arm.com>
-Date: Wed, 19 Nov 2025 10:25:37 -0600
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A9473F740;
+	Wed, 19 Nov 2025 08:28:57 -0800 (PST)
+Message-ID: <5926591f-81aa-4953-9d80-bc85d3ce754f@arm.com>
+Date: Wed, 19 Nov 2025 10:28:57 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/34] ACPI / PPTT: Stop acpi_count_levels() expecting
- callers to clear levels
+Subject: Re: [PATCH v5 03/34] ACPI / PPTT: Add acpi_pptt_cache_v1_full to use
+ pptt cache as one structure
 To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
 Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
@@ -56,108 +56,147 @@ Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
  lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
  rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
  scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Zeng Heng <zengheng4@huawei.com>
+ tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com
 References: <20251117170014.4113754-1-ben.horgan@arm.com>
- <20251117170014.4113754-3-ben.horgan@arm.com>
+ <20251117170014.4113754-4-ben.horgan@arm.com>
 Content-Language: en-US
 From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <20251117170014.4113754-3-ben.horgan@arm.com>
+In-Reply-To: <20251117170014.4113754-4-ben.horgan@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 11/17/25 10:59 AM, Ben Horgan wrote:
-> From: James Morse <james.morse@arm.com>
+> In actbl2.h, acpi_pptt_cache describes the fields in the original
+> Cache Type Structure. In PPTT table version 3 a new field was added at the
+> end, cache_id. This is described in acpi_pptt_cache_v1 but rather than
+> including all v1 fields it just includes this one.
 > 
-> In acpi_count_levels(), the initial value of *levels passed by the
-> caller is really an implementation detail of acpi_count_levels(), so it
-> is unreasonable to expect the callers of this function to know what to
-> pass in for this parameter.  The only sensible initial value is 0,
-> which is what the only upstream caller (acpi_get_cache_info()) passes.
-> 
-> Use a local variable for the starting cache level in acpi_count_levels(),
-> and pass the result back to the caller via the function return value.
-> 
-> Get rid of the levels parameter, which has no remaining purpose.
-> 
-> Fix acpi_get_cache_info() to match.
+> In lieu of this being fixed in acpica, introduce acpi_pptt_cache_v1_full to
+> contain all the fields of the Cache Type Structure . Update the existing
+> code to use this new struct. This simplifies the code and removes a
+> non-standard use of ACPI_ADD_PTR.
 
-Sure,
+To me, reading the code its a lot clearer that there is a version 
+difference in the subtable this way.
 
-Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>>
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-> Tested-by: Peter Newman <peternewman@google.com>
-> Tested-by: Carl Worth <carl@os.amperecomputing.com>
-> Tested-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Zeng Heng <zengheng4@huawei.com>
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+
+> 
 > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 > ---
+> I have opened a pull request to acpica to update acpi_pptt_cache_v1 to
+> include all fields. https://github.com/acpica/acpica/pull/1059
+> 
+> Change since v4:
+> Use fields directly in acpi_pptt_cache_v1_full
+> Delay the casting
+> 
 > Changes since v3:
-> s/starting_level/current_level/ (Jonathan)
+> New patch
 > ---
->   drivers/acpi/pptt.c | 20 ++++++++++++--------
->   1 file changed, 12 insertions(+), 8 deletions(-)
+>   drivers/acpi/pptt.c | 47 +++++++++++++++++++++++++++++++++++----------
+>   1 file changed, 37 insertions(+), 10 deletions(-)
 > 
 > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index b8248c0092fe..2856254e29d7 100644
+> index 2856254e29d7..53fde9bd8140 100644
 > --- a/drivers/acpi/pptt.c
 > +++ b/drivers/acpi/pptt.c
-> @@ -177,14 +177,14 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
->   }
+> @@ -21,6 +21,25 @@
+>   #include <linux/cacheinfo.h>
+>   #include <acpi/processor.h>
 >   
->   /**
-> - * acpi_count_levels() - Given a PPTT table, and a CPU node, count the cache
-> - * levels and split cache levels (data/instruction).
-> + * acpi_count_levels() - Given a PPTT table, and a CPU node, count the
-> + * total number of levels and split cache levels (data/instruction).
->    * @table_hdr: Pointer to the head of the PPTT table
->    * @cpu_node: processor node we wish to count caches for
-> - * @levels: Number of levels if success.
->    * @split_levels:	Number of split cache levels (data/instruction) if
->    *			success. Can by NULL.
->    *
-> + * Return: number of levels.
->    * Given a processor node containing a processing unit, walk into it and count
->    * how many levels exist solely for it, and then walk up each level until we hit
->    * the root node (ignore the package level because it may be possible to have
-> @@ -192,14 +192,18 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
->    * split cache levels (data/instruction) that exist at each level on the way
->    * up.
->    */
-> -static void acpi_count_levels(struct acpi_table_header *table_hdr,
-> -			      struct acpi_pptt_processor *cpu_node,
-> -			      unsigned int *levels, unsigned int *split_levels)
-> +static int acpi_count_levels(struct acpi_table_header *table_hdr,
-> +			     struct acpi_pptt_processor *cpu_node,
-> +			     unsigned int *split_levels)
+> +/*
+> + * The acpi_pptt_cache_v1 in actbl2.h, which is imported from acpica,
+> + * only contains the cache_id field rather than all the fields of the
+> + * Cache Type Structure. Use this alternative structure until it is
+> + * resolved in acpica.
+> + */
+> +struct acpi_pptt_cache_v1_full {
+> +	struct acpi_subtable_header header;
+> +	u16 reserved;
+> +	u32 flags;
+> +	u32 next_level_of_cache;
+> +	u32 size;
+> +	u32 number_of_sets;
+> +	u8 associativity;
+> +	u8 attributes;
+> +	u16 line_size;
+> +	u32 cache_id;
+> +};
+> +
+>   static struct acpi_subtable_header *fetch_pptt_subtable(struct acpi_table_header *table_hdr,
+>   							u32 pptt_ref)
 >   {
-> +	int current_level = 0;
-> +
->   	do {
-> -		acpi_find_cache_level(table_hdr, cpu_node, levels, split_levels, 0, 0);
-> +		acpi_find_cache_level(table_hdr, cpu_node, &current_level, split_levels, 0, 0);
->   		cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
->   	} while (cpu_node);
-> +
-> +	return current_level;
+> @@ -56,6 +75,18 @@ static struct acpi_pptt_cache *fetch_pptt_cache(struct acpi_table_header *table_
+>   	return (struct acpi_pptt_cache *)fetch_pptt_subtable(table_hdr, pptt_ref);
 >   }
 >   
->   /**
-> @@ -645,7 +649,7 @@ int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
->   	if (!cpu_node)
->   		return -ENOENT;
+> +static struct acpi_pptt_cache_v1_full *upgrade_pptt_cache(struct acpi_pptt_cache *cache)
+> +{
+> +	if (cache->header.length < sizeof(struct acpi_pptt_cache_v1_full))
+> +		return NULL;
+> +
+> +	/* No use for v1 if the only additional field is invalid */
+> +	if (!(cache->flags & ACPI_PPTT_CACHE_ID_VALID))
+> +		return NULL;
+> +
+> +	return (struct acpi_pptt_cache_v1_full *)cache;
+> +}
+> +
+>   static struct acpi_subtable_header *acpi_get_pptt_resource(struct acpi_table_header *table_hdr,
+>   							   struct acpi_pptt_processor *node,
+>   							   int resource)
+> @@ -111,7 +142,7 @@ static unsigned int acpi_pptt_walk_cache(struct acpi_table_header *table_hdr,
+>   	if (res->type != ACPI_PPTT_TYPE_CACHE)
+>   		return 0;
 >   
-> -	acpi_count_levels(table, cpu_node, levels, split_levels);
-> +	*levels = acpi_count_levels(table, cpu_node, split_levels);
+> -	cache = (struct acpi_pptt_cache *) res;
+> +	cache = (struct acpi_pptt_cache *)res;
+>   	while (cache) {
+>   		local_level++;
 >   
->   	pr_debug("Cache Setup: last_level=%d split_levels=%d\n",
->   		 *levels, split_levels ? *split_levels : -1);
+> @@ -355,7 +386,6 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
+>    * @this_leaf: Kernel cache info structure being updated
+>    * @found_cache: The PPTT node describing this cache instance
+>    * @cpu_node: A unique reference to describe this cache instance
+> - * @revision: The revision of the PPTT table
+>    *
+>    * The ACPI spec implies that the fields in the cache structures are used to
+>    * extend and correct the information probed from the hardware. Lets only
+> @@ -365,10 +395,9 @@ static struct acpi_pptt_cache *acpi_find_cache_node(struct acpi_table_header *ta
+>    */
+>   static void update_cache_properties(struct cacheinfo *this_leaf,
+>   				    struct acpi_pptt_cache *found_cache,
+> -				    struct acpi_pptt_processor *cpu_node,
+> -				    u8 revision)
+> +				    struct acpi_pptt_processor *cpu_node)
+>   {
+> -	struct acpi_pptt_cache_v1* found_cache_v1;
+> +	struct acpi_pptt_cache_v1_full *found_cache_v1;
+>   
+>   	this_leaf->fw_token = cpu_node;
+>   	if (found_cache->flags & ACPI_PPTT_SIZE_PROPERTY_VALID)
+> @@ -418,9 +447,8 @@ static void update_cache_properties(struct cacheinfo *this_leaf,
+>   	    found_cache->flags & ACPI_PPTT_CACHE_TYPE_VALID)
+>   		this_leaf->type = CACHE_TYPE_UNIFIED;
+>   
+> -	if (revision >= 3 && (found_cache->flags & ACPI_PPTT_CACHE_ID_VALID)) {
+> -		found_cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> -	                                      found_cache, sizeof(struct acpi_pptt_cache));
+> +	found_cache_v1 =  upgrade_pptt_cache(found_cache);
+> +	if (found_cache_v1) {
+>   		this_leaf->id = found_cache_v1->cache_id;
+>   		this_leaf->attributes |= CACHE_ID;
+>   	}
+> @@ -445,8 +473,7 @@ static void cache_setup_acpi_cpu(struct acpi_table_header *table,
+>   		pr_debug("found = %p %p\n", found_cache, cpu_node);
+>   		if (found_cache)
+>   			update_cache_properties(this_leaf, found_cache,
+> -						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)),
+> -						table->revision);
+> +						ACPI_TO_POINTER(ACPI_PTR_DIFF(cpu_node, table)));
+>   
+>   		index++;
+>   	}
 
 
