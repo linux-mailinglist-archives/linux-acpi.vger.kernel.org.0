@@ -1,162 +1,206 @@
-Return-Path: <linux-acpi+bounces-19073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DEBC6DEA4
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 11:13:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EDBC6E6F6
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 13:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 52859353FD3
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 10:12:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 68E154E6C77
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 12:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9ED3491F6;
-	Wed, 19 Nov 2025 10:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9570351FDE;
+	Wed, 19 Nov 2025 12:23:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E79348865;
-	Wed, 19 Nov 2025 10:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1F133FE05;
+	Wed, 19 Nov 2025 12:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763547155; cv=none; b=caL8T3pVrmzwBOZ1lc9IhEwgrwNsZB2LGhPrdRTJrzg+pUbMRb7ufj1lWi73/m4B9lsO/e63NWmxMxXwoJol6SBR32geCdqZY+q+VosL2P56IGuOi9tF+Ih5vyF+WnS1I3tBZH4y9C3XwRtdyUyIcl549S0RUemgasAczo16gHs=
+	t=1763555011; cv=none; b=cHwV0RqPGMnBw1ixLtX9NX7Wa4U2disxxVW9/AiqrlOH8QWQKBSgCNh1anJD54tl5Kp5fl0dze8w5UcxnR+xI/PE9enucF6kWw+sozTCm4FL9W7lofDgeYW2Q6fo6tsIx/Q6Rot0uc9ACDeJXWn2oyxygpNuhk7IUv0qISM6jMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763547155; c=relaxed/simple;
-	bh=5R4x4bB+FeNSynI9wYt88bpcE7w6VM13UPcU2yuLTUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZlC+V0sRxtYcNfackm8UVZyReChLc0obbwtL5SI+7s6QbVPlnkl68dPOOtuuwxU8yL7EGqFIJr8ZWUnrwLTp0edfJcweTo9PSXxkDyp/9BM1VN5cNkw01kEoBRm4makyVuKtUaEv3U2/jMudB2N9pUQ8IVhCVAXBMDFsUuT5y4I=
+	s=arc-20240116; t=1763555011; c=relaxed/simple;
+	bh=xbH2Z6sdxLaoR8hxzfCHfbH3JB+mrMcV1WoNyz0tWPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qk/IjyaZuHoebi7+7olKtFuKDEExmQzWq7Rf6Yw3oK35wDSAXyZY1BZ62X48QW1M4NQRUJDd7vsTiyy2k7Q2jv0QAYbrWHZSx0TRfqvrUrl3rBBcB9GxGoKooyKCGO1qKZxrg3gmbqD3xcckEarNopcDKKCgoMgTLenQot86Be4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89F5EFEC;
-	Wed, 19 Nov 2025 02:12:24 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4AF733F740;
-	Wed, 19 Nov 2025 02:12:27 -0800 (PST)
-Message-ID: <d13bb673-a033-4020-a984-19b4ab560be9@arm.com>
-Date: Wed, 19 Nov 2025 10:12:25 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AEFF9FEC;
+	Wed, 19 Nov 2025 04:23:20 -0800 (PST)
+Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4FF173F740;
+	Wed, 19 Nov 2025 04:23:23 -0800 (PST)
+From: Ben Horgan <ben.horgan@arm.com>
+To: james.morse@arm.com
+Cc: amitsinght@marvell.com,
+	baisheng.gao@unisoc.com,
+	baolin.wang@linux.alibaba.com,
+	bobo.shaobowang@huawei.com,
+	carl@os.amperecomputing.com,
+	catalin.marinas@arm.com,
+	dakr@kernel.org,
+	dave.martin@arm.com,
+	david@redhat.com,
+	dfustini@baylibre.com,
+	fenghuay@nvidia.com,
+	gregkh@linuxfoundation.org,
+	gshan@redhat.com,
+	guohanjun@huawei.com,
+	jeremy.linton@arm.com,
+	jonathan.cameron@huawei.com,
+	kobak@nvidia.com,
+	lcherian@marvell.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lpieralisi@kernel.org,
+	peternewman@google.com,
+	quic_jiles@quicinc.com,
+	rafael@kernel.org,
+	robh@kernel.org,
+	rohit.mathew@arm.com,
+	scott@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	sudeep.holla@arm.com,
+	tan.shaopeng@fujitsu.com,
+	will@kernel.org,
+	xhao@linux.alibaba.com,
+	reinette.chatre@intel.com,
+	Ben Horgan <ben.horgan@arm.com>
+Subject: [PATCH v6 00/34] arm_mpam: Add basic mpam driver
+Date: Wed, 19 Nov 2025 12:22:30 +0000
+Message-ID: <20251119122305.302149-1-ben.horgan@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/34] arm_mpam: Add helpers for managing the locking
- around the mon_sel registers
-To: Fenghua Yu <fenghuay@nvidia.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- gregkh@linuxfoundation.org, gshan@redhat.com, guohanjun@huawei.com,
- jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Zeng Heng <zengheng4@huawei.com>
-References: <20251117170014.4113754-1-ben.horgan@arm.com>
- <20251117170014.4113754-16-ben.horgan@arm.com>
- <bb238bdc-1870-4888-874e-b3fa466d264b@nvidia.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <bb238bdc-1870-4888-874e-b3fa466d264b@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Fenghua,
+Hi all,
 
-On 11/19/25 04:13, Fenghua Yu wrote:
-> Hi, Ben,
-> 
-> On 11/17/25 08:59, Ben Horgan wrote:
->> From: James Morse <james.morse@arm.com>
->>
->> The MSC MON_SEL register needs to be accessed from hardirq for the
->> overflow
->> interrupt, and when taking an IPI to access these registers on platforms
->> where MSC are not accessible from every CPU. This makes an irqsave
->> spinlock the obvious lock to protect these registers. On systems with
->> SCMI
->> or PCC mailboxes it must be able to sleep, meaning a mutex must be used.
->> The SCMI or PCC platforms can't support an overflow interrupt, and
->> can't access the registers from hardirq context.
->>
->> Clearly these two can't exist for one MSC at the same time.
->>
->> Add helpers for the MON_SEL locking. For now, use a irqsave spinlock and
->> only support 'real' MMIO platforms.
->>
->> In the future this lock will be split in two allowing SCMI/PCC platforms
->> to take a mutex. Because there are contexts where the SCMI/PCC platforms
->> can't make an access, mpam_mon_sel_lock() needs to be able to fail. Do
->> this now, so that all the error handling on these paths is present. This
->> allows the relevant paths to fail if they are needed on a platform where
->> this isn't possible, instead of having to make explicit checks of the
->> interface type.
->>
->> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
->> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
->> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->> Tested-by: Peter Newman <peternewman@google.com>
->> Tested-by: Carl Worth <carl@os.amperecomputing.com>
->> Tested-by: Gavin Shan <gshan@redhat.com>
->> Tested-by: Zeng Heng <zengheng4@huawei.com>
->> Signed-off-by: James Morse <james.morse@arm.com>
->> Signed-off-by: Ben Horgan <ben.horgan@arm.com
-> 
-> [SNIP]
-> 
->> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/
->> mpam_internal.h
->> index 768a58a3ab27..b62ee55e1ed5 100644
->> --- a/drivers/resctrl/mpam_internal.h
->> +++ b/drivers/resctrl/mpam_internal.h
-> 
-> [SNIP]
-> 
->> +/* Returning false here means accesses to mon_sel must fail and
->> report an error. */
->> +static inline bool __must_check mpam_mon_sel_lock(struct mpam_msc *msc)
->> +{
->> +    WARN_ON_ONCE(msc->iface != MPAM_IFACE_MMIO);
->> +
->> +    raw_spin_lock_irqsave(&msc->_mon_sel_lock, msc->_mon_sel_flags);
->> +    return true;
->> +}
-> 
-> This helper always returns true, never false. And this may cause issue
-> later.
-> 
-> On the bottom line, this causes confusion in the comment and when later
-> its return value is always checked by callers.
-> 
-> It's better to improve this helper?
-> 
-> Option 1: warn and return false when ris->iface is not MMIO. No changes
-> in other patches which call the helper. Seems this is a better fix.
+Just a handful of minor changes based on v5 review comments. See individual
+patches for change lgos. I haven't asked James to host any branches for this
+revision but please let me know if this would be helpful to anyone. Thanks for
+all the help with reviews and testing.
 
-Ok. The return value checking is intentional so that the locking for the
-firmware backed interface can be easily re-instated to the driver later.
-I'll return false when ris->iface is not MMIO but we won't get there as
-the probe will have already failed.
+Previous cover letter from James:
 
-> Option 2: warn on non MMIO iface but no return value. Other patches need
-> to be changed when calling the helper.
-> 
-> Thanks.
-> 
-> -Fenghua
+This is just enough MPAM driver for ACPI. DT got ripped out. If you need DT
+support - please share your DTS so the DT folk know the binding is what is
+needed.
+This doesn't contain any of the resctrl code, meaning you can't actually drive it
+from user-space yet. Because of that, its hidden behind CONFIG_EXPERT.
+This will change once the user interface is connected up.
+
+This is the initial group of patches that allows the resctrl code to be built
+on top. Including that will increase the number of trees that may need to
+coordinate, so breaking it up make sense.
+
+The locking got simplified, but is still strange - this is because of the 'mpam-fb'
+firmware interface specification that is still alpha. That thing needs to wait for
+an interrupt after every system register write, which significantly impacts the
+driver. Some features just won't work, e.g. reading the monitor registers via
+perf.
+
+I've not found a platform that can test all the behaviours around the monitors,
+so this is where I'd expect the most bugs.
+
+The MPAM spec that describes all the system and MMIO registers can be found here:
+https://developer.arm.com/documentation/ddi0598/db/?lang=en
+(Ignored the 'RETIRED' warning - that is just arm moving the documentation around.
+ This document has the best overview)
+
+The expectation is this will go via the arm64 tree.
+
+This series is based on v6.18-rc4, and can be retrieved from: (no v6 version)
+https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/driver/v5
+
+The rest of the driver can be found here: (no v6 version)
+https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.18-rc4-v5
+
+What is MPAM? Set your time-machine to 2020:
+https://lore.kernel.org/lkml/20201030161120.227225-1-james.morse@arm.com/
+
+Ben Horgan (5):
+  ACPI / PPTT: Add acpi_pptt_cache_v1_full to use pptt cache as one
+    structure
+  platform: Define platform_device_put cleanup handler
+  ACPI: Define acpi_put_table cleanup handler and
+    acpi_get_table_pointer() helper
+  arm_mpam: Consider overflow in bandwidth counter state
+  MAINTAINERS: new entry for MPAM Driver
+
+James Morse (27):
+  ACPI / PPTT: Add a helper to fill a cpumask from a processor container
+  ACPI / PPTT: Stop acpi_count_levels() expecting callers to clear
+    levels
+  ACPI / PPTT: Find cache level by cache-id
+  ACPI / PPTT: Add a helper to fill a cpumask from a cache_id
+  arm64: kconfig: Add Kconfig entry for MPAM
+  ACPI / MPAM: Parse the MPAM table
+  arm_mpam: Add probe/remove for mpam msc driver and kbuild boiler plate
+  arm_mpam: Add the class and component structures for firmware
+    described ris
+  arm_mpam: Add MPAM MSC register layout definitions
+  arm_mpam: Add cpuhp callbacks to probe MSC hardware
+  arm_mpam: Probe hardware to find the supported partid/pmg values
+  arm_mpam: Add helpers for managing the locking around the mon_sel
+    registers
+  arm_mpam: Probe the hardware features resctrl supports
+  arm_mpam: Merge supported features during mpam_enable() into
+    mpam_class
+  arm_mpam: Reset MSC controls from cpuhp callbacks
+  arm_mpam: Add a helper to touch an MSC from any CPU
+  arm_mpam: Extend reset logic to allow devices to be reset any time
+  arm_mpam: Register and enable IRQs
+  arm_mpam: Use a static key to indicate when mpam is enabled
+  arm_mpam: Allow configuration to be applied and restored during cpu
+    online
+  arm_mpam: Probe and reset the rest of the features
+  arm_mpam: Add helpers to allocate monitors
+  arm_mpam: Add mpam_msmon_read() to read monitor value
+  arm_mpam: Track bandwidth counter state for power management
+  arm_mpam: Add helper to reset saved mbwu state
+  arm_mpam: Add kunit test for bitmap reset
+  arm_mpam: Add kunit tests for props_mismatch()
+
+Rohit Mathew (2):
+  arm_mpam: Probe for long/lwd mbwu counters
+  arm_mpam: Use long MBWU counters if supported
+
+ MAINTAINERS                         |   10 +
+ arch/arm64/Kconfig                  |   25 +
+ drivers/Kconfig                     |    2 +
+ drivers/Makefile                    |    1 +
+ drivers/acpi/arm64/Kconfig          |    3 +
+ drivers/acpi/arm64/Makefile         |    1 +
+ drivers/acpi/arm64/mpam.c           |  411 ++++
+ drivers/acpi/pptt.c                 |  280 ++-
+ drivers/acpi/tables.c               |    2 +-
+ drivers/resctrl/Kconfig             |   24 +
+ drivers/resctrl/Makefile            |    4 +
+ drivers/resctrl/mpam_devices.c      | 2723 +++++++++++++++++++++++++++
+ drivers/resctrl/mpam_internal.h     |  658 +++++++
+ drivers/resctrl/test_mpam_devices.c |  389 ++++
+ include/linux/acpi.h                |   26 +
+ include/linux/arm_mpam.h            |   66 +
+ include/linux/platform_device.h     |    1 +
+ 17 files changed, 4608 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/acpi/arm64/mpam.c
+ create mode 100644 drivers/resctrl/Kconfig
+ create mode 100644 drivers/resctrl/Makefile
+ create mode 100644 drivers/resctrl/mpam_devices.c
+ create mode 100644 drivers/resctrl/mpam_internal.h
+ create mode 100644 drivers/resctrl/test_mpam_devices.c
+ create mode 100644 include/linux/arm_mpam.h
 
 -- 
-Thanks,
-
-Ben
+2.43.0
 
 
