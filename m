@@ -1,255 +1,128 @@
-Return-Path: <linux-acpi+bounces-19071-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19072-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC68C6DE1A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 11:05:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D24C6DDB7
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 11:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AEA184E074C
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 10:00:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 450622DE61
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 10:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C212FDC31;
-	Wed, 19 Nov 2025 10:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDD933C522;
+	Wed, 19 Nov 2025 10:01:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF122E719B;
-	Wed, 19 Nov 2025 10:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868F2329C7C;
+	Wed, 19 Nov 2025 10:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763546444; cv=none; b=A7mhOEx/zaTdokMzYvuxlNeb5tya8I5Q7A6w6RE7nUO9Nv7nj1CqqQof6hV0VMWFl3FAeI2fOFTgY80HXNLAygZ0H7rxi2iYaTJHLlZ2I1fJeQnz50SvohhyowzoIo7wmpI68qu9pKEpqAWv8szWeEuFtBFS9c5twns64NDOvRs=
+	t=1763546460; cv=none; b=iOPJ0elVOQIswTg0nPEzWTfEijmUmQz3IN/cDEYNf2HW4bInX5ijm1jM74PUOvp1PmSh2bvZu2zx1LPHBd80E/rLfkkCwvDjj1kA9kBMXWzX11ogNwjqZkw7u9X+KWKNIsSK75RxICPNA6tInqZn0bogfVOar1hx9EVMyBGxIDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763546444; c=relaxed/simple;
-	bh=kkzJQHrqOrhQammoetUn6ZUlAXD70+ipvtJBIpExG80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b6MRHGOGDbQk2vx1OM/dA8CoT/Mvg+Od2AW5vWXAFbdZj33vmCYJj/Ae13wQvWwq/X4HgIfY6sKPLxIIFdN5usEAWI5MEndF4YsjV9YYoZW4AZsT+higIiZD35yHCxCQlLrBLmZB7ZRv+wDSncFi5FtVQJON3Ct0iu3QMtmrsuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 76950FEC;
-	Wed, 19 Nov 2025 02:00:33 -0800 (PST)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 336103F740;
-	Wed, 19 Nov 2025 02:00:36 -0800 (PST)
-Message-ID: <6eaf7e9c-a833-44c8-a213-7247a47d417d@arm.com>
-Date: Wed, 19 Nov 2025 10:00:34 +0000
+	s=arc-20240116; t=1763546460; c=relaxed/simple;
+	bh=7bPlwgIBBdtIQHHWoI7EnSculCS8P0Y4e3k0uNVXk0k=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TRvXDbpipSdxikJvH9PE/veN6iV3JsCAb6q+OPRKO2tYQ7PHOuyln3fz/zHx2Bne6CzqE3TN3ELODZn+fgIQW1o0ISWQQCDgHPeXiVTBFxq2bhgIL3UydLvwq+SD1iDYH2kWWBBghI0dlcQa2bKOslSRqZlVLZ98EHYxJsDcRl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dBH6G0VxxzHnH5T;
+	Wed, 19 Nov 2025 18:00:22 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9B1071401DC;
+	Wed, 19 Nov 2025 18:00:54 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 19 Nov
+ 2025 10:00:53 +0000
+Date: Wed, 19 Nov 2025 10:00:51 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Drew Fustini <fustini@kernel.org>
+CC: Ben Horgan <ben.horgan@arm.com>, <james.morse@arm.com>,
+	<amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
+	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
+	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
+	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
+	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
+	<guohanjun@huawei.com>, <jeremy.linton@arm.com>, <kobak@nvidia.com>,
+	<lcherian@marvell.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
+	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
+	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
+	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
+	<xhao@linux.alibaba.com>
+Subject: Re: [PATCH 00/33] arm_mpam: Add basic mpam driver
+Message-ID: <20251119100051.000018a0@huawei.com>
+In-Reply-To: <aRz5S/gnT9mhqN+7@x1>
+References: <20251107123450.664001-1-ben.horgan@arm.com>
+	<aRoG+UptQg9mix+7@x1>
+	<753f4d26-efa9-4ffd-a820-7c2a53c0bc5f@arm.com>
+	<aRz5S/gnT9mhqN+7@x1>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/34] ACPI / PPTT: Add a helper to fill a cpumask from
- a processor container
-To: Gavin Shan <gshan@redhat.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
- baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
- carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
- dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
- fenghuay@nvidia.com, gregkh@linuxfoundation.org, guohanjun@huawei.com,
- jeremy.linton@arm.com, jonathan.cameron@huawei.com, kobak@nvidia.com,
- lcherian@marvell.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
- rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
- scott@os.amperecomputing.com, sdonthineni@nvidia.com, sudeep.holla@arm.com,
- tan.shaopeng@fujitsu.com, will@kernel.org, xhao@linux.alibaba.com,
- Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Zeng Heng <zengheng4@huawei.com>
-References: <20251117170014.4113754-1-ben.horgan@arm.com>
- <20251117170014.4113754-2-ben.horgan@arm.com>
- <455c577a-2c6b-4d57-9547-8f55bfe1c126@redhat.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <455c577a-2c6b-4d57-9547-8f55bfe1c126@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-Hi Gavin,
+On Tue, 18 Nov 2025 14:55:07 -0800
+Drew Fustini <fustini@kernel.org> wrote:
 
-On 11/19/25 03:35, Gavin Shan wrote:
-> Hi Ben,
+> On Tue, Nov 18, 2025 at 02:11:31PM +0000, Ben Horgan wrote:
+> > Hi Drew,
+> > 
+> > On 11/16/25 17:16, Drew Fustini wrote:  
+> > > On Fri, Nov 07, 2025 at 12:34:17PM +0000, Ben Horgan wrote:  
+> > >> Hi all,  
+> > > [snip]  
+> > >> The rest of the driver can be found here: (no updated version - based on v3)
+> > >> https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.18-rc1  
+> > > 
+> > > Does anyone know of a hosting platform that offers ARM machines that
+> > > have MPAM?  
+> > 
+> > As far as I know there aren't any.
+> > 
+> > There is some MPAM support in the Orion Radxa board which is likely the
+> > cheapest option. The MPAM acpi table isn't in the firmware though so
+> > you'd need to load a custom table. James has this working.  
 > 
-> On 11/18/25 2:59 AM, Ben Horgan wrote:
->> From: James Morse <james.morse@arm.com>
->>
->> The ACPI MPAM table uses the UID of a processor container specified in
->> the PPTT to indicate the subset of CPUs and cache topology that can
->> access each MPAM System Component (MSC).
->>
->> This information is not directly useful to the kernel. The equivalent
->> cpumask is needed instead.
->>
->> Add a helper to find the processor container by its id, then walk
->> the possible CPUs to fill a cpumask with the CPUs that have this
->> processor container as a parent.
->>
->> CC: Dave Martin <dave.martin@arm.com>
->> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
->> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
->> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
->> Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
->> Tested-by: Peter Newman <peternewman@google.com>
->> Tested-by: Carl Worth <carl@os.amperecomputing.com>
->> Tested-by: Gavin Shan <gshan@redhat.com>
->> Tested-by: Zeng Heng <zengheng4@huawei.com>
->> Signed-off-by: James Morse <james.morse@arm.com>
->> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
->> ---
->> Changes since v4:
->> Remove blank line
->>
->> Changes since v3:
->> Refer to processor hierarchy in comments (Jonathan)
->> Fix indent (Jonathan)
->> ---
->>   drivers/acpi/pptt.c  | 84 ++++++++++++++++++++++++++++++++++++++++++++
->>   include/linux/acpi.h |  3 ++
->>   2 files changed, 87 insertions(+)
->>
+> Thank you, I didn't realize that there was a dev board that supports
+> MPAM. I didn't want to the expense or noise of a rackable server :)
 > 
-> Since this series may need another respin, a nitpick below...
+> Drew
 > 
->> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->> index 54676e3d82dd..b8248c0092fe 100644
->> --- a/drivers/acpi/pptt.c
->> +++ b/drivers/acpi/pptt.c
->> @@ -817,3 +817,87 @@ int find_acpi_cpu_topology_hetero_id(unsigned int
->> cpu)
->>       return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
->>                         ACPI_PPTT_ACPI_IDENTICAL);
->>   }
->> +
->> +/**
->> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT
->> + * processor hierarchy node
->> + *
->> + * @table_hdr:        A reference to the PPTT table
->> + * @parent_node:    A pointer to the processor hierarchy node in the
->> + *            table_hdr
->> + * @cpus:        A cpumask to fill with the CPUs below @parent_node
->> + *
->> + * Walks up the PPTT from every possible CPU to find if the provided
->> + * @parent_node is a parent of this CPU.
->> + */
->> +static void acpi_pptt_get_child_cpus(struct acpi_table_header
->> *table_hdr,
->> +                     struct acpi_pptt_processor *parent_node,
->> +                     cpumask_t *cpus)
->> +{
->> +    struct acpi_pptt_processor *cpu_node;
->> +    u32 acpi_id;
->> +    int cpu;
->> +
->> +    cpumask_clear(cpus);
->> +
-> 
-> The CPU mask has been cleared in its only caller
-> acpi_pptt_get_cpus_from_container(),
-> no need to clear it again.
+Hi Drew,
 
-I'd rather not change this as it adds extra constraints on the caller
-which aren't necessarily expected.
+Obvious not functional as such, but I did spin qemu emulation with a bunch
+of introspection so you could see what was configured.  Aim was to poke
+corner cases more easily than with real hardware. Did it's job at the time
+and shook out some bugs.
 
-> 
->> +    for_each_possible_cpu(cpu) {
->> +        acpi_id = get_acpi_id_for_cpu(cpu);
->> +        cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
->> +
->> +        while (cpu_node) {
->> +            if (cpu_node == parent_node) {
->> +                cpumask_set_cpu(cpu, cpus);
->> +                break;
->> +            }
->> +            cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
->> +        }
->> +    }
->> +}
->> +
->> +/**
->> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all
->> CPUs in a
->> + *                                       processor container
->> + * @acpi_cpu_id:    The UID of the processor container
->> + * @cpus:        The resulting CPU mask
->> + *
->> + * Find the specified Processor Container, and fill @cpus with all
->> the cpus
->> + * below it.
->> + *
->> + * Not all 'Processor Hierarchy' entries in the PPTT are either a CPU
->> + * or a Processor Container, they may exist purely to describe a
->> + * Private resource. CPUs have to be leaves, so a Processor Container
->> + * is a non-leaf that has the 'ACPI Processor ID valid' flag set.
->> + */
->> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
->> +{
->> +    struct acpi_table_header *table_hdr;
->> +    struct acpi_subtable_header *entry;
->> +    unsigned long table_end;
->> +    u32 proc_sz;
->> +
->> +    cpumask_clear(cpus);
->> +
->> +    table_hdr = acpi_get_pptt();
->> +    if (!table_hdr)
->> +        return;
->> +
->> +    table_end = (unsigned long)table_hdr + table_hdr->length;
->> +    entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
->> +                 sizeof(struct acpi_table_pptt));
->> +    proc_sz = sizeof(struct acpi_pptt_processor);
->> +    while ((unsigned long)entry + proc_sz <= table_end) {
->> +        if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
->> +            struct acpi_pptt_processor *cpu_node;
->> +
->> +            cpu_node = (struct acpi_pptt_processor *)entry;
->> +            if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
->> +                !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
->> +                cpu_node->acpi_processor_id == acpi_cpu_id) {
->> +                acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
->> +                break;
->> +            }
->> +        }
->> +        entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
->> +                     entry->length);
->> +    }
->> +}
->> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->> index 5ff5d99f6ead..4752ebd48132 100644
->> --- a/include/linux/acpi.h
->> +++ b/include/linux/acpi.h
->> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int
->> level);
->>   int find_acpi_cpu_topology_cluster(unsigned int cpu);
->>   int find_acpi_cpu_topology_package(unsigned int cpu);
->>   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
->> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t
->> *cpus);
->>   #else
->>   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
->>   {
->> @@ -1562,6 +1563,8 @@ static inline int
->> find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->>   {
->>       return -EINVAL;
->>   }
->> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
->> +                             cpumask_t *cpus) { }
->>   #endif
->>     void acpi_arch_init(void);
-> 
-> Thanks,
-> Gavin
-> 
+I haven't rebased it recently though.
+https://lore.kernel.org/qemu-devel/20230808115713.2613-1-Jonathan.Cameron@huawei.com/
 
-Thanks,
+https://gitlab.com/jic23/qemu/-/commits/mpam-2023-sept-01
+Has what looks to be a slightly more recent rebase.
 
-Ben
+No monitor support though.
 
+I might bring this back to poke the rest of this series as it moves forwards
+(or if anyone else wants to they are welcome to do so)
+
+FWIW we could in theory hook this up to the cache plugins to get some 'plausible'
+numbers, but I never bothered as we have hardware (as seen by tested-by's on this
+series).
+
+Jonathan
 
