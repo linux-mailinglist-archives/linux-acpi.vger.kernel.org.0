@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-19103-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19104-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CC4C6E779
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 13:30:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E28FC6E813
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 13:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id E95002E912
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 12:29:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8AD7C4ECE45
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 12:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E33358D04;
-	Wed, 19 Nov 2025 12:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B8035A14C;
+	Wed, 19 Nov 2025 12:26:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2953590D7;
-	Wed, 19 Nov 2025 12:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A4435A92B;
+	Wed, 19 Nov 2025 12:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763555170; cv=none; b=FT9nyp5wowyji6hhXdM9A/gL4Nkn4wtWX8Fk8w7wjagOd3rs7LOninJF++/VPfrHogoIYqOHfiQID5oN2QPaXb++SdGU37HSY0ag+Xyu0nticp9RNA4BmBZiNeFilZPmU3ofmgpBZXlgbJ58PsLx7Un0uVrWwYGSaeHeMEEEk9Q=
+	t=1763555176; cv=none; b=PVwztml/haS8XJ74Sw64d9QmlxUn7QkSL8tWShz/g/GGadSqVeJb/Xntx+FJ3VxuPwnfaEVLS5z5OoFttTBN3/h4b8H87XUfbVXzrI+/SDJJe9hVizRDWcb+G5vWANmH87fLb8wMIzkEWB0Zisp6HipTf9FW3LvAWVSKJbr+1j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763555170; c=relaxed/simple;
-	bh=rRsWvpYBvdzov3OyeUbqP8LoFROcsOLtl0hxTbj1LmQ=;
+	s=arc-20240116; t=1763555176; c=relaxed/simple;
+	bh=gnHB0UeiLjwz4tWYUgGB3CQyoJJ+7kI4DOvT5IUZ5ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTdMFRLXW0wDVK9Nk2gO6a/yqFAEihecCAkVxz/Tca4dn+PLCgLHxkIicvRmP0XirN+N7bVBEa2DgWJKeCcev2eRGKBnaLyMEBh4VaS07fAkH92XfKb/QdlnvlDnTqWntmaE2etmf6jhXQ2E4IC5HvFg+b+Fz2XIqpPlV3r9DIw=
+	 MIME-Version; b=lm3It8C8KKjQJc3Hkyf28S4FxudoMX1P/BignaIdmONwdGsBzru77mruxhWsmiZif4LSY3q/05DJEsLxN7WBt0gukYhQLHpZ+zz9IeEsDhtqMaDJoDH8kNbk5FDN5bhphzvGGb694Fz/Zyo5gB3WiKIx1OENq7Fxc6sxQU3hOjE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A17312FC;
-	Wed, 19 Nov 2025 04:26:00 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F00BF1AED;
+	Wed, 19 Nov 2025 04:26:05 -0800 (PST)
 Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D98023F740;
-	Wed, 19 Nov 2025 04:26:02 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 57EB63F740;
+	Wed, 19 Nov 2025 04:26:08 -0800 (PST)
 From: Ben Horgan <ben.horgan@arm.com>
 To: james.morse@arm.com
 Cc: amitsinght@marvell.com,
@@ -73,9 +73,9 @@ Cc: amitsinght@marvell.com,
 	Ben Horgan <ben.horgan@arm.com>,
 	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
 	Zeng Heng <zengheng4@huawei.com>
-Subject: [PATCH v6 29/34] arm_mpam: Probe for long/lwd mbwu counters
-Date: Wed, 19 Nov 2025 12:22:59 +0000
-Message-ID: <20251119122305.302149-30-ben.horgan@arm.com>
+Subject: [PATCH v6 30/34] arm_mpam: Use long MBWU counters if supported
+Date: Wed, 19 Nov 2025 12:23:00 +0000
+Message-ID: <20251119122305.302149-31-ben.horgan@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251119122305.302149-1-ben.horgan@arm.com>
 References: <20251119122305.302149-1-ben.horgan@arm.com>
@@ -89,27 +89,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Rohit Mathew <rohit.mathew@arm.com>
 
-mpam v0.1 and versions above v1.0 support optional long counter for
-memory bandwidth monitoring. The MPAMF_MBWUMON_IDR register has fields
-indicating support for long counters.
+Now that the larger counter sizes are probed, make use of them.
 
-Probe these feature bits.
+Callers of mpam_msmon_read() may not know (or care!) about the different
+counter sizes. Allow them to specify mpam_feat_msmon_mbwu and have the
+driver pick the counter to use.
 
-The mpam_feat_msmon_mbwu feature is used to indicate that bandwidth
-monitors are supported, instead of muddling this with which size of
-bandwidth monitors, add an explicit 31 bit counter feature.
+Only 32bit accesses to the MSC are required to be supported by the
+spec, but these registers are 64bits. The lower half may overflow
+into the higher half between two 32bit reads. To avoid this, use
+a helper that reads the top half multiple times to check for overflow.
 
 Signed-off-by: Rohit Mathew <rohit.mathew@arm.com>
-[ morse: Added 31bit counter feature to simplify later logic ]
+[morse: merged multiple patches from Rohit, added explicit counter selection ]
 Signed-off-by: James Morse <james.morse@arm.com>
+Cc: Peter Newman <peternewman@google.com>
 Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Carl Worth <carl@os.amperecomputing.com>
 Tested-by: Gavin Shan <gshan@redhat.com>
 Tested-by: Zeng Heng <zengheng4@huawei.com>
@@ -117,79 +118,275 @@ Tested-by: Hanjun Guo <guohanjun@huawei.com>
 Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 ---
 Changes since v3:
-Only set the exact counter length that is supported
+Peter:
+Fix type checking, use mpam_feat_msmon_mbwu_<n>counter
+Reset/configuration order of long counters
 ---
- drivers/resctrl/mpam_devices.c  | 35 ++++++++++++++++++++++-----------
- drivers/resctrl/mpam_internal.h |  3 +++
- 2 files changed, 26 insertions(+), 12 deletions(-)
+ drivers/resctrl/mpam_devices.c | 145 ++++++++++++++++++++++++++++-----
+ 1 file changed, 126 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index ecb5ecad50f8..380386cceb74 100644
+index 380386cceb74..0fb08222b91d 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -783,25 +783,36 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
- 				dev_err_once(dev, "Counters are not usable because not-ready timeout was not provided by firmware.");
- 		}
- 		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
--			bool hw_managed;
-+			bool has_long, hw_managed;
- 			u32 mbwumon_idr = mpam_read_partsel_reg(msc, MBWUMON_IDR);
+@@ -905,6 +905,50 @@ struct mon_read {
+ 	int				err;
+ };
  
- 			props->num_mbwu_mon = FIELD_GET(MPAMF_MBWUMON_IDR_NUM_MON, mbwumon_idr);
--			if (props->num_mbwu_mon)
-+			if (props->num_mbwu_mon) {
- 				mpam_set_feature(mpam_feat_msmon_mbwu, props);
- 
--			if (FIELD_GET(MPAMF_MBWUMON_IDR_HAS_RWBW, mbwumon_idr))
--				mpam_set_feature(mpam_feat_msmon_mbwu_rwbw, props);
-+				if (FIELD_GET(MPAMF_MBWUMON_IDR_HAS_RWBW, mbwumon_idr))
-+					mpam_set_feature(mpam_feat_msmon_mbwu_rwbw, props);
- 
--			/* Is NRDY hardware managed? */
--			hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
--			if (hw_managed)
--				mpam_set_feature(mpam_feat_msmon_mbwu_hw_nrdy, props);
-+				has_long = FIELD_GET(MPAMF_MBWUMON_IDR_HAS_LONG, mbwumon_idr);
-+				if (has_long) {
-+					if (FIELD_GET(MPAMF_MBWUMON_IDR_LWD, mbwumon_idr))
-+						mpam_set_feature(mpam_feat_msmon_mbwu_63counter, props);
-+					else
-+						mpam_set_feature(mpam_feat_msmon_mbwu_44counter, props);
-+				} else {
-+					mpam_set_feature(mpam_feat_msmon_mbwu_31counter, props);
-+				}
- 
--			/*
--			 * Don't warn about any missing firmware property for
--			 * MBWU NRDY - it doesn't make any sense!
--			 */
-+				/* Is NRDY hardware managed? */
-+				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
-+				if (hw_managed)
-+					mpam_set_feature(mpam_feat_msmon_mbwu_hw_nrdy, props);
++static bool mpam_ris_has_mbwu_long_counter(struct mpam_msc_ris *ris)
++{
++	return (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, &ris->props) ||
++		mpam_has_feature(mpam_feat_msmon_mbwu_44counter, &ris->props));
++}
 +
-+				/*
-+				 * Don't warn about any missing firmware property for
-+				 * MBWU NRDY - it doesn't make any sense!
-+				 */
-+			}
- 		}
++static u64 mpam_msc_read_mbwu_l(struct mpam_msc *msc)
++{
++	int retry = 3;
++	u32 mbwu_l_low;
++	u64 mbwu_l_high1, mbwu_l_high2;
++
++	mpam_mon_sel_lock_held(msc);
++
++	WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz);
++	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
++
++	mbwu_l_high2 = __mpam_read_reg(msc, MSMON_MBWU_L + 4);
++	do {
++		mbwu_l_high1 = mbwu_l_high2;
++		mbwu_l_low = __mpam_read_reg(msc, MSMON_MBWU_L);
++		mbwu_l_high2 = __mpam_read_reg(msc, MSMON_MBWU_L + 4);
++
++		retry--;
++	} while (mbwu_l_high1 != mbwu_l_high2 && retry > 0);
++
++	if (mbwu_l_high1 == mbwu_l_high2)
++		return (mbwu_l_high1 << 32) | mbwu_l_low;
++
++	pr_warn("Failed to read a stable value\n");
++	return MSMON___L_NRDY;
++}
++
++static void mpam_msc_zero_mbwu_l(struct mpam_msc *msc)
++{
++	mpam_mon_sel_lock_held(msc);
++
++	WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz);
++	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
++
++	__mpam_write_reg(msc, MSMON_MBWU_L, 0);
++	__mpam_write_reg(msc, MSMON_MBWU_L + 4, 0);
++}
++
+ static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+ 				   u32 *flt_val)
+ {
+@@ -931,7 +975,9 @@ static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+ 			*flt_val |= FIELD_PREP(MSMON_CFG_CSU_FLT_XCL, ctx->csu_exclude_clean);
+ 
+ 		break;
+-	case mpam_feat_msmon_mbwu:
++	case mpam_feat_msmon_mbwu_31counter:
++	case mpam_feat_msmon_mbwu_44counter:
++	case mpam_feat_msmon_mbwu_63counter:
+ 		*ctl_val |= MSMON_CFG_MBWU_CTL_TYPE_MBWU;
+ 
+ 		if (mpam_has_feature(mpam_feat_msmon_mbwu_rwbw, &m->ris->props))
+@@ -953,7 +999,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+ 		*ctl_val = mpam_read_monsel_reg(msc, CFG_CSU_CTL);
+ 		*flt_val = mpam_read_monsel_reg(msc, CFG_CSU_FLT);
+ 		break;
+-	case mpam_feat_msmon_mbwu:
++	case mpam_feat_msmon_mbwu_31counter:
++	case mpam_feat_msmon_mbwu_44counter:
++	case mpam_feat_msmon_mbwu_63counter:
+ 		*ctl_val = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
+ 		*flt_val = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
+ 		break;
+@@ -966,6 +1014,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+ static inline void clean_msmon_ctl_val(u32 *cur_ctl)
+ {
+ 	*cur_ctl &= ~MSMON_CFG_x_CTL_OFLOW_STATUS;
++
++	if (FIELD_GET(MSMON_CFG_x_CTL_TYPE, *cur_ctl) == MSMON_CFG_MBWU_CTL_TYPE_MBWU)
++		*cur_ctl &= ~MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L;
+ }
+ 
+ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+@@ -984,12 +1035,17 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+ 		mpam_write_monsel_reg(msc, CSU, 0);
+ 		mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
+ 		break;
+-	case mpam_feat_msmon_mbwu:
++	case mpam_feat_msmon_mbwu_31counter:
++	case mpam_feat_msmon_mbwu_44counter:
++	case mpam_feat_msmon_mbwu_63counter:
+ 		mpam_write_monsel_reg(msc, CFG_MBWU_FLT, flt_val);
+ 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
+ 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
+ 		/* Counting monitors require NRDY to be reset by software */
+-		mpam_write_monsel_reg(msc, MBWU, 0);
++		if (m->type == mpam_feat_msmon_mbwu_31counter)
++			mpam_write_monsel_reg(msc, MBWU, 0);
++		else
++			mpam_msc_zero_mbwu_l(m->ris->vmsc->msc);
+ 		break;
+ 	default:
+ 		pr_warn("Unexpected monitor type %d\n", m->type);
+@@ -998,8 +1054,17 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+ 
+ static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
+ {
+-	/* TODO: scaling, and long counters */
+-	return BIT_ULL(hweight_long(MSMON___VALUE));
++	/* TODO: implement scaling counters */
++	switch (type) {
++	case mpam_feat_msmon_mbwu_63counter:
++		return BIT_ULL(hweight_long(MSMON___LWD_VALUE));
++	case mpam_feat_msmon_mbwu_44counter:
++		return BIT_ULL(hweight_long(MSMON___L_VALUE));
++	case mpam_feat_msmon_mbwu_31counter:
++		return BIT_ULL(hweight_long(MSMON___VALUE));
++	default:
++		return 0;
++	}
+ }
+ 
+ static void __ris_msmon_read(void *arg)
+@@ -1029,7 +1094,12 @@ static void __ris_msmon_read(void *arg)
+ 	 * This saves waiting for 'nrdy' on subsequent reads.
+ 	 */
+ 	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
+-	overflow = cur_ctl & MSMON_CFG_x_CTL_OFLOW_STATUS;
++
++	if (mpam_feat_msmon_mbwu_31counter == m->type)
++		overflow = cur_ctl & MSMON_CFG_x_CTL_OFLOW_STATUS;
++	else if (mpam_feat_msmon_mbwu_44counter == m->type ||
++		 mpam_feat_msmon_mbwu_63counter == m->type)
++		overflow = cur_ctl & MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L;
+ 
+ 	clean_msmon_ctl_val(&cur_ctl);
+ 	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+@@ -1041,7 +1111,9 @@ static void __ris_msmon_read(void *arg)
+ 		overflow = false;
+ 	} else if (overflow) {
+ 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL,
+-				      cur_ctl & ~MSMON_CFG_x_CTL_OFLOW_STATUS);
++				      cur_ctl &
++				      ~(MSMON_CFG_x_CTL_OFLOW_STATUS |
++					MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L));
  	}
  
-diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index 218e2f48c7bf..693a315c4710 100644
---- a/drivers/resctrl/mpam_internal.h
-+++ b/drivers/resctrl/mpam_internal.h
-@@ -164,6 +164,9 @@ enum mpam_device_features {
- 	mpam_feat_msmon_csu_xcl,
- 	mpam_feat_msmon_csu_hw_nrdy,
- 	mpam_feat_msmon_mbwu,
-+	mpam_feat_msmon_mbwu_31counter,
-+	mpam_feat_msmon_mbwu_44counter,
-+	mpam_feat_msmon_mbwu_63counter,
- 	mpam_feat_msmon_mbwu_capture,
- 	mpam_feat_msmon_mbwu_rwbw,
- 	mpam_feat_msmon_mbwu_hw_nrdy,
+ 	switch (m->type) {
+@@ -1051,11 +1123,24 @@ static void __ris_msmon_read(void *arg)
+ 			nrdy = now & MSMON___NRDY;
+ 		now = FIELD_GET(MSMON___VALUE, now);
+ 		break;
+-	case mpam_feat_msmon_mbwu:
+-		now = mpam_read_monsel_reg(msc, MBWU);
+-		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+-			nrdy = now & MSMON___NRDY;
+-		now = FIELD_GET(MSMON___VALUE, now);
++	case mpam_feat_msmon_mbwu_31counter:
++	case mpam_feat_msmon_mbwu_44counter:
++	case mpam_feat_msmon_mbwu_63counter:
++		if (m->type != mpam_feat_msmon_mbwu_31counter) {
++			now = mpam_msc_read_mbwu_l(msc);
++			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
++				nrdy = now & MSMON___L_NRDY;
++
++			if (m->type == mpam_feat_msmon_mbwu_63counter)
++				now = FIELD_GET(MSMON___LWD_VALUE, now);
++			else
++				now = FIELD_GET(MSMON___L_VALUE, now);
++		} else {
++			now = mpam_read_monsel_reg(msc, MBWU);
++			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
++				nrdy = now & MSMON___NRDY;
++			now = FIELD_GET(MSMON___VALUE, now);
++		}
+ 
+ 		if (nrdy)
+ 			break;
+@@ -1118,13 +1203,26 @@ static int _msmon_read(struct mpam_component *comp, struct mon_read *arg)
+ 	return any_err;
+ }
+ 
++static enum mpam_device_features mpam_msmon_choose_counter(struct mpam_class *class)
++{
++	struct mpam_props *cprops = &class->props;
++
++	if (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, cprops))
++		return mpam_feat_msmon_mbwu_63counter;
++	if (mpam_has_feature(mpam_feat_msmon_mbwu_44counter, cprops))
++		return mpam_feat_msmon_mbwu_44counter;
++
++	return mpam_feat_msmon_mbwu_31counter;
++}
++
+ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+ 		    enum mpam_device_features type, u64 *val)
+ {
+ 	int err;
+ 	struct mon_read arg;
+ 	u64 wait_jiffies = 0;
+-	struct mpam_props *cprops = &comp->class->props;
++	struct mpam_class *class = comp->class;
++	struct mpam_props *cprops = &class->props;
+ 
+ 	might_sleep();
+ 
+@@ -1134,6 +1232,9 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+ 	if (!mpam_has_feature(type, cprops))
+ 		return -EOPNOTSUPP;
+ 
++	if (type == mpam_feat_msmon_mbwu)
++		type = mpam_msmon_choose_counter(class);
++
+ 	arg = (struct mon_read) {
+ 		.ctx = ctx,
+ 		.type = type,
+@@ -1142,8 +1243,8 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+ 	*val = 0;
+ 
+ 	err = _msmon_read(comp, &arg);
+-	if (err == -EBUSY && comp->class->nrdy_usec)
+-		wait_jiffies = usecs_to_jiffies(comp->class->nrdy_usec);
++	if (err == -EBUSY && class->nrdy_usec)
++		wait_jiffies = usecs_to_jiffies(class->nrdy_usec);
+ 
+ 	while (wait_jiffies)
+ 		wait_jiffies = schedule_timeout_uninterruptible(wait_jiffies);
+@@ -1282,12 +1383,13 @@ static int mpam_restore_mbwu_state(void *_ris)
+ 	int i;
+ 	struct mon_read mwbu_arg;
+ 	struct mpam_msc_ris *ris = _ris;
++	struct mpam_class *class = ris->vmsc->comp->class;
+ 
+ 	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
+ 		if (ris->mbwu_state[i].enabled) {
+ 			mwbu_arg.ris = ris;
+ 			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
+-			mwbu_arg.type = mpam_feat_msmon_mbwu;
++			mwbu_arg.type = mpam_msmon_choose_counter(class);
+ 
+ 			__ris_msmon_read(&mwbu_arg);
+ 		}
+@@ -1322,8 +1424,13 @@ static int mpam_save_mbwu_state(void *arg)
+ 		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
+ 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
+ 
+-		val = mpam_read_monsel_reg(msc, MBWU);
+-		mpam_write_monsel_reg(msc, MBWU, 0);
++		if (mpam_ris_has_mbwu_long_counter(ris)) {
++			val = mpam_msc_read_mbwu_l(msc);
++			mpam_msc_zero_mbwu_l(msc);
++		} else {
++			val = mpam_read_monsel_reg(msc, MBWU);
++			mpam_write_monsel_reg(msc, MBWU, 0);
++		}
+ 
+ 		cfg->mon = i;
+ 		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
 -- 
 2.43.0
 
