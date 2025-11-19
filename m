@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-19079-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19080-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960DBC6E6D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 13:24:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911A8C6E6E5
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 13:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id A6E8724027
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 12:24:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3F189386C81
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 12:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FAF353883;
-	Wed, 19 Nov 2025 12:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6B23590C8;
+	Wed, 19 Nov 2025 12:24:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905D23590BB;
-	Wed, 19 Nov 2025 12:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD883587B9;
+	Wed, 19 Nov 2025 12:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763555038; cv=none; b=l5FR7TEVU9l6sLZCwQt0tjLGGFvdaWqtTBbG8nvNUdJ0V5t2dpYLzS6kg+vLA1NTfYifkrGn/lcDI0qrhgf61i7vgSigKTNRIyoCf+5OQ03UGlApcGCnCawePeJ+NsF6S/coXm2PHv0IMupm27TngjoOxTSkIIMZRPobm4/JmgA=
+	t=1763555043; cv=none; b=QxjQTocvr32I5sSuUI5HKrgj0Buz32bR3eJ1caQPOn9gyRlF2CQZS2I0uyltlimunapkE00ZwwUd/11SCtL6I4CNItk0Pp97VaeYfU6/E/BYQGVHoLnk37+Y+H4N0HyXZ6xA3UnlchvbJYDrmBntz2cm8CJsBuGs3eAUQTW8bpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763555038; c=relaxed/simple;
-	bh=DRls3je39IJwkKdjASbYnfd7lm5xUgaSN4n9CydZgWM=;
+	s=arc-20240116; t=1763555043; c=relaxed/simple;
+	bh=t3eKR0gZbU+TbemFtRcRB60vnL0B5FY6xy4XkSzD8NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lg917XKkJy/AA7UQHCgh9oBvwfgZBHTRDEjsT6raKM9Hfk9Oi9an65HNqRs50it4nyNOQ9IzPZ6FKuGT4yY8m9A9TfT9cM5l3ZtWtQzNR0EkRelocBXvHJXqBbtHYRBtYDNwU6+zB/UuZAf96QXKdyeqP9xY3RA4YV7PltgYyG0=
+	 MIME-Version; b=HZs9+toCHUFSkrRgsrKjJn61pGAZl4Azw4cUjQPtguN/5zyHCmknIh7G0vc7YGgO4Fwby3H+HQ7JvsGxjJeX/Rd5We+5axLfd+4ITNhdfZEDzZlQx/8w39Z9h56h98Hb1fQC3P6xMOvu3on2NkIVUOTm2z+8rBTKGnk/bvn/HVM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F5DFFEC;
-	Wed, 19 Nov 2025 04:23:48 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4E191762;
+	Wed, 19 Nov 2025 04:23:53 -0800 (PST)
 Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4CA2B3F740;
-	Wed, 19 Nov 2025 04:23:50 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3CD663F740;
+	Wed, 19 Nov 2025 04:23:56 -0800 (PST)
 From: Ben Horgan <ben.horgan@arm.com>
 To: james.morse@arm.com
 Cc: amitsinght@marvell.com,
@@ -70,13 +70,12 @@ Cc: amitsinght@marvell.com,
 	will@kernel.org,
 	xhao@linux.alibaba.com,
 	reinette.chatre@intel.com,
-	Rohit Mathew <Rohit.Mathew@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
 	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v6 05/34] ACPI / PPTT: Add a helper to fill a cpumask from a cache_id
-Date: Wed, 19 Nov 2025 12:22:35 +0000
-Message-ID: <20251119122305.302149-6-ben.horgan@arm.com>
+	Zeng Heng <zengheng4@huawei.com>
+Subject: [PATCH v6 06/34] arm64: kconfig: Add Kconfig entry for MPAM
+Date: Wed, 19 Nov 2025 12:22:36 +0000
+Message-ID: <20251119122305.302149-7-ben.horgan@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251119122305.302149-1-ben.horgan@arm.com>
 References: <20251119122305.302149-1-ben.horgan@arm.com>
@@ -90,141 +89,69 @@ Content-Transfer-Encoding: 8bit
 
 From: James Morse <james.morse@arm.com>
 
-MPAM identifies CPUs by the cache_id in the PPTT cache structure.
+The bulk of the MPAM driver lives outside the arch code because it
+largely manages MMIO devices that generate interrupts. The driver
+needs a Kconfig symbol to enable it. As MPAM is only found on arm64
+platforms, the arm64 tree is the most natural home for the Kconfig
+option.
 
-The driver needs to know which CPUs are associated with the cache.
-The CPUs may not all be online, so cacheinfo does not have the
-information.
+This Kconfig option will later be used by the arch code to enable
+or disable the MPAM context-switch code, and to register properties
+of CPUs with the MPAM driver.
 
-Add a helper to pull this information out of the PPTT.
-
-CC: Rohit Mathew <Rohit.Mathew@arm.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Signed-off-by: James Morse <james.morse@arm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Carl Worth <carl@os.amperecomputing.com>
 Tested-by: Gavin Shan <gshan@redhat.com>
 Tested-by: Zeng Heng <zengheng4@huawei.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 Tested-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: James Morse <james.morse@arm.com>
+CC: Dave Martin <dave.martin@arm.com>
 Signed-off-by: Ben Horgan <ben.horgan@arm.com>
 ---
-Changes since v4:
-Same changes as previous patch in series
-do/while
-initialisation of acpi_cpu_id
-use new version of acpi_pptt_cache_v1_full
+ arch/arm64/Kconfig | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Changes since v3:
-Equivalent changes to the previous patch:
- Tags dropped due to rework
- Fallout/simplification from adding acpi_pptt_cache_v1_full
- Look for each cache type before incrementing level
----
- drivers/acpi/pptt.c  | 65 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h |  6 ++++
- 2 files changed, 71 insertions(+)
-
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index da49b56a1ef2..de5f8c018333 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -998,3 +998,68 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 6663ffd23f25..67015d51f7b5 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2023,6 +2023,29 @@ config ARM64_TLB_RANGE
+ 	  ARMv8.4-TLBI provides TLBI invalidation instruction that apply to a
+ 	  range of input addresses.
  
- 	return -ENOENT;
- }
++config ARM64_MPAM
++	bool "Enable support for MPAM"
++	help
++	  Memory System Resource Partitioning and Monitoring (MPAM) is an
++	  optional extension to the Arm architecture that allows each
++	  transaction issued to the memory system to be labelled with a
++	  Partition identifier (PARTID) and Performance Monitoring Group
++	  identifier (PMG).
 +
-+/**
-+ * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
-+ *					   specified cache
-+ * @cache_id: The id field of the cache
-+ * @cpus: Where to build the cpumask
-+ *
-+ * Determine which CPUs are below this cache in the PPTT. This allows the property
-+ * to be found even if the CPUs are offline.
-+ *
-+ * The PPTT table must be rev 3 or later,
-+ *
-+ * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
-+ * Otherwise returns 0 and sets the cpus in the provided cpumask.
-+ */
-+int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
-+{
-+	int cpu;
-+	struct acpi_table_header *table;
++	  Memory system components, such as the caches, can be configured with
++	  policies to control how much of various physical resources (such as
++	  memory bandwidth or cache memory) the transactions labelled with each
++	  PARTID can consume.  Depending on the capabilities of the hardware,
++	  the PARTID and PMG can also be used as filtering criteria to measure
++	  the memory system resource consumption of different parts of a
++	  workload.
 +
-+	cpumask_clear(cpus);
++	  Use of this extension requires CPU support, support in the
++	  Memory System Components (MSC), and a description from firmware
++	  of where the MSCs are in the address space.
 +
-+	table = acpi_get_pptt();
-+	if (!table)
-+		return -ENOENT;
++	  MPAM is exposed to user-space via the resctrl pseudo filesystem.
 +
-+	if (table->revision < 3)
-+		return -ENOENT;
-+
-+	for_each_possible_cpu(cpu) {
-+		bool empty;
-+		int level = 1;
-+		u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
-+		struct acpi_pptt_cache *cache;
-+		struct acpi_pptt_processor *cpu_node;
-+
-+		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
-+		if (!cpu_node)
-+			continue;
-+
-+		do {
-+			int cache_type[] = {CACHE_TYPE_INST, CACHE_TYPE_DATA, CACHE_TYPE_UNIFIED};
-+
-+			empty = true;
-+			for (int i = 0; i < ARRAY_SIZE(cache_type); i++) {
-+				struct acpi_pptt_cache_v1_full *cache_v1;
-+
-+				cache = acpi_find_cache_node(table, acpi_cpu_id, cache_type[i],
-+							     level, &cpu_node);
-+
-+				if (!cache)
-+					continue;
-+
-+				empty = false;
-+
-+				cache_v1 = upgrade_pptt_cache(cache);
-+				if (cache_v1 && cache_v1->cache_id == cache_id)
-+					cpumask_set_cpu(cpu, cpus);
-+			}
-+			level++;
-+		} while (!empty);
-+	}
-+
-+	return 0;
-+}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index be074bdfd4d1..a9dbacabdf89 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1543,6 +1543,7 @@ int find_acpi_cpu_topology_package(unsigned int cpu);
- int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
- void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
- int find_acpi_cache_level_from_id(u32 cache_id);
-+int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus);
- #else
- static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
- {
-@@ -1570,6 +1571,11 @@ static inline int find_acpi_cache_level_from_id(u32 cache_id)
- {
- 	return -ENOENT;
- }
-+static inline int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id,
-+						      cpumask_t *cpus)
-+{
-+	return -ENOENT;
-+}
- #endif
+ endmenu # "ARMv8.4 architectural features"
  
- void acpi_arch_init(void);
+ menu "ARMv8.5 architectural features"
 -- 
 2.43.0
 
