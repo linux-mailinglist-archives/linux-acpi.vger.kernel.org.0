@@ -1,122 +1,140 @@
-Return-Path: <linux-acpi+bounces-19163-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19164-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7993DC75213
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 16:51:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E29EC756DF
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 17:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7B0BF365F86
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 15:44:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BC694E922F
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 16:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF25F35FF7A;
-	Thu, 20 Nov 2025 15:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGzNRPlO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAA036C0DE;
+	Thu, 20 Nov 2025 16:33:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2C92D7806;
-	Thu, 20 Nov 2025 15:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60207364EB7
+	for <linux-acpi@vger.kernel.org>; Thu, 20 Nov 2025 16:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763653262; cv=none; b=Dp6eyH+itGGvijZQG5GaXdFxFALmCNtoO1R4SMQAlIo+bkkiLxjU2YzyK8aHkokk2HNtxwSdLPUSchMK2wR0vOAZDaeC0hhWfTETBxlqI1WdudFnRiMqEnXoGIl/ps55kssa47u12qMcyojCL7nlSj1AU3CvuggAs7YesaGGuos=
+	t=1763656394; cv=none; b=Gn286aCOCiTulq7QkNszj89/N9B9nlUA4o25iM31B6na6BxoPy8ik6Nw0+9jAwK+EQxosnZLPH9BDgOTlcTKEyAohkdJYtDHXNyVw5Qf9fhvVVbzuNfdbHrHtGVB/1UzW8KHFSdA+IfbxPUvwqDaGXljz5p7hLczqqFHQhPoQnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763653262; c=relaxed/simple;
-	bh=0hY7oqaKrN/l/NqnjJ3E9raGrfa7kCrwvlrO+yXm6Lc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q6dkSbSj6stevm/yabh6Myc5eXKoB7ZHTbv6vMK/bNPH/w9c9fQc8o6YjuQxfygwMWNHITrq+8eBbmJKRs9iTSOdcyP2lu6Bdh3ki56IG/l9I2+kBeibPK5VlxmnvKtT1YeAvfCmjW/XaEFO2Unbzkutv3GqzsqUL1j5CUd0eos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGzNRPlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0BBC4CEF1;
-	Thu, 20 Nov 2025 15:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763653260;
-	bh=0hY7oqaKrN/l/NqnjJ3E9raGrfa7kCrwvlrO+yXm6Lc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jGzNRPlOKyW789+cPDChpz5r5xsSoRyMD+kqy4CIfRpJEA0JnImhvy0jK+hKQ+mO4
-	 T7PHC8QwtOgD1K+rGzgjUsgCc/HJnzriyLux3VfaERuCZwMUMbryZbhJGaY5Agx1Hz
-	 Mc1LvsRY65ZTsopyxVnOXEwgNzYbpY/mmCzI2zs4kiKCENhJ6SdrNNB7oKx0XuqMwt
-	 /uAe1KoPlUQO5bs1rlmWyk3XVbkcN0SmTzDReo+BD7L/dpt7+u3FHMHf2a8hNIrkp1
-	 FJxsFj7gqRaxKx+8mQ70I9e3qa8ypG+Yi6QhCciDyqiYqzVQY/HxQQJhnRIp+DS/ud
-	 EV/nvzTh4UwLQ==
-Date: Thu, 20 Nov 2025 15:40:52 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-	linux-spi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable+noautosel@kernel.org
-Subject: Re: [PATCH v7 4/9] spi: cs42l43: Use actual ACPI firmware node for
- chip selects
-Message-ID: <f37ba9cb-7ed6-41b2-b423-3ad3cf9b371e@sirena.org.uk>
+	s=arc-20240116; t=1763656394; c=relaxed/simple;
+	bh=73XsPhx2c3nGgibr//sd4fPhn8bIZngrIJyJokW5wT4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VmcDxKNhS6HD0dqy4U7pu99I/cX0P7K+D2+/jAoDBTPQ48B5u1tXUpPIl6YGm3W5ltF5LO3DsWW3xfcl/wvRtqKQG1cSmJ6UVGp5tpWVIFa/WF+5i0USmPRQSzdRO7/G3sUaZwBCGyC9VB5bec5VjprL6X9m2Kk3psUJNnRhG/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vM7aS-0004YP-9t; Thu, 20 Nov 2025 17:32:48 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vM7aQ-001RqE-2W;
+	Thu, 20 Nov 2025 17:32:46 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vM7aQ-00000000Bax-2qXE;
+	Thu, 20 Nov 2025 17:32:46 +0100
+Message-ID: <4e26c38c17fdcecc0e3fc119222568bc543f870b.camel@pengutronix.de>
+Subject: Re: [PATCH v7 0/9] reset: rework reset-gpios handling
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij	
+ <linus.walleij@linaro.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus	
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"	 <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski	 <krzk@kernel.org>,
+ David Rhodes <david.rhodes@cirrus.com>, Richard Fitzgerald	
+ <rf@opensource.cirrus.com>, Mark Brown <broonie@kernel.org>, Maciej Strozek
+	 <mstrozek@opensource.cirrus.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>,  Andy Shevchenko	 <andy@kernel.org>,
+ Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-spi@vger.kernel.org, Bartosz
+ Golaszewski	 <bartosz.golaszewski@linaro.org>, stable+noautosel@kernel.org
+Date: Thu, 20 Nov 2025 17:32:46 +0100
+In-Reply-To: <20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org>
 References: <20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org>
- <20251120-reset-gpios-swnodes-v7-4-a100493a0f4b@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JsE2zsHk8MEHlqtJ"
-Content-Disposition: inline
-In-Reply-To: <20251120-reset-gpios-swnodes-v7-4-a100493a0f4b@linaro.org>
-X-Cookie: Smile!  You're on Candid Camera.
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 
-
---JsE2zsHk8MEHlqtJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Nov 20, 2025 at 02:23:59PM +0100, Bartosz Golaszewski wrote:
-> From: Charles Keepax <ckeepax@opensource.cirrus.com>
+On Do, 2025-11-20 at 14:23 +0100, Bartosz Golaszewski wrote:
+> Machine GPIO lookup is a nice, if a bit clunky, mechanism when we have
+> absolutely no idea what the GPIO provider is or when it will be created.
+> However in the case of reset-gpios, we not only know if the chip is
+> there - we also already hold a reference to its firmware node.
 >=20
-> On some systems the cs42l43 has amplifiers attached to its SPI
-> controller that are not properly defined in ACPI. Currently
-> software nodes are added to support this case, however, the chip
-> selects for these devices are specified using a hack. A software
-> node is added with the same name as the pinctrl driver, as the
-> look up was name based, this allowed the GPIO look up to return
-> the pinctrl driver even though the swnode was not owned by it.
-> This was necessary as the swnodes did not support directly
-> linking to real firmware nodes.
+> In this case using fwnode lookup makes more sense. However, since the
+> reset provider is created dynamically, it doesn't have a corresponding
+> firmware node (in this case: an OF-node). That leaves us with software
+> nodes which currently cannot reference other implementations of the
+> fwnode API, only other struct software_node objects. This is a needless
+> limitation as it's imaginable that a dynamic auxiliary device (with a
+> software node attached) would want to reference a real device with an OF
+> node.
+>=20
+> This series does three things: extends the software node implementation,
+> allowing its properties to reference not only static software nodes but
+> also existing firmware nodes, updates the GPIO property interface to use
+> the reworked swnode macros and finally makes the reset-gpio code the
+> first user by converting the GPIO lookup from machine to swnode.
+>=20
+> Another user of the software node changes in the future could become the
+> shared GPIO modules that's in the works in parallel[1].
+>=20
+> Merging strategy: the series is logically split into four parts: driver
+> core, SPI, GPIO and reset respectively. However there are build-time
+> dependencies between all three parts so I suggest the reset tree as the
+> right one to take it upstream with an immutable branch provided to
+> driver core, SPI and GPIO.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Applied to reset/next, thanks!
 
---JsE2zsHk8MEHlqtJ
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/9] software node: read the reference args via the fwnode API
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3Df11a8e996d5e
+[2/9] software node: increase the reference of the swnode by its fwnode
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D0651933c117e
+[3/9] software node: allow referencing firmware nodes
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3Dd7cdbbc93c56
+[4/9] spi: cs42l43: Use actual ACPI firmware node for chip selects
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3Dd2a6cea44acc
+[5/9] gpio: swnode: allow referencing GPIO chips by firmware nodes
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D216c12047571
+[6/9] reset: order includes alphabetically in reset/core.c
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D97d85328e3dc
+[7/9] reset: make the provider of reset-gpios the parent of the reset devic=
+e
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D46dae84a90f9
+[8/9] reset: gpio: convert the driver to using the auxiliary bus
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D109ce747ac22
+[9/9] reset: gpio: use software nodes to setup the GPIO lookup
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D5fc4e4cf7a22
 
------BEGIN PGP SIGNATURE-----
+5fc4e4cf7a22 is tagged as reset-gpio-for-v6.19. I'll send a separate
+pull request for it.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkfNoMACgkQJNaLcl1U
-h9CFFwf/ThK/ORvrdAYrN14PWvivAGfH6zY6C0jHi94oohgnypcc2n1pGrAEcCz3
-DZv+JPPrnNJaJNM3IGdI2xT2xfkOnLa6IusyMficnitbTt6NdWTBdhqOsCb7HIxU
-XLTE8nMXUlyLmZgoXN/GIVXo3n18+/gThghH0Rs7t+dvYpby1pSCWduaW7JzRdjg
-tCgjK8UAKg1nhQOY69UOfbFx/KyeYzG+jvHR6ZWQ6SIh8CeVCZkcUeA+Z20GZ4vE
-19PhoK5GYO3i3CKkryQ199kLuNIN5Yvmk50+aszK4jVSJ7/HghgImOJKplYnjjOR
-A1Og4Hbn2ysTJMM6n7b4mSJUsHbXsg==
-=e6Ug
------END PGP SIGNATURE-----
-
---JsE2zsHk8MEHlqtJ--
+regards
+Philipp
 
