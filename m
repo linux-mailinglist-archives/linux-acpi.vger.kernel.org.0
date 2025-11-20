@@ -1,70 +1,103 @@
-Return-Path: <linux-acpi+bounces-19123-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19126-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5854EC71561
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 23:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD4AC71B4E
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 02:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5494034F377
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Nov 2025 22:44:10 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 66A8034B333
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 01:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAD532E14D;
-	Wed, 19 Nov 2025 22:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5605223DFF;
+	Thu, 20 Nov 2025 01:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="EeHoapDu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uF2z7xSs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6737C32B9A5
-	for <linux-acpi@vger.kernel.org>; Wed, 19 Nov 2025 22:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F05816EB42;
+	Thu, 20 Nov 2025 01:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763592166; cv=none; b=Rl06DVJ7wCQcgmVS5K53k86r1WXQj9h69Xg/O5sQg3QJd8ZeAM2R0mE3V4ytMTX23hiPXRgov09MOiFZH6W8Tgh4hNvLFPisW0G0vpzNJkT/ZcqnUAFqurXnV3B09tSmV5Z7JFrg+m0SSds0WQaxXpRPoXcLfgjTv6Og2Y78DCc=
+	t=1763603259; cv=none; b=LehxLUdygbahBDgmM6n5WKLwmWaaFf9RQCIqQl/qgs2FG5m4isINVZgc+kLIMe0fLrbzyB7ytxDo9p+6iljFwa9nzhm8E8sTPonJt7PR5SgkmRLxv8aL1eiKt4NuVQYW+Yr6g3fvw6SDUo3r+ctpDePa5hzfAdvYg0zmpUaut44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763592166; c=relaxed/simple;
-	bh=tt/IMPwEpLQecANGcddj+ukYcGqvpvlJ/TqDtm477Es=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kiYMiQrs0HgJNTfZrvy5BXiXPQq3IqZckITn9yGZAdMoZYQOrciny9vON+F1Twu0nVgLki7/IsKhqQ3kXNXOst/4JO0vaCbv0Zm4NPUbFF5M3/uXOnN14mHsvq4NSz1lK5FsxAAjxqDfSpvoWUHl4/6KRwrpoh/K71Pk75TZ8wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=EeHoapDu; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqsm-006yof-1F; Wed, 19 Nov 2025 23:42:36 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
-	:Message-Id:Date:Subject:Cc:To:From;
-	bh=FJlg4ul1sq6ZIhYuGCfri+UArhKIFxhGhDxLLUHAweI=; b=EeHoapDuKaTV8lNNWBHRSinGgN
-	oGrN6E8WJGCGmQ/UZ8Jwwc0T7nrGHIqcSMnb8z/cZxhehiegTm/tshgB/kN4QR4hVhN9eSZwduGls
-	2PFLLd1+qwVa7We6HZ1csXYxMfEmciCyRSkMBIcruVyXpLS4RGdBf4LtH3eqk7bBBLCzERwb2FSI7
-	o9AlR4YV0O87T+tBljrwFgRuuzcQHRkgp8bftdjF1VkA2yXvs/KBIROiR6KWWjhC32bk7bf+h6q1Y
-	Ub+//bZuqPHi3FznD0eTSB+kOmeKwg/2l9abP2d5lW5Xu4ncplHgmJSiFao5JzXAw62EDEkir/tYT
-	fSWzAu0w==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqsl-00080B-EF; Wed, 19 Nov 2025 23:42:35 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vLqsd-00Fos6-6X; Wed, 19 Nov 2025 23:42:27 +0100
-From: david.laight.linux@gmail.com
-To: linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mika Westerberg <westeri@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH 18/44] drivers/gpio: use min() instead of min_t()
-Date: Wed, 19 Nov 2025 22:41:14 +0000
-Message-Id: <20251119224140.8616-19-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1763603259; c=relaxed/simple;
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AvH6jxCmb00Tu1pC9E68hK/IG2HkCQ2rUi3fteRS7RVCxd98MBVlgnbfgacz7Bq+11mxmr99AHS127RFH9nx6yI1texBxvKKBN1LoiUA+0YwLVTYlGXrBHoll7rtuLyDG5WYzWYIYohdSn8tVnM9wZ6SCws3KeZBQ74dXRwQNSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uF2z7xSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC38C113D0;
+	Thu, 20 Nov 2025 01:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763603258;
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uF2z7xSsJBEF2o7jOCGEA8BICVnf2Ll7GN/YdEoLbs8PaQeAHioKS/o3SZ7QSxsKt
+	 vFnjbh6TICH8PLye1zHlHKdpzDE5Fm345e4L/w0hg/fEJ7Itp2slYgup6C6JZwwIym
+	 LLCi+QyeEmLY48F4L7ZzcbTStdyHeEENY8Hfnp0DqQrXSF5r2MrZk7t4OMHkvbN7PR
+	 8Qcsuc8hp1q4+vdSlLZQjWoYyrPh5U9WhuFsg9TNqdi8dNwuUtBQRxPyNJujXI9VwL
+	 mc5s7M6miwKRs2zV2Elwkq7lUfoGg+X1KHfkkxDDXD+SynQUk6oIGjhckD0gmUEmi4
+	 nBJOVjtHwyLhA==
+Date: Wed, 19 Nov 2025 17:47:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexei Starovoitov
+ <ast@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Andreas Dilger
+ <adilger.kernel@dilger.ca>, Andrew Lunn <andrew@lunn.ch>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>, Christian
+ Brauner <brauner@kernel.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Christoph Hellwig <hch@lst.de>, Daniel Borkmann
+ <daniel@iogearbox.net>, Dan Williams <dan.j.williams@intel.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ David Ahern <dsahern@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "David S. Miller"
+ <davem@davemloft.net>, Dennis Zhou <dennis@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Jens Axboe
+ <axboe@kernel.dk>, Jiri Slaby <jirislaby@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, John Allen <john.allen@amd.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Juergen Gross <jgross@suse.com>, Kees Cook
+ <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Mika Westerberg <westeri@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, Namhyung Kim
+ <namhyung@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ nic_swsd@realtek.com, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Olivia
+ Mackall <olivia@selenic.com>, Paolo Abeni <pabeni@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Huewe <peterhuewe@gmx.de>, Peter
+ Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Srinivas Kandagatla
+ <srini@kernel.org>, Stefano Stabellini <sstabellini@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>, "Theodore Ts'o"
+ <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, x86@kernel.org, Yury Norov
+ <yury.norov@gmail.com>, amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
+ cgroups@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ io-uring@vger.kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mptcp@lists.linux.dev, netdev@vger.kernel.org,
+ usb-storage@lists.one-eyed-alien.net
+Subject: Re: [PATCH 00/44] Change a lot of min_t() that might mask high bits
+Message-ID: <20251119174734.5cba3f95@kernel.org>
 In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
 References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 Precedence: bulk
@@ -73,37 +106,15 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: David Laight <david.laight.linux@gmail.com>
+On Wed, 19 Nov 2025 22:40:56 +0000 david.laight.linux@gmail.com wrote:
+> I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
+> from 124 to under 100 to be able to send the cover letter.
+> The individual patches only go to the addresses found for the associated files.
+> That reduces the number of emails to a less unsane number.
 
-min_t(u16, a, b) casts an 'unsigned long' to 'u16'.
-Use min(a, b) instead as it promotes the both values to int
-and so cannot discard significant bits.
-
-In this case the values should be ok.
-
-Detected by an extra check added to min_t().
-
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
- drivers/gpio/gpiolib-acpi-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index d441c1236d8c..83dd227dbbec 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1099,7 +1099,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
- 		return AE_BAD_PARAMETER;
- 	}
- 
--	length = min_t(u16, agpio->pin_table_length, pin_index + bits);
-+	length = min(agpio->pin_table_length, pin_index + bits);
- 	for (i = pin_index; i < length; ++i) {
- 		unsigned int pin = agpio->pin_table[i];
- 		struct acpi_gpio_connection *conn;
--- 
-2.39.5
-
+Please split the networking (9?) patches out to a separate series.
+It will help you with the CC list, and help us to get this applied..
 
