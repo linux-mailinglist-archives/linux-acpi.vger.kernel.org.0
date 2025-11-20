@@ -1,141 +1,104 @@
-Return-Path: <linux-acpi+bounces-19166-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19167-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0ED3C7581B
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 18:00:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20411C75B39
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 18:34:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5D2A62B9FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 17:00:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE3CC4E50CC
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Nov 2025 17:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C593590AF;
-	Thu, 20 Nov 2025 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ABE375186;
+	Thu, 20 Nov 2025 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hd+CRwG5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJ4up3pu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E8D281341
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Nov 2025 17:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC97375183
+	for <linux-acpi@vger.kernel.org>; Thu, 20 Nov 2025 17:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763658016; cv=none; b=MGIeM0zP7DfvHoWlMgbHpp2Z2xkr9MniLCnWydKn53EoImYsrkvwx+spwrqPBJjZ/yGOmexai9RGQ9UBjFk+YGty81aMvNhq3zG57MWDMr/LaE5553yxyCsOPBezNYQZM3x735GJjqG+ajyjClPja1kYdRiwOZwXOhH4JCJMV2c=
+	t=1763659518; cv=none; b=bdkkemqRypEM9ha5YDkJPfPIreJ1w83aniCOo7oWzqSSM7C+3r3E7k7HH47if0wwfMHKejSeK4ekPSsD2uDcOh/ul+stGeSdLcYzDUOQ6zgPW3j6hWim30PtRIQ4st9GWdiAJp/9cJS0QKx0/tpdz4+x8x3mQnlGmBDx0wkLnqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763658016; c=relaxed/simple;
-	bh=l79bhb8Rml19lkkEmkA0c+LZL1ScG7jhO+hl9yufoGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UdH5jZjARsSUDLp9o6HPN+7Ti7BbIMIndOr9JDgEfWY6xuPrBOWJZgCkDdYkIn9A8YBEeTn1CMzm1G8gIxzDi1yxid+RcX0LL/p4R9FnqAGyu09LtimxfX7axOUu3N8MybCesydAvAI0YPHs6pXXOqjkG4NhQ5ngQNJ3AuuWrWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hd+CRwG5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763658013;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Zql52UJpb99WilLwYKYnbYuQW8tcqMVBJhzSSFgCSFM=;
-	b=hd+CRwG5iXY2nUuhv3Ufn2PYkaqNrCLw9Vi4D3bfhOxoud2hRMqOpBK7QTD54Z4QS/BVcY
-	CYXimkbyzVyWh6j2KBV7Lu/I+X6xubKSMC7q5MuC/C0rh1qVyCPzRQx68X0MxQXzREYh0o
-	BQPzlmhdzzU6Od/w1BfaZUtcivDn8DI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-131-gK0dQdIkPhek7Kcg_qLZnw-1; Thu,
- 20 Nov 2025 12:00:11 -0500
-X-MC-Unique: gK0dQdIkPhek7Kcg_qLZnw-1
-X-Mimecast-MFC-AGG-ID: gK0dQdIkPhek7Kcg_qLZnw_1763658009
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 82476195606D;
-	Thu, 20 Nov 2025 17:00:09 +0000 (UTC)
-Received: from mrout-thinkpadp16vgen1.punetw6.csb (unknown [10.74.80.121])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ADB6B1800878;
-	Thu, 20 Nov 2025 17:00:05 +0000 (UTC)
-From: Malaya Kumar Rout <mrout@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: mrout@redhat.com,
-	lyude@redhat.com,
-	malayarout91@gmail.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH] ACPI: tools: pfrut: fix memory leak and resource leak in pfrut.c
-Date: Thu, 20 Nov 2025 22:29:58 +0530
-Message-ID: <20251120170001.251968-1-mrout@redhat.com>
+	s=arc-20240116; t=1763659518; c=relaxed/simple;
+	bh=B9dqDVGpn9poHw7LutfxfXn3ISfiXHex6JcfVgVMl4o=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=H0Y6F7G3hjMKl9b5TAnwpBskVrPP/hdjbh4MKGtkbhmRjqKJhWEiHNZE17wy/OS+sIhrgw8flRcknQgoYmKOPyrg+beQHWyzQe7aCniVd1d7FKbZmdFe9azieGHLM6NkFHqDJyYRS2NEidqczFs9FKB3GCnac8dUebJXB8gm5NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJ4up3pu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20208C116D0
+	for <linux-acpi@vger.kernel.org>; Thu, 20 Nov 2025 17:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763659518;
+	bh=B9dqDVGpn9poHw7LutfxfXn3ISfiXHex6JcfVgVMl4o=;
+	h=From:Date:Subject:To:Cc:From;
+	b=IJ4up3pugWiOgvX/cXk/C+r+jZRcN6MPP+8XwaX69C/l+/kAJITRhqd0A2jV68wsI
+	 QDrBytfJg8KgftmQQtWsGAcxx6j9uPyu8A/0CSwP5XIoMIvQ5DrBxpASWe/63zEdit
+	 sUnC4bSxrFge2TC4SJuRlbusGck1uTHQ2LGbEox5FkSETtvNoNtx5At/mk6ZXiRhhw
+	 a6+PUyzf28h1f6Cu+nkQxKD7WdynQeJUN5OscfIhoJlQy590quNz5mpgLatZVLkFUn
+	 VHVd2xtKcAb6K7+CNeD1M6nhUq3veFzjDuJ7p64RSghzH/jA2CeUG1NDXivdGSlp9+
+	 k1r0//Ogjmz8g==
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7c6dbdaced8so733891a34.1
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Nov 2025 09:25:18 -0800 (PST)
+X-Gm-Message-State: AOJu0Yxo4DNQn7NaylTm9+j+7mG7qSpGTcMt8ZMjkmtlhJWYFXrp3grm
+	1xtz4/0PCwuMsZBPG89QGcVu9CmiVbFR9Dm4b1IDlucNNUWmK4CBxsv6GGAGx57p65nH1TXuJGO
+	W/eiJ5u8CVwNjXzMQWq8W4TjFFx7NMb0=
+X-Google-Smtp-Source: AGHT+IFZMg34iCUiAmO08vxtPmUbH+60GrJfSOlFwY0j0b5qlO1agNpOmK/cg2Gn0cxYBeMFZCdA80OScwRngRolMls=
+X-Received: by 2002:a05:6808:1888:b0:44f:e61d:18ae with SMTP id
+ 5614622812f47-450ff050127mr1910508b6e.0.1763659517414; Thu, 20 Nov 2025
+ 09:25:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 20 Nov 2025 18:25:06 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iVYQ43L_bvnzyZyO+ArhO9ePT91GetFfFfwDKguxVMSQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bnYOXmtXiuOFvVsmYRmrNT2ldgox0ZgwiOLxnUZOUslrvTKDOtHh4c2D3Y
+Message-ID: <CAJZ5v0iVYQ43L_bvnzyZyO+ArhO9ePT91GetFfFfwDKguxVMSQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI support fix for v6.18-rc7
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Static analysis found an issue in pfrut.c
+Hi Linus,
 
-cppcheck output before this patch:
-tools/power/acpi/tools/pfrut/pfrut.c:225:3: error: Resource leak: fd_update [resourceLeak]
-tools/power/acpi/tools/pfrut/pfrut.c:269:3: error: Resource leak: fd_update [resourceLeak]
-tools/power/acpi/tools/pfrut/pfrut.c:269:3: error: Resource leak: fd_update_log [resourceLeak]
-tools/power/acpi/tools/pfrut/pfrut.c:365:4: error: Memory leak: addr_map_capsule [memleak]
-tools/power/acpi/tools/pfrut/pfrut.c:424:4: error: Memory leak: log_buf [memleak]
+Please pull from the tag
 
-cppcheck output after this patch:
-No resource leaks found
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.18-rc7
 
-Fix by closing file descriptors and freeing allocated memory.
+with top-most commit d2932a59c2d4fb364396f21df58431c44918dd47
 
-Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
----
- tools/power/acpi/tools/pfrut/pfrut.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ ACPI: APEI: EINJ: Fix EINJV2 initialization and injection
 
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 44a9ecbd91e8..4d9b0177c312 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -222,6 +222,7 @@ int main(int argc, char *argv[])
- 	fd_update_log = open("/dev/acpi_pfr_telemetry0", O_RDWR);
- 	if (fd_update_log < 0) {
- 		printf("PFRT device not supported - Quit...\n");
-+		close(fd_update);
- 		return 1;
- 	}
- 
-@@ -265,7 +266,8 @@ int main(int argc, char *argv[])
- 		printf("chunk2_size:%d\n", data_info.chunk2_size);
- 		printf("rollover_cnt:%d\n", data_info.rollover_cnt);
- 		printf("reset_cnt:%d\n", data_info.reset_cnt);
--
-+		close(fd_update);
-+		close(fd_update_log);
- 		return 0;
- 	}
- 
-@@ -358,6 +360,7 @@ int main(int argc, char *argv[])
- 
- 		if (ret == -1) {
- 			perror("Failed to load capsule file");
-+			munmap(addr_map_capsule, st.st_size);
- 			close(fd_capsule);
- 			close(fd_update);
- 			close(fd_update_log);
-@@ -420,7 +423,7 @@ int main(int argc, char *argv[])
- 		if (p_mmap == MAP_FAILED) {
- 			perror("mmap error.");
- 			close(fd_update_log);
--
-+			free(log_buf);
- 			return 1;
- 		}
- 
--- 
-2.51.0
+on top of commit 6a23ae0a96a600d1d12557add110e0bb6e32730c
 
+ Linux 6.18-rc6
+
+to receive an ACPI support fix for 6.18-rc7.
+
+This fixes EINJV2 support introduced during the 6.17 cycle by unbreaking
+the initialization broken by a previous attempted fix, adding sanity
+checks for data coming from the platform firmware, and updating the code
+to handle injecting legacy error types on an EINJV2 capable systems
+properly (Tony Luck).
+
+Thanks!
+
+
+---------------
+
+Tony Luck (1):
+      ACPI: APEI: EINJ: Fix EINJV2 initialization and injection
+
+---------------
+
+ drivers/acpi/apei/einj-core.c | 64 +++++++++++++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
