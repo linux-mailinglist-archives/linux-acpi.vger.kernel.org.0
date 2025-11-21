@@ -1,102 +1,138 @@
-Return-Path: <linux-acpi+bounces-19180-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19181-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01152C77F54
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 09:41:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9D9C78033
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 09:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 10B7A29A4B
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 08:41:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 8CCAE2AB44
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 08:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89932335BAD;
-	Fri, 21 Nov 2025 08:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A2B2D73A4;
+	Fri, 21 Nov 2025 08:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nzk6O9e6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnoVKuHZ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64941306D49
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 08:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A14F19992C;
+	Fri, 21 Nov 2025 08:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763714471; cv=none; b=Cg9SUxCw7aBNNVHTFn9+iEaBNWlhmUQ5D5MinchxuPcpxO3aSs0SMQOz6Njkt/+u9gwJph3n/yXon4pbavXPory8PgC/nDQYqsC8thxQlHW8urVVaKkBKoq2kjyue2aSgjc5kay4imgVZl9LQQi4cjIm9oEYN/Nvf+v6AEutg7Q=
+	t=1763715354; cv=none; b=itKot3iD9lQAK1ixl6y4ep4tcpL8w2oGc2MmBeR1DuLCrK3DKhcqa0wU7aDSu9hXkJ6d6X6U9j6DdwpfOReD0pw9fFkL2iNv3mVRvfc6xdyCrDsIahe6ZY818vJTwRVxGFVcS4QALNQHim8gyi4rLREqjLFT37VD52DsDszmB+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763714471; c=relaxed/simple;
-	bh=DaciFNiZJdDzmwkQJHk/PAQ4JjEDIeUFvUYCaDDTZMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pH6XK2ZcDfo+OkVaSg/Ymo86H0XW6wIeyG3ZPBz4OAXDs9nOAR2XbC5v3Ii06j/eT7KejZ9C1u6rCHBrwDioKratv28Y0KZOcCK8pqsj2ARew0oaxEkWedZttAPmP/OWpYYfaGmIVfIXo5q3aVN4JarW3+Do9t8pmc5KoHXmOS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nzk6O9e6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11093C4AF09
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 08:41:11 +0000 (UTC)
+	s=arc-20240116; t=1763715354; c=relaxed/simple;
+	bh=CLdujVXTIJTmNxkxPMTXDrfK+Eg/9LJhE/zrA3mxOLw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dzR7NgfTFmYqH7mb1e1xjbEYPSHXzU64m1S/WehHNswKSGF6+SE1E9FFVugX/zS1ROcS6eq9n4ZDoxKjEuwT4XlYfKeQLjfVUZa9y129MOnAPEwLzF13JY3Hv/0JP7CHm62tLCuEKisR5ecQo2Y7E4bis7KFPwgqshlD7jfHuDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnoVKuHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8FEC4CEF1;
+	Fri, 21 Nov 2025 08:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763714471;
-	bh=DaciFNiZJdDzmwkQJHk/PAQ4JjEDIeUFvUYCaDDTZMI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Nzk6O9e6AQKntD2JXVbyRVvUL1AUBFDQBxR0fD8hL607V3qQ+Oz/eIh6UDh+OlIvP
-	 S4Z/0o/UHsTi/Gkd8WPfumYLUzQAQSjV9s8se7Nestq8j70sOVN9LAWvJ8IqGwNG4G
-	 VG/QcFClINXgV7k7f8NdlQHSAa7xSh9FqugkBW3yz8eYQJeF24PpAtmObl2KEt9Wyb
-	 rCT1YrocEhyZoWnLRbjl8Yr6YNisVX7MDA47sclDWzy3ZhlfHcatZpJlsiNhAlle4H
-	 zKjxrTduhQYK/26IJRIFb4em/VYnmQ4A/Dc2ctQR3PbPUV+Ry6Sj4eHZisSFhNm31+
-	 /XP29WyF1ismg==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37bb8bef4cdso16417461fa.3
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 00:41:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUiuhqzYdj4x5SBljSUxRSV2EqyIRr9Ok3bACTtg1jRAzdAu2JTlv0i0viLb9La4mZZ3EldrzwiK6k1@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ1JFqDhT8V/gPQ/6ZClLg48mgK4whDvBXg1rB1rDgi48wO0og
-	BzN2Gt9V4KlIYQrFpXaciE0wUcM6Fy6LVafLZ+QZVs01b5R9U0n1Vi9HS9OH1HaLuCqKYicgM9z
-	aL/47kV/X80uckG4TxwjYhljIQ8S5TP4=
-X-Google-Smtp-Source: AGHT+IEZkw4pUOPUm1jcsxIwoiBKols3i04HAvuLgAx8hxH/RJuJuQ5mOXqJFQljvDNxVxtyEoY07KVcHagIosejyGY=
-X-Received: by 2002:a05:651c:1104:b0:37a:4611:9fe5 with SMTP id
- 38308e7fff4ca-37cd91db308mr3512481fa.18.1763714469415; Fri, 21 Nov 2025
- 00:41:09 -0800 (PST)
+	s=k20201202; t=1763715353;
+	bh=CLdujVXTIJTmNxkxPMTXDrfK+Eg/9LJhE/zrA3mxOLw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EnoVKuHZhzz/45MeCGXfKWMne8kZdgVDIXTdB+Z4aevvgH7F2PAHdHCjv3E1IZGw3
+	 q3BxFIt56HUtmp6r8hZTUV896JbUbPB8+lgbllC2Jz9SbfN/BFFRygzskp3O+iTidA
+	 jcAgWTkUAD4lVKYjIKOEb9TemRGgAh9ogQOPGQ3wAVpUAYck6qaPIZC3V7dZKUJexM
+	 RkvLIsefcg25+gTbdZRHRWggyaLs+VGMLSCJfGRlKOyRvmUgUCYu2R3ZUkiBqrN5Eb
+	 GHpgmVNeXXpeT3sV7aBa6DNRqhJ1pm64l6ePRPzU/Js3CN1JSCdHkpqFQIF4J6f4lS
+	 KShMUoPOlkCjg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vMMvn-00000007AGP-0uKo;
+	Fri, 21 Nov 2025 08:55:51 +0000
+Date: Fri, 21 Nov 2025 08:55:50 +0000
+Message-ID: <861plrsr1l.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Hanjun Guo <guohanjun@huawei.com>
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>,
+	Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>,
+	Sudeep Holla
+	<sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel
+ Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH] ACPI: GTDT: Correctly number platform devices for MMIO timers
+In-Reply-To: <c1edd6cc-0542-8d22-6edc-60c619c9e162@huawei.com>
+References: <20251030110115.1842961-1-maz@kernel.org>
+	<c1edd6cc-0542-8d22-6edc-60c619c9e162@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250814-mauro_v3-v6-16-rev2-v6-0-e5538d534aa0@os.amperecomputing.com>
- <20251121093001.40e01849@foz.lan>
-In-Reply-To: <20251121093001.40e01849@foz.lan>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 21 Nov 2025 09:40:57 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXESiP+qSX+27MmPYGX9iWHjb-TEzQsWvdu=WmKcdORQSw@mail.gmail.com>
-X-Gm-Features: AWmQ_blgOiT1cZ50tRM36ay-nNSHXe_Hznnj3EG_3TWHRgTyXaTyKtnj5HzswWg
-Message-ID: <CAMj1kXESiP+qSX+27MmPYGX9iWHjb-TEzQsWvdu=WmKcdORQSw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/5] Fix issues with ARM Processor CPER records
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Daniel Ferguson <danielf@os.amperecomputing.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-edac@vger.kernel.org, 
-	Jason Tian <jason@os.amperecomputing.com>, Shengwei Luo <luoshengwei@huawei.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: guohanjun@huawei.com, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, pavan.kondeti@oss.qualcomm.com, sudeep.holla@arm.com, rafael@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de, mark.rutland@arm.com, catalin.marinas@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 21 Nov 2025 at 09:30, Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> Em Thu, 14 Aug 2025 09:52:51 -0700
-> Daniel Ferguson <danielf@os.amperecomputing.com> escreveu:
->
-> > This is needed for both kernelspace and userspace properly handle
-> > ARM processor CPER events.
-> >
-> > Patch 1 of this series fix the UEFI 2.6+ implementation of the ARM
-> > trace event, as the original implementation was incomplete.
-> > Changeset e9279e83ad1f ("trace, ras: add ARM processor error trace event")
-> > added such event, but it reports only some fields of the CPER record
-> > defined on UEFI 2.6+ appendix N, table N.16.  Those are not enough
-> > actually parse such events on userspace, as not even the event type
-> > is exported.
->
-> Hi Rafael/Ard,
->
-> What's the status of this series? I'm not seeing it yet on linux-next.
->
+On Fri, 21 Nov 2025 02:53:17 +0000,
+Hanjun Guo <guohanjun@huawei.com> wrote:
+> 
+> On 2025/10/30 19:01, Marc Zyngier wrote:
+> > Use the actual timer counter instead of the watchdog counter.
+> > 
+> > Fixes: 5669d92f3efa4 ("ACPI: GTDT: Generate platform devices for MMIO timers")
+> > Reported-by: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: Hanjun Guo <guohanjun@huawei.com>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
+> > ---
+> >   drivers/acpi/arm64/gtdt.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+> > index fd995a1d3d248..8cc8af8fd408c 100644
+> > --- a/drivers/acpi/arm64/gtdt.c
+> > +++ b/drivers/acpi/arm64/gtdt.c
+> > @@ -430,10 +430,10 @@ static int __init gtdt_platform_timer_init(void)
+> >   				continue;
+> >     			pdev = platform_device_register_data(NULL,
+> > "gtdt-arm-mmio-timer",
+> > -							     gwdt_count, &atm,
+> > +							     mmio_timer_count, &atm,
+> >   							     sizeof(atm));
+> >   			if (IS_ERR(pdev)) {
+> > -				pr_err("Can't register timer %d\n", gwdt_count);
+> > +				pr_err("Can't register timer %d\n", mmio_timer_count);
+> >   				continue;
+> >   			}
+> 
+> "typo" I think :)
+> 
+> Acked-by: Hanjun Guo <guohanjun@huawei.com>
+> 
+> Will this go via ARM64 tree?
 
-I'll queue it up - thanks for the reminder.
+Is that where the ACPI updates are routed to? This fixes a patch that
+was routed tip, so I'd have expected this to go via the same route.
+
+In any case, I've added Catalin and Will on Cc.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
