@@ -1,172 +1,151 @@
-Return-Path: <linux-acpi+bounces-19187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C197BC7BA6C
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 21:36:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5530BC7C12B
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Nov 2025 02:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3773A6A3B
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Nov 2025 20:36:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FBD44E06D6
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Nov 2025 01:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E388241CB7;
-	Fri, 21 Nov 2025 20:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2DD288505;
+	Sat, 22 Nov 2025 01:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIDqRIAe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DOCCUXDK"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475932BD02A
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 20:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FC8285CAE;
+	Sat, 22 Nov 2025 01:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763757359; cv=none; b=LhBUZyg219CF6xZsR0o8wddY6/ygh3nfrOx43byX3wQ4r2jhEG16TdZXceYztQWzcDJS5qIv2uPfpEEW/i+VQU8TxNE3idRiWTn6SovZGK7vzwZjv8w+5lz0KHMOgpy5Br/g25N/uhyTr0cxBlz/dbhDyk8VHgfdMqdX07z00ts=
+	t=1763774066; cv=none; b=WUDuOD6oXPjU7ClPOAxWj+t9X3IJaWuSHkNDEXNKD64Ch1J1OM2LxuMTIP/JsnNUDc2NsYCaPbRvAwtFHBLyihCkGzp4ux55q/PcgILHVuGeyGZGWuXfod+rqV3Rzkiw3YsmtayAxDrbXHzW/P4GcPq+3VtBC16u0uwJnPPWPkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763757359; c=relaxed/simple;
-	bh=meSktXQNs/zDvTr1rLs7LeQfxQysPHSbGkzQDId9XMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FhUzeFsRFQ5SjwbXfC/is2fZLS/N8aJaURXI5/Ppjs7lSDZRsrNSbNtZoRsNuy8yiFFZSPSxySDVGTB6389Wo++UoNc5Wr1b3CMftoNI5qvG2QUIqRMJgijsyWDAQ/WFCwYt1DmeOCFJolx2MbdjOTCyPiIeHvxcGmfuioGJlyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIDqRIAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C10C16AAE
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 20:35:59 +0000 (UTC)
+	s=arc-20240116; t=1763774066; c=relaxed/simple;
+	bh=TmK0ymaRbGnYFBwWDPKvoufQniChA4/p5HNSW5rwn4k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=lhZP2BDbL/Ilk+IMPAuA+0IlYs+iinNKIltD01gfJ+1GYBA3CSTjLmAmC0lQlAom4z8oxhIu9usIgyDeIueagoeH1JmQIajJ4gxutZVQDH1Y6Szigp2/9rWaUdDEHuuyQhQeFvKn6WKQbGQrk+xmvX2nZgRf907lr7HcWNLh1hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DOCCUXDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2BDC4CEF1;
+	Sat, 22 Nov 2025 01:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763757359;
-	bh=meSktXQNs/zDvTr1rLs7LeQfxQysPHSbGkzQDId9XMY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GIDqRIAeWCLUdym8Wrp+ILSVdv2LpkMXpn0ppo5qMOFJZ1oZaxiKDGg8iPM0FJY1s
-	 xTWonD8QTxzg+NoawORzto1WVHmzTaefcu6CspzqLaIyzwaxWJHh25II1oOIaDUIl6
-	 1Gv99d5j9mN0iRUZR9qsmaDeXgeI67gIGIdZRp5mhT+ooUS+9sAXl8x8iCyIEtWww2
-	 X2tSjzMAm8MVVq7huy4kmvK3DvxgkoZW8hmO+4gf5ak+DyuAu6ykC33HVejuDy6dAf
-	 fIFGOhB9dq4OTO2bOYWqzyTQ+/yo3YA9ORfBTLAd7tw9EH+5bLrhk5diw3++qmfF6X
-	 dnnJ+5gDm7D4g==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-657523b5db0so471353eaf.2
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Nov 2025 12:35:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV0xNL8zlm8kqvOFQFXWblMJCwIvv7og/OM5q9kUsmtA9z8dNJtDoRcM0FMGUdgQp/Yw7m7VvpaQax9@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjruAMP1qPqtbJ4M8O2R2VWD1YS3BtJQtmbEF4Ff1kp28mrz5Q
-	uz96WkZE00d70VwZ0OocrxKzZAgcCw/UstlKBuV8/PBrXBLUSz4dGeY6SfW/SrE7BrmOzbzrn7Z
-	5JjfSD/Lur2FHJwRti9jYSI0VuIfmp2U=
-X-Google-Smtp-Source: AGHT+IEGV1wW0AyQ4uV5rOeWs+mu0pohToH8QfmqGgzcM1nDvWFgodvXp8dfzsS7PUq8QlplylLWmLPmTb2ii+XtGZ8=
-X-Received: by 2002:a05:6820:4d57:10b0:657:7289:b1dc with SMTP id
- 006d021491bc7-65792596028mr1028369eaf.6.1763757357967; Fri, 21 Nov 2025
- 12:35:57 -0800 (PST)
+	s=k20201202; t=1763774066;
+	bh=TmK0ymaRbGnYFBwWDPKvoufQniChA4/p5HNSW5rwn4k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=DOCCUXDK6NRPvEW7WVjqDqRvikLNZETxp14lEvjXrEOexGVnJH5y6gk0Z+olezdx8
+	 4EshyvU5rLYqAlq84lgdS6MouZYFhL+q2fvWLIxnFc7zqz2CSNMSrhraclcdPg4jRS
+	 unLYvOiCD/w4CABgMBmXum9x7DnFD3jGUqhKK6d3W1LiwqTyKPiE3y/sOoVCY8Eua9
+	 yZeM/aBkwqJmXgXWDZl+XwWtf7eXckoFGU9Aza5brimVrD3fwG00I0GmVhWB5tN3J3
+	 OZJODR9xGQq7Fo2W34AgrGfyIAcU1NjUgIN75TmMKBwRRs/GBSyuKdCDwXCkP0eKUo
+	 sGpN4++AqfYXg==
+Date: Fri, 21 Nov 2025 18:14:24 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Anup Patel <anup@brainfault.org>
+cc: Paul Walmsley <pjw@kernel.org>, Anup Patel <apatel@ventanamicro.com>, 
+    Mark Rutland <mark.rutland@arm.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, 
+    Atish Patra <atish.patra@linux.dev>, Atish Patra <atishp@rivosinc.com>, 
+    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+    Palmer Dabbelt <palmer@dabbelt.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Nutty Liu <nutty.liu@hotmail.com>, linux-riscv@lists.infradead.org, 
+    Andrew Jones <ajones@ventanamicro.com>, Will Deacon <will@kernel.org>, 
+    Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v3 1/1] RISC-V: Add common csr_read_num() and csr_write_num()
+ functions
+In-Reply-To: <CAAhSdy0iwq_ZPzFY5_x_wsbM_H+npSDVv1F=wP=O-_25VChh6Q@mail.gmail.com>
+Message-ID: <60f4c500-6e22-ed4b-912b-c9368bad7c9a@kernel.org>
+References: <20251014132106.181155-1-apatel@ventanamicro.com> <20251014132106.181155-2-apatel@ventanamicro.com> <012aaa39-a37b-e682-0e34-9b7d7cd87f75@kernel.org> <CAAhSdy0iwq_ZPzFY5_x_wsbM_H+npSDVv1F=wP=O-_25VChh6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
-In-Reply-To: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 21 Nov 2025 21:35:47 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bmY4Rgl1Z4nj5ks6gNTVnBjHocEaNjk9D0MQSLHqvtZo8fqobTCygtTNLc
-Message-ID: <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com>
-Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
- device of thermal zone/cooling devices
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
-	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="8323329-284714384-1763774066=:3073511"
 
-On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Drivers registering thermal zone/cooling devices are currently unable
-> to tell the thermal core what parent device the new thermal zone/
-> cooling device should have, potentially causing issues with suspend
-> ordering
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-This is one potential class of problems that may arise, but I would
-like to see a real example of this.
+--8323329-284714384-1763774066=:3073511
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-As it stands today, thermal_class has no PM callbacks, so there are no
-callback execution ordering issues with devices in that class and what
-other suspend/resume ordering issues are there?
+On Thu, 30 Oct 2025, Anup Patel wrote:
 
-Also, the suspend and resume of thermal zones is handled via PM
-notifiers.  Is there a problem with this?
+> On Thu, Oct 30, 2025 at 12:35 AM Paul Walmsley <pjw@kernel.org> wrote:
+> > On Tue, 14 Oct 2025, Anup Patel wrote:
+> >
+> > > In RISC-V, there is no CSR read/write instruction which takes CSR
+> > > number via register so add common csr_read_num() and csr_write_num()
+> > > functions which allow accessing certain CSRs by passing CSR number
+> > > as parameter. These common functions will be first used by the
+> > > ACPI CPPC driver and RISC-V PMU driver.
+> >
+> > This patch also (silently) removes the CSR number filtering, e.g.
+> >
+> > > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
+> > > index 42c1a9052470..fe491937ed25 100644
+> > > --- a/drivers/acpi/riscv/cppc.c
+> > > +++ b/drivers/acpi/riscv/cppc.c
+> > > @@ -65,24 +65,19 @@ static void sbi_cppc_write(void *write_data)
+> > >  static void cppc_ffh_csr_read(void *read_data)
+> > >  {
+> > >       struct sbi_cppc_data *data = (struct sbi_cppc_data *)read_data;
+> > > +     int err;
+> > >
+> > > -     switch (data->reg) {
+> > > -     /* Support only TIME CSR for now */
+> > > -     case CSR_TIME:
+> > > -             data->ret.value = csr_read(CSR_TIME);
+> > > -             data->ret.error = 0;
+> > > -             break;
+> > > -     default:
+> > > -             data->ret.error = -EINVAL;
+> > > -             break;
+> > > -     }
+> >
+> > ... the above code, and:
+> 
+> The switch case is incomplete for cppc_ffh_csr_read().
+> Also, csr_read_num() already does appropriate filtering
+> so the switch case over here is now redundant.
+> 
+> >
+> > >  /*
+> > >   * Read the CSR of a corresponding counter.
+> > >   */
+> > >  unsigned long riscv_pmu_ctr_read_csr(unsigned long csr)
+> > >  {
+> > > -     if (csr < CSR_CYCLE || csr > CSR_HPMCOUNTER31H ||
+> > > -        (csr > CSR_HPMCOUNTER31 && csr < CSR_CYCLEH)) {
+> > > -             pr_err("Invalid performance counter csr %lx\n", csr);
+> > > -             return -EINVAL;
+> >
+> > ... the above code.
+> >
+> > I'm thinking that we probably want to keep the CSR number filtering code
+> > in; at least, I can't think of a good reason to remove it.  Care to add it
+> > back in?
+> 
+> We can potentially have custom CSRs as hardware counters
+> hence the CSR filtering over here is already incomplete. Plus,
+> csr_read_num() already does the CSR filtering and returns
+> failure for inappropriate CSR number.
 
-> and making it impossible for user space applications to
-> associate a given thermal zone device with its parent device.
+OK.  To me, the most notable changes in this patch are the changes in the 
+filters for both reads and writes for the two different call sites, ACPI 
+FFH and PMU.  It would be good to document these filter changes directly 
+in the patch description, along with the rationale.
 
-Why does user space need to know the parent of a given cooling device
-or thermal zone?
+I'm also not yet completely convinced that we should allow both of these 
+call sites to read and write any custom CSR.  But maybe the updated patch 
+description might be convincing...
 
-> This patch series aims to fix this issue by extending the functions
-> used to register thermal zone/cooling devices to also accept a parent
-> device pointer. The first six patches convert all functions used for
-> registering cooling devices, while the functions used for registering
-> thermal zone devices are converted by the remaining two patches.
->
-> I tested this series on various devices containing (among others):
-> - ACPI thermal zones
-> - ACPI processor devices
-> - PCIe cooling devices
-> - Intel Wifi card
-> - Intel powerclamp
-> - Intel TCC cooling
 
-What exactly did you do to test it?
-
-> I also compile-tested the remaining affected drivers, however i would
-> still be happy if the relevant maintainers (especially those of the
-> mellanox ethernet switch driver) could take a quick glance at the
-> code and verify that i am using the correct device as the parent
-> device.
-
-I think that the above paragraph is not relevant any more?
-
-> This work is also necessary for extending the ACPI thermal zone driver
-> to support the _TZD ACPI object in the future.
-
-I'm still unsure why _TZD support requires the ability to set a
-thermal zone parent device.
-
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
-> Armin Wolf (8):
->       thermal: core: Allow setting the parent device of cooling devices
->       thermal: core: Set parent device in thermal_of_cooling_device_regis=
-ter()
->       ACPI: processor: Stop creating "device" sysfs link
-
-That link is not to the cooling devices' parent, but to the ACPI
-device object (a struct acpi_device) that corresponds to the parent.
-The parent of the cooling device should be the processor device, not
-its ACPI companion, so I'm not sure why there would be a conflict.
-
->       ACPI: fan: Stop creating "device" sysfs link
->       ACPI: video: Stop creating "device" sysfs link
-
-Analogously in the above two cases AFAICS.
-
-The parent of a cooling device should be a "physical" device object,
-like a platform device or a PCI device or similar, not a struct
-acpi_device (which in fact is not a device even).
-
->       thermal: core: Set parent device in thermal_cooling_device_register=
-()
->       ACPI: thermal: Stop creating "device" sysfs link
-
-And this link is to the struct acpi_device representing the thermal zone it=
-self.
-
->       thermal: core: Allow setting the parent device of thermal zone devi=
-ces
-
-I'm not sure if this is a good idea, at least until it is clear what
-the role of a thermal zone parent device should be.
+- Paul
+--8323329-284714384-1763774066=:3073511--
 
