@@ -1,217 +1,191 @@
-Return-Path: <linux-acpi+bounces-19212-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19213-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCED5C8155B
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 16:29:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C08DC8175A
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 17:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3B2D5347116
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 15:25:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C954D4E5909
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 16:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22933313E00;
-	Mon, 24 Nov 2025 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970AD3148C2;
+	Mon, 24 Nov 2025 16:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cyiy0pY5";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LvfBeTAu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAA428Cq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DAF30AAC1
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 15:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712533128B5
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 16:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763997671; cv=none; b=qNQthLlP5FdRicvVWs74nmBfBEKHkAR3KQwe2pLIc09wDfwJGBl1vBY8gzNcF8JeOKiikmCKCLxHdyUMTMHeO1MzCPXOtz5nGatXbcdQImDb8H495apjhmfa1qHRND3OuwAjQfn+FJKLw5S2ONEnYedYW/QZXeNRt9omFRCugAA=
+	t=1764000083; cv=none; b=LlgMpAEa+ymEDYVujM/GR6RDl1UTKT9odGPeTLLmtIleTJ8z4DqVFFQvQK/qwNJ2tW2yTdnaz3GqYw0HfcpwCZUnJ6n7etZHYqJe5GxwbPXeOPO63UrvMrrgYVgQndsb+c24vVela0sthZJPSzCnD3aB+pzOO/P7yD0eJ7DJfyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763997671; c=relaxed/simple;
-	bh=BsdAQLGpRLJSdHZqTd1Sjbh6N1hN90ov2SRgLAfMpPk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=N7moYAHMJgWH6xEnb6GBtaQWnsp2mgi+JKEhV/joHkDMXD1A3wuUelJbcLC/LjNJ/I6cIKoWAerxiCbgaIIByzzgR9xJc8els5bi6MsGowuLs15cVMudcQl+IQ0qDJdilUiJrlxfrH9BIPgSI+DMtoH8EqbbMsMYmPoKV6KWxxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cyiy0pY5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LvfBeTAu; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AO81m2N1688024
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 15:21:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=7Xp5hyyL92DGXPcsi62gt/ZC
-	nMgydkx2tDNxw9WvsLg=; b=cyiy0pY5tq3c1wYdYzJOePxX6Pn4Do4Xu7ovIMjm
-	y+ERWtY5iZXG1Q74vA+LYw/vWGbs7nXq1Rl8exwK/TdGFVac1l+lWNcPsHCdVw8Q
-	jqiWbzO124WbyPLndoNDD6zBVy8YkTX+scynTB9HzSaq4IH0/x0v6eOEpTNQ7OWp
-	peThRHbSGlYGzn3vIGa54OfkhZ/v39Vnpo8R6KtzIDRmG8qkhoS7dE3hRItaCtxs
-	VpOYVrw0w2SM/nrA7sv12svu7/2AYABD2HUGeuvsgMysAAs7TTdP2dlkqrjSXpVn
-	PSLpiWU5uj0CVOFc53Z5Hy5Agm+2cwxucOe9NAQEFMy8KQ==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ama09aeq1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 15:21:08 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-5dfaab3a44dso8675886137.1
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 07:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763997667; x=1764602467; darn=vger.kernel.org;
-        h=mime-version:user-agent:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Xp5hyyL92DGXPcsi62gt/ZCnMgydkx2tDNxw9WvsLg=;
-        b=LvfBeTAuZhCRC0nuCRvXRwq40Bbrvr0zqZG9cA3cAHAmgeN9czioVHU4QHgTIBcJpJ
-         SvYNc70Hg44zzhvY6QpqwxDeFQ33/1Bt1oGpuIy+VP9kk/dQ2O70FinglXeibiTiJOkz
-         UzBCD4oLkktYbfYnvTYM007fFar7jSvZvRFocieGLkCwiJjmzlFuDDwYj7cjxjGRShBi
-         Efbq9AEzxmKXuKP3FC88Xx0b/8gg56FGZ2GYPXuflBlaQASnNNSJNUWFtOqjnIOCGl5f
-         YoDHks2sR1f/2brXs7xbV5DPTSJ/KJAY5Iy0wU6nhFLVaQ330gNkCHNMQW+MleaCOMDL
-         q1WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763997667; x=1764602467;
-        h=mime-version:user-agent:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7Xp5hyyL92DGXPcsi62gt/ZCnMgydkx2tDNxw9WvsLg=;
-        b=ZQCVgF2ZIiWhYI4QXEPzfZunAAmTa47o+p5935n7rGds8CEYVlV+qstwDFMm8eyHmt
-         7WO8eASPElQCXQz1NI04UIJ+OW4ayJPaP0vQ89odWXusp58RW1lNPM4GRnyT/qzaSX8L
-         CtZypUQEtAnrs7G2dWafDHqseFaY2PmaktGhBRObGOALWkLcVHt2Nhyd5/GLzlxqEJq9
-         Zj45eBCNmjfhrbGH2UzZd5a6SdsDGehqCAufPfFV5/p3GL8QSziFvW6EzokCqc8o8b+N
-         x3K8j2YboNfsxNiqxTzEDBbVvgvxdjI9DZejhgmluQvKSI+RUF7ke30c0xofJ4GrIy9R
-         5/BA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGRh8b+szFGiX7IK1KLWz+TsiYc4mcL0LCVE6i8XeNl55ev/qzTDiwdYsu2fKP99mrDVYO1jy3vzIj@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLunp3tFKzJ/DN7BugKzBXkkjCFEZ3UImYYSWH7WlXqrJirbUe
-	YCVRYN+hJHnktGFNDY71Jr0hurotD0E3I55Vl7E79pW0YeqMWVA7HBEbpDuluABCToDUFVZfMTV
-	S6uDUTnEtGneWSOwxWphEYShRtYR6KwtmKNit+nUiIL7xAMDXsSWVi+25VH5Qpfn8
-X-Gm-Gg: ASbGncuLQjrTeTsipz19mlAcxP8EBB1ovu7kWs4gZG+Pj6ddlHaiwPnxrsPDRmR6x5T
-	t00Kh+MxNxN+PDonZcS61xsiwEitD5jHI4SWz7cuBzeiJBmyl+/7b0pfq3Fa2UaTOgM3KIGftRb
-	+nQSGDvKHah06KCDdScD5XHDaTmFUdbX1j1Hpzkf2rcVB/ZKdYeXZOuNCu9+18jvwpYGEAvlmvV
-	4ZKFJYaEyuM+lPpb+hdtoEVlRwlSv6pCcuEt3V2rbhjyqPojhfQ3kfdYLJzmTCbwsvYcmqGPcpz
-	w5OBkqKtM9wZGiiQ1fwVrngn7WgmHI0FJL35IA+XQH1HnVaT6iZ7usvopp8gkF8ILbH01yKrMoO
-	KHSntmkHA9Uh4n6tdhjTlDsiW
-X-Received: by 2002:a67:e7ca:0:b0:5db:db1d:e1cc with SMTP id ada2fe7eead31-5e1de3add6bmr3993499137.23.1763997667175;
-        Mon, 24 Nov 2025 07:21:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwLbgq+f0syhYUIH8yRhYl+rqLz6oua3c3D1yhqylImpHoqxcKHLhjT0WLSt++6fQeJ9uiEQ==
-X-Received: by 2002:a67:e7ca:0:b0:5db:db1d:e1cc with SMTP id ada2fe7eead31-5e1de3add6bmr3993454137.23.1763997666665;
-        Mon, 24 Nov 2025 07:21:06 -0800 (PST)
-Received: from localhost ([2a01:4b00:b703:c200:1ac0:4dff:fe39:5426])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-477bf226c2asm199781335e9.10.2025.11.24.07.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 07:21:06 -0800 (PST)
-From: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-To: Ben Horgan <ben.horgan@arm.com>, james.morse@arm.com
-Cc: amitsinght@marvell.com, baisheng.gao@unisoc.com,
-        baolin.wang@linux.alibaba.com, bobo.shaobowang@huawei.com,
-        carl@os.amperecomputing.com, catalin.marinas@arm.com, dakr@kernel.org,
-        dave.martin@arm.com, david@redhat.com, dfustini@baylibre.com,
-        fenghuay@nvidia.com, gregkh@linuxfoundation.org, gshan@redhat.com,
-        guohanjun@huawei.com, jeremy.linton@arm.com,
-        jonathan.cameron@huawei.com, kobak@nvidia.com, lcherian@marvell.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        lpieralisi@kernel.org, peternewman@google.com, quic_jiles@quicinc.com,
-        rafael@kernel.org, robh@kernel.org, rohit.mathew@arm.com,
-        scott@os.amperecomputing.com, sdonthineni@nvidia.com,
-        sudeep.holla@arm.com, tan.shaopeng@fujitsu.com, will@kernel.org,
-        xhao@linux.alibaba.com, reinette.chatre@intel.com
-Subject: Re: [PATCH v6 00/34] arm_mpam: Add basic mpam driver
-In-Reply-To: <20251119122305.302149-1-ben.horgan@arm.com> (Ben Horgan's
-	message of "Wed, 19 Nov 2025 12:22:30 +0000")
-References: <20251119122305.302149-1-ben.horgan@arm.com>
-Date: Mon, 24 Nov 2025 15:21:05 +0000
-Message-ID: <877bvfa23i.fsf@stealth>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1764000083; c=relaxed/simple;
+	bh=BxNg8gs7WNaoKvLGFRKTqLXUTtsfWM5hG3yIT0h6Ccc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vtqvxhzvk8HQToMVJZ4agNxiJS0wCDP5HPm5gmOSLQi1o7lQQvYUA9gSbIL3v+oI135hQPKxbzNgPjftxgq+5iNlwR61Pvko9lyEK+2LgCYthSRkmFYexXxlKQYLtUHLKCFFMAYEPz+hfhCx17mnkpn5Dq5fRipLyCqF/gF5Y9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAA428Cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37101C2BCB2
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 16:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764000083;
+	bh=BxNg8gs7WNaoKvLGFRKTqLXUTtsfWM5hG3yIT0h6Ccc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fAA428Cq8fABOVJq0VpMm0c57ytXlW/e61UozuRE0IDDII4Bn/sWmrozVTyYHTXFX
+	 KMFtCzOgkqNQ1OEL4lY2p1W23MqolBBCazFWioabUybV4ZafndUEHy3ErjpjZ2uc7c
+	 idpMExGQnv9P9LDbby2sRcoVRpNRLKJaJBAQjrekgofMRMY84Mo9WGhvzSQW5vV3XH
+	 vX33KkrJ6mS2LhIwGweTtefxUMLUm66AdUn4lFhOU3IrtCOO0iDJ9Vg/u4S9nx/oST
+	 Fe1/yvkMObmdTYHzVVaVfvNADOuUP17JdHOPIpGdwG7iB0glTojIgG/oCBaZKD6X9n
+	 spLTvIRKb7w7w==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-65760bbd866so621660eaf.3
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 08:01:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXlkSFOWlrIVFC84mbHiSNlpxUQUl9hCpoSYxgbIVPK3/w+7+8ikYwtObVIk3DVZEn5EIdeYukzkvJQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBwW1kwCMBumYdI688VLNz++tLN3fC1gwHoPp7yhUsL0UDwDnL
+	tABCJZr/q28XWVExgH2W8ITCrUImBSBL1QnyXZYFRuqgMgSMT67hQ+ZZ4/tQ5lhSg9sed/b7tAd
+	KqaRK1/ZgYIepyPZ7ZmybEyDSnTZw6NQ=
+X-Google-Smtp-Source: AGHT+IEvm2FWxa2fcKAG3q3fnxyGT9utxHEMot9Bx/M+VGHVwX7ZA+SGpfVh77Zi4cGoL8rb3JZFFIMv0u2FP8+7mDY=
+X-Received: by 2002:a05:6820:4cc7:b0:657:5723:76c8 with SMTP id
+ 006d021491bc7-657925458ecmr4757740eaf.6.1764000082175; Mon, 24 Nov 2025
+ 08:01:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: uE7CuR7VPfGIJ6FsO0q1m2BD5apMNyjS
-X-Authority-Analysis: v=2.4 cv=PdHyRyhd c=1 sm=1 tr=0 ts=692477e4 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7CQSdrXTAAAA:8 a=VwQbUJbxAAAA:8
- a=kNSAGAUgJmWAU3osOT0A:9 a=ODZdjJIeia2B_SHc_B0f:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDEzNCBTYWx0ZWRfX0VSXCbmjSTzo
- fzrbFemff1zv1OeNokmi7K/CU0Qae9Nt7RTVCNEA4uR6tgOWn0T6wUSs2x+5u806h3ehWqx9q20
- MRikOez7sb1XQh7f50oYMmzWKxBDhJQMHTubpz3L22zTft9SjFfSL7YADkacC2vRMIz54XE/+N+
- Y6cI9H2Q3N+gC38Zn1YCrhL+utwpeLDmW1Do0barTSba7iRNdpaUTI5gvUxGkFMsLdaNv8oI0Ch
- oddRIkXjijWTFAyBzCbvQ+mDv8Tq4XWcz0iY/qtN2fjE72RorFl8PsNkUieY4y9SvzLbEdEHGfD
- Rai6lF+vf9vyICJnozksPtCLzL0HFvWvmkGTxt/lc6dF+bfriU3OOUo6yIdEgDjfPNwdUxyD2sP
- NMxcyqSM/fGk7A9kFVjJpyXuyzBQVA==
-X-Proofpoint-GUID: uE7CuR7VPfGIJ6FsO0q1m2BD5apMNyjS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-24_06,2025-11-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 spamscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 priorityscore=1501 phishscore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511240134
+References: <20251117-rneri-wakeup-mailbox-v7-0-4a8b82ab7c2c@linux.intel.com> <20251117-rneri-wakeup-mailbox-v7-1-4a8b82ab7c2c@linux.intel.com>
+In-Reply-To: <20251117-rneri-wakeup-mailbox-v7-1-4a8b82ab7c2c@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 24 Nov 2025 17:01:11 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gd_6b6s4aEpSvdfb4-+AULTWkqQqM3OE1eg5XzYaxQFQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bm4sOABo--PUFLL3Fnx287B9QjmRWcdT31tXqkGzNeqhEPx9y0Ws0-iwLc
+Message-ID: <CAJZ5v0gd_6b6s4aEpSvdfb4-+AULTWkqQqM3OE1eg5XzYaxQFQ@mail.gmail.com>
+Subject: Re: [PATCH v7 1/9] x86/acpi: Add functions to setup and access the
+ wakeup mailbox
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Rob Herring <robh@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
+	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>, linux-hyperv@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ben, James
+On Mon, Nov 17, 2025 at 6:04=E2=80=AFPM Ricardo Neri
+<ricardo.neri-calderon@linux.intel.com> wrote:
+>
+> Systems that describe hardware using DeviceTree graphs may enumerate and
+> implement the wakeup mailbox as defined in the ACPI specification but do
+> not otherwise depend on ACPI. Expose functions to setup and access the
+> location of the wakeup mailbox from outside ACPI code.
+>
+> The function acpi_setup_mp_wakeup_mailbox() stores the physical address o=
+f
+> the mailbox and updates the wakeup_secondary_cpu_64() APIC callback.
+>
+> The function acpi_madt_multiproc_wakeup_mailbox() returns a pointer to th=
+e
+> mailbox.
+>
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-Ben Horgan <ben.horgan@arm.com> writes:
+Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-> Hi all,
+> ---
+> Changes in v7:
+>  - Moved function declarations to arch/x86/include/asm/acpi.h
+>  - Added stubs for !CONFIG_ACPI.
+>  - Do not use these new functions in madt_wakeup.c.
+>  - Dropped Acked-by and Reviewed-by tags from Rafael and Dexuan as this
+>    patch changed.
 >
-> Just a handful of minor changes based on v5 review comments. See individual
-> patches for change lgos. I haven't asked James to host any branches for this
-> revision but please let me know if this would be helpful to anyone. Thanks for
-> all the help with reviews and testing.
+> Changes in v6:
+>  - Fixed grammar error in the subject of the patch. (Rafael)
+>  - Added Acked-by tag from Rafael. Thanks!
+>  - Added Reviewed-by tag from Dexuan. Thanks!
 >
-> Previous cover letter from James:
+> Changes in v5:
+>  - None
 >
-> This is just enough MPAM driver for ACPI. DT got ripped out. If you need DT
-> support - please share your DTS so the DT folk know the binding is what is
-> needed.
-> This doesn't contain any of the resctrl code, meaning you can't actually drive it
-> from user-space yet. Because of that, its hidden behind CONFIG_EXPERT.
-> This will change once the user interface is connected up.
+> Changes in v4:
+>  - Squashed the two first patches of the series into one, both introduce
+>    helper functions. (Rafael)
+>  - Renamed setup_mp_wakeup_mailbox() as acpi_setup_mp_wakeup_mailbox().
+>    (Rafael)
+>  - Dropped the function prototype for !CONFIG_X86_64. (Rafael)
 >
-> This is the initial group of patches that allows the resctrl code to be built
-> on top. Including that will increase the number of trees that may need to
-> coordinate, so breaking it up make sense.
+> Changes in v3:
+>  - Introduced this patch.
 >
-> The locking got simplified, but is still strange - this is because of the 'mpam-fb'
-> firmware interface specification that is still alpha. That thing needs to wait for
-> an interrupt after every system register write, which significantly impacts the
-> driver. Some features just won't work, e.g. reading the monitor registers via
-> perf.
+> Changes in v2:
+>  - N/A
+> ---
+>  arch/x86/include/asm/acpi.h        | 10 ++++++++++
+>  arch/x86/kernel/acpi/madt_wakeup.c | 11 +++++++++++
+>  2 files changed, 21 insertions(+)
 >
-> I've not found a platform that can test all the behaviours around the monitors,
-> so this is where I'd expect the most bugs.
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index a03aa6f999d1..820df375df79 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -182,6 +182,9 @@ void __iomem *x86_acpi_os_ioremap(acpi_physical_addre=
+ss phys, acpi_size size);
+>  #define acpi_os_ioremap acpi_os_ioremap
+>  #endif
 >
-> The MPAM spec that describes all the system and MMIO registers can be found here:
-> https://developer.arm.com/documentation/ddi0598/db/?lang=en
-> (Ignored the 'RETIRED' warning - that is just arm moving the documentation around.
->  This document has the best overview)
+> +void acpi_setup_mp_wakeup_mailbox(u64 addr);
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id);
+> +
+>  #else /* !CONFIG_ACPI */
 >
-> The expectation is this will go via the arm64 tree.
+>  #define acpi_lapic 0
+> @@ -200,6 +203,13 @@ static inline u64 x86_default_get_root_pointer(void)
+>         return 0;
+>  }
 >
-> This series is based on v6.18-rc4, and can be retrieved from: (no v6 version)
-> https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/driver/v5
+> +static inline void acpi_setup_mp_wakeup_mailbox(u64 addr) { }
+> +
+> +static inline struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wak=
+eup_mailbox(void)
+> +{
+> +       return NULL;
+> +}
+> +
+>  #endif /* !CONFIG_ACPI */
 >
-> The rest of the driver can be found here: (no v6 version)
-> https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.18-rc4-v5
+>  #define ARCH_HAS_POWER_INIT    1
+> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
+dt_wakeup.c
+> index 6d7603511f52..82caf44b45e3 100644
+> --- a/arch/x86/kernel/acpi/madt_wakeup.c
+> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> @@ -247,3 +247,14 @@ int __init acpi_parse_mp_wake(union acpi_subtable_he=
+aders *header,
 >
-> What is MPAM? Set your time-machine to 2020:
-> https://lore.kernel.org/lkml/20201030161120.227225-1-james.morse@arm.com/
-
-Although a little late to the party, I've managed to throw together
-enough firmware to describe the MPAM hardware and take this set (more
-specifically mpam/snapshot/v6.18-rc4-v5 branch from James' repository)
-for a spin. Using the branch, the kernel is able to probe the hardware
-and discover the advertised features. Yay! We are in business.
-
-Having said that, there are a few quirks of the platform that run into
-issues with later patches in the branch. The platform has MSCs attached
-to shared L2 caches which are being skipped during later stages of
-initialisation. IIUC, the L2 MSCs' limitations stems from the
-assumptions in the resctrl interface.
-
-I was wondering if there are any patches available to relax these
-limitations? I can give them a try. Or do these need to be put together
-from the ground up? Any pointers greatly appreciated.
-
-Thanks,
-Punit
-
-[...]
-
+>         return 0;
+>  }
+> +
+> +void __init acpi_setup_mp_wakeup_mailbox(u64 mailbox_paddr)
+> +{
+> +       acpi_mp_wake_mailbox_paddr =3D mailbox_paddr;
+> +       apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> +}
+> +
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id)
+> +{
+> +       return acpi_mp_wake_mailbox;
+> +}
+>
+> --
+> 2.43.0
+>
 
