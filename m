@@ -1,71 +1,71 @@
-Return-Path: <linux-acpi+bounces-19221-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19222-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341DEC82227
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 19:42:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE62C82273
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 19:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63B2D3A4B43
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 18:42:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 439B54E5BC0
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 18:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B0331A549;
-	Mon, 24 Nov 2025 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856AA2D24BF;
+	Mon, 24 Nov 2025 18:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTu/H58S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tr+P/AkV"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9A531A04F
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BEB2BE053
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 18:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764009773; cv=none; b=Vh/VyAAGkVIZH33GswY0YbpnKckk2EsbtJRXJBCMw6XNcqXouPaIFAhowhl5iw6jqmjJGLOrhGzZYYvFCXzq5wpw96QWDTd1vxzWhMmu75PmYofT7kCwyJNndN0lyEKurdjdiHbirJX+t1nmTIjrEY8vhipjwADsl01Sqg+TyrE=
+	t=1764010235; cv=none; b=U2WdakJnK+LkHIs8K/B14bbuT2XG7urqDZA7QScn3y4hGJGZ/S3ldorq/rshWag35vocyZvxxrXIZ9XXYxR7ewwkLZIW7sgUtL7acuKh+bf2681+JEntv7NRjKSptB91uNCyACRccvJQsxUPSUO6yCF6Fp2yDLWKb6t1PvwENjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764009773; c=relaxed/simple;
-	bh=4zv3PdwVNkz56gSyrllnr44HRqaValL/E3kwYnLlhsc=;
+	s=arc-20240116; t=1764010235; c=relaxed/simple;
+	bh=fHUfV3jb2dMNpLvji9C/yJUPLHn968yTbKuAQl37l3o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QLJZ1rnbM4+p/qm7H2PF/GTqLbz/3PzBI+oYk6JqrdLNco7/IPOwbNbQc+aK4sYamKWBqjxvQBOJ3vcOcKfMZSzZRDYj+9Bye23oiHeiQwm8+BBrpiFHC5JpvocvFP/+phHZEi44gueE2CW1FmIhK3H1BaQboESeDa5c0ldVC08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTu/H58S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7A8C4CEF1
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 18:42:52 +0000 (UTC)
+	 To:Cc:Content-Type; b=hwUgZZOsbqz6XTFWClRhqJdsD0DkcL+Q1JB4M9+tIPVS6Iqt1LvaSqOvc6t3DoZzAb40XgC1OzSA80PKKfuNfqPqmHlDXVRCRI5F+Xx/BsLqlzulk8JTxz4YG+JlCEtezbK55IMeTy21e12MDiTm+UDNL8QsXXSJSnYlyfrR5Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tr+P/AkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193C6C19424
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 18:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764009772;
-	bh=4zv3PdwVNkz56gSyrllnr44HRqaValL/E3kwYnLlhsc=;
+	s=k20201202; t=1764010235;
+	bh=fHUfV3jb2dMNpLvji9C/yJUPLHn968yTbKuAQl37l3o=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GTu/H58Sf+NJh68OhM1XK6L6r5knguL1+CJYWQ2J5WyszvD/M7/xt4b4SHCdwLEsp
-	 Rb9f9C7NAz29LaIy/OG2gGl5msYTc820GQiqSsfBGCY9/IR3fM0Lf8j+Uz69/AEy+l
-	 AYYjyTRkRcPL7gdfkCil0TVTVb7wXsQdOb9gHxYOG3vk4ghcRIqZzfcdDvhyOIWY5R
-	 y5Br5PJcGJI6holWJc4jlyV21HNfhTuvDr2Ix6QqV8snoSeBPAgDwO8BXbIqwMvBfc
-	 fqWvMEaSEUrOjb6r19k3AjkcU2XJQ/297N6z54gptC1b/+aPT5lYopZT2LwGMHtTMM
-	 vmGopB9Bkbkig==
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-450c65f3510so1958622b6e.2
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 10:42:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXA8SeNGOgrCpCeaGbbpyp4XW0r+Tfp5azZNwj3OSuaG/lsXuK845sSTSFYQoPMAoJgfDE9FpZABT2/@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFxldpSk5Jvo/naz2BTrdjqKYstUHW+9bjkwQtnUPTtpE0G7UO
-	m/ApmVCg/qzkJKZGBC+pE0BW8nJ3N4fhfCD3u72gnU9qhMvwF+Sn3tkh/ujLoljQ6FhWrm7JcbZ
-	WudhP6d9A6TCkVtOhLVY3sLhgsbGLBpg=
-X-Google-Smtp-Source: AGHT+IEhM6N9TSqsWeJA5wThKBrxOGVdlq9voHQQxrdy06SWCCgEqKdIk4hEBWDZbNm2DTtkLyI6qo3u5V3dSm4XBII=
-X-Received: by 2002:a05:6808:1481:b0:450:af35:8b1c with SMTP id
- 5614622812f47-4514e7efee7mr65880b6e.38.1764009771841; Mon, 24 Nov 2025
- 10:42:51 -0800 (PST)
+	b=tr+P/AkVO2pGoQLKwGXUI4lH6OSiyBc0QY0B4LmZ+UkMiyvu9qRHTR6gopFKUs2EM
+	 nB8vY67OkT9w0SXWDcAPB8VWq40F2SE9rRuCJQ0qu0v8rWOLbDJxUC8bHe6Agktg1V
+	 9oRVu/FPhC5onPGufOOUx4WfFuMLqcePHNysPav+ibU//6a5+7McE4FdD/Qom0DAYL
+	 kz2n5fojfM0o2aONXVTQAf9za3MGF6PvSO5lRuoXGZjCPtTikNGzMDCTSmMG2Yu+pW
+	 aQvHdRqDijVmRYcFjsamYDdM63FD8VswMgAKVikUPfnomsk41QnaB7reuK4vJzzc5J
+	 1cH/27/gARIrQ==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-657534478a0so1714074eaf.1
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 10:50:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWhfAl+h4aDiIxMZnWPKujP9hUDOnfIO/sBGYBcQKap7Xoy9hZJAORFnad8/XitRX7mbERY1I7KVceK@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNKFU8fdPBj8Y064nXW2jeveeNu2w/8unsFwKBrrn3TZA/adhg
+	MgI/YL73UnazeY+BRQH5NeLMrf9KHiqhY0zDjXOT91e/Q2YQKdHXGHj0kunXluMc4HGBiq6RAHH
+	epWDwu3cUgTgAE9IPvbkLH/tMlgJstvA=
+X-Google-Smtp-Source: AGHT+IGczO53OMf81+KZm97XbapuBhOvddt2IsgDMQf4zKkx/mC1/RGitlCviPWTfXRVw3oWX1kZEn5SBsylzd4+kss=
+X-Received: by 2002:a05:6808:2219:b0:450:b947:1da7 with SMTP id
+ 5614622812f47-4514e7f43f0mr77863b6e.36.1764010234383; Mon, 24 Nov 2025
+ 10:50:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107184438.1328717-1-usama.anjum@collabora.com> <20251107184438.1328717-3-usama.anjum@collabora.com>
-In-Reply-To: <20251107184438.1328717-3-usama.anjum@collabora.com>
+References: <20251107184438.1328717-1-usama.anjum@collabora.com> <20251107184438.1328717-4-usama.anjum@collabora.com>
+In-Reply-To: <20251107184438.1328717-4-usama.anjum@collabora.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 24 Nov 2025 19:42:40 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iWCxXSw3fBbesoMEWqGrRL9xrD85pMoW8rPuBBwTayhw@mail.gmail.com>
-X-Gm-Features: AWmQ_bltk1nKCTDeILyK8F-n51UW1Kksk-2_Q40QVBwGhl6mPDVhj8oD7VCItCU
-Message-ID: <CAJZ5v0iWCxXSw3fBbesoMEWqGrRL9xrD85pMoW8rPuBBwTayhw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ACPI: button: Cancel hibernation if button is pressed
- during hibernation
+Date: Mon, 24 Nov 2025 19:50:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gtGjE-rSwM4Kom4cDEhp3eSOkLCmbLwrt_9u9a7VP6zQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bnfk4DHB660ArOUxqnfissV07uZSrmDGTsW2Bf6x19HC0M5-fBpV9VsPWw
+Message-ID: <CAJZ5v0gtGjE-rSwM4Kom4cDEhp3eSOkLCmbLwrt_9u9a7VP6zQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] Input: Ignore the KEY_POWER events if hibernation is
+ in progress
 To: Muhammad Usama Anjum <usama.anjum@collabora.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
@@ -79,84 +79,56 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Nov 7, 2025 at 7:45=E2=80=AFPM Muhammad Usama Anjum
 <usama.anjum@collabora.com> wrote:
 >
-> acpi_pm_wakeup_event() is called from acpi_button_notify() which is
-> called when power button is pressed. The system is worken up from s2idle
-> in this case by setting hard parameter to pm_wakeup_dev_event().
+> Input (Serio) drivers call input_handle_event(). Although the serio
+> drivers have duplicate events, they have separate code path and call
+> input_handle_event(). Ignore the KEY_POWER such that this event isn't
+> sent to the userspace if hibernation is in progress.
 
-Right, so presumably you want to set it for hibernation too.
+Your change affects suspend too.
 
-> Call acpi_pm_wakeup_event() if power button is pressed and hibernation
-> is in progress.
+Also, what's the goal you want to achieve?
 
-Well, this is not what the code does after the change.
-
-> Set the hard parameter such that pm_system_wakeup()
-> gets called which increments pm_abort_suspend counter. The explicit call
-> to acpi_pm_wakeup_event() is necessary as ACPI button device has the
-> wakeup source. Hence call to input_report_key() with input device
-> doesn't call pm_system_wakeup() as it doesn't have wakeup source
-> registered.
+> Abort the hibernation by calling pm_wakeup_dev_event(). In case of serio,
+> doesn't have wakeup source registered, this call doesn't do anything.
+> But there may be other input drivers which will require this.
 >
-> Hence hibernation would be cancelled as in hibernation path, this counter
-> is checked if it should be aborted.
->
+> Without this, the event is sent to the userspace and it suspends the
+> device after hibernation cancellation.
+
+I think that's because user space handles it this way, isn't it?
+
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 > ---
 > Changes since RFC:
 > - Use pm_sleep_transition_in_progress()
-> - Update descriptin why explicit call to acpi_pm_wakeup_event() is
->   necessary
+> - Update description
 > ---
->  drivers/acpi/button.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+>  drivers/input/input.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 3c6dd9b4ba0ad..e4be5c763edaf 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -20,6 +20,7 @@
->  #include <linux/acpi.h>
->  #include <linux/dmi.h>
->  #include <acpi/button.h>
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index a500e1e276c21..7939bd9e47668 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -26,6 +26,7 @@
+>  #include <linux/kstrtox.h>
+>  #include <linux/mutex.h>
+>  #include <linux/rcupdate.h>
 > +#include <linux/suspend.h>
+>  #include "input-compat.h"
+>  #include "input-core-private.h"
+>  #include "input-poller.h"
+> @@ -362,6 +363,11 @@ void input_handle_event(struct input_dev *dev,
 >
->  #define ACPI_BUTTON_CLASS              "button"
->  #define ACPI_BUTTON_FILE_STATE         "state"
-> @@ -458,11 +459,16 @@ static void acpi_button_notify(acpi_handle handle, =
-u32 event, void *data)
->         acpi_pm_wakeup_event(&device->dev);
-
-The above is what you want to change, as this already reports the
-event.  Reporting it twice is unnecessary and potentially confusing.
-
->         button =3D acpi_driver_data(device);
-> -       if (button->suspended || event =3D=3D ACPI_BUTTON_NOTIFY_WAKE)
-> -               return;
-> -
->         input =3D button->input;
->         keycode =3D test_bit(KEY_SLEEP, input->keybit) ? KEY_SLEEP : KEY_=
-POWER;
-> +       if (event =3D=3D ACPI_BUTTON_NOTIFY_STATUS && keycode =3D=3D KEY_=
-POWER &&
-> +           pm_sleep_transition_in_progress()) {
-> +               pm_wakeup_dev_event(&device->dev, 0, true);
+>         lockdep_assert_held(&dev->event_lock);
+>
+> +       if (code =3D=3D KEY_POWER && pm_sleep_transition_in_progress()) {
+> +               pm_wakeup_dev_event(&dev->dev, 0, true);
 > +               return;
 > +       }
-
-First, this will affect suspend too.
-
-Second, this reports an already reported wakeup event.
-
-Next, why KEY_POWER only?  Is KEY_SLEEP not expected to wake up?
-
-And why event =3D=3D ACPI_BUTTON_NOTIFY_STATUS?  Isn't this what
-ACPI_BUTTON_NOTIFY_WAKE is for?
-
 > +
-> +       if (button->suspended || event =3D=3D ACPI_BUTTON_NOTIFY_WAKE)
-> +               return;
->
->         input_report_key(input, keycode, 1);
->         input_sync(input);
+>         disposition =3D input_get_disposition(dev, type, code, &value);
+>         if (disposition !=3D INPUT_IGNORE_EVENT) {
+>                 if (type !=3D EV_SYN)
 > --
 
