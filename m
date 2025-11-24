@@ -1,112 +1,146 @@
-Return-Path: <linux-acpi+bounces-19225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446B2C8254A
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 20:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1642C8257A
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 20:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E5A65349397
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 19:48:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 28870349DDA
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Nov 2025 19:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D296332BF32;
-	Mon, 24 Nov 2025 19:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B09032BF5B;
+	Mon, 24 Nov 2025 19:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3k0olT/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ToIXxtN7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2AB17C21B
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 19:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7671332AAB7
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 19:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764013715; cv=none; b=RHCt+GiV2/XcZBDZkTZuSPrXmGF0QkZRvHCB3UhlMjrrgP9hOPfA57jQEG2XejL2qNAjHPeJrGBeX/O//ThPX1OJSitHTT2fL3uYv3ukALS2oheth8/Yht6CT56SKHL1eykD1MAk+Ehuv29IdXXL6DLK7kl6voxmLz7IMg9cwHw=
+	t=1764013905; cv=none; b=V7c1tHhWlibaWXkuqUEwAxpwgq/iElRisrFyssmx0BQRLI1iKx/m8v4dC7MZSUL6aRD+3/AcGYqZo41W60jRAHqV9zj9OqR38MRvC/8h4BKTa571MSPu3icX4KOGQKAZkMIFJFesloi/6uAvcEh5kZEKTwRCmlDSr4cMFaK1xy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764013715; c=relaxed/simple;
-	bh=sY3rd0HLeplEVC41aDxA7AejzbWgUjGB9NpXAOLR1L4=;
+	s=arc-20240116; t=1764013905; c=relaxed/simple;
+	bh=YPdtestLIasfV0KRLy9AY08HX0axh8xGitQGoNVyqwU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q+M92Hzvy/2n3HdEWdlLMQVS5Aw74t4AtM4nTXfcve4QFweWqUoc+lDfTRmiBGu33LTY3OjU9jMn+F3uxL1UBpR22xHfd1D8vvYx2UkMHVnf01VezV97hxvFQpZjo6R0k3oFv8W3gWEBxFHDk1bQmX4C5EweE/totKvjNksaLfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3k0olT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55959C16AAE
-	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 19:48:35 +0000 (UTC)
+	 To:Cc:Content-Type; b=OJA/2vqA84FHKYjW1GrO27Wxl4w94oVzN7Nn+3nF+m/IOU1yLlGoKdoeRfjfrdeI7nh5IAFcE3u6hUdo6348JZMhp+VRD3jdGwQjNV+CLIB6OsjhhmoSKQDpMs/UPKBuBF9nt4escJbTh5ziX/dovRHxi8rUN6rIJHDftoD/5+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ToIXxtN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8D6C19425
+	for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 19:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764013715;
-	bh=sY3rd0HLeplEVC41aDxA7AejzbWgUjGB9NpXAOLR1L4=;
+	s=k20201202; t=1764013905;
+	bh=YPdtestLIasfV0KRLy9AY08HX0axh8xGitQGoNVyqwU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p3k0olT/8rxajtBlogXSRRY/lPMcgXTUa4m4VhK+i5TwxNnW9Z4k2bL7EfyARqY33
-	 X0GQlOkD28hZjneynEQeojeTGK+tPoE8fr1Li3sei7/dYZIQGLb0rJ1KNPq/6/1loB
-	 oT7ZDv41s/ivbmN2Rq2ndTRhLd6YDcALtqrQuS9bbxTvLjgqHY36tBVL5bLjVURJYs
-	 TwF8p+8DpZZZaedsIcLuHyVRGywYH9Oa6MQUcP7EhHJiwmuat0MxhSYcGHcyB6+vsY
-	 0a/0W5+VooydJ/n7lLp4P2Cz6k2su5vhSFd3lAshsMazY8+rFUjVHAjZX2RJFJ5t4R
-	 BlM+6nc8G6bPQ==
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-656b0bd47b8so829004eaf.0
-        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 11:48:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWCkpaZehdIbHEFxkSDvFMT4vNtvVMI3J3/LrV/wUH1jyNr6E5DKei5lm0yYHFNCgr/W794UoeBw61X@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwmS4kf2mT+u4jsY7fIVZPyJAjMsSqxIYeKyHjO/f1i8dSf3FF
-	adyQjcvQ5Heg1xGAgBn1f/1/qc+bVckWwDgojZ7zpef+WjNnQ2IMknidVEjk6Cb8HnnbvUsPfhT
-	W1fYBevOoCf2DDZp6hcdxgsK5ahK+aWA=
-X-Google-Smtp-Source: AGHT+IGLSS9U4Votx+vmCmhwlez+Pj59L7x+YU/qZ4G9iwcC3Y9Hq6yxI+jUYzkAwb/Gf/HnmkimHI519A0rHsGoO6Q=
-X-Received: by 2002:a05:6820:4dc3:b0:657:17a5:b314 with SMTP id
- 006d021491bc7-65791d46c32mr4484922eaf.0.1764013714661; Mon, 24 Nov 2025
- 11:48:34 -0800 (PST)
+	b=ToIXxtN7TGTKyhcWQCLg3HeiRp4+oMrExWo59cr/MOGeVbELfFfmWDB+Ei7h41fqm
+	 3d8l9dMaKwhNXRW7ZF0gs0Vik2Ub5O5RqnifyICIwUYMhpfLaIuCPeYau0vqd1pMNX
+	 56cIXNE1r462KVOh7btL0zkoAlCBCGSiGC6NhaARnEgK+HSBPqC1lAYpvsiJqNMu7J
+	 Hxl3eeSWacPuwlfcn/9PqPlC2KVQ82WgyZq/Ug2wzCnYx3Iwyf/wS6SMmgVmVZtzhw
+	 Ul5Gm+WrYoyhZyoHuSaGrNzI69qxCYx3geUPiPiiniKZXVA4WCRCLKPrLlp4h/gNg3
+	 rD9vCOx6Oo+hw==
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-3e84d56c4b8so2829601fac.2
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Nov 2025 11:51:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW5FLWfU9zWLxnM/CF8/pMhWLOJ8XZk6zonvcrkmlYIN6v/5w1Hf3kTvZNZS4z9zlyb2AhbhHqkFZPf@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+EIdrKNzWLV91wHjOCmAewBrCxSlK8D6HwUXR2KP7YVZQR8mu
+	qJPl3/N9JtVVnRyuYexfRvNSdC+vpoVSB2cmiLSJEXLQxrmgF4J3QSFR4taqkvkUSArNDNrD8yY
+	B8tYr9uyYfrEsyaTEVxIGHyI/suBXfCI=
+X-Google-Smtp-Source: AGHT+IE16Q5ptvTo6zpyWU0I2G7xrkJ5diqaQdF0v+EjVaTTvdKcD0eao/xw1Xu2bSFTqcYSCsy0C/AuewTNpTTr1Kw=
+X-Received: by 2002:a05:6808:448c:b0:43f:60b0:382 with SMTP id
+ 5614622812f47-4514e7f14ddmr164998b6e.40.1764013904234; Mon, 24 Nov 2025
+ 11:51:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251119224140.8616-1-david.laight.linux@gmail.com> <20251119224140.8616-14-david.laight.linux@gmail.com>
-In-Reply-To: <20251119224140.8616-14-david.laight.linux@gmail.com>
+References: <20251120170001.251968-1-mrout@redhat.com>
+In-Reply-To: <20251120170001.251968-1-mrout@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 24 Nov 2025 20:48:22 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jQwp6dkqaAo+bxzmQJe_3+UDX8_7e0r0=fr1gY59iWZA@mail.gmail.com>
-X-Gm-Features: AWmQ_bmlJAvhdPvEHZN3paBeqGwg4qTb25owDbrUB5aBcvfCA-R_3-BOal4pE2w
-Message-ID: <CAJZ5v0jQwp6dkqaAo+bxzmQJe_3+UDX8_7e0r0=fr1gY59iWZA@mail.gmail.com>
-Subject: Re: [PATCH 13/44] drivers/acpi: use min() instead of min_t()
-To: david.laight.linux@gmail.com
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 24 Nov 2025 20:51:33 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0i1Q7PcNLtchETbJ+1LhtMahCn75kzVCL7Dzb-bECJ39Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bl_c4Pn_vLzP5i-DISTb5bRLYcnHxS9LE8mJO63WQ_9Nqu8QnrjOH0DCuA
+Message-ID: <CAJZ5v0i1Q7PcNLtchETbJ+1LhtMahCn75kzVCL7Dzb-bECJ39Q@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: tools: pfrut: fix memory leak and resource leak in pfrut.c
+To: Malaya Kumar Rout <mrout@redhat.com>
+Cc: linux-kernel@vger.kernel.org, lyude@redhat.com, malayarout91@gmail.com, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 19, 2025 at 11:42=E2=80=AFPM <david.laight.linux@gmail.com> wro=
-te:
+On Thu, Nov 20, 2025 at 6:00=E2=80=AFPM Malaya Kumar Rout <mrout@redhat.com=
+> wrote:
 >
-> From: David Laight <david.laight.linux@gmail.com>
+> Static analysis found an issue in pfrut.c
 >
-> min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
-> Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long=
-'
-> and so cannot discard significant bits.
+> cppcheck output before this patch:
+> tools/power/acpi/tools/pfrut/pfrut.c:225:3: error: Resource leak: fd_upda=
+te [resourceLeak]
+> tools/power/acpi/tools/pfrut/pfrut.c:269:3: error: Resource leak: fd_upda=
+te [resourceLeak]
+> tools/power/acpi/tools/pfrut/pfrut.c:269:3: error: Resource leak: fd_upda=
+te_log [resourceLeak]
+> tools/power/acpi/tools/pfrut/pfrut.c:365:4: error: Memory leak: addr_map_=
+capsule [memleak]
+> tools/power/acpi/tools/pfrut/pfrut.c:424:4: error: Memory leak: log_buf [=
+memleak]
 >
-> In this case the 'unsigned long' value is small enough that the result
-> is ok.
+> cppcheck output after this patch:
+> No resource leaks found
 >
-> Detected by an extra check added to min_t().
+> Fix by closing file descriptors and freeing allocated memory.
 >
-> Signed-off-by: David Laight <david.laight.linux@gmail.com>
+> Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
 > ---
->  drivers/acpi/property.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tools/power/acpi/tools/pfrut/pfrut.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index 43d5e457814e..e427ab24cde7 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -1280,7 +1280,7 @@ static int acpi_data_prop_read(const struct acpi_de=
-vice_data *data,
->                 ret =3D acpi_copy_property_array_uint(items, (u64 *)val, =
-nval);
->                 break;
->         case DEV_PROP_STRING:
-> -               nval =3D min_t(u32, nval, obj->package.count);
-> +               nval =3D min(nval, obj->package.count);
->                 if (nval =3D=3D 0)
->                         return -ENODATA;
+> diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tool=
+s/pfrut/pfrut.c
+> index 44a9ecbd91e8..4d9b0177c312 100644
+> --- a/tools/power/acpi/tools/pfrut/pfrut.c
+> +++ b/tools/power/acpi/tools/pfrut/pfrut.c
+> @@ -222,6 +222,7 @@ int main(int argc, char *argv[])
+>         fd_update_log =3D open("/dev/acpi_pfr_telemetry0", O_RDWR);
+>         if (fd_update_log < 0) {
+>                 printf("PFRT device not supported - Quit...\n");
+> +               close(fd_update);
+>                 return 1;
+>         }
+>
+> @@ -265,7 +266,8 @@ int main(int argc, char *argv[])
+>                 printf("chunk2_size:%d\n", data_info.chunk2_size);
+>                 printf("rollover_cnt:%d\n", data_info.rollover_cnt);
+>                 printf("reset_cnt:%d\n", data_info.reset_cnt);
+> -
+> +               close(fd_update);
+> +               close(fd_update_log);
+>                 return 0;
+>         }
+>
+> @@ -358,6 +360,7 @@ int main(int argc, char *argv[])
+>
+>                 if (ret =3D=3D -1) {
+>                         perror("Failed to load capsule file");
+> +                       munmap(addr_map_capsule, st.st_size);
+>                         close(fd_capsule);
+>                         close(fd_update);
+>                         close(fd_update_log);
+> @@ -420,7 +423,7 @@ int main(int argc, char *argv[])
+>                 if (p_mmap =3D=3D MAP_FAILED) {
+>                         perror("mmap error.");
+>                         close(fd_update_log);
+> -
+> +                       free(log_buf);
+>                         return 1;
+>                 }
 >
 > --
 
-Applied as 6.19 material with adjusted subject, thanks!
+Applied as 6.19 material, thanks!
 
