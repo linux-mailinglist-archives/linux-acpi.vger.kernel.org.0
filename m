@@ -1,76 +1,79 @@
-Return-Path: <linux-acpi+bounces-19249-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19250-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312D8C8450F
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:56:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920F5C84626
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 11:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9683B1297
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:56:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 30257341E60
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCAC2ED872;
-	Tue, 25 Nov 2025 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7872EAB83;
+	Tue, 25 Nov 2025 10:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LR19ivzD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kz0CyX7Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F5C2EDD64;
-	Tue, 25 Nov 2025 09:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95B42BF001;
+	Tue, 25 Nov 2025 10:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764064557; cv=none; b=tDoJI+Y7pu4jTrzAhareK48hhoZR78C9sbQZfvJb4U6O69u19NPdByEkQEdFpZXlN/emy4WYRmAFkpH13gE7gNZ72ufpwoXN2IOTY4imfZj3D0ePcmoD8TLYZLk+FLQrvQDJpg+JacS5Y+8uaJIXUpd5+5CtI291CqkV/MFplo4=
+	t=1764065468; cv=none; b=fHsN3VLam+7xsnfgQcDyw+OBMItgLHs4hGRVOwddSRcjIXowz3Rv4di9A3Isw500DQ+xhCHV7Pj4GURPc0Pm7rwLVGApmbMDrCASHu5X0iAYhhGPPw5sa9GOKKomjURThe+pDM7evUzYaH73Dz5XuA+H6SCjFeSip9OBnZ4tN40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764064557; c=relaxed/simple;
-	bh=ft7ew2qfT7nP6Gbr86qhmeR9WG9LHorsMZfdwQHWsgg=;
+	s=arc-20240116; t=1764065468; c=relaxed/simple;
+	bh=BpBuyvSZHkQFCZlmH+DV+aClxlnNHZOqh0PRZANORPw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIe0x9Zc/DMUDAW328WOeUHK3UOTf458LPq9Zdd5Xj3aofTDwhL70Fhf7FRe5gnVhq79KITC1aGnY6i+HuD+dJzkkDGTbOYB4RcaCgjMW4kIgUc+4C73FxQBl1jwS80XA87ha7fKA/owebRjGGH+eXQGTNPDiCfUxRT0IaMdXbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LR19ivzD; arc=none smtp.client-ip=192.198.163.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=akJYkg6zsklfFrcl2umoiwq7gqhmKF5EFklISakf0o0yzBlom8fb9ZwRlFg9z0ys+pWjI3DFtgQ+Yz+ptTezVxSzh/wBGrd0oALx9T4RZSB9ecfH/Lsw5MYbYqU5uXtKeQjQAYT3I0i2EwdtMBESTNSVs61UffkY1j+dJE+cR38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kz0CyX7Z; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764064556; x=1795600556;
+  t=1764065466; x=1795601466;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ft7ew2qfT7nP6Gbr86qhmeR9WG9LHorsMZfdwQHWsgg=;
-  b=LR19ivzDVTdTtaZcM08btU42T0UoyfdggF92Ih48U8KLsXbBu8nAbJnp
-   VhRdjz3Dd2JidynL/WKsM4TPfrC19ATyZZfLFz3WDh7LejNy0hCpTKv4w
-   JBL6IQbIFC8yBanrZhhyr32S8c4ZQNqcjECxLTEihfZHcld4REgqGGQh0
-   FfkVUIKIHvhSG2WMVA2WoV16N8fDW65mqfpZP8O16Uhh88K08waFrIi85
-   gC7W+wCyoRhC6urxEjPN76cFk6LznCIg4mctsxe6mWdU7wy7JDnxGa91C
-   2nQj4QZ05aY1JqjPDGWKULvFWiDDM6y2gvll/CtXdlZgIws8DWBedDvrU
+  bh=BpBuyvSZHkQFCZlmH+DV+aClxlnNHZOqh0PRZANORPw=;
+  b=Kz0CyX7ZPnuvgvV2vzfgGhWjsvzvHojelNRm3eIZ0sm/jizObgjq+j/B
+   CX+VVs5WEdKJo+psjyIy4ez1w+Qr1k8cWgLKn9IoxsxdjVHwXIPasuFX0
+   DS0UJHjOJqXvf0RTaxFUM0IlbEO++H0InvRoZzphEF6R5RRchrfULHiOt
+   taDvi21cefsN73NURehzTLHSGrm2JMNgmb96QCMQNHJhXbjBmQxvqqb17
+   ZInREiw8Gjd+LP+m6zKM2xDPwwigwA+TSGcyG0GrvnaoaoFOq4BHQ3ZB0
+   /fXiQACRsh/sim+NGQlINnwpyuzo/F7Yzo7YRJXWYB98k9TZc/7lZTx0Z
    Q==;
-X-CSE-ConnectionGUID: xCoYQwtJRN+Jj6/m42TtZw==
-X-CSE-MsgGUID: CCIePTtzS+ebUc5tCdRGxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="53645455"
+X-CSE-ConnectionGUID: 89nuUtWWQdC/cKZjmLRnnQ==
+X-CSE-MsgGUID: XWmux/v7SlecbosMroeMBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="68668300"
 X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
-   d="scan'208";a="53645455"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:55:55 -0800
-X-CSE-ConnectionGUID: I18gb42OTXyeGIVWQPk54g==
-X-CSE-MsgGUID: DK4TSHc7Twim3IO4GIMRJQ==
+   d="scan'208";a="68668300"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 02:11:05 -0800
+X-CSE-ConnectionGUID: xMPnIGJCQ9S4u4SDfIto3Q==
+X-CSE-MsgGUID: Hldz7eUERRCpq8g+tO+46Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
-   d="scan'208";a="192833855"
+   d="scan'208";a="192592051"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.152])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:55:53 -0800
-Date: Tue, 25 Nov 2025 11:55:51 +0200
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 02:11:02 -0800
+Date: Tue, 25 Nov 2025 12:10:59 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-gpio@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mika Westerberg <westeri@kernel.org>
-Subject: Re: [PATCH 18/44] drivers/gpio: use min() instead of min_t()
-Message-ID: <aSV9JxrZdJZNhSL4@smile.fi.intel.com>
-References: <20251119224140.8616-1-david.laight.linux@gmail.com>
- <20251119224140.8616-19-david.laight.linux@gmail.com>
- <aR7K2bWKiaXrwWIr@smile.fi.intel.com>
- <20251120093743.1cf9bb8f@pumpkin>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Baojun Xu <baojun.xu@ti.com>, linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH v1 1/2] i2c: acpi: Return -ENOENT when no resources found
+ in i2c_acpi_client_count()
+Message-ID: <aSWAs71tl5s9_Rup@smile.fi.intel.com>
+References: <20251125094249.1627498-1-andriy.shevchenko@linux.intel.com>
+ <20251125094249.1627498-2-andriy.shevchenko@linux.intel.com>
+ <20251125095046.GB323117@black.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -79,54 +82,28 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120093743.1cf9bb8f@pumpkin>
+In-Reply-To: <20251125095046.GB323117@black.igk.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 20, 2025 at 09:37:43AM +0000, David Laight wrote:
-> On Thu, 20 Nov 2025 10:01:29 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Nov 19, 2025 at 10:41:14PM +0000, david.laight.linux@gmail.com wrote:
-> > > 
-> > > min_t(u16, a, b) casts an 'unsigned long' to 'u16'.
-> > > Use min(a, b) instead as it promotes the both values to int
-> > > and so cannot discard significant bits.
-> > > 
-> > > In this case the values should be ok.
-> > > 
-> > > Detected by an extra check added to min_t().  
-
-...
-
-> > > acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,  
-> > 
-> > > -	length = min_t(u16, agpio->pin_table_length, pin_index + bits);
-> > > +	length = min(agpio->pin_table_length, pin_index + bits);  
-> > 
-> > Now, if you look closer at the code, the pin_index alone has the problem you
-> > are targeting here.
+On Tue, Nov 25, 2025 at 10:50:46AM +0100, Mika Westerberg wrote:
+> On Tue, Nov 25, 2025 at 10:40:11AM +0100, Andy Shevchenko wrote:
+> > Some users want to return an error to the upper layers when
+> > i2c_acpi_client_count() returns 0. Follow the common pattern
+> > in such cases, i.e. return -ENOENT instead of 0.
 > 
-> The compiler warning happens because 'pin_index + bits' is 'int' and the compiler
-> doesn't know the value fits in 16 bits.
-> It should fit, but only if the caller passes in valid data.
+> Well what does 0 mean then?
 
-I meant that assignment to pin_index already cuts the higher bits
-from the input.
+There is no 0.
 
-> > On top of that the iterator and 'length' are signed, while
-> > the result of min_t(u16) is unsigned (however it has no difference in this case).
-> 
-> Actually the result type of min_t(u16) is 'int' (:? promotes char/short to int).
-> So the u16 cast does '(pin_index + bits) & 0xffff', everything is then promoted
-> to 'int' for all the comparisons (etc).
+> To me it's logical that i2c_acpi_client_count() as it returns count,
+> returns 0 if the count is 0. Let's not make it any more complex than that.
+> ;-)
 
-Sure, but the value is positive even if int is signed. That's why I put
-a remark in the parentheses that it has no difference in this case.
-
-...
-
-> > TL;DR: I apply this patch with subject changed, but I think more work needs to
-> > be done if you want to fix it fully.
+The same approach used elsewhere, e.g., gpiod_count(),
+   of_reset_control_get_count() / reset_control_get_count().
+And other count methods used for IRQ resource, for example.
+However PCI MSI/MSI-X counters never return 0.
 
 -- 
 With Best Regards,
