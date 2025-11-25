@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-19259-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19260-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7233BC86027
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:41:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAADC86064
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 32ECA4E2190
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 16:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE98D3B2235
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 16:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38A832937D;
-	Tue, 25 Nov 2025 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FD5329C41;
+	Tue, 25 Nov 2025 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="V9ci28Ga"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VpeFfnsq"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A39B1487E9;
-	Tue, 25 Nov 2025 16:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E407329C64;
+	Tue, 25 Nov 2025 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764088913; cv=none; b=F3g4+KQxpe+SedCoU/t5HvtkAGM49od9sUTj5tRljyAfvZ0i+sGQU/IwiVWICof0xehn19bDSNzCkoVX0FWQ6xuHMz/nL3jlmd4gZCF77Lb9Tp6RYA3b/hqexFKaF8t70KzYozFfX3onXvIaWOu/T/nc/a4nY4pdpJEJnH3XkwU=
+	t=1764089108; cv=none; b=U+gLj/jjklEXyw2hB69nlYUf39YKliwhNj5h57giAzhe5PhoN4mSLHC0+uE97B2B9oCu2DhwoWBo8RueLRVUVFQhYG2pqXk1nxb2OnuW63yy+B+jqlfUY88D60fjmtAVPtY9QeKJqCXiEUEjQ3xcM2+V8wNKuLcHd/n9lEyuN00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764088913; c=relaxed/simple;
-	bh=wwVWQ8qs5FyaFgj2VKw9vuePt2aYfqUPEd7y+BOSRVw=;
+	s=arc-20240116; t=1764089108; c=relaxed/simple;
+	bh=L7B8F2Q1Vxh92Ji5RCsOEviO3cskIYxKJ9u0G0P5QP0=;
 	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XqeHsPJSU7FWjbDwem2HEX0SMetfZIcJ9OF6IP3q15Cr7fPO0pQsX+7+dpEDVrKQYJSeSGsbFdE4UvqShwr9KNeByt/FbUmK0PeQo8xN6QlGdoi+mSahYTRm54DSIg8BNX9zdHd/nSzJ+9LpTtAxVZdcJIvgaAuE/SPrt9LIAF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=V9ci28Ga; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:Content-Type; b=Zd3w65caNE9zuAhepKlxDnuEUyZCagWqQj+AgE7Gh35OIqSsrQElF+4CiCmruwq3XcuEhtobOSvFtR1UhDG+1HBD8c4UJXXZ1ZKwwILqzEnX3MAsCS39OKE59cG8Opp3WqrVIGgJwWo0NkgeWpi2p06Qu1b/8n2KenST5qAiMc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VpeFfnsq; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764088909;
-	bh=wwVWQ8qs5FyaFgj2VKw9vuePt2aYfqUPEd7y+BOSRVw=;
+	s=mail; t=1764089104;
+	bh=L7B8F2Q1Vxh92Ji5RCsOEviO3cskIYxKJ9u0G0P5QP0=;
 	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=V9ci28GahN2kkzienIhBTFqRLlnWrbA5eDmQqoK7gOQlGX64ye+RfULR9pQFESuwi
-	 qcX4KCMZ4yZFmbDnOFiDXeu9NDtKLY+O4nsql3JT5xIvOcj9G7Oz6yFHMWGa3dv77k
-	 QTTFKOnWtHbyz9bP3BgAxOFOW9sjaSOAUc2uwoBcFShpcbBQ7ijEr5HzJbnKKcv7H9
-	 vovNGa6miYFWculfJK47TW0Olwubbpy6XbtIZLtkIgEIw603CRWZ4BuEAo5vCp+8YD
-	 j51qzBmc8tWHIrJPNBL8Jtm4R4hpBaXLLhl6f6KVX8KCLCVsMySD62k2EJMiXOGcho
-	 PkEKbPO0cOcEA==
+	b=VpeFfnsqnbNLZb48ChsmECFmJ1ONI3vRemdpIYxlQKfzjmPDC/H8N0Nsejwm6RUry
+	 Z+H8ulfHj138967YJdfQy22HCZQwTquEYeqv5bu3wD8ca/zHD13I+ohUDVNyCHjfXn
+	 bctuCu3aSIaFMQIgVoswJhuDlbMeh9HWgQ+kmYn1FCsNLh2iJ05m2bAnJk9BqaW3Ad
+	 GRmwt96qOkcPisYmNe/oY6W+e0vNjkveAF4K1KKTGuCvFIWg17GlqoeX5iNQPhoe/T
+	 U1mI/GobupFurQ9MJVCKBeA/3/mubZMpa6K6YH7R6HqTZt5+ZzXaMuQOH25JoobYGy
+	 /pNh2yCKD2jxw==
 Received: from [192.168.100.50] (unknown [144.48.130.189])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2A21017E0AC3;
-	Tue, 25 Nov 2025 17:41:45 +0100 (CET)
-Message-ID: <cef1d96b-b642-4e69-8c1b-2e0bf7528edf@collabora.com>
-Date: Tue, 25 Nov 2025 21:41:22 +0500
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4D2E317E0AC3;
+	Tue, 25 Nov 2025 17:45:01 +0100 (CET)
+Message-ID: <7701d31b-d4cc-47fb-84eb-87e61c94c126@collabora.com>
+Date: Tue, 25 Nov 2025 21:44:40 +0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,81 +65,54 @@ Cc: usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, linux-input@vger.kernel.org, kernel@collabora.com,
  superm1@kernel.org
-Subject: Re: [PATCH 2/4] ACPI: button: Cancel hibernation if button is pressed
- during hibernation
+Subject: Re: [PATCH 1/4] PM: hibernate: export
+ pm_sleep_transition_in_progress()
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20251107184438.1328717-1-usama.anjum@collabora.com>
- <20251107184438.1328717-3-usama.anjum@collabora.com>
- <2025112433-emphasize-helpful-b748@gregkh>
- <e1e97842-0ad3-4270-b0d1-3cc7150988cd@collabora.com>
- <2025112506-acting-tipoff-3a49@gregkh>
+ <20251107184438.1328717-2-usama.anjum@collabora.com>
+ <2025112423-rocking-deafness-88c0@gregkh>
 Content-Language: en-US
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <2025112506-acting-tipoff-3a49@gregkh>
+In-Reply-To: <2025112423-rocking-deafness-88c0@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/25/25 4:47 PM, Greg Kroah-Hartman wrote:
-> On Tue, Nov 25, 2025 at 04:12:54PM +0500, Muhammad Usama Anjum wrote:
->> Hi Greg,
+On 11/24/25 10:01 PM, Greg Kroah-Hartman wrote:
+> On Fri, Nov 07, 2025 at 11:44:28PM +0500, Muhammad Usama Anjum wrote:
+>> Export pm_sleep_transition_in_progress() to be used by other
+>> modules.
 >>
->> Thank you for the review.
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>> ---
+>>  kernel/power/main.c | 1 +
+>>  1 file changed, 1 insertion(+)
 >>
->> On 11/24/25 10:03 PM, Greg Kroah-Hartman wrote:
->>> On Fri, Nov 07, 2025 at 11:44:29PM +0500, Muhammad Usama Anjum wrote:
->>>> acpi_pm_wakeup_event() is called from acpi_button_notify() which is
->>>> called when power button is pressed. The system is worken up from s2idle
->>>> in this case by setting hard parameter to pm_wakeup_dev_event().
->>>>
->>>> Call acpi_pm_wakeup_event() if power button is pressed and hibernation
->>>> is in progress. Set the hard parameter such that pm_system_wakeup()
->>>> gets called which increments pm_abort_suspend counter. The explicit call
->>>> to acpi_pm_wakeup_event() is necessary as ACPI button device has the
->>>> wakeup source. Hence call to input_report_key() with input device
->>>> doesn't call pm_system_wakeup() as it doesn't have wakeup source
->>>> registered.
->>>>
->>>> Hence hibernation would be cancelled as in hibernation path, this counter
->>>> is checked if it should be aborted.
->>>>
->>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>>
->> My thinking is that people don't press power button after triggering
->> hibernation. They will only press power button if they want to cancel the
->> hibernation or resume from hibernation a bit later when hibernation completes. 
->>> This could be dangerous, as this is not what happens today, are you sure
->>> that people aren't just used to pressing the button multiple times until
->>> the system is hibernated? If so, that would now break with this change
->>> as it's hard to determine what is going on.
->> Yes, its possible. Previously the device wouldn't cancel hibernation on power
->> button press; while now it'll cancel.
->>
->> So should we put this cancellation under some config option to avoid breaking
->> the default behavior?
+>> diff --git a/kernel/power/main.c b/kernel/power/main.c
+>> index 33a47ed15994f..ff3354b5be150 100644
+>> --- a/kernel/power/main.c
+>> +++ b/kernel/power/main.c
+>> @@ -570,6 +570,7 @@ bool pm_sleep_transition_in_progress(void)
+>>  {
+>>  	return pm_suspend_in_progress() || hibernation_in_progress();
+>>  }
+>> +EXPORT_SYMBOL_GPL(pm_sleep_transition_in_progress);
 > 
-> Do not add another config option, that way lies madness.  As proof, what
-> would your distro select for this, in order to preserve old behavior?  :)
-I think, the new behavior would be desirable by most distros. They don't care
-about the old behavior. But its just my thinking. What do you think is the way forward?
-
-Even if there are users which used to pressing power button during hibernation,
-will not press it after a few tries if they really want the hibernation to complete.
+> The problem is, you can not rely on the result of this call as it could
+> change right after you call it, right?
+> 
+> So who needs to call this and why?  What new workflow requires this?
+Yeah, Rafael just mentioned as well that this API isn't dependable. I need
+to use better flag for detecting if driver is suspended. I'm testing if
+suspended flag in ACPI button driver is enough and similar flag can be added
+in input driver.
 
 > 
->>> And why does hibernate take so long?  Why not fix that up instead?
->> Hibernation is inherently slow: it must freeze devices, copy and
->> compress/encrypt memory, then resume storage devices to write the image to
->> disk.
->>
->> While I've thought about increasing the speed, I've no concrete ideas yet.
->> The main problem is that its sequential in nature.
+> thanks,
 > 
-> Then fix that?
-That's in the plan. But who knows when we get time to attempt that. 
+> greg k-h
 
-First I need a board/machine with serial console access to view all logs in real
-time. :)
 
+-- 
 ---
 Thanks,
 Usama
