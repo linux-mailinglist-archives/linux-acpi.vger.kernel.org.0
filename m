@@ -1,94 +1,104 @@
-Return-Path: <linux-acpi+bounces-19243-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19244-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DD5C8436F
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:27:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1D2C8446D
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E04134E21C
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF28D3A4044
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C62C1586;
-	Tue, 25 Nov 2025 09:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0B72EC0A6;
+	Tue, 25 Nov 2025 09:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Ujh5Xxgt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bp4Upw6S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44E1269B1C;
-	Tue, 25 Nov 2025 09:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B2B2EBB84;
+	Tue, 25 Nov 2025 09:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764062836; cv=none; b=fGfB0qmTBDxxexsfqLg1AK100CCVnDKRZUQHRAHtahcZ3v4KR5grV/OkzSTCsz50TIdLg3wUivBP77ZrouY/wd/FxMv/SDtiK6Q8RpqEtZk2Nxn2c8x+zY4ku9y9XTwmF+Ajt7hxoOG9sOBHee5vFxppyRs1pHXZ6ohsHxhP10k=
+	t=1764063776; cv=none; b=l6cpn4hZJaAkhGqTjsXx2WpVjnNg8vrskL6zcjTEOP1O0G3fGG0kRMZOLb9Gv/UDVxKe3pObDP1HOH2AvIlf7HXxGgsKIueMe8BqY/qCGIFAqx7mmkmzZsxKjmh0JIfP+DGlROjnBr9jOYXAjR4V7TAA6/x19Bnw7lCYvkerwr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764062836; c=relaxed/simple;
-	bh=9fsfpjAM2+mQ4S4GAkoN+7jqNZGufRMjtus1fCgCMqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HwR4Vbuv9pVfdwJPCtTbTcpCKpopE/8Nqk6F6O0sVQ7Gc1vA8jnJprp3MZ5XuiigMhmoBwbV2s+/yQshXJFTaXiW74jb7HIkPl8+hUKKjBugDnQXt+c3wvPTU9QHES0aFAcYP616SxuANPibzSwll6hPhJYm0QHOgS5rw7obsUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Ujh5Xxgt; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=k/+2LtzZDQDT/XIIJmpYRUvrcP2KDj85kUn+MGkQNJM=; b=Ujh5XxgtWd8jr9zZcd2oA5syOx
-	Cwt9IJjcT2z4O5nC1oTDkZz2phCS+d5yfzIkGRu+3qoqEO2RlWYiUacquZZfBmTVSUBoRbs2suKMb
-	tgNMMpisQA++79/GIAH54dlpgo6eDFiYCm+51O/uVjZGIk4WsbQUyxEdYxcDg802H6xhoFfnanQHH
-	9ssOiu60VP0hjxpyMc5BSbNgLUL69A3AfZGGp6YTPhBEe6KGim/4BfYTG36omzLqBzqEPxcbwEr1u
-	RUnLeqwU2gSJrzxpg6hLMJbWkXHRZJ1RayRA4ZqkwA+pmawb3gg1rEUtggbyAIsM1erOI2idwpGJb
-	W3EEC88g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vNpKA-003ICO-9j; Tue, 25 Nov 2025 09:27:02 +0000
-Date: Tue, 25 Nov 2025 01:26:55 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Borislav Petkov <bp@alien8.de>, akpm@linux-foundation.org
-Cc: tony.luck@intel.com, akpm@linux-foundation.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	osandov@osandov.com, xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	kernel-team@meta.com, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
- errors
-Message-ID: <zbqtqndpicedldf37c7t74cikasqruzkv2rqt2eh6ufjbj4exb@3p7ajieb6ovr>
-References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
- <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
- <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+	s=arc-20240116; t=1764063776; c=relaxed/simple;
+	bh=FBwlETeISBdOzMws60gIvJNe7Z99k/ZEdQRsmGC9bgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uu2cEt657HNrZaEKTm5hxhG4Fd9fyCuIxccLyHG/oUUWGNbmYG6lPoVeUZYQa4iCKwiu90JsoOcMsswSLKhvIVq94UqEvpkxfB9A/jpN23WT2B37gVexPHjixTI1loPJzP3NV17ntgHQfS5mOYG09mezYV761tx6Y98GMIekIsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bp4Upw6S; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764063775; x=1795599775;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FBwlETeISBdOzMws60gIvJNe7Z99k/ZEdQRsmGC9bgI=;
+  b=Bp4Upw6S39ckN6gzKtQ+jMZJIQQQb5A3ZNJ35M3xxadf3zg6o8i8Uc7U
+   6DRtPyQjY6ikyweEXMMRdPNpviByCV9O+e0f6Ytm4F7qvnekPXc0/8b9T
+   Krya6zEKfXRhsCeaIXQibQhpM417mPvYk8PihArARihBPnyCFGJ8dViud
+   jr9u7yXbrKXLJ5sL8dkTEAEY2FDEte/DtPDwSL8vV1kA92XkCBo8xCuub
+   VcJwcd9moFcn7GfiipjUnYFAHJAPQTXdMOku/9AA8bzOPUYUylAsGDJp0
+   sDX/LrsmLW3cUw3q7OPpo9Lf8aGFE+W2Zn8RKKBCcHHiHqFSWHkboFyTj
+   w==;
+X-CSE-ConnectionGUID: sfSkqupBT9mFqONk5xjUBw==
+X-CSE-MsgGUID: /ikVBK5wRX+NOUHvJeQX2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="76700491"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="76700491"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:42:54 -0800
+X-CSE-ConnectionGUID: 25WM80IaT7O/t6XcUUKUPg==
+X-CSE-MsgGUID: 2cVSAVKQQ5Wlc8Jj9Y1m4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="223562650"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa001.fm.intel.com with ESMTP; 25 Nov 2025 01:42:52 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 405E0A0; Tue, 25 Nov 2025 10:42:51 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v1 0/2] i2c: acpi: Ad-hoc cleanup and kernel-doc fix
+Date: Tue, 25 Nov 2025 10:40:10 +0100
+Message-ID: <20251125094249.1627498-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-Hello Andrew,
+Here are an ad-hoc cleanup and a kernel-doc fix while I was looking
+into serial-multi-instantiate.c for other reasons. Note, the other
+users of i2c_acpi_client_count() are not affected by the change as
+they are only interested in positive value returned from it.
 
-On Tue, Nov 18, 2025 at 03:10:02PM +0100, Borislav Petkov wrote:
-> On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
-> > Do you know what is the right tree for this patch?
-> > 
-> > I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
-> 
-> I can take it if akpm wants me to...
+Assumed to go via I2C core tree, Ilpo, please, Ack the second change.
 
-Would you prefer to have this patch on your tree, or on Borislav's?
+Andy Shevchenko (2):
+  i2c: acpi: Return -ENOENT when no resources found in
+    i2c_acpi_client_count()
+  platform/x86: serial-multi-instantiate: Remove duplicate check
 
-Thanks
---breno
+ drivers/i2c/i2c-core-acpi.c                     | 7 +++++--
+ drivers/platform/x86/serial-multi-instantiate.c | 3 ---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+-- 
+2.50.1
+
 
