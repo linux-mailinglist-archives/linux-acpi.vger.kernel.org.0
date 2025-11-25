@@ -1,158 +1,92 @@
-Return-Path: <linux-acpi+bounces-19262-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19263-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44FAC8634E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 18:26:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346E9C8638D
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 18:33:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EA063351E1C
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:26:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F00064E9999
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E55329E46;
-	Tue, 25 Nov 2025 17:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8F332B9A7;
+	Tue, 25 Nov 2025 17:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="CRoJOjMm"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nr6cZGfS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from exactco.de (exactco.de [176.9.10.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D3020DD51
-	for <linux-acpi@vger.kernel.org>; Tue, 25 Nov 2025 17:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1A6207A0B;
+	Tue, 25 Nov 2025 17:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764091605; cv=none; b=XjZpl3lZUInIlhGdU9FwbYvozVrFhqtYEcjL0I/ohHCWq/+zSPL/CkqPAaQds6a7U3xSHLG9yZ9/L8MWwhSAxo29ppSidOJY9mRV4hpABOgcQwTlLCbC6C4D2l1alQUZefaqRA3xPR2gi7qlC/6vCbgWwIWiLimY5zSUoV/M2k8=
+	t=1764091933; cv=none; b=TLbf07Bh5u30pMW7lQwNTmYzOqgmWKBjE74kuep4VU446iWLGUz378ZY1H1Tdrby63qFwXmLv722acJYCsf8kw1E3X8tgcpVlu4D9SZYSMLo+of8Dl4qT7Rt3lnkuhMh5Xf0Wwd3Ocyk8omdaphaXiXmPZJd/RzgrFAu5G1r0Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764091605; c=relaxed/simple;
-	bh=9yKQn6i4c2KXko0BOBk4oKJB+hxyfzgEqSD4rsgLILE=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=C+jKcnZR488dEd749Ho44yjgGtDowkUoK+KbHUsTfWosm5SQjrTZzmGwAK8p95mveE5/r9lWVSDqQ69bpePax1kEg710HDvSEyeI3dNC8fVeMHIW9BovUnvVdewyRBcTdq9VfvPjP/D9f3Dr83AEwxB1WK+v90tjQ4mhaRaDDlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=CRoJOjMm; arc=none smtp.client-ip=176.9.10.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
-	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=YpUr/+LwOBLmRjUPQxrmaD7SCAHqVJ4mMXF72YuH1GM=; b=C
-	RoJOjMmi1xgmoSCJmzkCq00ZlbKGQs9xvyVNHVxRRL6BrnMCV6E/E6Xb3XCbs7e9mJ7fCpARfBD05
-	/dVga6tb2VWsjN2ryCKQxcBbYllMq67NsU5A6lic1Lj1AfaymnFmcqdEyGNhdAUsMhhWCPii9shmS
-	t55z+l6mchYtH//Lqk2wlTPUnDUGVnZfk60i2SvBaMZgtP0zhfcAx/7cY3qFUynX2Vc0mE1ozn6pN
-	dfk3azI12rlCpGwyfMbCCH6NYDbAhViNI4kHDriItsB0ByTj5kJpwzWm4csh1ZN0bzMi78pUbfoIy
-	MfVGauhJpHfyC94cjB7qTsP+Sv6UOonxg==;
-Date: Tue, 25 Nov 2025 18:26:54 +0100 (CET)
-Message-Id: <20251125.182654.1292605389516841541.rene@exactco.de>
-To: linux-acpi@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Huang Rui <ray.huang@amd.com>,
- Borislav Petkov (AMD) <bp@alien8.de>
-Subject: [PATCH] ACPI: processor_core: fix map_x2apic_id for amd-pstate
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	s=arc-20240116; t=1764091933; c=relaxed/simple;
+	bh=nnAEPQ59gqP0qnrmNI3FJEAbvJ+MZOEUAcLlq2prKCE=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=rEMrZJiCWrtiQ96d4TNBsUZADJGAHcSxpEYeQg2cVnpuaiWdCu81s4VBTzo+Q/t1SWkKKigJPOW5Qv/ajgwH4gz30IOjVT4zZWJvRnNcS5yFfOK+eEfDZGz556HGb5dQJMgT0zvOtDZ3lky7eK5JdZyAAEc5ueQNkjlsy242fWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nr6cZGfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC08C4CEF1;
+	Tue, 25 Nov 2025 17:32:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764091932;
+	bh=nnAEPQ59gqP0qnrmNI3FJEAbvJ+MZOEUAcLlq2prKCE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nr6cZGfS3O34sgUcHJr7KtS+Mp52RlENxbRA2dOu/d4YFQzwnvtmp3Sq5//ODUpfl
+	 +JTv5kdtE8yRGxiVrRPo0z9izXQ4Qd7pOleXhGLoV+myrsB8q9Z1Q0r5elNASWV8mA
+	 SkTNueFUG1lHdCCOI0S/bo6eQeJ5jJCa5HA65TtY=
+Date: Tue, 25 Nov 2025 09:32:11 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Breno Leitao <leitao@debian.org>, tony.luck@intel.com,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ acpica-devel@lists.linux.dev, osandov@osandov.com,
+ xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, kernel-team@meta.com, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse
+ <james.morse@arm.com>, Robert Moore <robert.moore@intel.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver
+ O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable
+ hardware errors
+Message-Id: <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
+In-Reply-To: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
+	<vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+	<20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
-and equivalent Gigabyte, amd-pstate does not initialize when the
-x2apic is enabled in the BIOS. Kernel debug messages include:
+On Tue, 18 Nov 2025 15:10:02 +0100 Borislav Petkov <bp@alien8.de> wrote:
 
-[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
-[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
-[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
+> On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
+> > Do you know what is the right tree for this patch?
+> > 
+> > I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
+> 
+> I can take it if akpm wants me to...
+> 
 
-I tracked this down to map_x2apic_id() checking device_declaration
-passed in via the type argument of acpi_get_phys_id() via
-map_madt_entry() while map_lapic_id() does not.
+I don't feel I'll add much value here so please take it via the
+appropriate tree.
 
-Fix amd-pstate w/ x2apic on am4 by removing the device_declaration
-check in map_x2apic_id(), likewise.
+I'll toss it in mm.git for linux-next exposure and shall drop it again
+when it appears in -next via another route.
 
-Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
-Signed-off-by: René Rebe <rene@exactco.de>
----
-Tested in production in all x86 T2/Linux builds since 2021-09-26.
-[    0.000000] DMI: ASUS System Product Name/Pro WS X570-ACE, BIOS 4702 10/20/2023
-[    0.000655] x2apic: enabled by BIOS, switching to x2apic ops
-[    0.003328] APIC: Switched APIC routing to: cluster x2apic
-[    0.059460] IOAPIC[0]: apic_id 33, version 33, address 0xfec00000, GSI 0-23
-[    0.059465] IOAPIC[1]: apic_id 34, version 33, address 0xfec01000, GSI 24-55
-
-rene@5950x:~# grep . /sys/devices/system/cpu/cpufreq/policy0/*
-/sys/devices/system/cpu/cpufreq/policy0/affected_cpus:0
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_highest_perf:166
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_hw_prefcore:enabled
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_lowest_nonlinear_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_prefcore_ranking:206
-/sys/devices/system/cpu/cpufreq/policy0/boost:1
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_avg_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_min_freq:572131
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_transition_latency:0
-/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences:default performance balance_performance balance_power power
-/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference:balance_performance
-/sys/devices/system/cpu/cpufreq/policy0/related_cpus:0
-/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors:performance powersave
-/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/scaling_driver:amd-pstate-epp
-/sys/devices/system/cpu/cpufreq/policy0/scaling_governor:powersave
-/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed:<unsupported>
----
- drivers/acpi/processor_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index 9b6b71a2ffb5..a7fbaca91c6f 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -46,7 +46,7 @@ static int map_lapic_id(struct acpi_subtable_header *entry,
- }
- 
- static int map_x2apic_id(struct acpi_subtable_header *entry,
--		int device_declaration, u32 acpi_id, phys_cpuid_t *apic_id)
-+		u32 acpi_id, phys_cpuid_t *apic_id)
- {
- 	struct acpi_madt_local_x2apic *apic =
- 		container_of(entry, struct acpi_madt_local_x2apic, header);
-@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
- 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
- 		return -ENODEV;
- 
--	if (device_declaration && (apic->uid == acpi_id)) {
-+	if (apic->uid == acpi_id) {
- 		*apic_id = apic->local_apic_id;
- 		return 0;
- 	}
-@@ -179,7 +179,7 @@ static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
- 			if (!map_lapic_id(header, acpi_id, &phys_id))
- 				break;
- 		} else if (header->type == ACPI_MADT_TYPE_LOCAL_X2APIC) {
--			if (!map_x2apic_id(header, type, acpi_id, &phys_id))
-+			if (!map_x2apic_id(header, acpi_id, &phys_id))
- 				break;
- 		} else if (header->type == ACPI_MADT_TYPE_LOCAL_SAPIC) {
- 			if (!map_lsapic_id(header, type, acpi_id, &phys_id))
-@@ -256,7 +256,7 @@ static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
- 	else if (header->type == ACPI_MADT_TYPE_LOCAL_SAPIC)
- 		map_lsapic_id(header, type, acpi_id, &phys_id);
- 	else if (header->type == ACPI_MADT_TYPE_LOCAL_X2APIC)
--		map_x2apic_id(header, type, acpi_id, &phys_id);
-+		map_x2apic_id(header, acpi_id, &phys_id);
- 	else if (header->type == ACPI_MADT_TYPE_GENERIC_INTERRUPT)
- 		map_gicc_mpidr(header, type, acpi_id, &phys_id);
- 	else if (header->type == ACPI_MADT_TYPE_CORE_PIC)
--- 
-2.46.0
-
--- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+It's a shame it took us two weeks to get onto this - it's a bit late
+for the upcoming merge window.
 
