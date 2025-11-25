@@ -1,218 +1,158 @@
-Return-Path: <linux-acpi+bounces-19261-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19262-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6481DC86129
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 18:00:34 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44FAC8634E
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 18:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A953B1FC7
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:00:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EA063351E1C
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 17:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65CE32C93E;
-	Tue, 25 Nov 2025 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E55329E46;
+	Tue, 25 Nov 2025 17:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dTyjMtaa";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNS8YvUH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="CRoJOjMm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ABA32C329
-	for <linux-acpi@vger.kernel.org>; Tue, 25 Nov 2025 16:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D3020DD51
+	for <linux-acpi@vger.kernel.org>; Tue, 25 Nov 2025 17:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764089953; cv=none; b=nR7ctrFgPTKQwZL1X0aGoggfIDgjXt2qMCR5kAhNl15dbX04WeQy9eOsxaV9OUdyZTvG+MUOu9n9OIMmCH1eEaJ9XIkXH63WD6oj9mYglKPYJY/iIEeHnUsboJbyJF9B403RRYE3T7XQs/ETuVDUU3vQouFrFuTEBkMeL/Xi9fQ=
+	t=1764091605; cv=none; b=XjZpl3lZUInIlhGdU9FwbYvozVrFhqtYEcjL0I/ohHCWq/+zSPL/CkqPAaQds6a7U3xSHLG9yZ9/L8MWwhSAxo29ppSidOJY9mRV4hpABOgcQwTlLCbC6C4D2l1alQUZefaqRA3xPR2gi7qlC/6vCbgWwIWiLimY5zSUoV/M2k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764089953; c=relaxed/simple;
-	bh=QrCXwTVbTY2L/QXOdA+AJKifzsbPegD16vH5IBkdGJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=K58WzNJYICRFS2C8aWag2hKSmibXPT0SUdwDaIOmHDX5EF2SfmyssN0vifLfag5710aZT3Yr8xVEHYgJrp77pUUp2BeMhQruQ9YdZJHNEqQNdCv6VUoF0T5IxeB2ziI0DUS6RJB1HTecXf3H+ps3qz0qZ3pJwqq0v0sFNncSAkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dTyjMtaa; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNS8YvUH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764089950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hG/yosQtNPsaLgr5tkw6oyaa1Fhacq6iGIxAKL96B5c=;
-	b=dTyjMtaaxJox4SfXepcEJ5Jbtj3IrGV+KEv/zrWKrR7L9N/401SgaI/DtFyepKaUFcM3zi
-	lzZjiePPlj6ue5bn8+g4Dc7WFmOhKx2IvZD5ET0rF9rBYj0NR+WKxq+g7nBh6ARIeyvnBY
-	LH6vqIuS9s43LbAUCdG4GTs7QeZn4Fc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-tiQhhQLENU-WmwudT-Rzpg-1; Tue, 25 Nov 2025 11:59:08 -0500
-X-MC-Unique: tiQhhQLENU-WmwudT-Rzpg-1
-X-Mimecast-MFC-AGG-ID: tiQhhQLENU-WmwudT-Rzpg_1764089947
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4779c35a66bso38424585e9.2
-        for <linux-acpi@vger.kernel.org>; Tue, 25 Nov 2025 08:59:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764089947; x=1764694747; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hG/yosQtNPsaLgr5tkw6oyaa1Fhacq6iGIxAKL96B5c=;
-        b=UNS8YvUHTYtcrPkW7zJRWp51Oirzp785bbqqoJdf66vfc7LAIXwMDDERXK43YgaZ+q
-         Q6UbfgLcebAsxTTQ6KjtzqZ2EP5UlcBvyuRhze9rp2S5X2yVYseYtgvzeObkrVDogsPN
-         m7OEZF1AS3Kuqk35U0YXLfnXfG+OnH6YnIXsuVxRPuQT26C/TwE5zG/NGt0pq7oynTEy
-         Q7RiW3L/bM48PrGDUW7GutP39roAW+BvizuyVL6jIx9KnU1sDGu0VwGed6o0kveWEPHg
-         ZRjsPjd9OmpsHZ+5kZUogt6iu6xt1mDrliNCRrZNI3ZBs6tO/RHR6B5xYHahVEzVMKv4
-         QZmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764089947; x=1764694747;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hG/yosQtNPsaLgr5tkw6oyaa1Fhacq6iGIxAKL96B5c=;
-        b=YhQOoKPJ0GSGpp5Fs84bDEvwOrMzW2nY0BdKw0/G/xPFcS2wbJxH1x8KgDqbu8NnOR
-         MjFAez6EVYdTPRg+GPfyOevfc1mn5n3NIpPijHVz0iurXSO/gd60WEO/5PiKrUFRR+Ph
-         A+8K61pPjWHbb73w4tHwXsfYg3HT45E6S64QfBd8iZSLgzCJ6CuzzjieWDwczeZ2ozBu
-         NBq+QAokd+U4ikeZJ3ls/ElgsOzPdvEFC6GGB25oyqnClRnldtn02PpE4jhHRQ5fCjPg
-         PVxqlQi2BnzDq+fvO7O7S2nWml9NCIrQuK4TkyoDArrMk3nUB1k7vYWtshWEeGiZiTcY
-         PuuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0b5vA/p6rxX0LB3onoScGilu/y4hkflAyZbTEGNLa9fbtVtCV60JnVXGGvtYx+Ip81D2huZDBRnlN@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJcow67R4euWnsuU+k7oZ0hgzv18yFnKY4B7vmlbghs3yh6exu
-	xyckzXkDml4YfZXKqOXEiWOIXX3EDciOdU8cvkHzKw+Q+3yHGj+mSBmvIVdW5ynETLYK3quj+92
-	sLXt4l/db6OXBrZ//00ob8zE3lO8Wqd1xm7+afWb4kScyCysblk69rNzXL3pj0qiLaDHcN4kYDw
-	==
-X-Gm-Gg: ASbGncvKDOiJsQXgnJRdW8NVs7tscTPWPVPvMJJR9pfx5/AtngPRRKxVRdWu2jvkSpX
-	I/QnKZKyXqGiSLKnqOIihkDJP3Rnq89X/Ia6GkVb9QzOGEg60itnTpVVIas98Dug52pgl3xhAq3
-	wz7/j/o8pU7i7EU3J/D6sAsL+BPlxiA4uviBaT4PEMYEWriNnO9vzqnuJMovqjI81PfKxbMa2/t
-	eZfBGIcKaOJSjuOckFk27sS8lK4X9JxbR8Gm8U+YIoG+2FThGxIn0xjX4NlQeONJhWwmN+OIZ5e
-	FxddfkNh/VColFJYvh5Z2BDH8vJ3z2BERzMWoMKTOc0n8hretm1icJBh4jlZmBXHDuje5x7KNiC
-	lN328ZSB+5+7euX/I/j5WmX+epeJTDgxiFTHl9yQmGjb48nm83jKfvvo=
-X-Received: by 2002:a05:600c:4f49:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-47904b24957mr33441265e9.28.1764089946770;
-        Tue, 25 Nov 2025 08:59:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHfZ6NgVrVjPGwjj83mk0cuZy70V+eAj/GkF9EsNDbbjKbkEF6o0Lstb1Ac7PYBzJ0qoAHtSg==
-X-Received: by 2002:a05:600c:4f49:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-47904b24957mr33441015e9.28.1764089946293;
-        Tue, 25 Nov 2025 08:59:06 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb (host-2-99-207-158.as13285.net. [2.99.207.158])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790552c3c9sm21068055e9.0.2025.11.25.08.59.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 08:59:05 -0800 (PST)
-Date: Tue, 25 Nov 2025 16:59:04 +0000
-From: Juri Lelli <juri.lelli@redhat.com>
-To: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-rt-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Tommaso Cucinotta <tommaso.cucinotta@santannapisa.it>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
-Subject: [ANNOUNCE] Power Management and Scheduling in the Linux Kernel VIII
- edition (OSPM-summit 2026) - save the date
-Message-ID: <aSXgWOmJZnvEFYaH@jlelli-thinkpadt14gen4.remote.csb>
+	s=arc-20240116; t=1764091605; c=relaxed/simple;
+	bh=9yKQn6i4c2KXko0BOBk4oKJB+hxyfzgEqSD4rsgLILE=;
+	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=C+jKcnZR488dEd749Ho44yjgGtDowkUoK+KbHUsTfWosm5SQjrTZzmGwAK8p95mveE5/r9lWVSDqQ69bpePax1kEg710HDvSEyeI3dNC8fVeMHIW9BovUnvVdewyRBcTdq9VfvPjP/D9f3Dr83AEwxB1WK+v90tjQ4mhaRaDDlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=CRoJOjMm; arc=none smtp.client-ip=176.9.10.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
+	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=YpUr/+LwOBLmRjUPQxrmaD7SCAHqVJ4mMXF72YuH1GM=; b=C
+	RoJOjMmi1xgmoSCJmzkCq00ZlbKGQs9xvyVNHVxRRL6BrnMCV6E/E6Xb3XCbs7e9mJ7fCpARfBD05
+	/dVga6tb2VWsjN2ryCKQxcBbYllMq67NsU5A6lic1Lj1AfaymnFmcqdEyGNhdAUsMhhWCPii9shmS
+	t55z+l6mchYtH//Lqk2wlTPUnDUGVnZfk60i2SvBaMZgtP0zhfcAx/7cY3qFUynX2Vc0mE1ozn6pN
+	dfk3azI12rlCpGwyfMbCCH6NYDbAhViNI4kHDriItsB0ByTj5kJpwzWm4csh1ZN0bzMi78pUbfoIy
+	MfVGauhJpHfyC94cjB7qTsP+Sv6UOonxg==;
+Date: Tue, 25 Nov 2025 18:26:54 +0100 (CET)
+Message-Id: <20251125.182654.1292605389516841541.rene@exactco.de>
+To: linux-acpi@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Huang Rui <ray.huang@amd.com>,
+ Borislav Petkov (AMD) <bp@alien8.de>
+Subject: [PATCH] ACPI: processor_core: fix map_x2apic_id for amd-pstate
+From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Power Management and Scheduling in the Linux Kernel (OSPM-summit) VIII edition
+On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
+and equivalent Gigabyte, amd-pstate does not initialize when the
+x2apic is enabled in the BIOS. Kernel debug messages include:
 
-April 14-16, 2026 - Arm, Cambridge (UK)
+[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
+[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
+[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
 
-.:: SAVE THE DATE
+I tracked this down to map_x2apic_id() checking device_declaration
+passed in via the type argument of acpi_get_phys_id() via
+map_madt_entry() while map_lapic_id() does not.
 
-OSPM is moving to the UK!
+Fix amd-pstate w/ x2apic on am4 by removing the device_declaration
+check in map_x2apic_id(), likewise.
 
-Please note that this is a “save the date” announcement only.
+Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
+Signed-off-by: René Rebe <rene@exactco.de>
+---
+Tested in production in all x86 T2/Linux builds since 2021-09-26.
+[    0.000000] DMI: ASUS System Product Name/Pro WS X570-ACE, BIOS 4702 10/20/2023
+[    0.000655] x2apic: enabled by BIOS, switching to x2apic ops
+[    0.003328] APIC: Switched APIC routing to: cluster x2apic
+[    0.059460] IOAPIC[0]: apic_id 33, version 33, address 0xfec00000, GSI 0-23
+[    0.059465] IOAPIC[1]: apic_id 34, version 33, address 0xfec01000, GSI 24-55
 
-Given that the Linux Plumbers Conference 2025 (LPC25) is scheduled for
-December 2025, the call for topics and registrations will open in early
-2026, after LPC25 has concluded.
+rene@5950x:~# grep . /sys/devices/system/cpu/cpufreq/policy0/*
+/sys/devices/system/cpu/cpufreq/policy0/affected_cpus:0
+/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_highest_perf:166
+/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_hw_prefcore:enabled
+/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_lowest_nonlinear_freq:1748178
+/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_max_freq:5276318
+/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_prefcore_ranking:206
+/sys/devices/system/cpu/cpufreq/policy0/boost:1
+/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_avg_freq:1748178
+/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq:5276318
+/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_min_freq:572131
+/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_transition_latency:0
+/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences:default performance balance_performance balance_power power
+/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference:balance_performance
+/sys/devices/system/cpu/cpufreq/policy0/related_cpus:0
+/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors:performance powersave
+/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq:1748178
+/sys/devices/system/cpu/cpufreq/policy0/scaling_driver:amd-pstate-epp
+/sys/devices/system/cpu/cpufreq/policy0/scaling_governor:powersave
+/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq:5276318
+/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq:1748178
+/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed:<unsupported>
+---
+ drivers/acpi/processor_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-More communication and further details will follow. Stay tuned!
+diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+index 9b6b71a2ffb5..a7fbaca91c6f 100644
+--- a/drivers/acpi/processor_core.c
++++ b/drivers/acpi/processor_core.c
+@@ -46,7 +46,7 @@ static int map_lapic_id(struct acpi_subtable_header *entry,
+ }
+ 
+ static int map_x2apic_id(struct acpi_subtable_header *entry,
+-		int device_declaration, u32 acpi_id, phys_cpuid_t *apic_id)
++		u32 acpi_id, phys_cpuid_t *apic_id)
+ {
+ 	struct acpi_madt_local_x2apic *apic =
+ 		container_of(entry, struct acpi_madt_local_x2apic, header);
+@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
+ 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
+ 		return -ENODEV;
+ 
+-	if (device_declaration && (apic->uid == acpi_id)) {
++	if (apic->uid == acpi_id) {
+ 		*apic_id = apic->local_apic_id;
+ 		return 0;
+ 	}
+@@ -179,7 +179,7 @@ static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
+ 			if (!map_lapic_id(header, acpi_id, &phys_id))
+ 				break;
+ 		} else if (header->type == ACPI_MADT_TYPE_LOCAL_X2APIC) {
+-			if (!map_x2apic_id(header, type, acpi_id, &phys_id))
++			if (!map_x2apic_id(header, acpi_id, &phys_id))
+ 				break;
+ 		} else if (header->type == ACPI_MADT_TYPE_LOCAL_SAPIC) {
+ 			if (!map_lsapic_id(header, type, acpi_id, &phys_id))
+@@ -256,7 +256,7 @@ static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
+ 	else if (header->type == ACPI_MADT_TYPE_LOCAL_SAPIC)
+ 		map_lsapic_id(header, type, acpi_id, &phys_id);
+ 	else if (header->type == ACPI_MADT_TYPE_LOCAL_X2APIC)
+-		map_x2apic_id(header, type, acpi_id, &phys_id);
++		map_x2apic_id(header, acpi_id, &phys_id);
+ 	else if (header->type == ACPI_MADT_TYPE_GENERIC_INTERRUPT)
+ 		map_gicc_mpidr(header, type, acpi_id, &phys_id);
+ 	else if (header->type == ACPI_MADT_TYPE_CORE_PIC)
+-- 
+2.46.0
 
-.:: FOCUS
-
-The VIII edition of the Power Management and Scheduling in the Linux
-Kernel (OSPM) summit aims at fostering discussions on power management
-and (real-time) scheduling techniques. The summit will be held at Arm in
-Cambridge (UK) on April 14-16, 2026.
-
-We welcome anybody interested in having discussions on the broad scope
-of scheduler techniques for reducing energy consumption while meeting
-performance and latency requirements, real-time systems, real-time and
-non-real-time scheduling, tooling, debugging and tracing.
-
-Feel free to take a look at what happened previous years:
-
-I   edition - https://lwn.net/Articles/721573/
-II  edition - https://lwn.net/Articles/754923/
-III edition - https://lwn.net/Articles/793281/
-IV  edition - https://lwn.net/Articles/820337/ (online)
-V   edition - https://lwn.net/Articles/934142/
-              https://lwn.net/Articles/934459/
-              https://lwn.net/Articles/935180/
-VI  edition - https://lwn.net/Articles/981371/
-VII edition - https://lwn.net/Articles/1020596/
-              https://lwn.net/Articles/1021332/
-              https://lwn.net/Articles/1022054/
-
-.:: FORMAT
-
-The summit is organized to cover three days of discussions and talks.
-
-The list of topics of interest includes (but it is not limited to):
-
- - Power management techniques
- - Scheduling techniques (real-time and non real-time)
- - Energy consumption and CPU capacity aware scheduling
- - Real-time virtualization
- - Mobile/Server power management real-world use cases (successes and
-   failures)
- - Power management and scheduling tooling (configuration, integration,
-   testing, etc.)
- - Tracing
- - Recap/lightning talks
-
-Presentations (50 min) can cover recently developed technologies,
-ongoing work and new ideas. Please understand that this workshop is not
-intended for presenting sales and marketing pitches.
-
-.:: SUBMIT A TOPIC/PRESENTATION
-
-Please consider this a "save the date" notification only. Information
-regarding important dates and how to submit topics will be announced in
-early 2026.
-
-.:: ATTENDING
-
-Attending OSPM-summit is free of charge, but registration to the event
-is mandatory. The event can allow a maximum of 50 people (so, be sure to
-register early!).
-
-Registration is scheduled to open in early 2026.
-
-While it is not strictly required to submit a topic/presentation,
-registrations with a topic/presentation proposal will take precedence.
-
-.:: VENUE
-
-OSPM26 is hosted at the Arm Cambridge campus (in Cambridge, UK), in the
-lecture theatre and breakout area. We appreciate Arm's generous support
-in providing the venue.
-
-Although the event takes place on Arm's premises, it is fully
-independent of Arm's business operations. The summit is organised by and
-for the open-source community, and everyone is welcome to take part in
-an open, collaborative environment.
-
-.:: ORGANIZERS
-
-Juri Lelli (Red Hat)
-Dietmar Eggemann (Arm)
-Tommaso Cucinotta (SSSA)
-Lorenzo Pieralisi (Linaro)
-
-http://retis.sssup.it/ospm-summit/
-
+-- 
+René Rebe, ExactCODE GmbH, Berlin, Germany
+https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
 
