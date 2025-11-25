@@ -1,196 +1,136 @@
-Return-Path: <linux-acpi+bounces-19248-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19249-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5FDC844EB
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:54:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312D8C8450F
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D38BE4E080E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:54:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9683B1297
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2372ECD14;
-	Tue, 25 Nov 2025 09:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCAC2ED872;
+	Tue, 25 Nov 2025 09:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bb9QSvs3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LR19ivzD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B72C2E9ECA;
-	Tue, 25 Nov 2025 09:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F5C2EDD64;
+	Tue, 25 Nov 2025 09:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764064449; cv=none; b=WFGXFqUa7okNO0YBvcRH0U2OKSQtmPK8GglDVmEhK9/+uI75kIxHNfs5Xwsp/9j2yq374bbC08hvgwDSKZ8ur2RMPl97lz9gQb0xppJm6o6undHxdW5Omyync5Ij8U/RI1bf4AXs4TaTk6Mu2jtSmBPtspRSVsuEI1QB8A2ozzQ=
+	t=1764064557; cv=none; b=tDoJI+Y7pu4jTrzAhareK48hhoZR78C9sbQZfvJb4U6O69u19NPdByEkQEdFpZXlN/emy4WYRmAFkpH13gE7gNZ72ufpwoXN2IOTY4imfZj3D0ePcmoD8TLYZLk+FLQrvQDJpg+JacS5Y+8uaJIXUpd5+5CtI291CqkV/MFplo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764064449; c=relaxed/simple;
-	bh=rr34/a1ie3cyaKkr8XjenTC8kZoD9Dm/nJWu3Wq5z4s=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=r4XjYWzOSiOmsbt9K4iRj3WdreW1xSzZ+2lWMUBsqUdSCWSM2YtY4duVsJAaaa2823lYVvFPrecYZfu7DcSbDART5NleFxHWp0hHWNIH24ldRam2GhGGx4HRTyvOMIah+ZISUw86l23g3wxGi8bHqLgu0ewQXdW09QHmnqa+Lpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bb9QSvs3; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764064439;
-	bh=rr34/a1ie3cyaKkr8XjenTC8kZoD9Dm/nJWu3Wq5z4s=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=bb9QSvs30CKZp/52Diiij5ClyF1qlRUc1UM+AWHK7eAQ27bgB2juwHPge5WFHpVr1
-	 CVCDDZxatZLCqvlIt8Dr4GDa4s7vJrRUtjuJYgr22G0hdZCb21EgXC8PSHUkwwnGML
-	 fRuKmxtoKKyPG4tDGtYOTFeX7etAx83m6uk8fP1ejb6VFKvl9MQEJqZ2OiVqsCmESn
-	 8JPW7NNkBIfx2t1S9QJtdIhNM9tiQ17qgo9Zd6bfGCErtsi+nJ2V3OniSQUSfoymyZ
-	 UEzrbdyboMkml7qZy0Wqwg7YT0/cUmdn/kSlXaqyaKTHZyT5dnFWrhgvVt/6ZoRTjZ
-	 sMZb0HJ8lBfkg==
-Received: from [192.168.100.50] (unknown [144.48.130.189])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id BB1B317E0EDB;
-	Tue, 25 Nov 2025 10:53:55 +0100 (CET)
-Message-ID: <b71b3e35-fc76-4397-9d60-20778685e37c@collabora.com>
-Date: Tue, 25 Nov 2025 14:53:40 +0500
+	s=arc-20240116; t=1764064557; c=relaxed/simple;
+	bh=ft7ew2qfT7nP6Gbr86qhmeR9WG9LHorsMZfdwQHWsgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UIe0x9Zc/DMUDAW328WOeUHK3UOTf458LPq9Zdd5Xj3aofTDwhL70Fhf7FRe5gnVhq79KITC1aGnY6i+HuD+dJzkkDGTbOYB4RcaCgjMW4kIgUc+4C73FxQBl1jwS80XA87ha7fKA/owebRjGGH+eXQGTNPDiCfUxRT0IaMdXbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LR19ivzD; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764064556; x=1795600556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ft7ew2qfT7nP6Gbr86qhmeR9WG9LHorsMZfdwQHWsgg=;
+  b=LR19ivzDVTdTtaZcM08btU42T0UoyfdggF92Ih48U8KLsXbBu8nAbJnp
+   VhRdjz3Dd2JidynL/WKsM4TPfrC19ATyZZfLFz3WDh7LejNy0hCpTKv4w
+   JBL6IQbIFC8yBanrZhhyr32S8c4ZQNqcjECxLTEihfZHcld4REgqGGQh0
+   FfkVUIKIHvhSG2WMVA2WoV16N8fDW65mqfpZP8O16Uhh88K08waFrIi85
+   gC7W+wCyoRhC6urxEjPN76cFk6LznCIg4mctsxe6mWdU7wy7JDnxGa91C
+   2nQj4QZ05aY1JqjPDGWKULvFWiDDM6y2gvll/CtXdlZgIws8DWBedDvrU
+   Q==;
+X-CSE-ConnectionGUID: xCoYQwtJRN+Jj6/m42TtZw==
+X-CSE-MsgGUID: CCIePTtzS+ebUc5tCdRGxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="53645455"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="53645455"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:55:55 -0800
+X-CSE-ConnectionGUID: I18gb42OTXyeGIVWQPk54g==
+X-CSE-MsgGUID: DK4TSHc7Twim3IO4GIMRJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="192833855"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.152])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:55:53 -0800
+Date: Tue, 25 Nov 2025 11:55:51 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-gpio@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mika Westerberg <westeri@kernel.org>
+Subject: Re: [PATCH 18/44] drivers/gpio: use min() instead of min_t()
+Message-ID: <aSV9JxrZdJZNhSL4@smile.fi.intel.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+ <20251119224140.8616-19-david.laight.linux@gmail.com>
+ <aR7K2bWKiaXrwWIr@smile.fi.intel.com>
+ <20251120093743.1cf9bb8f@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@collabora.com, Len Brown <lenb@kernel.org>,
- Pavel Machek <pavel@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-input@vger.kernel.org, kernel@collabora.com,
- superm1@kernel.org
-Subject: Re: [PATCH 4/4] PM: sleep: clear pm_abort_suspend at suspend
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20251107184438.1328717-1-usama.anjum@collabora.com>
- <20251107184438.1328717-5-usama.anjum@collabora.com>
- <CAJZ5v0iucMXFkKuRxtAUyAqW11NHHGVuYnjJNbroeMgJoGY1kw@mail.gmail.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <CAJZ5v0iucMXFkKuRxtAUyAqW11NHHGVuYnjJNbroeMgJoGY1kw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251120093743.1cf9bb8f@pumpkin>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Rafael,
+On Thu, Nov 20, 2025 at 09:37:43AM +0000, David Laight wrote:
+> On Thu, 20 Nov 2025 10:01:29 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Wed, Nov 19, 2025 at 10:41:14PM +0000, david.laight.linux@gmail.com wrote:
+> > > 
+> > > min_t(u16, a, b) casts an 'unsigned long' to 'u16'.
+> > > Use min(a, b) instead as it promotes the both values to int
+> > > and so cannot discard significant bits.
+> > > 
+> > > In this case the values should be ok.
+> > > 
+> > > Detected by an extra check added to min_t().  
 
-Thank you for reviewing.
+...
 
-On 11/24/25 11:54 PM, Rafael J. Wysocki wrote:
-> On Fri, Nov 7, 2025 at 7:45 PM Muhammad Usama Anjum
-> <usama.anjum@collabora.com> wrote:
->>
->> Clear pm_abort_suspend counter in case a wakeup is detected during
->> hibernation process. If this counter isn't reset, it'll affect the
->> next hibernation cycle and next time hibernation will not happen as
->> pm_abort_suspend is still positive.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->> ---
->>  drivers/base/power/main.c | 2 ++
->>  kernel/cpu.c              | 1 +
->>  kernel/power/hibernate.c  | 5 ++++-
->>  kernel/power/process.c    | 1 +
->>  4 files changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
->> index 5760abb25b591..84e76f8df1e02 100644
->> --- a/drivers/base/power/main.c
->> +++ b/drivers/base/power/main.c
->> @@ -1642,6 +1642,7 @@ static void device_suspend_late(struct device *dev, pm_message_t state, bool asy
->>                 goto Complete;
->>
->>         if (pm_wakeup_pending()) {
->> +               pm_wakeup_clear(0);
->>                 WRITE_ONCE(async_error, -EBUSY);
->>                 goto Complete;
->>         }
->> @@ -1887,6 +1888,7 @@ static void device_suspend(struct device *dev, pm_message_t state, bool async)
->>
->>         if (pm_wakeup_pending()) {
->>                 dev->power.direct_complete = false;
->> +               pm_wakeup_clear(0);
->>                 WRITE_ONCE(async_error, -EBUSY);
->>                 goto Complete;
->>         }
->> diff --git a/kernel/cpu.c b/kernel/cpu.c
->> index db9f6c539b28c..74c9f6b4947dd 100644
->> --- a/kernel/cpu.c
->> +++ b/kernel/cpu.c
->> @@ -1921,6 +1921,7 @@ int freeze_secondary_cpus(int primary)
->>
->>                 if (pm_wakeup_pending()) {
->>                         pr_info("Wakeup pending. Abort CPU freeze\n");
->> +                       pm_wakeup_clear(0);
->>                         error = -EBUSY;
->>                         break;
->>                 }
->> diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
->> index e15907f28c4cd..1f6b60df45d34 100644
->> --- a/kernel/power/hibernate.c
->> +++ b/kernel/power/hibernate.c
->> @@ -349,8 +349,10 @@ static int create_image(int platform_mode)
->>                 goto Enable_irqs;
->>         }
->>
->> -       if (hibernation_test(TEST_CORE) || pm_wakeup_pending())
->> +       if (hibernation_test(TEST_CORE) || pm_wakeup_pending()) {
->> +               pm_wakeup_clear(0);
->>                 goto Power_up;
->> +       }
->>
->>         in_suspend = 1;
->>         save_processor_state();
->> @@ -660,6 +662,7 @@ int hibernation_platform_enter(void)
->>                 goto Enable_irqs;
->>
->>         if (pm_wakeup_pending()) {
->> +               pm_wakeup_clear(0);
->>                 error = -EAGAIN;
->>                 goto Power_up;
->>         }
->> diff --git a/kernel/power/process.c b/kernel/power/process.c
->> index dc0dfc349f22b..e935b27a04ae0 100644
->> --- a/kernel/power/process.c
->> +++ b/kernel/power/process.c
->> @@ -67,6 +67,7 @@ static int try_to_freeze_tasks(bool user_only)
->>                         break;
->>
->>                 if (pm_wakeup_pending()) {
->> +                       pm_wakeup_clear(0);
->>                         wakeup = true;
->>                         break;
->>                 }
->> --
+> > > acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,  
+> > 
+> > > -	length = min_t(u16, agpio->pin_table_length, pin_index + bits);
+> > > +	length = min(agpio->pin_table_length, pin_index + bits);  
+> > 
+> > Now, if you look closer at the code, the pin_index alone has the problem you
+> > are targeting here.
 > 
-> I don't think pm_wakeup_clear() needs to be called in so many places.
+> The compiler warning happens because 'pin_index + bits' is 'int' and the compiler
+> doesn't know the value fits in 16 bits.
+> It should fit, but only if the caller passes in valid data.
+
+I meant that assignment to pin_index already cuts the higher bits
+from the input.
+
+> > On top of that the iterator and 'length' are signed, while
+> > the result of min_t(u16) is unsigned (however it has no difference in this case).
 > 
-> Any why isn't it sufficient to call it in freeze_processes()?  For
-> suspend, it is sufficient, so what's different about hibernation in
-> that respect?
+> Actually the result type of min_t(u16) is 'int' (:? promotes char/short to int).
+> So the u16 cast does '(pin_index + bits) & 0xffff', everything is then promoted
+> to 'int' for all the comparisons (etc).
 
-It seems this patch was written by me when [1] was added which removed the
-unconditional call pm_wakeup_clear(0) from freeze_processes(). It was later
-reverted [2].
+Sure, but the value is positive even if int is signed. That's why I put
+a remark in the parentheses that it has no difference in this case.
 
-I've removed this patch and tested again to find out:
-- try_to_freeze_tasks() gets called from freeze_process() after
-  unconditional clearing of pm_wakeup. So pm_wakeup doesn't get cleared
-  until next hibernation or any other similar operation. So for hibernation
-  cancellation this patch isn't required. I'll drop it.
+...
 
-But shouldn't this wakeup event be consumed without waiting for next hibernation
-(or similar operation to happen)?
+> > TL;DR: I apply this patch with subject changed, but I think more work needs to
+> > be done if you want to fix it fully.
 
-[1] 56a232d93cea ("PM: sleep: Make pm_wakeup_clear() call more clear") - Aug 20
-[2] 79816d4b9e9b ("Revert "PM: sleep: Make pm_wakeup_clear() call more clear"") - Oct 22
+-- 
+With Best Regards,
+Andy Shevchenko
 
----
-Thanks,
-Usama
+
 
