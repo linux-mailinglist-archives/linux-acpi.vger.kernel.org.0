@@ -1,115 +1,94 @@
-Return-Path: <linux-acpi+bounces-19242-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19243-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0B7C8424E
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:08:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DD5C8436F
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 10:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E00C4E7FD8
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:08:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E04134E21C
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Nov 2025 09:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555902D8390;
-	Tue, 25 Nov 2025 09:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C62C1586;
+	Tue, 25 Nov 2025 09:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="A9CQTr4R"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Ujh5Xxgt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597682BEC3A;
-	Tue, 25 Nov 2025 09:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44E1269B1C;
+	Tue, 25 Nov 2025 09:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764061684; cv=none; b=gqP+HtEXkhEVGf9YTE1N7QJsJCh9uWW6PKlsWtZgDPV3wOIjKxy8JsXncWUNVRYSaRWgOATEIDZLKw1nxl3dspIheY8YwtwOj6YF4HoTfAGauUHZYdz/qTrh/Wuk8RbC/PBcJQ0XQRHCAF+cQsLqEntzTnDBjnJCZxubxOITn14=
+	t=1764062836; cv=none; b=fGfB0qmTBDxxexsfqLg1AK100CCVnDKRZUQHRAHtahcZ3v4KR5grV/OkzSTCsz50TIdLg3wUivBP77ZrouY/wd/FxMv/SDtiK6Q8RpqEtZk2Nxn2c8x+zY4ku9y9XTwmF+Ajt7hxoOG9sOBHee5vFxppyRs1pHXZ6ohsHxhP10k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764061684; c=relaxed/simple;
-	bh=9vOFtqIWzazMdCPHxFRVurGLYvckDHb3NZHZdeLZqqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxW2+YKSMH8vbvZdkMYmlWC/Rd46MPYLeJEDXE8yxaFVMrmE57w1umisWfi3BcLfRyY7s3T+TQ0jSBQ8ExcS5eDr8xFGQTYceM2rR8kbuEnl32RUJyZbQTXl+ivcN7Kns1bHS/7MGSV1DR2y6GAlY1k6H0/qyXMDbDmXs6PqQLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=A9CQTr4R; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 97DD22021A;
-	Tue, 25 Nov 2025 09:01:19 +0000 (UTC)
-Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [149.56.97.132])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 8640C2022F;
-	Tue, 25 Nov 2025 09:01:10 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay1.mymailcheap.com (Postfix) with ESMTPS id 5F5413E859;
-	Tue, 25 Nov 2025 09:01:03 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 0CD8E40135;
-	Tue, 25 Nov 2025 09:00:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1764061257; bh=9vOFtqIWzazMdCPHxFRVurGLYvckDHb3NZHZdeLZqqc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9CQTr4RQKvaddo6OBu9PNAQdnFH7IEzl/BdXdBL4AsiYh5Cbuc5cEh9UWjOWWU75
-	 XZT5iA6L/bEAuAJlts3sNjH1cjfm1ZcV23i/AuExWh5yjs+SfuSUdw6Jk6CxnLeC3u
-	 Fq7DSvvYsChknsaeABuvkamilUbs5cKcw/R8SYFs=
-Received: from avenger-XINGYAO-Series (unknown [39.144.78.112])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 0CBBA436FA;
-	Tue, 25 Nov 2025 09:00:43 +0000 (UTC)
-From: WangYuli <wangyuli@aosc.io>
-To: cryolitia.pukngae@linux.dev
-Cc: acpica-devel@lists.linux.dev,
-	cryolitia@deepin.org,
-	guanwentao@uniontech.com,
-	jeffbai@aosc.io,
-	kexybiscuit@aosc.io,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	niecheng1@uniontech.com,
-	rafael@kernel.org,
-	robert.moore@intel.com,
-	zhanjun@uniontech.com,
-	WangYuli <wangyl5933@chinaunicom.cn>
-Subject: Re: [PATCH] ACPICA: Avoid walking the Namespace if StartNode is NULL
-Date: Tue, 25 Nov 2025 17:00:26 +0800
-Message-ID: <20251125090026.373878-1-wangyuli@aosc.io>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251125-acpica-v1-1-99e63b1b25f8@linux.dev>
-References: <20251125-acpica-v1-1-99e63b1b25f8@linux.dev>
+	s=arc-20240116; t=1764062836; c=relaxed/simple;
+	bh=9fsfpjAM2+mQ4S4GAkoN+7jqNZGufRMjtus1fCgCMqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HwR4Vbuv9pVfdwJPCtTbTcpCKpopE/8Nqk6F6O0sVQ7Gc1vA8jnJprp3MZ5XuiigMhmoBwbV2s+/yQshXJFTaXiW74jb7HIkPl8+hUKKjBugDnQXt+c3wvPTU9QHES0aFAcYP616SxuANPibzSwll6hPhJYm0QHOgS5rw7obsUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Ujh5Xxgt; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=k/+2LtzZDQDT/XIIJmpYRUvrcP2KDj85kUn+MGkQNJM=; b=Ujh5XxgtWd8jr9zZcd2oA5syOx
+	Cwt9IJjcT2z4O5nC1oTDkZz2phCS+d5yfzIkGRu+3qoqEO2RlWYiUacquZZfBmTVSUBoRbs2suKMb
+	tgNMMpisQA++79/GIAH54dlpgo6eDFiYCm+51O/uVjZGIk4WsbQUyxEdYxcDg802H6xhoFfnanQHH
+	9ssOiu60VP0hjxpyMc5BSbNgLUL69A3AfZGGp6YTPhBEe6KGim/4BfYTG36omzLqBzqEPxcbwEr1u
+	RUnLeqwU2gSJrzxpg6hLMJbWkXHRZJ1RayRA4ZqkwA+pmawb3gg1rEUtggbyAIsM1erOI2idwpGJb
+	W3EEC88g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vNpKA-003ICO-9j; Tue, 25 Nov 2025 09:27:02 +0000
+Date: Tue, 25 Nov 2025 01:26:55 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Borislav Petkov <bp@alien8.de>, akpm@linux-foundation.org
+Cc: tony.luck@intel.com, akpm@linux-foundation.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	osandov@osandov.com, xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
+	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
+	kernel-team@meta.com, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
+ errors
+Message-ID: <zbqtqndpicedldf37c7t74cikasqruzkv2rqt2eh6ufjbj4exb@3p7ajieb6ovr>
+References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
+ <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+ <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0CD8E40135
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	RCVD_COUNT_ONE(0.00)[1];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[chinaunicom.cn:query timed out];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[wangyl5933.chinaunicom.cn:server fail];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[wangyl5933.chinaunicom.cn:query timed out];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+X-Debian-User: leitao
 
-Great!
+Hello Andrew,
 
-Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
+On Tue, Nov 18, 2025 at 03:10:02PM +0100, Borislav Petkov wrote:
+> On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
+> > Do you know what is the right tree for this patch?
+> > 
+> > I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
+> 
+> I can take it if akpm wants me to...
 
-Thanks,
----
-WangYuli
+Would you prefer to have this patch on your tree, or on Borislav's?
+
+Thanks
+--breno
 
