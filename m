@@ -1,80 +1,55 @@
-Return-Path: <linux-acpi+bounces-19279-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19280-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9E9C89E0B
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 13:56:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 963B8C8A020
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 14:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 42721356C08
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 12:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB343A9BD2
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 13:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D53328B57;
-	Wed, 26 Nov 2025 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6412931CA7D;
+	Wed, 26 Nov 2025 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BMYuePZR"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="hg8ivDDd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010031.outbound.protection.outlook.com [52.101.193.31])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841C3328B54;
-	Wed, 26 Nov 2025 12:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764161749; cv=fail; b=kYJfL1E8Dtb1SJi4jyMavRth/VUbCJaY8VBZfGCH+1ixZlmMH2xIv2d/WrT918kg2y0yKQiqqvFGVO7QX8d2UcNgJo9L4B8gosr9raWOGeS5GIAqm0QQIpBv9plSaRwKW7eTdJiafdcfUBY80bNkmgsYSMp55Mx0nfZNBs2wV/8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764161749; c=relaxed/simple;
-	bh=VCtlqcnHQLbKsZTS/w3g0Azg1oIMjc8zUiG6lqqQyIY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=BXo9DbOI0LJQ+y52xc+aOkQ+IBRVuA52uMzTrEnruX+pMpenfjPHnsIaWrchCE1cqob6Lj23YT6dJL8VT8C8icdYJNnWf1dQBvIsitUyMgn6GbYBTdcgb3ghWpuugUZtCkiD3YkrowZkhVKxOjk7eu9JsCJ0XrEfGUCxB/+PAU8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BMYuePZR; arc=fail smtp.client-ip=52.101.193.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yEogWjZXqSXsNWuVqgRu29Y0+TKJmRdTrimnZuyKRO8x2F02gWXZB2hgugjAyd48KfjXE002dFgtrCp5NrSE3qUjUhN+KyLoO82Ag5OFs8kv9yWyYRK53TjpEgjxEAqi2JqktKtI0fepPYR6GhJDVMTowjpgdIbto26Y02SGyaIHwuI7jSdZAdwDgAQA0k15LqSvqGCXBT7vBs26Y6awGNO3nmUUt20lFik1P2ro07Ar9ZFT58Jhb7McFMTVTGy+9ULXgh/Qf2ZfhAvkNmnvETBo/hmtHU11YdGUa0PrNhNE6sDvx8cZ9DPpAuZ/LqaDXy9vQIhDHkvk2z4urg2/6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OOLbz5T6j9f0/FMeiqQGZRnFda1JEt/ver6zFmLEIHI=;
- b=ngk6Ilz4zFP/55Xp6b0MT2iJQAzHFhkYixsTAwB0qQGxRW+ZZF9NItlzqX6TIxGPvT/+WgIrdgV+FyFobtKBZbHS/Q+O/BUFvGFn9hjer3oEAUeEk7+kDkc2bW9UjMWbQeUil6aWx9HBpbP9LIbz954VUZwNup0Qk4CxBz6jfowliX26CgQWK4s9hpG8RzMg9/2SorOoVIRi/QXoXMuRDime9atzgIJYLS0iOOvZuRt9p6NdBrVDwp5C1zla9RhvuL57WWqcrPpqH/S/4SYsksYjvDWUCMhuLnojoowcumzhE3TQJcsDLjq7WTPwOxNSNyn99HvIAerVpaizx1BRjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nvidia.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OOLbz5T6j9f0/FMeiqQGZRnFda1JEt/ver6zFmLEIHI=;
- b=BMYuePZR4M6LFsU+hgQN1T0bUORVbyt19mMLgDnw/nDFr3by+LEfTW5CwffB5J8TvHSEaBn6RqSp+lr5Csf+a1KNJqooowVkQYRM+iIRQ4PurwEx/8bRHqWZajOdGEaI73YzaZJjZ18ejdIp7dyDTmcVmiqVvaPiQWKfjkyoByw=
-Received: from SJ0PR03CA0204.namprd03.prod.outlook.com (2603:10b6:a03:2ef::29)
- by DM6PR12MB4300.namprd12.prod.outlook.com (2603:10b6:5:21a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
- 2025 12:55:41 +0000
-Received: from SJ1PEPF00001CE1.namprd05.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::5d) by SJ0PR03CA0204.outlook.office365.com
- (2603:10b6:a03:2ef::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.11 via Frontend Transport; Wed,
- 26 Nov 2025 12:55:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CE1.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.7 via Frontend Transport; Wed, 26 Nov 2025 12:55:40 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 26 Nov
- 2025 06:55:40 -0600
-Received: from [10.252.200.251] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 26 Nov 2025 04:55:34 -0800
-Message-ID: <1f65de37-db9f-4807-a3ff-6cd377c855a5@amd.com>
-Date: Wed, 26 Nov 2025 18:25:34 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEAB2F8BC3;
+	Wed, 26 Nov 2025 13:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764163634; cv=none; b=t48w/cZP+imirr6oOgoa67K4HKSVQKZteTjU0IPLG2qwN8hkcfsQ2ukqDpVEVtRQ4DmtJifazqVX3ugc1HP1335K8uMagLxtO8+QLzcSCEpVonnCJBFWRb79vBqbQDDYyLybDXiBZj0+rbAfC6dgg/mLgjebkV/A174jXOUVWkM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764163634; c=relaxed/simple;
+	bh=DSMhYON7uEGSO4yTfH8l/pMs5uXDMtuWeSv6hnic1N4=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HnGpA2YlAQMLaut7sfdD7irneY7GQiY8kZkjVCaSREcMU6qvnBUHwXtGslyUutxZDM+meAdLFc4qHQLkCaL6d9+rkkXocpeVRu4cYU4r6jYwBo42lVoLvmOWiiSIJo9TXxHJAekgn1LEqexUf5iea4xvAyaMtZzj4yJD/LJfcPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=hg8ivDDd; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1764163630;
+	bh=DSMhYON7uEGSO4yTfH8l/pMs5uXDMtuWeSv6hnic1N4=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=hg8ivDDdl3eXnp7CRP196ogMs1sRZxX7n7d8kHTWuwFW17PjIHbmQCjrTNHW6uvf0
+	 BajHC42ysribGYgqFMFWetHL+RO/GPzfwJqzU1nYB0nOA7FjnjYYZVW+cn5JJCz641
+	 VOnqjXdK6K+eYDnL6XHBmHHRtgnCiMpY/zXPo3cAckjXTwW7VdGPz3GktXtYnwZoBf
+	 o/1v4t2ZLrkFfhYvGPdWxIuFKEuvFv9CY3+O7dmgusYYaOJCIbcR+5lzXI+n4aKa5f
+	 Zxi8a9bBMYqMEGp4sGuv9hvvhp4M3CsPeyOHGvgHI7cMW/J3rGbH7SmaWiwTPDUiAU
+	 dacrR+mXFjATQ==
+Received: from [192.168.100.50] (unknown [144.48.130.189])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7FB6917E10E7;
+	Wed, 26 Nov 2025 14:27:06 +0100 (CET)
+Message-ID: <d4ae5b48-d437-494d-8253-0bb66fedd78e@collabora.com>
+Date: Wed, 26 Nov 2025 18:26:36 +0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -82,141 +57,58 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/5] iommu: Lock group->mutex in
- iommu_deferred_attach()
-To: Nicolin Chen <nicolinc@nvidia.com>, <joro@8bytes.org>, <afael@kernel.org>,
-	<bhelgaas@google.com>, <alex@shazbot.org>, <jgg@nvidia.com>
-CC: <will@kernel.org>, <robin.murphy@arm.com>, <lenb@kernel.org>,
-	<kevin.tian@intel.com>, <baolu.lu@linux.intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<patches@lists.linux.dev>, <pjaroszynski@nvidia.com>, <vsethi@nvidia.com>,
-	<helgaas@kernel.org>, <etzhao1900@gmail.com>
-References: <cover.1763775108.git.nicolinc@nvidia.com>
- <a7ebae88c78e81e7ff0d14788ddff2e6a9fcecd3.1763775108.git.nicolinc@nvidia.com>
+Cc: usama.anjum@collabora.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-input@vger.kernel.org, kernel@collabora.com,
+ Askar Safin <safinaskar@gmail.com>
+Subject: Re: [PATCH 2/4] ACPI: button: Cancel hibernation if button is pressed
+ during hibernation
+To: Mario Limonciello <superm1@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20251107184438.1328717-1-usama.anjum@collabora.com>
+ <20251107184438.1328717-3-usama.anjum@collabora.com>
+ <2025112433-emphasize-helpful-b748@gregkh>
+ <e1e97842-0ad3-4270-b0d1-3cc7150988cd@collabora.com>
+ <2025112506-acting-tipoff-3a49@gregkh>
+ <cef1d96b-b642-4e69-8c1b-2e0bf7528edf@collabora.com>
+ <2025112612-backup-driving-e6e6@gregkh>
+ <92de74fb-fc75-4260-bb1d-2d6dd522183f@kernel.org>
 Content-Language: en-US
-From: "Srivastava, Dheeraj Kumar" <dhsrivas@amd.com>
-In-Reply-To: <a7ebae88c78e81e7ff0d14788ddff2e6a9fcecd3.1763775108.git.nicolinc@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE1:EE_|DM6PR12MB4300:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25291961-492c-4892-72e5-08de2ceb1ab3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Zm1hSWY2S0w2ejhWT1NHOFZMdXJWdC94S041c1VBS3lLWGJ3a2lodXhuc2tu?=
- =?utf-8?B?anNNSndzN0N0T3ZIZVV5NWY0eU1oVURrSUZkR0JkVWtxOGpsdHlsTjZxcy9V?=
- =?utf-8?B?dWp2YlJtN1Y3bVZwcWVSRlUwcEYvek1BM0d3Y09JY0RPREwzQWQwbHhudWVm?=
- =?utf-8?B?RExUckFjL0tjREhTTjY5ZUNlYUl0WGFMcVdUdXpRMDN6TURoaGtMN2p5cmNi?=
- =?utf-8?B?THVQRTJJNEV4Y3VPbTdkdDVDZFZWdkN3dkJWWEszWUlyM3N5bG1yTURhdnFh?=
- =?utf-8?B?endRNjAyU3NWUXlzcFV5b1Rhb0JrRDdadUxlN1dzMkJZUDNKUkpzVjZsa3JK?=
- =?utf-8?B?ZFZ5d3poZmRDN0pIa0lBaTVMdm91VFFsNXFydFZBcXRuVlc5b2dvU3NNQ3gz?=
- =?utf-8?B?RUNIdUFwR29MaGlQc3U2T2llWGtFVEZDd1NLUHVKYW5sWHRIS2VsTTJORjdy?=
- =?utf-8?B?NVN5UWloZFlKVkRqNnl1MGhMU3gyc1BNM3JxZjlKY3VUZ0VOblUvelNtTkJL?=
- =?utf-8?B?Ukw4ejgvVmNYQ3dhaXphL3ZEai9vbmdhaDg1eGFPSklHbzBibEJaeWhZd01I?=
- =?utf-8?B?anlML0dMMnVocTAvckNvZzQzY1VjQmxPaVNEd1V2OERvWmxja3JHZWo0dDVv?=
- =?utf-8?B?bVRTRFg4Qkx3VnhQclBsQk9adEt1R1ZYdmt5Y2ZHVUpSTnhQT2dyZ3QvRVht?=
- =?utf-8?B?Z1FKSkJPTXRUWElzTlZ0MzhoVjYvblNHVkdaczZIcGNBQUJIS1puamJRdVRP?=
- =?utf-8?B?VERYamVlTkdNRzI2MjVuckhMczI3UWFQVFlxOElFRzlsMVJQcHcvcitmTnp5?=
- =?utf-8?B?MzVqbS9uNHBRUzFMZ0M1SVF0cndxUERvdTltenpxNWdZNDV5NU8wTURPSHJk?=
- =?utf-8?B?SFBEVHorMFA2MWlpSmQ2dkJyMVg5Y1dyV0lXbXhVcUYvOEF5ODlTc0NlRHVH?=
- =?utf-8?B?QjFYdk5zdWV2U1EvOW5vVTRCMkIzS0drN2huZkVBbkw0QW02WTE4YjNSUU5O?=
- =?utf-8?B?QXZXSVhoVSsvR0xZTDgvV1RoZDY1NDVTZGk3b1NXaVRoZDI0UEM2RzZMZ1E5?=
- =?utf-8?B?Q0lIWVVsS3BtSFdKalFia2tVR0xyVHRXY1NFT01aaldsQUNxbWhCZEZvcElV?=
- =?utf-8?B?MlpQazdlazhkRlhScWlKekt6QTZ0RXZSWTFEbEJZRFprclMwdThhUmJ6dTkr?=
- =?utf-8?B?VllHMlhGRmxCK01sT205am5tM01ab2VpYzhDbFhuS0ppdTY2R01oYlJWSUxR?=
- =?utf-8?B?eFJGZ2lLWmg0NG95dzRNalRHY2xCWFd3QjIwd0R1dUhpckZvUEFJRk1MQ0hH?=
- =?utf-8?B?c09GTnNHcmpuWWV0TWVlVlFOcVl6VllGM013NGcwcHB2UU5ZUk5MQXA0UnNu?=
- =?utf-8?B?YlFVRUQ3QXhDT2JXSm93RnlXd0tLeC9KMWE4cmpmWU1waWVJV1BrN0xkcldq?=
- =?utf-8?B?VUpFTWh0MG45eEkyQ1NIVkNvRkI1alRnQXB0NDNkaWo3OWZod3hOT2xwTjdD?=
- =?utf-8?B?V3BMZU81T2ZLZGhockVRbmJEOHU3QVp1MDVvREhwZ1J2VXdxM21JNGhuNXdn?=
- =?utf-8?B?Q2JZWWNSSm5XQ2owZEJwM3ZlWjJneVp2cDdPZjJXa2Rpak1qSUUwK3htZU5Y?=
- =?utf-8?B?TCt1NkFMN3h3U01nRDQvRU5FOXJNZkFSemNKSlpZcTdaVWk3WWVIc2lRTWpH?=
- =?utf-8?B?TUFnWXRNUk1LZGRnMGdESjJEdCt1VUdXeTZ3ZktDMnoxTFNpMDM5cHU5c3Bq?=
- =?utf-8?B?TU1ka2R1LzZZNVhna244R1c2V01iY2M5M1ExMGFkTU9pZHpBOXI4SHlLS3JC?=
- =?utf-8?B?azdtMHBsdUlaVXVTeUF0enFrQldHS2tlUVVza3gvVDE1K09uNHRDVkM1TE84?=
- =?utf-8?B?cDdKd2I5MGFOdEFkeS9PeEZzQ0RJeThUUDg3UW5ScXlDOVRrVFBDSHE1Tktv?=
- =?utf-8?B?LzlaVjVrQTdOYmo4NFJjb1h5OHlpUjNsSXhnZG15b05acWtwWEJqQ1BIK1hI?=
- =?utf-8?B?YnJvMDdIczJ3bk42T0Y3STRaNWxnbzBjSHRRU1AzNXYvdVdLYU9id29kUkNj?=
- =?utf-8?B?OVdWMjBpZWdJZjI4VERkeGMvTG1GUStuK3dyZWRicmlEdmZBOHMrQklMWUQ4?=
- =?utf-8?Q?7QbY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 12:55:40.8724
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25291961-492c-4892-72e5-08de2ceb1ab3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4300
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <92de74fb-fc75-4260-bb1d-2d6dd522183f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On 11/22/2025 7:27 AM, Nicolin Chen wrote:
-> The iommu_deferred_attach() function invokes __iommu_attach_device(), but
-> doesn't hold the group->mutex like other __iommu_attach_device() callers.
+On 11/26/25 5:55 PM, Mario Limonciello wrote:
+>>> First I need a board/machine with serial console access to view all logs in real
+>>> time. :)
+>>
+>> usb debug cables might be your solution.
+>>
+> Just a word of warning before you go too far down this path to get a console working from XHCI debug.
 > 
-> Though there is no pratical bug being triggered so far, it would be better
-> to apply the same locking to this __iommu_attach_device(), since the IOMMU
-> drivers nowaday are more aware of the group->mutex -- some of them use the
-> iommu_group_mutex_assert() function that could be potentially in the path
-> of an attach_dev callback function invoked by the __iommu_attach_device().
+> This is probably a Hal changing a light bulb problem [1]. Last time I tried XHCI debug cables on some modern AMD systems I ran into a problem that the BAR is too big for early_ioremap().  Looking through LKML it's come up a few times in the past too [2] [3].
 > 
-> Worth mentioning that the iommu_deferred_attach() will soon need to check
-> group->resetting_domain that must be locked also.
+> Link: https://youtu.be/5W4NFcamRhM?si=qOFrCTzvK6-H-4AX [1]
+> Link: https://lore.kernel.org/linux-usb/ZCOq3PUBCtHkwdnw@mail-itl/ [2]
+> Link: https://lore.kernel.org/linux-usb/CAAcb1K_bezseTM8DrOrzVUi_W+nZoE2N0CO4k3AQWPw7=7pyjw@mail.gmail.com/ [3]
 > 
-> Thus, grab the mutex to guard __iommu_attach_device() like other callers.
+> The other obvious idea is to use netconsole, but you need a PCIe Ethernet controller, but I think you'll have more success in development using KVM as these are generic architectural problems.
 > 
-
-Tested the series with PCI reset on PFs and VFs, including device 
-pass-through to a Linux guest. All scenarios worked as expected.
-
-Tested-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-
-Thanks
-Dheeraj
-
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> ---
->   drivers/iommu/iommu.c | 13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
+> To help you get started with this I may point out something that was shared to me for another hibernate bug [4].
 > 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 2ca990dfbb884..170e522b5bda4 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -2185,10 +2185,17 @@ EXPORT_SYMBOL_GPL(iommu_attach_device);
->   
->   int iommu_deferred_attach(struct device *dev, struct iommu_domain *domain)
->   {
-> -	if (dev->iommu && dev->iommu->attach_deferred)
-> -		return __iommu_attach_device(domain, dev, NULL);
-> +	/*
-> +	 * This is called on the dma mapping fast path so avoid locking. This is
-> +	 * racy, but we have an expectation that the driver will setup its DMAs
-> +	 * inside probe while being single threaded to avoid racing.
-> +	 */
-> +	if (!dev->iommu || !dev->iommu->attach_deferred)
-> +		return 0;
->   
-> -	return 0;
-> +	guard(mutex)(&dev->iommu_group->mutex);
-> +
-> +	return __iommu_attach_device(domain, dev, NULL);
->   }
->   
->   void iommu_detach_device(struct iommu_domain *domain, struct device *dev)
+> Link: https://lore.kernel.org/linux-pm/20251105180506.137448-1-safinaskar@gmail.com/ [4]
+> 
+> Askar Safin (CC'ed) produced a script that does a very minimal kernel build, sets up a VM with the right sizes of disks/swap/etc.  It's trivial to make kernel changes and re-run the script, and you can  also attach a debugger to the KVM instance.  Maybe you can adapt something like that.  You can wrap it with 'time' calls to actually measure performance for any ideas and prove them out too.
+I was just going to try it. Thank you so much for double confirming. I'll
+test and see.
 
+-- 
+---
+Thanks,
+Usama
 
