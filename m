@@ -1,145 +1,211 @@
-Return-Path: <linux-acpi+bounces-19290-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19291-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308C9C8AC1B
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 16:55:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id B532EC8AE7B
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 17:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 210FF4E219D
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 15:55:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E65C5359518
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 16:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5153093C6;
-	Wed, 26 Nov 2025 15:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B70930EF75;
+	Wed, 26 Nov 2025 16:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="mYs0k+L4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PnB7M0xY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from exactco.de (exactco.de [176.9.10.151])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010070.outbound.protection.outlook.com [52.101.201.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21D33B6E0
-	for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 15:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172502; cv=none; b=R1O1fQxvluf9ecETN7SSqKiRHnMLvXKn1MF008J9ueFTTeboLWv+n1qyE4IH0myyUeDD6NajzVBJDGAOQv9QtQ3gOjO9gxZiqnlrHoIiO48doaX8j0nPGOTqiHA5MFJ0tzPLYaotQAAf/sgx8XIw3rnLQRJclR8oZY9vrhEC/hU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764172502; c=relaxed/simple;
-	bh=F3QVig14ZRvT1Esvj5ZqfKt0M4mvHVyclwA7KD3pHhM=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=GX9KCfTwI+fAMq0JldZpHDEcq4CoSWstyf+EMHICCSNCLSofi69aXi2xaXG3UBPxtgSzxK+g0Jep8+M71tX9oBUCaLxZDP017Da0ZR2Epx6oxu56nVhiHTvfWJb92j2y5wuBfIRTdvUNylHKOVWLXaHz+cbMzhSclBL8LlgGd8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=mYs0k+L4; arc=none smtp.client-ip=176.9.10.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
-	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=W4Tu9wxxLOptPLPhrNTsZDFp0NbI9VYyurm6x/MU27w=; b=m
-	Ys0k+L4r7SPxWj0Q2sDABF9Me8U3y8PxDHkb+aRxhpjV76k6ZiB3PvqYQtJO+CfsuL8sIBFnqe5Vc
-	0oHkLSoW+5wcW7olh2yfLAhtbdUqLIZYe6OLAlCMrYZUhFq6lVpndrSqFfkmGMtoQdRZXXhnPtmkH
-	iOt6PRbY9nXNPiz3Jc8VkobsWPfXSaTWsu+QsYWd3dCu1juokRyzJbqM+9H3yVKUHbSynzVA9jT1H
-	8KdH6IrCaE84FffqQa2W5Lg7f1vBSz6H754Fkzgtq4UAChdjXn/O0OCPQPKgyiTfETWTD2Z0Pn2i2
-	XODDIlv1vlH25O/tf77NmpbtJtLWm5hjQ==;
-Date: Wed, 26 Nov 2025 16:55:13 +0100 (CET)
-Message-Id: <20251126.165513.1373131139292726554.rene@exactco.de>
-To: x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Huang Rui <ray.huang@amd.com>,
- Borislav Petkov (AMD) <bp@alien8.de>, tglx@linutronix.de,
- superm1@kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH V2] ACPI: processor_core: fix map_x2apic_id for amd-pstate
- on am4
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C28D25487C;
+	Wed, 26 Nov 2025 16:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764173842; cv=fail; b=I/uQYzuhNLFjsIpVprmFjes+ejRPzyif7K5Y+JL3JIzMW5RfChHGZ23vAGjIUh/7RytQpJ8KBMRy5euTh9PBkWhka+m5j78uPhUlr2CVh+nhAN2bU+t2FROySctAnTDmeyzMB6u/dQlDq3GtirHl0fv/rih/nunh9g4pP+YWg5Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764173842; c=relaxed/simple;
+	bh=59dbul5u+a5/eEc9+HVPaPgFdQqoiHNrx+O01kjC4hU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GW5BynJp0GE2Gew+UimF7bXVdyNJLazwc8ySxtueX9m2kR6wcAvN2WWqZhB2v4//0xy/Wl/91IP8/9jcmGni+5/UbYG/7WyyDoZg1yDaCbWZ/DuXNznLAZWhcYVRyV1G00LMLDtThU66KPz4A8252yPWL9M/lQ7LOkdBndX40Xk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PnB7M0xY; arc=fail smtp.client-ip=52.101.201.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=muEvsr01lyaLhIOmVAoGRb6fHLXxPuKu0O2OkBmj8w13NNGeUvWoYIwZEl/OKYWS9TguENN/QWHlGbyL8p8t39r3AAXQ0z/0aR1M/qWXidNM/UfQqwfFPWryTTY12FYXjxrz5p/vQ1Gee0zIy5YMWYXT6OmhZr7Oa2N7CmUXoWny4+j9cjqvHRdHydevxmujDTUtxHgTyokNh0nSOcSA0u74APlGgK27g8WatI3VGbHttmZA6T9WMhd0rSkxcUP5DQRE+D++mlN5ZWkv2Ywtm5TJCmI5tyWJL5lzDE7bvma334pHUvzeJmBNgFgZPLPYSoBfUFcbAYPJXJuTHAJC9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BT9J92y2KCsCjcSJEXZha/lFViLEelcSyMMy7Qud3EE=;
+ b=vLZQdsaeysDF500/7HToV0cCW++TGqQ5FzO8qOCUoE5ZrBfgXfylrE6jXWjCpqAEVQVrjRoUbvMkTB+k7dkN1SmvGhTNGcE1yjii5DatA4g3zigN1F0Z9evvd72PJ2xgfiZJvxvWh81m2B7oml7NupY2YWC+c8Nk4cTQSlr9yMNNc4G3EzWNM0Yy0LwSFu4aMt0Gd74bbda6N658SYUBKkKH7H1IkQ+sm/kSDcfGbptgHWXC+X4vpmrI09a5q/dGgb+pN2tGNU0BtSUUs4pnX4g7BHxszb2rkwxNadt81bva11KROcYbczi9T6jbkoQHtD3PT2nNeYhTIK0GscwsCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=amd.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BT9J92y2KCsCjcSJEXZha/lFViLEelcSyMMy7Qud3EE=;
+ b=PnB7M0xYEnSSdvzJCR49HHiH9cdY7gPGranJEnAtfJFXg1mlDIzGE9Z5d59R6kZgBhZxuHTB8M8iZjBqRMJYPWyNd1LzWxIFvuSA0xMs72jrHUh6KOoCkORgZduQxwfdb1jWOvQk/KRNuWtalDYYkHo+BjnYIU/H70PQ0Wv0krkvkw64KkK5LxB8vvBGX+w4WaAeEQ+1L+82hxO7jFueeYwbZfGf8mcFZu5TkZ/8xKNSfH1BJGP/sx05DF20NFxtFQZoT5SkwbEMlsriKBfUVopLIuj1iJtg12DVWVwNRurlJ/ZBx0ghTx+Eyj4bvepdmnLLqI/yoXujCt8cVtgm9A==
+Received: from SJ0PR13CA0043.namprd13.prod.outlook.com (2603:10b6:a03:2c2::18)
+ by CH3PR12MB7547.namprd12.prod.outlook.com (2603:10b6:610:147::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
+ 2025 16:17:14 +0000
+Received: from SJ1PEPF00002320.namprd03.prod.outlook.com
+ (2603:10b6:a03:2c2:cafe::8c) by SJ0PR13CA0043.outlook.office365.com
+ (2603:10b6:a03:2c2::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.11 via Frontend Transport; Wed,
+ 26 Nov 2025 16:17:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF00002320.mail.protection.outlook.com (10.167.242.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.7 via Frontend Transport; Wed, 26 Nov 2025 16:17:14 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 26 Nov
+ 2025 08:16:58 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 26 Nov
+ 2025 08:16:57 -0800
+Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 26 Nov 2025 08:16:56 -0800
+Date: Wed, 26 Nov 2025 08:16:54 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: "Srivastava, Dheeraj Kumar" <dhsrivas@amd.com>
+CC: <joro@8bytes.org>, <afael@kernel.org>, <bhelgaas@google.com>,
+	<alex@shazbot.org>, <jgg@nvidia.com>, <will@kernel.org>,
+	<robin.murphy@arm.com>, <lenb@kernel.org>, <kevin.tian@intel.com>,
+	<baolu.lu@linux.intel.com>, <linux-arm-kernel@lists.infradead.org>,
+	<iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <patches@lists.linux.dev>, <pjaroszynski@nvidia.com>,
+	<vsethi@nvidia.com>, <helgaas@kernel.org>, <etzhao1900@gmail.com>
+Subject: Re: [PATCH v7 1/5] iommu: Lock group->mutex in
+ iommu_deferred_attach()
+Message-ID: <aScn9t5ctN7FgRKD@Asurada-Nvidia>
+References: <cover.1763775108.git.nicolinc@nvidia.com>
+ <a7ebae88c78e81e7ff0d14788ddff2e6a9fcecd3.1763775108.git.nicolinc@nvidia.com>
+ <1f65de37-db9f-4807-a3ff-6cd377c855a5@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f65de37-db9f-4807-a3ff-6cd377c855a5@amd.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002320:EE_|CH3PR12MB7547:EE_
+X-MS-Office365-Filtering-Correlation-Id: 369c9118-1291-418d-922b-08de2d074319
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SXUya21lUlc1UW44cVlaNTJpclpJbjNXcjY0M3RtY0s2bUc5dDFub3dwYkdr?=
+ =?utf-8?B?UGNodTFmdXJOSHlXMEhCUXlqRTdVK2x3S2Vka094Y3Vyc3dXbDAzUmM0L1NI?=
+ =?utf-8?B?U2hRazc5ZEdoczUwTlRvRzlyb2JhSy9URlF0M1J5c0VCUlQ2WWNXSVlFWWdt?=
+ =?utf-8?B?U2ZjLzdHSE9LM0VDaHdkdHNBRTl5OEtGcVI5WnlSTlcyUFJycXNsMXdDYmVk?=
+ =?utf-8?B?eVJGbmwwWDRKVmdiYVFVNEJyMG9nVGx4OFU0cDNMRFM5ZGdPdkFTM0FLVm9k?=
+ =?utf-8?B?SDlqM21JOFJLMnJGNklCbDU0dUFPbVNLVTdqS04rNzg3NVZKbmlrSXFvTGFK?=
+ =?utf-8?B?aWpVSUxQZjdVSEd2USt6MzRZYjVRZm5xUy91MGdkY0x0WW12NjRacHQ0NHhP?=
+ =?utf-8?B?Y0hqYTN2Z1B4dy95ZTVMVncrSDYzM20zbW81ZVMrVHFHMUdkOHJ5SldhNlRU?=
+ =?utf-8?B?ZDhvWWdNY0xMeXZmeFlsK2dWQ3k3Ly9zb0gxQ3NsMVNHTUFCOUZJa1E0ayth?=
+ =?utf-8?B?bm9xdGRWTDh6ckdCMlg4TWczNlR6b2lmKzhtNk82ZDNlcTRsMGRHNzdPWXRu?=
+ =?utf-8?B?QXhhTy9Td3dDUDZUWEVIdzZpSStnOVI4OWhRVElmSnVXSDRsNExaSnFKZzBm?=
+ =?utf-8?B?THZ5cEZ0bnVRNTduOWRsRE1PeWRLZ2NPUUhvY2RIOXlVQ0NLNnlNYjNBTk00?=
+ =?utf-8?B?cUVKKzIveHA1Q1RCNzd1QVRmT2x5Y2hSeFordzBIaDR5a0txejVVdTR4RHF4?=
+ =?utf-8?B?L2Z1cnRyWnROWlhIZFhMczdnUjV4TXZ1dWQ1WDQwaC91d21lZFFObHBVdlVW?=
+ =?utf-8?B?a2lXM1BSYTVEWVpVVHBJV3hhbTd0ZndyV0VHakpQZXZ6TE5QS1RSbll2NWdC?=
+ =?utf-8?B?czc5L0wrcHZ2M1B1cnRFVGVKQkwvVzJROURISlJBejduTGc0YzZYQ2htRGox?=
+ =?utf-8?B?S0tLbXh2TlV0LzkvNDdWTlYxRjNHenJnOURhQjlGRkptNi9uKy8xUmRSc3p6?=
+ =?utf-8?B?QTA1VWZReFFQMzFHalVtU1FsOG1FeUV4ZUNsY3htcDR6L1ZKdTI0L1ExN2Fa?=
+ =?utf-8?B?cE12anFDM2tDaWszaFREdjl6THd3Zm1uSElFOWp0bjd4NStPdXBmVkZVODU0?=
+ =?utf-8?B?NDBNY0gwcmlaU1dCQ1ZMNEFINDNnNEx2R3ovSWNSQnd0VXV1MGtGRzJBRWJw?=
+ =?utf-8?B?S2MrWW5BTG5ab0VXRjI1WVJXMzJ0T2R0VzNSaEdnNEtMdThhUUxJRzROcnV3?=
+ =?utf-8?B?T0tSdVRuZVJvU2NlV0ZwalhvMlREc3Q4YUtvTDVralFuVnYzR1ZGUHlEc29p?=
+ =?utf-8?B?TzJnSklJa1RrTDdTRXJ1YXFOeittZ2xTME11VFYweVB1Y25oOGw5dkJ0M1Bx?=
+ =?utf-8?B?Y2twWWZ5Kys2RkNBOTlhaUxiRFlGbHV0amdDOWpUSE1UMW1POXpaR3VrU013?=
+ =?utf-8?B?c1VYYWN2bE9UcGg1NFc5SiszanAzWWZVL0I1Sy9iUGZLazBsM3ErNGtjeC9B?=
+ =?utf-8?B?U1I3ZEJmSGlWRit0MDJFSFZxWlNkbFFLRkRqb3BHd1FnaStlK0t1YVk5WHUr?=
+ =?utf-8?B?MnZuWUVEb05idnNkWTU4WktkalI1MVVmYUlkbGkyR3l1cGJQVnRSdHlUK1Ex?=
+ =?utf-8?B?SWJNTVNyWXBsWE1lZ2g3OVlqMjBBTHRUUGVpdUN4WksvUmx6S3VINVB1clFs?=
+ =?utf-8?B?aUlpZjRscldCWElkUTVZYS9tWlBCbWQ3TlFWcVNIa0szcVY2ZWwyRCt4MVUz?=
+ =?utf-8?B?WEF1dHQ4SDBVUTRkdVkzTHVjdWNGYjFkTVVLT2lnYUk2NEIrRmJsMmQxNzlu?=
+ =?utf-8?B?L0V1ZjYraU1hcks3WVZDSHpvdWtrQ2tTdnlVRnYzM0NVZytEM3g1eHBlRkdx?=
+ =?utf-8?B?NFAyM1NGWHFrTndDNlpmY28zUUtFTHVteDhTalBUMHlEYU0vRUVvQUVqOGMw?=
+ =?utf-8?B?K2p0RVByS3VtdWQ0T2hXcVdsbjNUbzJaWEtzQUYrcEpUbmp6SC9BMlhETDlJ?=
+ =?utf-8?B?eGl2Kyt2L05jZlhnTWlKU2dWb0VUS2VJZ2dZYzZBZS8rSjhScHV5ZERaQXhQ?=
+ =?utf-8?B?dzlsWmE3dm5rQm15bUw1NGNVNytYeSs2amplZldnNmxIYi9VNUNBWDFYRXlG?=
+ =?utf-8?Q?nDqQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 16:17:14.6630
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 369c9118-1291-418d-922b-08de2d074319
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002320.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7547
 
-On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
-and equivalent Gigabyte, amd-pstate does not initialize when the
-x2apic is enabled in the BIOS. Kernel debug messages include:
+On Wed, Nov 26, 2025 at 06:25:34PM +0530, Srivastava, Dheeraj Kumar wrote:
+> On 11/22/2025 7:27 AM, Nicolin Chen wrote:
+> > The iommu_deferred_attach() function invokes __iommu_attach_device(), but
+> > doesn't hold the group->mutex like other __iommu_attach_device() callers.
+> > 
+> > Though there is no pratical bug being triggered so far, it would be better
+> > to apply the same locking to this __iommu_attach_device(), since the IOMMU
+> > drivers nowaday are more aware of the group->mutex -- some of them use the
+> > iommu_group_mutex_assert() function that could be potentially in the path
+> > of an attach_dev callback function invoked by the __iommu_attach_device().
+> > 
+> > Worth mentioning that the iommu_deferred_attach() will soon need to check
+> > group->resetting_domain that must be locked also.
+> > 
+> > Thus, grab the mutex to guard __iommu_attach_device() like other callers.
+> > 
+> 
+> Tested the series with PCI reset on PFs and VFs, including device
+> pass-through to a Linux guest. All scenarios worked as expected.
+> 
+> Tested-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
 
-[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
-[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
-[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
+Thanks for testing!
 
-I tracked this down to map_x2apic_id() checking device_declaration
-passed in via the type argument of acpi_get_phys_id() via
-map_madt_entry() while map_lapic_id() does not.
+Yet, this is replying to PATCH-1. So, you might want to reply with
+your "Tested-by" tag to PATCH-0 :)
 
-It appears these BIOS' use Processor statements for declaring the CPUs
-in the ACPI namespace instead of processor device objects (which
-should have been used). CPU declarations via Processor statements were
-deprecated in ACPI 6.0 that was released 10 years ago. They should not
-be used any more in any contemporary platform firmware.
+Otherwise, default B4 command might miss your tag in other patches:
 
-I tried to contact Asus support multiple times, but never received a
-reply nor did any BIOS update ever change this.
+  ✗ [PATCH v7 1/5] iommu: Lock group->mutex in iommu_deferred_attach()
+    + Tested-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com> (✓ DKIM/amd.com)
+  ✗ [PATCH v7 2/5] iommu: Tidy domain for iommu_setup_dma_ops()
+    + Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> (✗ DKIM/Nvidia.com)
+  ✗ [PATCH v7 3/5] iommu: Add iommu_driver_get_domain_for_dev() helper
+    + Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> (✗ DKIM/Nvidia.com)
+  ✗ [PATCH v7 4/5] iommu: Introduce pci_dev_reset_iommu_prepare/done()
+    + Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> (✗ DKIM/Nvidia.com)
+  ✗ [PATCH v7 5/5] PCI: Suspend iommu function prior to resetting a device
+    + Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> (✗ DKIM/Nvidia.com)
 
-Fix amd-pstate w/ x2apic on am4 by allowing this processor statements
-for IDs less than 255.
-
-Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
-Signed-off-by: René Rebe <rene@exactco.de>
----
-v2: allow for IDs < 255 only and add ACPI conformance note
----
-Tested in production in all x86 T2/Linux builds since 2021-09-26.
-[    0.000000] DMI: ASUS System Product Name/Pro WS X570-ACE, BIOS 4702 10/20/2023
-[    0.000655] x2apic: enabled by BIOS, switching to x2apic ops
-[    0.003328] APIC: Switched APIC routing to: cluster x2apic
-[    0.059460] IOAPIC[0]: apic_id 33, version 33, address 0xfec00000, GSI 0-23
-[    0.059465] IOAPIC[1]: apic_id 34, version 33, address 0xfec01000, GSI 24-55
-
-rene@5950x:~# grep . /sys/devices/system/cpu/cpufreq/policy0/*
-/sys/devices/system/cpu/cpufreq/policy0/affected_cpus:0
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_highest_perf:166
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_hw_prefcore:enabled
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_lowest_nonlinear_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/amd_pstate_prefcore_ranking:206
-/sys/devices/system/cpu/cpufreq/policy0/boost:1
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_avg_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_min_freq:572131
-/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_transition_latency:0
-/sys/devices/system/cpu/cpufreq/policy0/energy_performance_available_preferences:default performance balance_performance balance_power power
-/sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference:balance_performance
-/sys/devices/system/cpu/cpufreq/policy0/related_cpus:0
-/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors:performance powersave
-/sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/scaling_driver:amd-pstate-epp
-/sys/devices/system/cpu/cpufreq/policy0/scaling_governor:powersave
-/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq:5276318
-/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq:1748178
-/sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed:<unsupported>
----
- drivers/acpi/processor_core.c | 2 +-
- 1 file changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index 9b6b71a2ffb5..a7fbaca91c6f 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
- 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
- 		return -ENODEV;
- 
--	if (device_declaration && (apic->uid == acpi_id)) {
-+	if (apic->uid == acpi_id && (device_declaration || acpi_id < 255)) {
- 		*apic_id = apic->local_apic_id;
- 		return 0;
- 	}
-
--- 
-2.46.0
-
--- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+Thank you
+Nicolin
 
