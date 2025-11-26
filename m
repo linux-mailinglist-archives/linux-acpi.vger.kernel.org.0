@@ -1,90 +1,114 @@
-Return-Path: <linux-acpi+bounces-19274-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19275-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752C8C88714
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 08:38:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90901C88DED
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 10:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4BC504E274A
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 07:38:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3CD2635231D
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 09:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5652BCF5D;
-	Wed, 26 Nov 2025 07:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D846303CAF;
+	Wed, 26 Nov 2025 09:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+wD/bkn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0jZqolv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA26246BD5;
-	Wed, 26 Nov 2025 07:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C93302159
+	for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 09:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764142690; cv=none; b=OFkhCVS0HlN1Q7xKRam4bKL7rin48Eu2FF77TNImkfER1I66fZV/ERU8qWPKYL1KRqams1+nM21mh8NeqQ2CMa8VsSYFCn1YZpTIEJWT+7vIIkBp5DNfa5ikrX6f9Snr+KrZKuD5VkYlPN6+kEAFp4NiLUa7HFvrH+1eE+ZIfRo=
+	t=1764148227; cv=none; b=iRPAIypj6e/fXRxA5kJTZnHKETLrQ5sbDyXAL/FZAKiFpPYtxaCalgzLfM/2u6Nnunpman/KN9T95IdYcGTxn7RVby40OuaVyXf80pSiIVLNdPkT79tZVhBPQChGd2UJn3G957q2v4S5ElgvGl/iEs6dDRnfc44Kwa+wYSgmqgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764142690; c=relaxed/simple;
-	bh=u2/8o+93/7lAGtmlFeXczNKd2oyHcucjDMBdhkz4rkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TmGpY+x1VzXXonALew1fW2Kamc3QJzsGkEOSZYoiXpMHDiY1HyCD10cshNFmfJNJ81Wp8HlNCXkLRwaovbmeHwFU9n4zJ9Fv+t6BMyLKqsDzxXWrKUy0i4mO7qqFJh18VLTsTAYi6vd2mWZxyRBj59Smsy8LQiQQ9W9IyjUWI4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+wD/bkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66762C113D0;
-	Wed, 26 Nov 2025 07:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764142690;
-	bh=u2/8o+93/7lAGtmlFeXczNKd2oyHcucjDMBdhkz4rkg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q+wD/bkntqnQTHZkOioO0AunDRzjZ+Gqs4DR8Tt2j/SPKLaBlrlbDt+GdIi4w8zk7
-	 /w4QVlAVPqqv9ypRPaUFs0g7Hl1kdpjKFR15mXrrNIGCOGZlzVlatqt03i6gfdlM3E
-	 VghY5A1Zn8Pk5UnK89hSwmw9ef0AM/Zzh4SZeax0=
-Date: Wed, 26 Nov 2025 08:38:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-input@vger.kernel.org, kernel@collabora.com,
-	superm1@kernel.org
-Subject: Re: [PATCH 2/4] ACPI: button: Cancel hibernation if button is
- pressed during hibernation
-Message-ID: <2025112612-backup-driving-e6e6@gregkh>
-References: <20251107184438.1328717-1-usama.anjum@collabora.com>
- <20251107184438.1328717-3-usama.anjum@collabora.com>
- <2025112433-emphasize-helpful-b748@gregkh>
- <e1e97842-0ad3-4270-b0d1-3cc7150988cd@collabora.com>
- <2025112506-acting-tipoff-3a49@gregkh>
- <cef1d96b-b642-4e69-8c1b-2e0bf7528edf@collabora.com>
+	s=arc-20240116; t=1764148227; c=relaxed/simple;
+	bh=1Gh+v9gZlx4T+2vP2/a+CEj14Wm+hS7qirELQBW3q2o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tr9fE3t2WbMQOaWaXxk7iu344KjUt9cCBsemD2LpSrgPZdA0FS+z6NpDvYPbowJUv8i0kRLyBT76QSJqv7zC4OQ9J4gqLCbA/8UPf+oMu5EoTa5t1aud+i+WGFFJiX3grqktlUaaTC4Mqcq5iKkwA4s4sud/1vW/kmU0IyPsgEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0jZqolv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA91C2BCB2
+	for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 09:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764148227;
+	bh=1Gh+v9gZlx4T+2vP2/a+CEj14Wm+hS7qirELQBW3q2o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Y0jZqolvA7hXFfMAw3hJ7asvZznjTxeWPgdjxIsFuK7HKMO4Aup6xgMuchtbnJrWK
+	 xwHhJa5s00+VgaGP0ML7tieVIDbVQF+iwIWSKLuRdn17r7ZCfmOGkDvaz5chhKzg10
+	 6nuZs180dCROf6d0BqFD4aQrPkytxlHR4p3UdXOoYlzcUKG7y65OdDl9AqZWj0YoUy
+	 yoPsX6VqQHAnD4aQTu5svKlJ0TOQMUtEl97rI5l/4ARfHFMSjCpLQ4gBbxMQy16n5h
+	 WNQsEGuhpZqW72YAf+JKsA029R4llEpPHQZ1GKjiJ8c5kBmdrVYOY+MXl0Kiucajop
+	 ciirWL/s93zAg==
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6432842cafdso1855467d50.2
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 01:10:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW+p3HPGKx0b+DI2G6beQem0VbBxVfKqI1KoQ3JiNB19hLoOSI32H1PwK5Koe3GorHEfiLz8ovue7b3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLB2UVS6Bp61J3EYAj5gEw2lYQd72zqlKaX2BkUFs7Ct76NPjr
+	VSSl2cpBSxzukL/ojOHuTHxmPgCViie8rvwjJ0jETDesEYLa9YXjax8O58GPhPpWbOgecULxZcI
+	6dJuoiCEH/Gnk9HPwNsCpzydNNNscmf0=
+X-Google-Smtp-Source: AGHT+IEn+dWU8mxRAWLhMi7GP0Lw8+OC8N4aZc4Hh63NWSD8PewoKHoDsfkyUR8ez/7yCP4Jhv1U4PvoktYwLmnE7yE=
+X-Received: by 2002:a05:690c:48c8:b0:789:552f:b576 with SMTP id
+ 00721157ae682-78a8b490616mr155805427b3.15.1764148226208; Wed, 26 Nov 2025
+ 01:10:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cef1d96b-b642-4e69-8c1b-2e0bf7528edf@collabora.com>
+References: <20251125023639.2416546-1-lei.xue@mediatek.com> <20251125023639.2416546-3-lei.xue@mediatek.com>
+In-Reply-To: <20251125023639.2416546-3-lei.xue@mediatek.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 26 Nov 2025 10:10:15 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=h4ZEgrjgGOfgFyAXBM7EL91ZD-La82UQ7GPOXv8h9WQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bmlrwKgRMkbTd5MLDMlxjKIz8VWVRw6PHOOri4KCmVC5vDi2iUqAwHA-0o
+Message-ID: <CAD++jL=h4ZEgrjgGOfgFyAXBM7EL91ZD-La82UQ7GPOXv8h9WQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] pinctrl: mediatek: Add acpi support
+To: Lei Xue <lei.xue@mediatek.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>
+Cc: Sean Wang <sean.wang@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, yong.mao@mediatek.com, 
+	qingliang.li@mediatek.com, Fred-WY.Chen@mediatek.com, 
+	ot_cathy.xu@mediatek.com, ot_shunxi.zhang@mediatek.com, 
+	ot_yaoy.wang@mediatek.com, ot_ye.wang@mediatek.com, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 25, 2025 at 09:41:22PM +0500, Muhammad Usama Anjum wrote:
-> >> While I've thought about increasing the speed, I've no concrete ideas yet.
-> >> The main problem is that its sequential in nature.
-> > 
-> > Then fix that?
-> That's in the plan. But who knows when we get time to attempt that. 
+On Tue, Nov 25, 2025 at 3:36=E2=80=AFAM Lei Xue <lei.xue@mediatek.com> wrot=
+e:
 
-Take the time to fix this properly first, don't paper over the issue by
-changing user/system interactions that will not be needed in the future
-when the real problem is resolved.
+> Add acpi support in the common part of pinctrl driver. Parsing
+> hardware base addresses and irq number to initialize eint
+> accroding to the acpi table data.
+>
+> Signed-off-by: Lei Xue <lei.xue@mediatek.com>
 
-> First I need a board/machine with serial console access to view all logs in real
-> time. :)
+I'd ideally like Andy and the ARM64 ACPI maintainers look on
+this. (Added to To:) and CC linux-acpi@vger.kernel.org.
 
-usb debug cables might be your solution.
+I'm not aware of the best way to deal with ACPI in combined drivers
+but things like this:
 
-good luck!
+> -               hw->base[i] =3D devm_platform_ioremap_resource_byname(pde=
+v,
+> -                                       hw->soc->base_names[i]);
+> +               hw->base[i] =3D is_of_node(fwnode)
+> +                       ? devm_platform_ioremap_resource_byname(pdev, hw-=
+>soc->base_names[i])
+> +                       : devm_platform_get_and_ioremap_resource(pdev, i,=
+ NULL);
 
-greg k-h
+Just look really quirky, I think there are better ways to go about
+this and sometimes the ACPI maintainers give some good
+pushback about the firmware as well.
+
+Yours,
+Linus Walleij
 
