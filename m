@@ -1,114 +1,105 @@
-Return-Path: <linux-acpi+bounces-19285-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FDAC8A905
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 16:14:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2082C8A993
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 16:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF94E3A4F13
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 15:14:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 642A74E1836
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Nov 2025 15:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B97730F92D;
-	Wed, 26 Nov 2025 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2579330B38;
+	Wed, 26 Nov 2025 15:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BNCYgRsX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="OnoMT1yy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E289730F534;
-	Wed, 26 Nov 2025 15:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375A9331239
+	for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 15:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764170042; cv=none; b=R1xszTLMVhP5JqGEypopwNkgwlI+o0Kfed5C44xtA6KkYEX3xdh0b4J83f0qj2Lq8GOUrHn/SWxrTBEqsgS+lq49cwXQagN6wT2HSyRa6JrPBZ+ef0nDYfxG0oqeN/vY/cDw2f6SEwUFWeMoMpxXjdmwFHx/Rj8edd6oZAKho7w=
+	t=1764170435; cv=none; b=G1gG3WnCdIovRmHxfZnFvNEDa9PiGDIeEAHSBqib/jWQvLtlRBuOulIymOEjLjERzMleWgktgsev0ATfeib7rvIV207tEvE28H/DTkftyoXBtum9vDu38QJ6SkDMoi/r7V7fSTzPkXj55PKYvdAxHURkQGhtOBhSrUSPnQUAzl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764170042; c=relaxed/simple;
-	bh=dSbJS+jVRKAGJvmMm1kY438mxy9TbCHMr4buRPBAhKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y5+BgU4hBUVLasLVykkdt5TXqoLPo8veABsBI5txvBFcfAvz+/2RH4QP8mYx0bgWswTYSrZe7QgKqkouyIzu1ErZ5eDHROZ0NUJzpiHjrIre5xAgNTPTI0RWmRCHynkv6wUqiaNpxm6caR6UEzGvDyiV+G57+46tKQEJ8oLvh7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BNCYgRsX; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D32A140E0200;
-	Wed, 26 Nov 2025 15:13:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PyEw0_TdL3VJ; Wed, 26 Nov 2025 15:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764170026; bh=btJVqATq4plsOClKXHmubGbB+S0XT5c2lsnhyZZ9nas=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BNCYgRsXypIt2YFL/PZ6nGUMZz9o02d55d+tXPW8kTo+3HzpzgCG1jlvQdBT3u5mu
-	 GHRYJfXvWznDWRxUC3WfgugAqxCRzAC0dhZa95UiVgObtepA+AasKuRiIOq+t1OIJf
-	 lFGHlp1NR0LbCl3Ft9+ssutw2KPoNcM5foBDZm3BtI8iJwZu9y4sFqKP+OYHshXoBL
-	 fINVe/cexWV7WbrsJ5NABrZPJ/jLNAYR3fwnzuTUC9q2YgJgRQen8cmEvP11zugork
-	 TEqmjUSOYd9WG0GNmTigIIITd7fX10ahOBY0hFtN8Kl/frrT4YIRVdEeykWOTfnYOt
-	 h9uYNUY5Wl20Up88tyAaM50GX49DQXhIUA5KYiFDWKGZL8KON7fHR9D4JRtDqv8eEZ
-	 hzzac87JN7fR/dgb6fNrPfit4jhZ9zB4peqFo/JuWPELcn2EFOGM0Q6EoYMZqxvyLB
-	 L9F29HiQP/GInS/NVAP5AgTY+a8+VQWXiyjV1Ueua7wwqVQOGU6g8qdJh0JfzPiWQn
-	 zoQYTAsqyrAVBex2AjXlJVnrY+Ib0ZWyhL/lnHmCvfQtlWc5T109hd501tvrAQX8GU
-	 dK5bG7CIGmBHq3RNzRE7U1y8HvtfJi/67XjEmhFOCvT6LgJHl3tHumY/LIbpvMfQjr
-	 vUtGW0zS9qeFajmu6KB4G8Yo=
-Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 101EF40E016C;
-	Wed, 26 Nov 2025 15:13:30 +0000 (UTC)
-Date: Wed, 26 Nov 2025 16:13:25 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>, Ira Weiny <ira.weiny@intel.com>,
-	Jason Tian <jason@os.amperecomputing.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Len Brown <lenb@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
-	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] apei/ghes: don't go past allocated memory
-Message-ID: <20251126151325.GCaScZFXvm-7PYy0Dh@fat_crate.local>
-References: <cover.1764169337.git.mchehab+huawei@kernel.org>
- <3f6764ddbc0b596a43a73616d972c2ba0060d1b1.1764169337.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1764170435; c=relaxed/simple;
+	bh=nq+18yCbIjN68mfxCtnLnhRS2b0sgj7XPpMYAquaKsg=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=JMNtecrHgLUNPv/51mUI2Jp9xbw8/JcDiXSoOk6xZrcnhStqfFf4+CA2tr8FPtWxL2hJxLA6hl3zNWzqz3mvrhRT2PgEYKrkAl2o0mvC+P4+Pk50LIvYz3tlN6yMfILRuFaTUlgU9LEmNbuthH4fmcuN6abSwg1tq+uZVFR9de0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=OnoMT1yy; arc=none smtp.client-ip=176.9.10.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:References:
+	In-Reply-To:From:Subject:Cc:To:Message-Id:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=tNFEZumKHSYYIjyqtWd/gI3UClhLQ2SvutzdiZGuepw=; b=OnoMT1yyaMT9HykZkgkntvVSxT
+	ClVwXJg3xXB+pdGyvp0fpSwF84msahykYup0omuKcsOIEW+J2pqT/9n5yGs9PpFIeNZsQl4xTwM/g
+	hILyrhSDEthgAmCk+KOYc2kW72Xo9wIluxn8cYX8Y50nd3OQE6f22kwiRryQYSpTT6TBsPNN7olST
+	m/NPiJBgeg8QDR4YFVH2s9JlC66lYaGHf+whp17jBbFD+4kAlrKfFT0PKFrlHVPHBb8W1KtZj1wag
+	z/YXNoAox0y0pEWImOY4CBwFKBJdM7pZJlkkhyPbTJrT5lqv0qFtk4NTu/YqTH9mA35j6np9Y6qcK
+	EK1BghCQ==;
+Date: Wed, 26 Nov 2025 16:20:38 +0100 (CET)
+Message-Id: <20251126.162038.2015308014407369467.rene@exactco.de>
+To: rafael@kernel.org
+Cc: linux-acpi@vger.kernel.org, ray.huang@amd.com, bp@alien8.de,
+ x86@kernel.org, tglx@linutronix.de, superm1@kernel.org
+Subject: Re: [PATCH] ACPI: processor_core: fix map_x2apic_id for amd-pstate
+From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
+In-Reply-To: <CAJZ5v0jiZCxHJCXMXjBtQuPZzDzJyjYwBXTkq5Girj05CwxoNA@mail.gmail.com>
+References: <20251125.182654.1292605389516841541.rene@exactco.de>
+	<CAJZ5v0jiZCxHJCXMXjBtQuPZzDzJyjYwBXTkq5Girj05CwxoNA@mail.gmail.com>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3f6764ddbc0b596a43a73616d972c2ba0060d1b1.1764169337.git.mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 26, 2025 at 04:05:46PM +0100, Mauro Carvalho Chehab wrote:
-> If the BIOS generates a very small ARM Processor Error, or
-> an incomplete one, the current logic will fail to deferrence
-> 
-> 	err->section_length
-> and
-> 	ctx_info->size
-> 
-> Add checks to avoid that. With such changes, those GHESv2
-> records won't cause OOPSes:
-> 
->     GUID: e19e3d16-bc11-11e4-9caa-c2051d5d46b0
->     CPER:
->       00000000  23 da a0 ce 9a 1b 92 d7 08 2b 32 08 7b 56 1b 23   #........+2.{V.#
+Hi,
 
-Surely you can summarize this gibberish instead of putting it in the commit
-message.
+On Wed, 26 Nov 2025 13:19:30 +0100, "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+
+> In the first place, this is an x86 patch, so it would be good to CC
+> the x86 list (CCed now).
+
+Sorry I missed the list.
+
+> > Fix amd-pstate w/ x2apic on am4 by removing the device_declaration
+> > check in map_x2apic_id(), likewise.
+> 
+> It looks like on your system Processor statements have been used for
+> declaring the CPUs in the ACPI namespace instead of processor device
+> objects (which should have been used).  CPU declarations via Processor
+> statements were deprecated in ACPI 6.0 that was released 10 years ago.
+> They should not be used any more in any contemporary platform
+> firmware.
+
+Yes, I know. I tried to contact Asus multiple times, but never
+received a reply nor did any BIOS update ever change this.
+
+I only wanted to finally sent upstream what we shipped for years.
+
+> This change goes a bit too far because some acpi_id values are only
+> valid when the CPU is declared as a processor device.
+> 
+> Does the attached patch also fix the issue?
+
+Yes, thanks. The only point of this -I guess- is to enforce vendors to
+use the right declaration for big server boards? We better use <= 255
+just in case? Will sent v2.
+
+Thanks!
+     René
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+René Rebe, ExactCODE GmbH, Berlin, Germany
+https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
 
