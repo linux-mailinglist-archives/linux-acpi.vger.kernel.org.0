@@ -1,289 +1,180 @@
-Return-Path: <linux-acpi+bounces-19341-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19342-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522AAC90485
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 23:14:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2C5C904E5
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 23:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A5EA24E4CB6
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 22:14:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AA0F3A9202
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 22:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D031DDA4;
-	Thu, 27 Nov 2025 22:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10703191CE;
+	Thu, 27 Nov 2025 22:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxXJsiNx"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="RwyeBq37";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WFrYCzrK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C172E31986F
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 22:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E955F1FF7D7;
+	Thu, 27 Nov 2025 22:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764281680; cv=none; b=D6TpqoNwT3++Ht0krUmqmg7vSYt4u6x0VPKRrxyJjcYXL4MpZcjSq/OEz55kD5VezNcKKoNUOC+tjKRTaKBpnxa5QayBqphBID2PCdQKdCDXJq0586Jw3z92/dQ5HPaxzAteafLz4O3Mi2/r7zeJ+7GlTx6yZhOORqENfzU1rx4=
+	t=1764283740; cv=none; b=Lt9hEm4PDp5oAc4ep9FMGyGQrfYpuxGlf9Mr7HjvjQzslZqBBwJNoYn1HiAqEcxO87krc7uxT+kGtsqI3zft5ZcbkCi81hzgheGCvFYGV6kjayfZoE1f+aZ6Y+VzHruBESyN8AeYAsZE0M4oKiYVsVX36UeJ/sdlyaN+YXSORsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764281680; c=relaxed/simple;
-	bh=eBS0CUizpUI0IUV5eENk604ryPB8tzKxAgoT6Iv/rNI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tZGClp/5SsBrW11WYW+A3Q2rs5m59cH+uealki6S2mq3K8QSJ0cHrid7R0MA/mKSgI1LvtBLer9a4hEYMDroSCTBDnOtotj/dg03GOxUv3wacuRXEvuXupOumJtn0WkZBzxFERvcEXWwOjjvXp1vK8mxKVmIddEH+j6mmGomaK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxXJsiNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F58DC19425
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 22:14:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764281680;
-	bh=eBS0CUizpUI0IUV5eENk604ryPB8tzKxAgoT6Iv/rNI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mxXJsiNxhN1S4+aaL4NbV6VQmJPpBrqirZIT11lmoiHRFXWYqOdHgLT8nO/dex4lu
-	 b7GrvOOExqharqQdAnDFbOwJ2/6KIKAoGI8Ov0Jz1/eH7uCa4i3sUatetNWNmLla/b
-	 gmKseYf9lrbt/ekwpRBQ+j5p9AvkGXK0MueOr/uY+Bcmk8YsZ3jw+EmPr5EM9Xyyal
-	 w1SmZZ/DOWEfb+N8J8aZQSBGaoJh/eg6OzG5nfJN1KPSC3nC0ViYIRVVicAehr2FDP
-	 LCDRlTMMeoJ5ENTrtfXzS6KAU7rPSkbbhwwkQO9+40ZZb5aHdlQzERXU+RPoNg/4Gr
-	 IufmTo+X4LXXQ==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-65791c35134so551979eaf.1
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 14:14:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWz3izeLxGxg6P3NN55FHYSf7jqmUxXoFu/xy5CINzh8/eFVzd/jorI9oxuTV2n8hOL6zJOHOibF69U@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+sei+prbGJVl/KnRJnyj/SKV1K/jPtUlW0I8tUMrus9uL/t6C
-	SBQtR1MqmGqrErBENPBNita3R1NDSQVKTSFYDMm7lpM/O89kBgpQP7l2+TQVJVBs2o0+7mfwPkX
-	K5O1zpYXQVRHa9KzaOKz+rncvGxKNcB0=
-X-Google-Smtp-Source: AGHT+IFwPll0f82sEFyAgxPzXsJ3Sz08LKmddouqPj3T99a8UMq1Mqm0U4kLPk1yoT7JDPl2CGsyiJV/R33trqfiRI4=
-X-Received: by 2002:a05:6820:2982:b0:657:60b8:b07c with SMTP id
- 006d021491bc7-657bdae7b8bmr3877565eaf.2.1764281679535; Thu, 27 Nov 2025
- 14:14:39 -0800 (PST)
+	s=arc-20240116; t=1764283740; c=relaxed/simple;
+	bh=HGs/c5PPffwHSRJka96fP7JSTP/89kfA/cICTdfPCbw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=SjXhz+mnsMMjxY4ZHU5jgEyW+XgDFapnTLlVEjU6bqbCh4NU030tyj+ua4Kik/qdaAIco9r+6hn1Zl0O9pB9IH0HLwHNrzhjFh8peS95svExog+itmuUS2c4I9ChHs2PqyPmXOBE/+DHHgPQ/J1lR7Dvje+fTZyw1JmWZYRn1ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=RwyeBq37; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WFrYCzrK; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 01E11EC01CD;
+	Thu, 27 Nov 2025 17:48:57 -0500 (EST)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-02.internal (MEProxy); Thu, 27 Nov 2025 17:48:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1764283736;
+	 x=1764370136; bh=4LCrl8bx5It8r0TMBNBQaLJ/qadECKvrJ82mQP+rBT0=; b=
+	RwyeBq37ggZ0cMcrnmtb2Dll9zXF+NUMNXX9wcUOStcd0q/WAPWt3JCMtSVgNk44
+	DH4GJw151IpLF42R5Zo2k8VNE39pgV/S4pHP+L7Rmdw+hqiglo8NOqQ9ShKh6y3r
+	f97uJvw/cdVj242YdmGeMBdk/u8/us4HiMYme7PGt4lV/1f+XBGL7seemOh51SjZ
+	moMIx0zH0uu52l3Bil8yyr3WpLdidZfQEjGvuEgkwXYN3QAMjaPeNcNxWvttNCii
+	prBgpo5sEswFRVgdnBTE7EEQD0ltyzoCZ9lc5PYV3kBQEgz/zV9gisok7UKXMOTD
+	xsZ7ElXkK8KdPUs/rFHG8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764283736; x=
+	1764370136; bh=4LCrl8bx5It8r0TMBNBQaLJ/qadECKvrJ82mQP+rBT0=; b=W
+	FrYCzrKkt2JRQQQjrZcOmlwg2qrKJXlrYu700dEjstkcT0tOTFRj2gDk9WQEKI7K
+	JWNFXVwqWxajUgozUdk/C2wtm/iM4Xu6tnJS/EaLHz9AxaWnaK/7nEKMZuKTlKDj
+	ZnFXRR7CUerbnYnicPE8y/KSYvXAmusv6jKPd1XA4K6MhNPp2vJOBiOwS5N0i4HX
+	QbsLB0is0xkv9s94Y08RgN7JH5HEtto8X+pGdxbh7jC01Bb1obuG5Ca5akqMpp39
+	K2b+KllO7uivrkJiSB6Biz+NhCzNqbPHGjHxWAAdjWN4I6gdIlizJgvA7TxNK3B9
+	NmrtuI8gV1g6UuMJCoaow==
+X-ME-Sender: <xms:WNUoaUGyQmFsMyDevvYtIcCFnxc5BU5kbJqsnExyAND8lEC7VVdlkQ>
+    <xme:WNUoaYIfB-MJE6FCVDjHlnXRZVNWqXfxNzffFScSuxXfJ2Xgza6kLoJeEaCkqBqT-
+    3UO8-RfzkJ9iWO2PgbVNPTh0DTNpm4ObjCls1QKoDIySXVL6legd2E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeekgeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfofgrrhhk
+    ucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtg
+    grqeenucggtffrrghtthgvrhhnpedtffevgfethfevteduvdefleevkedtuddvlefghefg
+    ieekffejteejveffkedthfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhn
+    qdhlvghnohhvohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepudehpdhmohguvg
+    epshhmthhpohhuthdprhgtphhtthhopeguvghrvghkjhhohhhnrdgtlhgrrhhksehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepkhhuuhhrthgssehgmhgrihhlrdgtohhmpdhrtghpth
+    htohepfigprghrmhhinhesghhmgidruggvpdhrtghpthhtoheplhgvnhgssehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepshhuphgvrhhmudeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrghohhii
+    udeslhgvnhhovhhordgtohhmpdhrtghpthhtohepiihhrghnghiigiefieeslhgvnhhovh
+    hordgtohhmpdhrtghpthhtohepihhlphhordhjrghrvhhinhgvnheslhhinhhugidrihhn
+    thgvlhdrtghomh
+X-ME-Proxy: <xmx:WNUoaVqOH5nJg_RStfKKbWP-iQ2lzUePQ52B9b9C8O5r1W2qHRacxw>
+    <xmx:WNUoadPX_4Z1QepNQKjWPmNxi43hzYN2_epRjlUpFXFv2uXq4cVRFw>
+    <xmx:WNUoabz-q1vR04iTHAXiBiFg9drf2cAiSP-x2lGvSaMuiljN_SPM-Q>
+    <xmx:WNUoaRyc7kvUMda0gwhbSot9dSzrcZh62ukE1rdt1161uo1-97iYmQ>
+    <xmx:WNUoaWxLxkv_CfJ3cTOKcI31iwqEPpuO_oWANnBHMAbatoK6iGicHxRg>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5A2F62CE0072; Thu, 27 Nov 2025 17:48:56 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
- <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com>
- <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de> <CAJZ5v0hdqY-=O5Ai6c5qjMr_pRFc+SDyV1QruM=ZeHH9Z=guSg@mail.gmail.com>
- <cf86344b-d9f1-4d3c-9fe9-deeb4ade9304@gmx.de>
-In-Reply-To: <cf86344b-d9f1-4d3c-9fe9-deeb4ade9304@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 27 Nov 2025 23:14:27 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iH8jkqJaSNtqaTHxt_305DeiEq0AqQCo4Eho5hMKkU4Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bnDEMFFW397UhskjKnrkd8ZW685Q6DyeE8xXCdq63xxksrcXk6fCdtHXQ8
-Message-ID: <CAJZ5v0iH8jkqJaSNtqaTHxt_305DeiEq0AqQCo4Eho5hMKkU4Q@mail.gmail.com>
-Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
- device of thermal zone/cooling devices
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
-	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AFwPr5mXVruN
+Date: Thu, 27 Nov 2025 17:48:36 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: "Derek J . Clark" <derekjohn.clark@gmail.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Armin Wolf" <W_Armin@gmx.de>, "Len Brown" <lenb@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>
+Cc: "Mario Limonciello" <superm1@kernel.org>,
+ "Zhixin Zhang" <zhangzx36@lenovo.com>, "Mia Shao" <shaohz1@lenovo.com>,
+ "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
+ "Kurt Borja" <kuurtb@gmail.com>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Message-Id: <3a24c5d6-c7a1-4aea-8fe9-847526226efe@app.fastmail.com>
+In-Reply-To: <20251127151605.1018026-1-derekjohn.clark@gmail.com>
+References: <20251127151605.1018026-1-derekjohn.clark@gmail.com>
+Subject: Re: [PATCH v4 0/3] Add max-power platform profile
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 27, 2025 at 9:29=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+On Thu, Nov 27, 2025, at 10:16 AM, Derek J. Clark wrote:
+> This series adds a new "max-power" platform profile mode and uses it for
+> the lenovo-wmi-gamezone driver. It also adds the Lenovo Legion Go 2 to
+> the extreme mode quirks table.
 >
-> Am 27.11.25 um 19:22 schrieb Rafael J. Wysocki:
+> On some Lenovo Legion devices there is a thermal mode called extreme
+> that corresponds to setting ppt/spl vlaues to the maximum achievable by
+> the cooling solution. This correlates strongly with an overall power draw
+> that exceeds the DC power draw capability of the internal battery. This
+> mode being mapped to performance when extreme mode is detected as
+> supported, with the actual performance mode being set to
+> balanced-performance, has led to some misinformation being promulgated
+> that performance is always a bad setting in Linux for these devices.
+> There is also some confusion that the mode labeled performance in
+> userspace, which corresponds to a red LED in Windows, shows as purple
+> when set using the hardware extreme mode.
 >
-> > On Sat, Nov 22, 2025 at 3:18=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wro=
-te:
-> >> Am 21.11.25 um 21:35 schrieb Rafael J. Wysocki:
-> >>
-> >>> On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> w=
-rote:
-> > [...]
-> >
-> >>>> ---
-> >>>> Armin Wolf (8):
-> >>>>         thermal: core: Allow setting the parent device of cooling de=
-vices
-> >>>>         thermal: core: Set parent device in thermal_of_cooling_devic=
-e_register()
-> >>>>         ACPI: processor: Stop creating "device" sysfs link
-> >>> That link is not to the cooling devices' parent, but to the ACPI
-> >>> device object (a struct acpi_device) that corresponds to the parent.
-> >>> The parent of the cooling device should be the processor device, not
-> >>> its ACPI companion, so I'm not sure why there would be a conflict.
-> >>   From the perspective of the Linux device core, a parent device does =
-not have to be
-> >> a "physical" device. In the case of the ACPI processor driver, the ACP=
-I device is used,
-> >> so the cooling device registered by said driver belongs to the ACPI de=
-vice.
-> > Well, that's a problem.  A struct acpi_device should not be a parent
-> > of anything other than a struct acpi_device.
+> I'll also note that as the hard TDP limits are refreshed when on AC or DC
+> by the ACPI notifier of lenovo-wmi-other method driver, no special handling
+> of the battery is needed for safety limiting extreme mode.
 >
-> Understandable, in this case we should indeed use the the CPU device, esp=
-ecially since the fwnode
-> associated with it already points to the correct ACPI processor object (a=
-t least on my machine).
+> Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
 >
-> >> I agree that using the Linux processor device would make more sense, b=
-ut this will require
-> >> changes inside the ACPI processor driver.
-> > So be it.
+> ---
+> v4:
+>  - prevent  platform_profile_cycle() from selecting max_power.
+> v3: 
+> https://lore.kernel.org/platform-driver-x86/20251113212639.459896-1-derekjohn.clark@gmail.com/
+>  - Rename the vendor specific "extreme" to a vendor agnositic 
+> "max-power"
+>    to better allign with the "low-power" platform profile.
+> v2: 
+> https://lore.kernel.org/platform-driver-x86/20251106212121.447030-1-derekjohn.clark@gmail.com/
+>  - Drop patch 3/3, keep extreme mode quirks table
+>  - Add Legion Go 2 to quirks table
+>  - Fix nits from Mario
+> v1: 
+> https://lore.kernel.org/platform-driver-x86/20251026081240.997038-1-derekjohn.clark@gmail.com/
 >
-> OK.
 >
-> >> As for the "device" symlink: The conflict would be a naming conflict, =
-as both "device" symlinks
-> >> (the one created by the ACPI processor driver and the one created by t=
-he device core) will
-> >> be created in the same directory (which is the directory of the coolin=
-g device).
-> > I see.
-> >
-> > But why is the new symlink needed in the first place?  If the device
-> > has a parent, it will appear under that parent in /sys/devices/, won't
-> > it?
-> >
-> > Currently, all of the thermal class devices appear under
-> > /sys/devices/virtual/thermal/ because they have no parents and they
-> > all get a class parent kobject under /sys/devices/virtual/, as that's
-> > what get_device_parent() does.
-> >
-> > If they have real parents, they will appear under those parents, so
-> > why will the parents need to be pointed to additionally?
+> Derek J. Clark (3):
+>   acpi: platform_profile - Add max-power profile option
+>   platform/x86: lenovo-wmi-gamezone Use max-power rather than
+>     balanced-performance
+>   platform/x86: wmi-gamezone: Add Legion Go 2 Quirks
 >
-> The "device" smylink is a comfort feature provided by the device core its=
-elf to allow user space
-> application to traverse the device tree from bottom to top, like a double=
--linked list. We cannot
-> disable the creation of this symlink, nor should we.
+>  .../ABI/testing/sysfs-class-platform-profile  |  2 ++
+>  .../wmi/devices/lenovo-wmi-gamezone.rst       | 31 ++++++++--------
+>  drivers/acpi/platform_profile.c               |  7 ++--
+>  drivers/platform/x86/lenovo/wmi-gamezone.c    | 35 +++++++++++--------
+>  include/linux/platform_profile.h              |  1 +
+>  5 files changed, 44 insertions(+), 32 deletions(-)
+>
+> -- 
+> 2.51.2
 
-I think you mean device_add_class_symlinks(), but that's just for
-class devices.  Of course, thermal devices are class devices, so
-they'll get those links if they get parents.  Fair enough.
+For the series - looks good to me.
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-> > BTW, this means that the layout of /sys/devices/ will change when
-> > thermal devices get real parents.  I'm not sure if this is a problem,
-> > but certainly something to note.
->
-> I know, most applications likely use /sys/class/thermal/, so they are not=
- impacted by this. I will
-> note this in the cover letter of the next revision.
->
-> >>>>         ACPI: fan: Stop creating "device" sysfs link
-> >>>>         ACPI: video: Stop creating "device" sysfs link
-> >>> Analogously in the above two cases AFAICS.
-> >>>
-> >>> The parent of a cooling device should be a "physical" device object,
-> >>> like a platform device or a PCI device or similar, not a struct
-> >>> acpi_device (which in fact is not a device even).
-> >>   From the perspective of the Linux device core, a ACPI device is a pe=
-rfectly valid device.
-> > The driver core is irrelevant here.
-> >
-> > As I said before, a struct acpi_device object should not be a parent
-> > of anything other than a struct acpi_device object.  Those things are
-> > not devices and they cannot be used for representing PM dependencies,
-> > for example.
-> >
-> >> I agree that using a platform device or PCI device is better, but this=
- already happens
-> >> inside the ACPI fan driver (platform device).
-> > So it should not happen there.
->
-> I meant that the ACPI fan driver already uses the platform device as the =
-parent device of the
-> cooling device, so the ACPI device is only used for interacting with the =
-ACPI control methods
-> (and registering sysfs attributes i think).
-
-OK
-
-> >> Only the ACPI video driver created a "device" sysfs link that points t=
-o the ACPI device
-> >> instead of the PCI device. I just noticed that i accidentally changed =
-this by using the
-> >> PCI device as the parent device for the cooling device.
-> >>
-> >> If you want then we can keep this change.
-> > The PCI device should be its parent.
->
-> Alright, i will note this in the patch description.
->
-> >>>>         thermal: core: Set parent device in thermal_cooling_device_r=
-egister()
-> >>>>         ACPI: thermal: Stop creating "device" sysfs link
-> >>> And this link is to the struct acpi_device representing the thermal z=
-one itself.
-> >> Correct, the ACPI thermal zone driver is a ACPI driver, meaning that h=
-e binds to
-> >> ACPI devices. Because of this all (thermal zone) devices created by an=
- instance of
-> >> said driver are descendants of the ACPI device said instance is bound =
-to.
-> >>
-> >> We can of course convert the ACPI thermal zone driver into a platform =
-driver, but
-> >> this would be a separate patch series.
-> > If you want parents, this needs to be done first, but I'm still not
-> > sure what the parent of a thermal zone would represent.
-> >
-> > In the ACPI case it is kind of easy - it would be the (platform)
-> > device corresponding to a given ThermalZone object in the ACPI
-> > namespace - but it only has a practical meaning if that device has a
-> > specific parent.  For example, if the corresponding ThermalZone object
-> > is present in the \_SB scope, the presence of the thermal zone parent
-> > won't provide any additional information.
->
-> To the device core it will, as the platform device will need to be suspen=
-ded
-> after the thermal zone device has been suspended, among other things.
-
-Let's set suspend aside for now, I think I've explained my viewpoint
-on this enough elsewhere.
-
-> > Unfortunately, the language in the specification isn't particularly
-> > helpful here: "Thermal zone objects should appear in the namespace
-> > under the portion of the system that comprises the thermal zone. For
-> > example, a thermal zone that is isolated to a docking station should
-> > be defined within the scope of the docking station device."  To me
-> > "the portion of the system" is not too meaningful unless it is just
-> > one device without children.  That's why _TZD has been added AFAICS.
->
-> I think you are confusing the parent device of the ThermalZone ACPI devic=
-e
-> with the parent device of the struct thermal_zone_device.
-
-No, I'm not.
-
-> I begin to wonder if mentioning the ACPI ThermalZone device together with=
- the
-> struct thermal_zone_device was a bad idea on my side xd.
-
-Maybe.
-
-> >>>>         thermal: core: Allow setting the parent device of thermal zo=
-ne devices
-> >>> I'm not sure if this is a good idea, at least until it is clear what
-> >>> the role of a thermal zone parent device should be.
-> >> Take a look at my explanation with the Intel Wifi driver.
-> > I did and I think that you want the parent to be a device somehow
-> > associated with the thermal zone, but how exactly?  What should that
-> > be in the Wifi driver case, the PCI device or something else?
-> >
-> > And what if the thermal zone affects multiple devices?  Which of them
-> > (if any) would be its parent?  And would it be consistent with the
-> > ACPI case described above?
-> >
-> > All of that needs consideration IMV.
->
-> I agree, but there is a difference between "this struct thermal_zone_devi=
-ce depends on
-> device X to be operational" and "this thermal zone affects device X, devi=
-ce Y and device Z".
-
-Yes, there is.
-
-> This patch series exclusively deals with telling the driver core that "th=
-is struct thermal_zone_device
-> depends on device X to be operational".
-
-Maybe let's take care of cooling devices first and get back to this later?
+Mark
 
