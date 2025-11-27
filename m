@@ -1,65 +1,79 @@
-Return-Path: <linux-acpi+bounces-19324-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19325-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217E4C8F2A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:12:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D665C8F37D
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B8B0E345997
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195E03B6D14
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533903358C0;
-	Thu, 27 Nov 2025 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9D23115A6;
+	Thu, 27 Nov 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrlaFN+D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CmxWzcQl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAA83358B8;
-	Thu, 27 Nov 2025 15:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62026257830;
+	Thu, 27 Nov 2025 15:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764256073; cv=none; b=Ok4qgxOwCFvVmU44Y4kYvP1P9P53ODFLeUilt53MRFX7HR6La2lK02hJHDN0AnYs/9kRbokm73m87I1Ei9YXptEhi8cd3K4+pw1ypNV111C5uKxKmkhYTMxGwIUmUwdXg226aWcNpq+jgNURYmqcIMCs0RmJj0irPnnREsiJtFU=
+	t=1764256270; cv=none; b=nFXdPzP4dj4OPjflTUv3BXEUZW7TAdqlsEn0DMH+WTuePF/0ha7hjGTQE8aSP8zLvMpNfwGvZHJHgp0Kpzg9v6iquHbFfooQ4JAlWy9NXKofLIvf5GemRs1xxiw/vez64MCkAa41x6oUfdPPvVpsuQErzrhAcqYuUsVDgJ1od78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764256073; c=relaxed/simple;
-	bh=ljqisYxitm41njQJO3ODA5Tj4UjflqDfTeVkqfWZ5wc=;
+	s=arc-20240116; t=1764256270; c=relaxed/simple;
+	bh=VbGblNVtoDSl589XQ7oYPodErP1t6oS9NvvWeUPMmGU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jk1fy71aAuE7eNR6dpl6P0QQx125+qQ6a3zjGa326ZNXsMadSA276L7O20VlY6nGw+WN9F6IVXVQbfn2ZMDo7pGyoQ+FZNBcVgPzHamfubEbapM45snYKKVFOLjsUBMgHk9Jf+BBGZqMJm9K9imN8rNDBZC/gAiewRcKUFnW144=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrlaFN+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE99C4CEF8;
-	Thu, 27 Nov 2025 15:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764256072;
-	bh=ljqisYxitm41njQJO3ODA5Tj4UjflqDfTeVkqfWZ5wc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NrlaFN+DxhPEopF4u1BSSkEWsdgz3Zjc007UUR282fJ8vAQzbEdZjKK63IwiF8dt5
-	 JXXUdSNtsKzOnEp5K9GgMfxSnGwYFDehW4B7hpuJ6hwQsUzqXfpBzEF1wmFq1LFNxD
-	 FFQCgevTmbhGjxmUVl3SXTGJly3BWOLNji71u0f5FnLluk3LLuc1L7xWIXH4otX5c1
-	 G431auMrbTS8eOgxpn6GdsM3l+9iA+z1rqokCx5CmjpbbjCiMbdDmAoO4+qTQTP5aZ
-	 BUX+DRiINTx3Mnd3zeccaodqPpn7oRJl16g/TKtVld9UL/fR3myD5XmhVlWSfx/gMg
-	 uglyXPyqSwL9A==
-Date: Thu, 27 Nov 2025 15:07:47 +0000
-From: Will Deacon <will@kernel.org>
-To: Hanjun Guo <guohanjun@huawei.com>
-Cc: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH] ACPI: GTDT: Correctly number platform devices for MMIO
- timers
-Message-ID: <aShpQ4iDceJ7-Nzs@willie-the-truck>
-References: <20251030110115.1842961-1-maz@kernel.org>
- <c1edd6cc-0542-8d22-6edc-60c619c9e162@huawei.com>
- <861plrsr1l.wl-maz@kernel.org>
- <5a742d2a-ac57-f060-913a-6bc9db1e71a2@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tq4n+jRRk7rFXzbZ4aS48y0K+jHL2dHKjVSCPjH51hDzcsiX+QOQqTkV38EXElh/D70Us9s3XZu0tvJ5ykybG+Gi8H77ux6OQriuyJVQ7/4U/HMHltwOlxNgnVLs93COsNulDdpr0F2xelAMzAZutyP5+/D3DNNCfSDpLKxvef8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CmxWzcQl; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764256267; x=1795792267;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VbGblNVtoDSl589XQ7oYPodErP1t6oS9NvvWeUPMmGU=;
+  b=CmxWzcQl6ySzVuEbXBH0HD/L5b7YtvNRK0iXe2S6SHfgeKG0MVVgtQVr
+   ZoetXl3jm+uMqQNVkfyOCwGZcVO58sVJzwxT1hTibj8Z2uzoOalJSaP0o
+   2oMLVtc9XYlmGp1epCLGt0//iqz7nWgYuO3Pz98glvhcNK0hBmRgG+lbk
+   lY358zDtmce2AHjCcZ+QXZqw5Xxxx7g2MjI7eUYjud/QR3yBr6fj1mU+u
+   x31FmKnnrrjsS0QJH7N3WxdNHhbAhXheY2SKi6b23XLsjeQqJzv8ybW7f
+   8IiBqag2Rm0VnnmoEioNyUNISnC5TvbPW6Inf4HwO9fPi4loj9jTcylJ+
+   A==;
+X-CSE-ConnectionGUID: N1w8YxQnRB+c1vriB+cDLA==
+X-CSE-MsgGUID: USyFNjLlRJu9NtwR5mDdKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77409050"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="77409050"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 07:11:07 -0800
+X-CSE-ConnectionGUID: hONJ7WbgQjmgi56mrkxaaQ==
+X-CSE-MsgGUID: pV5bBdvaQwOK23dYa6rF6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="197569264"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 27 Nov 2025 07:11:04 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vOde9-000000005C1-238z;
+	Thu, 27 Nov 2025 15:11:01 +0000
+Date: Thu, 27 Nov 2025 23:10:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Huisong Li <lihuisong@huawei.com>, rafael@kernel.org, lenb@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com,
+	linuxarm@huawei.com, jonathan.cameron@huawei.com,
+	zhanjie9@hisilicon.com, zhenglifeng1@huawei.com,
+	yubowen8@huawei.com, lihuisong@huawei.com
+Subject: Re: [PATCH 2/3] ACPI: processor: idle: Disable ACPI idle if get
+ power information failed in power notify
+Message-ID: <202511272227.w1fgoiKQ-lkp@intel.com>
+References: <20251125072933.3706006-3-lihuisong@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -68,71 +82,37 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5a742d2a-ac57-f060-913a-6bc9db1e71a2@huawei.com>
+In-Reply-To: <20251125072933.3706006-3-lihuisong@huawei.com>
 
-Hey Hanjun,
+Hi Huisong,
 
-On Fri, Nov 21, 2025 at 09:14:04PM +0800, Hanjun Guo wrote:
-> On 2025/11/21 16:55, Marc Zyngier wrote:
-> > On Fri, 21 Nov 2025 02:53:17 +0000,
-> > Hanjun Guo <guohanjun@huawei.com> wrote:
-> > > 
-> > > On 2025/10/30 19:01, Marc Zyngier wrote:
-> > > > Use the actual timer counter instead of the watchdog counter.
-> > > > 
-> > > > Fixes: 5669d92f3efa4 ("ACPI: GTDT: Generate platform devices for MMIO timers")
-> > > > Reported-by: Pavan Kondeti <pavan.kondeti@oss.qualcomm.com>
-> > > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > > Cc: Hanjun Guo <guohanjun@huawei.com>
-> > > > Cc: Sudeep Holla <sudeep.holla@arm.com>
-> > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > > Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> > > > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > > > Cc: Mark Rutland <mark.rutland@arm.com>
-> > > > ---
-> > > >    drivers/acpi/arm64/gtdt.c | 4 ++--
-> > > >    1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> > > > index fd995a1d3d248..8cc8af8fd408c 100644
-> > > > --- a/drivers/acpi/arm64/gtdt.c
-> > > > +++ b/drivers/acpi/arm64/gtdt.c
-> > > > @@ -430,10 +430,10 @@ static int __init gtdt_platform_timer_init(void)
-> > > >    				continue;
-> > > >      			pdev = platform_device_register_data(NULL,
-> > > > "gtdt-arm-mmio-timer",
-> > > > -							     gwdt_count, &atm,
-> > > > +							     mmio_timer_count, &atm,
-> > > >    							     sizeof(atm));
-> > > >    			if (IS_ERR(pdev)) {
-> > > > -				pr_err("Can't register timer %d\n", gwdt_count);
-> > > > +				pr_err("Can't register timer %d\n", mmio_timer_count);
-> > > >    				continue;
-> > > >    			}
-> > > 
-> > > "typo" I think :)
-> > > 
-> > > Acked-by: Hanjun Guo <guohanjun@huawei.com>
-> > > 
-> > > Will this go via ARM64 tree?
-> > 
-> > Is that where the ACPI updates are routed to? This fixes a patch that
-> > was routed tip, so I'd have expected this to go via the same route.
-> > 
-> > In any case, I've added Catalin and Will on Cc.
-> 
-> Yes, ARM64 ACPI code merged via ARM64 tree.
+kernel test robot noticed the following build errors:
 
-Catalin and I were chatting the other day and we wondered whether it's
-worth adding something to MAINTAINERS so that we get CC'd on arm64 ACPI
-patches without you having to add us in manually? We wouldn't merge
-anything without an Ack from somebody listed under the "ACPI FOR ARM64"
-entry but it would mean that we get picked up by get_maintainer.pl.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.18-rc7 next-20251127]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-What do you think?
+url:    https://github.com/intel-lab-lkp/linux/commits/Huisong-Li/cpuidle-Add-enable_cpuidle-interface/20251125-153615
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20251125072933.3706006-3-lihuisong%40huawei.com
+patch subject: [PATCH 2/3] ACPI: processor: idle: Disable ACPI idle if get power information failed in power notify
+config: riscv-randconfig-001-20251127 (https://download.01.org/0day-ci/archive/20251127/202511272227.w1fgoiKQ-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 12.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251127/202511272227.w1fgoiKQ-lkp@intel.com/reproduce)
 
-I can't tell whether this would be best as an F: line under the arm64
-architecture entry, or adding us as R:/M: for the ACPI/arm64 entry.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511272227.w1fgoiKQ-lkp@intel.com/
 
-Will
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "enable_cpuidle" [drivers/acpi/processor.ko] undefined!
+>> ERROR: modpost: "disable_cpuidle" [drivers/acpi/processor.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
