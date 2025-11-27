@@ -1,44 +1,44 @@
-Return-Path: <linux-acpi+bounces-19322-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19323-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24094C8F02B
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:02:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BD8C8F02E
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C0133B71AC
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 14:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEFF43BCAB8
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 14:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9C335087;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF458335099;
 	Thu, 27 Nov 2025 14:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IgAgdKgo";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IgAgdKgo"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KYU033Za";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KYU033Za"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013067.outbound.protection.outlook.com [52.101.72.67])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD4334C19;
-	Thu, 27 Nov 2025 14:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE9A334C0A;
+	Thu, 27 Nov 2025 14:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.54
 ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255296; cv=fail; b=SIYHLqIB05Rv2uT3KuVNgyVD2u2cMZH7Mvr2rCn8cf7f4OK4EtyPHXpHsQhBhFPlOkyeoxykgdsBzFwGFcoqrfaFQK+FVXODNke+o6qN9I1QlirG53l+Nxt8PF8eU0s3kHycDyQV324dSFyk4/gPwDvls/iUGFrjwPgQdQaO0Tg=
+	t=1764255296; cv=fail; b=ILLed6ymdk4GmDKzKmQGvs+oT4ZJpZDMQLVvA0bfnimWJ/dPfyiTj9djLHRorrM0pjQN5lOig/PG2kMslbajsWe6QXYQO3oFRfFBbBJ8OxGQfaOQKu2mrgmi0DF3IR1c6GjgZV2vxUo/++vxSSawIknycxb37frvrqjeI4JtN7A=
 ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764255296; c=relaxed/simple;
-	bh=xtM6+wsWUEZimjNIELZJT2G5e+g82xFpx54FLphSlVE=;
+	bh=NSo4XRehT3h6B5nSiMWtJcxAsmhlrGgv8Yw4M/TnrzM=;
 	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ga1Uyb6CfQdOYSKTNScAMxVQfAL9vg/sTc2SVHcbrBjEpi1KibnGS/bu2TwCz+h+AlIJkHnJwgPCmoeMCkj3mWDjzoWFXe4N6tQbl7tzVlSckVT7IzfiY5umH7DMTx6VGDPeEDut2qPHHh0WkKTXGjzg+vt+SMeqVnLzjcdQWIA=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IgAgdKgo; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IgAgdKgo; arc=fail smtp.client-ip=52.101.72.67
+	 Content-Type:MIME-Version; b=LKBTW9lJLidYMvzzLeNuIhpZ5kakSknUL13NjiMLWdrquCQ3imoGwwDsoaFxsJMbGlWOFX3v5asXgfjv0H8ypBQty8XfhpLSuQUI9E+zsnDU2p598Hpg7y+1E1ffDhU7RPMD/xi42mcv1y2KPbl3469qCPbYoGtpz55a/ztnQQs=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KYU033Za; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KYU033Za; arc=fail smtp.client-ip=52.101.66.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=QEVYACmCEctiUT8ipU6eJDwZgBCWGFEct2e7e2xuvzBhwYOuEnhQwvMAS/y+/KBvknDbilb3k1yu7F/LOl100Jagt0fJHtvRCp2uEPSENAUQ+jAlNnjK1DHag3DWLsWHBw86jOWYFDf8s6JGqFm8gcuF/YOiHxSgkXhqSYRfyTDDid2/2qj1AGuAjE/HaR+uQbiDlyW/YtI3XtuLRBfPsNmLRYEYzL88CHueNlkNFX48qdX2F32Qedq0fqyOVHX+EvTlwpbOur+qkB9Sw2ZxWIBhxvjIYM1j9BHRIDXeUTFnYzSTe28luuMAFR0KRuNjrLHXG8db989YkDNIGw1w8g==
+ b=Ca7OCriyvTpslAz4/YW333npjSR+NS7gItm8nns1NsrwqUdqYqKJuYwlTypcvJ5kFwFo4d/Qgryi5m0lUo6m94YgALypURPQQacyeXIrcE+GBtfRnGvjqIWRjZrNhVH02WWrfBbx6trowKdtTpzNnOyLzu+VnR1pNvhBZ9fyKSwDjpDr/OOA02jMClN1+S1nLrnlU3nfUV1ffe5arXvkpfs6Gbp6cMNwaIfFjt9a/ULUkNdDiWBNjU9f73Y9KmlO0QeeuwSxF/HFTCc42Mtv5u7xDhwWFHImWbI9zZ12cg/RVS3282n03Nz0UaRNxzWQel1T0uMZ93G7VVti+fMdbA==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qwxxnCSupYXy93VAAKsncS7R/ZTlq7HRxrIa0gIObZk=;
- b=ehfPXNPlBpijHBjfxzUeBGvWXZZZ6wgbRSznW67ebV8IJ6nKvke5mXssNPwFnwhOfTQfQhKINzJYp6Eei6S5hppm9dWZHF6JB3Uq9+Tm6LLpXBGoEIUloZIlB0jesW0ZaRkzSR7B0UymHBuMP6Ms2Y7C65dIhuMtamyYgGHydjPusSvPen9oGrRhDKOUHW0S5JlH63ge/aArb80Ay8IMnAxfeSvz7CQa71+YVRjbGnIyh1oRYSKiTVWo6UOP/Z7F2IKJYFG4Dj/RSH3fEOsJt7TXleiwheirVa010CUhIrY+YXx433jHvdXXI+H51Um2seRVPW05KlfHKf/tJD9oew==
+ bh=OFhpovNIW4zoU6IpWBva3F+yRZ5QcDQYLcPce/PdK/g=;
+ b=wRuQgSQtdfIO3YZQ5mcCHicOuRHz9AeaA+taG0AicocU4W436Eo/M9h/7pC9IaJnvA/UYegVD4WbRqufcDb3dB5aQVd3jlyNgnuhnNpBysbZ/XBPpJTBa0rqECOpk1CUOyt1TgRXpDEL+ifNKVCaODjkbqA+P84O0h/D+jTMxUsJG/6ozdSVKMiPTLnJstYH2/pruDv6yPnp9xMUahruZ9eyXoOvFE96Jsd3yPOJpy2Dj0VOmajaMHQDZXFJ9AND2BpDn4KIVeLtBBmS38llU7Jweojjgfu2uYfoLOQhu3hKBZWdtNQV76Tb8yaa5cpwZDwlY1bfBWBZNQA9D5S7bQ==
 ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
  4.158.2.129) smtp.rcpttodomain=nvidia.com smtp.mailfrom=arm.com; dmarc=pass
  (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
@@ -47,17 +47,17 @@ ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
  dmarc=[1,1,header.from=arm.com])
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qwxxnCSupYXy93VAAKsncS7R/ZTlq7HRxrIa0gIObZk=;
- b=IgAgdKgoasWd5pmQbl4C7gPE/Q0I7v5/q0vXyxDapa88w6QFMebKjIhTgBCib1yI3/fWpcfFPaJS+uO/yMIFlGd2JwILzyAJ+2U3fajFsQ/1x8T/CbzNwODglAw3L6/NewWiutfB9qhZamCW6GO+ygyf8oUoAmccrIsyOx7fzec=
-Received: from AM9P195CA0017.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:21f::22)
- by GV2PR08MB11740.eurprd08.prod.outlook.com (2603:10a6:150:305::6) with
+ bh=OFhpovNIW4zoU6IpWBva3F+yRZ5QcDQYLcPce/PdK/g=;
+ b=KYU033ZaQLw4yRhR33flC/6b5jWzJ4AO7sQVo1xAhH7OhrNuU4wncj7Jw+QONCBGx9ijKL7Z+h9ibztvuAHKjPQvb9xBvQI9YMAmgootDgfJHwQ4U+vsIBL9TBC4ctbslyCmYKpLbcbjhL4jOo+yza0wbF5IGdOVme5ZmJf4AI4=
+Received: from AS4PR09CA0012.eurprd09.prod.outlook.com (2603:10a6:20b:5e0::15)
+ by PAWPR08MB10258.eurprd08.prod.outlook.com (2603:10a6:102:358::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.14; Thu, 27 Nov
- 2025 14:54:47 +0000
-Received: from AM3PEPF00009B9D.eurprd04.prod.outlook.com
- (2603:10a6:20b:21f:cafe::78) by AM9P195CA0017.outlook.office365.com
- (2603:10a6:20b:21f::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.14 via Frontend Transport; Thu,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Thu, 27 Nov
+ 2025 14:54:50 +0000
+Received: from AM3PEPF00009B9C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5e0:cafe::9) by AS4PR09CA0012.outlook.office365.com
+ (2603:10a6:20b:5e0::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.14 via Frontend Transport; Thu,
  27 Nov 2025 14:54:46 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
  smtp.mailfrom=arm.com; dkim=pass (signature was verified)
@@ -66,58 +66,59 @@ Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
  4.158.2.129 as permitted sender) receiver=protection.outlook.com;
  client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
 Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM3PEPF00009B9D.mail.protection.outlook.com (10.167.16.22) with Microsoft
+ AM3PEPF00009B9C.mail.protection.outlook.com (10.167.16.21) with Microsoft
  SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.7
- via Frontend Transport; Thu, 27 Nov 2025 14:54:46 +0000
+ via Frontend Transport; Thu, 27 Nov 2025 14:54:50 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uaggXSXoweY/GxFyNZAvN7zYKJKoH3j8QSalJwN4/UFo6SzWwhiOG3a4aYhzBSdglOVqSgCQfVmWsXw4aNhhn0yKc8LuiiqH4LeUtURcRQeCpOQ6w8nLquXuvQIlmJfXVt247l2lDNzxpps8IdbSU7UssQWaedSCFMG3vQ4uZCpVuITA1iqbMBFTql39fXzkdYL+o474mXUHcjtHc4YXXS6lLOiKuxNqpTCq7k1WJwFNR9Keci1Pmpr44RvnBpuuiROSxR7NEV49n7Zilpzn8a/ZsgWCR4xAd2IEmyWs7gzh/K/UlXGMOHC9VLzcTKs6doV9SoHF7wb4siPF0Iz8oA==
+ b=rgv7jYny2dFUlwd1AICf0nA5OTyHUfaM95K3QYV13fshaspYnWNT2OMFHNJj+07PJrAHlb3k1Yy/7wW6JxXQiEkegf+XaCUUX6s65S173idaxqHg55qRj9I5cl8I8VAlj0RsjSaL4jG5uCWCNm/z7UFxamUHB29kdKkbQGz14NdWIFg4+vYeRtgVnuWgYqQsvSwmi+uSyGUhcvvoJB/y2Z+aRjuxmoiHV1c2baW6QmeBhVIogowon8lK+e9x4/3rGGYrwAPdBM8BecFdsqs3ukLvaFPvxBaqCN5TIIHac/JK4HiRZ8LONjHK6DjzIJGvj59JxcUVPdZ6SwLOCs2JTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qwxxnCSupYXy93VAAKsncS7R/ZTlq7HRxrIa0gIObZk=;
- b=mT09sk+k5VwO3959KrfxmA5O5vwRC8E48tDud6/fRdn0cKYtfUGV85j8/w+JjynrtP6nZPwCjSj9KXJnqkFeBowgOJUdPlHof3aObcANc8oFXYxP84mk3AeeWWYbH34j8E8DPq8BFsco6B/Fqatm5u8SmbBbiMbSqgXn5k1IIqNDRHEOXiHQKyyT2ovrVVDoz3UYzbncZN4oLvh6ub7v5ZaJ/RGo9DRYHBlJZoElp+CrBMmsh5p/RXKjm3Su4cO6OsWRLtp3/B+AZHgMLmAts2crk08pSFE99vo0RFl+lrrxLkonWzVisqb65iKGPkbAy8NdqT0sgbiOyqP9ysLHpQ==
+ bh=OFhpovNIW4zoU6IpWBva3F+yRZ5QcDQYLcPce/PdK/g=;
+ b=IJBgwMrPKCrMltZOxKGqhd1BfdT5ftuhT8A/AdvIRgOFAq53/zvSf+0o2HJx6+xhqUmzGKY1nUlsa8Jd/wRmNtiMZMA1yXXtPZY5CxW8vXuCHw+ZKuTCa3G/UqiBT0OEBQAOaAcWxof5BAp2LSDt7aZk71OVPAW9rMyP1RRsVpTDI7/6eAnaiqAe1d3RgG5ujVUg3kXZhMxkV5CP/zXbrmYvCaK2KkINHKB8eX7KMCSdLR2QJQ1IVHddq6aCzobX16fGMYGDokgHUqtC6yo19ML0NXcG9C6VSbbLy1Qxo8EmPmQFXG0kwIXNq37GjuYeC4xFhy9XU+UQRfUSuptRbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
  header.d=arm.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qwxxnCSupYXy93VAAKsncS7R/ZTlq7HRxrIa0gIObZk=;
- b=IgAgdKgoasWd5pmQbl4C7gPE/Q0I7v5/q0vXyxDapa88w6QFMebKjIhTgBCib1yI3/fWpcfFPaJS+uO/yMIFlGd2JwILzyAJ+2U3fajFsQ/1x8T/CbzNwODglAw3L6/NewWiutfB9qhZamCW6GO+ygyf8oUoAmccrIsyOx7fzec=
+ bh=OFhpovNIW4zoU6IpWBva3F+yRZ5QcDQYLcPce/PdK/g=;
+ b=KYU033ZaQLw4yRhR33flC/6b5jWzJ4AO7sQVo1xAhH7OhrNuU4wncj7Jw+QONCBGx9ijKL7Z+h9ibztvuAHKjPQvb9xBvQI9YMAmgootDgfJHwQ4U+vsIBL9TBC4ctbslyCmYKpLbcbjhL4jOo+yza0wbF5IGdOVme5ZmJf4AI4=
 Authentication-Results-Original: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=arm.com;
 Received: from GVXPR08MB10408.eurprd08.prod.outlook.com
  (2603:10a6:150:149::17) by DB9PR08MB7891.eurprd08.prod.outlook.com
  (2603:10a6:10:39e::15) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.14; Thu, 27 Nov
- 2025 14:54:13 +0000
+ 2025 14:54:18 +0000
 Received: from GVXPR08MB10408.eurprd08.prod.outlook.com
  ([fe80::7727:253f:2e85:efb8]) by GVXPR08MB10408.eurprd08.prod.outlook.com
  ([fe80::7727:253f:2e85:efb8%5]) with mapi id 15.20.9366.009; Thu, 27 Nov 2025
- 14:54:13 +0000
-Message-ID: <23baedfe-176a-42fd-9e5c-c8ad78107708@arm.com>
-Date: Thu, 27 Nov 2025 15:54:07 +0100
+ 14:54:18 +0000
+Message-ID: <1decddd7-54d7-4e7e-922d-b68b901bf9aa@arm.com>
+Date: Thu, 27 Nov 2025 15:54:12 +0100
 User-Agent: Mozilla Thunderbird
 From: Pierre Gondois <pierre.gondois@arm.com>
-Subject: Re: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface for
- min/max_perf
+Subject: Re: [PATCH v4 5/8] ACPI: CPPC: add APIs and sysfs interface for
+ perf_limited register
 To: Sumit Gupta <sumitg@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-pm@vger.kernel.org, zhanjie9@hisilicon.com, ionela.voinescu@arm.com,
- perry.yuan@amd.com, mario.limonciello@amd.com, gautham.shenoy@amd.com,
+Cc: linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+ acpica-devel@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+ zhanjie9@hisilicon.com, ionela.voinescu@arm.com, perry.yuan@amd.com,
+ mario.limonciello@amd.com, gautham.shenoy@amd.com, ray.huang@amd.com,
  rdunlap@infradead.org, zhenglifeng1@huawei.com, corbet@lwn.net,
  robert.moore@intel.com, lenb@kernel.org, viresh.kumar@linaro.org,
- linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
+ rafael@kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
  vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
- nhartman@nvidia.com, bbasu@nvidia.com, rafael@kernel.org, ray.huang@amd.com
+ nhartman@nvidia.com, bbasu@nvidia.com
 References: <20251105113844.4086250-1-sumitg@nvidia.com>
- <20251105113844.4086250-5-sumitg@nvidia.com>
+ <20251105113844.4086250-6-sumitg@nvidia.com>
 Content-Language: en-US
-In-Reply-To: <20251105113844.4086250-5-sumitg@nvidia.com>
+In-Reply-To: <20251105113844.4086250-6-sumitg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0125.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c6::11) To GVXPR08MB10408.eurprd08.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P265CA0124.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::14) To GVXPR08MB10408.eurprd08.prod.outlook.com
  (2603:10a6:150:149::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -126,8 +127,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-TrafficTypeDiagnostic:
-	GVXPR08MB10408:EE_|DB9PR08MB7891:EE_|AM3PEPF00009B9D:EE_|GV2PR08MB11740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d0c55ab-aa5b-4482-06d3-08de2dc4e85a
+	GVXPR08MB10408:EE_|DB9PR08MB7891:EE_|AM3PEPF00009B9C:EE_|PAWPR08MB10258:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75b7b59d-3b59-4433-4f7f-08de2dc4eac7
 x-checkrecipientrouted: true
 NoDisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
@@ -135,498 +136,234 @@ X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam-Untrusted:
  BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info-Original:
- =?utf-8?B?S3d2YTgxNzFoV2dNSFAxZjYwSGZsd2NmMVg2QWFVZ3lOWTk2QmRRdnhWR0tI?=
- =?utf-8?B?UDFOcWZKSHY1UTdFbEVObk95Z0ZHaWpRTjBnTHlXV05jSXljZEFHcUhyUjhh?=
- =?utf-8?B?ZzJwSHpZeUJBZHNlcHppR3Z5TnBMdkJ1Qm1DMHhleW5XUTUzeFE1Q2x5Q0Zu?=
- =?utf-8?B?emZWSHkraFBQQ0w4K1FhczBHZkIvTHFQdS9LaXZ6d0lXa0Z2STVHMktqeXdV?=
- =?utf-8?B?YUFRYzJXRzZQVVFQb3AwU1ZzNHBGVEM5L0ZXWTFRSXM3SzVIY0RrOTEzS1BV?=
- =?utf-8?B?SElSTkN2OHhHdStMZDZwR01nZi9KTit2QytsOFBGN2MzSnpjbUpRNWdkU3py?=
- =?utf-8?B?MHh2a2VEZ0Vuc0JmbW1mR3QwdkJOeGlxUW1lMEtvazNoYU9tK2lQV0RmVnJT?=
- =?utf-8?B?eFRlVDZMM0xpSHpldEIzeTFlRnZ6UHdrRUxCWk5ON3p5NDE5SXF5cTZKU1Br?=
- =?utf-8?B?UkkyQ0tuL3dMbUNvc1p0RnBVMFQxRC9VVkQyYzRybmM4NmhBL211NHNTNm01?=
- =?utf-8?B?ZXhZdThWZHZuaENzbVdreDRRdlgvVlFTV3kwaFlJVnE4Q3pTRC9tNlh5UHhh?=
- =?utf-8?B?cUNEb0FtckpTY0JadVg4RFNyNFVFT3JQeTBiSW5INVZKbXltYm5GK0lkZ21r?=
- =?utf-8?B?WFlIRnJ1ZHhFWUtvV2lhVDdoMFN6MmtSNnFZTXQrSTlvbm5lTStNSkhsa2Qw?=
- =?utf-8?B?RVhxcGE2YllURC9qMGo1ZVBEOVZOeWErRUx0ai9veXFiTDVHL1JtMHpwNUdP?=
- =?utf-8?B?RlVWWHBLczlEZTZML1JzNmprYWM0SXZ4UWpYWFJlWGdBbGJaeFlObTQvTjY0?=
- =?utf-8?B?Q3NjT1hkRVVibURIRU9hV3pyUWFhM2dma2pLSTFVVEFxajd3OW9sR3JrL3FC?=
- =?utf-8?B?aFMrYWpub3RCZkpSTWI4WmZsRlJ1VkRuWHkxM241UHhSYjJZOFREellLS2E1?=
- =?utf-8?B?MXdVVDdmbWlHbFZoSFF0V2N5UHZsdS9ydlBiY0VNUmFUaFV2VE1JdnVnbkZG?=
- =?utf-8?B?bWdsbU4xdjlsdG91VmpPS1dsVWZ4L0ZTTXlqbkFsSDlMSHRhWEo4enI4MUR1?=
- =?utf-8?B?Rk8rUndTTWFBd1pTK3M1bUUvdGxtek9pQ0JUcnV6TGV0blZkU0c5RVNUMVl1?=
- =?utf-8?B?aXZRaEg5aFJOUVZyVXJBWEZwQmpHS21KZlVxcTV2dmZLMjNaamNXSkZJQlhQ?=
- =?utf-8?B?S0RXa0lsaFR5RVVsNVpmanhZSy9HOGRjMEZWZ0dVYkhOMlBQTnFZREVBZ1RM?=
- =?utf-8?B?ZTFMZ1VZczJlLzY3aWRyY3dMR0tXVVE0dkM2YllIcDV5UVZNdjVtNURQck9p?=
- =?utf-8?B?bjFTMGhqSURBaU9vK2VzTFpHbEJjNVNHcU5rY1VMb2NweFRuKy8rTTlraGdK?=
- =?utf-8?B?Vmd5ZEVBNGV5THlNYWdFQTBlSmg1cVRodXRCUEtCTXNacnU5anhMc3drM1By?=
- =?utf-8?B?VnJTRGZobDVOSFViMG5uZ08rUXlQYXVDLzhiM1QxVVB3QUFZZEU0b2F0QUJR?=
- =?utf-8?B?K1JKRnI1d0FoRkVlSTEwTStYMlhnVkJBTGtGU2NBTlpMNmxmeE9ZN1NQdTRU?=
- =?utf-8?B?ZENNVmIzWG9qQ2EzUjJwRWNoWUVUb29YZWRNWDZuc3BCNGFkSUpIZzdCbVAy?=
- =?utf-8?B?dGVMbDkyZ1p0REJPekg1RlVXaUNvMS9tN2ZnQ2s5Nk1yWWR5L2lZbmVyTStS?=
- =?utf-8?B?THlQTHRvVDFtZjFGZTVHTEJla1Z4MW5vaHFaaEZTN0MvRmwxeUpQOXpPeFpV?=
- =?utf-8?B?MFI4UWhTanluZkJXTHNwcTdBNXZwQlM2WUtRNTBPS0RNUlNvbW9OWTZaUkp5?=
- =?utf-8?B?K280QkNZUitlZDhIYkFWaTFJY20vdHZFbFJUb2JWaWV1ZmhVdml4NW41cWlv?=
- =?utf-8?B?MzJQMVhzbDJuSFZYaTN3RENZaWRtM0xhS3c4VmpMMmdiczZTMGxESWtQNjV5?=
- =?utf-8?B?TTZoS3A2UFh6eGxEZGUrSENUYmkrbXdNWEFsMWl4SS9pcjl5dTFkL0Q5Q01Y?=
- =?utf-8?B?NnViQ1FTbWNBPT0=?=
+ =?utf-8?B?MzJWeU1odHprZkovVmt2MWtUOURaMmJWMHV3czJmWHF1c3FzWjd1RmFyRWJz?=
+ =?utf-8?B?UHpyczdKYVlZdm8ycVBXZmx3UkdIaUYvdzdQb0hncXRJM3cveGpobmxEaklQ?=
+ =?utf-8?B?ckZQOUVWbjY3bDRvNWpUc0tiUDNFVmtNbGYwYmdCbXVsK0RDQWQvNlpuQit1?=
+ =?utf-8?B?aVZpQmVOclJMTVg1L0NXYk5WSVM3S09FZENqNlBQL1RUcHA4Zm9UZ3dBQ2Zw?=
+ =?utf-8?B?WnRNMUdGTU9mai9VaFhqTHRxQUppdmVPMlRpbzZwdjZGUWN5Snd1NkQ5ZCtn?=
+ =?utf-8?B?OHdqb3Z2OENNT2tCMlFyYjdub0pJWEZnWVRrNG9LYU9ieitCdm1pVTRDbVor?=
+ =?utf-8?B?ditrSys1RXpkbmtJZTZYZnJNa2YyL0VMakUwcER4ZFZuZmlnd3lmcmU1WEtK?=
+ =?utf-8?B?VkRtRjl3MDlUeXZveFVDb2d4MlRkUlZPVlJQaUtDV1l0UEEvRWVrMmd1Vy8w?=
+ =?utf-8?B?S1BHYjJvTTJRSEV1dnZqUkFzeFRzRzkrS0FjMWNuSHQ4SXJyMjI2YTZaNjJi?=
+ =?utf-8?B?QlhYWDA4S0dxd0loSDlmY2s5ZkdnQ1VaeEpMdHBXNHhsdjJQVEJ5MFhGUXRY?=
+ =?utf-8?B?dmJEWjMvVWZDeFQ4SnFPUlVqU3RKaHZlc3g5cDY4bVpNVmFHaGhQTXIvSG1z?=
+ =?utf-8?B?NGtrSnVMOUZ6aFNMZ0d2NWpIQ05SOG94M0dLTVU5dnJkOUsvY3VkRi84RmhS?=
+ =?utf-8?B?OFduWlJUQko5ZVlQRXN6MmJ3RUM3NW1MdnlkYnNnOHpwN1pXNFlOeXFVOFNx?=
+ =?utf-8?B?VUlHNG9SS0IzRG9lcnI4OUlDWjJrVGtOdndGdE9CODhuYlVrMDBlTGhjMUsr?=
+ =?utf-8?B?N3RmeFpPbjJQNmtIZ2lCQ3VSNU9vbU1XVzk4RGFjYXpCZWxZeXgxL1lxdjM0?=
+ =?utf-8?B?WXJNUGZZb3FvWVdxN3l0dVJvT2g5cWVMNFk0Um82eEdhZExLZXpaUFUxTkFy?=
+ =?utf-8?B?LzY0dkVmWWxBTmVBTGlkRDJRYVRvMHBUT3YrNjN2V3Y0WURka251WEFOTGhI?=
+ =?utf-8?B?eUYvSUNqa2tNaGwvbk4rTmtROExoVllyN2pPVTdZYWt2R29nN3RoZFlvWEZ1?=
+ =?utf-8?B?VE5oUS9lbzlReWxBckNOZi9MTlQ4dkJUWm5mdURza1J0N01YaDl5dkNNRzVz?=
+ =?utf-8?B?Uk0zSklOK2U2RVlBcjBIS0dHWDRSUVhuZGI3MXhTVExSa0NsUEdkZStVQnlz?=
+ =?utf-8?B?bkNaWnlmdXdra3FURXNpQ2hYWThQUDZFWVpQZFBnNkpxZzREekd5VkFlVTR5?=
+ =?utf-8?B?aWRWN21henZwMU8rdlR1anVGMTVhOC9pN2dzQTZaMWxGWk5sR3FNalVtK05T?=
+ =?utf-8?B?UFV6WGxvNFRKVGYzMHNiK1RaZUUvL1dzK0FONU1CQi90QXBsbnp6ckxNUzRS?=
+ =?utf-8?B?dkczclFvMElJTzhocmdwNVY0WlZ6Y0czQ2dvM1hYWkxaSlB5eGVhdlZKQ2Fz?=
+ =?utf-8?B?U2J0bktqTGhJWC95b0lZdkp0QnU2MU85YS8zQnFndDZSYlM1Nmd0M092dmhs?=
+ =?utf-8?B?RDJEQkg1alJUUEFvcGdOLzdxSGRxVjVlazJiRG4wTXE2MFNwb0NUSU92V2th?=
+ =?utf-8?B?TVpkWGE3MmxoZTlzWTd6SkRNU2liTktDVGZJRGxRakNueWVSNUxPYWl3eXdw?=
+ =?utf-8?B?ZlFyenVDMWZSb2lNL001cEFTQ2FEMlYzUUpqNGM3ZzdSVGtRMFlVbkYzL1pD?=
+ =?utf-8?B?QTd6ekFCbW9yUGpBT1F5RUxNY1dJYnJQdTBzeGFQRGdrTzBBN1BKZjRad2hS?=
+ =?utf-8?B?ODI3Mmt0aVJIUC9LUzM0eERXTDgzM0tjUUlTQWNPU3JoVmwvb0FhZVVGZDYw?=
+ =?utf-8?B?OGJhVmtwSjlzOWdqRjZYbllib1RNVlFjNXFSSGZ4dXFWL0pVdTJEaEkydmtj?=
+ =?utf-8?B?bDdLNzlTdWpqUzRWQWpzek1yTTVQNFJCZFp4ZnZEZGoxcW9wLzA1NFJGRHBW?=
+ =?utf-8?Q?45rVI/GV+nA9+uZV8luWpJZUVuiN6/YM?=
 X-Forefront-Antispam-Report-Untrusted:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR08MB10408.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB7891
 X-EOPAttributedMessage: 0
 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM3PEPF00009B9D.eurprd04.prod.outlook.com
+ AM3PEPF00009B9C.eurprd04.prod.outlook.com
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	bd6c0b26-ec9c-4ce7-30cd-08de2dc4d41d
+	a6616863-12a5-452d-167e-08de2dc4d70c
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|82310400026|1800799024|7416014|376014|14060799003|36860700013|7053199007|13003099007;
+	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|35042699022|82310400026|14060799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZlNOR0FybWUva2h0WFhCbFNYM2pXSThXMmVwcWw4NjNqSDI4dFFjMTVDSG5w?=
- =?utf-8?B?b3B6azRjTWtmREtJRUtjKzJzVmVPRUZDVGI4TXhwRmowcW5uMFhKUEFFWGJK?=
- =?utf-8?B?c3B3cys1cG5JMFRKa1EwZHBXVkNlUWlLZGpCQUNCUTJEdlk2VkdVamtUby9Y?=
- =?utf-8?B?OWRleDJBYmJ1YWJwZTBwcFhHcFlKSkFFdzBpRHVVRWs2VjB1K0ZxSVN6NUZV?=
- =?utf-8?B?dE8xQzlHZVFxMThyN1ZkZmp2Nk1MY0l4QUhNYmExQjIrZkdqY0N0NDlHVGxx?=
- =?utf-8?B?V1BDaU5pekxBVk9tZTZ6RW1heGl1VU5ubFZYOTBld3V1WkZLR0gyWE9mK1l4?=
- =?utf-8?B?QUkydkFqWlpnbzBZMys1Sll3bllrSDBBV3VDTTUzSGZKVklsSHlQbmtSTXJC?=
- =?utf-8?B?SGNWb2hGSlhyREhrSkYxa3NZMnowZGdxckdNZkhobjRIVTlZamNtb0VndjBw?=
- =?utf-8?B?ODRoR2s1UkRpR2wybXBKUk1Dd0JJNW5LdkJTNXpveFFFVzljc3hFRS9RZlla?=
- =?utf-8?B?UFlOcGlBTDZObWoxWVg0cDZUV01Vd2FyQlBzZ01OeE5FZCt5b0IxdVRzMlNm?=
- =?utf-8?B?NU1oUGMzeVNoVnZVK3IrYnh4ZjFLM2VSN3NLVzhYQzZsQUYyazRxZllSMGM5?=
- =?utf-8?B?Tlhsays3MkVMZEU5Z3YxcXBod0V2UzFQbWlOS0dnU20vQlFHeFdQTUFsOXV1?=
- =?utf-8?B?bVNRTzRXS2FLbEpyY3UvTURsMkRWOXdnaEtUbWNJVTRTM2JmZllqZ1B0SmdK?=
- =?utf-8?B?dUpBV1VEc29OK0Q3Q1RpWFd3ZnQ2ZDROMEpWcGc4M3NtOElUUUxqNkp5eUJW?=
- =?utf-8?B?akxwcDZZQXR6UkZQSExaWHZqaFFRN3pOUjQrSEtCU2lrSHcrOCt4b2p0NEND?=
- =?utf-8?B?YnhUMEZ1elUxc0grR0MrVFdFc2hUbXhEN3RDTUpWK0RHZkN5enFDcjgrWnRh?=
- =?utf-8?B?eUVRL0hLNXNIVFpRRGc2QmJEcmh2SG1SM2tWdURzdXM4ZFAxT0lCRXFOV0tv?=
- =?utf-8?B?TUFLT0VqMEpPNmJUZGdGczNDTGU4akNwZlpGcnVsZko0OWo0YmYyTjR2MmNP?=
- =?utf-8?B?SXM0cHRyZENiWUdWM3hIWmtWSkNMM1AvYVUzNmZTbGg3ZitWR1dVRDF3Y0hM?=
- =?utf-8?B?VTFCZXBrYlQ5Rkk5NmxreEVqRC9kU0F6K2poK0puWmNybmZZZEM0bXRBQ0xS?=
- =?utf-8?B?R1dhTXRPSUNlODdLV2hlZmFabnhmUDJPVDZJaEVxanNrKzBjTEZhdnZsMVFW?=
- =?utf-8?B?d3NFSnFiekNYc2Eva2dGUDcyL2lFczZjb1QwOGtFcXBSS1BLeEsvczZlQXVq?=
- =?utf-8?B?RVNzVWI0K3Z6c2FMZnAzUjNPTXRIT3VEc01rbFBxdDhCdWVZOHVNYjUrUVd2?=
- =?utf-8?B?QmJVTWNsejZtVWo1SFVjVVZlZ2FlVVVOMjMyRmRFd1pHYk1QVHE3ZFJXYlFS?=
- =?utf-8?B?RGZZaTFyZ2dDOWYzalBPTjBkTUFOSlNub2pSRFE3cHBzSDB6YnFIY0h3eUNW?=
- =?utf-8?B?eUR5Y21qMXdEQXp2UVl4WGMxVWFRUkJScG56U3Q2K0lhcVRQOU1BL0owVGtI?=
- =?utf-8?B?aFc4T1ZRdXFSMlFqa2tJSzRZdGJhT1g0SytncVNHdFI0ZjZ4eWFJNzk4WEd1?=
- =?utf-8?B?N0JXMFg2WVh3ZGRybFJoYXJQd3dObnozS210aDFlZ1hmOFJBdkUyMXFETm9o?=
- =?utf-8?B?WUJERnR2N2wxR3lDODRZNlY0eDIzMHlIWVFaWWhZM3hBMEY5dldhTWtqZmUw?=
- =?utf-8?B?d1dhTDRMQzMyT0hJTW5WU1pKcThJZDFuelNGQzlRZFdrcDFMOVVONTZoTG5H?=
- =?utf-8?B?S2RPdThHYzFqSURadk12TVpIRWoyUXVSRUJFRGxKWEF4aWRCTGY4aTRLTFho?=
- =?utf-8?B?aklFTXBLUkY5Z1VrZXhWODRhQWlGRTBzNlVXTWZheU1tcytwWVdjYzNlRk1x?=
- =?utf-8?B?MEhFYTRicnlEcndBZVcvS2xMejhJWG1iVTVTa3hUZUNCcHMvSXlkUVZkMXRl?=
- =?utf-8?B?QzJFZXF2cmFDODJKRElzR1gya21oSHZZZjNMLzZoMUE4bEs0N3Ftb244Rjgv?=
- =?utf-8?B?YjNzbjB4Y3lLVE1XNXBsNUNBaERnYSsveGlLaFJCOXgvTjNDQnRUZDViQVZp?=
- =?utf-8?Q?lXmc=3D?=
+	=?utf-8?B?OU1PQ3o5TFZMZ2dYRWpSdTJXMGQzbndOcHp0eHBOeUw5WXF5RFRST3hNTUQ1?=
+ =?utf-8?B?NTcxbGtLNG5xZ1FnaVgxdExaa0xwbVFWMlREeGNoemtYQ1lVNkJ5d3dobldD?=
+ =?utf-8?B?RXVjOUQvaU1oaGdlYjFKMCs0T3dZT2JLRGtJMnVoWU9IaXlUV2RoSzVhZ1Fr?=
+ =?utf-8?B?WVUxcG92OUlRd3hqQ0NKN0FCck5KTTZSMUJvVFQ3MjZYWjEwU0U5a0YwTXZF?=
+ =?utf-8?B?Z0orajZnRDBIYk9ReER1UVhuV1A2ci8xdnFEWGFtODNIeG4ySnpFOTJYaGkr?=
+ =?utf-8?B?NjBlWjh3dW5BZmFXSTBnU3FsT1E1YXg1N0hyNWYvMFl0TG5neDR6amxpZDlH?=
+ =?utf-8?B?dUV4YW05UldoZEFucW9ZQnlZL3ovc21RdXRMbTRBR2VmcVdxRndXSDhHRkNq?=
+ =?utf-8?B?R081VHg2ZUpZbmNIU2hJR3V5SU5sbnpSTFpGTEJjcHNCanRoMTlYRC9OUHpv?=
+ =?utf-8?B?UjFEZS9HYWhtQ3hhaitDZDQwcmx1eG5CeU9vam0vemN6WWlOb21SdTlaekJs?=
+ =?utf-8?B?RHRqRUNTZW92ZlU4UDM3NE5yNldPTTkvYlozNWtmSW9YOVFjYkJuZ0lDZkhN?=
+ =?utf-8?B?WUJhclUwdlhMa3JpR0NvbUhQWVBjSlZiNWxWV0tNVThJeFRNTjkrVE1HSE5o?=
+ =?utf-8?B?N0JCMVFETEhsbVlvd0ZQWFo4bGlhU0dEbGl4UjRUTVBkcFRHQndpbDJVTjVm?=
+ =?utf-8?B?aUZ5bmVIVllzSGh1Y25YOVlTQTN0Q0lyMU4xWVROemdPNncvS1lCRVgxQ2pH?=
+ =?utf-8?B?RHFXaDdldjR5d3FDTlJ0dkhKV0JZYm52RC92LzZuK21YVkFCOENhY2ovZURT?=
+ =?utf-8?B?dEkyVXhkTjdhMlkzeDFrQjlobkhVcWxUcloxdnRqQTNjMDc3YTBzZ3dzVFFT?=
+ =?utf-8?B?MHFHZkZjekhHR05uQVdlbG5vRXFqbU55emp2UXZnYy8wTUVMMG5pMEIrNUZr?=
+ =?utf-8?B?NHZSTDRFMlFCem02c0RkWDZ5YkU4bXBpc1g5ekVWVzMrUFBYNXJ2akx1L2V6?=
+ =?utf-8?B?V2JsRk40VEpRT3NZcWt2eHp4S21qbmxxNHN2eGlGanhuM0ZrV3dXeHpZZkU3?=
+ =?utf-8?B?aC9zYktlMHVlQW1ON3hkNXgzSXd5N3NwU05HYUhzUGZKQWJuNnlDWVdaTFRu?=
+ =?utf-8?B?Z2FaeENleFBDTnpPMy9NQnN5d2ViYW5PY2RWTUhoelBiaGxZNUNGekxUT3Vr?=
+ =?utf-8?B?ZjlaWmJVWkVwbS9HN2tROTZ4S2FFU1Rad0dNb1BqUEphMm92ellWQUZlT0tZ?=
+ =?utf-8?B?UEVlbWlLWGZCb1VKWGd0ZHFURXRyT21ZWDA4UWpUdWZvM3RETkE4TVVXSlla?=
+ =?utf-8?B?dmZ3TThOMmpzVFdrZWhYcnlsck40eWZBZTF3TytXZ0xMNC9vQ1dSSVdzZlF0?=
+ =?utf-8?B?bWY0MVE5WWxXLzdWdTY2ZlZqUWUzTi80UXhDTllQZ3NmVitIcFdQUU5WK2xo?=
+ =?utf-8?B?WEZBbkxOQjhKUEtNdHI5MmFBbDVtT2Ryc3NKeWZzdXNoNE54YmI4TWNrcXFN?=
+ =?utf-8?B?bHpBYkgxT25zNXJmR0V4ejdMREpuMFpWMFQ4aVl6c2pUN2xTbndiNWlxMHZ0?=
+ =?utf-8?B?bXVISXhrc0FpNGhnUVJ2VC9oYWFQdVhrOHVadWxjaytjNVlsNFRmMVNnd2JU?=
+ =?utf-8?B?VU9VWVBmZS9XVERXbHFFd2F6V3dwM2FDNDl2MXBrUDlNTXRFMGpqSGFwSWZG?=
+ =?utf-8?B?RGIvMlhad252eHZ0TEt6MjRjKzhQSEZPZjBXOG5xNFNnNi9oVXB6U3U2bUhu?=
+ =?utf-8?B?OElBY0ZVdG5zZFZndjNic0lTSHVpQjh5YnFqRGk0dDQwOVJsS2FsbjJOSVdj?=
+ =?utf-8?B?UXovYWxWY3dQWFdrOHNMOXgxeU5oTDhja1RGa0ZaUnpSMzN5dis1d2JsZG8y?=
+ =?utf-8?B?bDlpS0ZjaVJxMGVWVlg5eEV0RzQ2aWtYYlBaYzRMbTdQc0J3QjJCM0xJYkEx?=
+ =?utf-8?B?Rll4S2FzcXFrUHhOaWcvZENYMVEyQ1B0Z1EvK1NBM2dia01STkV6RVQ5b2dl?=
+ =?utf-8?B?aW42eHRTVk02aU4rV1VSaVljRFh6NkVyb1VtdmM0TlRBVnlSUWNIMENJRWdC?=
+ =?utf-8?B?b0JZejN0L202bkYwNVk0V0d6eEZkM3pNeVY2TXlLa2RYYWFsa21weXlkcTh1?=
+ =?utf-8?Q?Q1sM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(82310400026)(1800799024)(7416014)(376014)(14060799003)(36860700013)(7053199007)(13003099007);DIR:OUT;SFP:1101;
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(35042699022)(82310400026)(14060799003)(7053199007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 14:54:46.7302
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 14:54:50.8001
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d0c55ab-aa5b-4482-06d3-08de2dc4e85a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75b7b59d-3b59-4433-4f7f-08de2dc4eac7
 X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF00009B9D.eurprd04.prod.outlook.com
+	AM3PEPF00009B9C.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB11740
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB10258
 
 
 On 11/5/25 12:38, Sumit Gupta wrote:
-> CPPC allows platforms to specify minimum and maximum performance
-> limits that constrain the operating range for CPU performance scaling
-> when Autonomous Selection is enabled. These limits can be dynamically
-> adjusted to implement power management policies or workload-specific
-> optimizations.
+> Add sysfs interface to read/write the Performance Limited register.
 >
-> Add cppc_get_min_perf() and cppc_set_min_perf() functions to read and
-> write the MIN_PERF register, allowing dynamic adjustment of the minimum
-> performance floor.
+> The Performance Limited register indicates to the OS that an
+> unpredictable event (like thermal throttling) has limited processor
+> performance. This register is sticky and remains set until reset or
+> OS clears it by writing 0.
 >
-> Add cppc_get_max_perf() and cppc_set_max_perf() functions to read and
-> write the MAX_PERF register, enabling dynamic ceiling control for
-> maximum performance.
->
-> Expose these capabilities through cpufreq sysfs attributes that accept
-> frequency values in kHz (which are converted to/from performance values
-> internally):
-> - /sys/.../cpufreq/policy*/min_perf: Read/write min perf as freq (kHz)
-> - /sys/.../cpufreq/policy*/max_perf: Read/write max perf as freq (kHz)
->
-> The frequency-based interface provides a user-friendly abstraction which
-> is similar to other cpufreq sysfs interfaces, while the driver handles
-> conversion to hardware performance values.
->
-> Also update EPP constants for better clarity:
-> - Rename CPPC_ENERGY_PERF_MAX to CPPC_EPP_ENERGY_EFFICIENCY_PREF
-> - Add CPPC_EPP_PERFORMANCE_PREF for the performance-oriented setting
+> The interface is exposed as:
+>   /sys/devices/system/cpu/cpuX/cpufreq/perf_limited
 >
 > Signed-off-by: Sumit Gupta<sumitg@nvidia.com>
 > ---
->   drivers/acpi/cppc_acpi.c       |  55 ++++++++++-
->   drivers/cpufreq/cppc_cpufreq.c | 166 +++++++++++++++++++++++++++++++++
->   include/acpi/cppc_acpi.h       |  23 ++++-
->   3 files changed, 242 insertions(+), 2 deletions(-)
+>   drivers/acpi/cppc_acpi.c       | 26 ++++++++++++++++++++++++++
+>   drivers/cpufreq/cppc_cpufreq.c | 12 ++++++++++++
+>   include/acpi/cppc_acpi.h       | 10 ++++++++++
+>   3 files changed, 48 insertions(+)
 >
 > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 757e8ce87e9b..ef53eb8a1feb 100644
+> index ef53eb8a1feb..9b8da3ef06db 100644
 > --- a/drivers/acpi/cppc_acpi.c
 > +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1634,7 +1634,7 @@ EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
->    */
->   int cppc_set_epp(int cpu, u64 epp_val)
->   {
-> -	if (epp_val > CPPC_ENERGY_PERF_MAX)
-> +	if (epp_val > CPPC_EPP_ENERGY_EFFICIENCY_PREF)
->   		return -EINVAL;
->   
->   	return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
-> @@ -1757,6 +1757,59 @@ int cppc_set_enable(int cpu, bool enable)
->   	return cppc_set_reg_val(cpu, ENABLE, enable);
+> @@ -1810,6 +1810,32 @@ int cppc_set_max_perf(int cpu, u64 max_perf)
 >   }
->   EXPORT_SYMBOL_GPL(cppc_set_enable);
-> +
+>   EXPORT_SYMBOL_GPL(cppc_set_max_perf);
+>   
 > +/**
-> + * cppc_get_min_perf - Get the min performance register value.
-> + * @cpu: CPU from which to get min performance.
-> + * @min_perf: Return address.
+> + * cppc_get_perf_limited - Get the Performance Limited register value.
+> + * @cpu: CPU from which to get Performance Limited register.
+> + * @perf_limited: Pointer to store the Performance Limited value.
 > + *
 > + * Return: 0 for success, -EIO on register access failure, -EOPNOTSUPP if not supported.
 > + */
-> +int cppc_get_min_perf(int cpu, u64 *min_perf)
+> +int cppc_get_perf_limited(int cpu, u64 *perf_limited)
 > +{
-> +	return cppc_get_reg_val(cpu, MIN_PERF, min_perf);
+> +	return cppc_get_reg_val(cpu, PERF_LIMITED, perf_limited);
 > +}
-> +EXPORT_SYMBOL_GPL(cppc_get_min_perf);
+> +EXPORT_SYMBOL_GPL(cppc_get_perf_limited);
 > +
 > +/**
-> + * cppc_set_min_perf() - Write the min performance register.
+> + * cppc_set_perf_limited() - Write the Performance Limited register.
 > + * @cpu: CPU on which to write register.
-> + * @min_perf: Value to write to the MIN_PERF register.
-> + *
-> + * Return: 0 for success, -EIO otherwise.
-> + */
-> +int cppc_set_min_perf(int cpu, u64 min_perf)
-> +{
-> +	return cppc_set_reg_val(cpu, MIN_PERF, min_perf);
-> +}
-> +EXPORT_SYMBOL_GPL(cppc_set_min_perf);
-> +
-> +/**
-> + * cppc_get_max_perf - Get the max performance register value.
-> + * @cpu: CPU from which to get max performance.
-> + * @max_perf: Return address.
+> + * @perf_limited: Value to write to the perf_limited register.
 > + *
 > + * Return: 0 for success, -EIO on register access failure, -EOPNOTSUPP if not supported.
 > + */
-> +int cppc_get_max_perf(int cpu, u64 *max_perf)
+> +int cppc_set_perf_limited(int cpu, u64 perf_limited)
 > +{
-> +	return cppc_get_reg_val(cpu, MAX_PERF, max_perf);
+> +	return cppc_set_reg_val(cpu, PERF_LIMITED, perf_limited);
 > +}
-> +EXPORT_SYMBOL_GPL(cppc_get_max_perf);
-> +
-> +/**
-> + * cppc_set_max_perf() - Write the max performance register.
-> + * @cpu: CPU on which to write register.
-> + * @max_perf: Value to write to the MAX_PERF register.
-> + *
-> + * Return: 0 for success, -EIO otherwise.
-> + */
-> +int cppc_set_max_perf(int cpu, u64 max_perf)
-> +{
-> +	return cppc_set_reg_val(cpu, MAX_PERF, max_perf);
-> +}
-> +EXPORT_SYMBOL_GPL(cppc_set_max_perf);
+
+There are currently only 2 bits used:
+- 0 Desired_Excursion
+- 1 Minimum_Excursion
+It might be worth defining these bits and mask the values when trying to 
+set the register.
+
+------
+
+Also NIT:
+
+The spec. says:
+" All accesses to the Performance Limited Register must be made using 
+interlocked operations, by both accessing entities."
+
+I am not sure I understand which synchronization issues are faced.
+It's just to report the comment from the spec.
+
+
+> +EXPORT_SYMBOL_GPL(cppc_set_perf_limited);
 > +
 >   /**
 >    * cppc_get_perf - Get a CPU's performance controls.
 >    * @cpu: CPU for which to get performance controls.
 > diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index cf3ed6489a4f..cde6202e9c51 100644
+> index cde6202e9c51..a425ad575aa6 100644
 > --- a/drivers/cpufreq/cppc_cpufreq.c
 > +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -23,10 +23,12 @@
->   #include <uapi/linux/sched/types.h>
->   
->   #include <linux/unaligned.h>
-> +#include <linux/cleanup.h>
->   
->   #include <acpi/cppc_acpi.h>
->   
->   static struct cpufreq_driver cppc_cpufreq_driver;
-> +static DEFINE_MUTEX(cppc_cpufreq_update_autosel_config_lock);
->   
->   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
->   static enum {
-> @@ -582,6 +584,68 @@ static void cppc_cpufreq_put_cpu_data(struct cpufreq_policy *policy)
->   	policy->driver_data = NULL;
+> @@ -1043,12 +1043,23 @@ static ssize_t store_max_perf(struct cpufreq_policy *policy, const char *buf, si
+>   	return count;
 >   }
 >   
-> +/**
-> + * cppc_cpufreq_set_mperf_limit - Generic function to set min/max performance limit
-> + * @policy: cpufreq policy
-> + * @val: performance value to set
-> + * @update_reg: whether to update hardware register
-
-I m not sure I see in which case we might not want to update the 
-hardware register.
-Isn't the min/max_perf values relevant even when autonomous selection is
-disabled/absent ?
-
-
-> + * @update_policy: whether to update policy constraints
-> + * @is_min: true for min_perf, false for max_perf
-> + */
-> +static int cppc_cpufreq_set_mperf_limit(struct cpufreq_policy *policy, u64 val,
-> +					bool update_reg, bool update_policy, bool is_min)
+> +static ssize_t show_perf_limited(struct cpufreq_policy *policy, char *buf)
 > +{
-> +	struct cppc_cpudata *cpu_data = policy->driver_data;
-> +	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
-> +	unsigned int cpu = policy->cpu;
-> +	struct freq_qos_request *req;
-> +	unsigned int freq;
-> +	u32 perf;
-> +	int ret;
-> +
-> +	perf = clamp(val, caps->lowest_perf, caps->highest_perf);
-> +	freq = cppc_perf_to_khz(caps, perf);
-> +
-> +	pr_debug("cpu%d, %s_perf:%llu, update_reg:%d, update_policy:%d\n", cpu,
-> +		 is_min ? "min" : "max", (u64)perf, update_reg, update_policy);
-> +
-> +	guard(mutex)(&cppc_cpufreq_update_autosel_config_lock);
-> +
-> +	if (update_reg) {
-> +		ret = is_min ? cppc_set_min_perf(cpu, perf) : cppc_set_max_perf(cpu, perf);
-> +		if (ret) {
-> +			if (ret != -EOPNOTSUPP)
-> +				pr_warn("Failed to set %s_perf (%llu) on CPU%d (%d)\n",
-> +					is_min ? "min" : "max", (u64)perf, cpu, ret);
-> +			return ret;
-> +		}
-> +
-> +		if (is_min)
-> +			cpu_data->perf_ctrls.min_perf = perf;
-> +		else
-> +			cpu_data->perf_ctrls.max_perf = perf;
-> +	}
-> +
-> +	if (update_policy) {
-> +		req = is_min ? policy->min_freq_req : policy->max_freq_req;
-> +
-> +		ret = freq_qos_update_request(req, freq);
-
-IIUC, we are adding a qos constraint to the min_freq_req or 
-max_freq_req. However these constraints should match the 
-scaling_min/max_freq sysfs interface. So doesn't it mean that if we set 
-the 'max_perf', we are overwriting the the max_freq_req constraint ?
-
-If you have frequencies between 600000:1200000 # Init state: 
-max_perf:1200000 scaling_max_freq:1200000 # echo 10000000 > max_perf 
-max_perf:1000000 scaling_max_freq:1000000 # echo 900000 > 
-scaling_max_freq max_perf:1000000 scaling_max_freq:900000 # echo 1200000 
- > scaling_max_freq max_perf:1000000 scaling_max_freq:1200000
-
-The 2 values are not in sync. Is it the desired behaviour ?
-
-
-> +		if (ret < 0) {
-> +			pr_warn("Failed to update %s_freq constraint for CPU%d: %d\n",
-> +				is_min ? "min" : "max", cpu, ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
+> +	return cppc_cpufreq_sysfs_show_u64(policy->cpu, cppc_get_perf_limited, buf);
 > +}
 > +
-> +#define cppc_cpufreq_set_min_perf(policy, val, update_reg, update_policy) \
-> +	cppc_cpufreq_set_mperf_limit(policy, val, update_reg, update_policy, true)
-> +
-> +#define cppc_cpufreq_set_max_perf(policy, val, update_reg, update_policy) \
-> +	cppc_cpufreq_set_mperf_limit(policy, val, update_reg, update_policy, false)
-> +
->   static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
->   {
->   	unsigned int cpu = policy->cpu;
-> @@ -881,16 +945,118 @@ static ssize_t store_energy_performance_preference_val(struct cpufreq_policy *po
->   	return cppc_cpufreq_sysfs_store_u64(policy->cpu, cppc_set_epp, buf, count);
->   }
->   
-> +/**
-> + * show_min_perf - Show minimum performance as frequency (kHz)
-> + *
-> + * Reads the MIN_PERF register and converts the performance value to
-> + * frequency (kHz) for user-space consumption.
-> + */
-> +static ssize_t show_min_perf(struct cpufreq_policy *policy, char *buf)
+> +static ssize_t store_perf_limited(struct cpufreq_policy *policy, const char *buf, size_t count)
 > +{
-> +	struct cppc_cpudata *cpu_data = policy->driver_data;
-> +	u64 perf;
-> +	int ret;
-> +
-> +	ret = cppc_get_min_perf(policy->cpu, &perf);
-> +	if (ret == -EOPNOTSUPP)
-> +		return sysfs_emit(buf, "<unsupported>\n");
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Convert performance to frequency (kHz) for user */
-> +	return sysfs_emit(buf, "%u\n", cppc_perf_to_khz(&cpu_data->perf_caps, perf));
-> +}
-> +
-> +/**
-> + * store_min_perf - Set minimum performance from frequency (kHz)
-> + *
-> + * Converts the user-provided frequency (kHz) to a performance value
-> + * and writes it to the MIN_PERF register.
-> + */
-> +static ssize_t store_min_perf(struct cpufreq_policy *policy, const char *buf, size_t count)
-> +{
-> +	struct cppc_cpudata *cpu_data = policy->driver_data;
-> +	unsigned int freq_khz;
-> +	u64 perf;
-> +	int ret;
-> +
-> +	ret = kstrtouint(buf, 0, &freq_khz);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Convert frequency (kHz) to performance value */
-> +	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
-> +
-> +	ret = cppc_cpufreq_set_min_perf(policy, perf, true, cpu_data->perf_caps.auto_sel);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +/**
-> + * show_max_perf - Show maximum performance as frequency (kHz)
-> + *
-> + * Reads the MAX_PERF register and converts the performance value to
-> + * frequency (kHz) for user-space consumption.
-> + */
-> +static ssize_t show_max_perf(struct cpufreq_policy *policy, char *buf)
-
-I think it might collide with the scaling_min/max_freq.
-I saw that you answered this point at:
-https://lore.kernel.org/lkml/b2bd3258-51bd-462a-ae29-71f1d6f823f3@nvidia.com/
-
-But I m not sure I understood why it is needed to have 2 interfaces.
-Would it be possible to explain it again ?
-
-I don't see any case where we would like to make a distinction between:
-- scaling_max_freq, i.e. the maximal freq. the cpufreq driver is allowed 
-to set
-- max_perf, i.e. the maximal perf. level the firmware will set
-
-------------
-
-Another point is that the min/max_perf interface actually uses freq. values.
-
-> +{
-> +	struct cppc_cpudata *cpu_data = policy->driver_data;
-> +	u64 perf;
-> +	int ret;
-> +
-> +	ret = cppc_get_max_perf(policy->cpu, &perf);
-> +	if (ret == -EOPNOTSUPP)
-> +		return sysfs_emit(buf, "<unsupported>\n");
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Convert performance to frequency (kHz) for user */
-> +	return sysfs_emit(buf, "%u\n", cppc_perf_to_khz(&cpu_data->perf_caps, perf));
-> +}
-> +
-> +/**
-> + * store_max_perf - Set maximum performance from frequency (kHz)
-> + *
-> + * Converts the user-provided frequency (kHz) to a performance value
-> + * and writes it to the MAX_PERF register.
-> + */
-> +static ssize_t store_max_perf(struct cpufreq_policy *policy, const char *buf, size_t count)
-> +{
-> +	struct cppc_cpudata *cpu_data = policy->driver_data;
-> +	unsigned int freq_khz;
-> +	u64 perf;
-> +	int ret;
-> +
-> +	ret = kstrtouint(buf, 0, &freq_khz);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Convert frequency (kHz) to performance value */
-> +	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
-> +
-> +	ret = cppc_cpufreq_set_max_perf(policy, perf, true, cpu_data->perf_caps.auto_sel);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
+> +	return cppc_cpufreq_sysfs_store_u64(policy->cpu, cppc_set_perf_limited, buf, count);
 > +}
 > +
 >   cpufreq_freq_attr_ro(freqdomain_cpus);
 >   cpufreq_freq_attr_rw(auto_select);
 >   cpufreq_freq_attr_rw(auto_act_window);
 >   cpufreq_freq_attr_rw(energy_performance_preference_val);
-> +cpufreq_freq_attr_rw(min_perf);
-> +cpufreq_freq_attr_rw(max_perf);
+>   cpufreq_freq_attr_rw(min_perf);
+>   cpufreq_freq_attr_rw(max_perf);
+> +cpufreq_freq_attr_rw(perf_limited);
 >   
 >   static struct freq_attr *cppc_cpufreq_attr[] = {
 >   	&freqdomain_cpus,
->   	&auto_select,
->   	&auto_act_window,
+> @@ -1057,6 +1068,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
 >   	&energy_performance_preference_val,
-> +	&min_perf,
-> +	&max_perf,
+>   	&min_perf,
+>   	&max_perf,
+> +	&perf_limited,
 >   	NULL,
 >   };
 >   
 > diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 42e37a84cac9..be7de1222eee 100644
+> index be7de1222eee..8baff46f2ac7 100644
 > --- a/include/acpi/cppc_acpi.h
 > +++ b/include/acpi/cppc_acpi.h
-> @@ -39,7 +39,8 @@
->   /* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
->   #define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
->   
-> -#define CPPC_ENERGY_PERF_MAX	(0xFF)
-> +#define CPPC_EPP_PERFORMANCE_PREF		0x00
-> +#define CPPC_EPP_ENERGY_EFFICIENCY_PREF		0xFF
->   
->   /* Each register has the folowing format. */
->   struct cpc_reg {
-> @@ -172,6 +173,10 @@ extern int cppc_get_auto_act_window(int cpu, u64 *auto_act_window);
->   extern int cppc_set_auto_act_window(int cpu, u64 auto_act_window);
->   extern int cppc_get_auto_sel(int cpu, bool *enable);
->   extern int cppc_set_auto_sel(int cpu, bool enable);
-> +extern int cppc_get_min_perf(int cpu, u64 *min_perf);
-> +extern int cppc_set_min_perf(int cpu, u64 min_perf);
-> +extern int cppc_get_max_perf(int cpu, u64 *max_perf);
-> +extern int cppc_set_max_perf(int cpu, u64 max_perf);
+> @@ -177,6 +177,8 @@ extern int cppc_get_min_perf(int cpu, u64 *min_perf);
+>   extern int cppc_set_min_perf(int cpu, u64 min_perf);
+>   extern int cppc_get_max_perf(int cpu, u64 *max_perf);
+>   extern int cppc_set_max_perf(int cpu, u64 max_perf);
+> +extern int cppc_get_perf_limited(int cpu, u64 *perf_limited);
+> +extern int cppc_set_perf_limited(int cpu, u64 perf_limited);
 >   extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
 >   extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
 >   extern int amd_detect_prefcore(bool *detected);
-> @@ -264,6 +269,22 @@ static inline int cppc_set_auto_sel(int cpu, bool enable)
+> @@ -285,6 +287,14 @@ static inline int cppc_set_max_perf(int cpu, u64 max_perf)
 >   {
 >   	return -EOPNOTSUPP;
 >   }
-> +static inline int cppc_get_min_perf(int cpu, u64 *min_perf)
+> +static inline int cppc_get_perf_limited(int cpu, u64 *perf_limited)
 > +{
 > +	return -EOPNOTSUPP;
 > +}
-> +static inline int cppc_set_min_perf(int cpu, u64 min_perf)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +static inline int cppc_get_max_perf(int cpu, u64 *max_perf)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +static inline int cppc_set_max_perf(int cpu, u64 max_perf)
+> +static inline int cppc_set_perf_limited(int cpu, u64 perf_limited)
 > +{
 > +	return -EOPNOTSUPP;
 > +}
