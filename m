@@ -1,190 +1,256 @@
-Return-Path: <linux-acpi+bounces-19313-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19314-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8580FC8EC18
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:30:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EEDC8EC6F
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28A873AAAE8
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 14:30:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 420284E1900
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 14:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602783328F2;
-	Thu, 27 Nov 2025 14:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BDC32E130;
+	Thu, 27 Nov 2025 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hJW+4vYz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BnrYKOwx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410C823717F;
-	Thu, 27 Nov 2025 14:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF511CBA
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 14:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764253804; cv=none; b=We+MNiyPmEPugDHqXedCafxtMNtPaSX95YNNtVh4+fu4ZAHHsVTRJosIHJnCStTlCGreTzG+ncJ3kz90DcpANXxhxEyfLoycRGWbK6O3Ota49XMFueIdRkhW4DIQKa1u6Hw3LxeRAIkVlzbWUc/KUwlunxA9OD2YwxnC61MZing=
+	t=1764254166; cv=none; b=gAB3ar7PSmMtsSx1Iqoux28d8hEsICWUYKvRDXlR4QPu/3DuW7FdXFX0xv6Ej1PsMiUJ8kCU7i9D5YwbQYMLB7yLqz13PudtdJYZTKgaJmxrJusmxw2EW3gi82hzKBYX8VYUqLrMUvh8VlpfGU5bJNVVWk2O0bk1x8YRIBqN0Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764253804; c=relaxed/simple;
-	bh=wV3E8BYGDfNKefQX/rsj0hZUZjUWd8J11Hu9YUDDBXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N2Phw3BwEozXEzos/ZTJ9VZJyhw2RSSfdIXmtoszy4og8GKSKpcl4BdHmnqip4C99tSEsGWW6/diR0wSe8H28JBSwhAD/pLlXwQJ2AM60Gc8JYS25hLSKafeHZ+nQyk5AvEWBo9IkdhqHfQvhirVNhrCKXlIR0SRpZ8vhSz8SpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hJW+4vYz; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764253802; x=1795789802;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=wV3E8BYGDfNKefQX/rsj0hZUZjUWd8J11Hu9YUDDBXM=;
-  b=hJW+4vYzFHlSnaa/O7xpKIL9/UEMsq/np1XVKO0SxYCx0tIOpBIWgxF+
-   5O0Y5B0MnyRYTZS6nwZ9hHK5VuwfpgA4s4PvwykXICIg90kcem+ytzHhf
-   J43535xRHyP3YXdouIcy8Y4+iMXfYftV0YwTalBoQGq5JCplYnX1HqTqR
-   67iznbEhDTGFgNyeaQm7KKYXBXfZ8RHSrqUuDImhoM05w2NFFYaks0oMP
-   8YN1Vum9PweIT9AQin6j53IN2fp4q8yafdphptP3Mc9X/EM4dXnsUWxXF
-   tDS7A/A8AJkIMpeyn1HKTLBCzrUtMwYsgW6fr7WZ8Sx4ld4tN5iW6PmxL
-   Q==;
-X-CSE-ConnectionGUID: FcsgSA8JRKeNq0dwqrmEhQ==
-X-CSE-MsgGUID: 6k26OwAMSkGOiQ5mReHcrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77662590"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="77662590"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 06:30:01 -0800
-X-CSE-ConnectionGUID: A4KmkT6hSRCb9jEmqznsow==
-X-CSE-MsgGUID: K4CHSgcNSc+gBla+AVuQ4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="198188135"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 06:29:56 -0800
-Date: Thu, 27 Nov 2025 16:29:54 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Linus Walleij <linusw@kernel.org>, Lei Xue <lei.xue@mediatek.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	yong.mao@mediatek.com, qingliang.li@mediatek.com,
-	Fred-WY.Chen@mediatek.com, ot_cathy.xu@mediatek.com,
-	ot_shunxi.zhang@mediatek.com, ot_yaoy.wang@mediatek.com,
-	ot_ye.wang@mediatek.com, linux-acpi@vger.kernel.org,
-	robh@kernel.org
-Subject: Re: [PATCH 2/3] pinctrl: mediatek: Add acpi support
-Message-ID: <aShgYukPRfDkq_Z0@smile.fi.intel.com>
-References: <20251125023639.2416546-1-lei.xue@mediatek.com>
- <20251125023639.2416546-3-lei.xue@mediatek.com>
- <CAD++jL=h4ZEgrjgGOfgFyAXBM7EL91ZD-La82UQ7GPOXv8h9WQ@mail.gmail.com>
- <aScwaxBG53dnZ4a4@lpieralisi>
- <aSdBu-B9mwU2-1_S@smile.fi.intel.com>
- <aSgipbe75hrwhTD7@lpieralisi>
+	s=arc-20240116; t=1764254166; c=relaxed/simple;
+	bh=y/w70PmgkgiljvltcnTxMbOWap97glwa/EjzZTFKfmA=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=a5xo7iW7DrC7kp4ctEVT0XpaDtoTMk2otI3Ski6oetpNB9ZomMqUrjN6XzGLIVottHB+5tS2AY/moN/5WGWWELQZSRkxw+0uP3bfrqWGd9oZgrwI79F01kHXvOamotvzBXxb9vk/iHMQYhauFx+03rCmQ2uGZmFrC9gTbATgYBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BnrYKOwx; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34372216275so1019787a91.2
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 06:36:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764254164; x=1764858964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WbONDNfo5P6URvv49uARRyWcfYc6EtU0aSI8NWvYcqA=;
+        b=BnrYKOwx0zYlqh1aUcqOKFf3LapSU4LUju4z5lsrtF1tXuEidIJNxPWZSzt2LLmoAD
+         Ql6bjzGGpQmvqvN1b1qFO+4QLXe828k8BqSQFhhFkoafZwXmH7YFQS8W6/h6BgXEQZnv
+         ziA2mS4hjlZXQOHElXX6/SRj+L0rJpLUnJnKnY/+QNF3WN2Uiw4yhLIssXOlVum0uN0p
+         UZEAdknLIrJgXttY8ZE5/9gqIiHdb9BIH7PVRy/0rBnWeg4OxNb3tCixV2SxPi7updHJ
+         3TEUGVA6PwXEDLf21OKXXcnN1ziKALhNV+9lVk1ktsHgL/Pmx/WJtsOPqO2vvOCEw45t
+         VbXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764254164; x=1764858964;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WbONDNfo5P6URvv49uARRyWcfYc6EtU0aSI8NWvYcqA=;
+        b=CcHrhAWv8cth05eqB1rqWg2ETz8WfCzI3ZoyFnYm3Zn7wk3IYS769VniwG3yRGWVgd
+         hlqPXcOUYFcKic79HJjXvynaxO/Xd6xNYzZ0Sx0L1K1TcDEyXAz9poWUqq1Ui2w7GSN8
+         e1pXqBOe2JHB+hD6oanPm3XOoQq3RFmuaM7tfq1NGs5IViPTH0ZqtX5XTGWlG5RQmJWt
+         Neo3jIufZA168BroV8qZ4qvw+Fjl7iiY76ybzlnA6iETlPjQMc9hblK19ISuUf3ndnz0
+         /xZ8UopG+EU0MiX1ycXKpYT7y35hweQFxe8yuXBiKecBzn9brMqNYt9fFencv8Nwr3dM
+         qW3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWLn7do89PtTHBduV9NcBtevs2ZmDQ8fdIjmYQqEt0Ao25BKSjJzAqB5rvrBN4e+l0afe9IYxhqukXg@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvlSfP8vonmjenIYy60gpZ+lp+c/MzAUPc2hj+l9amiK+XjSNz
+	ZurDShOP8Czg1K2Wq0QKy7LqOL9dNmx+lsYWp1HkT8NInJ8wluO7p95yMe0Lfn9u
+X-Gm-Gg: ASbGncs4cIbiv2zoueDWKE3OTI0yc5A0J0n1M9gTOyTDXFfjEYjcDsNVW7fVEztEvAc
+	XweiBnmUdaC389wNs5ySEtdmrmmveJ0SVBN9n83kSbCoOnBHUydvslrgevD4UaRt1Mk4rQatHk1
+	EG8yw+LZ+0YoqFJzBcxhWVYeJkhRypFI7AzNgWGl5EAFzh6QkrX3sKEq95/1l6tOXwvvMElvMua
+	JaOu6gI4B7NpowbtrCoMqXR3nI9SZoHOt/1UvMaZ369kSD5RBZGRGq82AIMMXawSuxzQnadhzV6
+	nhsj1gUPOpZ3oF5d4E/8NUY522/ULeq+sab5B0i5TRzU2DXfOyr6q6v7d2IdsDvy9rTUgrjBei4
+	u8HotjAcYIBEV491CGdXJRwcN/7GvDslGMAwy7JqBXOD6DpxghCTq4OqvpMiitJ5ymCjCDLM41m
+	RUHIj++EVEDzQh8nbHCXTFh8LLTc7ThpZ5yDjMEnW3j5AsENs/eKA2WWG/jp47Sr0jyoGK6xZRQ
+	qGmZE21Tw==
+X-Google-Smtp-Source: AGHT+IGDH89O43VYWGivoRzsH/VMsd+fKZHuO3oJN/28fn5VsdLF5lsOBh224MfCX+i8kiHkoomAAw==
+X-Received: by 2002:a05:7301:b0d:b0:2a4:4bb4:4712 with SMTP id 5a478bee46e88-2a7192e5b06mr13076983eec.39.1764254163482;
+        Thu, 27 Nov 2025 06:36:03 -0800 (PST)
+Received: from ehlo.thunderbird.net (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcaee7076sm7209397c88.4.2025.11.27.06.36.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Nov 2025 06:36:02 -0800 (PST)
+Date: Thu, 27 Nov 2025 06:36:02 -0800
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+To: =?ISO-8859-1?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Armin Wolf <W_Armin@gmx.de>
+CC: Len Brown <lenb@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Mario Limonciello <superm1@kernel.org>,
+ Zhixin Zhang <zhangzx36@lenovo.com>, Mia Shao <shaohz1@lenovo.com>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ "Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
+ Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org,
+ linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-acpi@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/3=5D_acpi=3A_platform=5Fpr?=
+ =?US-ASCII?Q?ofile_-_Add_max-power_profile_option?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <bf61e05b-74ac-28de-d8ea-4a909d6e5fb8@linux.intel.com>
+References: <20251113212639.459896-1-derekjohn.clark@gmail.com> <20251113212639.459896-2-derekjohn.clark@gmail.com> <7050cadc-9cb7-4f9b-8393-247bddb56965@gmx.de> <CFD27662-0044-4AF3-8E66-65229324CECF@gmail.com> <e801bef5-158e-4422-9c23-93dc2210f734@gmx.de> <bf61e05b-74ac-28de-d8ea-4a909d6e5fb8@linux.intel.com>
+Message-ID: <278FC60D-C084-44B9-A0DB-23FAC930458B@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSgipbe75hrwhTD7@lpieralisi>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 11:06:29AM +0100, Lorenzo Pieralisi wrote:
-> On Wed, Nov 26, 2025 at 08:06:51PM +0200, Andy Shevchenko wrote:
+On November 27, 2025 4:11:36 AM PST, "Ilpo J=C3=A4rvinen" <ilpo=2Ejarvinen@=
+linux=2Eintel=2Ecom> wrote:
+>On Mon, 17 Nov 2025, Armin Wolf wrote:
+>
+>> Am 16=2E11=2E25 um 20:01 schrieb Derek J=2E Clark:
+>>=20
+>> > On November 16, 2025 8:13:17 AM PST, Armin Wolf <W_Armin@gmx=2Ede> wr=
+ote:
+>> > > Am 13=2E11=2E25 um 22:26 schrieb Derek J=2E Clark:
+>> > >=20
+>> > > > Some devices, namely Lenovo Legion devices, have an "extreme" mod=
+e where
+>> > > > power draw is at the maximum limit of the cooling hardware=2E Add=
+ a new
+>> > > > "max-power" platform profile to properly reflect this operating m=
+ode=2E
+>> > > >=20
+>> > > > Reviewed-by: Mario Limonciello (AMD) <superm1@kernel=2Eorg>
+>> > > > Acked-by: Rafael J=2E Wysocki (Intel) <rafael@kernel=2Eorg>
+>> > > > Signed-off-by: Derek J=2E Clark <derekjohn=2Eclark@gmail=2Ecom>
+>> > > > ---
+>> > > >    Documentation/ABI/testing/sysfs-class-platform-profile | 2 ++
+>> > > >    drivers/acpi/platform_profile=2Ec                        | 1 +
+>> > > >    include/linux/platform_profile=2Eh                       | 1 +
+>> > > >    3 files changed, 4 insertions(+)
+>> > > >=20
+>> > > > diff --git a/Documentation/ABI/testing/sysfs-class-platform-profi=
+le
+>> > > > b/Documentation/ABI/testing/sysfs-class-platform-profile
+>> > > > index dc72adfb830a=2E=2Efcab26894ec3 100644
+>> > > > --- a/Documentation/ABI/testing/sysfs-class-platform-profile
+>> > > > +++ b/Documentation/ABI/testing/sysfs-class-platform-profile
+>> > > > @@ -23,6 +23,8 @@ Description:	This file contains a space-separat=
+ed
+>> > > > list of profiles supported
+>> > > >    					power consumption with a
+>> > > > slight bias
+>> > > >    					towards performance
+>> > > >    		performance		High performance operation
+>> > > > +		max-power		Higher performance operation that may
+>> > > > exceed
+>> > > > +					internal battery draw limits when on
+>> > > > AC power
+>> > > I am not sure if it is a good idea to allow platform_profile_cycle(=
+) to
+>> > > cycle into this
+>> > > new max-power profile=2E The system could encounter a brownout if i=
+t is
+>> > > currently operating
+>> > > on battery power when selecting max-power=2E
+>> > >=20
+>> > > Maybe we should prevent platform_profile_cylce() from selecting max=
+-power?
+>> > At least for Lenovo devices unplugging AC will automatically throttle=
+ the
+>> > ppt values to roughly equivalent to performance=2E It will look at a =
+different
+>> > WMI data block for the values when switched, so there's no risk for c=
+ycling
+>> > in this case=2E This seems like smart hardware design, but we've cert=
+ainly
+>> > seen bad hardware design so the concern is warranted=2E Perhaps it is=
+ worth
+>> > visiting if another vendor implements it differently? That being said=
+, what
+>> > you're describing would match up with how the physical profile select=
+ion
+>> > button works, so it would align with consumer expectation=2E I have n=
+o strong
+>> > feelings either way, but I'm a little concerned about meeting the mer=
+ge
+>> > window as this series fixes a pretty disruptive bug affecting 6=2E17 =
+users=2E
+>> >=20
+>> > Regards,
+>> > - Derek
+>> >=20
+>> If the physical platform selection button does not automatically select=
+ the
+>> max-power profile under Windows, then we should copy this behavior i th=
+ink=2E
+>> The changes necessary for that are fairly small, basically you only hav=
+e to
+>> extend the handling of PLATFORM_PROFILE_CUSTOM inside platform_profile_=
+cycle()
+>> to also include the max-power profile=2E So i would prefer if we modify
+>> platform_profile_cycle() now has doing this later might be seen as a
+>> regression=2E
+>
+>Derek,
+>
+>Any comments on this?
+>
+>I'd very much prefer to take this series in this cycle but this comment=
+=20
+>seems unresolved and has userspace visible impact so may bind us=20
+>irrevocably to certain behavior=2E
+>
+>--
+> i=2E
 
-[...]
+Ilpo,
 
-> > > I also assume/hope that we don't want to add a "reg-names" _DSD property either
-> > > in ACPI to deal with this seamlessly in DT/ACPI (that was done for
-> > > "interrupt-names"):
-> > > 
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/firmware-guide/acpi/enumeration.rst?h=v6.18-rc7#n188
-> > 
-> > Hmm... Why not?
-> 
-> What's the policy there ?
+If I'm being totally honest I forgot about this request=2E I can knock thi=
+s out pretty quickly and send v4 today=2E
 
-> Half of the ACPI bindings for an interrupt
-> descriptor are defined in the ACPI specs (ie _CRS) and the other half
-> (ie "interrupt-names") is documented in the Linux kernel (or are we
-> documenting this elsewhere ?) ?
-
-Yeah, nobody pursued ACPI specification updates / addendum to make it fully
-official. _De facto_ we have established practice for GPIOs enumeration
-(as most used resources in the OSes), Linux official for PWM, I²C muxes,
-multi-functional HW (such as Diolan DLN-2, LJCA), Microsoft defined for
-so called "USB hardwired" devices, Linux defined for LEDs and GPIO keys,
-sensor mount matrix as per "most used" cases + DT analogue works just
-because we have agnostic APIs in IIO to retrieve that. There are maybe
-more, but don't remember
-
-So, I think the practical "policies" are that:
-- if it's defined in ACPI spec, we use the spec
-- if there is Microsoft addendum, we rely on what Windows does
-- WMI, EFI, and other "windoze"-like vendor defined cases
-- if it makes sense, we establish practice from Linux perspective
-- the rest, every vendor does what it does
-
-That said, for the first two we expect OEMs to follow, for the third one
-depends, but there are established WMI calls and other more or less "standard"
-interfaces, so like the first two.
-
-For the fourth one (Linux) we do, but living in the expectation that some or
-more vendors fall to the fifth category and we might need to support that if
-we want their HW work in Linux.
-
-> Or we are saying that "interrupt-names" properties are added by kernel
-> code _only_ (through software nodes, to make parsing seamless between DT
-> and ACPI) based on hardcoded name values in drivers ?
-
-No, the idea behind software nodes is to "fix" the FW nodes in case the FW
-description can not be modified (and that might well happen to even DT in some
-cases AFAIH). So, if some driver hard codes "interrupt-names" we expect that
-new versions of the FW that support the HW that needs the property will be
-amended accordingly.
-
-"interrupt-names" has been established for ACPI to support a separate SMB alert
-interrupt. However, I haven't heard any development of that IRL (for real
-devices in ACPI environment).
-
-> I don't think I can grok any example of the latter in the mainline.
-> 
-> I am asking because I'd need to add something similar shortly to make parsing
-> of platform devices created out of ACPI static tables easier (I guess we
-> can postpone discussion till I post the code but I thought I'd ask).
-
-Oh, I can go ahead and tell you, try to avoid that. Why?! Whatever,
-indeed, please Cc me to that, I will be glad to study the case and
-try to be helpful.
-
-(Have you considered DT overlays instead? There is a big pending support for
- that for _ACPI_ platforms.)
-
-> Are we going to do the same for "reg-names" ?
-
-If it makes sense and we expect some vendor to follow that _in ACPI_,
-why not?
-
-> Most importantly, what is DT maintainers stance on the matter ?
-
-AFAIK They don't care as long as there is a schema provided, accepted and
-used in DT, if it's ACPI-only thing, then it most likely should be done
-in ACPI-like way (see above the first two / three items: spec, MS, WMI/EFI).
-
-> > > I am sorry I have got more questions than answers here - it would be good
-> > > to understand where the line is drawn when it comes to OF/ACPI and fwnode
-> > > heuristics compatibility.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Thanks,
+Derek
+>>=20
+>> Thanks,
+>> Armin Wolf
+>>=20
+>> > > Other than that:
+>> > > Reviewed-by: Armin Wolf <W_Armin@gmx=2Ede>
+>> > >=20
+>> > > >    		custom			Driver defined custom profile
+>> > > >    		=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> > > >    diff --git a/drivers/acpi/platform_profile=2Ec
+>> > > > b/drivers/acpi/platform_profile=2Ec
+>> > > > index b43f4459a4f6=2E=2Eaa1dce05121b 100644
+>> > > > --- a/drivers/acpi/platform_profile=2Ec
+>> > > > +++ b/drivers/acpi/platform_profile=2Ec
+>> > > > @@ -37,6 +37,7 @@ static const char * const profile_names[] =3D {
+>> > > >    	[PLATFORM_PROFILE_BALANCED] =3D "balanced",
+>> > > >    	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] =3D
+>> > > > "balanced-performance",
+>> > > >    	[PLATFORM_PROFILE_PERFORMANCE] =3D "performance",
+>> > > > +	[PLATFORM_PROFILE_MAX_POWER] =3D "max-power",
+>> > > >    	[PLATFORM_PROFILE_CUSTOM] =3D "custom",
+>> > > >    };
+>> > > >    static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFIL=
+E_LAST);
+>> > > > diff --git a/include/linux/platform_profile=2Eh
+>> > > > b/include/linux/platform_profile=2Eh
+>> > > > index a299225ab92e=2E=2E855b28340e95 100644
+>> > > > --- a/include/linux/platform_profile=2Eh
+>> > > > +++ b/include/linux/platform_profile=2Eh
+>> > > > @@ -24,6 +24,7 @@ enum platform_profile_option {
+>> > > >    	PLATFORM_PROFILE_BALANCED,
+>> > > >    	PLATFORM_PROFILE_BALANCED_PERFORMANCE,
+>> > > >    	PLATFORM_PROFILE_PERFORMANCE,
+>> > > > +	PLATFORM_PROFILE_MAX_POWER,
+>> > > >    	PLATFORM_PROFILE_CUSTOM,
+>> > > >    	PLATFORM_PROFILE_LAST, /*must always be last */
+>> > > >    };
+>> >=20
+>>=20
 
 
