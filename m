@@ -1,180 +1,234 @@
-Return-Path: <linux-acpi+bounces-19332-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19333-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AF8C8FDF7
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 19:10:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58704C8FE7C
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 19:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DCBA4E1EBB
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 18:10:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C5E2035159C
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 18:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6345C2FDC4B;
-	Thu, 27 Nov 2025 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AFE30100A;
+	Thu, 27 Nov 2025 18:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jc29asDp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5If9gO+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3242A2FDC37
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 18:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD6C3009D4
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 18:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764267003; cv=none; b=GakKxkzUN7dnOZvIbFM7tne4XCCTvCEcCzEKLJehnw9mzlhCuiKtMGWOebxdrMPiCA1oIt0KVyQF2r0yJ6cdbkNxHX3oS+l5wYyHfXrcolXXy3Sf7eSapC1SNoZxmCil4C5qV1MaxKHtyNbwVSrGQ8YMIYcGVnPR0tczG4QISHA=
+	t=1764267769; cv=none; b=IYB8G2qa5yKlBj1a8zeV+U4InytSdtzSX9zY3Nk13jxuh6HP4s3x7HB2ZsFiYGguTcQ4niheID6Ced6wpW2jBnWWpbL6hE1eB5aX15EJFPjHo72r2uxudDcSczIKBDmcG++CIlMzPcckptJaG15C8wDxqxDqXZpk6K4mNaVfcu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764267003; c=relaxed/simple;
-	bh=mjIImdNaHtUFvvXlOK6pE8V72hbYBHg+Voc9qEUtsbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KN5h9Z4uaQ+Ky3o4J+zLj1bRdROMWaPaijkDa8yQWu9IwgN1LS/HnPPhQ5S8AjoU9DGWY0MR2dhismoO07IO3VabGy/uCu4YB5z8LEQtxhLo43lWJH3yYgaVUSIKyaKqE4NJmqWK6vSWPo+6QIZYaCYxFYYuQyySHnILyraV54U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jc29asDp; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-429c4c65485so1070395f8f.0
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 10:10:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764266999; x=1764871799; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dx7dLWF3fYt4YAydLoSYihtQG3rPcHN7URxJi8Fj67U=;
-        b=jc29asDpPv8WUCKJh0v1fwH6vWRcnJtBs2rhxoiz71kvBglPjQFIRitrBRG/m5HK0e
-         qPhbefY2zjcxWVAgwG6Lhtq+lRzlNHed3citUuo1tzTGD9u55HfffGeVxiil0b52C6mo
-         Xh09WG5a01KaWQfG4b7U/newcNAx2RvFNffWbMZGsh8FTGq7qdQgFPZ0Erk80BVxztYu
-         MMZz9Tsp+Ng3mS1SzCVcCpRzz5lCvkzZH/v1/eo7wNZHWkRlmwm+kkzZrvf3nsSw7ypr
-         MyG1PzImUEnK04g0lG5uME7iycHzmbpxnmnMhfGdbbgzIHerQxgdf6XWUt/42Dh516JC
-         jfXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764266999; x=1764871799;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dx7dLWF3fYt4YAydLoSYihtQG3rPcHN7URxJi8Fj67U=;
-        b=GSldrwracDC2qAkcpzICXxgzaM91H/fMpj681cH1BjCEDgCCEt/vShQw+jnAJH1b/v
-         8Ohq7u+apXftYOvr83Yf1SN62znAvN4sG0/LN8uzHlOV8oJKqwiAQ6lPRfs1DJNa3xMr
-         LsbMlcVOiE4+DaZjNAGgzfFV/69E5UrdoHj48l0yakFz0k7i6zBEKWb+Y9X9Ua1XI3Ct
-         lfZTmyE458JW0zi3sXCKyQ5gUBDqFpdAm7Bmnen3EpUWM8FSS2c4Sz1QD4p9EybYlHCC
-         SrkRL9JA7dUA3avm9xjH/cBcq2YM4q3bVWse+dwvbXPzsAIFh0A7E1mYoCtpxBLgp1PZ
-         JIIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrczzy4n5Sf7m8r0DBfec3oOPrSlVg6FR2FP7JZn05fWaq2B6QOMuVM30si4Qera5mxRLRb5F2ehPT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzk6oQHG3ZKQ8IvjPe2Nn3P0gcqBxhf7aLfPf53mR2CKYn+0Np
-	LZ+TsHrwUkKm/Lh+36WKoAC9soar5chCqRrGBLuvNTekwtqPQc03AXf2Wr8JXh7tHGY=
-X-Gm-Gg: ASbGncuvtauXqqfX+D4ZqgtY+Nmp9ThKEgHwuwnR64BqznkjIziLoJbClAKIjqSHwCB
-	Dw+h2v+W0KJfy8ulNJfKkHQ1KuzYkVX1v8nh46yrH9ckBZWQ8qHh8pyR+Lxi8CVChHOmBlL9yS7
-	2fqF+f9pB1RlFfLSKIjgvggswDDJc4mQIHDeyE+ZXmbqvgwNZhTyzWDMGrAGINv3FwvZmgebnc7
-	xH3PfdY9H3teXZBdKbxjMD3D2cdnXrrrX4SpWsa1fbn4loTDliK+MQ2SUVXFNnICYR/54VpJgzc
-	n3d/FBeIt6BNYU9IcFbfucOm+YKeZliWjpsMsUMPqNCB70BRbPW4n8+jI0qvHBv3H8RBzSxW8pr
-	MO0xiRtyRsM4wJu9cTpV1lTjyGuyxMsJFHBuz8jSGaqOBFzKpKaxKTN3Yuc0YB5N60d3k78I2Ud
-	6MUfmdXbZ/FMtLpJQs
-X-Google-Smtp-Source: AGHT+IFj2t3yKW6pPDsFDhEyOjjtQDUGWqwY1Td1Uo8FE8nnLGME1TAIOSoCs2nLoFBFrgBCNM5nDQ==
-X-Received: by 2002:a05:6000:208a:b0:42b:3bd2:b2f8 with SMTP id ffacd0b85a97d-42cc1d3543dmr25867134f8f.46.1764266999388;
-        Thu, 27 Nov 2025 10:09:59 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-42e1c5e3857sm5371663f8f.19.2025.11.27.10.09.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 10:09:58 -0800 (PST)
-Date: Thu, 27 Nov 2025 21:09:54 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Huisong Li <lihuisong@huawei.com>,
-	rafael@kernel.org, lenb@kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sudeep.Holla@arm.com, linuxarm@huawei.com,
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com,
-	zhenglifeng1@huawei.com, yubowen8@huawei.com, lihuisong@huawei.com
-Subject: Re: [PATCH 3/3] ACPI: processor: idle: Update idle states from
- avaiable power information
-Message-ID: <202511272353.nOqEau6n-lkp@intel.com>
+	s=arc-20240116; t=1764267769; c=relaxed/simple;
+	bh=2zh5IckA93jcXpcP2jg/bB2AVaYgRYS+ot7BWC5MT2A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S8FxMWcflrWADy/KxoCPfhi/IyQxYhW4E24CgAybU0iZMz2lfSwJ68ter1wBpUgbwXBInkeUkVsuC5VSsRzKDp3rYZuybDOLcbYWggyctxdh76ppmcmPEHCSDBGMsOyQzIypX9sSEo7TXp8N67sA3a/zI7L6js1mHCxAfqSDZ0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5If9gO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D97C2BCB1
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 18:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764267769;
+	bh=2zh5IckA93jcXpcP2jg/bB2AVaYgRYS+ot7BWC5MT2A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=t5If9gO++OOilnxFrwBrkBC309GX2ZWoD+KuNyiD5dUztBFiu96epD55nIlqdm2bE
+	 I629s/i5ebpTIV1f8i9y5LxYTw1ElYOyDOS7zh8yoLRb12SJMkNSTl/k5UVdiV9Wcx
+	 4pI9IStlpgObJIRTRBZMtk1aAK13fAJZM4p9nuCNWNYZMgi9MXm7gEip+9kip1t60N
+	 fsKjao8brX5y0iEjBEnKN0hZgNGxRVvpYBmlN4f60tM41YnF3OOyz3ScwQfNNPuO1O
+	 tD5BH4EMod/AgIyuDOrhBKsWuQJMKPloN85ij5AbiVt3+3bxe8+vH/r2iPJ0jTChzF
+	 Psdd0ZmiQoKyA==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-45066bee74aso237847b6e.2
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 10:22:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVG/d0m6eTrdYg07GpM911XTCdQjAcUkidW4scIyPhxLYh+i/HDreYFGGR9NV55ei7s+BEzy8nfZdTs@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOaCyv2aLQ42RWbE5nDu1pYdDVHVUn30g5qFhXWSdJc0o7uf8L
+	LDQPZwbiwShGMzG2uLX12vFNIYDTFHUidVd4gL75QBU27EA2jd5Gn2DWpy98mjlesifuJO6gZ9v
+	OHWhvZAppCGk+pcFWy3mAgxtknRG26FA=
+X-Google-Smtp-Source: AGHT+IH1bZuq2107Z9vV3tIssGfEt3HKcvXwJtichyRCHN4NG+9zrGINSBUFfZp8A6sCqAX7wGBoKCjmIoVGx2W+fiQ=
+X-Received: by 2002:a05:6808:1803:b0:44d:a972:f48d with SMTP id
+ 5614622812f47-45115ade7bcmr8045952b6e.51.1764267768535; Thu, 27 Nov 2025
+ 10:22:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125072933.3706006-4-lihuisong@huawei.com>
+References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+ <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com> <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+In-Reply-To: <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Nov 2025 19:22:37 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hdqY-=O5Ai6c5qjMr_pRFc+SDyV1QruM=ZeHH9Z=guSg@mail.gmail.com>
+X-Gm-Features: AWmQ_bmQtAcoPswZk2AImBNuJ-60z5nmzzYc3vdfnDFN0Jddf0LEskGxktPDRCM
+Message-ID: <CAJZ5v0hdqY-=O5Ai6c5qjMr_pRFc+SDyV1QruM=ZeHH9Z=guSg@mail.gmail.com>
+Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
+ device of thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Huisong,
+On Sat, Nov 22, 2025 at 3:18=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 21.11.25 um 21:35 schrieb Rafael J. Wysocki:
+>
+> > On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
 
-kernel test robot noticed the following build warnings:
+[...]
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >> ---
+> >> Armin Wolf (8):
+> >>        thermal: core: Allow setting the parent device of cooling devic=
+es
+> >>        thermal: core: Set parent device in thermal_of_cooling_device_r=
+egister()
+> >>        ACPI: processor: Stop creating "device" sysfs link
+> >
+> > That link is not to the cooling devices' parent, but to the ACPI
+> > device object (a struct acpi_device) that corresponds to the parent.
+> > The parent of the cooling device should be the processor device, not
+> > its ACPI companion, so I'm not sure why there would be a conflict.
+>
+>  From the perspective of the Linux device core, a parent device does not =
+have to be
+> a "physical" device. In the case of the ACPI processor driver, the ACPI d=
+evice is used,
+> so the cooling device registered by said driver belongs to the ACPI devic=
+e.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Huisong-Li/cpuidle-Add-enable_cpuidle-interface/20251125-153615
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20251125072933.3706006-4-lihuisong%40huawei.com
-patch subject: [PATCH 3/3] ACPI: processor: idle: Update idle states from avaiable power information
-config: i386-randconfig-141-20251126 (https://download.01.org/0day-ci/archive/20251127/202511272353.nOqEau6n-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+Well, that's a problem.  A struct acpi_device should not be a parent
+of anything other than a struct acpi_device.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202511272353.nOqEau6n-lkp@intel.com/
+> I agree that using the Linux processor device would make more sense, but =
+this will require
+> changes inside the ACPI processor driver.
 
-smatch warnings:
-drivers/acpi/processor_idle.c:1339 acpi_processor_power_state_has_changed() error: we previously assumed '_pr' could be null (see line 1339)
+So be it.
 
-vim +/_pr +1339 drivers/acpi/processor_idle.c
+> As for the "device" symlink: The conflict would be a naming conflict, as =
+both "device" symlinks
+> (the one created by the ACPI processor driver and the one created by the =
+device core) will
+> be created in the same directory (which is the directory of the cooling d=
+evice).
 
-a36a7fecfe6071 Sudeep Holla              2016-07-21  1294  int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1295  {
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1296  	int cpu;
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1297  	struct acpi_processor *_pr;
-3d339dcbb56d8d Daniel Lezcano            2012-09-17  1298  	struct cpuidle_device *dev;
-ffff9603ddf90a Huisong Li                2025-11-25  1299  	int ret = 0;
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1300  
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1301  	if (disabled_by_idle_boot_param())
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1302  		return 0;
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1303  
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1304  	if (!pr->flags.power_setup_done)
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1305  		return -ENODEV;
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1306  
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1307  	/*
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1308  	 * FIXME:  Design the ACPI notification to make it once per
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1309  	 * system instead of once per-cpu.  This condition is a hack
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1310  	 * to make the code that updates C-States be called once.
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1311  	 */
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1312  
-9505626d7bfeb5 Paul E. McKenney          2012-02-28  1313  	if (pr->id == 0 && cpuidle_get_driver() == &acpi_idle_driver) {
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1314  
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1315  		/* Protect against cpu-hotplug */
-95ac706744de78 Sebastian Andrzej Siewior 2021-08-03  1316  		cpus_read_lock();
-6726655dfdd2dc Jiri Kosina               2014-09-03  1317  		cpuidle_pause_and_lock();
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1318  
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1319  		/* Disable all cpuidle devices */
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1320  		for_each_online_cpu(cpu) {
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1321  			_pr = per_cpu(processors, cpu);
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1322  			if (!_pr || !_pr->flags.power_setup_done)
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1323  				continue;
-3d339dcbb56d8d Daniel Lezcano            2012-09-17  1324  			dev = per_cpu(acpi_cpuidle_device, cpu);
-3d339dcbb56d8d Daniel Lezcano            2012-09-17  1325  			cpuidle_disable_device(dev);
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1326  		}
-46bcfad7a819bd Deepthi Dharwar           2011-10-28  1327  
-ffff9603ddf90a Huisong Li                2025-11-25  1328  		/*
-ffff9603ddf90a Huisong Li                2025-11-25  1329  		 * Update C-state information based on new power information.
-ffff9603ddf90a Huisong Li                2025-11-25  1330  		 *
-ffff9603ddf90a Huisong Li                2025-11-25  1331  		 * The same idle state is used for all CPUs.
-ffff9603ddf90a Huisong Li                2025-11-25  1332  		 * The old idle state may not be usable anymore if fail to get
-092a52b5417fd4 Huisong Li                2025-11-25  1333  		 * available ACPI power information from any online CPU.
-ffff9603ddf90a Huisong Li                2025-11-25  1334  		 * The cpuidle of all CPUs should be disabled.
-ffff9603ddf90a Huisong Li                2025-11-25  1335  		 */
-092a52b5417fd4 Huisong Li                2025-11-25  1336  		ret = -ENODEV;
-092a52b5417fd4 Huisong Li                2025-11-25  1337  		for_each_online_cpu(cpu) {
-092a52b5417fd4 Huisong Li                2025-11-25  1338  			_pr = per_cpu(processors, cpu);
-092a52b5417fd4 Huisong Li                2025-11-25 @1339  			if (!_pr && !_pr->flags.power_setup_done)
-                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-if _pr is NULL this will crash.  s/&&/||/
+I see.
 
-092a52b5417fd4 Huisong Li                2025-11-25  1340  				continue;
-092a52b5417fd4 Huisong Li                2025-11-25  1341  			ret = acpi_processor_get_power_info(_pr);
-092a52b5417fd4 Huisong Li                2025-11-25  1342  			if (!ret) {
-092a52b5417fd4 Huisong Li                2025-11-25  1343  				acpi_processor_setup_cpuidle_states(_pr);
+But why is the new symlink needed in the first place?  If the device
+has a parent, it will appear under that parent in /sys/devices/, won't
+it?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Currently, all of the thermal class devices appear under
+/sys/devices/virtual/thermal/ because they have no parents and they
+all get a class parent kobject under /sys/devices/virtual/, as that's
+what get_device_parent() does.
 
+If they have real parents, they will appear under those parents, so
+why will the parents need to be pointed to additionally?
+
+BTW, this means that the layout of /sys/devices/ will change when
+thermal devices get real parents.  I'm not sure if this is a problem,
+but certainly something to note.
+
+> >>        ACPI: fan: Stop creating "device" sysfs link
+> >>        ACPI: video: Stop creating "device" sysfs link
+> > Analogously in the above two cases AFAICS.
+> >
+> > The parent of a cooling device should be a "physical" device object,
+> > like a platform device or a PCI device or similar, not a struct
+> > acpi_device (which in fact is not a device even).
+>
+>  From the perspective of the Linux device core, a ACPI device is a perfec=
+tly valid device.
+
+The driver core is irrelevant here.
+
+As I said before, a struct acpi_device object should not be a parent
+of anything other than a struct acpi_device object.  Those things are
+not devices and they cannot be used for representing PM dependencies,
+for example.
+
+> I agree that using a platform device or PCI device is better, but this al=
+ready happens
+> inside the ACPI fan driver (platform device).
+
+So it should not happen there.
+
+> Only the ACPI video driver created a "device" sysfs link that points to t=
+he ACPI device
+> instead of the PCI device. I just noticed that i accidentally changed thi=
+s by using the
+> PCI device as the parent device for the cooling device.
+>
+> If you want then we can keep this change.
+
+The PCI device should be its parent.
+
+> >>        thermal: core: Set parent device in thermal_cooling_device_regi=
+ster()
+> >>        ACPI: thermal: Stop creating "device" sysfs link
+> > And this link is to the struct acpi_device representing the thermal zon=
+e itself.
+>
+> Correct, the ACPI thermal zone driver is a ACPI driver, meaning that he b=
+inds to
+> ACPI devices. Because of this all (thermal zone) devices created by an in=
+stance of
+> said driver are descendants of the ACPI device said instance is bound to.
+>
+> We can of course convert the ACPI thermal zone driver into a platform dri=
+ver, but
+> this would be a separate patch series.
+
+If you want parents, this needs to be done first, but I'm still not
+sure what the parent of a thermal zone would represent.
+
+In the ACPI case it is kind of easy - it would be the (platform)
+device corresponding to a given ThermalZone object in the ACPI
+namespace - but it only has a practical meaning if that device has a
+specific parent.  For example, if the corresponding ThermalZone object
+is present in the \_SB scope, the presence of the thermal zone parent
+won't provide any additional information.
+
+Unfortunately, the language in the specification isn't particularly
+helpful here: "Thermal zone objects should appear in the namespace
+under the portion of the system that comprises the thermal zone. For
+example, a thermal zone that is isolated to a docking station should
+be defined within the scope of the docking station device."  To me
+"the portion of the system" is not too meaningful unless it is just
+one device without children.  That's why _TZD has been added AFAICS.
+
+> >>        thermal: core: Allow setting the parent device of thermal zone =
+devices
+> >
+> > I'm not sure if this is a good idea, at least until it is clear what
+> > the role of a thermal zone parent device should be.
+>
+> Take a look at my explanation with the Intel Wifi driver.
+
+I did and I think that you want the parent to be a device somehow
+associated with the thermal zone, but how exactly?  What should that
+be in the Wifi driver case, the PCI device or something else?
+
+And what if the thermal zone affects multiple devices?  Which of them
+(if any) would be its parent?  And would it be consistent with the
+ACPI case described above?
+
+All of that needs consideration IMV.
 
