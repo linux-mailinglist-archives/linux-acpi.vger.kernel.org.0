@@ -1,147 +1,232 @@
-Return-Path: <linux-acpi+bounces-19329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33135C8F3B3
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:20:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4570EC8F5D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12FD3AF0C0
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:16:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A153C4E8091
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BBB336EC2;
-	Thu, 27 Nov 2025 15:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26400313266;
+	Thu, 27 Nov 2025 15:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WL1wqSw2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYpXrYRb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9076633557E
-	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 15:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE21A283FDD;
+	Thu, 27 Nov 2025 15:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764256579; cv=none; b=te/e4E3nUhBvFNYfH0cRDhGffumwJvlecGFVNZuwCYlVzHQA/+5KnzNUMY3X51p+eaBlDKvkKZl/Z5z0ZzU1YrbAwh4nQA4imoD1YaDQNx9zlS8Kc7PWWxtrMkAjv3lEA8sVYfRDnX+GCiRvkNz4ClLTnyOD+TJMLbIfgdC85D8=
+	t=1764258847; cv=none; b=tKTVQs8sqzq1jSfjWk+cFbENoI4+18USWl6gGXXKygXnbToegOmFYEsnGjFW9MYsygffOFLg6b0+E3go0oc8+REwMCoNttBMekFJK1lKfM5OdFA3NN4cZMUaa6gnFnFgb/HW1JmRXAQe8QBLLzhPi25xEs0o3WK2phRQwlXIe8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764256579; c=relaxed/simple;
-	bh=EAYHD0uflfQd6sszqckCoZM9plV9potl4DoHq6i9A4c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItErqmjei+FZ582H35OjmlP6K9scC2ydVyke0yRuO/U5LRTJFH6ZebTRSD9Q/aGOZkff+C5hUbwsxv7r5+s2OAhJuaX7yARqEKBK0ZxGdU5lwaH4Jc9ZcB3iDQs0SOIsWt10Abw06PznFKb+LBGrghuJNV/LcwSvZYYFM5o/z6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WL1wqSw2; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b86e0d9615so1146504b3a.0
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 07:16:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764256575; x=1764861375; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2SI5IT2ccA/LcmNZQUHmcdI+iq0zqrTHDtVhV8fx+VI=;
-        b=WL1wqSw2h9maYpLMe+Aoz7zsV1mRG8SxFJEUoTLop1jyl9mr4Opl+O+jsYhQ6XSYCQ
-         iV+TGTYl6pMZq+EiCGel0zZuQ0ha+bku6KXtjmYaidTcieXGjrycHkaZQ9eetuZetU3D
-         2mPDV/wd/PSt6VQgm/mBcFeppx6jdSHZuEtbvkjmE1rj1FhGAjq6DdYckOsjZHgkXhu2
-         zlEXGY0yo+A7GsguADhfca3aU/oNv+WRmfP3crf+xX6C+lsfCGDU2imbS1pcTT5oB+fR
-         hBNafEJm/Ec/790+miaS7bSFo9WTAp4uB5qSV+7g5+jitsQK8G56hhH2AztpTg/cJRqe
-         9Z+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764256575; x=1764861375;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2SI5IT2ccA/LcmNZQUHmcdI+iq0zqrTHDtVhV8fx+VI=;
-        b=qhES/wgZB6kBXV8MnxlIIvv7dyndlNppX1UeD+dBSYe3EVYHNmgY7X5IKcGg5d2Lof
-         7N5jQOtD3IV7+sY4nd7tt5DNIJ87QylJaE2t/CrGR5aTGyw3IZQcjBH+4sQjuCdTT0ed
-         U/NdB+lU8jaULgHNSzKLy1iQxELEZSlNg2HGyjeJATB/6DrILUmrO8VbRk2Uco0UbHt5
-         gH4jlLm9ruB1ulHK27zltIjhRv7GnhVb7KZtB1ias+deVAs+EJ1c1xyTucnM0VA9r2Ar
-         oaInRxCc0vgpcxj7yyPApMrB7l9NdkMle5LwDd4zwidZz4A4lLZivybbpmBfgvTDsLwK
-         w+wA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDmLgtrRRkX/gIBPMYkcn+g+MCjHQJ/I7/5a6zGqOPJxbuK4KxcCI7MFwREJWYW7gobqnL/szm44CD@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBdQcfKdlhn34asz6+MB/Y7N+IzsWN2ofZWjNLHVIpPWUM1l7P
-	cF46fjShueYRdwl5czXhtvN9zYzRGkr5Yz6MgqgeBmMrhAiUxqdaLGqY
-X-Gm-Gg: ASbGncs5xTNIfqgwJxouhxMjH3vs8tCDjJnr1wBhutLa1euEhCkfmYTSM1OwvLqSaR0
-	aFyCxx7AJfCQ+7a+NMy9JU5dVoB7lp0e4zuURXo6EYkwGtfpxVjU6/MrfZpBrfjN72+flY8wy0R
-	zBd4qKf4ti9jjtYfG13/vlqzEGnH/W2ubT2touWoh0G3vyvHRlbXTi/N16HlZ8Zb3wBQah79mqI
-	xITnVADWmgquRJULn0NxN4LK9v8IAeeZaNB6V5740vcjt3tzHZTLCVbcHGheCfbKk4gUtAA91kI
-	eoC365w7E4dYKKAsA4WSt8V5/FqQY8JOc/ce0pv3N2AyUkUlcIGLxPtvdLSLQObH9RR3WLAk+mq
-	D/ZK+8NRYp7rq1/2AksAi9ZX/REFYz5BYIvPLjhpsEjX4NbGhjf7peXu0wKYLucuedVkF4rIKq7
-	zOrXWdLZBBFz8I6r1gm0KjZFW3JY142Pae2yPkYkeEYhnIt+d0syQ5LCEXg/lysf8phCY=
-X-Google-Smtp-Source: AGHT+IF2C4VQYvmJzN4VQiQ587h8aO8/w5xYj9vrh6mYj3laNxKF6BXlbjKrvVYNuGLe/wityRhDKg==
-X-Received: by 2002:a05:701b:208a:b0:11b:b064:f606 with SMTP id a92af1059eb24-11c9d85009cmr11987237c88.26.1764256574538;
-        Thu, 27 Nov 2025 07:16:14 -0800 (PST)
-Received: from bliptop (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcb067088sm5099656c88.10.2025.11.27.07.16.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 07:16:14 -0800 (PST)
-From: "Derek J. Clark" <derekjohn.clark@gmail.com>
-To: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Len Brown <lenb@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mario Limonciello <superm1@kernel.org>,
-	Zhixin Zhang <zhangzx36@lenovo.com>,
-	Mia Shao <shaohz1@lenovo.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Pierre-Loup A . Griffais" <pgriffais@valvesoftware.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v4 3/3] platform/x86: wmi-gamezone: Add Legion Go 2 Quirks
-Date: Thu, 27 Nov 2025 07:16:05 -0800
-Message-ID: <20251127151605.1018026-4-derekjohn.clark@gmail.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251127151605.1018026-1-derekjohn.clark@gmail.com>
-References: <20251127151605.1018026-1-derekjohn.clark@gmail.com>
+	s=arc-20240116; t=1764258847; c=relaxed/simple;
+	bh=XZh8Am0flcWfvfawgkFuAwpjKDq4TvWS83SNiDd6NuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xmsdi8/DoPgHMRsKV2TA6j/hdbODh36flonfJpmRG0b5gcx7RSVbcTcHWSghCuuFqZMJ4mV3PiMmn2qM+SmhTOgpgh9rVbV18tiqycIf73e3ZtF2M92XKXCDJ/vVedyvsQCxZdKZI3FQk7tERcr/+WG0bAaJGpkUbvB1di/Oick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYpXrYRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E5FC4CEF8;
+	Thu, 27 Nov 2025 15:53:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764258845;
+	bh=XZh8Am0flcWfvfawgkFuAwpjKDq4TvWS83SNiDd6NuM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FYpXrYRbASFQ/9C7rRjqhxSeT8JnwjTbo4WJZiENuT7AhCcej8OJBAsDWtVvVmn5i
+	 +UtH1RmYTAlvNsvN6yCy0IJyC8UNmxTRoWVYCTJdUB+5v2A5idsCX2R2CE8MFBaqKR
+	 w3cF4GwCXK/hTW2vp0Fnoi29iGXNwjOjDK4KBFKiBQoNSbUAWkIYMRKHgDuN1ONAck
+	 QP8rn/5x9NVcW2CNY+Juz82e3owgEu2GOj0w/J/l60+dhxszr0VU6bwF1J1WHn6QCE
+	 2mAsHwIsZKFZiT9oDVPtPWrySL9normVU7tUlcJXeYLk+A351eDTpTLrCKX8XYTcgy
+	 b/aMZxFMxgwYg==
+Date: Thu, 27 Nov 2025 16:53:55 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Linus Walleij <linusw@kernel.org>, Lei Xue <lei.xue@mediatek.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sean Wang <sean.wang@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	yong.mao@mediatek.com, qingliang.li@mediatek.com,
+	Fred-WY.Chen@mediatek.com, ot_cathy.xu@mediatek.com,
+	ot_shunxi.zhang@mediatek.com, ot_yaoy.wang@mediatek.com,
+	ot_ye.wang@mediatek.com, linux-acpi@vger.kernel.org,
+	robh@kernel.org
+Subject: Re: [PATCH 2/3] pinctrl: mediatek: Add acpi support
+Message-ID: <aSh0EyGm9ZHAc3dN@lpieralisi>
+References: <20251125023639.2416546-1-lei.xue@mediatek.com>
+ <20251125023639.2416546-3-lei.xue@mediatek.com>
+ <CAD++jL=h4ZEgrjgGOfgFyAXBM7EL91ZD-La82UQ7GPOXv8h9WQ@mail.gmail.com>
+ <aScwaxBG53dnZ4a4@lpieralisi>
+ <aSdBu-B9mwU2-1_S@smile.fi.intel.com>
+ <aSgipbe75hrwhTD7@lpieralisi>
+ <aShgYukPRfDkq_Z0@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aShgYukPRfDkq_Z0@smile.fi.intel.com>
 
-Add Legion Go 2 SKU's to the Extreme Mode quirks table.
+On Thu, Nov 27, 2025 at 04:29:54PM +0200, Andy Shevchenko wrote:
+> On Thu, Nov 27, 2025 at 11:06:29AM +0100, Lorenzo Pieralisi wrote:
+> > On Wed, Nov 26, 2025 at 08:06:51PM +0200, Andy Shevchenko wrote:
+> 
+> [...]
+> 
+> > > > I also assume/hope that we don't want to add a "reg-names" _DSD property either
+> > > > in ACPI to deal with this seamlessly in DT/ACPI (that was done for
+> > > > "interrupt-names"):
+> > > > 
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/firmware-guide/acpi/enumeration.rst?h=v6.18-rc7#n188
+> > > 
+> > > Hmm... Why not?
+> > 
+> > What's the policy there ?
+> 
+> > Half of the ACPI bindings for an interrupt
+> > descriptor are defined in the ACPI specs (ie _CRS) and the other half
+> > (ie "interrupt-names") is documented in the Linux kernel (or are we
+> > documenting this elsewhere ?) ?
+> 
+> Yeah, nobody pursued ACPI specification updates / addendum to make it fully
+> official. _De facto_ we have established practice for GPIOs enumeration
+> (as most used resources in the OSes), Linux official for PWM, I²C muxes,
+> multi-functional HW (such as Diolan DLN-2, LJCA), Microsoft defined for
+> so called "USB hardwired" devices, Linux defined for LEDs and GPIO keys,
+> sensor mount matrix as per "most used" cases + DT analogue works just
+> because we have agnostic APIs in IIO to retrieve that. There are maybe
+> more, but don't remember
+> 
+> So, I think the practical "policies" are that:
+> - if it's defined in ACPI spec, we use the spec
+> - if there is Microsoft addendum, we rely on what Windows does
+> - WMI, EFI, and other "windoze"-like vendor defined cases
+> - if it makes sense, we establish practice from Linux perspective
+> - the rest, every vendor does what it does
+> 
+> That said, for the first two we expect OEMs to follow, for the third one
+> depends, but there are established WMI calls and other more or less "standard"
+> interfaces, so like the first two.
+> 
+> For the fourth one (Linux) we do, but living in the expectation that some or
+> more vendors fall to the fifth category and we might need to support that if
+> we want their HW work in Linux.
+> 
+> > Or we are saying that "interrupt-names" properties are added by kernel
+> > code _only_ (through software nodes, to make parsing seamless between DT
+> > and ACPI) based on hardcoded name values in drivers ?
+> 
+> No, the idea behind software nodes is to "fix" the FW nodes in case the FW
+> description can not be modified (and that might well happen to even DT in some
+> cases AFAIH). So, if some driver hard codes "interrupt-names" we expect that
+> new versions of the FW that support the HW that needs the property will be
+> amended accordingly.
+> 
+> "interrupt-names" has been established for ACPI to support a separate SMB alert
+> interrupt. However, I haven't heard any development of that IRL (for real
+> devices in ACPI environment).
+> 
+> > I don't think I can grok any example of the latter in the mainline.
+> > 
+> > I am asking because I'd need to add something similar shortly to make parsing
+> > of platform devices created out of ACPI static tables easier (I guess we
+> > can postpone discussion till I post the code but I thought I'd ask).
+> 
+> Oh, I can go ahead and tell you, try to avoid that. Why?! Whatever,
+> indeed, please Cc me to that, I will be glad to study the case and
+> try to be helpful.
+> 
+> (Have you considered DT overlays instead? There is a big pending support for
+>  that for _ACPI_ platforms.)
 
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
----
- drivers/platform/x86/lenovo/wmi-gamezone.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Long story short: we do need to create platform devices out of static
+table (eg ARM64 IORT) entries. Current code parses the table entries and
+try to map the devices IRQs (ie acpi_register_gsi()) when the platform
+device is created. Now, the interrupt controller that device IRQ's is
+routed to might not have probed yet. We have to defer probing and later,
+when the platform driver probes, map the IRQ.
 
-diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platform/x86/lenovo/wmi-gamezone.c
-index df475e52f79d..381836d29a96 100644
---- a/drivers/platform/x86/lenovo/wmi-gamezone.c
-+++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
-@@ -266,8 +266,23 @@ static const struct dmi_system_id fwbug_list[] = {
- 		},
- 		.driver_data = &quirk_no_extreme_bug,
- 	},
-+	{
-+		.ident = "Legion Go 8ASP2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go 8ASP2"),
-+		},
-+		.driver_data = &quirk_no_extreme_bug,
-+	},
-+	{
-+		.ident = "Legion Go 8AHP2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Legion Go 8AHP2"),
-+		},
-+		.driver_data = &quirk_no_extreme_bug,
-+	},
- 	{},
--
- };
- 
- /**
--- 
-2.51.2
+Issue is: for OF nodes and ACPI devices, behind the platform device
+firmware node there is a standard firmware object, so implementing
+fwnode_irq_get() is trivial. For the devices I am talking about,
+the data providing GSI info (hwirq, trigger/polarity) is static
+table specific, so the idea was to stash that data and embed it in
+fwnode_static along with a irq_get() fwnode_operations function
+specific to that piece of data so that device drivers can actually do:
 
+fwnode_irq_get()
+
+on the fwnode _seamlessly_ (if you still do wonder: those platform
+devices created out of static table entries in ACPI in OF are
+of_node(s)).
+
+There is a less convoluted solution (that is what some platform
+drivers in ACPI do today), that is, we pass the static table
+data in pdev->dev.platform_data and each platform_driver parses it differently.
+
+That works but that also means the in the respective device drivers
+OF and ACPI IRQ (and MMIO) parsing differ (which is not necessarily
+a problem I just have to rewrite them all).
+
+Now - when it comes to "interrupt-names". Some of the device drivers
+I mention do:
+
+eg platform_get_irq_byname_optional()
+
+that expects the IRQ to be mapped and stored in a named platform device resource.
+
+That's easy in DT - for two reasons:
+
+(1) "interrupt-names"
+(2) standard properties behind the of_node
+
+how to do that for fwnodes that aren't backed by either OF nodes or ACPI
+devices (that do use "interrupt-names" _DSD property) is a question.
+
+Mind, the "interrupt-names" thing is a detail in the whole mechanism.
+
+DT overlays to represent in ACPI those static table entries ?
+
+I vividly remember the days ACPI for ARM64 was being merged - that's what
+our crystal ball predicted :)
+
+This delayed IRQ mapping notwithstanding, I read what you wrote and took
+note. The worry is, this fwnode_*() (on ACPI nodes) interface trickling
+into subsystems where it should not (ie PCI, clocks, regulators) - hopefully
+the respective maintainers are keeping an eye on it.
+
+Thanks,
+Lorenzo
+
+> > Are we going to do the same for "reg-names" ?
+> 
+> If it makes sense and we expect some vendor to follow that _in ACPI_,
+> why not?
+> 
+> > Most importantly, what is DT maintainers stance on the matter ?
+> 
+> AFAIK They don't care as long as there is a schema provided, accepted and
+> used in DT, if it's ACPI-only thing, then it most likely should be done
+> in ACPI-like way (see above the first two / three items: spec, MS, WMI/EFI).
+> 
+> > > > I am sorry I have got more questions than answers here - it would be good
+> > > > to understand where the line is drawn when it comes to OF/ACPI and fwnode
+> > > > heuristics compatibility.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
