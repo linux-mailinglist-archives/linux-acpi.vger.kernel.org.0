@@ -1,232 +1,313 @@
-Return-Path: <linux-acpi+bounces-19330-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19331-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4570EC8F5D2
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 16:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44864C8FBB4
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 18:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A153C4E8091
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 15:54:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6FA9B4E3035
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 17:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26400313266;
-	Thu, 27 Nov 2025 15:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E362F12A7;
+	Thu, 27 Nov 2025 17:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYpXrYRb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQo4zWhW"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE21A283FDD;
-	Thu, 27 Nov 2025 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DCA2EFDBF
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764258847; cv=none; b=tKTVQs8sqzq1jSfjWk+cFbENoI4+18USWl6gGXXKygXnbToegOmFYEsnGjFW9MYsygffOFLg6b0+E3go0oc8+REwMCoNttBMekFJK1lKfM5OdFA3NN4cZMUaa6gnFnFgb/HW1JmRXAQe8QBLLzhPi25xEs0o3WK2phRQwlXIe8E=
+	t=1764265283; cv=none; b=Pq0+25ot7aRF1ByhHreZS8urv5GlQhbcbja4//QkCMjnNO5jc8kW4vhUDNXxokqrqIP9BHFR0HVwxc3+HSaZKaOAmyH0ez6cG9Zw0u93s7Ypm6flM3/0R3XMsu7K3SIiU1SymOgPh/ZkvvdYww7GVg9bk+FjEFn0EIz3DexF8pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764258847; c=relaxed/simple;
-	bh=XZh8Am0flcWfvfawgkFuAwpjKDq4TvWS83SNiDd6NuM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xmsdi8/DoPgHMRsKV2TA6j/hdbODh36flonfJpmRG0b5gcx7RSVbcTcHWSghCuuFqZMJ4mV3PiMmn2qM+SmhTOgpgh9rVbV18tiqycIf73e3ZtF2M92XKXCDJ/vVedyvsQCxZdKZI3FQk7tERcr/+WG0bAaJGpkUbvB1di/Oick=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYpXrYRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E5FC4CEF8;
-	Thu, 27 Nov 2025 15:53:58 +0000 (UTC)
+	s=arc-20240116; t=1764265283; c=relaxed/simple;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d+jRwnCnVVvQlhZe1OoaVm4Zj7A6H7ZP/xH3BlaFGG+WH4u331wlyZF5HL4FIGlB12XxV9xZMoyBHpuKDxxCERZYlDj2ybrdl6MbE4ExySFHIVNtCVbuGlg15fnen6yO4Dp9oIFUFp5mcY5OzCsAdfaOK39F1HEIP2dXrx3cHuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQo4zWhW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5EEC2BCB7
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764258845;
-	bh=XZh8Am0flcWfvfawgkFuAwpjKDq4TvWS83SNiDd6NuM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FYpXrYRbASFQ/9C7rRjqhxSeT8JnwjTbo4WJZiENuT7AhCcej8OJBAsDWtVvVmn5i
-	 +UtH1RmYTAlvNsvN6yCy0IJyC8UNmxTRoWVYCTJdUB+5v2A5idsCX2R2CE8MFBaqKR
-	 w3cF4GwCXK/hTW2vp0Fnoi29iGXNwjOjDK4KBFKiBQoNSbUAWkIYMRKHgDuN1ONAck
-	 QP8rn/5x9NVcW2CNY+Juz82e3owgEu2GOj0w/J/l60+dhxszr0VU6bwF1J1WHn6QCE
-	 2mAsHwIsZKFZiT9oDVPtPWrySL9normVU7tUlcJXeYLk+A351eDTpTLrCKX8XYTcgy
-	 b/aMZxFMxgwYg==
-Date: Thu, 27 Nov 2025 16:53:55 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linusw@kernel.org>, Lei Xue <lei.xue@mediatek.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	yong.mao@mediatek.com, qingliang.li@mediatek.com,
-	Fred-WY.Chen@mediatek.com, ot_cathy.xu@mediatek.com,
-	ot_shunxi.zhang@mediatek.com, ot_yaoy.wang@mediatek.com,
-	ot_ye.wang@mediatek.com, linux-acpi@vger.kernel.org,
-	robh@kernel.org
-Subject: Re: [PATCH 2/3] pinctrl: mediatek: Add acpi support
-Message-ID: <aSh0EyGm9ZHAc3dN@lpieralisi>
-References: <20251125023639.2416546-1-lei.xue@mediatek.com>
- <20251125023639.2416546-3-lei.xue@mediatek.com>
- <CAD++jL=h4ZEgrjgGOfgFyAXBM7EL91ZD-La82UQ7GPOXv8h9WQ@mail.gmail.com>
- <aScwaxBG53dnZ4a4@lpieralisi>
- <aSdBu-B9mwU2-1_S@smile.fi.intel.com>
- <aSgipbe75hrwhTD7@lpieralisi>
- <aShgYukPRfDkq_Z0@smile.fi.intel.com>
+	s=k20201202; t=1764265282;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GQo4zWhWFwuM7yaQm/G6MoYrO1sGCe63LiivwvpbJXTuD4bpwtx7vVrjJq/jO3yNT
+	 /glPNOmTyEyuQgFnjW09IwIDuzYIhIp82Bq5tDcMxZ2FYvQimg6WzJuHjpMmBtLdRC
+	 7UHkgkhDXiAZGbYaljkVGuyQaHao2d5pJkHVYaTTRtcd/n5x9+u6+lZm+cbLEo/yUI
+	 r91c8vZQfOXME3t0aQ3s8j0vLUmV7g0L5ZqU6BMJPCG7P1VcW7pspVtnA3oNfQZt9a
+	 wFzr4/a6G8flzMAgfLEhY9Cq1WfAqIZxQ26MOBUnGa6tT8wSG9PPUc+wOdGDq10Lp1
+	 5jvmWmWflox3A==
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7c75dd36b1bso673308a34.2
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 09:41:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUhYMSmc1x9cGEll06tqAl7nT9n9mReKAbPRMuzbpTwXDVxGvaoY3dImUSmVJ1DZUl+Nah9gxSQkkui@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2n2mNO55T36RwMkXI28j0cYnGKYPLf68ZcGkr3+dI4cLkpqUz
+	PsmRDQrOpYMzn7CCNe+KJktvDvw30VgjEBcLKG1MHnZRq45tQQXAZuF9vMQLW1/BEqMwmdKl915
+	b8DcVXXamYekqmB7IIYZMn9qsdE5DRpE=
+X-Google-Smtp-Source: AGHT+IHbfQ5CxJ+BeKUIRbyKYrpAVhmzQHngDVOs0E2Nv7PPmdkB/EPrjv3dEJtB2ATSYwuHhVrLlp/6B/DbEuYhyUY=
+X-Received: by 2002:a05:6808:14d3:b0:450:d7fb:85c2 with SMTP id
+ 5614622812f47-4514e6e1593mr4705868b6e.19.1764265281611; Thu, 27 Nov 2025
+ 09:41:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aShgYukPRfDkq_Z0@smile.fi.intel.com>
+References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+ <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com> <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+In-Reply-To: <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Nov 2025 18:41:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+X-Gm-Features: AWmQ_bnNFzjNLr4ZD-k1rd8sHstOmmRzRHvS_v-U6yiSpHx7MBaeEIqIodGMGBQ
+Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
+ device of thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 04:29:54PM +0200, Andy Shevchenko wrote:
-> On Thu, Nov 27, 2025 at 11:06:29AM +0100, Lorenzo Pieralisi wrote:
-> > On Wed, Nov 26, 2025 at 08:06:51PM +0200, Andy Shevchenko wrote:
-> 
-> [...]
-> 
-> > > > I also assume/hope that we don't want to add a "reg-names" _DSD property either
-> > > > in ACPI to deal with this seamlessly in DT/ACPI (that was done for
-> > > > "interrupt-names"):
-> > > > 
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/firmware-guide/acpi/enumeration.rst?h=v6.18-rc7#n188
-> > > 
-> > > Hmm... Why not?
-> > 
-> > What's the policy there ?
-> 
-> > Half of the ACPI bindings for an interrupt
-> > descriptor are defined in the ACPI specs (ie _CRS) and the other half
-> > (ie "interrupt-names") is documented in the Linux kernel (or are we
-> > documenting this elsewhere ?) ?
-> 
-> Yeah, nobody pursued ACPI specification updates / addendum to make it fully
-> official. _De facto_ we have established practice for GPIOs enumeration
-> (as most used resources in the OSes), Linux official for PWM, I²C muxes,
-> multi-functional HW (such as Diolan DLN-2, LJCA), Microsoft defined for
-> so called "USB hardwired" devices, Linux defined for LEDs and GPIO keys,
-> sensor mount matrix as per "most used" cases + DT analogue works just
-> because we have agnostic APIs in IIO to retrieve that. There are maybe
-> more, but don't remember
-> 
-> So, I think the practical "policies" are that:
-> - if it's defined in ACPI spec, we use the spec
-> - if there is Microsoft addendum, we rely on what Windows does
-> - WMI, EFI, and other "windoze"-like vendor defined cases
-> - if it makes sense, we establish practice from Linux perspective
-> - the rest, every vendor does what it does
-> 
-> That said, for the first two we expect OEMs to follow, for the third one
-> depends, but there are established WMI calls and other more or less "standard"
-> interfaces, so like the first two.
-> 
-> For the fourth one (Linux) we do, but living in the expectation that some or
-> more vendors fall to the fifth category and we might need to support that if
-> we want their HW work in Linux.
-> 
-> > Or we are saying that "interrupt-names" properties are added by kernel
-> > code _only_ (through software nodes, to make parsing seamless between DT
-> > and ACPI) based on hardcoded name values in drivers ?
-> 
-> No, the idea behind software nodes is to "fix" the FW nodes in case the FW
-> description can not be modified (and that might well happen to even DT in some
-> cases AFAIH). So, if some driver hard codes "interrupt-names" we expect that
-> new versions of the FW that support the HW that needs the property will be
-> amended accordingly.
-> 
-> "interrupt-names" has been established for ACPI to support a separate SMB alert
-> interrupt. However, I haven't heard any development of that IRL (for real
-> devices in ACPI environment).
-> 
-> > I don't think I can grok any example of the latter in the mainline.
-> > 
-> > I am asking because I'd need to add something similar shortly to make parsing
-> > of platform devices created out of ACPI static tables easier (I guess we
-> > can postpone discussion till I post the code but I thought I'd ask).
-> 
-> Oh, I can go ahead and tell you, try to avoid that. Why?! Whatever,
-> indeed, please Cc me to that, I will be glad to study the case and
-> try to be helpful.
-> 
-> (Have you considered DT overlays instead? There is a big pending support for
->  that for _ACPI_ platforms.)
+On Sat, Nov 22, 2025 at 3:18=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 21.11.25 um 21:35 schrieb Rafael J. Wysocki:
+>
+> > On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+> >> Drivers registering thermal zone/cooling devices are currently unable
+> >> to tell the thermal core what parent device the new thermal zone/
+> >> cooling device should have, potentially causing issues with suspend
+> >> ordering
+> > This is one potential class of problems that may arise, but I would
+> > like to see a real example of this.
+> >
+> > As it stands today, thermal_class has no PM callbacks, so there are no
+> > callback execution ordering issues with devices in that class and what
+> > other suspend/resume ordering issues are there?
+>
+> Correct, that is why i said "potentially".
+>
+> >
+> > Also, the suspend and resume of thermal zones is handled via PM
+> > notifiers.  Is there a problem with this?
+>
+> The problem with PM notifiers is that thermal zones stop working even bef=
+ore
+> user space is frozen. Freezing user space might take a lot of time, so ha=
+ving
+> no thermal management during this period is less than ideal.
 
-Long story short: we do need to create platform devices out of static
-table (eg ARM64 IORT) entries. Current code parses the table entries and
-try to map the devices IRQs (ie acpi_register_gsi()) when the platform
-device is created. Now, the interrupt controller that device IRQ's is
-routed to might not have probed yet. We have to defer probing and later,
-when the platform driver probes, map the IRQ.
+This can be addressed by doing thermal zone suspend after freezing
+tasks and before starting to suspend devices.  Accordingly, thermal
+zones could be resumed after resuming devices and before thawing
+tasks.  That should not be an overly complex change to make.
 
-Issue is: for OF nodes and ACPI devices, behind the platform device
-firmware node there is a standard firmware object, so implementing
-fwnode_irq_get() is trivial. For the devices I am talking about,
-the data providing GSI info (hwirq, trigger/polarity) is static
-table specific, so the idea was to stash that data and embed it in
-fwnode_static along with a irq_get() fwnode_operations function
-specific to that piece of data so that device drivers can actually do:
+> This problem would not occur when using dev_pm_ops, as thermal zones woul=
+d be
+> suspended after user space has been frozen successfully. Additionally, wh=
+en using
+> dev_pm_ops we can get rid of thermal_pm_suspended, as the device core alr=
+eady mandates
+> that no new devices (including thermal zones and cooling devices) be regi=
+stered during
+> a suspend/resume cycle.
+>
+> Replacing the PM notifiers with dev_pm_ops would of course be a optimizat=
+ion with
+> its own patch series.
 
-fwnode_irq_get()
+Honestly, I don't see much benefit from using dev_pm_ops for thermal
+zone devices and cooling devices.  Moreover, I actually think that
+they could be "no PM" devices that are not even put on the
+suspend-resume device list.  Technically, they are just interfaces on
+top of some other devices allowing the user space to interact with the
+latter and combining different pieces described by the platform
+firmware.  They by themselves have no PM capabilities.
 
-on the fwnode _seamlessly_ (if you still do wonder: those platform
-devices created out of static table entries in ACPI in OF are
-of_node(s)).
+> >> and making it impossible for user space applications to
+> >> associate a given thermal zone device with its parent device.
+> > Why does user space need to know the parent of a given cooling device
+> > or thermal zone?
+>
+> Lets say that we have two thermal zones registered by two instances of th=
+e
+> Intel Wifi driver. User space is currently unable to find out which therm=
+al zone
+> belongs to which Wifi adapter, as both thermal zones have the (nearly) sa=
+me type string ("iwlwifi[0-X]").
 
-There is a less convoluted solution (that is what some platform
-drivers in ACPI do today), that is, we pass the static table
-data in pdev->dev.platform_data and each platform_driver parses it differently.
+But the "belong" part is not quite well defined here.  I think that
+what user space needs to know is what devices are located in a given
+thermal zone, isn't it?  Knowing the parent doesn't necessarily
+address this.
 
-That works but that also means the in the respective device drivers
-OF and ACPI IRQ (and MMIO) parsing differ (which is not necessarily
-a problem I just have to rewrite them all).
+> This problem would be solved once we populate the parent device pointer i=
+nside the thermal zone
+> device, as user space can simply look at the "device" symlink to determin=
+e the parent device behind
+> a given thermal zone device.
 
-Now - when it comes to "interrupt-names". Some of the device drivers
-I mention do:
+I'm not convinced about this.
 
-eg platform_get_irq_byname_optional()
+> Additionally, being able to access the acpi_handle of the parent device w=
+ill be necessary for the
+> ACPI thermal zone driver to support cooling devices other than ACPI fans =
+and ACPI processors.
 
-that expects the IRQ to be mapped and stored in a named platform device resource.
+I guess by the "parent" you mean the device represented in the ACPI
+namespace by a ThermalZone object, right?  But this is not the same as
+the "parent" in the Wifi driver context, is it?
 
-That's easy in DT - for two reasons:
+> >> This patch series aims to fix this issue by extending the functions
+> >> used to register thermal zone/cooling devices to also accept a parent
+> >> device pointer. The first six patches convert all functions used for
+> >> registering cooling devices, while the functions used for registering
+> >> thermal zone devices are converted by the remaining two patches.
+> >>
+> >> I tested this series on various devices containing (among others):
+> >> - ACPI thermal zones
+> >> - ACPI processor devices
+> >> - PCIe cooling devices
+> >> - Intel Wifi card
+> >> - Intel powerclamp
+> >> - Intel TCC cooling
+> > What exactly did you do to test it?
+>
+> I tested:
+> - the thermal zone temperature readout
+> - correctness of the new sysfs links
+> - suspend/resume
+>
+> I also verified that ACPI thermal zones still bind with the ACPI fans.
 
-(1) "interrupt-names"
-(2) standard properties behind the of_node
+I see, thanks.
 
-how to do that for fwnodes that aren't backed by either OF nodes or ACPI
-devices (that do use "interrupt-names" _DSD property) is a question.
+> >> I also compile-tested the remaining affected drivers, however i would
+> >> still be happy if the relevant maintainers (especially those of the
+> >> mellanox ethernet switch driver) could take a quick glance at the
+> >> code and verify that i am using the correct device as the parent
+> >> device.
+> > I think that the above paragraph is not relevant any more?
+>
+> You are right, however i originally meant to CC the mellanox maintainers =
+as
+> i was a bit unsure about the changes i made to their driver. I will rewor=
+k
+> this section in the next revision and CC the mellanox maintainers.
+>
+> >
+> >> This work is also necessary for extending the ACPI thermal zone driver
+> >> to support the _TZD ACPI object in the future.
+> > I'm still unsure why _TZD support requires the ability to set a
+> > thermal zone parent device.
+>
+> _TZD allows the ACPI thermal zone to bind to cooling devices other than A=
+CPI fans
+> and ACPI processors, like ACPI batteries.
 
-Mind, the "interrupt-names" thing is a detail in the whole mechanism.
+No, it is not for cooling devices if my reading of the specification
+is correct.  It says:
 
-DT overlays to represent in ACPI those static table entries ?
+"_TZD (Thermal Zone Devices)
 
-I vividly remember the days ACPI for ARM64 was being merged - that's what
-our crystal ball predicted :)
+This optional object evaluates to a package of device names. Each name
+corresponds to a device in the ACPI namespace that is associated with
+the thermal zone. The temperature reported by the thermal zone is
+roughly correspondent to that of each of the devices."
 
-This delayed IRQ mapping notwithstanding, I read what you wrote and took
-note. The worry is, this fwnode_*() (on ACPI nodes) interface trickling
-into subsystems where it should not (ie PCI, clocks, regulators) - hopefully
-the respective maintainers are keeping an eye on it.
+And then
 
-Thanks,
-Lorenzo
+"The list of devices returned by the control method need not be a
+complete and absolute list of devices affected by the thermal zone.
+However, the package should at least contain the devices that would
+uniquely identify where this thermal zone is located in the machine.
+For example, a thermal zone in a docking station should include a
+device in the docking station, a thermal zone for the CD-ROM bay,
+should include the CD-ROM."
 
-> > Are we going to do the same for "reg-names" ?
-> 
-> If it makes sense and we expect some vendor to follow that _in ACPI_,
-> why not?
-> 
-> > Most importantly, what is DT maintainers stance on the matter ?
-> 
-> AFAIK They don't care as long as there is a schema provided, accepted and
-> used in DT, if it's ACPI-only thing, then it most likely should be done
-> in ACPI-like way (see above the first two / three items: spec, MS, WMI/EFI).
-> 
-> > > > I am sorry I have got more questions than answers here - it would be good
-> > > > to understand where the line is drawn when it comes to OF/ACPI and fwnode
-> > > > heuristics compatibility.
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+So IIUC this is a list of devices allowing the location of the thermal
+zone to be figured out.  There's nothing about cooling in this
+definition.
+
+> This however will currently not work as
+> the ACPI thermal zone driver uses the private drvdata of the cooling devi=
+ce to
+> determine if said cooling device should bind. This only works for ACPI fa=
+ns and
+> processors due to the fact that those drivers store a ACPI device pointer=
+ inside
+> drvdata, something the ACPI thermal zone expects.
+
+I'm not sure I understand the above.
+
+There is a list of ACPI device handles per trip point, as returned by
+either _PSL or _ALx.  Devices whose handles are in that list will be
+bound to the thermal zone, so long as there are struct acpi_device
+objects representing them which is verified with the help of the
+devdata field in struct thermal_cooling_device.
+
+IOW, cooling device drivers that create struct thermal_cooling_device
+objects representing them are expected to set devdata in those objects
+to point to struct acpi_device objects corresponding to their ACPI
+handles, but in principle acpi_thermal_should_bind_cdev() might as
+well just use the handles themselves.  It just needs to know that
+there is a cooling driver on the other side of the ACPI handle.
+
+The point is that a cooling device to be bound to an ACPI thermal zone
+needs an ACPI handle in the first place to be listed in _PSL or _ALx.
+
+> As we cannot require all cooling devices to store an ACPI device pointer =
+inside
+> their drvdata field in order to support ACPI,
+
+Cooling devices don't store ACPI device pointers in struct
+thermal_cooling_device objects, ACPI cooling drivers do, and there are
+two reasons to do that: (1) to associate a given struct
+thermal_cooling_device with an ACPI handle and (2) to let
+acpi_thermal_should_bind_cdev() know that the cooling device is
+present and functional.
+
+This can be changed to store an ACPI handle in struct
+thermal_cooling_device and acpi_thermal_should_bind_cdev() may just
+verify that the device is there by itself.
+
+> we must use a more generic approach.
+
+I'm not sure what use case you are talking about.
+
+Surely, devices with no representation in the ACPI namespace cannot be
+bound to ACPI thermal zones.  For devices that have a representation
+in the ACPI namespace, storing an ACPI handle in devdata should not be
+a problem.
+
+> I was thinking about using the acpi_handle of the parent device instead o=
+f messing
+> with the drvdata field, but this only works if the parent device pointer =
+of the
+> cooling device is populated.
+>
+> (Cooling devices without a parent device would then be ignored by the ACP=
+I thermal
+> zone driver, as such cooling devices cannot be linked to ACPI).
+
+It can be arranged this way, but what's the practical difference?
+Anyone who creates a struct thermal_cooling_device and can set its
+parent pointer to a device with an ACPI companion, may as well set its
+devdata to point to that companion directly - or to its ACPI handle if
+that's preferred.
 
