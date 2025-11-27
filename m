@@ -1,189 +1,290 @@
-Return-Path: <linux-acpi+bounces-19301-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19302-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC162C8C67B
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 01:08:25 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FADBC8C9A9
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 02:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729D53AF2B2
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 00:08:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E82434E853
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 01:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC9C2AEE4;
-	Thu, 27 Nov 2025 00:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A648723D2B4;
+	Thu, 27 Nov 2025 01:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="o+D1zHLe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nj3THp1r"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91AC946C;
-	Thu, 27 Nov 2025 00:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812C923BCFD
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 01:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764202102; cv=none; b=QkKyHVsAxAgDVrj0yyinL0amSmBYEGNJhPu1J2LwZD0RHsmCXecgheJWXsndOmzGwzOjRnzWGBH5EREzAMfdndScbk9GMnd3zc+85P0NeKZWADpJjY+xXjBtG8IY93vDj9LgD8JHzb9WwwqaLLS/oczIQoN8AYrMk1fMvbEK3qs=
+	t=1764208487; cv=none; b=k4YYWTYCSiv6vs3s9Ai6ZH1tA4pC4J1l1GbvWoTrxdhG36wn2RXtGx+x0DrOz9fVsuMIM/v/1H8F4HYveSu059yJBrbcspb2S1toKq7a3p0WzC1P+hFzGarSPaR4xsb29mJKhOZyHQoffetKpCW8czX0al9JKh38glcoGUlle7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764202102; c=relaxed/simple;
-	bh=vF2jJF51ar6bsXa6t7/iihINwHwWmBQcPf/CzXd6qnY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jC7vgr+GMn8DVdJ4KH0eUbmrSu/Pn6xCVWUUAK/pnkpUD4ufWOrbjwK0lbiVg1iT3mp+EsYlbOgySp1S9cnpFBjRgrYTlYvdx93+DWnBIssisVjjZTpZhYzVWJO3J/4KnjMEkpUKt8kdqabs2ZWLG7NfMPVAmMPnAjVgpt6Dvbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=o+D1zHLe; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1764202087; x=1764806887; i=spasswolf@web.de;
-	bh=vF2jJF51ar6bsXa6t7/iihINwHwWmBQcPf/CzXd6qnY=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=o+D1zHLeKQHf9xPt/X3i+CfJuTIWAu0ueS2cTBAgzFP5PB29iDBJf0QJvca6vCpu
-	 /zQj2qyCLWZ+2zt1d7Vnm1vdIM+F1eRnHXncaNzdu6pfpOKpNrj5K1U+hHwssRP0J
-	 XGAfMrtVIAJysJORhEHZKjD+07PKCIY6P6n7JlDRngf6gag2kPGRk0zYxKfIg0tua
-	 NPHrZR223GZ88PyuknCxJVfmlR4CjU+fHOuAossw/tFNTBZRQKnSfCDoBmc9NV8yh
-	 tSSWxKS+C+d6YyKzk71c0tBg/y6U4oa3aGHjkTt1+U/Z6m3oE91hpDulSF1KG6ciZ
-	 PBBA+z9FTMml9tQdzg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MbCI8-1vzgFT1ui8-00aUBi; Thu, 27
- Nov 2025 01:08:07 +0100
-Message-ID: <8273a7755f90a3e41782f1d820dd9f0c22be78b7.camel@web.de>
-Subject: Re: Crash during resume of pcie bridge due to infinite loop in
- ACPICA
-From: Bert Karwatzki <spasswolf@web.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, "Mario
- Limonciello (AMD) (kernel.org)"	 <superm1@kernel.org>,
- linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-pci@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
- <rafael.j.wysocki@intel.com>, 	acpica-devel@lists.linux.dev, Robert Moore
- <robert.moore@intel.com>, Saket Dumbre <saket.dumbre@intel.com>,
- spasswolf@web.de
-Date: Thu, 27 Nov 2025 01:08:05 +0100
-In-Reply-To: <CAJZ5v0iAJN4eTdp9S=CKbMnVn78R7UnBKbLjBTdRhHebE0i7dA@mail.gmail.com>
-References: <20251006120944.7880-1-spasswolf@web.de>
-	 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
-	 <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
-	 <4a8302a0-209f-446a-9825-36cb267c1718@kernel.org>
-	 <25f36fa7-d1d6-4b81-a42f-64c445d6f065@amd.com>
-	 <1853e2af7f70cf726df278137b6d2d89d9d9dc82.camel@web.de>
-	 <f18bafacbd8316c9623658e2935f8fc3b276af64.camel@web.de>
-	 <26bf82303f661cdd34e4e8c16997e33eb21d1ee4.camel@web.de>
-	 <635b6cb19b5969bed7432dfd1cd651124e63aebb.camel@web.de>
-	 <18e472a0489ee5337465d5dc26685cebaf7c4f8d.camel@web.de>
-	 <3772b8f5-6d1a-403e-ad27-99a711e78902@kernel.org>
-	 <0cb75fae3a9cdb8dd82ca82348f4df919d34844d.camel@web.de>
-	 <ab51bd58919a31107caf8f8753804cb2dbfa791d.camel@web.de>
-	 <0719d985-1c09-4039-84c1-8736a1ca5e2d@amd.com>
-	 <3f790ee59129e5e49dd875526cb308cc4d97b99d.camel@web.de>
-	 <CAJZ5v0iRaYBU+1S4rqYR7D6XC+rfQ2+0hgbodweV5JsFr8EEnQ@mail.gmail.com>
-	 <b1fadb15d1869bde81315be7488c50dbbc9f7dbd.camel@web.de>
-	 <CAJZ5v0iAJN4eTdp9S=CKbMnVn78R7UnBKbLjBTdRhHebE0i7dA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1764208487; c=relaxed/simple;
+	bh=f0EdgUznNZO54LZecInfA4y5+ELOv8o96l9SDsv2F0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uocZ5L3VRbbeiYTgxpgL4nP3FfArnDnMT7+EvYGbCh6sJROul3ns2OEmAoSjw+TSyVXAkq1gzQEiosfn/Ruhdp0d8DadGWD0Lq/aGwsEej57Wh0LUuHxJeVf2SYRcy3jqjzkotPvVK+5aWKeHTR2AaSuwBJH2qSosP6GiIvr18g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nj3THp1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADA0C2BCB0
+	for <linux-acpi@vger.kernel.org>; Thu, 27 Nov 2025 01:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764208487;
+	bh=f0EdgUznNZO54LZecInfA4y5+ELOv8o96l9SDsv2F0k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nj3THp1rcpdtkT3yeXdFSYqGpgv4f9R30RUyhSfbiRBL5j4fSFBJGV9VaWkwF3qsG
+	 zjwZicy5NFkSmZ+nh5sUNhme+2Du/zWh08fMSK9ccFupeg1GTOvgOKD8KZFDah6CUJ
+	 6HALQe+7g7tX2MuM8bLQMVGhbivIOnMTmyMqFWkDrQ0K9xX85qs+Bk0VT0YJLuIl0n
+	 B1HnKUGG/X1C0TBEVeSMLOB5qS2VjlhqolPOeEU3DGPUvW5cxrrsVID7XRsdVMMHfv
+	 h7dSQtqgellJgUSuYj5mjpBSeqjWtGSXBa6sTkOGztkNJu25mxLtzN7zIXmdh+tHvw
+	 N2CFz124qpgKg==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640860f97b5so655658a12.2
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Nov 2025 17:54:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWHaloM9urX5RkxU/1Agv18+UWbIIUJdgjlCT2nCuZO80RMsPKw8TSXWVvC5WycLfDKtOgDtHgWkMdt@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWGFWI35Q0CxgxJuXtysnBAXmknFDvKx4LV3WkehQGQ5OGHcI8
+	80T2/tVQp8Xnz6RLAfwqET6UGkU5JZpe9HW75myQd586bA48eoPXljPPpa1BNRRtFJlQrPwJVE0
+	E/WWjkV8cgN5IV3LNyvHPh0QL2+4fMg==
+X-Google-Smtp-Source: AGHT+IEKWFjQTeH/gw4l8j+96xvyDrFErJSXFFFwjwYJm2zw06q8mwVDlJH1+0djMgauaqAXyS9qMnoqGjEF33qExow=
+X-Received: by 2002:a05:6402:2803:b0:634:ce70:7c5 with SMTP id
+ 4fb4d7f45d1cf-645eb2b8003mr8895933a12.17.1764208485058; Wed, 26 Nov 2025
+ 17:54:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com> <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+ <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+ <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com> <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+ <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+In-Reply-To: <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 26 Nov 2025 19:54:33 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+X-Gm-Features: AWmQ_bmOuLhKUl5W5zrcj5AQOjs5kC_X5Om5_otgYtq0JTdMygrEymDVT57WU48
+Message-ID: <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Herve Codina <herve.codina@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:AKT8oFDXjqvXIO66/lY6MH6t8J+WgkfgqQRwdse9knBK+N9If8M
- BELvrLT9C1XdpGsbLS+45ON3fCZ+MrEhvDygHo3ELqNOapB29CU9fxO9UYzUcFx5IWxSI2i
- lTZm30uF1RqhWcBaZs1YRZf/dU+PTtHAItEru5oSztrI/vLWooHNSX+VBrd1Nigcp/Al3a2
- JyAz3gf0Oerco8c3URX5g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tL3u4n7RGtY=;7D1xbhkGvhqeso3oJucNy8vfnY0
- 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
- Qd4UlFPPEPeX0L+CA=
 
-Am Dienstag, dem 25.11.2025 um 20:46 +0100 schrieb Rafael J. Wysocki:
->=20
->=20
-> What may be happening, but this is just a theory, is that the
-> interpreter aborts the evaluation of a method due to an internal
-> timeout, essentially the control_state->control.loop_timeout check in
-> acpi_ds_exec_end_control_op() and that leads to a subsequent hard
-> failure like a deadlock.
->=20
-> This may be tested by increasing the ACPI_MAX_LOOP_TIMEOUT value, but
-> I'm not sure it's practical to try that.
+On Tue, Nov 25, 2025 at 12:43=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
+>
+> On 24/11/2025 19:01, Rob Herring wrote:
+> > On Mon, Nov 24, 2025 at 10:44=E2=80=AFAM Kalle Niemi <kaleposti@gmail.c=
+om> wrote:
+> >>
+> >>
+> >> On 11/24/25 16:53, Rob Herring wrote:
+> >>> On Mon, Nov 24, 2025 at 8:48=E2=80=AFAM Kalle Niemi <kaleposti@gmail.=
+com> wrote:
+> >>>> On 10/15/25 10:13, Herve Codina wrote:
+> >>>>> From: Saravana Kannan <saravanak@google.com>
+> >>>>>
+> >>>>> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+> >>>>>
+> >>>>> While the commit fixed fw_devlink overlay handling for one case, it
+> >>>>> broke it for another case. So revert it and redo the fix in a separ=
+ate
+> >>>>> patch.
+> >>>>>
+> >>>>> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overla=
+ys")
+> >>>>> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> >>>>> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_=
+rJgyo8x6=3D9F9rZ+-KzjOg@mail.gmail.com/
+> >>>>> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin=
+.com/
+> >>>>> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootli=
+n.com/
+> >>>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> >>>>> Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravan=
+ak@google.com/
+> >>>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >>>>> Acked-by: Mark Brown <broonie@kernel.org>
+> >>>>> ---
+> >>>>>     drivers/bus/imx-weim.c    | 6 ------
+> >>>>>     drivers/i2c/i2c-core-of.c | 5 -----
+> >>>>>     drivers/of/dynamic.c      | 1 -
+> >>>>>     drivers/of/platform.c     | 5 -----
+> >>>>>     drivers/spi/spi.c         | 5 -----
+> >>>>>     5 files changed, 22 deletions(-)
+> >>>>>
+> >>>>> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+> >>>>> index 83d623d97f5f..87070155b057 100644
+> >>>>> --- a/drivers/bus/imx-weim.c
+> >>>>> +++ b/drivers/bus/imx-weim.c
+> >>>>> @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_bloc=
+k *nb, unsigned long action,
+> >>>>>                                  "Failed to setup timing for '%pOF'=
+\n", rd->dn);
+> >>>>>
+> >>>>>                 if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+> >>>>> -                     /*
+> >>>>> -                      * Clear the flag before adding the device so=
+ that
+> >>>>> -                      * fw_devlink doesn't skip adding consumers t=
+o this
+> >>>>> -                      * device.
+> >>>>> -                      */
+> >>>>> -                     rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DE=
+VICE;
+> >>>>>                         if (!of_platform_device_create(rd->dn, NULL=
+, &pdev->dev)) {
+> >>>>>                                 dev_err(&pdev->dev,
+> >>>>>                                         "Failed to create child dev=
+ice '%pOF'\n",
+> >>>>> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> >>>>> index eb7fb202355f..30b48a428c0b 100644
+> >>>>> --- a/drivers/i2c/i2c-core-of.c
+> >>>>> +++ b/drivers/i2c/i2c-core-of.c
+> >>>>> @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block=
+ *nb, unsigned long action,
+> >>>>>                         return NOTIFY_OK;
+> >>>>>                 }
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 client =3D of_i2c_register_device(adap, rd->dn);
+> >>>>>                 if (IS_ERR(client)) {
+> >>>>>                         dev_err(&adap->dev, "failed to create clien=
+t for '%pOF'\n",
+> >>>>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> >>>>> index 2eaaddcb0ec4..b5be7484fb36 100644
+> >>>>> --- a/drivers/of/dynamic.c
+> >>>>> +++ b/drivers/of/dynamic.c
+> >>>>> @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node=
+ *np)
+> >>>>>         np->sibling =3D np->parent->child;
+> >>>>>         np->parent->child =3D np;
+> >>>>>         of_node_clear_flag(np, OF_DETACHED);
+> >>>>> -     np->fwnode.flags |=3D FWNODE_FLAG_NOT_DEVICE;
+> >>>>>
+> >>>>>         raw_spin_unlock_irqrestore(&devtree_lock, flags);
+> >>>>>
+> >>>>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> >>>>> index f77cb19973a5..ef9445ba168b 100644
+> >>>>> --- a/drivers/of/platform.c
+> >>>>> +++ b/drivers/of/platform.c
+> >>>>> @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_=
+block *nb,
+> >>>>>                 if (of_node_check_flag(rd->dn, OF_POPULATED))
+> >>>>>                         return NOTIFY_OK;
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 /* pdev_parent may be NULL when no bus platform dev=
+ice */
+> >>>>>                 pdev_parent =3D of_find_device_by_node(parent);
+> >>>>>                 pdev =3D of_platform_device_create(rd->dn, NULL,
+> >>>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> >>>>> index 2e0647a06890..b22944a207c9 100644
+> >>>>> --- a/drivers/spi/spi.c
+> >>>>> +++ b/drivers/spi/spi.c
+> >>>>> @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_blo=
+ck *nb, unsigned long action,
+> >>>>>                         return NOTIFY_OK;
+> >>>>>                 }
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 spi =3D of_register_spi_device(ctlr, rd->dn);
+> >>>>>                 put_device(&ctlr->dev);
+> >>>>>
+> >>>> Sorry, some of you will receive this message now for second time. Fi=
+rst
+> >>>> message was sent to older series of patches.
+> >>>> -
+> >>>>
+> >>>> Hello,
+> >>>>
+> >>>> Test system testing drivers for ROHM ICs bisected this commit to cau=
+se
+> >>>> BD71847 drivers probe to not be called.
+> >>> This driver (and overlay support) is in linux-next or something out o=
+f
+> >>> tree on top of linux-next?
+> >>>
+> >>> Rob
+> >>
+> >> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7.c
+> >
+> > I don't see any support to apply overlays in that driver.
+>
+> Ah. Sorry for the confusion peeps. I asked Kalle to report this without
+> proper consideration. 100% my bad.
+>
+> While the bd718x7 drive indeed is mainline (and tested), the actual
+> 'glue-code' doing the overlay is part of the downstream test
+> infrastructure. So yes, this is not a bug in upstream kernel - this
+> falls in the category of an upstream change causing downstream things to
+> break. So, feel free to say: "Go fix your code" :)
+>
+> Now that this is sorted, if someone is still interested in helping us to
+> get our upstream drivers tested - the downstream piece is just taking
+> the compiled device-tree overlay at runtime (via bin-attribute file),
+> and applying it using the of_overlay_fdt_apply(). The approach is
+> working for our testing purposes when the device is added to I2C/SPI
+> node which is already enabled. However, in case where we have the I2C
+> disabled, and enable it in the same overlay where we add the new device
+> - then the new device does not get probed.
+>
+> I would be really grateful if someone had a pointer for us.
 
-I don't think this the case here because ACPI_MAX_LOOP_TIMEOUT defaults to=
-=20
-30s and the walk loop until the crash only lasts ~2s.
+Seems to be fw_devlink related. I suppose if you turn it off it works?
+There's info about the dependencies in sysfs or maybe debugfs. I don't
+remember the details, but that should help to tell you why things
+aren't probing.
 
-Bert Karwatzki
+I've dropped the changes for 6.18 for now. No one really seems to be
+in need of them yet AFAICT.
+
+Rob
 
