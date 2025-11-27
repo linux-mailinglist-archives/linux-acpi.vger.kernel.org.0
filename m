@@ -1,129 +1,141 @@
-Return-Path: <linux-acpi+bounces-19303-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19304-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C93C8CA35
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 03:09:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670EBC8D142
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 08:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B5E0A4E1962
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 02:09:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 397574E270B
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Nov 2025 07:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDD724290D;
-	Thu, 27 Nov 2025 02:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A98B315D2B;
+	Thu, 27 Nov 2025 07:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="I19Kz/uP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T6sK2G2P"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0250720A5E5;
-	Thu, 27 Nov 2025 02:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D4D3C1F;
+	Thu, 27 Nov 2025 07:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764209394; cv=none; b=kLKvv2AxTRMnn9fDA/p1sZqDmi7iri6yrz+Jb1Vq8MTETSXjNwQwUvAe20SWAEs4wppGMub8DcHDdP3ZIMuv4Mu1KNzloY5uKqA3wKpp+q6loTPnS03+FAHKvDVe0/puhJ5LCNshwSef6/p96GZ2P1kR7zjU1yd3x8elKnQz6Oo=
+	t=1764228321; cv=none; b=unwNuewEw9/78ljPpijdHyU8yqTePOpEIo6jPcoGjONsyjhKYpwM4/Ql5Ua4gvnfSr7pvyEWGpQta06/Q3p6OdFEDg47mVCHzdfC7Ms8hZkzunKLthocYJFmombntDWGivf2HK/AYrXfihSi3nQzDNJ5FYRyRQOmNKoM5kj0IvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764209394; c=relaxed/simple;
-	bh=xDs508urDQVseAJA2kSJdcyIzJ7PCzIxzYucRzfxfeo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=p+4IpCKyDZbstwKtMNfFCsa2KZWNBIIqB5Gzl3x+I9fn59slmqTw8F8dXnTmvK65V3+cWD/nwKdpm7eYu6YUs2gWZDKn3X7ciWqMnjgakaHie+EM+ThwbWQ4O/WWN7VtxaXjntPjzKx4E8oAxnjlzU2VeV2wwV2vxLyrlmMmkWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=I19Kz/uP; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=qZrw3MGbOgIujlX664VzCx3x+2aqMoYiHH9ABOjCtUY=;
-	b=I19Kz/uPG+6CWhjWxuHW59Fu9jeJ6plLrcxIhT6Jrcsb+chI+VYBb9mY6677ktPkLAodXSblU
-	iNeq8za6N7vMlk7Ua36oi+gR/NDoM28e6Ssd8FVY7dAkQDD/YfmHy8fEu4bQ0D2bHrgEyufIp6T
-	YfDA96vxU9A1N74QvowSbls=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dH0FY2hr6z1K96g;
-	Thu, 27 Nov 2025 10:08:01 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 235BE1A0188;
-	Thu, 27 Nov 2025 10:09:48 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 27 Nov 2025 10:09:47 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 27 Nov
- 2025 10:09:47 +0800
-Message-ID: <1ea445d0-0949-4a28-9f76-325861a3c57f@huawei.com>
-Date: Thu, 27 Nov 2025 10:09:46 +0800
+	s=arc-20240116; t=1764228321; c=relaxed/simple;
+	bh=n+/fQ/alpef2q01Tg3dUfg5Vy/IgYpSrTAPVea67aQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RJqkuVbNYTxV5x4Tofzdxc1zXo4VE/4c3qUc3l4IoLf0rrsLRRVJCBlwenf+mmqk5+dVOkO8R8nYKYcIX5a74xWq8+qcyiiSzN9h/Mx5A4PIRqRmT6D/lLZ3mfcOcCtdyNBqpMHZSGukNi7VHXEMuYt11kugnwMdbFRPQZnpafI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=T6sK2G2P; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D9189C16A12;
+	Thu, 27 Nov 2025 07:24:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 971436068C;
+	Thu, 27 Nov 2025 07:25:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3130D102F2350;
+	Thu, 27 Nov 2025 08:24:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764228314; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=cGqB1dei6ROTkKi8qgP3hn8JoeylozOmIRsBNS04jmU=;
+	b=T6sK2G2PDUeR+pjSQn/B7iQbPsQ8Wcz+0KiAVYYMspcQnDAs6d3DC6Hizs9V61K96ZYwPT
+	MWPQm0b1UsKDIypmCvUtC60JluxrkH+WKfFHqqbOoynx7SceksEsqTI49+W0M3NodmM4Gk
+	u8QmjuPghMy7oJHohjRpIxX1eawQpRih9ZuMPEQ0h0pbd/nsQLpOja/6nFwVznMd0LaPBv
+	3yN/UTBE/8mIG4ZcZxCMsYz+0i+YTYqv3ut760qDTDvCZcBlLg4Ac5kqxAB6N6H2QvWbI+
+	NsIGmEU3Ztxx27d5aIFFgytJFUJqMRidqHtr/wVwJFwxkyeW3sUCTEw15Hzcmg==
+Date: Thu, 27 Nov 2025 08:24:56 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Kalle Niemi
+ <kaleposti@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20251127082456.08542b8c@bootlin.com>
+In-Reply-To: <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<20251015071420.1173068-2-herve.codina@bootlin.com>
+	<f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+	<CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+	<5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+	<CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+	<072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+	<CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] Urgent ACPI support fix for v6.18
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM
-	<linux-pm@vger.kernel.org>, Linux Kernel Mailing List
-	<linux-kernel@vger.kernel.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, <lihuisong@huawei.com>
-References: <CAJZ5v0g6c1HNbxxh088xh_nTgD-SE6c2qtDr81AgD1+by-jnKA@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0g6c1HNbxxh088xh_nTgD-SE6c2qtDr81AgD1+by-jnKA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Rafael,
+Hi Matti, Rob,
 
-在 2025/11/26 20:54, Rafael J. Wysocki 写道:
-> Hi Linus,
->
-> Please pull from the tag
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->   acpi-6.18-rc8
->
-> with top-most commit 43ff36c4a5a574ee83b4b0d3f3d74f09a3a8c2d3
->
->   Revert "ACPI: processor: idle: Optimize ACPI idle driver registration"
->
-> on top of commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
->
->   Linux 6.18-rc7
->
-> to receive an urgent ACPI support fix for 6.18.
->
-> This reverts a commit that attempted to make the code in the ACPI
-> processor driver more straightforward, but it turned out to cause
-> the kernel to crash on at least one system, along with some further
-> cleanups on top of it.
-I just found that "ACPI: processor: idle: Optimize ACPI idle driver 
-registration" depends on the change
-about cpuhp_setup_state in the commit [1]. Or many CPUs don't create 
-cpuidle directory.
-What is the crash? Do you have releated trace?
+...
 
-[1] 
-https://lore.kernel.org/all/20240529133446.28446-2-Jonathan.Cameron@huawei.com/ 
+> 
+> Seems to be fw_devlink related. I suppose if you turn it off it works?
+> There's info about the dependencies in sysfs or maybe debugfs. I don't
+> remember the details, but that should help to tell you why things
+> aren't probing.
 
->
->
-> ---------------
->
-> Rafael J. Wysocki (5):
->        Revert "ACPI: processor: Do not expose global variable acpi_idle_driver"
->        Revert "ACPI: processor: idle: Redefine two functions as void"
->        Revert "ACPI: processor: idle: Rearrange declarations in header file"
->        Revert "ACPI: processor: Remove unused empty stubs of some functions"
->        Revert "ACPI: processor: idle: Optimize ACPI idle driver registration"
->
-> ---------------
->
->   drivers/acpi/processor_driver.c |   6 +--
->   drivers/acpi/processor_idle.c   | 115 ++++++++++++++++------------------------
->   include/acpi/processor.h        |  34 +++++++++---
->   3 files changed, 76 insertions(+), 79 deletions(-)
->
+All available links are available the /sys/class/devlink/ directory [1].
+You can check them to see if each each provider/consumer are correct.
+
+
+Also, for each device you can find suppliers [2] the device depends on and
+consumers of the device in its device directory [3].
+for instance in /sys/bus/platform/devices/foo/ for the foo device.
+
+[1] https://elixir.bootlin.com/linux/v6.18-rc7/source/Documentation/ABI/testing/sysfs-class-devlink
+[2] https://elixir.bootlin.com/linux/v6.18-rc7/source/Documentation/ABI/testing/sysfs-devices-supplier
+[3] https://elixir.bootlin.com/linux/v6.18-rc7/source/Documentation/ABI/testing/sysfs-devices-consumer
+
+> 
+> I've dropped the changes for 6.18 for now. No one really seems to be
+> in need of them yet AFAICT.
+
+Best regards,
+Hervé
 
