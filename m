@@ -1,98 +1,76 @@
-Return-Path: <linux-acpi+bounces-19371-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19373-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2AFC981F4
-	for <lists+linux-acpi@lfdr.de>; Mon, 01 Dec 2025 16:52:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7CAC9A037
+	for <lists+linux-acpi@lfdr.de>; Tue, 02 Dec 2025 05:36:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7CDE64E1E1F
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Dec 2025 15:52:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E40573456E6
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Dec 2025 04:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C19333457;
-	Mon,  1 Dec 2025 15:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6002DCF74;
+	Tue,  2 Dec 2025 04:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImMRwE8b"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="JQTvkHGp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6946A332ED9
-	for <linux-acpi@vger.kernel.org>; Mon,  1 Dec 2025 15:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764604346; cv=none; b=Ve5wtOE2hxTb1hy7RNcfiT9CCr3efAzdSPPVXad+R9lCngUVune5qaZbuz1wMxBJVhVxg6gCrAS2YHdXKjm5R+CO3oLAUZFjeVjb5BueONz39nxv9NEuEDP0lamEtfyv1pjEQ/pDdllUDo0oZgXXBLtna6LLwhnhFPE8wRt949o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764604346; c=relaxed/simple;
-	bh=XGyeeigAK9L746tngnKMOCKOk5BQ+hWN4+EJTlSpqSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IjiaAyx+UDGbIB8eMbDEGk5+zdCu2BXmFl0qP1K65pPSPT4rYaT/EZFvuKv96dIYiq+PpxfdL/d6BxEfpkV4BC+qrSSXRpS6Uz9jH+wX2S1T4nypmENcpsrY05V96Gr6+YZOgcq7dGXFYW93YWIYX1AX2ijmc17jKgf9WtPqrOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImMRwE8b; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297e982506fso56944365ad.2
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Dec 2025 07:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764604345; x=1765209145; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pVKsqLAjHiedCsMTkQj6KU9uWiG9cI4IM21lpckerh0=;
-        b=ImMRwE8b/Fjc5hCvvFAs4/MtNwNQvIsehrcYoQ34UMRmy88hdHkudaz7hVav3ODsF0
-         +g4Bwwgn8XF0hCzld0EGWArZ3iqa1lsew9wgUzez6dRoFp4z/8BNBv0MAd0vLJ4BvAsH
-         /o5/8ChQ6MPoYk+/b57KvLOMxJKHLUq4cEygNReIukWJOoHUQoqpmWzRx3GPy3MMrrdu
-         OqhhpXUemzCDpYHlGAVjJCHyUzIXi1nNBXgKmeuEHcHMx2VhRZZwrChRUqlGNoT2GdeP
-         SM1HM+C7Tmxw76LMztzqmx5uZKIqX5ZtFNiohpc+Mw/AHos0s8VOn3ds4VarKXEzR2Ym
-         hwkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764604345; x=1765209145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pVKsqLAjHiedCsMTkQj6KU9uWiG9cI4IM21lpckerh0=;
-        b=vINlGNOGSNsHvvVJsTnHlifzvpEwZhuvywoUoevawb4v+vbPL9hl/fbcwZ3szI2qUr
-         rrPh38DdcrkXfSNVnJfa2FBehL00RspKDuWIhU1B2KcYXSqqkzEQXy8ImaNqvd8tXcic
-         0f2lu7WErLeXoZ+M9aOKQ/X/w35EeTI9TrZRIrEuNbILBCOl4GM9Z3vmPsicNXtjeYsU
-         CUckvzN6/RKZjq9btxBUXYQyimZkr8gK7kOdBGxR6JxWO91z3/R6wjaalayPjkuOOJa5
-         jLOnDICap+lK4dAP1MQxJCZLNQ8/YMXvvmkZ/NdmLmGuYquH6qx9gUVAJ7FzaH6TURm4
-         3iKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXW68Cwe40UkTex+ukjnfEhSk4T7PRITw8CDsZ0ipVDltx5bhnqD6+83Ii5qwCpeqTYZHxjY5zk40yM@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdK5Fmx2g+2lYndga0IhVI/LPoqhUc0pslsRtRvfIsH9kheRfk
-	/Ge9eXElM0iBQPjG1nBJ943F9Bc4Q9NRoAXOEzuXJoHfVkP5V1TpCumL
-X-Gm-Gg: ASbGncthazpgCV4LWlQnUBZ0ukJaTm+71wSg56csJJlu24uHQhrLWy3RRXFih1G39xc
-	mRwxdGBPfFFP+dR1T4e4TlHNU5fGnpRaAjW/fr0e7Eq6RstyIEQT6IP8A4prCR4zeCXHYJtR/6W
-	OT8iM8nmoVhgoDgJ4+2bhVKFNEqQfFvQX6cesVmj1Hnx4ZlbTEm2QvrnuZ9E7+TDVAaatVlEYjt
-	0iUWGMxX5oE+EKs11plI2c56nDLD8UUHL8TGYCga8aQXeyya47A5NO4nm2Y1Oktut3VJDltVNY8
-	EsbZkyU1GoOlkpUiU5YImmeCfCIEwIlz7TC3cyq6tjzvK8nh+Q8znnkxJALaBM91DWdsx7dV5qy
-	aEMxoUYvxWNG0yXPymAZnqYciTyQavvr2tLlobBjHDmvvlWZ42sz5Xf/W/xQntFJwSuudf1WTlx
-	zym9jn7L0GSmB7Pc06UOK69ZDcN4TbNK16BLkB41poe8/kioDaDlns1vje4uBxpzoS
-X-Google-Smtp-Source: AGHT+IGat4VhF83+oMq7CNZLZBFhrHJD09jfouaostnsMQaYHnfRxI2M9f052yuItSKVu6dT7hxfmw==
-X-Received: by 2002:a17:902:f641:b0:295:395c:ebf9 with SMTP id d9443c01a7336-29b6bf80942mr448394395ad.55.1764604344552;
-        Mon, 01 Dec 2025 07:52:24 -0800 (PST)
-Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb5442csm125777105ad.85.2025.12.01.07.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 07:52:24 -0800 (PST)
-From: Atharv Dubey <atharvd440@gmail.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DF51A23A6;
+	Tue,  2 Dec 2025 04:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764650177; cv=pass; b=aZt1GeWlq4mGTWNFUPxnX2hlCmExb9cyc1LX6lPJ3tP2EHaRVTz9aOSdGRZurfDa0M353wiFgL3jOC16cftoFI/fcIwPevta8mQ0nRtfB2J+wbuExSVMaL1JGTNn4c2FUT7uoYjIeCuS1g6axVfBKfYnPNHjdkGx5/ZMH0nY4UQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764650177; c=relaxed/simple;
+	bh=zberiFQ9fzE2wHsCxRxJP8uQeXw0joLdO/LlZbq+V+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fxINuX7fkdbGf9az4SfkFYKd0iEyyl4/Tz0MrD0A1ybiEVO6ZVD+KyVqQQo+9NrW8pYvWyXKznVVec1zXB0C54Mze6HsVKltH9t1me4xBocHN9LGdNx8oTwG5co4IExvLwpOj+PqoDvMWEQEVYKE6huRNfqvP3MviTO/E/komVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=JQTvkHGp; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1764650144; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Q1J7NoIHHD4iUK+1oL0pXt0jhAIIMO8eNl/e8RdkukblZX3H+9wXK9cDCUs35BPhkhgJJO3pnRr6VuZCM56FRMTtt4pzAlxrAlOETjK4A5pCXKsJWnDG1yjhkVszi4HuqKLTN0g3G/Kfmgc06oVq8MW92sPGQAIzWZxMcvgO58A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764650144; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TPWPkwKyrUpHoNb+LjuE6gPDtbXFmFpkHgDbSUDooqw=; 
+	b=f2yXuEf5npqcnLAP21nXYRfHie2oi86HiUM04u0GOD0Eh+qPxZVUOL5Yn/6tIo3hKj+IykNrdL1RuWa+fJBfwuvvSWjWUraj2654u4F0z9j0Q7l+8iJxxCussylYh3N5RmravTq3by9uOMrJGmsjAYPz/vRE9cCuNOxg/N/gcfY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764650144;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=TPWPkwKyrUpHoNb+LjuE6gPDtbXFmFpkHgDbSUDooqw=;
+	b=JQTvkHGpROjyr1DuuT74aw3NSqL5OquQk6gwcV+Ne6DTiHKHhBGHHZExxAkmKCS6
+	jMyofJVJQc0l+wMLtRCYgMZHm0mMrPbOUo39UUkMc3Mpo24iF55HWkTp0Z6V69YsXXH
+	v25fdnP0x4Z0C/cvYF+6/kAP5GuY+N1GQWhnZYNQ=
+Received: by mx.zohomail.com with SMTPS id 1764650142159431.31272850876826;
+	Mon, 1 Dec 2025 20:35:42 -0800 (PST)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <superm1@kernel.org>,
+	Robert Beckett <bob.beckett@collabora.com>
+Cc: linux-acpi@vger.kernel.org,
+	kernel@collabora.com,
 	linux-kernel@vger.kernel.org,
-	Atharv Dubey <atharvd440@gmail.com>
-Subject: [PATCH v2] rust: acpi: replace manual zero-initialization with `pin_init::zeroed()`
-Date: Mon,  1 Dec 2025 21:22:10 +0530
-Message-ID: <20251201155210.22710-1-atharvd440@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Richard Hughes <richard@hughsie.com>,
+	William Jon McCann <mccann@jhu.edu>,
+	"Jaap A . Haitsma" <jaap@haitsma.org>,
+	Benjamin Canou <bookeldor@gmail.com>,
+	Bastien Nocera <hadess@hadess.net>,
+	systemd-devel@lists.freedesktop.org,
+	Lennart Poettering <lennart@poettering.net>,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: [RFC PATCH v1 0/1] ACPI: s2idle: Add /sys/power/lps0_screen_off
+Date: Tue,  2 Dec 2025 07:34:15 +0300
+Message-ID: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -100,32 +78,36 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Use `pin_init::zeroed()` instead of `core::mem::zeroed()` for initializing
-`acpi_device_id`. This removes an explicit unsafe block and aligns ACPI
-initialization with the pin-init conversion used across the Rust tree.
+Introduce the `/sys/power/lps0_screen_off` sysfs interface, enabling
+userspace control over ACPI LPS0 Display Off/On notifications [1].
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
----
- rust/kernel/acpi.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+These notifications are a part of a Modern Standby [2]. The Display Off
+notification signals the firmware when all displays (physical and remote)
+are off, allowing it to enter lower power states that makes device pretend
+it has been suspended while the system remains operational.
 
-diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-index 37e1161c1298..cc98b36b90a0 100644
---- a/rust/kernel/acpi.rs
-+++ b/rust/kernel/acpi.rs
-@@ -40,8 +40,7 @@ pub const fn new(id: &'static CStr) -> Self {
-         let src = id.to_bytes_with_nul();
-         build_assert!(src.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
-         // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
--        // SAFETY: FFI type is valid to be zero-initialized.
--        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-+        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
-         let mut i = 0;
-         while i < src.len() {
-             acpi.id[i] = src[i];
+Future work will involve integrating this new sysfs control support into
+userspace services like power-profiles-daemon, adding a new `idle_screen_off`
+inhibitor type to logind and updating power managers with the new
+functionality that may improve power savings for idling devices.
+
+Display notifications will allow to support "resume to a dark mode"
+feature where the device wakes briefly, performs actions, and then
+re-enters into suspended state.
+
+[1] https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf
+[2] https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-firmware-notifications
+
+Dmitry Osipenko (1):
+  ACPI: PM: s2idle: Add lps0_screen_off sysfs interface
+
+ Documentation/ABI/testing/sysfs-power |  13 +++
+ drivers/acpi/x86/s2idle.c             | 149 +++++++++++++++++++++++---
+ 2 files changed, 145 insertions(+), 17 deletions(-)
+
 -- 
-2.43.0
+2.51.1
 
 
