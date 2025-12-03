@@ -1,127 +1,208 @@
-Return-Path: <linux-acpi+bounces-19412-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19413-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872A7C9F3BB
-	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 15:08:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C403FC9F4E3
+	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 15:34:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E9D3A19A0
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 14:08:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 3DA9B30000B5
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 14:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7AB25FA10;
-	Wed,  3 Dec 2025 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743032FDC39;
+	Wed,  3 Dec 2025 14:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MCZeIICS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHPFhJOu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9891B1E3DF2;
-	Wed,  3 Dec 2025 14:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F412FD7A8;
+	Wed,  3 Dec 2025 14:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764770885; cv=none; b=FrmP4ElJ21HR9bydk8ZLr17Ky0Wkkksk5SOeo5+tK07sapp66LM8eZuD8GNzuoUcGbOXoDowTHmXJYtm5aDqUfR83j7xtO9Xl96I9/PptRys6JCC4WjUFoeAmsIJUFo0F86QvBKrpKaWxoZS2p6x6cwF3Sycrfc2kewT4ZMSlUw=
+	t=1764772490; cv=none; b=WPM0FJMU34uBubleNdjBXd5+hpjIM6uAcmLry+ICsFoo/BAqoyL6HhE+HcRtjJgO4p2N1tJ4awIIWVRDi+G40po1vr3c+vPzdxBiqkno/740vlelMkZ+rcSzeDRMnf6Ra5SJbpwz1dsGC335L2QGbaSikmTip6OjViXbr3q3S6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764770885; c=relaxed/simple;
-	bh=PSSOQbiuoMFwbBWEEMiiUUq96LEP5YutIhssCZGMHV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/C2ssMyWtTTXzDmjwB2w0Ba3MaeJ/EGW7X0gAzX3MpDqcoRV8+GPeZHDepWjHZdSms3qKrIwW62MoD6OtarRjRVsFd97RaAAPxUU0Yvy1LG8VZ5/oVNZOw+ftSj9RnPyfWvZFnUSeZjA+r6ShHv7ZLQesaKL5Ithi2f0wS9aKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MCZeIICS; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6v
-	jPMbJovrzsBMLAUkTTVNnF0FnwAzcF2LJIGzth/x0=; b=MCZeIICSWkmguaZOjQ
-	MsTQY966D9U+FZn+7rnjgEOJ32tZ2opgdJPQr0CZwgiRXs2avSoiN+jLOeUsQZey
-	jycrIv+tOqm5FtTW6En7e2Vu7KtpUQYEuvb9ZJm7d/Dnd4saTASTlREb3qqomepW
-	HJ5FDvldz1BKOBpmKmIcFQ2D8=
-Received: from emily-VMware-Virtual-Platform.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDnJEcWRDBpRx7lDg--.2028S2;
-	Wed, 03 Dec 2025 22:07:20 +0800 (CST)
-From: huyuye <huyuye812@163.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dai.hualiang@zte.com.cn,
-	deng.weixian@zte.com.cn,
-	guo.chang2@zte.com.cn,
-	liu.qingtao2@zte.com.cn,
-	wu.jiabao@zte.com.cn,
-	lin.yongchun@zte.com.cn,
-	hu.yuye@zte.com.cn,
-	zhang.longxiang@zte.com.cn,
-	zuo.jiang@zte.com.cn,
-	li.kunpeng@zte.com.cn,
-	huyuye <huyuye812@163.com>
-Subject: [PATCH] ACPI: pci_root: Clear the acpi dependencies after PCI root bridge initialization on RISC-V
-Date: Wed,  3 Dec 2025 22:07:15 +0800
-Message-ID: <20251203140716.3065-1-huyuye812@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764772490; c=relaxed/simple;
+	bh=75sM6P0BND/nLtSjLsysOiqxUPuoaL5e6OnCNezvNfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DYTEBSBitoXi/x4kMuJ+W1KKkGbEOaEASjqbJcX9VvmVao1CEFGqgArrAhgwj0Txa0eg37c0xf/sKQW+mUNFc1TZT8cRzrkbdzjMN22aWPVcXwAjNBaSlZVfRS0h+Or3Tcxp9RE9a4+iXQXkWPnI1Pw3o0761V4WuPkNC8/UtzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHPFhJOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5241C4CEF5;
+	Wed,  3 Dec 2025 14:34:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764772489;
+	bh=75sM6P0BND/nLtSjLsysOiqxUPuoaL5e6OnCNezvNfg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EHPFhJOuUaYeheZRXMaeB/i9/rZXdjh32bIaRi/MvShEqOxIOm6tYah3UQNaq6ttz
+	 RVYnLApUet2mr8MDG5LEh9Vb6HbNEWT/4vF8MRoEkeH4vTixNMlmFlNlaXzLbw09ze
+	 82IEagF6y0drqGzqHPGuoQJnQKPOk270NLcUF61XvX9guULPk5zILJEAwdkTFZMGBT
+	 oEoYyTjNcpZjjrCTi13o77A5Eb1mPqCzeUojwO4FBphaEEBoudOqHUSTwJz2T5/enu
+	 fZZBVTwZjmt7hUUH7fx5V+oAjfoCB3ZQC/THI9V76RTlt+HHJYbrhhuZ7lME9EMmis
+	 h5g3Z7ss7yaEg==
+Message-ID: <2d4040dd-87e0-4cc4-9cce-3560e7b026c9@kernel.org>
+Date: Wed, 3 Dec 2025 08:34:47 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnJEcWRDBpRx7lDg--.2028S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW8tr18JFy5JrWUCw45Jrb_yoW8Zr45pF
-	4jg3W5KrykXw1qkrnxAw18try5Xan5u3y5GrZrCw1S9a1ku3WjvF92ya4jyFy3JFs7AF43
-	XrZFqF1kCF1DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziFfO5UUUUU=
-X-CM-SenderInfo: 5kx135bhyrjqqrwthudrp/xtbBzxAZCGkwQ7AJ6AAAsF
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
+ interface
+To: Antheas Kapenekakis <lkml@antheas.dev>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Lennart Poettering <lennart@poettering.net>,
+ Daniel Stone <daniels@collabora.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Robert Beckett <bob.beckett@collabora.com>,
+ linux-acpi@vger.kernel.org, kernel@collabora.com,
+ linux-kernel@vger.kernel.org,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
+ William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
+ Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
+ <CAGwozwG=F1BC8UF6Xkest5pwZG6iRjNjk5zpjmSV8Yh-0S2tGA@mail.gmail.com>
+ <c7760b2d-c8cb-40fa-b1b1-8715e97e5cf0@kernel.org>
+ <CAGwozwHi_U_R3ueJaYDaR_Pa6JntNbEh1dpwwbZW7jtrs5mbQw@mail.gmail.com>
+ <02103d95-7bca-4db0-81c6-ac36429ea0bb@kernel.org>
+ <35f69c12-ecd4-4b21-bfb0-53bf57f0febf@collabora.com>
+ <ba7f9789-fd57-4d53-bf9a-15e85657ddd7@kernel.org>
+ <82357e17-56ec-4dd6-82b2-0b8308f7aec2@collabora.com>
+ <CAGwozwEDJbFoZJsqyOycHbv-LwGqOC-MG3K_duVEEqfKfXMUhA@mail.gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAGwozwEDJbFoZJsqyOycHbv-LwGqOC-MG3K_duVEEqfKfXMUhA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On RISC-V platforms with multiple PCI root bridges, the enumeration
-order varies randomly across reboots due to APLIC driver initialization
-occurring after ACPI device scanning. This defers PCI probing to a
-unbound workqueue, resulting in non-deterministic device discovery
-sequences.
+On 12/3/25 4:12 AM, Antheas Kapenekakis wrote:
+> On Wed, 3 Dec 2025 at 07:47, Dmitry Osipenko
+> <dmitry.osipenko@collabora.com> wrote:
+>>
+>> On 12/3/25 05:12, Mario Limonciello (AMD) (kernel.org) wrote:
+>>>
+>>>
+>>> On 12/2/2025 4:35 PM, Dmitry Osipenko wrote:
+>>>> On 12/3/25 00:25, Mario Limonciello (AMD) (kernel.org) wrote:
+>>>>>> An inhibitor process in logind can handle this gracefully very simply.
+>>>>>> Involving the DRM subsystem just adds a lot of complexity and it is
+>>>>>> not clear what the benefit would be. There are no known devices that
+>>>>>> hook DRM components into that DSM.
+>>>>>>
+>>>>>>> By doing it this way userspace still has control, but it's not
+>>>>>>> mandatory for userspace to be changed.
+>>>>>>
+>>>>>> On that note, the screen off calls/userspace implementations are
+>>>>>> optional under both patch series. If userspace is not aware of them,
+>>>>>> they are still called by the kernel when suspending.
+>>>>>
+>>>>> With the proposal I mentioned you can get the LPS0 _DSM called on a
+>>>>> handheld when the screen gets called without changing userspace.
+>>>>>
+>>>>>>
+>>>>>> Current userland also duplicates the functionality of the screen off
+>>>>>> call, which is primarily turning off the keyboard backlight. So along
+>>>>>> implementing this call, userspace software like powerdevil/upower
+>>>>>> needs to be tweaked to avoid doing that if the screen off state is
+>>>>>> available.
+>>>>>
+>>>>> Sure Any hooking for turning off LEDs manually based off the screen off
+>>>>> _DSM is totally feasible.
+>>>>
+>>>> It's not that trivial to add screen on/off hooks to DRM, there is no one
+>>>> central place for that from what I can tell. I'm seeing variant with DRM
+>>>> hooks as unnecessary complexity that doesn't solve any practical problem.
+>>>
+>>> Is it really that hard?  I figured that any time
+>>> connector->dpms != mode from drm_atomic_connector_commit_dpms() could
+>>> walk through all the connectors and make a judgement call whether to
+>>> notify the potentially exported symbol.
+>>
+>> - drm_atomic_connector_commit_dpms() is used only for atomic ioctl path
+>> - there is another legacy kms path
+>> - AFAICT, DRM takes a different path when display is enabled initially
+>> by kernel
+>>
+>> Here we have 3 places where to plug the hook. Gives a strong feeling of
+>> a red flag, IMO.
 
-Such random enumeration leads to changes in device naming across each
-boot, which disrupts storage configurations, network settings, and
-severely impacts the stability of server maintenance.
+It could easily be a symbol that all 3 places call which enumerates 
+connectors and decides whether to call the LPS0 symbol.
 
-By adding the acpi_dev_clear_dependencies() call in acpi_pci_root_add(),
-this patch enables the firmware to actively control the enumeration order
-of multiple PCI root bridges through the ACPI _DEP method, providing the
-firmware with the opportunity to initialize devices in the intended order,
-thereby ensuring consistent enumeration results across multiple boots.
+But yeah; you might be right it's too complex.
 
-Signed-off-by: huyuye <huyuye812@163.com>
----
- drivers/acpi/pci_root.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+>>
+>>>> A week ago in a private conversation, Daniel Stone gave an example of
+>>>> laptop's lid-close handling that is done purely in userspace.
+>>>> Technically, kernel could have DRM hooks for that too, but it doesn't.
+>>>
+>>> All the way into hardware sleep?  There are certain requirements needed
+>>> for hardware sleep that kernel drivers are normally used to put devices
+>>> into the right state.  I guess PCIe devices you can hack around with
+>>> userspace PCI config space writes but you're going to confuse the kernel
+>>> pretty badly.
+>>
+>> - Userspace gets notification for a changed lid state
+>> - Userspace takes action of turning display on/off
+>> - Kernel DRM doesn't know and doesn't care about lid state,
+>> force-disabling display on machine suspension
+>>
+>> Don't see how this is different for the case of the LPS0 notifications.
+>> Maybe I'm not getting your point well, in that case please clarify more.
 
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index 74ade4160314..f5b5aa7d5f93 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -760,6 +760,20 @@ static int acpi_pci_root_add(struct acpi_device *device,
- 	pci_lock_rescan_remove();
- 	pci_bus_add_devices(root->bus);
- 	pci_unlock_rescan_remove();
-+#ifdef CONFIG_RISCV
-+    /*
-+     * Clear dependencies to allow dependent devices to be enumerated.
-+     * This is particularly important for RISC-V platforms where multiple
-+     * PCIe host bridges may have initialization order dependencies defined
-+     * via ACPI _DEP method in DSDT. If a host bridge B depends on host
-+     * bridge A (via _DEP), this call allows bridge B to proceed with
-+     * enumeration after bridge A is fully initialized.
-+     */
-+#ifdef CONFIG_ACPI
-+	if (!acpi_disabled)
-+		acpi_dev_clear_dependencies(device);
-+#endif
-+#endif
- 	return 1;
- 
- remove_dmar:
--- 
-2.43.0
+I thought you were talking about total sleep handling, but you're just 
+talking about other userspace events related to a lid.  This is much 
+different.
+
+>>
+>>>> Userspace would need to be taught about new power modes in any case.
+>>>> Addition of DRM hooks should require a well-defined justification, which
+>>>> is currently absent.
+>>>>
+>>>
+>>> Why does userspace need to know about them?  Besides the inhibitor can't
+>>> this be invisible to userspace?  I thought this mostly is for the
+>>> firmware to flash some LEDs and maybe change some power limits.
+>>
+>> What I was saying is that LPS0 inhibitors would represent the power mode
+>> controls by themselves. Userspace would have to know how to drive them.
+>>
+>> Userspace power managers are already driving displays DPMS. Combining
+>> this with knowledge about the LPS0 inhibitors gives userspace ability to
+>> support the new device power states. Hence, there is no practical need
+>> to bother kernel DRM with the LPS0 burden.
+> 
+> _Technically_ DPMS is driven by the compositor, not by any power manager.
+> 
+> However, I think for Gnome and KDE they link to logind's inactivity
+> hook so practically you are correct for inactivity.
+> 
+> Moreover, traditionally, compositors do not fire DPMS for suspend, the
+> kernel does. I think KDE fixed that recently though. This is why the
+> display used to wake up twice during hibernation, and why you get a
+> frozen display when suspending/resuming. This also complicates
+> suspend-then-hibernate checks because the display wakes up. i.e., they
+> should fire DPMS for suspend but a lot for them don't
+> 
+> With compositors such as gamescope that do not have a dbus API it gets
+> more hairy. And it also means that the power manager/kernel cannot
+> control DPMS without the compositor's consent. If they do that, the
+> compositor will crash due to rejected commits. We have a suspend hook
+> for gamescope on Bazzite though, it improves suspend appearance.
+
+It's OT and tangential to this thread; but Gamescope should probably 
+grow native DPMS control for this particular case.
+
+> 
+> Just throwing in this for context, although it builds more of a case
+> of not involving DRM.
+> 
+
+I don't feel it's appropriate to build new API in the kernel to work 
+around shortcomings of an individual compositor.
 
 
