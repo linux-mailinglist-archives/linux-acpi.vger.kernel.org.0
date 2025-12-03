@@ -1,70 +1,66 @@
-Return-Path: <linux-acpi+bounces-19411-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19412-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235EDC9F0A9
-	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 14:03:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872A7C9F3BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 15:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EEEF54E448C
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 13:03:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E9D3A19A0
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 14:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0792F5308;
-	Wed,  3 Dec 2025 13:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7AB25FA10;
+	Wed,  3 Dec 2025 14:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="b1kEgj3x"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MCZeIICS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4B42DAFAE;
-	Wed,  3 Dec 2025 13:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9891B1E3DF2;
+	Wed,  3 Dec 2025 14:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764766992; cv=none; b=Hn7WmjjWhTs2nosCVG3uyZ2wi2RlElKurILMwnlMDuZPbzWO+dP6pRS+4bjVHCi4nMQ3cCq1aJ0qGMb/Mj3uzjcUnPSMCYytGXJPsGcCixAX1Ge/dq4pS7rlYrS78Jnikd7GCwf4Vh9lG/n3+D6l+n2rNftUL+gSkcmtzKl1MlM=
+	t=1764770885; cv=none; b=FrmP4ElJ21HR9bydk8ZLr17Ky0Wkkksk5SOeo5+tK07sapp66LM8eZuD8GNzuoUcGbOXoDowTHmXJYtm5aDqUfR83j7xtO9Xl96I9/PptRys6JCC4WjUFoeAmsIJUFo0F86QvBKrpKaWxoZS2p6x6cwF3Sycrfc2kewT4ZMSlUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764766992; c=relaxed/simple;
-	bh=niRAa2D8g84O610u9+Z+A11OvECu7j1aWrMp4Ngezus=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OyWStYtcc4DZmJ6oKN4h7OWoQX8K1IBK6I9Zl3wKS7nFMWowJHAJShsB1TG2K3HT7sT8ltrgwT9VtNnucDEfjZFviZffRLn4IxMKPNdSQGX8W9eMjQwB1j/PtekyDWZivfJQ9Y5xZBFCN/7Resqtx/9cYD7TNP7KmOQCRMy2Kps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=b1kEgj3x; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1764766979; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=1MvtZ5ab+ryK10NzwLqSh+RbaAmADfpIYi1fbjQ+wyM=;
-	b=b1kEgj3xVOE4W7aYwuz66esniVL0oMqQEbdiuWrILXRkd0LSeHcJfrv7JXQ2zuTAye5tOL2GH54qLKw3glKn4s+APPpdw5ZbgYEcK1UoD2XGzw9AupgqDcZ6cQKBGzs2qvWbuQvtWDqjKyn9s6OOq79hJgOVos9pfr1FuJJfTYw=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wu.aDva_1764766978 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 03 Dec 2025 21:02:58 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: tony.luck@intel.com,
-	guohanjun@huawei.com,
-	mchehab@kernel.org,
-	yazen.ghannam@amd.com
-Cc: dave.jiang@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	leitao@debian.org,
-	pengdonglin@xiaomi.com,
-	xueshuai@linux.alibaba.com,
-	baolin.wang@linux.alibaba.com,
-	benjamin.cheatham@amd.com,
-	bp@alien8.de,
-	dan.j.williams@intel.com,
-	james.morse@arm.com,
-	lenb@kernel.org,
+	s=arc-20240116; t=1764770885; c=relaxed/simple;
+	bh=PSSOQbiuoMFwbBWEEMiiUUq96LEP5YutIhssCZGMHV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/C2ssMyWtTTXzDmjwB2w0Ba3MaeJ/EGW7X0gAzX3MpDqcoRV8+GPeZHDepWjHZdSms3qKrIwW62MoD6OtarRjRVsFd97RaAAPxUU0Yvy1LG8VZ5/oVNZOw+ftSj9RnPyfWvZFnUSeZjA+r6ShHv7ZLQesaKL5Ithi2f0wS9aKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MCZeIICS; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6v
+	jPMbJovrzsBMLAUkTTVNnF0FnwAzcF2LJIGzth/x0=; b=MCZeIICSWkmguaZOjQ
+	MsTQY966D9U+FZn+7rnjgEOJ32tZ2opgdJPQr0CZwgiRXs2avSoiN+jLOeUsQZey
+	jycrIv+tOqm5FtTW6En7e2Vu7KtpUQYEuvb9ZJm7d/Dnd4saTASTlREb3qqomepW
+	HJ5FDvldz1BKOBpmKmIcFQ2D8=
+Received: from emily-VMware-Virtual-Platform.. (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDnJEcWRDBpRx7lDg--.2028S2;
+	Wed, 03 Dec 2025 22:07:20 +0800 (CST)
+From: huyuye <huyuye812@163.com>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-pci@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	rafael@kernel.org,
-	zhuo.song@linux.alibaba.com
-Subject: [PATCH 3/3] ACPI: APEI: GHES: Improve ghes_notify_sea() status check
-Date: Wed,  3 Dec 2025 21:02:53 +0800
-Message-Id: <20251203130253.73888-4-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20251203130253.73888-1-xueshuai@linux.alibaba.com>
-References: <20251203130253.73888-1-xueshuai@linux.alibaba.com>
+	dai.hualiang@zte.com.cn,
+	deng.weixian@zte.com.cn,
+	guo.chang2@zte.com.cn,
+	liu.qingtao2@zte.com.cn,
+	wu.jiabao@zte.com.cn,
+	lin.yongchun@zte.com.cn,
+	hu.yuye@zte.com.cn,
+	zhang.longxiang@zte.com.cn,
+	zuo.jiang@zte.com.cn,
+	li.kunpeng@zte.com.cn,
+	huyuye <huyuye812@163.com>
+Subject: [PATCH] ACPI: pci_root: Clear the acpi dependencies after PCI root bridge initialization on RISC-V
+Date: Wed,  3 Dec 2025 22:07:15 +0800
+Message-ID: <20251203140716.3065-1-huyuye812@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,81 +68,60 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnJEcWRDBpRx7lDg--.2028S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW8tr18JFy5JrWUCw45Jrb_yoW8Zr45pF
+	4jg3W5KrykXw1qkrnxAw18try5Xan5u3y5GrZrCw1S9a1ku3WjvF92ya4jyFy3JFs7AF43
+	XrZFqF1kCF1DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziFfO5UUUUU=
+X-CM-SenderInfo: 5kx135bhyrjqqrwthudrp/xtbBzxAZCGkwQ7AJ6AAAsF
 
-Performance testing on ARMv8 systems shows significant overhead in error
-status handling in SEA error handling.
+On RISC-V platforms with multiple PCI root bridges, the enumeration
+order varies randomly across reboots due to APLIC driver initialization
+occurring after ACPI device scanning. This defers PCI probing to a
+unbound workqueue, resulting in non-deterministic device discovery
+sequences.
 
-- ghes_peek_estatus(): 8,138.3 ns (21,160 cycles).
-- ghes_clear_estatus(): 2,038.3 ns (5,300 cycles).
+Such random enumeration leads to changes in device naming across each
+boot, which disrupts storage configurations, network settings, and
+severely impacts the stability of server maintenance.
 
-Apply the same optimization used in ghes_notify_nmi() to
-ghes_notify_sea() by checking for active errors before processing,
+By adding the acpi_dev_clear_dependencies() call in acpi_pci_root_add(),
+this patch enables the firmware to actively control the enumeration order
+of multiple PCI root bridges through the ACPI _DEP method, providing the
+firmware with the opportunity to initialize devices in the intended order,
+thereby ensuring consistent enumeration results across multiple boots.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: huyuye <huyuye812@163.com>
 ---
- drivers/acpi/apei/ghes.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/acpi/pci_root.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 2c7f3ca6ce50..0be46d63db53 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1455,6 +1455,9 @@ int ghes_notify_sea(void)
- 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_sea);
- 	int rv;
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 74ade4160314..f5b5aa7d5f93 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -760,6 +760,20 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 	pci_lock_rescan_remove();
+ 	pci_bus_add_devices(root->bus);
+ 	pci_unlock_rescan_remove();
++#ifdef CONFIG_RISCV
++    /*
++     * Clear dependencies to allow dependent devices to be enumerated.
++     * This is particularly important for RISC-V platforms where multiple
++     * PCIe host bridges may have initialization order dependencies defined
++     * via ACPI _DEP method in DSDT. If a host bridge B depends on host
++     * bridge A (via _DEP), this call allows bridge B to proceed with
++     * enumeration after bridge A is fully initialized.
++     */
++#ifdef CONFIG_ACPI
++	if (!acpi_disabled)
++		acpi_dev_clear_dependencies(device);
++#endif
++#endif
+ 	return 1;
  
-+	if (!ghes_has_active_errors(&ghes_sea))
-+		return -ENOENT;
-+
- 	raw_spin_lock(&ghes_notify_lock_sea);
- 	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA);
- 	raw_spin_unlock(&ghes_notify_lock_sea);
-@@ -1462,11 +1465,19 @@ int ghes_notify_sea(void)
- 	return rv;
- }
- 
--static void ghes_sea_add(struct ghes *ghes)
-+static int ghes_sea_add(struct ghes *ghes)
- {
-+	int rc;
-+
-+	rc = ghes_map_error_status(ghes);
-+	if (rc)
-+		return rc;
-+
- 	mutex_lock(&ghes_list_mutex);
- 	list_add_rcu(&ghes->list, &ghes_sea);
- 	mutex_unlock(&ghes_list_mutex);
-+
-+	return 0;
- }
- 
- static void ghes_sea_remove(struct ghes *ghes)
-@@ -1474,10 +1485,11 @@ static void ghes_sea_remove(struct ghes *ghes)
- 	mutex_lock(&ghes_list_mutex);
- 	list_del_rcu(&ghes->list);
- 	mutex_unlock(&ghes_list_mutex);
-+	ghes_unmap_error_status(ghes);
- 	synchronize_rcu();
- }
- #else /* CONFIG_ACPI_APEI_SEA */
--static inline void ghes_sea_add(struct ghes *ghes) { }
-+static inline int ghes_sea_add(struct ghes *ghes) { return -EINVAL; }
- static inline void ghes_sea_remove(struct ghes *ghes) { }
- #endif /* CONFIG_ACPI_APEI_SEA */
- 
-@@ -1710,7 +1722,9 @@ static int ghes_probe(struct platform_device *ghes_dev)
- 		break;
- 
- 	case ACPI_HEST_NOTIFY_SEA:
--		ghes_sea_add(ghes);
-+		rc = ghes_sea_add(ghes);
-+		if (rc)
-+			goto err;
- 		break;
- 	case ACPI_HEST_NOTIFY_NMI:
- 		rc = ghes_nmi_add(ghes);
+ remove_dmar:
 -- 
-2.39.3
+2.43.0
 
 
