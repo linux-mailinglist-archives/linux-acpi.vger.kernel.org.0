@@ -1,271 +1,321 @@
-Return-Path: <linux-acpi+bounces-19402-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19403-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156FDC9EA6F
-	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 11:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9B5C9EA99
+	for <lists+linux-acpi@lfdr.de>; Wed, 03 Dec 2025 11:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B41A14E04E6
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 10:11:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3DA1F4E1609
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Dec 2025 10:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAD92E7BBA;
-	Wed,  3 Dec 2025 10:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D002E8B63;
+	Wed,  3 Dec 2025 10:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CGQ3qm8f"
+	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="XgTV3rUi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay15.grserver.gr (relay15.grserver.gr [46.62.234.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616762E1EE0
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Dec 2025 10:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3CE2E7BB5
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Dec 2025 10:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.62.234.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764756711; cv=none; b=mMNkvuLni4jze0BO56+dSVlA9XAQFB8IbnczZ/KobSkYhITdcwK28A0J7LyTGnIKkU6daoGUA+aoDGmX84c6CuFAF29cUxXat6KV2DeLuPxZgLPywRjtCdvXebXhArUy+GlR/lPyNkokuUr2zEitTBdjaLv1YzwV8qpDhePgTvU=
+	t=1764756806; cv=none; b=ZBuwBlCW2vkSH/EjawaHS2kHMrSCvbEWhbjm5XU9Uw2HFRvUzDgVpn58rqA3d6sHyowVSpMoSGb/vVZUCWdVLbXzx1Bq0xebNtlq1bVx1WJax9Fx3Kiqozcx8IUtK7RePpj1XqqpoUr9eQtTV+So40Xrde4edtlxkJfZWg7QgTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764756711; c=relaxed/simple;
-	bh=yy2j4Gr2kBYId3840eqEXHigGss3DzYkeqaEM7aYlHA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZWPy29b9sxntAVN6GntxXziqThDuGnTez0LyOWxRuezvGnK8h4dLV0J82/7zDbunwsP2Z42LJnuWCOM9/UKxS7p0tJPSSyYcKSkMvI0j9Hj5qWsI2W8XpSqd8G5nSHaLpmiUS5POeM2+EtqSbX+X6rOrG2T9xJCuVU2PItry4+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CGQ3qm8f; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59581e32163so6627610e87.1
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Dec 2025 02:11:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764756707; x=1765361507; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7hkzMjIodS1pI1goTlzUE28NNMhc2FNCH6n3nOuMBQE=;
-        b=CGQ3qm8f+FnQjwU2B6pdhx/AwemgYV6WVz3Dj7xUo4cV3I4MJgz1nWnTG6r2YQPOjf
-         fP8b+31wR1gNKe6nGF9q9e+RncRGjSWqm3UGUrUsUmPAxzh+gkAJ7quVLcI9rMrMg7vB
-         Uq0TC/2dS4oGg0gFqFJdmhF5vXYCsU+okjdR6We64fb16qwZPbwsgj6AxYG9IZAgrwah
-         tARdWVM8K9aVO6PuvFeMcAZk9zmPV6pfQJxh1anrbDS95rvuNVWG8Lrc27VSlQ9/IY0L
-         55DMxgyxALBxlRdganrQNQwaut8ICacgWsjCQgecIbz6bI07RlBRM+UX0VQC2wwTLQW+
-         owHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764756707; x=1765361507;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7hkzMjIodS1pI1goTlzUE28NNMhc2FNCH6n3nOuMBQE=;
-        b=DRH7LOfiWYZOT5VQXNAVF1LEkC3A7TYvekRpOP5hgVaVJcFYHfl7oyLjZZBtv9iZBz
-         fDF46YLKoZ4PvAPNzZFjMrPdgeU0XG4TvCnbXtp0WGJAT8sb+lQdKW+7AgKB8ytdKNNg
-         4ctd+Zfe2oZHmqIoMHsr7VgwQVVMpEIez3+nlZb3Dv+T2e0/JjVNd2ad61HdpdJtNSlO
-         VD9k+FFUR+XdNtX3+N/+fd3Wir6KhcTVl0yi9RdZRaLJKTlXDOFoZGacyA29samoNHa6
-         PZadCZXd4WrUfzvnZSe98+7hhtGCdQtMY1XafghRXHoQ9LYlz4fy9SQVOQQA1uIZ5ZMz
-         9htQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU40TqVpsoUYcebh4wG2UxkDnoWFFCVhXLeuzow8v10CXXC38+Z5nAkMeW+fa/67gkop2uUjaJQ7WBf@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmPeMOHmHPY7BrchT/7RWdE59a9gvm1/2mQ7iXgV+buKYfE3AJ
-	SXs6Wezi5eXPS2ZlWu2LtZMsKkon6KNhmp4WROT4oGRKdkpBn4wgNWWQ
-X-Gm-Gg: ASbGncsqqJI3yUpvlfblifAT5mIb01QuohGr1HNWXmJOoyOzuHivZvwolpW/kL9rJUc
-	WJ0BAva3Xfjid4EIFHv+tSF6oz4TVDCmmkXq3vrNzvvdVjS/O3heQhLx1D0sh4CbPL3dICDjckt
-	FkoR21P4IZ4snImFBS6m9CrRXjxySTHLe16JiG9HIGC7BTLSjyCNLuwzJJlmSUtsrk1TscQI+h6
-	plFCtKFJZSXsriCsneKehYp5uZ+qE0FGqt0W2QUUUQqfQ7CnFPGe0HkiTTWpc/02x+DXOP3ayAF
-	tYPSJ68owU5xiPqjB2uRbcj34biIqdxfYgJTaThYDY3nd0OljbOCiiarfB1HL5uBxJkZhvDn+66
-	yTY3Ghi+8TqTDBXF2D3pu7lC4GR4EGoDH5FfdfwIZpLEN0+bs7ugiI0LRiVu0DWmiu7uvREuvJN
-	94hr5fG/C0GUQhaw==
-X-Google-Smtp-Source: AGHT+IGClRjrRzHtx62krt4asIMCvQHnP6xr/r5CpGOAwQrXHtwf7m7w8S9UGWZzoda9nXqVUQIx4Q==
-X-Received: by 2002:a05:6512:12c4:b0:595:7d86:f654 with SMTP id 2adb3069b0e04-597d3fb539emr853943e87.26.1764756707102;
-        Wed, 03 Dec 2025 02:11:47 -0800 (PST)
-Received: from [10.38.18.76] ([213.255.186.37])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596bf8a7b2asm5560144e87.12.2025.12.03.02.11.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 02:11:46 -0800 (PST)
-Message-ID: <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
-Date: Wed, 3 Dec 2025 12:11:45 +0200
+	s=arc-20240116; t=1764756806; c=relaxed/simple;
+	bh=xiO6yUoSorPLzzs22ZWq3AW+Eb7Aiok5LPrV7Sv79sY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qLsF85PSqKO6omTb3lWnym/jl5VEYW++3LfIfuHwwbky5YNwVUHo/aODjS/K9hSm80PQZzvs2y2BJXhEB+/ebYZp8RIYTV6s+1qgXAD3CxrO0mEMv3ZKQm8Bevym3oQ/WHNCRL94feXjOeQVqz10kwFS9gUS2Jm+Io/i94jaEZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=XgTV3rUi; arc=none smtp.client-ip=46.62.234.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from relay15 (localhost [127.0.0.1])
+	by relay15.grserver.gr (Proxmox) with ESMTP id BDCF643FE6
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Dec 2025 10:13:14 +0000 (UTC)
+Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by relay15.grserver.gr (Proxmox) with ESMTPS id 4EB2943ED1
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Dec 2025 10:13:13 +0000 (UTC)
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by linux3247.grserver.gr (Postfix) with ESMTPSA id 6611F201DFB
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Dec 2025 12:13:12 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1764756792;
+	bh=ystVRlB5GzrP6kiPxnK2FZKeHRDPMpJtByIw/RIGM/0=;
+	h=Received:From:Subject:To;
+	b=XgTV3rUiufTTkhrZfDNYx04x0chm0aoBjZWKThaNfL2g+orI1GkpCtTgHLO4x5gcr
+	 OoZkI6Sq3NrERRTFGjMiTE0K66OXXaq4l3L1ul+HX+OHpU79ipYq201bZkXyH0XLad
+	 C8D25jKIMV5A0dJuo6gCLpUjWbbTUbBQDAoWT+YSZ2ns9KluRbm7mnnWyA4s+g1U+M
+	 0R7pRNiie6OhQ47Dkkbv+6DhYB77+Gsbgd2Dt+jVcy+DRV4QiQ1okAhQo6gIjgg8u7
+	 W/DkT1eXcOBvo9vrJSrJxI7AWjOWPwpDBk3JIUv8tgObz4wDj9Exy1J3ejm9l/Fo8W
+	 95m3yL1ZGNd7g==
+Authentication-Results: linux3247.grserver.gr;
+        spf=pass (sender IP is 209.85.208.176) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f176.google.com
+Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
+Received: by mail-lj1-f176.google.com with SMTP id
+ 38308e7fff4ca-37d056f5703so62828661fa.0
+        for <linux-acpi@vger.kernel.org>;
+ Wed, 03 Dec 2025 02:13:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXWP9PrWWaKewdh1PU4RmPmbftEdyO3peTxzkRjp6dsY/aXpwdcklVXAw//GPv2bZ9eeFj8fCRbgRGG@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc5vFytvR2qCbkaQ03EUmzCznItDsvC+RIxmQW2S0qRzxkv1pL
+	KGYLYgJCBLnPFXNvq4AjPmjCM6rgCyVZpnTieMon+4YXzaoA+bpx5nFyulMXJ3l5xh0sgsFRDzl
+	qLRZCL8OtR6FnSGk9I2M62oyYkZ2d6v0=
+X-Google-Smtp-Source: 
+ AGHT+IE6dO5cX16bgmMma+Xl2x1Mttlofbd/WG8z1lQH6uGUP3ZH/prrPtHg0rWn8Ex9vXz2fUFi9oHm3uX20JoqkYQ=
+X-Received: by 2002:a2e:8809:0:b0:37a:9558:5bda with SMTP id
+ 38308e7fff4ca-37e6378da8bmr4625451fa.14.1764756791710; Wed, 03 Dec 2025
+ 02:13:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
- overlays"
-To: Herve Codina <herve.codina@bootlin.com>, Rob Herring <robh@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
- Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Richard Fitzgerald <rf@opensource.cirrus.com>,
- David Rhodes <david.rhodes@cirrus.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
- Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,
- Steen Hegelund <steen.hegelund@microchip.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com>
- <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
- <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
- <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
- <20251202102619.5cd971cc@bootlin.com>
- <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
- <20251202175836.747593c0@bootlin.com>
-Content-Language: en-US
-From: Kalle Niemi <kaleposti@gmail.com>
-In-Reply-To: <20251202175836.747593c0@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
+ <CAGwozwG=F1BC8UF6Xkest5pwZG6iRjNjk5zpjmSV8Yh-0S2tGA@mail.gmail.com>
+ <c7760b2d-c8cb-40fa-b1b1-8715e97e5cf0@kernel.org>
+ <CAGwozwHi_U_R3ueJaYDaR_Pa6JntNbEh1dpwwbZW7jtrs5mbQw@mail.gmail.com>
+ <02103d95-7bca-4db0-81c6-ac36429ea0bb@kernel.org>
+ <35f69c12-ecd4-4b21-bfb0-53bf57f0febf@collabora.com>
+ <ba7f9789-fd57-4d53-bf9a-15e85657ddd7@kernel.org>
+ <82357e17-56ec-4dd6-82b2-0b8308f7aec2@collabora.com>
+In-Reply-To: <82357e17-56ec-4dd6-82b2-0b8308f7aec2@collabora.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Wed, 3 Dec 2025 11:12:59 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwEDJbFoZJsqyOycHbv-LwGqOC-MG3K_duVEEqfKfXMUhA@mail.gmail.com>
+X-Gm-Features: AWmQ_bkrFVFOYH8OHn468IWDzdZ9i6p4_RsZrZYr5ZK3wRU8Cic-DJ1BS8zFVhk
+Message-ID: 
+ <CAGwozwEDJbFoZJsqyOycHbv-LwGqOC-MG3K_duVEEqfKfXMUhA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
+ interface
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
+ Lennart Poettering <lennart@poettering.net>,
+	Daniel Stone <daniels@collabora.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
+	kernel@collabora.com, linux-kernel@vger.kernel.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>,
+	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>,
+	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>,
+	Bastien Nocera <hadess@hadess.net>
+Content-Type: text/plain; charset="UTF-8"
+X-PPP-Message-ID: 
+ <176475679278.2257852.15066177133417332945@linux3247.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
+X-Virus-Status: Clean
 
-On 12/2/25 18:58, Herve Codina wrote:
-> Hi Kalle, Matti,
-> 
-> On Tue, 2 Dec 2025 13:21:16 +0200
-> Kalle Niemi <kaleposti@gmail.com> wrote:
-> 
->> On 12/2/25 11:26, Herve Codina wrote:
->>> Hi Kalle,
->>>
->>> On Fri, 28 Nov 2025 10:34:57 +0200
->>> Kalle Niemi <kaleposti@gmail.com> wrote:
->>>
->>> ...
->>>>>>>>>>
->>>>>>>>>> Hello,
->>>>>>>>>>
->>>>>>>>>> Test system testing drivers for ROHM ICs bisected this commit to cause
->>>>>>>>>> BD71847 drivers probe to not be called.
->>>>>>>>> This driver (and overlay support) is in linux-next or something out of
->>>>>>>>> tree on top of linux-next?
->>>>>>>>>
->>>>>>>>> Rob
->>>>>>>> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7.c
->>>>>>> I don't see any support to apply overlays in that driver.
->>>>>> Ah. Sorry for the confusion peeps. I asked Kalle to report this without
->>>>>> proper consideration. 100% my bad.
->>>>>>
->>>>>> While the bd718x7 drive indeed is mainline (and tested), the actual
->>>>>> 'glue-code' doing the overlay is part of the downstream test
->>>>>> infrastructure. So yes, this is not a bug in upstream kernel - this
->>>>>> falls in the category of an upstream change causing downstream things to
->>>>>> break. So, feel free to say: "Go fix your code" :)
->>>>>>
->>>>>> Now that this is sorted, if someone is still interested in helping us to
->>>>>> get our upstream drivers tested - the downstream piece is just taking
->>>>>> the compiled device-tree overlay at runtime (via bin-attribute file),
->>>>>> and applying it using the of_overlay_fdt_apply(). The approach is
->>>>>> working for our testing purposes when the device is added to I2C/SPI
->>>>>> node which is already enabled. However, in case where we have the I2C
->>>>>> disabled, and enable it in the same overlay where we add the new device
->>>>>> - then the new device does not get probed.
->>>>>>
->>>>>> I would be really grateful if someone had a pointer for us.
->>>>> Seems to be fw_devlink related. I suppose if you turn it off it works?
->>>>> There's info about the dependencies in sysfs or maybe debugfs. I don't
->>>>> remember the details, but that should help to tell you why things
->>>>> aren't probing.
->>>
->>> Rob reverted patches but I plan to continue my work on it.
->>> On my side, I need the reverted patches but I fully understand that, on
->>> your side, you need a working system.
->>>
->>> In order to move forward and find a solution for my next iteration, can you
->>> send your overlay (dtso) used in your working and non working cases?
->>>
->>> Best regards,
->>> Hervé
->>
->> Hello Hervé,
->>
->> I have attached the overlay source file: bd71847_overlay.dts
-> 
-> Thanks a lot for your overlay.
-> 
-> I did an update of the reverted patches and I didn't detect any regression
-> with the update applied on my use case but I don't have the needed code to
-> perform tests similar to your use case. Indeed, you apply the overlay using
-> an out of tree code.
-> 
-> May I ask you to perform a test of this update on your side?
-> 
-> First you can use the last linux-next kernel where reverted patches are present.
-> The next-20251127 tag is a good candidate. Indeed both patches are present:
->    - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
->    - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
-> 
-> Of course, be sure to have the issue using this kernel with your overlays.
-> 
-> Then can you add the following modification on your faulty kernel:
-> ---- 8< ----
-> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-> index 1528d8ad9f26..aea7bb26d9c4 100644
-> --- a/drivers/of/overlay.c
-> +++ b/drivers/of/overlay.c
-> @@ -190,6 +190,20 @@ static void overlay_fw_devlink_refresh(struct overlay_changeset *ovcs)
->          for (int i = 0; i < ovcs->count; i++) {
->                  struct device_node *np = ovcs->fragments[i].target;
->   
-> +               /*
-> +                * The device related to target node itself could have been
-> +                * removed and re-added. This happens when the 'status' property
-> +                * in the target node has been changed by the overlay.
-> +                *
-> +                * In that case the parent node needs to be fixed.
-> +                *
-> +                * Before fixing the target node itself, fix its parent. To keep
-> +                * things simple, fix the parent in any case. If nothing needs
-> +                * to be fixed, fw_devlink_refresh_fwnode() acts as a no-op.
-> +                */
-> +               if (np->parent)
-> +                       fw_devlink_refresh_fwnode(of_fwnode_handle(np->parent));
-> +
->                  fw_devlink_refresh_fwnode(of_fwnode_handle(np));
->          }
->   }
-> ---- 8< ----
-> 
-> My hope is that this modification will fix your issue.
-> If so, I will add it in my next iteration.
-> 
-> If you cannot perform the test on your side, can you provide me the out of
-> tree code you use to apply the overlay?
-> 
+On Wed, 3 Dec 2025 at 07:47, Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+>
+> On 12/3/25 05:12, Mario Limonciello (AMD) (kernel.org) wrote:
+> >
+> >
+> > On 12/2/2025 4:35 PM, Dmitry Osipenko wrote:
+> >> On 12/3/25 00:25, Mario Limonciello (AMD) (kernel.org) wrote:
+> >>>> An inhibitor process in logind can handle this gracefully very simply.
+> >>>> Involving the DRM subsystem just adds a lot of complexity and it is
+> >>>> not clear what the benefit would be. There are no known devices that
+> >>>> hook DRM components into that DSM.
+> >>>>
+> >>>>> By doing it this way userspace still has control, but it's not
+> >>>>> mandatory for userspace to be changed.
+> >>>>
+> >>>> On that note, the screen off calls/userspace implementations are
+> >>>> optional under both patch series. If userspace is not aware of them,
+> >>>> they are still called by the kernel when suspending.
+> >>>
+> >>> With the proposal I mentioned you can get the LPS0 _DSM called on a
+> >>> handheld when the screen gets called without changing userspace.
+> >>>
+> >>>>
+> >>>> Current userland also duplicates the functionality of the screen off
+> >>>> call, which is primarily turning off the keyboard backlight. So along
+> >>>> implementing this call, userspace software like powerdevil/upower
+> >>>> needs to be tweaked to avoid doing that if the screen off state is
+> >>>> available.
+> >>>
+> >>> Sure Any hooking for turning off LEDs manually based off the screen off
+> >>> _DSM is totally feasible.
+> >>
+> >> It's not that trivial to add screen on/off hooks to DRM, there is no one
+> >> central place for that from what I can tell. I'm seeing variant with DRM
+> >> hooks as unnecessary complexity that doesn't solve any practical problem.
+> >
+> > Is it really that hard?  I figured that any time
+> > connector->dpms != mode from drm_atomic_connector_commit_dpms() could
+> > walk through all the connectors and make a judgement call whether to
+> > notify the potentially exported symbol.
+>
+> - drm_atomic_connector_commit_dpms() is used only for atomic ioctl path
+> - there is another legacy kms path
+> - AFAICT, DRM takes a different path when display is enabled initially
+> by kernel
+>
+> Here we have 3 places where to plug the hook. Gives a strong feeling of
+> a red flag, IMO.
+>
+> >> A week ago in a private conversation, Daniel Stone gave an example of
+> >> laptop's lid-close handling that is done purely in userspace.
+> >> Technically, kernel could have DRM hooks for that too, but it doesn't.
+> >
+> > All the way into hardware sleep?  There are certain requirements needed
+> > for hardware sleep that kernel drivers are normally used to put devices
+> > into the right state.  I guess PCIe devices you can hack around with
+> > userspace PCI config space writes but you're going to confuse the kernel
+> > pretty badly.
+>
+> - Userspace gets notification for a changed lid state
+> - Userspace takes action of turning display on/off
+> - Kernel DRM doesn't know and doesn't care about lid state,
+> force-disabling display on machine suspension
+>
+> Don't see how this is different for the case of the LPS0 notifications.
+> Maybe I'm not getting your point well, in that case please clarify more.
+>
+> >> Userspace would need to be taught about new power modes in any case.
+> >> Addition of DRM hooks should require a well-defined justification, which
+> >> is currently absent.
+> >>
+> >
+> > Why does userspace need to know about them?  Besides the inhibitor can't
+> > this be invisible to userspace?  I thought this mostly is for the
+> > firmware to flash some LEDs and maybe change some power limits.
+>
+> What I was saying is that LPS0 inhibitors would represent the power mode
+> controls by themselves. Userspace would have to know how to drive them.
+>
+> Userspace power managers are already driving displays DPMS. Combining
+> this with knowledge about the LPS0 inhibitors gives userspace ability to
+> support the new device power states. Hence, there is no practical need
+> to bother kernel DRM with the LPS0 burden.
+
+_Technically_ DPMS is driven by the compositor, not by any power manager.
+
+However, I think for Gnome and KDE they link to logind's inactivity
+hook so practically you are correct for inactivity.
+
+Moreover, traditionally, compositors do not fire DPMS for suspend, the
+kernel does. I think KDE fixed that recently though. This is why the
+display used to wake up twice during hibernation, and why you get a
+frozen display when suspending/resuming. This also complicates
+suspend-then-hibernate checks because the display wakes up. i.e., they
+should fire DPMS for suspend but a lot for them don't
+
+With compositors such as gamescope that do not have a dbus API it gets
+more hairy. And it also means that the power manager/kernel cannot
+control DPMS without the compositor's consent. If they do that, the
+compositor will crash due to rejected commits. We have a suspend hook
+for gamescope on Bazzite though, it improves suspend appearance.
+
+Just throwing in this for context, although it builds more of a case
+of not involving DRM.
+
+Best,
+Antheas
+
+> --
 > Best regards,
-> Hervé
-Hello Hervé,
+> Dmitry
+>
 
-I tried this patch on next-20251127 by manually adding the added lines 
-to /drivers/of/overlay.c, and it did not solve the issue. I will 
-continue to test this.
+On Wed, 3 Dec 2025 at 07:47, Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+>
+> On 12/3/25 05:12, Mario Limonciello (AMD) (kernel.org) wrote:
+> >
+> >
+> > On 12/2/2025 4:35 PM, Dmitry Osipenko wrote:
+> >> On 12/3/25 00:25, Mario Limonciello (AMD) (kernel.org) wrote:
+> >>>> An inhibitor process in logind can handle this gracefully very simply.
+> >>>> Involving the DRM subsystem just adds a lot of complexity and it is
+> >>>> not clear what the benefit would be. There are no known devices that
+> >>>> hook DRM components into that DSM.
+> >>>>
+> >>>>> By doing it this way userspace still has control, but it's not
+> >>>>> mandatory for userspace to be changed.
+> >>>>
+> >>>> On that note, the screen off calls/userspace implementations are
+> >>>> optional under both patch series. If userspace is not aware of them,
+> >>>> they are still called by the kernel when suspending.
+> >>>
+> >>> With the proposal I mentioned you can get the LPS0 _DSM called on a
+> >>> handheld when the screen gets called without changing userspace.
+> >>>
+> >>>>
+> >>>> Current userland also duplicates the functionality of the screen off
+> >>>> call, which is primarily turning off the keyboard backlight. So along
+> >>>> implementing this call, userspace software like powerdevil/upower
+> >>>> needs to be tweaked to avoid doing that if the screen off state is
+> >>>> available.
+> >>>
+> >>> Sure Any hooking for turning off LEDs manually based off the screen off
+> >>> _DSM is totally feasible.
+> >>
+> >> It's not that trivial to add screen on/off hooks to DRM, there is no one
+> >> central place for that from what I can tell. I'm seeing variant with DRM
+> >> hooks as unnecessary complexity that doesn't solve any practical problem.
+> >
+> > Is it really that hard?  I figured that any time
+> > connector->dpms != mode from drm_atomic_connector_commit_dpms() could
+> > walk through all the connectors and make a judgement call whether to
+> > notify the potentially exported symbol.
+>
+> - drm_atomic_connector_commit_dpms() is used only for atomic ioctl path
+> - there is another legacy kms path
+> - AFAICT, DRM takes a different path when display is enabled initially
+> by kernel
+>
+> Here we have 3 places where to plug the hook. Gives a strong feeling of
+> a red flag, IMO.
+>
+> >> A week ago in a private conversation, Daniel Stone gave an example of
+> >> laptop's lid-close handling that is done purely in userspace.
+> >> Technically, kernel could have DRM hooks for that too, but it doesn't.
+> >
+> > All the way into hardware sleep?  There are certain requirements needed
+> > for hardware sleep that kernel drivers are normally used to put devices
+> > into the right state.  I guess PCIe devices you can hack around with
+> > userspace PCI config space writes but you're going to confuse the kernel
+> > pretty badly.
+>
+> - Userspace gets notification for a changed lid state
+> - Userspace takes action of turning display on/off
+> - Kernel DRM doesn't know and doesn't care about lid state,
+> force-disabling display on machine suspension
+>
+> Don't see how this is different for the case of the LPS0 notifications.
+> Maybe I'm not getting your point well, in that case please clarify more.
+>
+> >> Userspace would need to be taught about new power modes in any case.
+> >> Addition of DRM hooks should require a well-defined justification, which
+> >> is currently absent.
+> >>
+> >
+> > Why does userspace need to know about them?  Besides the inhibitor can't
+> > this be invisible to userspace?  I thought this mostly is for the
+> > firmware to flash some LEDs and maybe change some power limits.
+>
+> What I was saying is that LPS0 inhibitors would represent the power mode
+> controls by themselves. Userspace would have to know how to drive them.
+>
+> Userspace power managers are already driving displays DPMS. Combining
+> this with knowledge about the LPS0 inhibitors gives userspace ability to
+> support the new device power states. Hence, there is no practical need
+> to bother kernel DRM with the LPS0 burden.
+>
+> --
+> Best regards,
+> Dmitry
+>
 
-BR
-Kalle
 
