@@ -1,206 +1,130 @@
-Return-Path: <linux-acpi+bounces-19426-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19427-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F631CA3FE2
-	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 15:22:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AADCA42BF
+	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 16:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 131F2301D9E6
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 14:22:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34AA33160D1A
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 15:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C436433ADAB;
-	Thu,  4 Dec 2025 14:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633B02D3A69;
+	Thu,  4 Dec 2025 15:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+bDJ+oB"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="aBHsBm9J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3A3335089;
-	Thu,  4 Dec 2025 14:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764858115; cv=none; b=bDZjnP32u9ykCEtKlcytkRYWG+y9sWQYtyYOAXA0IQ8KqEz5Zu/MbCEae89s5IssygNbLzLbUV+TxK2CTq9z1xzXdtb1UcJEpdTffjsVxWf9nZ3UDoOxLo/7k7Z2JLsXwHaDDT/UqvdLMRbfIOLy4bXhEdEMglGOgmmkM5kedhA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764858115; c=relaxed/simple;
-	bh=Ix4HAjzi2WlFfbJt7VTMxHQfAkw4id96Xxu6hbqhPmA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiJ/M2jOTEX/0mPRDIf7E80+W4TtU2QzA2TIz6mptkvjHLxQhmg95ZwrdSaukFFBXYXJpC5eGOL0rUQuZkzjyYabCcpMK4HvpGLJ0imKvGuyiNNnNpcO1MGXh7V82O6B9iVBboCinUefLmFPYUsYhbCjSXoCIEcHWvzz1G0eAuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+bDJ+oB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5353C4CEFB;
-	Thu,  4 Dec 2025 14:21:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764858114;
-	bh=Ix4HAjzi2WlFfbJt7VTMxHQfAkw4id96Xxu6hbqhPmA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y+bDJ+oBSuytrRGrA1/IeWKGjwOp/ZGF7vweh2xg2gWzgCyssqRjWsrI41ZAUass8
-	 0ZyjkEcxeEDfLkb8i3ZjzGBGRr1z3eCHdOmLi9qeeF4uh3KuI6kGjS6flpdv+sWhCE
-	 x058GGYzauOameSVw86ITd5aIngE+grBP6RBIUiwkDvmf/t8T/YdwyhIgZmMugFbs0
-	 9+dyM2PjIsQ+yA6mhL+qjZoDlOHQD1xyKRBzJWAXo/3GaeyKLE0ftRUOIbQH6kHaxM
-	 rTVM7WMh1EvKMT20Ynl+pQ/dSXo9mj5YJunSM/lfEAdsFwT5rzaCSywiOvSp6AaBBD
-	 c35yjxCXPdknA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vRADQ-0000000AT9t-1T1w;
-	Thu, 04 Dec 2025 14:21:52 +0000
-Date: Thu, 04 Dec 2025 14:21:51 +0000
-Message-ID: <867bv2pbsw.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Daniel Thompson <danielt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH v4 16/26] genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
-In-Reply-To: <aTFozefMQRg7lYxh@aspen.lan>
-References: <20251020122944.3074811-1-maz@kernel.org>
-	<20251020122944.3074811-17-maz@kernel.org>
-	<aTFozefMQRg7lYxh@aspen.lan>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D542D29D6;
+	Thu,  4 Dec 2025 15:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764860682; cv=pass; b=GsNfm4kGmJ1nCIR5OtB9LagwCdO2m5A4A1bIHS9RH5pli+4zWOYTHlLtnmF+brOTqO3bVwJU2s4HbRYJk3GlSex/F1K0rzz0W3XawnSjl5zWc1FEis8lJByafJzFq0MRBxJf6dD1xK1jE3ZlTrRgN+/pA/F6OjMTZHc/RIJXADQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764860682; c=relaxed/simple;
+	bh=Z1zDOIZZt8ODFF5YMJW3Baghig0RzGQQANrYx67jkic=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ir1ITxw2WD9wC8wZsIw4hiIkB452gmOYYMbys9WeUF3oYVwWVPmapLn8i5ETbNd6k/BdvYV5LEijbDUY/WuVKF7xAtEMEdIPWlIReqY8NJCV0fFCpMt9XcDlpDiUhSM16QDYiglAzYhi8nBMFKEH8CQRF6C2V72eK5vimHcknh4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=aBHsBm9J; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1764860632; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=UyCAFsfn6LHZLkTjszFgwl3yfwM1RHks+/KQADfu+Y7r2Upw0jDDvUjckVpamswWNauSFcktVZcq0YSHh+1TLnGH1duBgdVQTY7bu5nB9sQapkT4E0dttpuArjCrmOsouYeJh/GkcEB+ft80Ijieg/Yw80+rGzIpU5sPL9pJOow=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764860632; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FPf25EqHzEi/72P8f6zXr0/UiOkqeWlzJVT7ZkJdT/0=; 
+	b=P9yQY65LFkW6eTKSmGusEJi6krtl38/H4AlxWgDE85hAlkxoNcFFHEswPAhX9Vu7UvjCOj1xQobfpa8Syqo2LLjk4qTUpxSWAELXCMLAPL3y00DV+Dx/9jXfObce2gl/HI/Hak46BdXFqrbylf/+M+FmVywT501u6hicgHZ1/ZA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764860632;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=FPf25EqHzEi/72P8f6zXr0/UiOkqeWlzJVT7ZkJdT/0=;
+	b=aBHsBm9JISpTWm1MVPI0BlSnyqSU53pE/PgKRYX40h9frArf5qtrMQpxzSQBMtNB
+	+O/hSyUtyVcB9Tj5LSamATHmPE65K54PvYW7euojvXfkPS3zmq18895eZ6YymsKkjeK
+	xQURl71DoUkB0gqeG9Pua8H/+I3RWoh2R/xoLs04=
+Received: by mx.zohomail.com with SMTPS id 1764860630126560.3360139527972;
+	Thu, 4 Dec 2025 07:03:50 -0800 (PST)
+Message-ID: <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
+Date: Thu, 4 Dec 2025 18:03:44 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: danielt@kernel.org, tsbogend@alpha.franken.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com, ruanjinjie@huawei.com, alexandru.elisei@arm.com, linux-mips@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
+ interface
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mario Limonciello <superm1@kernel.org>,
+ Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
+ kernel@collabora.com, linux-kernel@vger.kernel.org,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
+ William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
+ Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>,
+ systemd-devel@lists.freedesktop.org,
+ Lennart Poettering <lennart@poettering.net>,
+ Antheas Kapenekakis <lkml@antheas.dev>
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
+ <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Thu, 04 Dec 2025 10:56:13 +0000,
-Daniel Thompson <danielt@kernel.org> wrote:
+On 12/3/25 17:58, Rafael J. Wysocki wrote:
+>> Add `/sys/power/lps0_screen_off` interface to allow userspace to control
+>> Display OFF/ON DSM notifications at runtime.
+> Why?
 > 
-> On Mon, Oct 20, 2025 at 01:29:33PM +0100, Marc Zyngier wrote:
-> > Interrupt sharing for percpu-devid interrupts is forbidden, and
-> > for good reasons. These are interrupts generated *from* a CPU and
-> > handled by itself (timer, for example). Nobody in their right mind
-> > would put two devices on the same pin (and if they have, they get to
-> > keep the pieces...).
-> >
-> > But this also prevents more benign cases, where devices are connected
-> > to groups of CPUs, and for which the affinities are not overlapping.
-> > Effectively, the only thing they share is the interrupt number, and
-> > nothing else.
-> >
-> > Let's tweak the definition of IRQF_SHARED applied to percpu_devid
-> > interrupts to allow this particular case. This results in extra
-> > validation at the point of the interrupt being setup and freed,
-> > as well as a tiny bit of extra complexity for interrupts at handling
-> > time (to pick the correct irqaction).
-> >
-> > Tested-by: Will Deacon <will@kernel.org>
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+>> Writing "1" to this file triggers the OFF notification, and "0" triggers the ON notification.
+>>
+>> Userspace should write "1" after turning off all physical and remote
+>> displays. It should write "0" before turning on any of displays.
+> This sets a limitation on the correct/expected usage of this
+> interface.  How can the kernel ensure that the limitation is taken
+> into account?  In principle, it should not allow OFF to be triggered
+> if any displays are "on", for example.
 > 
-> I picked up this patch via linux-next and it appears be causing boot
-> regressions on MIPS/qemu. This patch was identified with a bisect and
-> a git revert of this patch from the linux-next tip resolves the problem
-> (specifically, next-20251204 with git revert bdf4e2ac295f).
-> 
-> I'm running the code as part of the kgdb test suite but the system
-> doesn't survive long enough for kgdb to be involved. In fact I was able
-> to reduce things to the following reproduction with all the kgdb pieces
-> removed:
-> 
->     make malta_kvm_defconfig generic/64r6.config
->     ../scripts/config \
->         --enable WERROR --enable CPU_MIPS64_R6 --enable MIPS_CPS \
-> 	--enable BLK_DEV_INITRD --set-val FRAME_WARN 2048
->     make olddefconfig
->     make -j$(nproc) all
->     qemu-system-mips64el -cpu I6400 -M malta -m 1G -smp 2 \
->         -kernel vmlinux -nographic \
-> 	-append " console=ttyS0,115200 clk_ignore_unused"
+> And what exactly do you mean by "turning off a display".  Cutting
+> power from it or something else?
 
-Many thanks for the minimal reproducer, that really helped a lot!
+The common lowest level denominator for the "turned off display" should
+be that all display CRTCs are disabled and there are no active remote
+desktop sessions.
 
-[...]
+For example, firmware of Intel laptops tracks state of a built-in
+display internally and treats display being tuned off when either
+display's CRTC is disabled or when backlight level is set to 0. This may
+be not the same for AMD firmware.
 
-> CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff801c2398, ra == ffffffff801bab00
-> Oops[#1]:
-> CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.18.0-next-20251204 #20 NONE
-> Hardware name: mti,malta
-> $ 0   : 0000000000000000 0000000000000001 0000000000000000 0000000000000000
-> $ 4   : 0000000000000001 a8000000020e8008 0000000000000000 ffffffff80c23b80
-> $ 8   : 0000000000000004 0000000000000000 0000000000000000 000000000000002f
-> $12   : a8000000020f4000 0000000000003ff0 0000000000003000 0000000000000003
-> $16   : ffffffff80d095c0 ffffffff80ceb410 0000000000000019 ffffffff80c378c0
-> $20   : ffffffff80c4bec8 0000000000000000 ffffffff80e00000 ffffffff80de0000
-> $24   : 0000000000000000 0000000000000010
-> $28   : ffffffff80c20000 a8000000020f7ec0 a800000000e12fcd ffffffff801bab00
-> epc   : ffffffff801c2398 handle_percpu_devid_irq+0xb8/0x250
-> ra    : ffffffff801bab00 handle_irq_desc+0x48/0x88
-> Status: 1400a4e2	KX SX UX KERNEL EXL
-> Cause : 00800408 (ExcCode 02)
-> BadVA : 0000000000000000
-> PrId  : 0001a900 (MIPS I6400)
-> Modules linked in:
-> Process swapper/0 (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-> Stack : ffffffff80c35a2c 0000000000000002 ffffffff80e00000 0fffffffffffffff
->         ffffffff80c50000 0000000000000001 0000000000000003 ffffffff801bab00
->         0000000000000000 ffffffff805d82a8 0000000000000000 0000000000000008
->         0000000000000000 0000000000000000 0000000000000000 5189d95a7a4f4800
->         a800000002014300 0000000000000002 0000000000000001 000000000000001f
->         ffffffff80e00000 0000000000000004 0000000000000000 ffffffff801bab00
->         0000000000000000 ffffffff809ec128 0000000000000001 fffffffffffffffb
->         0000000000000001 ffffffff805d7ebc 0000000000000000 0000000000000000
->         ffffffff80c23c80 ffffffff80c50000 ffffffff80de0000 ffffffff80db0000
->         0000000000000000 ffffffff80112f10 ffffffff80c23c80 0000000000000000
-> Call Trace:
-> [<ffffffff801c2398>] handle_percpu_devid_irq+0xb8/0x250
-> [<ffffffff801bab00>] handle_irq_desc+0x48/0x88
-> [<ffffffff805d82a8>] gic_irq_dispatch+0xc0/0x288
-> [<ffffffff801bab00>] handle_irq_desc+0x48/0x88
-> [<ffffffff809ec128>] do_domain_IRQ+0x28/0x40
-> [<ffffffff805d7ebc>] plat_irq_dispatch+0x64/0xe8
-> [<ffffffff80112f10>] handle_int+0x134/0x140
-> [<ffffffff80110dc8>] calibrate_delay+0x158/0x290
-> [<ffffffff80d58e48>] start_kernel+0x754/0x7a4
+Display On/Off notification is a hint to firmware that it's allowed to
+put machine into a lower power state where UI presented to a user may
+become non-interactive.
 
-This hack fixes it for me, but really, mips needs to grow up and stop
-using these antiquated APIs.
+In practice, entering this lower power state makes device to pretend
+that it has been suspended. On a laptop, keyboard backlight will be
+turned off and power button LED will start blinking. This allows us to
+implement the "resume to a dark mode", mentioned in the cover letter.
 
-Can please you give it a go?
+It's up to userspace to make decision when and what DSM notification
+should be issued, thus the new sysfs control.
 
-Thanks,
-
-	M.
-
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 0bb29316b4362..8b1b4c8a4f54c 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -2470,6 +2470,9 @@ int setup_percpu_irq(unsigned int irq, struct irqaction *act)
- 	if (retval < 0)
- 		return retval;
- 
-+	if (!act->affinity)
-+		act->affinity = cpu_online_mask;
-+
- 	retval = __setup_irq(irq, desc, act);
- 
- 	if (retval)
+There is no strict requirement on having displays to be turned off when
+Display OFF notification is issued. Machine won't blow up when display
+is enabled and OFF notification is set. Hence, it should be unnecessary
+for kernel to be extra cautious RE trusting userspace.
 
 -- 
-Without deviation from the norm, progress is not possible.
+Best regards,
+Dmitry
 
