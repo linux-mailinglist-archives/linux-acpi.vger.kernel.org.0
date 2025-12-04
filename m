@@ -1,104 +1,206 @@
-Return-Path: <linux-acpi+bounces-19425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741C0CA3C50
-	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 14:20:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F631CA3FE2
+	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 15:22:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 922733080AF7
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 13:14:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 131F2301D9E6
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3631342169;
-	Thu,  4 Dec 2025 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C436433ADAB;
+	Thu,  4 Dec 2025 14:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+bDJ+oB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF603396FE;
-	Thu,  4 Dec 2025 13:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3A3335089;
+	Thu,  4 Dec 2025 14:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764854075; cv=none; b=OmGPRBnoEEmeE4jU7zkgz7e94J/+9APydJgnIiXeeK9j652dIEEzOUfIOrjh9ox23NIybFcycF6+P60hqGRbq4gXhIF4SSbwLslIi9wmv4of1s2PdtGHbGqExlYP5xs2077vOd4DghgXIZyjgosi8LuIhMKaZNcUrner1zApBwU=
+	t=1764858115; cv=none; b=bDZjnP32u9ykCEtKlcytkRYWG+y9sWQYtyYOAXA0IQ8KqEz5Zu/MbCEae89s5IssygNbLzLbUV+TxK2CTq9z1xzXdtb1UcJEpdTffjsVxWf9nZ3UDoOxLo/7k7Z2JLsXwHaDDT/UqvdLMRbfIOLy4bXhEdEMglGOgmmkM5kedhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764854075; c=relaxed/simple;
-	bh=zBWKn0P2O+rLsRZ/F2EWDzprh9B9QbAOe3NY8MQ01iU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcfGse2WvDJSBj4wk1m0Hw7Z/d5JZ7JYjMYD4zmL78tHVtBn5EgrRPL+okHsdIilzvS6lJ4gBDfCbRLipYLCxyMQ5A0+R4EHyNuGWT3KsC55TdJBk4lfsRtoJMX4uLVbweaNaFwe4Z1ANs1jPfns0Rz5rWBjXyiUcDPM/4YToQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FFEA339;
-	Thu,  4 Dec 2025 05:14:26 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A4E4C3F59E;
-	Thu,  4 Dec 2025 05:14:31 -0800 (PST)
-Date: Thu, 4 Dec 2025 13:14:28 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Andrea Tomassetti <andrea.tomassetti@sipearl.com>
-Cc: <jassisinghbrar@gmail.com>, <lenb@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lkp@intel.com>,
-	<oe-kbuild-all@lists.linux.dev>, <olivier.dautricourt@sipearl.com>,
-	<olivierdautricourt@gmail.com>, <rafael@kernel.org>,
-	<thibault.cantori@sipearl.com>
-Subject: Re: Re: [PATCH v3 1/2] mailbox: pcc: support polling mode when there
- is no platform IRQ
-Message-ID: <20251204-mauve-bear-of-wholeness-e13a4b@sudeepholla>
-References: <20251203-persimmon-condor-of-essence-9fc43d@sudeepholla>
- <20251204125938.3025022-1-andrea.tomassetti@sipearl.com>
+	s=arc-20240116; t=1764858115; c=relaxed/simple;
+	bh=Ix4HAjzi2WlFfbJt7VTMxHQfAkw4id96Xxu6hbqhPmA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DiJ/M2jOTEX/0mPRDIf7E80+W4TtU2QzA2TIz6mptkvjHLxQhmg95ZwrdSaukFFBXYXJpC5eGOL0rUQuZkzjyYabCcpMK4HvpGLJ0imKvGuyiNNnNpcO1MGXh7V82O6B9iVBboCinUefLmFPYUsYhbCjSXoCIEcHWvzz1G0eAuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+bDJ+oB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5353C4CEFB;
+	Thu,  4 Dec 2025 14:21:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764858114;
+	bh=Ix4HAjzi2WlFfbJt7VTMxHQfAkw4id96Xxu6hbqhPmA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y+bDJ+oBSuytrRGrA1/IeWKGjwOp/ZGF7vweh2xg2gWzgCyssqRjWsrI41ZAUass8
+	 0ZyjkEcxeEDfLkb8i3ZjzGBGRr1z3eCHdOmLi9qeeF4uh3KuI6kGjS6flpdv+sWhCE
+	 x058GGYzauOameSVw86ITd5aIngE+grBP6RBIUiwkDvmf/t8T/YdwyhIgZmMugFbs0
+	 9+dyM2PjIsQ+yA6mhL+qjZoDlOHQD1xyKRBzJWAXo/3GaeyKLE0ftRUOIbQH6kHaxM
+	 rTVM7WMh1EvKMT20Ynl+pQ/dSXo9mj5YJunSM/lfEAdsFwT5rzaCSywiOvSp6AaBBD
+	 c35yjxCXPdknA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vRADQ-0000000AT9t-1T1w;
+	Thu, 04 Dec 2025 14:21:52 +0000
+Date: Thu, 04 Dec 2025 14:21:51 +0000
+Message-ID: <867bv2pbsw.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Daniel Thompson <danielt@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	linux-mips@vger.kernel.org
+Subject: Re: [PATCH v4 16/26] genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
+In-Reply-To: <aTFozefMQRg7lYxh@aspen.lan>
+References: <20251020122944.3074811-1-maz@kernel.org>
+	<20251020122944.3074811-17-maz@kernel.org>
+	<aTFozefMQRg7lYxh@aspen.lan>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251204125938.3025022-1-andrea.tomassetti@sipearl.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: danielt@kernel.org, tsbogend@alpha.franken.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com, ruanjinjie@huawei.com, alexandru.elisei@arm.com, linux-mips@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Dec 04, 2025 at 01:59:38PM +0100, Andrea Tomassetti wrote:
-> On 25/12/03 10:28AM, Sudeep Holla wrote:
-> > On Tue, Dec 02, 2025 at 11:12:14AM +0100, Andrea Tomassetti wrote:
-> > > The goal is to allow clients to submit a message in both irq and polling
-> > > mode of the pcc mailbox. The ACPI specification does not require a
-> > > platform irq for pcc channels. Let's implement the case where it is not
-> > > available.
-> > >
-> > 
-> > Just curious if you have a real use case for this polling mode on your
-> > platforms or ...
-> > 
-> > > Tested-by: Thibault Cantori <thibault.cantori@sipearl.com>
-> > > Co-developed-by: Olivier Dautricourt <olivier.dautricourt@sipearl.com>
-> > > Signed-off-by: Olivier Dautricourt <olivier.dautricourt@sipearl.com>
-> > > Signed-off-by: Andrea Tomassetti <andrea.tomassetti@sipearl.com>
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120243.soxAFpqQ-lkp@intel.com/
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120558.Cln7LF6M-lkp@intel.com/
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120729.R3XQNSnx-lkp@intel.com/
-> > 
-> > You are just trying to fix these warnings. If it is latter, we don't have to
-> > add support for polling mode especially if it can't be tested on real
-> > platforms.
+On Thu, 04 Dec 2025 10:56:13 +0000,
+Daniel Thompson <danielt@kernel.org> wrote:
+> 
+> On Mon, Oct 20, 2025 at 01:29:33PM +0100, Marc Zyngier wrote:
+> > Interrupt sharing for percpu-devid interrupts is forbidden, and
+> > for good reasons. These are interrupts generated *from* a CPU and
+> > handled by itself (timer, for example). Nobody in their right mind
+> > would put two devices on the same pin (and if they have, they get to
+> > keep the pieces...).
 > >
-> In our target product, we're still investigating if PCC-based SCMI communication will
-> rely on interrupts or polling. When we started looking into it we realized that polling
-> wasn't supported and that's why we decided to work on and send this patch. We thought it
-> could have been beneficial to other members of the community and it brings the driver a
-> bit closer to the ACPI specifications.
+> > But this also prevents more benign cases, where devices are connected
+> > to groups of CPUs, and for which the affinities are not overlapping.
+> > Effectively, the only thing they share is the interrupt number, and
+> > nothing else.
+> >
+> > Let's tweak the definition of IRQF_SHARED applied to percpu_devid
+> > interrupts to allow this particular case. This results in extra
+> > validation at the point of the interrupt being setup and freed,
+> > as well as a tiny bit of extra complexity for interrupts at handling
+> > time (to pick the correct irqaction).
+> >
+> > Tested-by: Will Deacon <will@kernel.org>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
 > 
-> We're using ARM Fast Models for prototyping and that's how we validated and tested this patch.
+> I picked up this patch via linux-next and it appears be causing boot
+> regressions on MIPS/qemu. This patch was identified with a bisect and
+> a git revert of this patch from the linux-next tip resolves the problem
+> (specifically, next-20251204 with git revert bdf4e2ac295f).
 > 
+> I'm running the code as part of the kgdb test suite but the system
+> doesn't survive long enough for kgdb to be involved. In fact I was able
+> to reduce things to the following reproduction with all the kgdb pieces
+> removed:
+> 
+>     make malta_kvm_defconfig generic/64r6.config
+>     ../scripts/config \
+>         --enable WERROR --enable CPU_MIPS64_R6 --enable MIPS_CPS \
+> 	--enable BLK_DEV_INITRD --set-val FRAME_WARN 2048
+>     make olddefconfig
+>     make -j$(nproc) all
+>     qemu-system-mips64el -cpu I6400 -M malta -m 1G -smp 2 \
+>         -kernel vmlinux -nographic \
+> 	-append " console=ttyS0,115200 clk_ignore_unused"
 
-I wouldn't consider that as real platform especially if it is not std. AEM
-models that are well maintained. Many Fast models are short lived and never
-maintained long term, so I don't want to push any feature based on that alone
-unless you have a real platform with missing or broken interrupt that needs
-this polling feature.
+Many thanks for the minimal reproducer, that really helped a lot!
 
-It is burden for long term maintenance if there is no regular way to test this
-polling mode feature.
+[...]
+
+> CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff801c2398, ra == ffffffff801bab00
+> Oops[#1]:
+> CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.18.0-next-20251204 #20 NONE
+> Hardware name: mti,malta
+> $ 0   : 0000000000000000 0000000000000001 0000000000000000 0000000000000000
+> $ 4   : 0000000000000001 a8000000020e8008 0000000000000000 ffffffff80c23b80
+> $ 8   : 0000000000000004 0000000000000000 0000000000000000 000000000000002f
+> $12   : a8000000020f4000 0000000000003ff0 0000000000003000 0000000000000003
+> $16   : ffffffff80d095c0 ffffffff80ceb410 0000000000000019 ffffffff80c378c0
+> $20   : ffffffff80c4bec8 0000000000000000 ffffffff80e00000 ffffffff80de0000
+> $24   : 0000000000000000 0000000000000010
+> $28   : ffffffff80c20000 a8000000020f7ec0 a800000000e12fcd ffffffff801bab00
+> epc   : ffffffff801c2398 handle_percpu_devid_irq+0xb8/0x250
+> ra    : ffffffff801bab00 handle_irq_desc+0x48/0x88
+> Status: 1400a4e2	KX SX UX KERNEL EXL
+> Cause : 00800408 (ExcCode 02)
+> BadVA : 0000000000000000
+> PrId  : 0001a900 (MIPS I6400)
+> Modules linked in:
+> Process swapper/0 (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
+> Stack : ffffffff80c35a2c 0000000000000002 ffffffff80e00000 0fffffffffffffff
+>         ffffffff80c50000 0000000000000001 0000000000000003 ffffffff801bab00
+>         0000000000000000 ffffffff805d82a8 0000000000000000 0000000000000008
+>         0000000000000000 0000000000000000 0000000000000000 5189d95a7a4f4800
+>         a800000002014300 0000000000000002 0000000000000001 000000000000001f
+>         ffffffff80e00000 0000000000000004 0000000000000000 ffffffff801bab00
+>         0000000000000000 ffffffff809ec128 0000000000000001 fffffffffffffffb
+>         0000000000000001 ffffffff805d7ebc 0000000000000000 0000000000000000
+>         ffffffff80c23c80 ffffffff80c50000 ffffffff80de0000 ffffffff80db0000
+>         0000000000000000 ffffffff80112f10 ffffffff80c23c80 0000000000000000
+> Call Trace:
+> [<ffffffff801c2398>] handle_percpu_devid_irq+0xb8/0x250
+> [<ffffffff801bab00>] handle_irq_desc+0x48/0x88
+> [<ffffffff805d82a8>] gic_irq_dispatch+0xc0/0x288
+> [<ffffffff801bab00>] handle_irq_desc+0x48/0x88
+> [<ffffffff809ec128>] do_domain_IRQ+0x28/0x40
+> [<ffffffff805d7ebc>] plat_irq_dispatch+0x64/0xe8
+> [<ffffffff80112f10>] handle_int+0x134/0x140
+> [<ffffffff80110dc8>] calibrate_delay+0x158/0x290
+> [<ffffffff80d58e48>] start_kernel+0x754/0x7a4
+
+This hack fixes it for me, but really, mips needs to grow up and stop
+using these antiquated APIs.
+
+Can please you give it a go?
+
+Thanks,
+
+	M.
+
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 0bb29316b4362..8b1b4c8a4f54c 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -2470,6 +2470,9 @@ int setup_percpu_irq(unsigned int irq, struct irqaction *act)
+ 	if (retval < 0)
+ 		return retval;
+ 
++	if (!act->affinity)
++		act->affinity = cpu_online_mask;
++
+ 	retval = __setup_irq(irq, desc, act);
+ 
+ 	if (retval)
 
 -- 
-Regards,
-Sudeep
+Without deviation from the norm, progress is not possible.
 
