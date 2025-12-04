@@ -1,183 +1,169 @@
-Return-Path: <linux-acpi+bounces-19428-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19429-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E638BCA4322
-	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 16:16:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CADCA4918
+	for <lists+linux-acpi@lfdr.de>; Thu, 04 Dec 2025 17:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C8A63001DD2
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 15:16:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C69343005D38
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Dec 2025 16:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F4B2DBF76;
-	Thu,  4 Dec 2025 15:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5490346E56;
+	Thu,  4 Dec 2025 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Qaw0OJQ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLNIRzFU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9162DAFDE;
-	Thu,  4 Dec 2025 15:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC2A1DF970
+	for <linux-acpi@vger.kernel.org>; Thu,  4 Dec 2025 16:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764861046; cv=none; b=EUoEy67XboAOVP3Efp2ZVeVCZ+iK45+Ij6Yu7aSshEMywF6RLkA00ACj+sG6fYvoPEBT/PB8r0O27mRyFxVqbZ4YVzi+KTwShwhUjX2KXiklO5X0JAkSBzrHJZotFCNRHtRZFBtdv23EXrjYR/QNg47hanYla95IaBFjXVK3joA=
+	t=1764866507; cv=none; b=HTenSudIULzMY54uUv1yx9cR/Tw7FJUF5QFFeq0n0tZo2hR8hr51NPAY1rGPzKoj4wQJuOYOHy/hz3ePnzNV8aEPfUFe90F4ortWWWhuXExh8agk9IynYmRrxZ3JZTFXBTTaVMIZSLkE5VZStQSetbRxKtMVV35vhqEg11ji/JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764861046; c=relaxed/simple;
-	bh=bfZFmNe7jatOQTK9tozxaSEopVXRcYgccuFzKdZNPdc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VEvhgIF92iF4inzSN5kAOEk+RLY/2LPUtCFPMaBcn9vfx2SrNxUG1Q1rEPXokboD+ZIeA2CEB6uA1+aRKEasrQzVSzr47TH/aSvz+4lP6j0tBun0y1P2FCYotpgDlIzxJPB3imy7sPYl0/zhUkAfwOAK390AUz8ss62FsPPtpGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Qaw0OJQ5; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=8VtqlbU7Up61NyYtebV4S/F1DYWfcykVq5pmrMT+3rI=; t=1764861044;
-	x=1765293044; b=Qaw0OJQ53n19YCCLzUeOLd2Par3Uxc/N4WbXbm7kReG7b5EBW8AYo6An5ZqjJ
-	KoyRVBqYeiAUWizxB/Qfl4KUfQWlWyYz58MXsWv5GOE1cmyLcKvPVtszC8WZ7soVbYMbywKooKXzA
-	5WlfvXHIUUBv9WZHG0quUD+1/TdmQPXJxBBDIieaW1XCq83NwBIt8IaYNxln9/wsliuuOtfR0uzLB
-	aenQFFzqN2LdPaVGiWXArC7AnyPqKk1lmzN9D+6Km6g1ZelYuzy9XCa2yyfMjYhb+UmHBFVWAgEmi
-	ayzpu2mkNKTUwommIsF5+T2rAzxOfxKsF8UwbsyPtHYn1jeDLg==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vRAyg-009Jto-0T;
-	Thu, 04 Dec 2025 16:10:42 +0100
-Message-ID: <08000f1a-2c1e-4a0d-a5b5-fc7dcea3d8a8@leemhuis.info>
-Date: Thu, 4 Dec 2025 16:10:41 +0100
+	s=arc-20240116; t=1764866507; c=relaxed/simple;
+	bh=nv+az/vA3K1avcB/U3jaW73GjapHKyh3UYcT67zoXyg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vjk8jgHzgy54ZRCz3OH1ueoS3P/IY+0iT2gkiYisUcRQGtC1Wg7fQh7iCBMy5Eu+uC/VZKG4E3iNR8jmnauW9dHtNoApL/l32iVI+8djlMDQffhHRstjhYVUO6yrMrx8Lvj1Q/+5yNL2j4He3ZfvzCyt3nlhTjxYi8GQ4U9TSxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLNIRzFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D4C19423
+	for <linux-acpi@vger.kernel.org>; Thu,  4 Dec 2025 16:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764866507;
+	bh=nv+az/vA3K1avcB/U3jaW73GjapHKyh3UYcT67zoXyg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KLNIRzFUQaLTrLrDAhxXsb+tFIs9HfZ1TSnBbHpbXZTGpTARG1zNpOhrc1wDmXPIC
+	 4NEak0Hkx89RqkRy5D/dbqum7AMWTLfDaXnRy4NDGhdmJzpjJEmL54lEBYJ9hTbOTr
+	 KWL1Gi0J/ANiGQ4xrDc1jQ4HjPNITS9kggoxzys7MOUXgiAXjl1qKd3kZiQhUwRYkK
+	 aufLM14gpi3aERY3VBqwWhuENkT9Td992S7iN1tYVHbt+UYD9NgFlfVnz9EsJbfncS
+	 X1z8joCueD9L+wviCh5uXsYQpWQYi8jrpqXYbt/Q6TZSQlJHWmirIGYB85mGQdTI3L
+	 9eVwFaXWGWLdg==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6597b877066so689709eaf.2
+        for <linux-acpi@vger.kernel.org>; Thu, 04 Dec 2025 08:41:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWkC79yepRIPHEi5Khb630P59dydy823ltcZXKIxMWSmticERucdPkJUl5deWg8fHSEBB4ps4pN0qg4@vger.kernel.org
+X-Gm-Message-State: AOJu0YycAeWt/0g3nptnrRlepUV161dlh6VjTOqrc4MKwIIF5yTVFOHI
+	AZ/kWbm7zGnLk0BAsmbWslx5KjJ2977+P2IHjCMKm41ouNVyA4rkG8YhBhpER3WuH2tuP4uGXkD
+	0/aOfnZektmVNsVdbnIb8t2iqPmMyf0U=
+X-Google-Smtp-Source: AGHT+IExziO/wClSDkcsmF3JZY9mMkjWA/1wHGBjRI1ZYbcUBy4WdNb0huBz9eUl/2YGs0aOEhKEIbFSrrMOZRltihc=
+X-Received: by 2002:a05:6820:201a:b0:657:71ec:544f with SMTP id
+ 006d021491bc7-6597263ef8dmr2925440eaf.2.1764866506290; Thu, 04 Dec 2025
+ 08:41:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression: SYNA3602 I2C touchpad broken in Linux 6.17.7 (works
- in 6.17.6 and previous versions)
-To: Vijay <vijayg0127@gmail.com>
-Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-acpi@vger.kernel.org,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>, jikos@kernel.org
-References: <CAMBhvbYA=onQkkcgkODaTj=+tkybwo28Cdi6P3vodGpVZi8OVA@mail.gmail.com>
- <CAO-hwJJRisVpZWeSA+3_fLaa8_52f7ypUocDcD+PojuF3KjHYw@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <CAO-hwJJRisVpZWeSA+3_fLaa8_52f7ypUocDcD+PojuF3KjHYw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1764861044;d5267d98;
-X-HE-SMSGID: 1vRAyg-009Jto-0T
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com> <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+ <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
+In-Reply-To: <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 4 Dec 2025 17:41:35 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+X-Gm-Features: AWmQ_blbOxXzW56bggbVrVX6G5y3d4dEw8W79L-pw-X8HtjTcdH_Eqbe0cOm7Pg
+Message-ID: <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs interface
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Mario Limonciello <superm1@kernel.org>, 
+	Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org, 
+	kernel@collabora.com, linux-kernel@vger.kernel.org, 
+	Sebastian Reichel <sebastian.reichel@collabora.com>, Xaver Hugl <xaver.hugl@gmail.com>, 
+	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>, 
+	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>, 
+	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org, 
+	Lennart Poettering <lennart@poettering.net>, Antheas Kapenekakis <lkml@antheas.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Lo!
+On Thu, Dec 4, 2025 at 4:04=E2=80=AFPM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+>
+> On 12/3/25 17:58, Rafael J. Wysocki wrote:
+> >> Add `/sys/power/lps0_screen_off` interface to allow userspace to contr=
+ol
+> >> Display OFF/ON DSM notifications at runtime.
+> > Why?
+> >
+> >> Writing "1" to this file triggers the OFF notification, and "0" trigge=
+rs the ON notification.
+> >>
+> >> Userspace should write "1" after turning off all physical and remote
+> >> displays. It should write "0" before turning on any of displays.
+> > This sets a limitation on the correct/expected usage of this
+> > interface.  How can the kernel ensure that the limitation is taken
+> > into account?  In principle, it should not allow OFF to be triggered
+> > if any displays are "on", for example.
+> >
+> > And what exactly do you mean by "turning off a display".  Cutting
+> > power from it or something else?
+>
+> The common lowest level denominator for the "turned off display" should
+> be that all display CRTCs are disabled and there are no active remote
+> desktop sessions.
+>
+> For example, firmware of Intel laptops tracks state of a built-in
+> display internally and treats display being tuned off when either
+> display's CRTC is disabled or when backlight level is set to 0. This may
+> be not the same for AMD firmware.
+>
+> Display On/Off notification is a hint to firmware that it's allowed to
+> put machine into a lower power state where UI presented to a user may
+> become non-interactive.
 
-@AM Vijay: 6.17.y will be EOL in about ten days, so this is unlikely to
-get fixed there. The big question is:
+To be precise, that's what MSDN has to say about it:
 
-Is 6.18 affected?
+"This _DSM Function will be invoked when the operating system has
+entered a state where all displays=E2=80=94local and remote, if any=E2=80=
+=94have been
+turned off. This could occur based on some user action, e.g. a button
+press or lid close event, or expiration of some display power down
+timer."
 
-If it is, we need your help identifying want went wrong; if not, then
-it's likely not worth looking closer into this
+The "Intel Low-power S0 Idle" specification
+(https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idl=
+e.pdf)
+says almost the same thing.
 
-Ciao, Thorsten
+None of them says what kind of hint this is to the firmware and what
+the firmware is expected to do in response to it.
 
-On 11/28/25 09:05, Benjamin Tissoires wrote:
-> Hi,
-> 
-> On Fri, Nov 28, 2025 at 7:40 AM Vijay <vijayg0127@gmail.com> wrote:
->>
->> Hello,
->>
->> I would like to report a regression in the Linux kernel affecting I2C-HID
->> touchpads that run through the Intel ISH + DesignWare I2C controller.
->>
->> Hardware:
->> - Laptop: Infinix Y4 Max
->> - CPU: Intel (13th gen core i5)
->> - Touchpad: SYNA3602:00 093A:35ED (I2C HID)
->> - Bus path: SYNA3602 → i2c_designware → Intel ISH → HID
->> - OS: Linux (Arch/CachyOS)
->> - Kernel config: Default distro config
->>
->> Regression summary:
->> - Touchpad works perfectly in Linux 6.17.6 and below versions
->> - Touchpad stops working in Linux 6.17.7 and all newer versions (6.17.8, 6.17.9, etc.)
->> - Desktop environment does not matter (Hyprland/GNOME both fail)
->> - The failure happens before userspace loads
->> - Touchpad also works fine in Linux 6.12 LTS
->>
->> This is a kernel-level regression introduced between:
->>     Good: Linux 6.17.6
->>     Bad:  Linux 6.17.7
->>
->> **Dmesg logs from broken kernel (6.17.7 and newer):**
->>
->>     i2c-SYNA3602:00: can't add hid device: -110
->>     hid_sensor_hub: reading report descriptor failed
->>     intel-hid INTC1078:00: failed to enable HID power button
-> 
-> Looks like i2c-hid can't even communicate with any I2C device, so this
-> is slightly worrying.
-> 
->>
->> And the DesignWare I2C controller logs around the failure:
->>     i2c_designware 0000:00:15.0: controller timed out
->>     i2c_designware 0000:00:15.0: lost arbitration
->>     i2c_designware 0000:00:15.0: transfer aborted (status = -110)
->>
->> These errors appear only on 6.17.7+ and not on 6.17.6.
->>
->> On working versions (6.17.6 and 6.12 LTS), the touchpad initializes normally:
->>
->>     input: SYNA3602:00 093A:35ED Touchpad as /devices/.../input/inputX
->>     hid-multitouch: I2C HID v1.00 device initialized
->>     i2c_designware 0000:00:15.0: controller operating normally
->>
->> This narrow regression window should make it possible to identify the offending
->> change in either:
->> - HID core
->> - I2C-HID
->> - Intel ISH HID
->> - DesignWare I2C controller
->> - ACPI timing changes
->>
->> I can provide:
->> - Full dmesg (working and broken)
->> - acpidump
-> 
-> Are you running on a full vanilla kernel?
-> 
-> The changelog between 6.17.6 and 6.17.7 is rather small, so it should
-> be easy enough to bisect and get the offending commit.
-> 
-> I have my suspicions on:
-> f1971d5ba2ef ("genirq/manage: Add buslock back in to enable_irq()")
-> b990b4c6ea6b ("genirq/manage: Add buslock back in to __disable_irq_nosync()")
-> 3c97437239df ("genirq/chip: Add buslock back in to irq_set_handler()")
-> 
-> Because anything else is unrelated to any component involved in i2c-hid.
-> (But that's also assuming you are running vanilla kernels without any
-> extra patches.)
-> 
-> OTOH, I've booted a 6.17.8 and 6.17.7 shipped by Fedora and I don't
-> see any issues related to i2c-hid, so those 3 commits might not be the
-> culprits.
-> 
-> 
->>
->> Please let me know what additional data is needed.
-> 
-> Can you do a bisect between v6.17.7 and v6.17.6?
-> 
-> Cheers,
-> Benjamin
-> 
->>
->> Thank you,
->> Vijay.
-> 
-> 
-> 
+> In practice, entering this lower power state makes device to pretend
+> that it has been suspended. On a laptop, keyboard backlight will be
+> turned off and power button LED will start blinking. This allows us to
+> implement the "resume to a dark mode", mentioned in the cover letter.
 
+Maybe, depending on what the firmware actually does.
+
+> It's up to userspace to make decision when and what DSM notification
+> should be issued, thus the new sysfs control.
+
+Why would it be up to user space?
+
+> There is no strict requirement on having displays to be turned off when
+> Display OFF notification is issued. Machine won't blow up when display
+> is enabled and OFF notification is set. Hence, it should be unnecessary
+> for kernel to be extra cautious RE trusting userspace.
+
+That is until one of them actually blows up when that happens.
+
+As it stands, I'm totally unconvinced.
+
+I generally think that allowing user space to trigger evaluation of
+AML via sysfs is risky, pretty much regardless of what the given AML
+has been designed for.  Turning that into kernel ABI is asking for
+trouble.
+
+Now, AFAIK this particular _DSM interface has been designed to be part
+of the "modern standby" (or equivalent) flows, not to be used
+separately, so assuming that it will always work the way you think it
+will when used separately is kind of walking on thin ice IMV.
+
+And there is also a concern regarding all of the systems where this
+firmware interface is not present or not supported that will not get
+the "dark resume" experience associated with it.  If you want "dark
+resume" to be a feature of Linux, it should not depend on whether or
+not a particular firmware is there and actually works the way you
+like.
 
