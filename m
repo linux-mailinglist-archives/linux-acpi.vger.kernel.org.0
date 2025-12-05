@@ -1,110 +1,264 @@
-Return-Path: <linux-acpi+bounces-19432-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19433-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8173CA5EE3
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 03:52:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCB3CA60AB
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 04:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B18A2308A359
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 02:52:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49277319F5B5
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 03:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9702821E0AD;
-	Fri,  5 Dec 2025 02:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC23286889;
+	Fri,  5 Dec 2025 03:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YA7fgfFX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftpDCE9P"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611977E0E8;
-	Fri,  5 Dec 2025 02:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE8B7081E;
+	Fri,  5 Dec 2025 03:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764903124; cv=none; b=DXiwG7yEEHIiKnJGXxjB1KFmmT3rjiWhgPZbM/vJckuehzzTqMJ9qXzADoRdLtc4MNhZcLZfIFXFA6gyXEShgQ9qph3xNEDzYxOq97d11F95LzVX8huhp1DMwtE44iSClOrxJnXmSXAv1mwCqI4iSTUV7E6udkihJ3R1m8mIyvk=
+	t=1764906763; cv=none; b=NhGQ3Fu/zmuWZGHA0Kz/f4FQjsrH2tTZS/3H7hOo51iBBrcf8eyq0v9jMM1MJRnURRMTmx3U9Hee4Raozn7GyhsY4dU/oxOE+g1kby9lMe3ungxxZbs6ityS8afp7UK5shhGpOu6hUWCA77mL0TBe8NGOp4Kx52bZzMmILwQnYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764903124; c=relaxed/simple;
-	bh=lLEITMTn65IIvzU4WXcnpjMaNc6Wj0csyop+NZ40fdc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YH7Dt1Q2fu36zGl0/mS8UDFo49UEHrO0bV6FhI7gT4IUWhJpO1E7ROkzBLetqSIdchix2/JzkAe67xDPLg+FyOidQPAYePivBKWkN1dd3MLFuOLuUO4tdM6NRX40aJEVBCbHOjrbDPxH8ZS2IOm25kiBn65Zw+DoSC6Ao8qyp1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YA7fgfFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3292FC4CEFB;
-	Fri,  5 Dec 2025 02:52:02 +0000 (UTC)
+	s=arc-20240116; t=1764906763; c=relaxed/simple;
+	bh=uhAu0R4lnraS00WX9uVrJqv2qbPtIH5Aet9UvnWAK7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eFpYabtTNq+BjwacWcrMMm70QasUwW1vmS9KJaNZdx7HWoe/yNHoFG1/MpoLC7ht270OzVQHuEovvVKxzYA14yPl4Bs1bT+lG79iPSaYbEB3KABRZvAY3Kzotgj7wbvocJjGWc7floQHnv4PXQpzwI+j3PS5lLxla26CzAhatos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftpDCE9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7481BC4CEF1;
+	Fri,  5 Dec 2025 03:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764903123;
-	bh=lLEITMTn65IIvzU4WXcnpjMaNc6Wj0csyop+NZ40fdc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YA7fgfFX43DAPhxLuuhEClLZMWU5ySss3LjGUa5Z38n0ZDRlQ1G1u1uT5G/LOBSwx
-	 Kp9kU6A2I0Xx9YCEqO5W7Oaz0RHSZdoTmtsWLbi6NxsdXLoAJZK6ccl/19ZFtEIXbW
-	 FjJA11C8Q2yLpoFWzI6IsQGJ+qKNflA4WSXAuUWRlXg53fS6C1sl6Z8eB1iiRiq/B1
-	 UKyynIhhcK8jsxpIdIRYCCHhTDhopCgyxGhHaSmAWLXSduzNk99W2hCoEc3lLfHLJz
-	 tSk5aVHbrcjcEngvgFG6/wsQOJyO7ODBCnHWmrcmPuDjApxGAZNlBwD71U5MK4rJH4
-	 uD880Kd7iEGbw==
-Message-ID: <f983382a-821c-40f0-a41e-ba9f47ae73c5@kernel.org>
-Date: Thu, 4 Dec 2025 20:52:00 -0600
+	s=k20201202; t=1764906763;
+	bh=uhAu0R4lnraS00WX9uVrJqv2qbPtIH5Aet9UvnWAK7E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ftpDCE9PVQs9TNhOb1A3Imxm2lyIunnW7YAWCuj2YMnRLH7aGqBfymQD6pGbHDBiB
+	 2iBzXkeW7HJeFjC+sYM7LZ01Wq7MPYhzA4e90PO2WGu6pA5xdPGd800OMkqzM4hnyz
+	 SMY5Y5aFd3rLi5c13hkk3EVmOcjINNLgaOim/n6cSsKkWzEOlyQzdgyjeSIKQ/mHDP
+	 87LNy9JSRBUYulYDR+aF7qNQT+SjJCqYA702ac6y4K7Jax+5bPwgu5Phv4LOWsJW6G
+	 LKFG4i/CqoUYjy4U4Ax+a0d9duAKOzreBlT/V1v/Bm49LAJvHU/y3edTemIxdbzbtI
+	 9ievSOIl3P+dQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
+Date: Thu,  4 Dec 2025 22:52:30 -0500
+Message-ID: <20251205035239.341989-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own
- from suspend
-To: Askar Safin <safinaskar@gmail.com>, andriy.shevchenko@linux.intel.com,
- DellClientKernel <Dell.Client.Kernel@dell.com>
-Cc: bartosz.golaszewski@linaro.org, benjamin.tissoires@redhat.com,
- dmitry.torokhov@gmail.com, linux-acpi@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
- regressions@lists.linux.dev, rrangel@chromium.org, wse@tuxedocomputers.com
-References: <aRDml95nMPeknmUM@smile.fi.intel.com>
- <20251205021616.1570442-1-safinaskar@gmail.com>
-Content-Language: en-US
-From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-In-Reply-To: <20251205021616.1570442-1-safinaskar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 12/4/2025 8:16 PM, Askar Safin wrote:
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com>:
->>> Sounds like it comes via GPIO, but it's not handled as touchpad IRQ. You may
->>> try to add a quirk to prevent touchpad IRQ from waking the system. That should
->>> help I believe.
->>> Something like "ignore_wake=INTC1085:00@355" in the kernel command line.
->>> If it helps, update drivers/gpio/gpiolib-acpi-quirks.c accordingly.
->>
->> It might be actually the touchpad controller name (as I see in the quirk table):
->>
->> 	ignore_wake=VEN_0488:00@355
-> 
-> It worked!
-> 
-> First, there is no option "ignore_wake". Correct option name is "gpiolib_acpi.ignore_wake".
-> 
-> I tried "gpiolib_acpi.ignore_wake=INTC1085:00@355", and it didn't help.
-> 
-> I tried "gpiolib_acpi.ignore_wake=VEN_0488:00@355", and it did help!
-> 
-> Please, somebody (maybe Mario?) author a patch.
-> 
-> Thank you in advance.
-> 
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Random thought - is this happening specifically when the lid is closed 
-and you're applying "pressure" to cause the touchpad to click with the 
-lid closed?
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
 
-If so; it's quite possible that the touchpad attention pin is still 
-serviced when the lid is closed.
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
 
-If that's not it, I would check if you have the latest firmware for the 
-touchpad.  Unfortunately this isn't something "commonly" flashable with 
-Linux like is the case with BIOS and other components.
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Maybe @DellClientKernel could provide some guidance.
+LLM Generated explanations, may be completely bogus:
 
-But yes; failing all that it's viable to make a quirk.  You can follow 
-any of the ones I've submitted for modeling how to do it.  Here's the 
-most recent one I've done.
+## Analysis
 
-https://github.com/torvalds/linux/commit/23800ad1265f10c2bc6f42154ce4d20e59f2900e
+### 1. COMMIT MESSAGE ANALYSIS
+
+The commit message states:
+- Problem: `acpi_graph_get_next_endpoint()` calls
+  `fwnode_get_next_child_node()`, which dispatches back to ACPI code,
+  creating unnecessary indirection.
+- Solution: Call `acpi_get_next_subnode()` directly instead.
+
+No "Cc: stable@vger.kernel.org" tag, no "Fixes:" tag, no explicit bug
+report link. The message says "somewhat problematic," indicating an
+architectural issue rather than a critical bug.
+
+### 2. CODE CHANGE ANALYSIS
+
+The diff shows 4 replacements in `acpi_graph_get_next_endpoint()`:
+- Line 1475: `fwnode_get_next_child_node(fwnode, port)` →
+  `acpi_get_next_subnode(fwnode, port)`
+- Line 1493: `fwnode_get_next_child_node(port, prev)` →
+  `acpi_get_next_subnode(port, prev)`
+- Line 1495: `fwnode_get_next_child_node(fwnode, port)` →
+  `acpi_get_next_subnode(fwnode, port)`
+- Line 1499: `fwnode_get_next_child_node(port, NULL)` →
+  `acpi_get_next_subnode(port, NULL)`
+
+Call chain:
+1. `fwnode_get_next_child_node()` dispatches via `fwnode_call_ptr_op()`
+   to the fwnode-specific implementation.
+2. For ACPI fwnodes, it calls `acpi_get_next_present_subnode()`
+   (registered at line 1747).
+3. `acpi_get_next_present_subnode()` filters non-present device nodes
+   and calls `acpi_get_next_subnode()`.
+
+Why the change is safe:
+- Graph endpoints are ACPI data nodes (checked by `is_acpi_graph_node()`
+  at line 1448: `is_acpi_data_node(fwnode)`).
+- `acpi_get_next_present_subnode()` only filters non-present device
+  nodes (lines 1407-1408), not data nodes.
+- Therefore, for graph endpoints, `acpi_get_next_subnode()` and
+  `fwnode_get_next_child_node()` behave the same.
+
+### 3. CLASSIFICATION
+
+This is a bug fix addressing an architectural issue:
+- Removes unnecessary indirection in ACPI-specific code.
+- Avoids a circular dependency pattern (ACPI → generic → ACPI).
+- Functionally equivalent for graph endpoints.
+
+Not a feature addition, not a new API, not a refactor.
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- Scope: 4 lines changed in one function in one file.
+- Risk: Very low — same behavior for graph endpoints, cleaner
+  architecture.
+- Complexity: Low — direct function call replacement.
+
+### 5. USER IMPACT
+
+- Who is affected: Users of ACPI graph endpoints (e.g., camera/media
+  drivers, device tree-like ACPI usage).
+- Severity: Low — architectural improvement, not a visible bug fix.
+- Likelihood: The "somewhat problematic" wording suggests no immediate
+  user-visible issue.
+
+### 6. STABILITY INDICATORS
+
+- Reviewed-by: Laurent Pinchart, Jonathan Cameron
+- Signed-off-by: Rafael J. Wysocki (ACPI maintainer)
+- No "Tested-by:" tags
+- Commit date: October 1, 2025 (recent)
+
+### 7. DEPENDENCY CHECK
+
+- `acpi_get_next_subnode()` exists in the same file and has been present
+  for years.
+- No external dependencies introduced.
+- Should apply cleanly to stable trees that have this code.
+
+### 8. HISTORICAL CONTEXT
+
+Related commits:
+- `79389a83bc388`: Introduced `acpi_graph_get_next_endpoint()` with
+  `fwnode_get_next_child_node()` calls.
+- `48698e6cf44c3`: Introduced `acpi_get_next_present_subnode()` to
+  filter non-present devices.
+- `5d010473cdeaa` (this commit): Removes the indirection.
+
+The pattern existed since the function was introduced; this commit
+cleans it up.
+
+### 9. STABLE KERNEL CRITERIA EVALUATION
+
+- Obviously correct: Yes — direct call instead of indirection.
+- Fixes a real bug: Yes — architectural issue that could cause problems.
+- Important issue: Moderate — architectural improvement, not a critical
+  bug.
+- Small and contained: Yes — 4 lines, single function.
+- No new features: Yes — same behavior, cleaner code.
+- Applies cleanly: Yes — should apply without conflicts.
+
+### 10. RISK VS BENEFIT
+
+Benefits:
+- Removes unnecessary indirection.
+- Avoids circular dependency pattern.
+- Improves code clarity.
+- No functional change for graph endpoints.
+
+Risks:
+- Very low — functionally equivalent change.
+- No new code paths or logic changes.
+
+### 11. CONCERNS AND CONSIDERATIONS
+
+- No "Cc: stable" tag, but that alone doesn't disqualify.
+- Recent commit (Oct 2025) — hasn't been in mainline long.
+- No explicit bug report or user complaint mentioned.
+- Architectural improvement rather than a critical fix.
+
+### CONCLUSION
+
+This is a small, correct fix that removes unnecessary indirection in
+ACPI code. It fixes an architectural issue and is functionally
+equivalent for graph endpoints. It meets stable kernel criteria:
+correct, fixes a real issue, small scope, no new features, and should
+apply cleanly.
+
+However, it's an architectural improvement rather than a critical bug
+fix, and there's no explicit stable tag or user-visible bug report. The
+"somewhat problematic" wording suggests it may not cause immediate
+visible problems.
+
+Given the conservative nature of stable trees and the lack of evidence
+of user-visible impact, this is borderline but leans toward acceptable
+for stable backporting due to its correctness, small scope, and
+architectural benefit.
+
+**YES**
+
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 43d5e457814e1..76158b1399029 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1472,7 +1472,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1490,13 +1490,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
+ 
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
+ 			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
+ 	}
+ 
+ 	/*
+-- 
+2.51.0
+
 
