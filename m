@@ -1,58 +1,55 @@
-Return-Path: <linux-acpi+bounces-19434-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19435-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EB9CA60D2
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 04:53:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED8DCA60C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 04:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D47831E0C90
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 03:52:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2F7E301836A
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 03:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1567128751B;
-	Fri,  5 Dec 2025 03:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5127A28850B;
+	Fri,  5 Dec 2025 03:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGDqP6xk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UChwGJbe"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB33F287511;
-	Fri,  5 Dec 2025 03:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA31E572F;
+	Fri,  5 Dec 2025 03:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764906776; cv=none; b=TJBk3Y8HOYwBVC9QjeIstTopJ0ckckAHzg0h/R/DY9okiOmX1ipSHGCQCXVr1yY2sFSgaHZWAV/AXC3gFRl4TzHPHkxfansTu4ExQyZb7+P5ScaWx7QbaYfDSgRU9NN36QmdslwW9qZVVwXMGw0YnkuX/iIbsuu3kOEzLdwLmTw=
+	t=1764906778; cv=none; b=lE10De5OoMJC/whaFMORIvCVoh85a3geRtgKXCzCSrnVTLCjdS4mb7FPZ9ZxswM3tJfMuE/iJ6K5vo+6YeX+6LN+UUMBZWxuT8/LdRr18RVoQTmyX4k7r+2fFceTWEtqyIKm39+fLpsXHRJ4jbQlon5jz20oKLvZK5oT1PdMINw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764906776; c=relaxed/simple;
-	bh=NUISdYukTJaqN4rnMX/MjabMnKemln+4pC0/rTyxsxw=;
+	s=arc-20240116; t=1764906778; c=relaxed/simple;
+	bh=Epvpa2owJvVaP5f+at6JugZc8mEhPiJMHBO2buzfa70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MZ7FgCh7b3qWLiv0Z/ZX+FusL5ARWZWEA5lYn/CHmVcy166Xmi078eIc/mARs8Irin702lDPMhFWvRnWModCb0/pLGv0CY7OuY9iv4PpeSB7vI1bu8BgZkqcQeU6oMDPRIgkixsBvaAH6JAiY2IJQ2nNNGwr6qhtC5pYv/BD9/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGDqP6xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED980C116D0;
-	Fri,  5 Dec 2025 03:52:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nttct7XZr9rD391T066oZCyBr4D488D2ggo8BA1K/CLsFuT8C0z+wYdjZMEmewLgyt3PxR+2vbjY3LNOkqviPapFruedMHFN0l0zvSffJv4pz2a4XA9CbggAz4wGuzj9TlXTYfJO6dfvO9/pUc2Op/qgQn+saUvZmjjBq8zXFvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UChwGJbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B52C116B1;
+	Fri,  5 Dec 2025 03:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764906775;
-	bh=NUISdYukTJaqN4rnMX/MjabMnKemln+4pC0/rTyxsxw=;
+	s=k20201202; t=1764906777;
+	bh=Epvpa2owJvVaP5f+at6JugZc8mEhPiJMHBO2buzfa70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGDqP6xkl5NEovweba7tB3prQECC5bMzHytZc0QuJT3+oz87EAi4AxYKUiq8mkrRm
-	 HW4rujiGGNErH9qym3zT74+tBvPUnl0HpTVdbv0/1JMNZ3w81vEm8RItK1ZRPvfANN
-	 0j7/SqFGEGL2MktO39i64fjSv6TKe0ns0RQXi42NuxnOH9XK6iRcREpqtifP8pdRqr
-	 S6zCmGsgKmFoRz7N0ONlVAIMhAHls/Ndkhj+i3ZzVHHQCtllHF8c04Q/wCCyIKsA36
-	 FKyOewkp+ei5tUCg6+4bFIq2W9lqLE41042dJw2B0oRgbkIqdkaUCXJJXkLMDqyuiY
-	 HcZ0Uhu7Go7Uw==
+	b=UChwGJbegO3yOXgytP2j9W/R4lhUpFt003kPPyPTd0lW6K3/6M6o5S4gaIY5XTj13
+	 C4Oqm/ymm03KTM0JcqlNib9+9STbI0fjiImBBAlt0X2kd7UlHgpYXMX0iciArUUh7h
+	 ZUClGUkgey/ARqTcMO/RC6Ha21IHVqlwr/2ooDmUGgB5hVAZz3ilaUTW3L3CCO0pMJ
+	 nlxdKWItQLhxmK+3NLcaumC4vK2wYg2xxBv+04uAmh8PyppX5/Sln9y+FdDBRF8cDy
+	 9NupCsTKjEJsMahKEAKR/6Cs6fyy4L56b5IsIsuyVHknVA+vwpiAkJlaHq9dn2ONHa
+	 ROxIYHJgsVeWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	WangYuli <wangyl5933@chinaunicom.cn>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.18-5.10] ACPICA: Avoid walking the Namespace if start_node is NULL
-Date: Thu,  4 Dec 2025 22:52:35 -0500
-Message-ID: <20251205035239.341989-6-sashal@kernel.org>
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] ACPI: fan: Workaround for 64-bit firmware bug
+Date: Thu,  4 Dec 2025 22:52:36 -0500
+Message-ID: <20251205035239.341989-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251205035239.341989-1-sashal@kernel.org>
 References: <20251205035239.341989-1-sashal@kernel.org>
@@ -68,220 +65,319 @@ X-stable-base: Linux 6.18
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
+[ Upstream commit 2e00f7a4bb0ac25ec7477b55fe482da39fb4dce8 ]
 
-Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
-if it is not there") fixed the situation when both start_node and
-acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
-on Honor Magicbook 14 Pro [1].
+Some firmware implementations use the "Ones" ASL opcode to produce
+an integer with all bits set in order to indicate missing speed or
+power readings. This however only works when using 32-bit integers,
+as the ACPI spec requires a 32-bit integer (0xFFFFFFFF) to be
+returned for missing speed/power readings. With 64-bit integers the
+"Ones" opcode produces a 64-bit integer with all bits set, violating
+the ACPI spec regarding the placeholder value for missing readings.
 
-That happens due to the access to the member of parent_node in
-acpi_ns_get_next_node().  The NULL pointer dereference will always
-happen, no matter whether or not the start_node is equal to
-ACPI_ROOT_OBJECT, so move the check of start_node being NULL
-out of the if block.
+Work around such buggy firmware implementation by also checking for
+64-bit integers with all bits set when reading _FST.
 
-Unfortunately, all the attempts to contact Honor have failed, they
-refused to provide any technical support for Linux.
-
-The bad DSDT table's dump could be found on GitHub [2].
-
-DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
-
-Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
-Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
-Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
-[ rjw: Subject adjustment, changelog edits ]
-Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+[ rjw: Typo fix in the changelog ]
+Link: https://patch.msgid.link/20251007234149.2769-3-W_Armin@gmx.de
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Comprehensive Analysis
+## Analysis: ACPI fan 64-bit firmware bug workaround
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Subject**: "ACPICA: Avoid walking the Namespace if start_node is NULL"
+**Subject:** `ACPI: fan: Workaround for 64-bit firmware bug`
 
-The commit message clearly indicates:
-- This is a fix to a prior fix (commit 0c9992315e73)
-- It addresses a real crash on Honor Magicbook 14 Pro hardware
-- The bug is a NULL pointer dereference in `acpi_ns_get_next_node()`
-- Link to ACPICA upstream commit
-  (1c1b57b9eba4554cb132ee658dd942c0210ed20d) - this is coordinated with
-  the ACPICA project
-- Signed off by Rafael J. Wysocki (ACPI maintainer) with "Reviewed-by"
-  tag
-
-**Missing tags**: No explicit `Cc: stable@vger.kernel.org` or `Fixes:`
-tag, but this is clearly a fix to a stable-tree-relevant commit.
+**Key points:**
+- Addresses firmware returning 64-bit all-bits-set (0xFFFFFFFFFFFFFFFF)
+  instead of the spec-compliant 32-bit placeholder (0xFFFFFFFF) for
+  missing readings
+- No `Cc: stable@vger.kernel.org` tag
+- No `Fixes:` tag
+- Signed by Rafael J. Wysocki (ACPI maintainer)
+- Commit date: October 8, 2025
 
 ### 2. CODE CHANGE ANALYSIS
 
-**The bug mechanism**:
+**Files modified:** 2 files, ~40 lines added, 7 lines removed
 
-Looking at `acpi_ns_get_next_node()` (lines 34-46 of nswalk.c):
+**Changes:**
 
-```c
-if (!child_node) {
-    /* It's really the parent's _scope_ that we want */
-    return (parent_node->child);  // <-- CRASH if parent_node is NULL
-}
-```
+1. **`drivers/acpi/fan.h`:**
+   - Adds `#include <linux/limits.h>`
+   - Adds `acpi_fan_speed_valid()` and `acpi_fan_power_valid()` inline
+     helpers
+   - Both check `value < U32_MAX` (catches both 0xFFFFFFFF and
+     0xFFFFFFFFFFFFFFFF)
 
-The original fix (0c9992315e73) added this check **inside** the
-ACPI_ROOT_OBJECT branch:
-```c
-if (start_node == ACPI_ROOT_OBJECT) {
-    start_node = acpi_gbl_root_node;
-    if (!start_node) {  // Only catches: ACPI_ROOT_OBJECT +
-gbl_root_node==NULL
-        return_ACPI_STATUS(AE_NO_NAMESPACE);
-    }
-}
-```
+2. **`drivers/acpi/fan_hwmon.c`:**
+   - Removes `FAN_SPEED_UNAVAILABLE` and `FAN_POWER_UNAVAILABLE` macros
+   - Replaces equality checks (`== FAN_SPEED_UNAVAILABLE`) with
+     validation calls (`!acpi_fan_speed_valid()`)
+   - Updates 3 locations: `is_visible()` power check, `hwmon_read()`
+     speed check, `hwmon_read()` power check
 
-**The problem**: If `start_node` is passed as NULL directly (not via
-ACPI_ROOT_OBJECT), the check is never executed:
-- `start_node` remains NULL
-- `parent_node = start_node;` makes `parent_node` = NULL
-- `acpi_ns_get_next_node(parent_node, NULL)` dereferences
-  `parent_node->child` → **KERNEL PANIC**
+**Technical mechanism:**
+- ACPI spec requires 0xFFFFFFFF (32-bit) for missing readings
+- Some firmware uses "Ones" ASL opcode with 64-bit integers, producing
+  0xFFFFFFFFFFFFFFFF
+- Current code only checks for 0xFFFFFFFF, so the 64-bit value is
+  treated as valid
+- Impact: incorrect readings (e.g., 18446744073709551615) reported via
+  hwmon
 
-**The fix** (this commit): Move the NULL check outside the if block:
-```c
-if (start_node == ACPI_ROOT_OBJECT) {
-    start_node = acpi_gbl_root_node;
-}
-
-/* Avoid walking the namespace if the StartNode is NULL */
-if (!start_node) {  // Now catches ALL NULL cases
-    return_ACPI_STATUS(AE_NO_NAMESPACE);
-}
-```
+**Why the fix works:**
+- `speed < U32_MAX` correctly rejects both 0xFFFFFFFF and
+  0xFFFFFFFFFFFFFFFF
+- Returns `-ENODEV` (not available) instead of `-EOVERFLOW` for missing
+  readings
+- Centralizes validation logic
 
 ### 3. CLASSIFICATION
 
-- **Type**: Bug fix (NULL pointer dereference crash)
-- **Not an exception category**: This is a pure crash fix, not a device
-  ID, quirk, or DT update
-- **Severity**: Kernel panic/crash - HIGH severity for affected hardware
+**Type:** Bug fix (firmware workaround)
+
+**Exception category:** Hardware/firmware quirk/workaround — allowed in
+stable per stable-kernel-rules
+
+**Not a new feature:** Only improves validation; no new APIs or behavior
+changes
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-**Lines changed**: 8 (minimal)
-**Files touched**: 1 (`drivers/acpi/acpica/nswalk.c`)
-**Complexity**: Trivial - literally moving 3 lines of code outside an if
-block
+**Scope:**
+- Small, localized change
+- Only affects hwmon interface validation
+- No architectural changes
 
-**Risk**: VERY LOW
-- The change only affects the code path when `start_node` is NULL
-- For non-NULL `start_node`, behavior is identical
-- The fix is obviously correct - you must catch all NULL cases
-- The fix was also merged upstream to ACPICA project
+**Risk:**
+- Very low
+- Defensive validation that doesn't change behavior for correct firmware
+- Simple bounds check (`< U32_MAX`)
+- No new code paths or complex logic
+
+**Potential concerns:**
+- `fan_attr.c` still prints `fst.speed` directly without validation
+  (different code path, not addressed here)
+- Overflow check (`fst.speed > LONG_MAX`) would catch it but returns the
+  wrong error code
 
 ### 5. USER IMPACT
 
-**Who is affected**:
-- Users with Honor Magicbook 14 Pro (FMB-P series)
-- Potentially other devices with similar DSDT issues
+**Who is affected:**
+- Users with buggy ACPI firmware returning 64-bit placeholder values
+- Users relying on hwmon for fan monitoring
 
-**Impact severity**:
-- Complete system crash (kernel panic) during boot
-- System is completely unusable without this fix
+**Severity:**
+- Medium — causes incorrect readings, not crashes
+- Monitoring tools may show invalid values
+- User confusion from huge numbers
 
-**Evidence**: Real crash report linked in commit with DMI string: "HONOR
-FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025"
+**Real-world impact:**
+- Fixes a real firmware bug
+- Improves error semantics (ENODEV vs EOVERFLOW)
 
 ### 6. STABILITY INDICATORS
 
-**Positive signals**:
-- Reviewed-by tag present
-- Signed off by Rafael J. Wysocki (ACPI maintainer - highly trusted)
-- Merged to ACPICA upstream (external validation)
-- Very simple, obvious logic fix
+**Testing:**
+- No explicit `Tested-by:` or `Reviewed-by:` tags
+- Signed by ACPI maintainer (Rafael J. Wysocki)
 
-**Concerns**:
-- Very recent commit (Nov 25, 2025)
-- No explicit Cc: stable tag
+**Age:**
+- Commit is recent (October 2025)
+- No indication of long-term testing in mainline
 
 ### 7. DEPENDENCY CHECK
 
-**Dependencies**:
-- Requires commit 0c9992315e73 to be present (it added the original NULL
-  check that this fix improves)
-- Commit 0c9992315e73 is already in stable trees (v5.18+, backported to
-  many LTS trees)
+**Critical dependency:**
+- Requires hwmon support (`drivers/acpi/fan_hwmon.c`)
+- Hwmon support added in commit `35c50d853adc0` (May 2024, "ACPI: fan:
+  Add hwmon support")
 
-The code change is self-contained - no other changes required.
+**Backport implications:**
+- Only applies to stable trees that have hwmon support
+- For trees without hwmon, this commit doesn't apply (no functional
+  impact)
+- If hwmon exists, the fix applies cleanly
 
-### 8. HISTORICAL CONTEXT
+**Other dependencies:**
+- `linux/limits.h` (U32_MAX) — standard header, available in all stable
+  trees
+- No other code dependencies
 
-The original commit 0c9992315e73 was introduced in March 2022 and was
-backported to all stable trees. This new fix addresses a gap in that
-original fix. The fact that the original fix was deemed stable-worthy
-means this completion of that fix should also be stable material.
+### 8. STABLE KERNEL RULES COMPLIANCE
 
----
+**Meets criteria:**
+1. Obviously correct — simple bounds check
+2. Fixes a real bug — incorrect readings from buggy firmware
+3. Important issue — affects monitoring accuracy
+4. Small and contained — ~40 lines, 2 files
+5. No new features — only validation improvement
+6. Applies cleanly — straightforward change
 
-## Final Assessment
+**Exception applies:**
+- Hardware/firmware workaround — explicitly allowed
 
-**Should this be backported?** YES
+**Missing signals:**
+- No `Cc: stable@vger.kernel.org` tag
+- No `Fixes:` tag
+- No bug report link in commit message
 
-**Rationale**:
-1. **Fixes a real crash**: NULL pointer dereference causing kernel panic
-   on real hardware
-2. **Minimal, surgical change**: Only 8 lines changed, moving code
-   outside an if block
-3. **Obviously correct**: The logic is trivial - catch ALL NULL cases,
-   not just one path
-4. **Completes a prior stable fix**: The original fix (0c9992315e73) is
-   already in stable trees; this completes it
-5. **Low risk**: Only affects NULL case; no behavioral change for
-   working systems
-6. **Externally validated**: Merged to ACPICA upstream project
-7. **Trusted maintainer**: Signed off by Rafael J. Wysocki
+### 9. RISK VS BENEFIT TRADE-OFF
 
-**Backport considerations**:
-- Should apply cleanly to all kernels that have commit 0c9992315e73
-- May have minor copyright year conflicts (trivial to resolve)
-- No functional dependencies beyond the original fix
+**Benefits:**
+- Fixes incorrect readings from buggy firmware
+- Improves error semantics
+- Low risk, defensive change
+- Better compatibility with non-compliant firmware
 
-The lack of explicit `Cc: stable` tag is likely an oversight. The commit
-is clearly stable material as it fixes a crash that makes hardware
-completely unusable.
+**Risks:**
+- Very low — simple validation logic
+- No behavior change for correct firmware
+- No new code paths
+
+**Verdict:** Benefits outweigh risks
+
+### 10. ADDITIONAL CONSIDERATIONS
+
+**Incomplete fix:**
+- `fan_attr.c:show_fan_speed()` still prints `fst.speed` without
+  validation
+- This commit only fixes hwmon, not sysfs attributes
+- Not a blocker for backport, but a limitation
+
+**Error code improvement:**
+- Current code would return `-EOVERFLOW` for 0xFFFFFFFFFFFFFFFF
+- Fix returns `-ENODEV` (more accurate)
+
+**Firmware compatibility:**
+- Works with both spec-compliant and buggy firmware
+- No regressions expected
+
+### FINAL ASSESSMENT
+
+**Should this be backported to stable?** YES
+
+**Reasoning:**
+1. Fixes a real bug affecting users with buggy firmware
+2. Small, contained, low-risk change
+3. Qualifies as a firmware workaround (allowed exception)
+4. Improves error handling semantics
+5. No new features or APIs
+6. Applies cleanly to trees with hwmon support
+
+**Recommendations:**
+- Backport to stable trees that include hwmon support (likely 6.6.y and
+  newer)
+- For older trees without hwmon, not applicable (no functional impact)
+- Consider fixing `fan_attr.c` in a follow-up commit
 
 **YES**
 
- drivers/acpi/acpica/nswalk.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/acpi/fan.h       | 33 +++++++++++++++++++++++++++++++++
+ drivers/acpi/fan_hwmon.c | 10 +++-------
+ 2 files changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
-index a2ac06a26e921..5670ff5a43cd4 100644
---- a/drivers/acpi/acpica/nswalk.c
-+++ b/drivers/acpi/acpica/nswalk.c
-@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index bedbab0e8e4e9..0d73433c38892 100644
+--- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -11,6 +11,7 @@
+ #define _ACPI_FAN_H_
  
- 	if (start_node == ACPI_ROOT_OBJECT) {
- 		start_node = acpi_gbl_root_node;
--		if (!start_node) {
--			return_ACPI_STATUS(AE_NO_NAMESPACE);
--		}
-+	}
-+
-+	/* Avoid walking the namespace if the StartNode is NULL */
-+
-+	if (!start_node) {
-+		return_ACPI_STATUS(AE_NO_NAMESPACE);
- 	}
+ #include <linux/kconfig.h>
++#include <linux/limits.h>
  
- 	/* Null child means "get first node" */
+ #define ACPI_FAN_DEVICE_IDS	\
+ 	{"INT3404", }, /* Fan */ \
+@@ -60,6 +61,38 @@ struct acpi_fan {
+ 	struct device_attribute fine_grain_control;
+ };
+ 
++/**
++ * acpi_fan_speed_valid - Check if fan speed value is valid
++ * @speeed: Speed value returned by the ACPI firmware
++ *
++ * Check if the fan speed value returned by the ACPI firmware is valid. This function is
++ * necessary as ACPI firmware implementations can return 0xFFFFFFFF to signal that the
++ * ACPI fan does not support speed reporting. Additionally, some buggy ACPI firmware
++ * implementations return a value larger than the 32-bit integer value defined by
++ * the ACPI specification when using placeholder values. Such invalid values are also
++ * detected by this function.
++ *
++ * Returns: True if the fan speed value is valid, false otherwise.
++ */
++static inline bool acpi_fan_speed_valid(u64 speed)
++{
++	return speed < U32_MAX;
++}
++
++/**
++ * acpi_fan_power_valid - Check if fan power value is valid
++ * @power: Power value returned by the ACPI firmware
++ *
++ * Check if the fan power value returned by the ACPI firmware is valid.
++ * See acpi_fan_speed_valid() for details.
++ *
++ * Returns: True if the fan power value is valid, false otherwise.
++ */
++static inline bool acpi_fan_power_valid(u64 power)
++{
++	return power < U32_MAX;
++}
++
+ int acpi_fan_get_fst(acpi_handle handle, struct acpi_fan_fst *fst);
+ int acpi_fan_create_attributes(struct acpi_device *device);
+ void acpi_fan_delete_attributes(struct acpi_device *device);
+diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+index 4b2c2007f2d7f..47a02ef5a6067 100644
+--- a/drivers/acpi/fan_hwmon.c
++++ b/drivers/acpi/fan_hwmon.c
+@@ -15,10 +15,6 @@
+ 
+ #include "fan.h"
+ 
+-/* Returned when the ACPI fan does not support speed reporting */
+-#define FAN_SPEED_UNAVAILABLE	U32_MAX
+-#define FAN_POWER_UNAVAILABLE	U32_MAX
+-
+ static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan, u64 control)
+ {
+ 	unsigned int i;
+@@ -77,7 +73,7 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
+ 			 * when the associated attribute should not be created.
+ 			 */
+ 			for (i = 0; i < fan->fps_count; i++) {
+-				if (fan->fps[i].power != FAN_POWER_UNAVAILABLE)
++				if (acpi_fan_power_valid(fan->fps[i].power))
+ 					return 0444;
+ 			}
+ 
+@@ -106,7 +102,7 @@ static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_fan:
+ 		switch (attr) {
+ 		case hwmon_fan_input:
+-			if (fst.speed == FAN_SPEED_UNAVAILABLE)
++			if (!acpi_fan_speed_valid(fst.speed))
+ 				return -ENODEV;
+ 
+ 			if (fst.speed > LONG_MAX)
+@@ -134,7 +130,7 @@ static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 			if (!fps)
+ 				return -EIO;
+ 
+-			if (fps->power == FAN_POWER_UNAVAILABLE)
++			if (!acpi_fan_power_valid(fps->power))
+ 				return -ENODEV;
+ 
+ 			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
 -- 
 2.51.0
 
