@@ -1,339 +1,290 @@
-Return-Path: <linux-acpi+bounces-19459-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19460-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41434CA9487
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 21:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6ABDCA96E4
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 22:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5559306BD5F
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 20:40:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDF633080AD1
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 21:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198B72C2365;
-	Fri,  5 Dec 2025 20:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60A32848BB;
+	Fri,  5 Dec 2025 21:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nN4h9oNo"
+	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="CAkob2Ot"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from relay10.grserver.gr (relay10.grserver.gr [37.27.248.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18B529BD82;
-	Fri,  5 Dec 2025 20:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE559277819
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 21:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.27.248.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764967224; cv=none; b=Gcn51a7I7Zxy0qH5ntGbss3uY5wKXAFf0WyblGpSslSxAUULFoxjKHKnvb0SB3ufNr88tOdINe0gMoodD+vctw3sWIF/pKQlZEF6imJ5/viTEAJmQV+muM1GlGksKDrck/nyP9RLjZ8TGU1Ho4BKBSc1c+ASNkcjjVtYwIPZLuE=
+	t=1764971565; cv=none; b=iJOyD0+TAgb81ZcQynIj8JqZXWQu2kLWSHPwwNUNYKKcnluA3nZd1qLXu9yovaCcRDFILtoDjXgyD+vgj9ipzh2zsXOCi3Bpnb9OvZX1kjeUegQtEj5VXq4GhVrwks0/ScXpMi1amSA2dmWtOVHHXE+ww92haFsDpIz+FDp3cyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764967224; c=relaxed/simple;
-	bh=uqtzVnHsKXAZKN8K0hdC/i1EofQ0GMrs7OzSRuVDpdw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Z8bn8sMK4TEDcU2iE4QtGdhN4yO4o0ttJ2QpSFsVq2TsmKTT4MAUmknEe+0fB/K4t36R91HD4k1PUGSlWxJnlz6EX68AvtDelLxLRNEQZnyFtOM6LVnVO/C793dG0aTeEGxIGX/CPIgQ5j9ji+f3Dr9cVlyxh7Gcp2A+SLJmBBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nN4h9oNo; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764967222; x=1796503222;
-  h=date:from:to:cc:subject:message-id;
-  bh=uqtzVnHsKXAZKN8K0hdC/i1EofQ0GMrs7OzSRuVDpdw=;
-  b=nN4h9oNol1Dz9c55aCql2bLwwkt63R5bvn+NeIFKtDCGA2So4+Cx/sGs
-   Zl4PbCKJACwC/V1E+3qaE/AKdGq03Bq0b28wp2v6V8w4IjuuWXlKgbGay
-   Crmn2RN8JMRttduvzFdQLO5mP2iw4aCmuTdMB63WPo07aT+MFgJGiTXoJ
-   dp5QdxgESdryrzPmGI28rBQ7KY5HFn4KXyjgWKp89Kiau32qF3S1Uiti2
-   /Eft+YM93TEnnxpiAc6SwR4kpu31qsY64YaQOFYm7b1Z1nrX71/EVkmOE
-   66MzRd9ViragNrTSABOYP6vr1pjgYa2y1tF4WUkEWNLSlThR2L8AnrWXp
-   Q==;
-X-CSE-ConnectionGUID: 9a9Fg6FuSquC4pZw0GUOUw==
-X-CSE-MsgGUID: a56VfMakTeu48X5pp4b7Gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="69599696"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="69599696"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 12:40:21 -0800
-X-CSE-ConnectionGUID: rwXa3dlJT/qJq5s+o6EXjg==
-X-CSE-MsgGUID: g3Dtv/QuTbKSYD3zOzBosg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="195195473"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 05 Dec 2025 12:40:19 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vRcbB-00000000FWd-1240;
-	Fri, 05 Dec 2025 20:40:17 +0000
-Date: Sat, 06 Dec 2025 04:39:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- e37cfe5601cb7a8ff0d0daa822981a9ff3fe94de
-Message-ID: <202512060427.m4z8854A-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1764971565; c=relaxed/simple;
+	bh=Gy8kXlMlJaAj9c2W6E2mo4ewEICl0PI32BqdFbVHrPg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nWSMuFwaQxQ9t94+Lcc6in265DAPfpNZNrwdKRU3wkVtLfrCE8+xa6Gj3wV2OIulb5EX3smxl4ZckrLuKeLDke30iv/HZ8Jat2Qr6+mBj6NYQwo8InDQbDY1UiPHz8sxUIuGF09K2lTpIbuLxejf31D9HFMW4xIJPzuSd6mUhJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=CAkob2Ot; arc=none smtp.client-ip=37.27.248.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from relay10 (localhost.localdomain [127.0.0.1])
+	by relay10.grserver.gr (Proxmox) with ESMTP id 9FA8941D10
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:34 +0200 (EET)
+Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by relay10.grserver.gr (Proxmox) with ESMTPS id 9A5B541D24
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:33 +0200 (EET)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by linux3247.grserver.gr (Postfix) with ESMTPSA id 7CC801FFF00
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:32 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1764971552;
+	bh=3UAowdJhz6D1DELEqX2ykhk5IO1dnEu9/WfYQBTzn3Q=;
+	h=Received:From:Subject:To;
+	b=CAkob2OtfN8vIklGhHpmvnd9K69qe9aTV1REo5wwZtXvRGkANNzRfax2IKbXM60ev
+	 aLgfjg0fgNihwMFPQZuMwQDIaUj8Ijrl5SoG0ah9wDfsESJOYZoxaS8mgcD0fY8XB4
+	 QTNiI8IGEzIwxIfB0TELBm0nIw84JMTk1bIIt3QOc4prrgctQ/WnTvhC9d3PBXDXf0
+	 1TGsT3AjdjCC+Zr86eV/Uael9qsDiW/OHAUz91wltQYp5wtrdCMx6xvJW+jHmuF+Jc
+	 gptukSVZAVr3HvkfN92UUZ0i+VWNKUBAFWXslu+II/1tWm6W4o6a5KLer81tSItj9q
+	 3GPMr5hsdTdYw==
+Authentication-Results: linux3247.grserver.gr;
+        spf=pass (sender IP is 209.85.208.172) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f172.google.com
+Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-37bac34346dso18066301fa.2
+        for <linux-acpi@vger.kernel.org>;
+ Fri, 05 Dec 2025 13:52:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVFe2puHF5zihCn8ApWBjaxCJZrUflJXQhXGeXyYjdKiZv6871olRGi6r8rCqoselrOXauOWFPYwFmy@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEis9u+o6Qu4AqRrRQOgYw3GimRK1v5O2r0g/AthPtQeDVX2Ym
+	1KKv0Ipu2SSxAvdqxreNfkCI96037LZPlk3PhI900Z8uX2uSqPFp4tiUy0A+6GsjHoxIWUm2Pf2
+	bH/3PAXMNppNX8JNetTXKd/JbcNWohDY=
+X-Google-Smtp-Source: 
+ AGHT+IGv+mOn61SuwyDf63TJcNGa2/QoVmGvyUOAnKBMsJNjfBnA0HksUK2DWtEpBRxNypZLRJdFpdQJsmNdMAGVY/c=
+X-Received: by 2002:a05:651c:2223:b0:36b:3a21:9c04 with SMTP id
+ 38308e7fff4ca-37ed83c38d1mr1789651fa.36.1764971551966; Fri, 05 Dec 2025
+ 13:52:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
+ <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+ <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
+ <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+ <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
+ <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
+ <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
+ <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
+ <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
+ <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
+ <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
+ <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
+In-Reply-To: 
+ <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Fri, 5 Dec 2025 22:52:21 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
+X-Gm-Features: AQt7F2r-5RHO_GkdaD6U2JOuJlALmfz1LAKY1-obKC5J9hba48yhViZDyK2YIdw
+Message-ID: 
+ <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
+ interface
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mario Limonciello <superm1@kernel.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
+	kernel@collabora.com, linux-kernel@vger.kernel.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>,
+	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>,
+	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>,
+	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org,
+	Lennart Poettering <lennart@poettering.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-PPP-Message-ID: 
+ <176497155274.112359.16671564883728146892@linux3247.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
+X-Virus-Status: Clean
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: e37cfe5601cb7a8ff0d0daa822981a9ff3fe94de  Merge branch 'pm-runtime' into fixes
+On Fri, 5 Dec 2025 at 21:06, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Fri, Dec 5, 2025 at 8:42=E2=80=AFPM Mario Limonciello <superm1@kernel.=
+org> wrote:
+> >
+> > On 12/5/25 1:37 PM, Rafael J. Wysocki wrote:
+> > > On Fri, Dec 5, 2025 at 7:07=E2=80=AFPM Mario Limonciello <superm1@ker=
+nel.org> wrote:
+> > >>
+> > >> On 12/5/25 11:22 AM, Rafael J. Wysocki wrote:
+> > >>> On Fri, Dec 5, 2025 at 5:47=E2=80=AFPM Mario Limonciello (AMD) (ker=
+nel.org)
+> > >>> <superm1@kernel.org> wrote:
+> > >>>>
+> > >>>>> I would start with the graphics stacks and teach them to
+> > >>>>> runtime-suspend the HW when the displays go off.  No firmware
+> > >>>>> notifications are needed for this to work.
+> > >>>>
+> > >>>> Well the problem with this is there is a sizable latency to runtim=
+e
+> > >>>> suspend hardware when displays go off.  For example you would need=
+ to
+> > >>>> redo link training when you spin the hardware back up.
+> > >>>>
+> > >>>> What we do today (AMD *dGPU* centric) is runtime suspend the hardw=
+are
+> > >>>> when no displays are connected and nothing else is using the GPU (=
+for
+> > >>>> offload purposes).
+> > >>>
+> > >>> The latency problem can be addressed by using autosuspend instead o=
+f
+> > >>> synchronous suspend.  Just set the autosuspend timer when displays =
+go
+> > >>> off.
+> > >>
+> > >> Sorry I probably confused the problem by saying latency to suspend t=
+he
+> > >> hardware.  That doesn't matter.  It's a problem of latency when they
+> > >> *come back up*.  Let me give a hypothetical that will demonstrate.
+> > >>
+> > >> Let's say I have the following:
+> > >> * Desktop with a dGPU connected to it.
+> > >> * My DE has a setting for compositor to blank the monitor after 5 mi=
+nutes.
+> > >> * My DE has a setting to starting system suspend after 10 minutes.
+> > >> * You set up auto-suspend on the dGPU for 15 seconds.
+> > >> * No non-display work running.
+> > >>
+> > >> You walk away for 6 minutes.  The dGPU will have entered runtime PM =
+from
+> > >> the auto-suspend.  You come back to the machine and you wiggle the
+> > >> mouse.  Because the dGPU was auto-suspended you gotta wait for it to
+> > >> spin back up, you have to wait for link training again etc.
+> > >
+> > > Yes.
+> > >
+> > >> This is pretty much the same that would have happened if you walked =
+away
+> > >> for 10 minutes now!  Your "5 minute blank monitor" turned into "5 mi=
+nute
+> > >> turn off dGPU".
+> > >
+> > > Well, the wakeup latency is the cost of saving energy.
+> > >
+> > >>>
+> > >>>> On AMD APU we don't use runtime suspend.  If you ignore the latenc=
+y I
+> > >>>> could see an argument for proxying the status of displays to indic=
+ate
+> > >>>> runtime suspended, but I don't know what it really buys you.
+> > >>>
+> > >>> Well, the lack of runtime PM is a problem and I don't see how it ca=
+n
+> > >>> be overcome easily.
+> > >>>
+> > >>> The main issue is that when the system is resuming and there is no
+> > >>> runtime PM support, the device in question must be powered up durin=
+g
+> > >>> the system resume flow.
+> > >>
+> > >> I don't think this is actually a problem.  The reason is in my below
+> > >> comment.
+> > >>
+> > >>>
+> > >>>>> Then, I would teach
+> > >>>>> graphics drivers to leave the devices in runtime-suspend if they =
+are
+> > >>>>> runtime-suspended when system suspend starts and to leave them in
+> > >>>>> runtime-suspend throughout the system suspend and resume, so they=
+ are
+> > >>>>> still runtime-suspended whey system resume is complete.  I'm not =
+sure
+> > >>>>> how far away graphics stacks are from this, but at least some of =
+them
+> > >>>>> support runtime PM, so maybe the fruits don't hang very high.  Wi=
+th
+> > >>>>> that, you'd just need a way to trigger a system suspend after a p=
+eriod
+> > >>>>> of inactivity when the displays are off and you have your "dark m=
+ode".
+> > >>>>
+> > >>>> I think even without kernel changes this can be accomplished today=
+ with
+> > >>>> userspace.
+> > >>>>
+> > >>>> There will be change events when the displays are turned off and y=
+ou can
+> > >>>> listen to and set a timer to enter system suspend based upon how l=
+ong
+> > >>>> they are off.
+> > >>>
+> > >>> True, but that's just about suspending.  To avoid powering up devic=
+es
+> > >>> on the way back from system suspend, runtime PM support and
+> > >>> integration of it with system suspend-resume is necessary.
+> > >>
+> > >> Yes and no.  For most device types I would agree; but the compositor
+> > >> controls DPMS on each CRTC which impacts whether anything is display=
+ed.
+> > >>
+> > >> If the compositor chooses to turn off the displays the GPU hardware =
+will
+> > >> remain active but display IP will be off or in a low power state.  T=
+his
+> > >> will still have significant power savings by the displays being off.
+> > >
+> > > OK, so you basically want the GPU to avoid turning displays on during
+> > > resume from system suspend if they were off before the suspend
+> > > transition has started.
 
-elapsed time: 1451m
+This is already the case for AMD. For Intel, it's more complicated...
 
-configs tested: 248
-configs skipped: 0
+But it is true that it should be handled kernel side. I also think
+that it was fixed for hibernation, again for AMD, already.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> > > This still needs to be handled by the GPU
+> > > driver in the kernel IIUC.
+> >
+> > Yes.  To be clear (in case you didn't see from my comments in this
+> > thread) I'm not a fan of this being a userspace interface to the LPS0
+> > screen off.
+>
+> So we agree here, good.
+>
+> > I feel if this state is to exist in the Linux state machine this should
+> > be DRM core entering it when displays are off.
+>
+> Something like that.
+>
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              alldefconfig    gcc-15.1.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    clang-22
-arc                                 defconfig    gcc-15.1.0
-arc                        nsim_700_defconfig    clang-17
-arc                   randconfig-001-20251205    gcc-13.4.0
-arc                   randconfig-001-20251206    clang-16
-arc                   randconfig-002-20251205    gcc-13.4.0
-arc                   randconfig-002-20251206    clang-16
-arm                               allnoconfig    gcc-15.1.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.1.0
-arm                        clps711x_defconfig    gcc-15.1.0
-arm                                 defconfig    gcc-15.1.0
-arm                         lpc32xx_defconfig    clang-17
-arm                   randconfig-001-20251205    gcc-13.4.0
-arm                   randconfig-001-20251206    clang-16
-arm                   randconfig-002-20251205    gcc-13.4.0
-arm                   randconfig-002-20251206    clang-16
-arm                   randconfig-003-20251205    gcc-13.4.0
-arm                   randconfig-003-20251206    clang-16
-arm                   randconfig-004-20251205    gcc-13.4.0
-arm                   randconfig-004-20251206    clang-16
-arm                             rpc_defconfig    gcc-15.1.0
-arm                        spear3xx_defconfig    gcc-15.1.0
-arm                         vf610m4_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-22
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20251205    clang-22
-arm64                 randconfig-001-20251206    clang-22
-arm64                 randconfig-002-20251205    clang-22
-arm64                 randconfig-002-20251206    clang-22
-arm64                 randconfig-003-20251205    clang-22
-arm64                 randconfig-003-20251206    clang-22
-arm64                 randconfig-004-20251205    clang-22
-arm64                 randconfig-004-20251206    clang-22
-csky                             allmodconfig    gcc-15.1.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20251205    clang-22
-csky                  randconfig-001-20251206    clang-22
-csky                  randconfig-002-20251205    clang-22
-csky                  randconfig-002-20251206    clang-22
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.1.0
-hexagon                           allnoconfig    gcc-15.1.0
-hexagon                             defconfig    gcc-15.1.0
-hexagon               randconfig-001-20251205    clang-22
-hexagon               randconfig-001-20251206    gcc-15.1.0
-hexagon               randconfig-002-20251205    clang-22
-hexagon               randconfig-002-20251206    gcc-15.1.0
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-15.1.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20251205    gcc-14
-i386        buildonly-randconfig-002-20251205    gcc-14
-i386        buildonly-randconfig-003-20251205    gcc-14
-i386        buildonly-randconfig-004-20251205    gcc-14
-i386        buildonly-randconfig-005-20251205    gcc-14
-i386        buildonly-randconfig-006-20251205    gcc-14
-i386                                defconfig    gcc-15.1.0
-i386                  randconfig-001-20251205    clang-20
-i386                  randconfig-002-20251205    clang-20
-i386                  randconfig-003-20251205    clang-20
-i386                  randconfig-004-20251205    clang-20
-i386                  randconfig-005-20251205    clang-20
-i386                  randconfig-006-20251205    clang-20
-i386                  randconfig-007-20251205    clang-20
-i386                  randconfig-011-20251205    clang-20
-i386                  randconfig-012-20251205    clang-20
-i386                  randconfig-013-20251205    clang-20
-i386                  randconfig-014-20251205    clang-20
-i386                  randconfig-015-20251205    clang-20
-i386                  randconfig-016-20251205    clang-20
-i386                  randconfig-017-20251205    clang-20
-loongarch                        allmodconfig    clang-22
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251205    clang-22
-loongarch             randconfig-001-20251206    gcc-15.1.0
-loongarch             randconfig-002-20251205    clang-22
-loongarch             randconfig-002-20251206    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                             allyesconfig    gcc-15.1.0
-mips                        bcm63xx_defconfig    clang-17
-mips                         bigsur_defconfig    clang-17
-mips                         cobalt_defconfig    gcc-15.1.0
-mips                         db1xxx_defconfig    clang-17
-mips                          eyeq6_defconfig    clang-17
-nios2                            allmodconfig    clang-22
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20251205    clang-22
-nios2                 randconfig-001-20251206    gcc-15.1.0
-nios2                 randconfig-002-20251205    clang-22
-nios2                 randconfig-002-20251206    gcc-15.1.0
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.1.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251205    clang-22
-parisc                randconfig-001-20251206    clang-22
-parisc                randconfig-002-20251205    clang-22
-parisc                randconfig-002-20251206    clang-22
-parisc64                         alldefconfig    gcc-15.1.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                   currituck_defconfig    gcc-15.1.0
-powerpc                        fsp2_defconfig    clang-17
-powerpc                    ge_imp3a_defconfig    gcc-15.1.0
-powerpc                      katmai_defconfig    gcc-15.1.0
-powerpc                         ps3_defconfig    gcc-15.1.0
-powerpc                     rainier_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20251205    clang-22
-powerpc               randconfig-001-20251206    clang-22
-powerpc               randconfig-002-20251205    clang-22
-powerpc               randconfig-002-20251206    clang-22
-powerpc64             randconfig-001-20251205    clang-22
-powerpc64             randconfig-001-20251206    clang-22
-powerpc64             randconfig-002-20251205    clang-22
-powerpc64             randconfig-002-20251206    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.1.0
-riscv                 randconfig-001-20251205    gcc-13.4.0
-riscv                 randconfig-001-20251206    clang-22
-riscv                 randconfig-002-20251205    gcc-13.4.0
-riscv                 randconfig-002-20251206    clang-22
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    gcc-15.1.0
-s390                  randconfig-001-20251205    gcc-13.4.0
-s390                  randconfig-001-20251206    clang-22
-s390                  randconfig-002-20251205    gcc-13.4.0
-s390                  randconfig-002-20251206    clang-22
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.1.0
-sh                        apsh4ad0a_defconfig    clang-17
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20251205    gcc-13.4.0
-sh                    randconfig-001-20251206    clang-22
-sh                    randconfig-002-20251205    gcc-13.4.0
-sh                    randconfig-002-20251206    clang-22
-sh                           se7206_defconfig    gcc-15.1.0
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251205    gcc-14
-sparc                 randconfig-001-20251206    gcc-14
-sparc                 randconfig-002-20251205    gcc-14
-sparc                 randconfig-002-20251206    gcc-14
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20251205    gcc-14
-sparc64               randconfig-001-20251206    gcc-14
-sparc64               randconfig-002-20251205    gcc-14
-sparc64               randconfig-002-20251206    gcc-14
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.1.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251205    gcc-14
-um                    randconfig-001-20251206    gcc-14
-um                    randconfig-002-20251205    gcc-14
-um                    randconfig-002-20251206    gcc-14
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20251205    gcc-14
-x86_64      buildonly-randconfig-002-20251205    gcc-14
-x86_64      buildonly-randconfig-003-20251205    gcc-14
-x86_64      buildonly-randconfig-004-20251205    gcc-14
-x86_64      buildonly-randconfig-005-20251205    gcc-14
-x86_64      buildonly-randconfig-006-20251205    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20251205    clang-20
-x86_64                randconfig-002-20251205    clang-20
-x86_64                randconfig-003-20251205    clang-20
-x86_64                randconfig-004-20251205    clang-20
-x86_64                randconfig-005-20251205    clang-20
-x86_64                randconfig-006-20251205    clang-20
-x86_64                randconfig-011-20251205    clang-20
-x86_64                randconfig-012-20251205    clang-20
-x86_64                randconfig-013-20251205    clang-20
-x86_64                randconfig-014-20251205    clang-20
-x86_64                randconfig-015-20251205    clang-20
-x86_64                randconfig-016-20251205    clang-20
-x86_64                randconfig-071-20251205    gcc-14
-x86_64                randconfig-072-20251205    gcc-14
-x86_64                randconfig-073-20251205    gcc-14
-x86_64                randconfig-074-20251205    gcc-14
-x86_64                randconfig-075-20251205    gcc-14
-x86_64                randconfig-076-20251205    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                           allyesconfig    clang-22
-xtensa                           allyesconfig    gcc-15.1.0
-xtensa                randconfig-001-20251205    gcc-14
-xtensa                randconfig-001-20251206    gcc-14
-xtensa                randconfig-002-20251205    gcc-14
-xtensa                randconfig-002-20251206    gcc-14
+Why should unplugging the HDMI cable from my desktop or changing
+display configuration cause the case RGB/keyboard backlight to turn
+off?
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I will reply to the earlier reply from Rafael with more context, but
+runtime suspend of the GPU is not part of or related to these
+notifications.
+
+CRPC DPMS latency is higher when initiated by userspace instead of the
+early resume hooks of the kernel and adds wake-up latency. Not being
+able to fire the intent to turn display on notification as part of
+early resume to boost the thermal envelope also adds latency. Both of
+these issues, while not related to this series, are a valid tangential
+discussion and center around the fact that the kernel cannot classify
+certain wake-up sources as being able to turn on the display
+currently, so it can make a judgement call itself.
+
+Antheas
+
 
