@@ -1,115 +1,122 @@
-Return-Path: <linux-acpi+bounces-19441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19442-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0DFCA7C6E
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 14:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C96ACA7D76
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 14:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBC6E300ACE0
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 13:34:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD1C630F1AF3
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 13:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AF232D7D9;
-	Fri,  5 Dec 2025 13:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF15E3314C1;
+	Fri,  5 Dec 2025 13:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="ZCahyJqW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z5WgnEWa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFF32192F5;
-	Fri,  5 Dec 2025 13:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428E632ABC3;
+	Fri,  5 Dec 2025 13:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764941697; cv=none; b=q0SUTjNQnxgZPLN8VA2zLKt3nz0oMSxRDi2koOhclSFAKIm7+hoSKnV6B/Vs2Y6PqR8NndBFKvK2n3xTl746aKHKDeZoskdtAUHr/5lR2wItC9qLNplGIy4Ff0UPKLKBzgCRM7sWw1VJqMho1enNzfIHnhkmiHQ245x9L/p2vBU=
+	t=1764942730; cv=none; b=X3zeH7BRq1LvfJkwYMWv0YQ4CeXW8HFLoMKYrUBtkSltR5k8Gmd+J9uMIB2wGz//LgAC3vPwMNiG/vOYl9jMC5kAXT7BnRaavfN5i7wKiRlmcXKdVvIn/1uj0s1uHms20P9axhRaxyKQLuheV1Jx713MUxhHFm9ArYv9ZIjMK+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764941697; c=relaxed/simple;
-	bh=m3hfaKQK1uO2lNMHM+UqMtvAMFIUX5Xw/Jt6ld1qzjw=;
+	s=arc-20240116; t=1764942730; c=relaxed/simple;
+	bh=k4hgjBGInSxYLHZeFSLPGQ6QSZkjySInF8Q+8uAlTcU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mGcvRLgKI24ipioJy8gEbdgFlJaNnVp4RL7QNwuODJDmYxjnAPVxRDDeejvqE+ojmdGrWb3MkiRGrq8JDo7BPSzzgWpL1mUxeCgPFG1YAgjGeBflICX79T7WESUOc/6L5eIwrZMMC1BavAz62C8QLxU6RJrSeK1H7Lq8fy2QZ6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=ZCahyJqW; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id E6B3E1C008F; Fri,  5 Dec 2025 14:34:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1764941683;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RIPfVUnMaYa0Y7gDoNdysIjTwTAo3rqn7Aaj+hkwZF0=;
-	b=ZCahyJqWFSjMQJA53FHieEk54PvrmyXe53jQMmtZ5ztVdPwx5jFA5seEdcrq06RkBmvDRh
-	43PmDj6P32ewWKyy41yRvGAjsXXGxzChlsskPZ8m40Hb6R6Zg2TCy0eaL9uqNGt8AcqZxo
-	YjRaVShSXycnaZjUJH3roPbkw5381Gw=
-Date: Fri, 5 Dec 2025 14:34:43 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Mario Limonciello <superm1@kernel.org>,
-	Robert Beckett <bob.beckett@collabora.com>,
-	linux-acpi@vger.kernel.org, kernel@collabora.com,
-	linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Xaver Hugl <xaver.hugl@gmail.com>,
-	Richard Hughes <richard@hughsie.com>,
-	William Jon McCann <mccann@jhu.edu>,
-	"Jaap A . Haitsma" <jaap@haitsma.org>,
-	Benjamin Canou <bookeldor@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>,
-	systemd-devel@lists.freedesktop.org,
-	Lennart Poettering <lennart@poettering.net>,
-	Antheas Kapenekakis <lkml@antheas.dev>
-Subject: Re: [RFC PATCH v1 0/1] ACPI: s2idle: Add /sys/power/lps0_screen_off
-Message-ID: <aTLfc+NT/OVUR/vZ@duo.ucw.cz>
-References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ebo2mNz0veMpGYMSJBfrvhqeDA2NSFsRh9rNVYNINgOZ3YQpOFDMlir6TZ61bR3X843Jz0iQZG7c8kNZ4NRrK55SHqw7dPXvj3Q4gJSASlnHyXprQSaz5c6DHMh1WJDz55LAVu+PY3N9LTxZ4v8fhP/lAaZ+YiCI2AOmDXioCOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z5WgnEWa; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764942728; x=1796478728;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=k4hgjBGInSxYLHZeFSLPGQ6QSZkjySInF8Q+8uAlTcU=;
+  b=Z5WgnEWatNgGQbhJkrjrLeeiooLWVa5mXfQ6rEk/CjpgwCnpLHvoOaUg
+   STNtWhoa7QQZhjC+RjkcYnWbviL+FIRnxsswXfd1g/Nit8iXy2KSy18YJ
+   pAgPhV0pAmuRx48PNNZMpwgb98+MGkCyVPS868U9Kmki2lMmhu1lJMoir
+   ubiNdYqdMGaslaDKy7necUoAheYprTw4Ci6DU1UAJA9z+fb90D2IUWCQP
+   PxVqeS7sr8Mf1A+viM3O5U17+xTACcPLXIBSmwiI/WwdRPFvTEJXvjLZ4
+   K7gXI1xlxFgoTxhi48JyMYb627BISNhZGuh7uotd6xWkauHG9mnggPZZI
+   Q==;
+X-CSE-ConnectionGUID: AAWUQD2hToyMR6Fp2qK06Q==
+X-CSE-MsgGUID: WAP5re4VTLm4ut1wS5jXrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66870278"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
+   d="scan'208";a="66870278"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 05:52:05 -0800
+X-CSE-ConnectionGUID: mnN5Jk7XTxeZlQ4Xt7iDJg==
+X-CSE-MsgGUID: KyMJQb+eTrWTnIlE4vAyFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
+   d="scan'208";a="194952297"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 05:52:02 -0800
+Date: Fri, 5 Dec 2025 15:52:00 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Cc: Askar Safin <safinaskar@gmail.com>, Dell.Client.Kernel@dell.com,
+	bartosz.golaszewski@linaro.org, benjamin.tissoires@redhat.com,
+	dmitry.torokhov@gmail.com, linux-acpi@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	regressions@lists.linux.dev, rrangel@chromium.org,
+	wse@tuxedocomputers.com
+Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own
+ from suspend
+Message-ID: <aTLjgEVfLCot0cSm@smile.fi.intel.com>
+References: <f983382a-821c-40f0-a41e-ba9f47ae73c5@kernel.org>
+ <20251205040141.1735580-1-safinaskar@gmail.com>
+ <8e3ae563-a058-40c5-a721-834d7bda141d@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YsO1h4ynmPO1LIsy"
-Content-Disposition: inline
-In-Reply-To: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
-
-
---YsO1h4ynmPO1LIsy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <8e3ae563-a058-40c5-a721-834d7bda141d@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi!
+On Thu, Dec 04, 2025 at 11:21:32PM -0600, Mario Limonciello (AMD) (kernel.org) wrote:
+> On 12/4/2025 10:01 PM, Askar Safin wrote:
+> > "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>:
 
-> Introduce the `/sys/power/lps0_screen_off` sysfs interface, enabling
-> userspace control over ACPI LPS0 Display Off/On notifications [1].
->=20
-> These notifications are a part of a Modern Standby [2]. The Display Off
-> notification signals the firmware when all displays (physical and remote)
-> are off, allowing it to enter lower power states that makes device pretend
-> it has been suspended while the system remains operational.
+...
 
-What is "remote" display? Remote desktop? ssh connection?
+> > > But yes; failing all that it's viable to make a quirk.  You can follow
+> > > any of the ones I've submitted for modeling how to do it.  Here's the
+> > > most recent one I've done.
+> > > 
+> > > https://github.com/torvalds/linux/commit/23800ad1265f10c2bc6f42154ce4d20e59f2900e
+> > 
+> > Thank you! I will write something like this:
+> > 
+> > +		.matches = {
+> > +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> > +			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
+> > +		},
+> > +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> > +			.ignore_wake = "VEN_0488:00@355",
+> > +		},
+> > 
+> > I will test it and then properly send (hopefully today or tomorrow).
+> 
+> This match it too liberal.  We don't have any evidence it applies to
+> anything more than your single system.  I'd pick some different strings.
+> For example Product SKU is probably a good string to use because that's very
+> unique.
 
-This needs better name. If it enables powersaving in exchange for
-100msec latency, for example, it should say that. I'm pretty sure it
-will be useful elsewhere, and all the world is not ACPI.
++1. If we ever see another one, we can then think of a more generic quirk.
 
-BR,
-								Pavel
+-- 
+With Best Regards,
+Andy Shevchenko
 
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
 
---YsO1h4ynmPO1LIsy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaTLfcwAKCRAw5/Bqldv6
-8nScAJ9SIQK2U6Xnz9Cqp/YUM+oGP9NKlACfaF2dwcHce973GrS41NYV40jKocA=
-=7/YZ
------END PGP SIGNATURE-----
-
---YsO1h4ynmPO1LIsy--
 
