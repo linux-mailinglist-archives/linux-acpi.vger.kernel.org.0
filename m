@@ -1,170 +1,195 @@
-Return-Path: <linux-acpi+bounces-19444-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19445-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69060CA7F80
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 15:34:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24AACA827F
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 16:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1775D3280A63
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 14:30:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ACABF3036B26
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 15:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D13199E94;
-	Fri,  5 Dec 2025 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9DD2DECBD;
+	Fri,  5 Dec 2025 15:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="qJcRQRRZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwywkSkO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AAF32E6AD;
-	Fri,  5 Dec 2025 14:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF472F99A3
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 15:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764944966; cv=none; b=G07lTYdzWF8hUakdXei6LM1bA6a26iHaEZCD8sffLtkU/XZONnPwqNgD4otueWUmNGlSdu4JwM5U07fSKC/61cRsi5oJl0cy8CuhsVt4i8M0vu6UYxrmiMNTtaxRzWTSkISbaHouYivTzQ6NMSa6XLDweoGo0zsW+PEzk7dBzPQ=
+	t=1764947617; cv=none; b=RC76dJzF3Lo+WphV/CJY2CwjhZsXBqCU1yJI/XQeEguNt7IXtwhl2O4g3zaXI7Juj5RVYah4MMPyqtc2l1RYVyBY+xOzS0VcJwfI0WMiRsjT/Eadp7RdlfpxNsF1pIFWlmQNmLoFL4swxgnxbk0rlX6l+JtaPp9wk9sA/8nJZuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764944966; c=relaxed/simple;
-	bh=sBzu10i21/6Sa32V37HZ38gzwxOa+i+lpu4pRCgONw8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LU/tiIitQVw+BQLHa6rJyIU7w/uNbsYXeNKioxGCZPJp7Aeg7yVxmxws7U8sIp3H+pltr3viTf/Wn8Sv7CmDaGA82iIxwd/pOiDd69427shC5HHI4+k7BEGepZapTPCNu0Xwkttj/B+3PoOJ1CX5h2VhSkh72GHltGlQjo1x7cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=qJcRQRRZ; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B5ECCgD3930767;
-	Fri, 5 Dec 2025 14:28:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=pdZ/TQ/PcFTWWe6z
-	jO2bxx4f/TGxWotGNX/3bRcBTio=; b=qJcRQRRZaI0J45qUEtKfTpV+RU5xzkCZ
-	vHTnaOz1DDLlT4wNHXdKqiJXvAmMFygL9i98eAYXhsT9yu0eZdTzgymtwVmu/q19
-	xHfEsoa1z/cFxEy6sB2+Fo7RereQgAH69jiFHUantDy7VrZVLoeJujWj01hmywZ+
-	Tbw6EyQ9/AXDI0EY41M0Y52lQboYJLyUNbWqZPHmoKr0xh45NC1cClaV+Cb4+wAz
-	P8vZXuszepHKPO6/PmJhmwkrbUU5L+M0AnbUSw+6uPAQwwSdKZ9x6+fJrSsxKgUI
-	Mj8/D8EWFl/fJtKwCdcyD8RJx40VeOQY3fUk6mUIiGvWuEL/Vb9Rjw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4as7wnj86v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Dec 2025 14:28:35 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B5Da5Kk040484;
-	Fri, 5 Dec 2025 14:28:34 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aqq9h2d28-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Dec 2025 14:28:34 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5B5ESXOq028403;
-	Fri, 5 Dec 2025 14:28:33 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4aqq9h2d15-1;
-	Fri, 05 Dec 2025 14:28:33 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, Sinan Kaya <okaya@codeaurora.org>,
-        Casey Leedom <leedom@chelsio.com>, Ashok Raj <ashok.raj@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        dingtianhong <dingtianhong@huawei.com>,
-        Alexander Duyck <alexander.h.duyck@intel.com>
-Cc: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI/ACPI: Do not fiddle with ExtTag and RO in program_hpx_type2
-Date: Fri,  5 Dec 2025 15:28:29 +0100
-Message-ID: <20251205142831.4063891-1-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1764947617; c=relaxed/simple;
+	bh=gToDeN6Xc25jVYcui6qGpeppUtC7Whn5YW0S6Qumrkk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b2kDfwu+BqVNLYmTyi2f5fqG8k+M4z3Ko/sxp0jXN7CWOwaOq37Zi/ATBzWU3JG/w3nQs3RQlvLqI0eK8t1ov23VkqofpdUDH0jCOQmmShm6CS7QZRWUfl3ceaQiZCxtBq7VVV7+jRFC4P8nH9QxlnVTK9n5lojY5Mf4BCiuXmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwywkSkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD97C2BCAF
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 15:13:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764947616;
+	bh=gToDeN6Xc25jVYcui6qGpeppUtC7Whn5YW0S6Qumrkk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=pwywkSkOrM9W497oFGAp6bFMeHPHsAjetaQ83LHhMMByeP58M7PlIeS9uS/+7tSVH
+	 kbrv4yuLV4F4i/vb3BpgP+xlgLcde2S2TWOz+WK6P6aB7DgSQG0Sk5irxZQKNehrWa
+	 a0DKNRR6xFd55jAEh6d0ME2x9mPMrnIFeRPyqFYXb1Q53x97tscyjnATwpuXOxlSQn
+	 Oug5c5Si0KpXD1n2c07GZukXOv0lpK9cOSfFGY/siQ5v7WUZRDkD+Oy6/ZkAi/2tFl
+	 ngsOZZwhYcnGVmkdqem/UUJiqhxVb6mmL3K6IpAlYsdtOG7a4Rznje4JGIAK8J+GJu
+	 aBxYg6z3ZIFbQ==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c76607b968so972956a34.3
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Dec 2025 07:13:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX9JrU01Od8IBbXxZe74gir7iShzIPc8QhDtZpXdehjF5pIGoo5uuyeNhMs0C+iKA6DhsGvTTVJRZ5K@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuN33cZrkFA/cmVrZRys17SaDg8AEH6f10p5ZSYvEJNv753/dd
+	wtvffC9kEKvQuPnTM7Km5akE07x2wKiBa4qouqJWV7xraZaRnXOx2MipBnJ7lrKBEMG/UiWkJ/3
+	nRBbodnUyuYabD4aF/hmugvTeFyGlOBM=
+X-Google-Smtp-Source: AGHT+IHrXWrqtMGXJxmwV1GVuCRVKcQU0z6/rzwbxUJ6/BP2yyYwuq+UjnxGK8r3GeEdRUHh75+CQgXDFSasFrCHpBs=
+X-Received: by 2002:a05:6830:719c:b0:7c5:3798:fa4e with SMTP id
+ 46e09a7af769-7c94dc0bf51mr8467872a34.17.1764947615507; Fri, 05 Dec 2025
+ 07:13:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_05,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512050104
-X-Proofpoint-GUID: QMjcKWQ7PEubpi8226Us1LDKW41L4pEW
-X-Proofpoint-ORIG-GUID: QMjcKWQ7PEubpi8226Us1LDKW41L4pEW
-X-Authority-Analysis: v=2.4 cv=SbX6t/Ru c=1 sm=1 tr=0 ts=6932ec13 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=ktkD548E8Y1-oA6S7RkA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf awl=host:12098
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDEwNCBTYWx0ZWRfX7O2rawPOoBA4
- JaKUtWuTJFMxj1GzkpAalpfJY7Rdaa81ixu82uMbcDlszKovDH60jP0kkM82NaCR6tOc+fqQnpy
- LXXOpKoAXaDGDBB2vJlcgecq97rHnUmwo/hZD7+V+eodoTB/MYncZSWTLw18y8KYi3uDQUumCBe
- TpdcCuKskNklGJQrZeIcMD3WjfNux+1BKySjdHDuS8ugt46fpkj24Wa9VRWtxSyk2Bj5ZBkM6Gm
- XjSOURrgjarp0ANYn4rr2b0UBxcgrF/jCPsPauCRv+Pa0fW71OEKQ7iCWUNrkYZWmCfQSnTSmah
- q8GB4bykvx7jQqBPWLtLJpYWRcNPNxu7E8Jarn7sAkgLifTONOoCWcbzHowrEVwDxX5KT5dT8f1
- Y4h4TJ7++Hw5o9ve+L+6GmokmOG5o46YEGftB3Po6w6HgmahsN4=
+References: <20251203032422.3232957-1-zhanjie9@hisilicon.com> <20251203032422.3232957-2-zhanjie9@hisilicon.com>
+In-Reply-To: <20251203032422.3232957-2-zhanjie9@hisilicon.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 5 Dec 2025 16:13:24 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jvk+gs+h+76__LLZDa=OGzLxQQsWEMDHXzeV8aV6UYsA@mail.gmail.com>
+X-Gm-Features: AWmQ_bmOH7nN5gWZs3xRPWHos4wTiEv97BodDPulN0JnoJDgcE3MNy86R_44060
+Message-ID: <CAJZ5v0jvk+gs+h+76__LLZDa=OGzLxQQsWEMDHXzeV8aV6UYsA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] ACPI: CPPC: Factor out and export per-cpu cppc_perf_ctrs_in_pcc_cpu()
+To: Jie Zhan <zhanjie9@hisilicon.com>
+Cc: viresh.kumar@linaro.org, rafael@kernel.org, ionela.voinescu@arm.com, 
+	beata.michalska@arm.com, pierre.gondois@arm.com, zhenglifeng1@huawei.com, 
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, prime.zeng@hisilicon.com, yubowen8@huawei.com, 
+	lihuisong@huawei.com, zhangpengjie2@huawei.com, wangzhi12@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-After commit 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if
-supported"), the kernel controls enablement of extended tags
-(ExtTag). Similar, after commit a99b646afa8a ("PCI: Disable PCIe
-Relaxed Ordering if unsupported"), the kernel controls the relaxed
-ordering bit (RO), in the sense that the kernel keeps the bit set (if
-already set) unless the RC does not support it.
+On Wed, Dec 3, 2025 at 4:25=E2=80=AFAM Jie Zhan <zhanjie9@hisilicon.com> wr=
+ote:
+>
+> Factor out cppc_perf_ctrs_in_pcc_cpu() for checking whether per-cpu CPC
+> regs are defined in PCC channels, and export it out for further use.
+>
+> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+> ---
+>  drivers/acpi/cppc_acpi.c | 45 +++++++++++++++++++++-------------------
+>  include/acpi/cppc_acpi.h |  5 +++++
+>  2 files changed, 29 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 3bdeeee3414e..aa80dbcf42c0 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1422,6 +1422,29 @@ int cppc_get_perf_caps(int cpunum, struct cppc_per=
+f_caps *perf_caps)
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+>
+> +bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
+> +{
+> +       struct cpc_desc *cpc_desc =3D per_cpu(cpc_desc_ptr, cpu);
+> +       struct cpc_register_resource *ref_perf_reg;
+> +
+> +       /*
+> +        * If reference perf register is not supported then we should use=
+ the
+> +        * nominal perf value
+> +        */
+> +       ref_perf_reg =3D &cpc_desc->cpc_regs[REFERENCE_PERF];
+> +       if (!CPC_SUPPORTED(ref_perf_reg))
+> +               ref_perf_reg =3D &cpc_desc->cpc_regs[NOMINAL_PERF];
+> +
+> +       if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> +           CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> +           CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+> +           CPC_IN_PCC(ref_perf_reg))
+> +               return true;
+> +
+> +       return false;
 
-On some platforms, when program_hpx_type2() is called and the _HPX
-object's Type2 records are, let's say, dubious, we may end up
-resetting ExtTag and RO, although they were explicit set or kept set
-by the OSPM [1].
+Why not
 
-The Advanced Configuration and Power Interface (ACPI) Specification
-version 6.6 has a provision that gives the OSPM the ability to
-control these bits any way. In a note in section 6.2.9, it is stated:
+return CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+          CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+          CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+          CPC_IN_PCC(ref_perf_reg);
 
-"OSPM may override the settings provided by the _HPX object's Type2
-record (PCI Express Settings) or Type3 record (PCI Express Descriptor
-Settings) when OSPM has assumed native control of the corresponding
-feature."
-
-So, in order to preserve the increased performance of ExtTag and RO on
-platforms that support any of these, we make sure program_hpx_type2()
-doesn't reset them.
-
-[1] Operating System-directed configuration and Power Management
-
-Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
-Fixes: a99b646afa8a ("PCI: Disable PCIe Relaxed Ordering if unsupported")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
----
- drivers/pci/pci-acpi.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 9369377725fa0..6a2ae1b821732 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -324,15 +324,18 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
- 		return;
- 	}
- 
--	/*
--	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
--	 * those to make sure they're consistent with the rest of the
--	 * platform.
-+	/* Don't allow _HPX to change MPS, MRRS, ExtTag, or RO
-+	 * settings.  We manage those to make sure they're consistent
-+	 * with the rest of the platform.
- 	 */
- 	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ;
-+				   PCI_EXP_DEVCTL_READRQ  |
-+				   PCI_EXP_DEVCTL_EXT_TAG |
-+				   PCI_EXP_DEVCTL_RELAX_EN;
- 	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ);
-+				    PCI_EXP_DEVCTL_READRQ  |
-+				    PCI_EXP_DEVCTL_EXT_TAG |
-+				    PCI_EXP_DEVCTL_RELAX_EN);
- 
- 	/* Initialize Device Control Register */
- 	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
--- 
-2.43.5
-
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc_cpu);
+> +
+>  /**
+>   * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC regio=
+n.
+>   *
+> @@ -1436,27 +1459,7 @@ bool cppc_perf_ctrs_in_pcc(void)
+>         int cpu;
+>
+>         for_each_online_cpu(cpu) {
+> -               struct cpc_register_resource *ref_perf_reg;
+> -               struct cpc_desc *cpc_desc;
+> -
+> -               cpc_desc =3D per_cpu(cpc_desc_ptr, cpu);
+> -
+> -               if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+> -                   CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+> -                   CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
+> -                       return true;
+> -
+> -
+> -               ref_perf_reg =3D &cpc_desc->cpc_regs[REFERENCE_PERF];
+> -
+> -               /*
+> -                * If reference perf register is not supported then we sh=
+ould
+> -                * use the nominal perf value
+> -                */
+> -               if (!CPC_SUPPORTED(ref_perf_reg))
+> -                       ref_perf_reg =3D &cpc_desc->cpc_regs[NOMINAL_PERF=
+];
+> -
+> -               if (CPC_IN_PCC(ref_perf_reg))
+> +               if (cppc_perf_ctrs_in_pcc_cpu(cpu))
+>                         return true;
+>         }
+>
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 13fa81504844..4bcdcaf8bf2c 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -154,6 +154,7 @@ extern int cppc_get_perf_ctrs(int cpu, struct cppc_pe=
+rf_fb_ctrs *perf_fb_ctrs);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+>  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+> +extern bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu);
+>  extern bool cppc_perf_ctrs_in_pcc(void);
+>  extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsign=
+ed int perf);
+>  extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsign=
+ed int freq);
+> @@ -204,6 +205,10 @@ static inline int cppc_get_perf_caps(int cpu, struct=
+ cppc_perf_caps *caps)
+>  {
+>         return -EOPNOTSUPP;
+>  }
+> +static inline bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
+> +{
+> +       return false;
+> +}
+>  static inline bool cppc_perf_ctrs_in_pcc(void)
+>  {
+>         return false;
+> --
+> 2.33.0
+>
+>
 
