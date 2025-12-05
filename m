@@ -1,172 +1,186 @@
-Return-Path: <linux-acpi+bounces-19452-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19453-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C956CA910E
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 20:29:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783ACCA9168
+	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 20:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F42B3021688
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 19:28:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 957B93009B54
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 19:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCBA27EFFA;
-	Fri,  5 Dec 2025 19:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01C931AAB9;
+	Fri,  5 Dec 2025 19:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TcO5C3KJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ogls52x4"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB8A26560A
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 19:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D23331AA9C
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 19:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764962911; cv=none; b=HXGudp8Ye66YcyAtEqDkhm1tl9+nw5hWec8E5eC3Td0Ucd8GRzRFt8WDTFdekrvR4XwSwsFRWfaYubMkUwUkZTY3KysPDdZh+I8eGumjxtuFkK6TzqkXj8ICYUtiOGceTewaQSSRUhOPzbCHxRRtUesqTpWpNTBK+GcnGofWQEQ=
+	t=1764963434; cv=none; b=WwNkq5XexN8w9XlkpTcpMEbSAG3rV2Q2M9CRDb+2ndL7T+vK30mjXRxAV9c+XgJoj+e2/ryA/oRW0uAtRYUGpDA5LKcX/Dn5vJXLZp6AjlkntrHLSqLcB3n4p0ewf1F7MN0FxkLttDkl/j8aVI7HCRQ9+6KppqIVXy+Yn1GLIMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764962911; c=relaxed/simple;
-	bh=+ZydZENrJ/o1f8l/C5k8KPPOEzcoH5udzy3jsq6uMP8=;
+	s=arc-20240116; t=1764963434; c=relaxed/simple;
+	bh=2Ytsjk11x96GPAln39gS+7c8dY8JbpbkwQJkutvez/A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PmJAURgPLY4Y8BWTIsjz58fBPdAXbZj935ucWXuxhEXnagigoDh3w1pOrNX5+iaiihP3F8dDDAgGU/sN5xELqV7qwscdcN5F69deG3D2Rd7B/moXDiiUJJZWfbc3Iqc8FD4i/FBIfg5z0nBwklOuAFQk5qdCVF6wFrSeGZ8Jrsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TcO5C3KJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F46C116B1
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 19:28:31 +0000 (UTC)
+	 To:Cc:Content-Type; b=scR9B4h+0tEMWKTdeBmejQwN7TJOgXvn4vLAyPosa6c3geyLwWPFsE4A4rJjRbD8ZtEcW+ti5UIFc5r2wauAOAWuBAO4vbi3XWlXZqcWJlkH8wRfhJ6owbuEO1Eccs80920i8AKD6JPzXgvwUtqbwqmIwZ9DVt78JVcHEG3n2pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ogls52x4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDCAC2BC87
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 19:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764962911;
-	bh=+ZydZENrJ/o1f8l/C5k8KPPOEzcoH5udzy3jsq6uMP8=;
+	s=k20201202; t=1764963434;
+	bh=2Ytsjk11x96GPAln39gS+7c8dY8JbpbkwQJkutvez/A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TcO5C3KJTvEnQ5subjonPC1ngXXsB/MSEs9E9YIa0wofUzCywkHknnEafVLK5ILSW
-	 nI7eG6s3sM+xg9NhPvvyJpnMGj0vBPzYwRxUnlKCs0MljP0/M83rQP94c7omPFbbmB
-	 w2gTHSGkyMBjVve+Z4jeQV+0Am7vUOnVQhiwYhkMplS5fKgd6fEGNsBupQrE8++a7J
-	 gwtYTgkVkp8nA1EFfgO3GlYoBZd3iJf7qXiW2+P8s4uS2IC2wRSSpH0H2BOiWS7+9N
-	 XZyB9+5oruYhBoDewNvtJeLL041UrQTeJEEyllkdd3oaYQru8o0jouI0WDqZrZwQK9
-	 HTWVWoN9EOwxA==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-65968986a0cso1343217eaf.3
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Dec 2025 11:28:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWW/G47W+En5m0SZ0b6sF9yR7h+HYQT4/YCba+m/Ip2NPc+P2n8J8g93T5ffG9KFtiRUXIpZC9zfuSM@vger.kernel.org
-X-Gm-Message-State: AOJu0YyloGGNdjNX0/3QZmuNzqo/LKMaZFDiq79RVq9USpk9zv5CueO1
-	mAN6pKtjEpW3PM0RDRz6GVB0VrHyVJh42kGpt1OIvv0azve3ksxv6PzfwohA5ucDImZytONAkHp
-	olFN9oLNI/Zf5zYhT3EATMNd3woDu/Kc=
-X-Google-Smtp-Source: AGHT+IFoPpIUBwxKFatmVHTKYNK+BIXykx5Kjw6K+0cefKdBwWa0qUPZQgpV/NxRpdwfxg8dmVrJBfL7uRFThzxCfE8=
-X-Received: by 2002:a05:6820:999:b0:659:9a49:9054 with SMTP id
- 006d021491bc7-6599a8ea084mr157037eaf.31.1764962910609; Fri, 05 Dec 2025
- 11:28:30 -0800 (PST)
+	b=Ogls52x4zTlUbk4iCVUYasN1hW7/qSWj7Fj9n+uShkN0qjlEgvHoP2pXVK9pPEKjS
+	 Ma1QtqZLV86cVxL0eG8FkCu9EkEJPyye1pVK0dIlQm2PZoFoR5VLSLc49BNOglnBXn
+	 4zwa1JvozLNPcVfnDRQ/UUeOPuy1zJXSCZfZv5UxZX2CoYgIOwcmnVOzMsatXjt8YG
+	 VGutKqTIH/EcSLZku1gAkyJZb7quGBKM+v5qnPA/AvgNPLqU2idTclEFDvYTH+77Z6
+	 ng5ctCo8KfIWNFVYr4vbM3pE4FZRpwNvU6qCia/N5VUtCn/WjfYRurZrazS88rd1af
+	 y6Dlm0QhNRRQA==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-3e80c483a13so1984722fac.2
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Dec 2025 11:37:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXxv2rKRBUptjnpYi+HKvO5idZSUOVjlqbpl+YdV90x0+ouQqs4pRzwk8nqNXmBdHVx5NnUyKS0TKFG@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuEZUK1QP0jAj+DDil5mSMCDLWE0VxlO+hdnbxg+z0gLaY49AK
+	QXZL0K7HkR8X73SOooD50QDk6Vesa47Ov4GOo4Nd2lFgiLXgMh5b+hUZvEjhvREVEtF1772DCrC
+	clupV46PsXWMKQoCUkvYogcD8Pm8xV2Q=
+X-Google-Smtp-Source: AGHT+IF7mn7zE/nwInSrxE8KmIbM6pSPPIxBFZ9gGZUsQq9yc+VWYBQw805uNRvYx1XunyiVpOrqjB0aXw2W1lzUoGc=
+X-Received: by 2002:a05:6820:61c:b0:659:9a49:8e45 with SMTP id
+ 006d021491bc7-6599a8c4386mr161621eaf.21.1764963433352; Fri, 05 Dec 2025
+ 11:37:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4f534cc70650111e420d5ac9040df4e546eed336.camel@linux.intel.com>
- <20251126170031.145b6a56@kf-m2g5> <20251203113851.52bf872b@kf-m2g5> <849e7394b8c7c4b74d1d55648a8d4b55b49aa91a.camel@linux.intel.com>
-In-Reply-To: <849e7394b8c7c4b74d1d55648a8d4b55b49aa91a.camel@linux.intel.com>
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com> <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+ <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com> <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+ <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
+ <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
+ <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org> <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
+ <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
+In-Reply-To: <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 5 Dec 2025 20:28:18 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hUc3oz=Z8UUv3n4rY3on1vZpCtSdKjgOFp+OWYC5D9tw@mail.gmail.com>
-X-Gm-Features: AWmQ_bnL-jdt_AOPDwqrhDQD4a2YqMip2xco13cxfiDxZ4zsiO6D-dJ1SB3S2Y4
-Message-ID: <CAJZ5v0hUc3oz=Z8UUv3n4rY3on1vZpCtSdKjgOFp+OWYC5D9tw@mail.gmail.com>
-Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
- detected on Arrow Lake hardware
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Aaron Rainbolt <arainbolt@kfocus.org>, kernel-team@lists.ubuntu.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, rjw@rjwysocki.net, 
-	mmikowski@kfocus.org
+Date: Fri, 5 Dec 2025 20:37:02 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
+X-Gm-Features: AWmQ_bm_HUQmG6oGj4RvoG9ZUV10mMXK534cgfN0AKeUIkhPqg_ZZpbLUz28QME
+Message-ID: <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs interface
+To: Mario Limonciello <superm1@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Antheas Kapenekakis <lkml@antheas.dev>, 
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>, Robert Beckett <bob.beckett@collabora.com>, 
+	linux-acpi@vger.kernel.org, kernel@collabora.com, 
+	linux-kernel@vger.kernel.org, 
+	Sebastian Reichel <sebastian.reichel@collabora.com>, Xaver Hugl <xaver.hugl@gmail.com>, 
+	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>, 
+	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>, 
+	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org, 
+	Lennart Poettering <lennart@poettering.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 5, 2025 at 8:11=E2=80=AFPM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
+On Fri, Dec 5, 2025 at 7:07=E2=80=AFPM Mario Limonciello <superm1@kernel.or=
+g> wrote:
 >
-> Hi Aaron,
->
-> On Wed, 2025-12-03 at 11:38 -0600, Aaron Rainbolt wrote:
-> > On Wed, 26 Nov 2025 17:00:31 -0600
-> > Aaron Rainbolt <arainbolt@kfocus.org> wrote:
+> On 12/5/25 11:22 AM, Rafael J. Wysocki wrote:
+> > On Fri, Dec 5, 2025 at 5:47=E2=80=AFPM Mario Limonciello (AMD) (kernel.=
+org)
+> > <superm1@kernel.org> wrote:
+> >>
+> >>> I would start with the graphics stacks and teach them to
+> >>> runtime-suspend the HW when the displays go off.  No firmware
+> >>> notifications are needed for this to work.
+> >>
+> >> Well the problem with this is there is a sizable latency to runtime
+> >> suspend hardware when displays go off.  For example you would need to
+> >> redo link training when you spin the hardware back up.
+> >>
+> >> What we do today (AMD *dGPU* centric) is runtime suspend the hardware
+> >> when no displays are connected and nothing else is using the GPU (for
+> >> offload purposes).
 > >
-> >
-> >
-> ...
+> > The latency problem can be addressed by using autosuspend instead of
+> > synchronous suspend.  Just set the autosuspend timer when displays go
+> > off.
 >
+> Sorry I probably confused the problem by saying latency to suspend the
+> hardware.  That doesn't matter.  It's a problem of latency when they
+> *come back up*.  Let me give a hypothetical that will demonstrate.
 >
+> Let's say I have the following:
+> * Desktop with a dGPU connected to it.
+> * My DE has a setting for compositor to blank the monitor after 5 minutes=
+.
+> * My DE has a setting to starting system suspend after 10 minutes.
+> * You set up auto-suspend on the dGPU for 15 seconds.
+> * No non-display work running.
 >
-> There are too many platforms here, don't have time to get to all. So
-> let's focus on one first.
->
-> ## Clevo | X580WNT-G  | Ultra 9 275HX | 6.18.0-061800rc7-generic
->
-> Summary:
-> There is no scaling factor related issue as reported before on ASROCK
-> platform before. The achieved maximum frequencies are correct.
->
-> The base_freq display is wrong (see below because of BIOS config).
-> The cpuinfo_max_freq wrong display is not related to scaling factor but
-> something else
->
->
-> To check, I need dump of:
-> m=3D$(getconf _NPROCESSORS_ONLN); for ((i=3D0; i<m; i++)); do echo CPU$i;
-> sudo rdmsr -p $i 0x771;  sudo rdmsr -p $i 0x774; done
->
-> But I expect them to match the acpi_cppc/highest_perf, which is showing
-> 3.9GHz.
->
-> What command you to report " M-Test  . Id"?
->
-> I think some busy 100% workload running on a single CPU.
->
->
->
-> Analsis:
->
-> Intel=C2=AE Core=E2=84=A2 Ultra 9 Processor 275HX
-> 8+16 no HT
-> Performance-core Base Frequency : 2.7 GHz
-> Efficient-core Base Frequency : 2.1 GHz
->
->
-> P-cores: 0-7
-> Nominal freq: 2700
-> Nominal perf: 43
-> Scaling : ~1.6 (correct)
->
-> E-cores:
-> 8-
-> Nominal freq: 2100
-> Nominal perf: 29
-> Scaling : ~1.38 (close to 1.4 so there will be some rounding issue)
->
-> So,  this is not related to scaling factor as before like on ASROCK
->
->
-> The P-cores under report `base_frequency` and `cpuinfo_max_freq`.
->
-> - FAIL: With Turbo ON or off, the claimed `base_freqency` (B-Claim) of
-> 2000000 does
->   NOT match the Intel spec (B-Spec) of 2700000.
->
-> From CPPC:
->
-> /sys/devices/system/cpu/cpu0/acpi_cppc/guaranteed_perf:32
-> The base freq reported by cpufreq: 3200/1.6 =3D 2000
->
->
->
->
-> - FAIL: With Turbo off, the claimed `cpuinfo_max_freq` (M-Claim) of
-> 2000000 does
->   NOT match the Intel spec (M-Spec) of 2700000.
->
-> We don=E2=80=99t depend on ACPI CPPC to achieve the measured value. When =
-you
-> are busy you are getting 2700, so the behavior is correct as the per
-> the CPU spec.
->
->
->
-> - FAIL: With Turbo ON, the claimed `cpuinfo_max_freq` (M-Claim) of
-> 3900000 does
->   NOT match the Intel spec (M-Spec) of 5400000.
->
-> ACPI CPPC also tells 3.9 GHz as max. But we don=E2=80=99t depend on it.
+> You walk away for 6 minutes.  The dGPU will have entered runtime PM from
+> the auto-suspend.  You come back to the machine and you wiggle the
+> mouse.  Because the dGPU was auto-suspended you gotta wait for it to
+> spin back up, you have to wait for link training again etc.
 
-But we depend on HWP_CAP.highest_perf =3D=3D CPPC.highest_perf (because
-the CPPC value comes from HWP).
+Yes.
+
+> This is pretty much the same that would have happened if you walked away
+> for 10 minutes now!  Your "5 minute blank monitor" turned into "5 minute
+> turn off dGPU".
+
+Well, the wakeup latency is the cost of saving energy.
+
+> >
+> >> On AMD APU we don't use runtime suspend.  If you ignore the latency I
+> >> could see an argument for proxying the status of displays to indicate
+> >> runtime suspended, but I don't know what it really buys you.
+> >
+> > Well, the lack of runtime PM is a problem and I don't see how it can
+> > be overcome easily.
+> >
+> > The main issue is that when the system is resuming and there is no
+> > runtime PM support, the device in question must be powered up during
+> > the system resume flow.
+>
+> I don't think this is actually a problem.  The reason is in my below
+> comment.
+>
+> >
+> >>> Then, I would teach
+> >>> graphics drivers to leave the devices in runtime-suspend if they are
+> >>> runtime-suspended when system suspend starts and to leave them in
+> >>> runtime-suspend throughout the system suspend and resume, so they are
+> >>> still runtime-suspended whey system resume is complete.  I'm not sure
+> >>> how far away graphics stacks are from this, but at least some of them
+> >>> support runtime PM, so maybe the fruits don't hang very high.  With
+> >>> that, you'd just need a way to trigger a system suspend after a perio=
+d
+> >>> of inactivity when the displays are off and you have your "dark mode"=
+.
+> >>
+> >> I think even without kernel changes this can be accomplished today wit=
+h
+> >> userspace.
+> >>
+> >> There will be change events when the displays are turned off and you c=
+an
+> >> listen to and set a timer to enter system suspend based upon how long
+> >> they are off.
+> >
+> > True, but that's just about suspending.  To avoid powering up devices
+> > on the way back from system suspend, runtime PM support and
+> > integration of it with system suspend-resume is necessary.
+>
+> Yes and no.  For most device types I would agree; but the compositor
+> controls DPMS on each CRTC which impacts whether anything is displayed.
+>
+> If the compositor chooses to turn off the displays the GPU hardware will
+> remain active but display IP will be off or in a low power state.  This
+> will still have significant power savings by the displays being off.
+
+OK, so you basically want the GPU to avoid turning displays on during
+resume from system suspend if they were off before the suspend
+transition has started.  This still needs to be handled by the GPU
+driver in the kernel IIUC.
 
