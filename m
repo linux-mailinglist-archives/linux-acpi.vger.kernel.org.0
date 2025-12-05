@@ -1,290 +1,150 @@
-Return-Path: <linux-acpi+bounces-19460-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19462-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6ABDCA96E4
-	for <lists+linux-acpi@lfdr.de>; Fri, 05 Dec 2025 22:52:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF3CCA9977
+	for <lists+linux-acpi@lfdr.de>; Sat, 06 Dec 2025 00:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDF633080AD1
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 21:52:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8690F3031723
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Dec 2025 23:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60A32848BB;
-	Fri,  5 Dec 2025 21:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20162F9DAE;
+	Fri,  5 Dec 2025 23:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="CAkob2Ot"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="By68nouB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay10.grserver.gr (relay10.grserver.gr [37.27.248.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE559277819
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 21:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.27.248.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5252225A38
+	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764971565; cv=none; b=iJOyD0+TAgb81ZcQynIj8JqZXWQu2kLWSHPwwNUNYKKcnluA3nZd1qLXu9yovaCcRDFILtoDjXgyD+vgj9ipzh2zsXOCi3Bpnb9OvZX1kjeUegQtEj5VXq4GhVrwks0/ScXpMi1amSA2dmWtOVHHXE+ww92haFsDpIz+FDp3cyU=
+	t=1764976402; cv=none; b=miOEjdJOF1wbYPD+jRfMVtyQVxbmuwf1CR5+AyiBJjfODeXK1a9PZut6vRr9dGkjg/U7cTAglFnl0o8EmPdZiT1olM2GDl0nLQk4bOCyjzJ4DNv9JddPfJNK58Rb7yGzawuDk6pLOJqxlfkk016ydg7zMXv7NBu96bsBpcngvZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764971565; c=relaxed/simple;
-	bh=Gy8kXlMlJaAj9c2W6E2mo4ewEICl0PI32BqdFbVHrPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nWSMuFwaQxQ9t94+Lcc6in265DAPfpNZNrwdKRU3wkVtLfrCE8+xa6Gj3wV2OIulb5EX3smxl4ZckrLuKeLDke30iv/HZ8Jat2Qr6+mBj6NYQwo8InDQbDY1UiPHz8sxUIuGF09K2lTpIbuLxejf31D9HFMW4xIJPzuSd6mUhJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=CAkob2Ot; arc=none smtp.client-ip=37.27.248.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay10 (localhost.localdomain [127.0.0.1])
-	by relay10.grserver.gr (Proxmox) with ESMTP id 9FA8941D10
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:34 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay10.grserver.gr (Proxmox) with ESMTPS id 9A5B541D24
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:33 +0200 (EET)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id 7CC801FFF00
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Dec 2025 23:52:32 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1764971552;
-	bh=3UAowdJhz6D1DELEqX2ykhk5IO1dnEu9/WfYQBTzn3Q=;
-	h=Received:From:Subject:To;
-	b=CAkob2OtfN8vIklGhHpmvnd9K69qe9aTV1REo5wwZtXvRGkANNzRfax2IKbXM60ev
-	 aLgfjg0fgNihwMFPQZuMwQDIaUj8Ijrl5SoG0ah9wDfsESJOYZoxaS8mgcD0fY8XB4
-	 QTNiI8IGEzIwxIfB0TELBm0nIw84JMTk1bIIt3QOc4prrgctQ/WnTvhC9d3PBXDXf0
-	 1TGsT3AjdjCC+Zr86eV/Uael9qsDiW/OHAUz91wltQYp5wtrdCMx6xvJW+jHmuF+Jc
-	 gptukSVZAVr3HvkfN92UUZ0i+VWNKUBAFWXslu+II/1tWm6W4o6a5KLer81tSItj9q
-	 3GPMr5hsdTdYw==
-Authentication-Results: linux3247.grserver.gr;
-        spf=pass (sender IP is 209.85.208.172) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f172.google.com
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f172.google.com with SMTP id
- 38308e7fff4ca-37bac34346dso18066301fa.2
-        for <linux-acpi@vger.kernel.org>;
- Fri, 05 Dec 2025 13:52:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCVFe2puHF5zihCn8ApWBjaxCJZrUflJXQhXGeXyYjdKiZv6871olRGi6r8rCqoselrOXauOWFPYwFmy@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEis9u+o6Qu4AqRrRQOgYw3GimRK1v5O2r0g/AthPtQeDVX2Ym
-	1KKv0Ipu2SSxAvdqxreNfkCI96037LZPlk3PhI900Z8uX2uSqPFp4tiUy0A+6GsjHoxIWUm2Pf2
-	bH/3PAXMNppNX8JNetTXKd/JbcNWohDY=
-X-Google-Smtp-Source: 
- AGHT+IGv+mOn61SuwyDf63TJcNGa2/QoVmGvyUOAnKBMsJNjfBnA0HksUK2DWtEpBRxNypZLRJdFpdQJsmNdMAGVY/c=
-X-Received: by 2002:a05:651c:2223:b0:36b:3a21:9c04 with SMTP id
- 38308e7fff4ca-37ed83c38d1mr1789651fa.36.1764971551966; Fri, 05 Dec 2025
- 13:52:31 -0800 (PST)
+	s=arc-20240116; t=1764976402; c=relaxed/simple;
+	bh=Z2TnggYnSPNTQQA0qeFMaIKiMc/QIExFwLuHda2smVU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kbyOHWgPcWnIcSHmHtiYQ0ZlPzbOnXcNKxCO4Fg0cQafj++rObw1pnbdMgV3IsiDmZvAAJkJEl3jvafI5EjDz9TEbQo4fV0tXxqQBkSmFqhaAn51t2KuOKmRcZYJPGTomaciYPUnXpac9zFyIG2xvR5o9rwARb+8MoZHiwhUNYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=By68nouB; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5959105629bso2776264e87.2
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Dec 2025 15:13:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764976398; x=1765581198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ok3XVC2kEB7d6LX2W7MFJKuf7Db93yAzAqWhVXvqPiI=;
+        b=By68nouBGABZzZpDHHPfiQKoWSJIfkh9HRFeKVufKIhFcf/6Nfi7+gl50e75zXgh9J
+         up9YTfO5T6MeQSqtFwTgm+PjOUVIj8AuX/tuMgoSjBBPY89tDxsFFGJgC6sDFlGSISXl
+         teZQYe5X1vaFL52WoTZqrDs2tHmLS8btykVC8U0Scz7LAGA/kXFXshUt7b4XPk2G8ybs
+         /tdb6xEuF09fB7POS9v+IWuWb/puLOVWKU/1zffiTdNnaqK+wq/waqirFHn4A8F7rIx6
+         1qIXQpN4E8X2iE1uVy3KFgWKxVhMfOYxE0qXuXFOgnuyOXJF620Jlda5Q5eMCZAfLrIf
+         0ZZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764976398; x=1765581198;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ok3XVC2kEB7d6LX2W7MFJKuf7Db93yAzAqWhVXvqPiI=;
+        b=VU/2FFTXz+VwMStoOBnFbjVRbuCbsq/r1u8ly+D0vVc3oX9+YZDGBZ4dH7LAQ9xtLK
+         o1HdCXHUSnLDiP6qkW/caAsnVX1tB1PESmqavisQEfsWf0l2yUImUUzD9XYrLSFJ2l6g
+         G85d7wTIGaUCsrpIsKaaOS5ni6t5SseCPcpBdS9VO/OQfvbrYoi4EM4hudZdqXpaZt07
+         4JITzzIN+elMDqY+QAGL/oC+bVIp7ZDuemVV/Agy/5s7XwXAvlX4t7HdD5k0EGNQJ1kk
+         BZN91c5Uiq+2H3q4kC3CpIdYSr1AauZslJ5A2lCb1JFOtEkifii1eAVnuVhHGYw1bDZw
+         HdVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu6ksKrlJvXsQ6pCQ3c777CufHPwiGLWjoH/GhM14dfKOp6z2p2MG9AaMooSiv5tCmZTsk3cAo0IkH@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTuvdKkItpq87y3dJn/Od8WvN3sHagOWwf2Z6zTHygqP9WGoNH
+	TvlpS90ladV4wv5NrTLdlDZUuMWbo+e/q3TOmWwhQjrFeoHEIxhyHlqO
+X-Gm-Gg: ASbGncsx9fotNIRgzk2kbf2k5NWeEM6ZJCcc/PBrIR3IJjzSpzefB15IKuG6owe8+UH
+	TWanHuu+OIHvisffCgNR5pD87DHOryYsEq0QPegL1L31AQOabepMgVRh4joGwf+z1hA4rfMFZhv
+	3WdkqJRXVeNl9sNmAqvgbUfz+iWEoS5FezwufK6I0SagHZKXcnDhbuUAXFcEC0rqyz/1o0JPysM
+	m4ziLRASE1Og/997675NT7H5xSTTRWwmW7YIS7cCUwbeoMYmCJHT/EjKqpGIqMouKtEtGO7cnL5
+	S6w0U7byqab+ByM3lVLESXqzy6LGbhxMGeI4H2KVaZIpqNTEnK9gla3zikJ3WUKhMHwHfsx4g+Q
+	9C2BC7lcu8KRxbDaEH8MiRVi+B26AmMSLBLy0j5q7wrVXgVn1XjDv40inXP6UVGm+DlGYexpQpn
+	9Eplgi22DyBPZJ7IhvgT4=
+X-Google-Smtp-Source: AGHT+IHw+siol0Y/HCUauT594fFSjA/LYfEXRKCDELP7T7smqU9LZ6s7uqmUidrRDZEZmBY4flxMEA==
+X-Received: by 2002:a05:6512:2353:b0:595:8200:9f7e with SMTP id 2adb3069b0e04-5987e8af414mr145380e87.20.1764976397518;
+        Fri, 05 Dec 2025 15:13:17 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-597d7c1e2efsm1918614e87.56.2025.12.05.15.13.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Dec 2025 15:13:17 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: Mika Westerberg <westeri@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: regressions@lists.linux.dev,
+	Dell.Client.Kernel@dell.com,
+	Mario Limonciello <superm1@kernel.org>,
+	patches@lists.linux.dev,
+	Askar Safin <safinaskar@zohomail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780
+Date: Fri,  5 Dec 2025 22:32:42 +0000
+Message-ID: <20251205230724.2374682-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
- <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
- <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
- <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
- <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
- <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
- <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
- <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
- <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
- <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
- <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
- <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
- <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
-In-Reply-To: 
- <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Fri, 5 Dec 2025 22:52:21 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
-X-Gm-Features: AQt7F2r-5RHO_GkdaD6U2JOuJlALmfz1LAKY1-obKC5J9hba48yhViZDyK2YIdw
-Message-ID: 
- <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
- interface
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mario Limonciello <superm1@kernel.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
-	kernel@collabora.com, linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
- Xaver Hugl <xaver.hugl@gmail.com>,
-	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>,
-	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org,
-	Lennart Poettering <lennart@poettering.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-PPP-Message-ID: 
- <176497155274.112359.16671564883728146892@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-On Fri, 5 Dec 2025 at 21:06, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Dec 5, 2025 at 8:42=E2=80=AFPM Mario Limonciello <superm1@kernel.=
-org> wrote:
-> >
-> > On 12/5/25 1:37 PM, Rafael J. Wysocki wrote:
-> > > On Fri, Dec 5, 2025 at 7:07=E2=80=AFPM Mario Limonciello <superm1@ker=
-nel.org> wrote:
-> > >>
-> > >> On 12/5/25 11:22 AM, Rafael J. Wysocki wrote:
-> > >>> On Fri, Dec 5, 2025 at 5:47=E2=80=AFPM Mario Limonciello (AMD) (ker=
-nel.org)
-> > >>> <superm1@kernel.org> wrote:
-> > >>>>
-> > >>>>> I would start with the graphics stacks and teach them to
-> > >>>>> runtime-suspend the HW when the displays go off.  No firmware
-> > >>>>> notifications are needed for this to work.
-> > >>>>
-> > >>>> Well the problem with this is there is a sizable latency to runtim=
-e
-> > >>>> suspend hardware when displays go off.  For example you would need=
- to
-> > >>>> redo link training when you spin the hardware back up.
-> > >>>>
-> > >>>> What we do today (AMD *dGPU* centric) is runtime suspend the hardw=
-are
-> > >>>> when no displays are connected and nothing else is using the GPU (=
-for
-> > >>>> offload purposes).
-> > >>>
-> > >>> The latency problem can be addressed by using autosuspend instead o=
-f
-> > >>> synchronous suspend.  Just set the autosuspend timer when displays =
-go
-> > >>> off.
-> > >>
-> > >> Sorry I probably confused the problem by saying latency to suspend t=
-he
-> > >> hardware.  That doesn't matter.  It's a problem of latency when they
-> > >> *come back up*.  Let me give a hypothetical that will demonstrate.
-> > >>
-> > >> Let's say I have the following:
-> > >> * Desktop with a dGPU connected to it.
-> > >> * My DE has a setting for compositor to blank the monitor after 5 mi=
-nutes.
-> > >> * My DE has a setting to starting system suspend after 10 minutes.
-> > >> * You set up auto-suspend on the dGPU for 15 seconds.
-> > >> * No non-display work running.
-> > >>
-> > >> You walk away for 6 minutes.  The dGPU will have entered runtime PM =
-from
-> > >> the auto-suspend.  You come back to the machine and you wiggle the
-> > >> mouse.  Because the dGPU was auto-suspended you gotta wait for it to
-> > >> spin back up, you have to wait for link training again etc.
-> > >
-> > > Yes.
-> > >
-> > >> This is pretty much the same that would have happened if you walked =
-away
-> > >> for 10 minutes now!  Your "5 minute blank monitor" turned into "5 mi=
-nute
-> > >> turn off dGPU".
-> > >
-> > > Well, the wakeup latency is the cost of saving energy.
-> > >
-> > >>>
-> > >>>> On AMD APU we don't use runtime suspend.  If you ignore the latenc=
-y I
-> > >>>> could see an argument for proxying the status of displays to indic=
-ate
-> > >>>> runtime suspended, but I don't know what it really buys you.
-> > >>>
-> > >>> Well, the lack of runtime PM is a problem and I don't see how it ca=
-n
-> > >>> be overcome easily.
-> > >>>
-> > >>> The main issue is that when the system is resuming and there is no
-> > >>> runtime PM support, the device in question must be powered up durin=
-g
-> > >>> the system resume flow.
-> > >>
-> > >> I don't think this is actually a problem.  The reason is in my below
-> > >> comment.
-> > >>
-> > >>>
-> > >>>>> Then, I would teach
-> > >>>>> graphics drivers to leave the devices in runtime-suspend if they =
-are
-> > >>>>> runtime-suspended when system suspend starts and to leave them in
-> > >>>>> runtime-suspend throughout the system suspend and resume, so they=
- are
-> > >>>>> still runtime-suspended whey system resume is complete.  I'm not =
-sure
-> > >>>>> how far away graphics stacks are from this, but at least some of =
-them
-> > >>>>> support runtime PM, so maybe the fruits don't hang very high.  Wi=
-th
-> > >>>>> that, you'd just need a way to trigger a system suspend after a p=
-eriod
-> > >>>>> of inactivity when the displays are off and you have your "dark m=
-ode".
-> > >>>>
-> > >>>> I think even without kernel changes this can be accomplished today=
- with
-> > >>>> userspace.
-> > >>>>
-> > >>>> There will be change events when the displays are turned off and y=
-ou can
-> > >>>> listen to and set a timer to enter system suspend based upon how l=
-ong
-> > >>>> they are off.
-> > >>>
-> > >>> True, but that's just about suspending.  To avoid powering up devic=
-es
-> > >>> on the way back from system suspend, runtime PM support and
-> > >>> integration of it with system suspend-resume is necessary.
-> > >>
-> > >> Yes and no.  For most device types I would agree; but the compositor
-> > >> controls DPMS on each CRTC which impacts whether anything is display=
-ed.
-> > >>
-> > >> If the compositor chooses to turn off the displays the GPU hardware =
-will
-> > >> remain active but display IP will be off or in a low power state.  T=
-his
-> > >> will still have significant power savings by the displays being off.
-> > >
-> > > OK, so you basically want the GPU to avoid turning displays on during
-> > > resume from system suspend if they were off before the suspend
-> > > transition has started.
+Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+after, say, 30 minutes.
 
-This is already the case for AMD. For Intel, it's more complicated...
+Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+Reported-by: Askar Safin <safinaskar@zohomail.com>
+Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+Cc: <stable@vger.kernel.org>
+Tested-by: Askar Safin <safinaskar@gmail.com>
+Signed-off-by: Askar Safin <safinaskar@gmail.com>
+---
+ drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-But it is true that it should be handled kernel side. I also think
-that it was fixed for hibernation, again for AMD, already.
-
-> > > This still needs to be handled by the GPU
-> > > driver in the kernel IIUC.
-> >
-> > Yes.  To be clear (in case you didn't see from my comments in this
-> > thread) I'm not a fan of this being a userspace interface to the LPS0
-> > screen off.
->
-> So we agree here, good.
->
-> > I feel if this state is to exist in the Linux state machine this should
-> > be DRM core entering it when displays are off.
->
-> Something like that.
->
-
-Why should unplugging the HDMI cable from my desktop or changing
-display configuration cause the case RGB/keyboard backlight to turn
-off?
-
-I will reply to the earlier reply from Rafael with more context, but
-runtime suspend of the GPU is not part of or related to these
-notifications.
-
-CRPC DPMS latency is higher when initiated by userspace instead of the
-early resume hooks of the kernel and adds wake-up latency. Not being
-able to fire the intent to turn display on notification as part of
-early resume to boost the thermal envelope also adds latency. Both of
-these issues, while not related to this series, are a valid tangential
-discussion and center around the fact that the kernel cannot classify
-certain wake-up sources as being able to turn on the display
-currently, so it can make a judgement call itself.
-
-Antheas
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+index 7b95d1b03361..a0116f004975 100644
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -370,6 +370,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_wake = "ASCP1A00:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups, likely from touchpad controller
++		 * Dell Precision 7780
++		 * Found in BIOS 1.24.1
++		 *
++		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
++		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
++		 * released on 11 Jul 2024
++		 *
++		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
++			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "VEN_0488:00@355",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
+ 
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449 (v6.18)
+-- 
+2.47.3
 
 
