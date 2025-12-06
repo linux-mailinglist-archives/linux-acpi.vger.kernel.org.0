@@ -1,151 +1,118 @@
-Return-Path: <linux-acpi+bounces-19467-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19468-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC118CAAC44
-	for <lists+linux-acpi@lfdr.de>; Sat, 06 Dec 2025 19:35:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D15DCAADAC
+	for <lists+linux-acpi@lfdr.de>; Sat, 06 Dec 2025 21:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB4D830198E4
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Dec 2025 18:35:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BBA513005A64
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Dec 2025 20:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74E92C3260;
-	Sat,  6 Dec 2025 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385E428640F;
+	Sat,  6 Dec 2025 20:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I/Hn6TT8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzlsifMz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1DD2765C3
-	for <linux-acpi@vger.kernel.org>; Sat,  6 Dec 2025 18:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102411B0F23;
+	Sat,  6 Dec 2025 20:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765046110; cv=none; b=o+kK1Fh6u9OCSV8zu3Ju8DXnYdYEG4+zbxv7O6qIlIbNN5C4SfoSzmQbVjTzNTlxl9RL91K75ajG4+d4sh8klWypR7+xS0qE6wlRc90jTbPL9jezUB4HjhsfYqtzLrnFrCR9Y8xjNhYz6RDwn8wzl8Q9q4rJ71KCsD64dnId8Sk=
+	t=1765054252; cv=none; b=WwWRypDoBX2KRQp3QcuWBCtL2pBp/o6YFzDWFhn+K7O43r/Jv05EYA/5XvevYMsZqbFdTJwxBo7l88HOONYG/pksHdT0zgsD40T7vRCTNQuwwUk1eXmpJsG5iSHH9uuCMhJFRIdCsg7k66dMZ/WBIE7DCbrTO+6w56n+6o3B3iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765046110; c=relaxed/simple;
-	bh=2Xj9BvX5DJCNWMWbbzPbSZXRdRtJu6wOg59n92iAbNY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pge5hu6+dtGlvVsdDQzMg8OIV7jyQdwOStqyvH2ki5Tdd6YEHrakwyXH3YJedulINsu7FzRO5UM9cOH41a5B9qgwo1L8k9Z1tc+jL/iSnkciw/rLuKPhoXHmugb+OXdg/FyGSaIdL/z6/0JjMG384CHVGWbDIzYhUO1RzQCxIiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I/Hn6TT8; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-594270ec7f9so3598028e87.3
-        for <linux-acpi@vger.kernel.org>; Sat, 06 Dec 2025 10:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765046105; x=1765650905; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yBbB448ht3hgqVqiqj9wAU25sZQEfiyetfXCLvEq3so=;
-        b=I/Hn6TT8iLH4JVy9MgQdBbonERZmmt6dv3kMvFnvwEmcPegq4M3EyZuAM93KgRYKeg
-         Au2WWmCwvJ5sLJI2dVdRocT+9MYZIqUjOaqL870wu350DpWHKujPJJxd5FhiCHZkU9Uy
-         ueCStBtDHPhN85XWZ8SPCEkqbMF/U8Y9rrtGANJ/tUH9/5+P6zMaIWJsZQThKRTy4UKh
-         krzI8iPj6xYcEo7gnNawrr46QdPR6cJet4d7kvCxySUof6nC2QLIG1c8TQpErBsx70xF
-         sDk1m1xBNMbyawGYD2+rMFsbeMCUgHAwbFcYn+Zz6HZHjHXhGAXHSgKwxm9UKJnHaO6U
-         f1rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765046105; x=1765650905;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yBbB448ht3hgqVqiqj9wAU25sZQEfiyetfXCLvEq3so=;
-        b=dhiOQIRzLE3E0eC3Dv2KX2rm2ArnRzVmdD/YW6BahvewbPobFQ2mez2H60MTuIVAHt
-         H0kwk+JL8RT/5yIWX6t6fM0BsT986mcSO5Lr1c4ttdHMYlBqVjrB9zLzCw7cgypYvyBc
-         N2eMVBYQUnrIkGz3iNqdCzxu8JEUakDPiuQjyOWhiqhimx91KnBuC80/7qphsqhIeTK7
-         fCa9PkEcaQ6AXLgnDR8ZoYa3tTZCHVZMSZ/TCtI1bO+DmILZFMhUKeDZIp9QZTfkWeve
-         2z7QrNLbJjJBdC24EygvigaRxmR69OG5OpO2rwUpvgZXRT/H/FW0gHjRdUQwHYpNcagX
-         U9aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2CBmPG+kb35vH4r0YlWsAYncY5RrmuK6nj4jqh9pB6fsZ5ET+i6qk+mmlGQTq3vG9Wu2HzCfoFWnu@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWWJ2Dp/5rA+gsnF+fd76yqJgZ64M0cAic8KiuNew+eNI/UBp5
-	lLb10uejQu6vqubbFjaHC2Z//VSMR+VAElQvkMxHVrSYaSkyV23GEDOo
-X-Gm-Gg: ASbGncsFP4mfXEtP/BXEvYu7cCUGqWdeDD+7cU6zYAUNaWa409b95nTUKzvuVtQYDyq
-	NSM6eBM3kciwAM0wWIyQ3OD42GW9JelxrAxNvYj6F7Gmo3eSIcat8EhbmRH93pWnhNuV4BfmLN1
-	39vQBgJeIsuNepmVtdTUMileU71E2HzI/HcBntJ0TNVwO7KY6AaUQvmJqIp43ACkpFvbbwcvGcy
-	djv6ZUFCcgAIZ85Tn07GTGRl1ED0LWWrzCLvQ/3MAxEaWcOLmzsQfN4tAjzgxoPBAt5Z5NQRHGu
-	0vXNLkLA08xihpCW83RiV+m5PIZ9+TyZ+6j9+4cWAr6GEct4tEpUDZTXrz2JvUCheGpi6lRVVZO
-	V7aTFCCyfXvnIhz23EbqkZgNNr7WcCV3rQe2Gh3xEATYcpX+IBlB03rO+vJDmx4VKkz1wDYcac9
-	LSBzOqHtMw
-X-Google-Smtp-Source: AGHT+IHnxnTE4IQRpHLhybpHqVatvtv9+syN2SM1jyy7DP6ZE+rzLXHDgj4+p7nmI+TmaroB84yRhg==
-X-Received: by 2002:a05:6512:1113:b0:595:81ba:fb4 with SMTP id 2adb3069b0e04-598853c54e7mr893651e87.47.1765046104377;
-        Sat, 06 Dec 2025 10:35:04 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-597d7c31520sm2588902e87.101.2025.12.06.10.35.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Dec 2025 10:35:03 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: regressions@lists.linux.dev,
-	Dell.Client.Kernel@dell.com,
-	Mario Limonciello <superm1@kernel.org>,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/1] gpiolib: acpi: Add quirk for Dell Precision 7780
-Date: Sat,  6 Dec 2025 18:04:13 +0000
-Message-ID: <20251206180414.3183334-2-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251206180414.3183334-1-safinaskar@gmail.com>
-References: <20251206180414.3183334-1-safinaskar@gmail.com>
+	s=arc-20240116; t=1765054252; c=relaxed/simple;
+	bh=sRnFIg1VrYNqYjDurSHX00/GOt5sT0Dy1tFsDVtl7RU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=riVQc/N/uR3iFSlxK4T8LS8UZAbM4sCQRsk0wzZ9O751sH9/zvf+dusBKh60UgOJL89PXd2VEvf6DredVwKXmdxZAR3UxOY+qBFXaYSokNGdcatGJRAeK/d4ZYKEHSwIT3PnL7/Sp8xbdq3dDQ3xs0bQyHZR+BoE667wtxWpnWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzlsifMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73445C4CEF5;
+	Sat,  6 Dec 2025 20:50:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765054251;
+	bh=sRnFIg1VrYNqYjDurSHX00/GOt5sT0Dy1tFsDVtl7RU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CzlsifMzqKBO/+z3sgnOMph+21Zi4siFLJAB2Ag5D3FCADYYGlBc5yaHOVTdilJEr
+	 6+we04suoMWewPlmHG1Q1NHELPVDO69sd8rVnIArt5jY9Gd9XcqPNBo3D3YqVUPnZc
+	 OS1+DkG2X650XDwzruBHAcFpyIIb0H6oTMNCbs2JZliya3QyNW2GR12g5NzYkU5PP2
+	 xpfhFqnVrhnkobmNgE2tne9aABgVOPqIScD2EC+pRJYTbMFHDb/1f1Vt8qBqHfugYI
+	 JdqFohiTZM6NRxaJ5vDf+BYSrcUla5bqufJLsQ/v1OPzor5QypwLgFwIwnioQHM1vN
+	 er977CNh3kLMA==
+Message-ID: <2711fe57-1963-483e-b8fa-0c5ed0bd2ea9@kernel.org>
+Date: Sat, 6 Dec 2025 14:50:48 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
+ interface
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Antheas Kapenekakis <lkml@antheas.dev>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
+ kernel@collabora.com, linux-kernel@vger.kernel.org,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
+ William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
+ Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>,
+ systemd-devel@lists.freedesktop.org,
+ Lennart Poettering <lennart@poettering.net>
+References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
+ <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+ <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
+ <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+ <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
+ <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
+ <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
+ <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
+ <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
+ <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
+ <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
+ <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
+ <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
+ <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-after, say, 30 minutes.
+>> I will reply to the earlier reply from Rafael with more context, but
+>> runtime suspend of the GPU is not part of or related to these
+>> notifications.
+> 
+> Of course it isn't.
+> 
+> What we were talking about was how to get from the "displays off, no
+> GUI activity" user space smoothly into system suspend and back.
+> 
+> You are saying that this has been done already on AMD, so I'm not sure
+> why you want more.
+> 
 
-Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
----
- drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+I'm not aware this existing in any unique way for AMD.  The decision of 
+displays off; start a timer and enter suspend would be the same for any 
+vendor.
 
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index 7b95d1b03361..a0116f004975 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -370,6 +370,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "ASCP1A00:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups, likely from touchpad controller
-+		 * Dell Precision 7780
-+		 * Found in BIOS 1.24.1
-+		 *
-+		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
-+		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
-+		 * released on 11 Jul 2024
-+		 *
-+		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
-+			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "VEN_0488:00@355",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
- 
--- 
-2.47.3
+But GPUs aren't only used for display.  If you're actively running a 
+different workload (for example an LLM) using the GPU and happen to turn 
+off all the displays you wouldn't want it to suspend.
 
+What you would want is to key off:
+
+1) All displays are off.
+2) All GPUs are unsused.
+3) Some time has passed.
+
+I feel that if userspace is going to adopt a policy like this kernel 
+drivers need to use runtime PM when displays are off and the GPUs aren't 
+being used for anything else.
+
+At least for AMD this doesn't happen today and would require driver 
+work.  But the same kind of work would be needed by any GPU driver.
 
