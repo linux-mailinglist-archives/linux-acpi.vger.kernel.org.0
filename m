@@ -1,118 +1,98 @@
-Return-Path: <linux-acpi+bounces-19468-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19469-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D15DCAADAC
-	for <lists+linux-acpi@lfdr.de>; Sat, 06 Dec 2025 21:50:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214DECAAE96
+	for <lists+linux-acpi@lfdr.de>; Sat, 06 Dec 2025 22:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BBA513005A64
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Dec 2025 20:50:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B7E53190975
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Dec 2025 21:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385E428640F;
-	Sat,  6 Dec 2025 20:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F66E281532;
+	Sat,  6 Dec 2025 21:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzlsifMz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bYLw4RK2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102411B0F23;
-	Sat,  6 Dec 2025 20:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1472C0F90;
+	Sat,  6 Dec 2025 21:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765054252; cv=none; b=WwWRypDoBX2KRQp3QcuWBCtL2pBp/o6YFzDWFhn+K7O43r/Jv05EYA/5XvevYMsZqbFdTJwxBo7l88HOONYG/pksHdT0zgsD40T7vRCTNQuwwUk1eXmpJsG5iSHH9uuCMhJFRIdCsg7k66dMZ/WBIE7DCbrTO+6w56n+6o3B3iA=
+	t=1765057936; cv=none; b=VT2M0IsTRk7wmHHSLawkOdYGnkGYdvAfqjFTfw82TjkJsAS5TUCpFMXYtjFtHziEuPGDIxI15oYHm0z2w0FntbGlCJNfnlZLOlLvwv/TEg66zh9VnPIYnWAtEigjgvZMSFTnBG7G9etPMQ3MdEuoZQPeDdLlr9ohf2NAGOCKduE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765054252; c=relaxed/simple;
-	bh=sRnFIg1VrYNqYjDurSHX00/GOt5sT0Dy1tFsDVtl7RU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=riVQc/N/uR3iFSlxK4T8LS8UZAbM4sCQRsk0wzZ9O751sH9/zvf+dusBKh60UgOJL89PXd2VEvf6DredVwKXmdxZAR3UxOY+qBFXaYSokNGdcatGJRAeK/d4ZYKEHSwIT3PnL7/Sp8xbdq3dDQ3xs0bQyHZR+BoE667wtxWpnWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzlsifMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73445C4CEF5;
-	Sat,  6 Dec 2025 20:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765054251;
-	bh=sRnFIg1VrYNqYjDurSHX00/GOt5sT0Dy1tFsDVtl7RU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CzlsifMzqKBO/+z3sgnOMph+21Zi4siFLJAB2Ag5D3FCADYYGlBc5yaHOVTdilJEr
-	 6+we04suoMWewPlmHG1Q1NHELPVDO69sd8rVnIArt5jY9Gd9XcqPNBo3D3YqVUPnZc
-	 OS1+DkG2X650XDwzruBHAcFpyIIb0H6oTMNCbs2JZliya3QyNW2GR12g5NzYkU5PP2
-	 xpfhFqnVrhnkobmNgE2tne9aABgVOPqIScD2EC+pRJYTbMFHDb/1f1Vt8qBqHfugYI
-	 JdqFohiTZM6NRxaJ5vDf+BYSrcUla5bqufJLsQ/v1OPzor5QypwLgFwIwnioQHM1vN
-	 er977CNh3kLMA==
-Message-ID: <2711fe57-1963-483e-b8fa-0c5ed0bd2ea9@kernel.org>
-Date: Sat, 6 Dec 2025 14:50:48 -0600
+	s=arc-20240116; t=1765057936; c=relaxed/simple;
+	bh=FILMRgQKN9fD9q+OVKg0dScHyxbVENaJTCPuXAeoctM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPkQrfJifVXTqzAkVOe353RwCFPLrTwEcOYc4QK+UzX384Dx3PdvQMYTkOvjXL4vbyEWATQLzfAJM3QeIp1X2hrwQQkrED32dsPKQaDQJNICTvaE2FP9C/onJCQ3m/UhRRqjW/XjspG3znelD4r+HYKcEDauAxIgteXl4pVDRIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bYLw4RK2; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765057933; x=1796593933;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FILMRgQKN9fD9q+OVKg0dScHyxbVENaJTCPuXAeoctM=;
+  b=bYLw4RK2YGXK8Zh1SNkSoEHAAFu3urvZ/C3xqrhNonzi8UYsW+O+6CoF
+   dHI+wZrIdk9LxgsEb3cKGWTf6HF+7n/h6OrX3+QUzqGlafzr1TU//fGhH
+   ZH6GMhsoef2+Q/NRm87vQ0MYds66rtPpOTTeImKTNOfjJcEx1jhg7Itby
+   tE579X7YkVlXSkm9Rwd5M+LocSyeUKXQliAkp6yAGwQG+mAoYfOsCVl4d
+   KyerWUQyALJA9mxEFtuIDGIQMNsRxFfOQvhuSQgS7N2gdH6xIyT6qxFDc
+   V31bqgpkKQjw88evn9VIx5qmX1iLBpvDbNvZhkSniY77MWhB4Q5IgAFiC
+   w==;
+X-CSE-ConnectionGUID: fy9rCIzSRtWYalgDMntRCw==
+X-CSE-MsgGUID: LoCzNmoBQuSs6lAw0XpDCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="77375336"
+X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
+   d="scan'208";a="77375336"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 13:52:08 -0800
+X-CSE-ConnectionGUID: CdZEbJFZR/WfZlXpYuN/iw==
+X-CSE-MsgGUID: YWVdeDCvRCigy88TWnw7AA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
+   d="scan'208";a="200513465"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.204])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 13:52:05 -0800
+Date: Sat, 6 Dec 2025 23:52:02 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev, Dell.Client.Kernel@dell.com,
+	Mario Limonciello <superm1@kernel.org>, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] gpiolib: acpi: Add quirk for Dell Precision 7780
+Message-ID: <aTSlgoK0PcE937l1@smile.fi.intel.com>
+References: <20251206180414.3183334-1-safinaskar@gmail.com>
+ <20251206180414.3183334-2-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
- interface
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Antheas Kapenekakis <lkml@antheas.dev>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
- kernel@collabora.com, linux-kernel@vger.kernel.org,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
- William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
- Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>,
- systemd-devel@lists.freedesktop.org,
- Lennart Poettering <lennart@poettering.net>
-References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
- <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
- <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
- <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
- <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
- <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
- <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
- <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
- <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
- <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
- <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
- <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
- <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
- <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
- <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251206180414.3183334-2-safinaskar@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
->> I will reply to the earlier reply from Rafael with more context, but
->> runtime suspend of the GPU is not part of or related to these
->> notifications.
-> 
-> Of course it isn't.
-> 
-> What we were talking about was how to get from the "displays off, no
-> GUI activity" user space smoothly into system suspend and back.
-> 
-> You are saying that this has been done already on AMD, so I'm not sure
-> why you want more.
-> 
+On Sat, Dec 06, 2025 at 06:04:13PM +0000, Askar Safin wrote:
+> Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+> wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+> after, say, 30 minutes.
 
-I'm not aware this existing in any unique way for AMD.  The decision of 
-displays off; start a timer and enter suspend would be the same for any 
-vendor.
+Bart, up to you, if you want to take this. But I can do with a usual route via
+my tree.
 
-But GPUs aren't only used for display.  If you're actively running a 
-different workload (for example an LLM) using the GPU and happen to turn 
-off all the displays you wouldn't want it to suspend.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-What you would want is to key off:
 
-1) All displays are off.
-2) All GPUs are unsused.
-3) Some time has passed.
-
-I feel that if userspace is going to adopt a policy like this kernel 
-drivers need to use runtime PM when displays are off and the GPUs aren't 
-being used for anything else.
-
-At least for AMD this doesn't happen today and would require driver 
-work.  But the same kind of work would be needed by any GPU driver.
 
