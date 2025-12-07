@@ -1,121 +1,116 @@
-Return-Path: <linux-acpi+bounces-19480-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19481-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A71ACAB7D0
-	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 17:46:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35451CABA70
+	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 23:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3492D300B34C
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 16:46:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28030300352F
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 22:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DB6241CB6;
-	Sun,  7 Dec 2025 16:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136902571DD;
+	Sun,  7 Dec 2025 22:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBir91JH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LMHD5TJw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8301C84DC
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 16:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DDD4502F;
+	Sun,  7 Dec 2025 22:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765125968; cv=none; b=rlGTRXIf3dpxvJrw/dne8mQ+7izVeWRrzJCIsJMy1SNnkvGQdDNbGJtNfRN2wUvbspESxxqnjoUG4u6fM1ZhhVYXDXGtz3pi20LXvG8zUvS/61uS4lWJQG6ywL91/UsscSHUfPcsdJbKWmTb0I4TAWWuemQOAB2HUVy3NisAA58=
+	t=1765146931; cv=none; b=RQqU831BlccQkfbFQzRC3VlbHfNK1KngPmKdMtAyDifFP8rHSF5PF1Jjyky1OSXMevzINGQ0siZK5KzBjIhl24kiXmbungT+2nuU4kex+aiu/+Prpj33mBUmPm/N7aNAehfL0b561ej/zv4f6QbCdKOzLKPW8Z+uwZnGIcU7Obc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765125968; c=relaxed/simple;
-	bh=I9Qx9n4Q79mBOZR4LXGGw10jVvLQ+xkac3lc1hwUVxg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EZUgWXcrJoPDZgqruYVJAQzhoOAvqkVXqOx/Nqq9UOwqGaWoeskAi7p3uUG5oC06crfZzLirK8SIT/BPmVmc81HBSHjSrKwaTMe1LRwe6ATmf19/NXH0dNUyBU6r2LNcyyJgmGJYbPYQMwa30NTwg79eOyxzfgIfeBxAQFwvnts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBir91JH; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-78a712cfbc0so40427477b3.1
-        for <linux-acpi@vger.kernel.org>; Sun, 07 Dec 2025 08:46:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765125965; x=1765730765; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I9Qx9n4Q79mBOZR4LXGGw10jVvLQ+xkac3lc1hwUVxg=;
-        b=CBir91JHkBNAEdojL2uT5hVYkK454TrqGILqeUbBA05z9UULrwX+ue7tzZJ1LGxDRK
-         sggrLWEpkJvwuFrzzFZd8y9zRg5nJnQ8d4rppNg39LauVtJ11jf5zRU+WXuKKy3xdh+y
-         GnOwpOGPhPslsjYOjt5c13M5BpbGBBuEYPS3EqhV7TcPOLfZxCM2F0XtM+btDZQ0Smhy
-         S0LgEhFFpAoPkiN7NE9+iyJme0H/QYPfDNx1ziv3lYNDQNMop52xI6ib/PK0VY5+Ztn0
-         RnqTAiIOvSiclU4bgeAM+zOgsVchZYeKHtVqXlIXeQQT0b+7DZJ1KhjSuMl2qu7E/o8/
-         +Xvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765125965; x=1765730765;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=I9Qx9n4Q79mBOZR4LXGGw10jVvLQ+xkac3lc1hwUVxg=;
-        b=sTkMPxBjhvyWr/s2KE4w6NwbdCghlRgGv+cEHL9wc1+DUicL8Q+FLAYCETGCRcf0OR
-         TggbLACkMqXb7T1cy6++DXsBjyZEc3ZVPi8VQPi1KxQCOu3bCvP7dJRdkXDkN+SCBhP7
-         XjwN5UOCY5uSUT3H5FQHlkHZVxoEVM0iLBDik/kc5kwywyUy29nWWSVfuz+ka0h7LRPV
-         nAmHRVwIZNr40ayNAs202mbR8Xv7W8O8wwxvdpv+sNwgaN7UXavpEOpvv7potohy+NQz
-         ATxMSVS6LldHl0ZOcg0SzPI05f5JVBkhjxbCef+kIiyEep8exrnH2BntdoI8417848w8
-         yc3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWj2zbM8YSSoYZdqWujKbTAseaktTPE49/5ITBzbVBKJ6qktTmRz6f1MscGX3UoL68T+xOYrbgsWYLo@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVhWAAUkaY7WcXPju9VJqrvFcMrAfiaB/ZllGqIkAMEtQH2PpV
-	aJcHDxewMoFNO02VfYcxk7qoR04YvBFCf/H3fAEOY7RcdRTr4oLg3XJjKrjGsiFwr5LMqq98upW
-	zUWzmlef+piq2U649qM/utSFUG20EhEA=
-X-Gm-Gg: ASbGnctNXL72vYQ3uE/DjaIJE4vqWltQ9rPMNI0IqHVUfhIZdH85zN3QzVBOYWi+Y0f
-	KmgnrxoE8DMJyXIG5YYtwDTvcUkCafh1DojtSX+8ng83gpRz/7rXJnyNPApLoI0wEuZOM7RlEo/
-	7omXTzm15eerQBwiwnW2CL586qq/1mD6Zv6ULGOXdd73XHEdX9CE6MB0y8+nHAnn75UQKxHF4Ar
-	DKN+l2alryQwVByOrvL6LJA3oZz0x7bTQD11xlf1jL8vCcBhBfUAS7slzHBXRVv9NkrK1La
-X-Google-Smtp-Source: AGHT+IFojsrwzBu58xmxqNiWONYhG9kxExBjgU7MJi2fTygt5IzjBHutS+yPKMllDxNSv0iDWafdsrpjLRVd2Us7NKw=
-X-Received: by 2002:a05:690c:d91:b0:788:bda:47e0 with SMTP id
- 00721157ae682-78c33b13875mr51874287b3.1.1765125964673; Sun, 07 Dec 2025
- 08:46:04 -0800 (PST)
+	s=arc-20240116; t=1765146931; c=relaxed/simple;
+	bh=QWkl0kwjBDtREVtvSh0+OJo95vV4EJjMAPJ7sMxTGV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwTyVYb2bIaeAWo9yYX1eGJuHmnNpPIEUwmWA3K4lEFGZ5E5ZzYdGD8PTocxF9FhbVsvk6+uZFcj2XAslkgvrwBQaEcwnmwnRHLRqFpwK/522xwLz3TMpBJxOKfReN4ONwSv7Al+m0RREdik80QOhtghNPGGhHe2iYrZJYj+1J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LMHD5TJw; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765146929; x=1796682929;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=QWkl0kwjBDtREVtvSh0+OJo95vV4EJjMAPJ7sMxTGV4=;
+  b=LMHD5TJwrcIH2qsoPt9M7ldQnH0yNZxc83FOdcuG2SuuFIeRsaGkNKhN
+   /uhrPbm9LLwfLprzv7qnqBvi3Rz/VuBkQ2a2OY8aPOEbPdrgdqlSLVH/m
+   S4T03FLn9OpqKycNTo5E00vWa72jUWf4B22Fq8v8wRuDnZFAPzxBGG3gc
+   iY9DHvsjLObC+kg5mhpuw/R9e7WVBszyOXhBaCa9u30WG62UsDE42bNnB
+   ILvQpCnnjS3/yZ11/loqzuNc9VdMpUBNZeq72Z9w3P+lLfkbFauCSLBID
+   m6mgi5PVMebNk2Ig3qupmDljOYzC7FVl7Icd0CQtmOavoKT3RPlWiv/5n
+   Q==;
+X-CSE-ConnectionGUID: ylY1m3UbR56P5cx1BeYAJg==
+X-CSE-MsgGUID: 4aVF4HhqTjCKs+NfNXbh/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67141829"
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="67141829"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:35:28 -0800
+X-CSE-ConnectionGUID: ZKmQuc7iQb2yX4tlQzpABQ==
+X-CSE-MsgGUID: yAVTPkqEQLivAU8Rru+AQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="200258356"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:35:25 -0800
+Date: Mon, 8 Dec 2025 00:35:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Dell.Client.Kernel@dell.com, bartosz.golaszewski@linaro.org,
+	benjamin.tissoires@redhat.com, dmitry.torokhov@gmail.com,
+	linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, regressions@lists.linux.dev,
+	rrangel@chromium.org, superm1@kernel.org, wse@tuxedocomputers.com
+Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own
+ from suspend
+Message-ID: <aTYBKzQXiCeIqaTd@smile.fi.intel.com>
+References: <aTLjgEVfLCot0cSm@smile.fi.intel.com>
+ <20251207040459.3581966-1-safinaskar@gmail.com>
+ <aTVUakljrd-sysxP@smile.fi.intel.com>
+ <CAPnZJGAxhXNOw1V5FTPK2Mrvu0YAPwm0Ph4UHd2aZv=kgx1qWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aTLjgEVfLCot0cSm@smile.fi.intel.com> <20251207040459.3581966-1-safinaskar@gmail.com>
- <aTVUakljrd-sysxP@smile.fi.intel.com>
-In-Reply-To: <aTVUakljrd-sysxP@smile.fi.intel.com>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Sun, 7 Dec 2025 19:45:28 +0300
-X-Gm-Features: AQt7F2qzPmg7UQ_bISru9-YSQqKjGJESrT0FY3SlqV8KJLp0EpCcDQigL4yk178
-Message-ID: <CAPnZJGAxhXNOw1V5FTPK2Mrvu0YAPwm0Ph4UHd2aZv=kgx1qWg@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own
- from suspend
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Dell.Client.Kernel@dell.com, bartosz.golaszewski@linaro.org, 
-	benjamin.tissoires@redhat.com, dmitry.torokhov@gmail.com, 
-	linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, regressions@lists.linux.dev, rrangel@chromium.org, 
-	superm1@kernel.org, wse@tuxedocomputers.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPnZJGAxhXNOw1V5FTPK2Mrvu0YAPwm0Ph4UHd2aZv=kgx1qWg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sun, Dec 7, 2025 at 1:18=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> I think nothing. It's better to try to actually fix the non-working scena=
-rios
-> rather than remove the feature completely.
+On Sun, Dec 07, 2025 at 07:45:28PM +0300, Askar Safin wrote:
+> On Sun, Dec 7, 2025 at 1:18 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 
-OK.
+> > I think nothing. It's better to try to actually fix the non-working scenarios
+> > rather than remove the feature completely.
 
-> P.S.
-> I'm sorry, but why are you so eager to remove something? While in many ca=
-ses
-> removal of (potentially dead or unused) code is considered a good thing, =
-it's
-> not always the case.
+> > P.S.
+> > I'm sorry, but why are you so eager to remove something? While in many cases
+> > removal of (potentially dead or unused) code is considered a good thing, it's
+> > not always the case.
+> 
+> Removing code is easier than writing new code. :)
+> 
+> Speaking of initrd, I tried to understand Linux init code a long time
+> ago (out of curiosity),
+> and so I wanted to remove initrd (to help me understand the code).
+> Also I saw initrd
+> deprecation notice back in 2020, and I decided to send a patch for its
+> removal back then.
+> But I got time for this only now.
 
-Removing code is easier than writing new code. :)
+The initrd support is scheduled to be removed in Jan 2027 IIRC.
 
-Speaking of initrd, I tried to understand Linux init code a long time
-ago (out of curiosity),
-and so I wanted to remove initrd (to help me understand the code).
-Also I saw initrd
-deprecation notice back in 2020, and I decided to send a patch for its
-removal back then.
-But I got time for this only now.
+-- 
+With Best Regards,
+Andy Shevchenko
 
---=20
-Askar Safin
+
 
