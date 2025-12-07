@@ -1,73 +1,54 @@
-Return-Path: <linux-acpi+bounces-19475-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19476-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2393CAB381
-	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 11:35:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D32CAB3C4
+	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 12:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 293433003129
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 10:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00A6730402E3
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 11:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563C727E7DA;
-	Sun,  7 Dec 2025 10:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2504D2367D5;
+	Sun,  7 Dec 2025 11:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="MYr4Ij4o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erBHnkGs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay14.grserver.gr (relay14.grserver.gr [157.180.73.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DFD224D6
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 10:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.180.73.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F320C1E832A
+	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 11:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765103703; cv=none; b=Cj+th+yRjq1OckJgkO5KHsCG8ZzM7s1Fz1S7iLaBB13o8EoE2EDDOn3xNNGm0aclb2BVESn7aa+I8rTKuap+g/f5KgVVWVBUtuQi5GxDGrh3CNbwlG2myz2mvrvGFdEjS2eg/pM2M5OLsWdE/JrOrx5EdjCxeDiNyS5A2vWn2ic=
+	t=1765105627; cv=none; b=bkewUrzlWkcyB5bXpa8fLGtctTHG8p6Y4fWLZQi1GeejIaxHUAiuMqva2cFpFoOMtvETfJSMl7nGoB/K69aB5mzwoI5RxK0DFgLop299LyWZbXFl1Yv7ui7RtDh+HbkMvgi45+xZBEI0aeghm5My2z3guefH7EU9TpXoaVPqphU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765103703; c=relaxed/simple;
-	bh=mgyG1fpaqMqjMtYTE6CAYYckEfJMe+xXDzbqF6w2b7E=;
+	s=arc-20240116; t=1765105627; c=relaxed/simple;
+	bh=75IvYYZOlmSYw80cXu2quom+DEZx4LJh1Ew7AVU9kkg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sqCrYRWVuNZ8vzSdUgjHm/qShz21aN9qbbAV5a+HHphpf3cPoZtKcRON//XWY3cjnkDuQfayJDGBvpEiiTHaQAY1UcccG7f2BohShusAFKJUIm0U6RFIjdCKlP73iFhc+snaH2NcTsX4zfiKC9jBSDOq2+opmYKCwAaaDl40e/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=MYr4Ij4o; arc=none smtp.client-ip=157.180.73.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay14 (localhost [127.0.0.1])
-	by relay14.grserver.gr (Proxmox) with ESMTP id 4A92B43DC9
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 10:34:52 +0000 (UTC)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay14.grserver.gr (Proxmox) with ESMTPS id B950343DD0
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 10:34:50 +0000 (UTC)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id CA55B200A55
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 12:34:49 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1765103690;
-	bh=cVsRfrbkWrWZzWtWrdGAsPLanpgkNC/Z6Yej7PPZ2aE=;
-	h=Received:From:Subject:To;
-	b=MYr4Ij4o6Wdb2VVWEeyAYKojhIvPb2NhFU6LO2Hq6JpMsivXhuYERLqnPmGmMHssq
-	 AWEBeFS2VRXefuLa7jNw1/9lvqJHHjjPYxUTLP47il/nz9xSVESR7tMwCIvx6Taw2D
-	 LzIakL1Ik++hT613G2ocd2mMdvyNgIv5syYhh89Q6A3IB5daJwZlsebtTQSUZX6wMF
-	 6vA/dmljfZ5SQggSD+5Spz0TT88GzsuwAbpEYYab5GCeqhrXkcNVyaUH09qonqWcqm
-	 u34dzsAs+xAkuanc9aZq2nq2OazqoWqC1YtlLrjZDW0fpa70ehL/I8/z8UsGN+kVtn
-	 cK5bqNzrFz2wA==
-Authentication-Results: linux3247.grserver.gr;
-        spf=pass (sender IP is 209.85.208.170) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f170.google.com
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f170.google.com with SMTP id
- 38308e7fff4ca-37a33b06028so31604221fa.2
-        for <linux-acpi@vger.kernel.org>;
- Sun, 07 Dec 2025 02:34:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmm5iCbDGB+dpkFDXxn9ZJ4MB/8mRbCFw+9Ir1D+Hp6srbFZY94E2Tx/GgTe3lDDgdyELeKGexXdcD@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4KGa9hydh02zSvsIREqc80GStm6A1QffSbF4OQ9NNduQJbPd9
-	4OEoaSvec1Ks/K80XuxKfIH4G03krNHnvgMTjtNLZivWzzZVL2MoYxxOOysIb1RkGXakz8voYlN
-	mXKLhULFbEeECtL3sqmm/t/GmijV7UP8=
-X-Google-Smtp-Source: 
- AGHT+IFrJ6yPsZgphHuetUZSMTCEXTxI5XtzRplIvOIlz5DM0DpnYqF4WZ8QNFvW4q/jXmgbHOapzbBSj/Bia2QQi24=
-X-Received: by 2002:a05:651c:212a:b0:37b:ad8b:7680 with SMTP id
- 38308e7fff4ca-37ed1fba423mr13158471fa.9.1765103689145; Sun, 07 Dec 2025
- 02:34:49 -0800 (PST)
+	 To:Cc:Content-Type; b=TfM2oRUa6uKtOHFetsulzrZbm7k3ZKcIPLX0W5n9Ccogur3bbA1dRGa9yhlercy8W2zMNsHSHxfgcgTOnpiCuZBKOLM6X/WOel8I3sbUJyGAOeFXq7ambEePYhUQBd1guCiXdDaUINQ7SL2tsC1g+9eLtFZacL+xkipiDxlQQkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erBHnkGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72012C19424
+	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 11:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765105626;
+	bh=75IvYYZOlmSYw80cXu2quom+DEZx4LJh1Ew7AVU9kkg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=erBHnkGsAKzwB2PlBhAJH8eYjj97C/pnJmCsvYZhybB6by7ypUht/6lAuVRPQY89Y
+	 BSt3urv8JDoDK8hKBB/RowBlmKgYNSduC/KDJNVqazDxkaaG7URQDRMSFkOYxdCOTS
+	 XzJ+KWx1lNYzeHiRBpewspqjJ8sY5t2ot2rGCxvrYcJkzV/HZ0oWyvaQus97nqZKOj
+	 V1ZuJPRtpGh1vDe/RsPWRV7gLUyXAg5mRBf1px12OFIAatVPKS4rslAWGbECgWAtS9
+	 +PR+5f67Gfxey14u/bEgqM6T1p2L3LmwbZexEyfrdHMsq6hGLDnNzruQu3rlKLkGIh
+	 mmQMITdMxPp4Q==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3eae4e590a4so1720365fac.1
+        for <linux-acpi@vger.kernel.org>; Sun, 07 Dec 2025 03:07:06 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVSKa/DcYz4gQnbuXtQ8rCyYcWhtzocT4nKCOjvmAANlihcgk8+jam55FCrsgmLETtdR617dz5zy7KB@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZJhCgU2+U1k2sQtSdnLPKCAY7xSpPTBXx8K22EVRpOZXhWpUn
+	DxaCcFoO+NSpCmDA3iejRanAuV/FLxseLOkqGhi0/7PMtV9AwG6+wvPiJtqO2tc9hJ4g6e54ZH/
+	lGwzAkVVI5uutAw+aWUFWtpG3rbyvxM8=
+X-Google-Smtp-Source: AGHT+IGpUVMOs2vICJEU2c6I4+aXguD/8TSdOIk/NeFcup/UIYb40gHW6I1+luajliEnFtl763ZmzoQAHHWvtMMCKhA=
+X-Received: by 2002:a05:6820:2d0c:b0:659:9a49:8e43 with SMTP id
+ 006d021491bc7-6599a8c7b41mr1853216eaf.19.1765105625689; Sun, 07 Dec 2025
+ 03:07:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,217 +56,190 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
- <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
- <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
+ <20251202043416.2310677-2-dmitry.osipenko@collabora.com> <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
+ <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com> <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
  <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
- <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
- <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
- <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
- <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
- <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
- <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
- <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
- <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
- <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
- <2711fe57-1963-483e-b8fa-0c5ed0bd2ea9@kernel.org>
- <CAGwozwEp3Xc_pv-YGb_Xc46CcLKPppYaZbphV24kiNHM4Eqb-w@mail.gmail.com>
- <edfc3586-84fb-4dee-a047-9f204054e6f2@kernel.org>
-In-Reply-To: <edfc3586-84fb-4dee-a047-9f204054e6f2@kernel.org>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Sun, 7 Dec 2025 11:34:36 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwHUvxSY+qMVzid+0a6CoUZ96Pw1xeKMAem+1o=N23xbqg@mail.gmail.com>
-X-Gm-Features: AQt7F2rs0MKc9G60Yyu5Vh3YaojS3NnTZWk5-4eyv4i3Ogyhu2T-VTU4ahpQTLU
-Message-ID: 
- <CAGwozwHUvxSY+qMVzid+0a6CoUZ96Pw1xeKMAem+1o=N23xbqg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
- interface
-To: Mario Limonciello <superm1@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
-	kernel@collabora.com, linux-kernel@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
- Xaver Hugl <xaver.hugl@gmail.com>,
-	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>,
-	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org,
+ <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com> <CAGwozwHd5196hr7Ckvh9wVJiyw0MBUriz+oqNWhOSkEYbCVMtQ@mail.gmail.com>
+In-Reply-To: <CAGwozwHd5196hr7Ckvh9wVJiyw0MBUriz+oqNWhOSkEYbCVMtQ@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sun, 7 Dec 2025 12:06:54 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j71mic4y2+TjZyNKe6NbSA8B74WHdyh_AxC-rZkQND5A@mail.gmail.com>
+X-Gm-Features: AQt7F2qDeWzH1vFUMAEm3D9-aoMlcZR4alseErKCbW48-he9qpa7bPQGX3k2_1M
+Message-ID: <CAJZ5v0j71mic4y2+TjZyNKe6NbSA8B74WHdyh_AxC-rZkQND5A@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs interface
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+	Mario Limonciello <superm1@kernel.org>, Robert Beckett <bob.beckett@collabora.com>, 
+	linux-acpi@vger.kernel.org, kernel@collabora.com, 
+	linux-kernel@vger.kernel.org, 
+	Sebastian Reichel <sebastian.reichel@collabora.com>, Xaver Hugl <xaver.hugl@gmail.com>, 
+	Richard Hughes <richard@hughsie.com>, William Jon McCann <mccann@jhu.edu>, 
+	"Jaap A . Haitsma" <jaap@haitsma.org>, Benjamin Canou <bookeldor@gmail.com>, 
+	Bastien Nocera <hadess@hadess.net>, systemd-devel@lists.freedesktop.org, 
 	Lennart Poettering <lennart@poettering.net>
 Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <176510369004.3884695.16878602246312218646@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
 
-On Sun, 7 Dec 2025 at 01:31, Mario Limonciello <superm1@kernel.org> wrote:
+GMail did something silly to my reply to this message, so resending it
+in case it didn't make it to the lists.  Sorry for duplicates.
+
+On Fri, Dec 5, 2025 at 11:52=E2=80=AFPM Antheas Kapenekakis
+<lkml@antheas.dev> wrote:
 >
->
->
-> On 12/6/25 5:35 PM, Antheas Kapenekakis wrote:
-> > On Sat, 6 Dec 2025 at 21:50, Mario Limonciello <superm1@kernel.org> wrote:
-> >>
-> >>>> I will reply to the earlier reply from Rafael with more context, but
-> >>>> runtime suspend of the GPU is not part of or related to these
-> >>>> notifications.
-> >>>
-> >>> Of course it isn't.
-> >>>
-> >>> What we were talking about was how to get from the "displays off, no
-> >>> GUI activity" user space smoothly into system suspend and back.
-> >>>
-> >>> You are saying that this has been done already on AMD, so I'm not sure
-> >>> why you want more.
-> >>>
-> >>
-> >> I'm not aware this existing in any unique way for AMD.  The decision of
-> >> displays off; start a timer and enter suspend would be the same for any
-> >> vendor.
+> On Fri, 5 Dec 2025 at 17:32, Rafael J. Wysocki <rafael@kernel.org> wrote:
 > >
-> > AMD retains CRTC DPMS state from userspace to s0ix currently, and you
-> > fixed hibernation recently too. Intel sometimes doesn't, the screen
-> > will sometimes flash while entering suspend.
->
-> I was talking about what Rafael said.  "What we were talking about was
-> how to get from the displays off no guid activity user space smoothly
-> into system suspend and back".
+> > On Thu, Dec 4, 2025 at 7:31=E2=80=AFPM Antheas Kapenekakis <lkml@antheas.dev> wrote:
+> > >
+> > > On Thu, 4 Dec 2025 at 17:41, Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > >
 
-CRPC DPMS state is the most important user-perceptible factor in that
-and it works at least.
+[cut]
 
 > >
-> > There is also runtime suspend on most components. Is there a case for
-> > powering off the iGPU completely to improve energy use?
+> > In Linux, making the system look like it is suspended even though in
+> > fact it isn't may be quite confusing, as a user may think that it is
+> > now safe to put a laptop in a bag, for example, but in fact it isn't.
+>
+> My thesis would be a proper userspace implementation running on a
+> laptop with a properly configured platform, it should be safe for the
+> user to put the laptop in their bag, even if it wakes up briefly
+> multiple times per hour without their knowledge or being perceivable.
+
+That's what Android phones/tablets do, but that's a vertical software stack.
+
+To implement something like this you need (a) support from the GFX driver
+in the kernel to go into system suspend back and forth without turning
+displays on and off, and (b) a mechanism to trigger system suspend
+automatically after a period of inactivity while in the "displays off, no
+GUI activity" state, and (c) support for system wakeup events in (b).
+
+I'm not sure what the LPS0 _DSM role is in that.
+
+> It is also a very valid point that this is a _very fine_ line that
+> Windows crossed with its userspace implementation and soured the
+> perception of Modern Standby for a lot of users. Buggy platform
+> firmware/insufficient tooling/control for OEMs, early on also
+> contributed to this.
+>
+> > > >
+> > > > To be precise, that's what MSDN has to say about it:
+> > > >
+> > > > "This _DSM Function will be invoked when the operating system has
+> > > > entered a state where all displays=E2=80=94local and remote, if any==E2=80=94have been
+> > > > turned off. This could occur based on some user action, e.g. a button
+> > > > press or lid close event, or expiration of some display power down
+> > > > timer."
+> > > >
+> > > > The "Intel Low-power S0 Idle" specification
+> > > > (https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle=.pdf)
+> > > > says almost the same thing.
+> > > >
+> > > > None of them says what kind of hint this is to the firmware and what
+> > > > the firmware is expected to do in response to it.
+> > >
+> > > It is true that online documentation does not list the firmware
+> > > response. There is additional documentation that lists the exact entry
+> > > conditions for display on/off [1]
+> > >
+> > > Specifically, while it is a prerequisite of the CRTCs, local/remote,
+> > > being turned off, the actual condition mirrors when userspace would
+> > > present a lockscreen to the user. I.e., if it is due to inactivity,
+> > > those notifications fire 5 seconds after displays turn off, and if it
+> > > is due to explicit action, e.g., power button, it is instant.
+> > >
+> > > "However, the system continues to run and all applications continue t=
+o
+> > > operate normally as if the display was powered on." also implies that
+> > > no hw is powered off as part of this notification.
+> > >
+> > > [1] https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/display--sleep--and-hibernate-idle-timers
 > >
+> > Wouldn't just turning the display off be sufficient here?  Why do you
+> > want to go for platform notification in addition to it?
+
+[cut]
+
+> There is a tendency by Microsoft to add OEM tooling that avoids the
+> need for creating platform drivers.
 >
-> I don't really *think& there will be much of a difference.  We already
-> go into GFXOFF when GC is idle, and SDMA, VCN, JPEG and VPE will be
-> clock gated when not in use.
+> This includes the WMI implementation which allows Windows userspace to
+> talk to hardware without having a signed platform driver, and now this
+> standardized set of notifications. Maintaining a signed
+> vulnerability-free driver is expensive.
 >
-> Someone would have to do power profiling to see if it's significant
-> enough difference to justify it.  The easiest way to check would be:
-> 1) Turn off all displays
-> 2) Connect over SSH
-> 3) Collect a RAPL power measurement for the package.
-> 4) Unbind the PCI device from amdgpu
-> 5) Collect a RAPL power measurement for the package.
-> 6) Compare 3 and 5.
-
-Yes. Seems it would add complexity without much benefit from first glance.
-
-> > The most expensive component in this process is unfreezing, then
-> > runtime pm freezing the GPU IP blocks after s0ix exit, then unfreezing
-> > it two seconds later to perform runtime checks and freezing it again.
-> > So for multiple exits from suspend where the IP is inactive this will
-> > keep repeating.
+> The Display On/Off notifications provide hooks for OEMs to customize
+> the inactive appearance of their device. Mostly, this is through
+> turning off auxiliary lights, such as the keyboard backlight.
 >
-> I think we would set the auto-suspend delay appropriately if we did this
-> and use DPM_FLAG_SMART_SUSPEND and DPM_FLAG_MAY_SKIP_RESUME in this case.
+> The sleep notifications provide a way for OEMs to limit the thermal
+> envelope of their machine and make it look like it is asleep, so that
+> it is safe for that device to wake up multiple times per hour,
+> including in a bag, without looking like it is awake.
+
+This is based on a very optimistic assumption that generally cannot be
+verified I'm afraid.
+
+(1) User space must not do anything silly like Bitcoin mining while
+this is done.
+(2) The firmware must not be cheating.
+(3) The GFX driver needs to be able to transition transparently
+between the "displays off" graphics state and the system suspend and
+resume flows.
+(4) The GFX driver activity needs to be coordinated at least somewhat
+with whatever user space entity would be responsible for triggering
+the notifications so they do not get completely out of sync.
+
+> Here is an example with how these DSMs would work with thinkpads.
 >
-> >
-> >> But GPUs aren't only used for display.  If you're actively running a
-> >> different workload (for example an LLM) using the GPU and happen to turn
-> >> off all the displays you wouldn't want it to suspend.
-> >>
-> >> What you would want is to key off:
-> >>
-> >> 1) All displays are off.
-> >> 2) All GPUs are unsused.
-> >> 3) Some time has passed.
-> >>
-> >> I feel that if userspace is going to adopt a policy like this kernel
-> >> drivers need to use runtime PM when displays are off and the GPUs aren't
-> >> being used for anything else.
-> >>
-> >> At least for AMD this doesn't happen today and would require driver
-> >> work.  But the same kind of work would be needed by any GPU driver.
-> >>
-> >
-> > You could potentially do that, first you'd need to show that there is
-> > a latency benefit to powering off the GPU over entering s0ix (as
-> > userspace will be frozen in both cases for the GPU to suspend). Then,
-> > you'd need to show that there is an energy benefit over just staying
-> > unsuspended with userspace frozen and the GPU being in runtime
-> > suspend. WIth both of these, a case could be made for powering off the
-> > GPU completely for a marginal latency/energy benefit.
-> >
-> > These notifications do not affect runtime pm though so this discussion
-> > is a bit tangential.
-> >
+> Windows does not have a Thinkpad backlight driver. There is auxiliary
+> and optional software, Vantage, which provides some of this. Assume it
+> is not installed. Then, in Linux, assume you disable the thinkpad
+> backlight driver, so upower loses control of the thinkpad keyboard
+> backlight. The thinkpad keyboard backlight is automatically controlled
+> by the EC through keyboard shortcuts. So are the power modes, via Fn+L
+> M H.
 >
-> I'm not worried about the latency.  We can change the policy for the
-> autosuspend delay if latency is a problem.
+> Then, assume that Linux implements these _DSMs, and hooks them via
+> systemd as following: display on/off is hooked to occur when logind
+> would lock the session, i.e. after 5 seconds of inactivity or pressing
+> the power button. The sleep notifications are triggered by
+> systemd-sleep, before suspend-then-hibernate begins.
 >
-> If we added runtime suspend support to integrated GPUs this sounds like
-> a really good thing to key off for that "display off notification" that
-> started this whole thread.
+> The end result is that after the display turns off, the keyboard
+> backlight of the device will also turn off automatically without a
+> platform driver. This is true for all modern standby laptops at least
+> post ~2021. A lot of these do not have kernel drivers in linux.
 >
-> Some infrastructure could be added so DRM core could monitor runtime
-> status for all GPUs on the system.  If they're all in runtime PM it
-> could use an exported symbol to send LPS0 screen off and when any one of
-> them exits then send LPS0 screen on.
+> Then, if the sleep state is supported (spotty in thinkpads but
+> available in a lot of other hw), when the RTC Wake Alarm/battery alarm
+> wakes the device and systemd briefly checks whether it should
+> hibernate, it will still look like it is asleep, and it will have a
+> reduced power envelope, reducing the risk of overheating if it is in a
+> bag and lowering standby power consumption.
 >
+> I.e., without requiring vendor software, platform drivers, both
+> Windows and Linux present a full feature set out of the box.
 
-But that notification is mostly used for the keyboard backlight.
-Hooking it to DRM core will just cause unpredictable behavior with the
-keyboard backlight (such as it turning off when reconfiguring the
-displays). It is very easy to just have a little inactivity ABI for
-userspace for it and avoid all of the complexity of that. Such an ABI
-is backward compatible, as not using the ABI would produce the same
-behavior the kernel has currently.
+I guess it would be rather useful to start the discussion with this
+proposed flow, some time might have been saved by everyone.
 
-If not for energy efficiency, I would see a benefit in configuring
-DPM_FLAG_* for certain common devices to reduce the latency of the
-sleep script for resuming. That would make "dark resume" wake-ups have
-less total time-span and power use.
+IIUC, the point is to make the system look "suspended" if it goes out
+of suspend briefly in response to a wakeup event (the other potential
+"benefits" of what the notifications can possibly do are in the domain
+of marketing IMV), but is it really worth the hassle?
 
-For reducing resume latency, an important factor is for the kernel to
-know that a wake-up source will "turn on the displays" where "turn on
-the displays" equates to "the user initiated the wake-up and is ready
-to interact with the device" and not something obscure related to DRM.
-In the same way, the display on/off notifications are not related to
-DRM but to whether the user is currently interacting with the device.
+Assuming that the answer is "yes", which I'm not convinced about at
+all, can't the kernel simply defer the "screen on" notification to
+some time after thawing user space, so it can avoid doing it and the
+corresponding "screen off" one if the system is suspended again
+quickly enough? Perhaps so long as the GFX driver opts in?
 
-This is for two reasons: first, the DPMS delay for turning on a
-monitor is 500ms-1s. Second, modern standby provides a firmware
-notification to boost the thermal envelope of the device for user
-interaction. Currently, if userspace initiates DPMS before suspend,
-then the kernel will unsuspend with DPMS applied, leaving it up to
-userspace to turn on the monitors. This means that the 500ms-1s delay
-of resuming the monitors begins at the point userspace is unfrozen,
-where it could begin when amdgpu resumes ~300ms earlier. Then, the
-"intent for display to turn on" notification (which is rare-I do not
-have a device with it) could marginally speed up kernel resume if it
-is applied in lps0 exit, instead of e.g., a "dark resume" userspace
-script 300ms later.
+And now we get to the most important thing: even before trying to do
+the above, let alone exposing anything to user space, the existing
+suspend-to-idle flow in the kernel needs to be adjusted to do the
+"screen off" notification much earlier and the "screen off"
+notification much later than they are done today.  I think that you
+should be able to argue convincingly for making this change.
 
-So there could be a potential 100ms savings there. But for that to
-happen there would need to be some refactorings to classify wake-up
-sources in-kernel-a substantial effort. In addition, kernel resume is
-pretty light, most CPU use comes from unfreezing the fs and userspace.
-Since the bulk of userspace unfreeze is now initiated by systemd, and
-prior to initiating it, systemd could trigger the "intent to turn
-displays on" notification/DPMS* itself, this would yield most of the
-benefit.
-
-I should note that while the "lps0 exit"->"sleep exit"->"display on"
-notifications are squished together prior to resume beginning**, the
-"intent to turn display on" notification which is meant to fire before
-"sleep exit" so that the device looks like it is asleep while having a
-boosted thermal envelope is irrelevant. "sleep exit"->"display on"
-would first have to be pushed to userspace, so that userspace can wake
-up in the "sleep" state, classify the wake-up source as e.g. a wake
-rtc or the user interacting with the device, and only if the user is
-interacting with it, fire the "intent to turn on display"
-notification, unfreeze the rest of userspace, then fire "sleep exit",
-"display on" together.
-
-* For systemd to initiate DPMS, the compositor would need to be part
-of the initial unfreeze and notified to resume early.
-
-** This squishing together and firing before the kernel resumes is
-a source of numerous obscure bugs in MS devices
-
-Antheas
-
+If this doesn't universally work for whatever reason, anything more
+will be out of the question.
 
