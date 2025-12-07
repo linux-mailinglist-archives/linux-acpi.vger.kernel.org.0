@@ -1,184 +1,143 @@
-Return-Path: <linux-acpi+bounces-19471-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19472-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B4ECAAFC2
-	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 01:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D185CAB148
+	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 05:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E6403043F51
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 00:31:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F25933036CA6
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 04:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43E63B1B3;
-	Sun,  7 Dec 2025 00:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2890284B4F;
+	Sun,  7 Dec 2025 04:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/CciXnx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnBIKHe1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95F3B8D41;
-	Sun,  7 Dec 2025 00:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79CE283C89
+	for <linux-acpi@vger.kernel.org>; Sun,  7 Dec 2025 04:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765067510; cv=none; b=QxsVWgkUAh26g23MWwuQqqaNQEs2YRGF+/4mOPkBKzCkZRyUivwgTIvl+ppV9DYSNOKUiZdGV07CHXOksLEKfxOjn4Dy1atFUOU3tJ9Ek3HjQgmDGZ1EUGM7uTiN5Y0VR1GAZLOEW9NMv9Y1MJuaBLok1QgCZZtA/04OWGwDMmc=
+	t=1765080346; cv=none; b=JhpNJPt6uQ+nvwWjNoG9C0DSl0v86rBlEr+jOmr17oKB+ak5/CBmGHaG1csWPuOQ2Q0IzaG1FF6gojUguTy5Wg4C1v7WQRd9dd1jGvbOgms5T8gu2ZQLSRcddP8ZO2mCpN5gQFyOh5099P+U8aq3P1jcmhao7G924NGs8QnGtJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765067510; c=relaxed/simple;
-	bh=yQrL+MqX0uilNbeGDZawsbEsYHJ+ZLk9MmBgka8Q7M0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c0TVnUzKcQj9aEmbCXuytkr57y79Q83/e4jlhX/rYGTE76dZoYU3pmXt2+aIbQLb3cpSg5OyJUTdq36oQg3pl2Z9VJpIZ6EKlB7ryh4Ro/QQ3g/P38S5Nd9+DI5f3seJfmLtEcUb15GPo5pfO+MO2WgP0MzRgKtPz5EC0BEsu64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/CciXnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA95C4CEF5;
-	Sun,  7 Dec 2025 00:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765067510;
-	bh=yQrL+MqX0uilNbeGDZawsbEsYHJ+ZLk9MmBgka8Q7M0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c/CciXnxWSbAtdqwWY4UlDewnqhHE0JTBWWrPnSnJz4p7alDkYkepBDZrGvJEdKWk
-	 lPSjKhcSWbI4iPkfoVjl/AjgQdt/07C0WUf/lJL6LnnW4vOiLjXjVMH+aF57iWOZ6U
-	 cHgK49wqiFVdM5uT2FlUSa1pOMocgniSluKJk2Fz785ETXtkt/SBItABRPOnSpE+UP
-	 kUcBlAc9G5JXilpGII5jQFytWvVCENCac/iCL9Y6XF9QJOXdD7ezGlwFjSwkof1Cq2
-	 s5FMAUnoBC7vvj4iB79ZNdmVjTYvgQj+dWCYeLHGmfNO2E9EZBDB0OA01DwNWcgXa1
-	 Nnhxiix18frjg==
-Message-ID: <edfc3586-84fb-4dee-a047-9f204054e6f2@kernel.org>
-Date: Sat, 6 Dec 2025 18:31:46 -0600
+	s=arc-20240116; t=1765080346; c=relaxed/simple;
+	bh=PWZ147u1Ppf7yNYMcL7wpdf1sLLMlRa3CTb2HAu1DTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QEpzNEIxIMZb95p9vRd/7+nmmqeZKVxNkjY+pc1AglE5ClS4uTMjmXtvTXeVuBU8PjrEDHw0Li7Cq4sMxCkkpIe82SUYZc3pYsgwyBFcMqO5dG/FuV+ULlh/PjbWYOZqXETdz+lc7JPlckkx1Vp50rA306XHCAif3PGotXLoj18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnBIKHe1; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-594330147efso3624821e87.2
+        for <linux-acpi@vger.kernel.org>; Sat, 06 Dec 2025 20:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765080343; x=1765685143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ex2lzVAczuwvkjLV+fgi87Xz5EH5RAk0RHJHjHXLtww=;
+        b=OnBIKHe1NH4Mm+UVQtZHs0/F9daQpimjovUkHUhv76Je/Elpjbibk7j8wZNK8kJtxZ
+         0AwZkfvTrrzja9Sq+jXQuLYhIXKA1uWdHJ+Oy9VthF7VBXqTD7sDPRLwbZoWSHySsF9l
+         +4kaLtbSmRXNxLb5yOxKj6xRzlgk4PrJgqILzug+CIotJK+tl0i4IrzybaE8n0q9sMLk
+         Ne6LhZUN6uoKMdyjnUGOMjTl0ZQkzArQfsoHHnHNnn2vfi5UFn22h5JEG2J5ommQU97w
+         os8/i1PFzQzclAd8kcB8V6OlZJYNnA1nhMGtqtohqJ5TNjZNGL3EC8mZGUCR+GOuzca7
+         Pg5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765080343; x=1765685143;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ex2lzVAczuwvkjLV+fgi87Xz5EH5RAk0RHJHjHXLtww=;
+        b=QNjEAjdfFm6WgwUqILFFeXDb0zZAmwCRpmiTIrWg+zmugoGFvZfCdrcj+1/K9DJiEJ
+         kXAew42sF0BtyZLoMC5ppQfKNS8u2t/c/mhM1TLwEBukJ6SNA7gX8nZr2NDSCWP7hkOy
+         CPsyU8Yb5+F63f/b9m2hjfMIbxiOl8Oz+vRmD3dB6xHlhFj10ZkhQHaoGFa/WPsNzrn5
+         EJpK2YeX5cC5N3p6LvFZ4wAdXf9clAxIV7hm/C0/nfXHSIZ6jnryTUKfXma3Xc9zk2hO
+         i/BeOqAbQSWslfq95MUQ+yK/y7gjX69UQSsf18RSpguZavQXDxldCt/ENrP7zuZekHX3
+         57CA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1fEhDApxK2P0/Iaetg+27wI5vVQkVC+fNKlZi9yS4vhR7wGHSE/nTf2t72xgAyFUiBusG4umMfasn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy6fehY+GBkx4As6JXwze+bNuSa2C7QyKeZQv22UAEw08wL4Ot
+	cKKj6+tR7d+AuZHm91vBSPZLEWGtegPJccZTbrm5uyMrUDGFY4Z+NGs9
+X-Gm-Gg: ASbGnctVNEKOHN1GAoQ33rbJJvp7Ucvv4oJsXlODcX3Je7wK6SXEtKTl4jL+TlKZJtZ
+	yQxypnnqH9m3DnlZMtsDA5FutXj/G3VytLg2t1jklxHOFNUjB78rHvoNj05yY2QZmwhRQ01VVws
+	rvOD86KNfLlXPPuXlXlu6sh6V/ZOO+FW6JJ3CpM3V/KsMKSQkcwWKqaClbnHvVH2LbCGqaztlmB
+	ftAXywtjxoHsQgUX4q+xe4qENeZfQU1bw13fdzw76j1JU3WMCrvn2fKdk1k4HUdMFkkzS+9KCNa
+	nnruXlfplTKzs8lgcLsPEYRHVBbbezBuaWnehPcmxjzogZQ+/ATfUToOKUhCTr57nCXW1vdd1sB
+	5M7Bf5OS5ts9Q2/uH+G5AVdOWFBEa3oxNr/3SspNlbucRsTmIqY2uU6SFbHlna12AHcYCDq+M9n
+	m0tChEp6l5
+X-Google-Smtp-Source: AGHT+IH8mx3P/9V/pAGu8lz10DNuwJ7kxmYDCtybY5oUGluuyAcyWcsd4RN6gkh3q7lmDuDfA7g2qg==
+X-Received: by 2002:a05:6512:31c6:b0:595:80d0:b68c with SMTP id 2adb3069b0e04-5987e8bf711mr934848e87.25.1765080342615;
+        Sat, 06 Dec 2025 20:05:42 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-597d7c270f1sm2912765e87.72.2025.12.06.20.05.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 06 Dec 2025 20:05:42 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: andriy.shevchenko@linux.intel.com
+Cc: Dell.Client.Kernel@dell.com,
+	bartosz.golaszewski@linaro.org,
+	benjamin.tissoires@redhat.com,
+	dmitry.torokhov@gmail.com,
+	linux-acpi@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	regressions@lists.linux.dev,
+	rrangel@chromium.org,
+	safinaskar@gmail.com,
+	superm1@kernel.org,
+	wse@tuxedocomputers.com
+Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own from suspend
+Date: Sun,  7 Dec 2025 07:04:59 +0300
+Message-ID: <20251207040459.3581966-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aTLjgEVfLCot0cSm@smile.fi.intel.com>
+References: <aTLjgEVfLCot0cSm@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
- interface
-To: Antheas Kapenekakis <lkml@antheas.dev>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
- kernel@collabora.com, linux-kernel@vger.kernel.org,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
- William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
- Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>,
- systemd-devel@lists.freedesktop.org,
- Lennart Poettering <lennart@poettering.net>
-References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
- <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
- <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
- <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
- <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
- <a0d91fa6-bf95-4bbb-a4f9-9d8cceae5543@kernel.org>
- <CAJZ5v0hkkurEK6X3_d_AErKMOn9uicusEb1OhDAv5sFHr7_ahQ@mail.gmail.com>
- <411ea5f1-7cc7-4a2e-99b4-2891f3aa344e@kernel.org>
- <CAJZ5v0hQMGarx96oU-OHXh8665FJ2UP4dJpVKoxCgdyi8fZ1QA@mail.gmail.com>
- <6d7b916a-8c37-499a-84a6-5facbe0e3bd4@kernel.org>
- <CAJZ5v0jqdQw57t7Moj4o2eWt54t1wBvn8_0N9L-orn_JzFGWyw@mail.gmail.com>
- <CAGwozwGafykCaiEa+EUS+QQsFBXR53-D4aYpW-SPRX=Ax1-F2w@mail.gmail.com>
- <CAJZ5v0g5dwWSOQCTUFeD+ztFLyYrRR1Z=vt2C+c48SRbaNLJzg@mail.gmail.com>
- <2711fe57-1963-483e-b8fa-0c5ed0bd2ea9@kernel.org>
- <CAGwozwEp3Xc_pv-YGb_Xc46CcLKPppYaZbphV24kiNHM4Eqb-w@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAGwozwEp3Xc_pv-YGb_Xc46CcLKPppYaZbphV24kiNHM4Eqb-w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Andy, Mario and others.
 
+During these months I found zillions of suspend and hibernation related bugs.
 
-On 12/6/25 5:35 PM, Antheas Kapenekakis wrote:
-> On Sat, 6 Dec 2025 at 21:50, Mario Limonciello <superm1@kernel.org> wrote:
->>
->>>> I will reply to the earlier reply from Rafael with more context, but
->>>> runtime suspend of the GPU is not part of or related to these
->>>> notifications.
->>>
->>> Of course it isn't.
->>>
->>> What we were talking about was how to get from the "displays off, no
->>> GUI activity" user space smoothly into system suspend and back.
->>>
->>> You are saying that this has been done already on AMD, so I'm not sure
->>> why you want more.
->>>
->>
->> I'm not aware this existing in any unique way for AMD.  The decision of
->> displays off; start a timer and enter suspend would be the same for any
->> vendor.
-> 
-> AMD retains CRTC DPMS state from userspace to s0ix currently, and you
-> fixed hibernation recently too. Intel sometimes doesn't, the screen
-> will sometimes flash while entering suspend.
+It seems hibernation is not well supported.
 
-I was talking about what Rafael said.  "What we were talking about was 
-how to get from the displays off no guid activity user space smoothly 
-into system suspend and back".
+For example, it seems hibernation is not supported on Chromebooks [1].
 
-> 
-> There is also runtime suspend on most components. Is there a case for
-> powering off the iGPU completely to improve energy use?
-> 
+And Fedora intentionally disables it by default. [2]
 
-I don't really *think& there will be much of a difference.  We already 
-go into GFXOFF when GC is idle, and SDMA, VCN, JPEG and VPE will be 
-clock gated when not in use.
+Other operating systems do similar thing. Hibernation is hard-to-enable
+in Windows [3]. macOS on Apple Silicon hibernate in very limited scenarios [4].
 
-Someone would have to do power profiling to see if it's significant 
-enough difference to justify it.  The easiest way to check would be:
-1) Turn off all displays
-2) Connect over SSH
-3) Collect a RAPL power measurement for the package.
-4) Unbind the PCI device from amdgpu
-5) Collect a RAPL power measurement for the package.
-6) Compare 3 and 5.
+But I still use hibernation.
 
-> The most expensive component in this process is unfreezing, then
-> runtime pm freezing the GPU IP blocks after s0ix exit, then unfreezing
-> it two seconds later to perform runtime checks and freezing it again.
-> So for multiple exits from suspend where the IP is inactive this will
-> keep repeating.
+So, I have an idea. Maybe we should remove as many as possible hibernation-related
+code from kernel to make sure that remaining code is easy to support? I. e.
+maybe we should remove some even-more-obscure-than-hibernation features,
+such as hybrid sleep mode, to make normal hibernation easier to maintain?
 
-I think we would set the auto-suspend delay appropriately if we did this 
-and use DPM_FLAG_SMART_SUSPEND and DPM_FLAG_MAY_SKIP_RESUME in this case.
+If you like this idea, then I will happily write patches for removing
+some hibernation-related features, such as hybrid sleep mode.
 
-> 
->> But GPUs aren't only used for display.  If you're actively running a
->> different workload (for example an LLM) using the GPU and happen to turn
->> off all the displays you wouldn't want it to suspend.
->>
->> What you would want is to key off:
->>
->> 1) All displays are off.
->> 2) All GPUs are unsused.
->> 3) Some time has passed.
->>
->> I feel that if userspace is going to adopt a policy like this kernel
->> drivers need to use runtime PM when displays are off and the GPUs aren't
->> being used for anything else.
->>
->> At least for AMD this doesn't happen today and would require driver
->> work.  But the same kind of work would be needed by any GPU driver.
->>
-> 
-> You could potentially do that, first you'd need to show that there is
-> a latency benefit to powering off the GPU over entering s0ix (as
-> userspace will be frozen in both cases for the GPU to suspend). Then,
-> you'd need to show that there is an energy benefit over just staying
-> unsuspended with userspace frozen and the GPU being in runtime
-> suspend. WIth both of these, a case could be made for powering off the
-> GPU completely for a marginal latency/energy benefit.
-> 
-> These notifications do not affect runtime pm though so this discussion
-> is a bit tangential.
-> 
+Other ideas:
+- Remove uswsusp (i. e. kernel/power/user.c ) in favor of normal hibernation
+(or vice versa, i. e. remove normal hibernation and keep uswsusp only)
+- Remove hibernation to swap partition and keep hibernation to swapfile only
+(or vice versa)
+- Decouple hibernation from swap completely (i. e. hibernate not to swap
+partition, but to special designated partition or file)
 
-I'm not worried about the latency.  We can change the policy for the 
-autosuspend delay if latency is a problem.
+In short, just tell me what should be removed, and I will happily remove it.
 
-If we added runtime suspend support to integrated GPUs this sounds like 
-a really good thing to key off for that "display off notification" that 
-started this whole thread.
+[1] https://www.reddit.com/r/chromeos/comments/y5pol9/anyone_know_what_the_status_of_hiberman_hibernate/
+[2] https://pagure.io/fedora-workstation/blob/master/f/notes/hibernationstatus.md
+[3] https://www.groovypost.com/howto/enable-hibernate-mode-windows-10/
+[4] https://www.reddit.com/r/chromeos/comments/y5pol9/comment/ism352k/
 
-Some infrastructure could be added so DRM core could monitor runtime 
-status for all GPUs on the system.  If they're all in runtime PM it 
-could use an exported symbol to send LPS0 screen off and when any one of 
-them exits then send LPS0 screen on.
+-- 
+Askar Safin
 
