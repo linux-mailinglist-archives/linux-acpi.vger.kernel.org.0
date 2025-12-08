@@ -1,110 +1,122 @@
-Return-Path: <linux-acpi+bounces-19482-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19483-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71BACABA7C
-	for <lists+linux-acpi@lfdr.de>; Sun, 07 Dec 2025 23:38:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E51E3CAC008
+	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 05:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE7903004C9F
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Dec 2025 22:38:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB667300DA72
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 04:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFB52EA473;
-	Sun,  7 Dec 2025 22:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fi1n0XF/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2E92F60B6;
+	Mon,  8 Dec 2025 04:02:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD9428B4FD;
-	Sun,  7 Dec 2025 22:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6384C21CFF6;
+	Mon,  8 Dec 2025 04:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765147108; cv=none; b=Dp7U80tuvRpTZsJOKLSIdh9IXjUprI0nhJ3Xbxcj8Au6SPUg5MQEO79pumg1BSHSsEchTv+Ik9cAMNU3e3tD8vpj1xadfYBHRO4dS5HxN/Amh6Cbnf+R87/ns6X4zEWAiEKQNH864hGq92g6EF8QuNyNch6TskmjL1O/WEZ/nv4=
+	t=1765166546; cv=none; b=qEPFwryOd9j13i5CS5M08YlG5eM+1cEq/QEV3fDq25Ezrk2QK4roECU+5arntyGKTkYh+5nG2zx0aZgmpl1jzOULt98j99uwIlXqem0bi0il/X7txGNBp5B1lxSkLf84lYeqXCjKz5BIF4BmAH6U969+r+HlG6Rd/aRhw10ifsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765147108; c=relaxed/simple;
-	bh=+ngbxpws5VsZ1WIpGjbQ722b/b9gYa1bOnWOBbWkhaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PaT8WTj3WYAsJuzKEi9skKogql6tLKHWnaGuh7wnleVlXWfIn5p3GGYV9T7wcslFamHcIQGr/xzj/Nx8JGMPSrljewfT1Ex8WdX/FYaoxohjJf+4F5kp58yXBCTVNJOI9lneJ+gVZFKGFDXLT2ZLZ0Y7yce3LcT6FXt12pPsMK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fi1n0XF/; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765147107; x=1796683107;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=+ngbxpws5VsZ1WIpGjbQ722b/b9gYa1bOnWOBbWkhaM=;
-  b=Fi1n0XF/+jNmMXNo6gU9mFCnDI5FoaDar8HNjM9jmATcI/6MFnr3ZLWx
-   7o9v/wFp0/14V4vLQJx9KYg7CnqYDeH0mPBuRkRjKxraBgGx2EUHpsBmN
-   POScXapkr2DM2ku+TwDHsjMDkVsJilzMRcFB0AEAv9Rn7el6U1hpPg9FD
-   8MajYRVB9xU9BP1HiDDaZzCkhW1SXdWQDCZyCcgo7iyQhJ3f6H4ymob5L
-   XbqEweG25cTYCc7YUN5gRDqEe8IVa5mEO8Xa5JLot6UWN4E341s7Eiuhg
-   u9lzrNqCgd4b0RmADAC1SAI6+GwLpz0/FCWk3QCoYAkfKRx5OUqkzR8l9
-   g==;
-X-CSE-ConnectionGUID: Sv1JRMPlT5iFWYyHGpkVLQ==
-X-CSE-MsgGUID: eCAHTlXbSXO+FdEKH2e54g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="77779053"
-X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
-   d="scan'208";a="77779053"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:38:26 -0800
-X-CSE-ConnectionGUID: EnEi7W0hQr6STAGcy6h8Sw==
-X-CSE-MsgGUID: NWWprS3RSiedeG+RjWk2jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
-   d="scan'208";a="196550714"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:38:23 -0800
-Date: Mon, 8 Dec 2025 00:38:21 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Askar Safin <safinaskar@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	Dell.Client.Kernel@dell.com, Mario Limonciello <superm1@kernel.org>,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] gpiolib: acpi: Add quirk for Dell Precision 7780
-Message-ID: <aTYB3aIfzR3tHxu6@smile.fi.intel.com>
-References: <20251206180414.3183334-1-safinaskar@gmail.com>
- <20251206180414.3183334-2-safinaskar@gmail.com>
- <aTSlgoK0PcE937l1@smile.fi.intel.com>
- <CAMRc=Mca8oi7JpEiNajP+CbHhBhSb9fS4NqFz-aojcX1qmEzcA@mail.gmail.com>
+	s=arc-20240116; t=1765166546; c=relaxed/simple;
+	bh=nUHg6a3gECAE+NIBQcPZ3nLPe1vCJ1oy3E4bhE1dcc0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pzpYAOlc3MkFhawx8MZYjcS4HAt+NhmCX8BoZ99AAcRZ7UZav8JHkGS2E6k87VAubqAFk4hXgsb828zn84YM7N/PspSqeOEXKGt9/aYjYC5vpACB25N4assZD4+b/12aDt/PwKXbNCU7py3hoVYJcHMQXJnaqgvNK1vc8utlrgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dPpD56YczzKm4s;
+	Mon,  8 Dec 2025 12:00:21 +0800 (CST)
+Received: from kwepemf200017.china.huawei.com (unknown [7.202.181.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 968C01A016C;
+	Mon,  8 Dec 2025 12:02:17 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by kwepemf200017.china.huawei.com
+ (7.202.181.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 8 Dec
+ 2025 12:02:16 +0800
+Message-ID: <adeb19a3-da4a-41e9-948c-dac7002d034a@hisilicon.com>
+Date: Mon, 8 Dec 2025 12:02:16 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] ACPI: CPPC: Factor out and export per-cpu
+ cppc_perf_ctrs_in_pcc_cpu()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <viresh.kumar@linaro.org>, <ionela.voinescu@arm.com>,
+	<beata.michalska@arm.com>, <pierre.gondois@arm.com>,
+	<zhenglifeng1@huawei.com>, <linux-pm@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<prime.zeng@hisilicon.com>, <yubowen8@huawei.com>, <lihuisong@huawei.com>,
+	<zhangpengjie2@huawei.com>, <wangzhi12@huawei.com>
+References: <20251203032422.3232957-1-zhanjie9@hisilicon.com>
+ <20251203032422.3232957-2-zhanjie9@hisilicon.com>
+ <CAJZ5v0jvk+gs+h+76__LLZDa=OGzLxQQsWEMDHXzeV8aV6UYsA@mail.gmail.com>
+Content-Language: en-US
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <CAJZ5v0jvk+gs+h+76__LLZDa=OGzLxQQsWEMDHXzeV8aV6UYsA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mca8oi7JpEiNajP+CbHhBhSb9fS4NqFz-aojcX1qmEzcA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemf200017.china.huawei.com (7.202.181.10)
 
-On Sun, Dec 07, 2025 at 08:12:13AM +0100, Bartosz Golaszewski wrote:
-> On Sat, Dec 6, 2025 at 10:52 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Sat, Dec 06, 2025 at 06:04:13PM +0000, Askar Safin wrote:
-> > > Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-> > > wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-> > > after, say, 30 minutes.
-> >
-> > Bart, up to you, if you want to take this. But I can do with a usual route via
-> > my tree.
+
+
+On 12/5/2025 11:13 PM, Rafael J. Wysocki wrote:
+> On Wed, Dec 3, 2025 at 4:25 AM Jie Zhan <zhanjie9@hisilicon.com> wrote:
+>>
+>> Factor out cppc_perf_ctrs_in_pcc_cpu() for checking whether per-cpu CPC
+>> regs are defined in PCC channels, and export it out for further use.
+>>
+>> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+>> ---
+>>  drivers/acpi/cppc_acpi.c | 45 +++++++++++++++++++++-------------------
+>>  include/acpi/cppc_acpi.h |  5 +++++
+>>  2 files changed, 29 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>> index 3bdeeee3414e..aa80dbcf42c0 100644
+>> --- a/drivers/acpi/cppc_acpi.c
+>> +++ b/drivers/acpi/cppc_acpi.c
+>> @@ -1422,6 +1422,29 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+>>  }
+>>  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+>>
+>> +bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
+>> +{
+>> +       struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+>> +       struct cpc_register_resource *ref_perf_reg;
+>> +
+>> +       /*
+>> +        * If reference perf register is not supported then we should use the
+>> +        * nominal perf value
+>> +        */
+>> +       ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+>> +       if (!CPC_SUPPORTED(ref_perf_reg))
+>> +               ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+>> +
+>> +       if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+>> +           CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+>> +           CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+>> +           CPC_IN_PCC(ref_perf_reg))
+>> +               return true;
+>> +
+>> +       return false;
 > 
-> I already have a bunch of fixes queued for next week so I guess it'll
-> be less hassle and the fastest option if I take it.
-
-Cool, thanks!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> Why not
+> 
+> return CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+>           CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+>           CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+>           CPC_IN_PCC(ref_perf_reg);
+> 
+Yes, that would save a few more lines.
+Thanks!
 
