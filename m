@@ -1,213 +1,155 @@
-Return-Path: <linux-acpi+bounces-19489-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19490-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFF5CAD570
-	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 14:54:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628B0CADB10
+	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 17:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3952F3034EEB
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 13:54:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D05D30A9133
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 16:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E0C2FA0DF;
-	Mon,  8 Dec 2025 13:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="U2pGSVR9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8051931197F;
+	Mon,  8 Dec 2025 15:55:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20B57FBA2;
-	Mon,  8 Dec 2025 13:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15A30FC30;
+	Mon,  8 Dec 2025 15:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765202071; cv=none; b=XXEOQMDD/woLjz5AYX7yyP1qFaP6FzdFNdvbAhxSoyychzwzvC9KBPtGtWd4rtrJqlaK1gweZqVN3GrHnFKNle7RVoEj5znbQo74X+yWZ1nXb17z+GT0LSqz9dQYkDHs3ddLa3t8bLQNzsNiDZdD3DaddMhXsZ/n+s0yRVhbi0c=
+	t=1765209333; cv=none; b=SK3qcgKrvPiat75zaghICw4Wmq3RCuJXjYgKirfAhmGR2OAJSEvs+af2cLvxMbhH0QtRpB0gz/VIw0o9/w9vta6nBFejUiGA9V27rxRktXm3RC396yBwkh3VKdAsNbJgTKULmKXHfcPxKZ4mB87JxvQNlECFm1i98TMZmhkb1ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765202071; c=relaxed/simple;
-	bh=XtK02cbQGJzTmXjZJenafX/U340FWeJFTUEhhlzX5Zg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PXqX9fuCT9MwQL9ztuuKyqUIPgSt3UX3O6mBi7QAbuJheujbGrmg4UHYJJQgKvnVjg8mfKRe/Zx2P/ThkfhYhKbjRm7B+6+3v/RScibaM5QrueSsWVyT0+Yw+qn6Ra+LSH6lZm3Ju4HilqZLbhgBsn7JlFrQ41zbaoSwK0KHgb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=U2pGSVR9; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=pyBHShYcd9rE8qx6LeUTgJCwaJuxWQkXiDuPREcistA=; t=1765202069;
-	x=1765634069; b=U2pGSVR9vLC2zT4SiOzeo+Og4rOo/TcTH8VqpkkKqiVuFEnwGBCySovCE4Yop
-	7AoKNfuBYDxRZiJxeVSg6M1JPDen2Xe6GTRU+VslbsVZp3a1LpsSyysk7t4hMSQOaT14KnUwPxlvN
-	//tg98/PjEzGPSzJLCOuUk5MQCyiovHPSSbxrht/XnkSKKovKzSZN1n8y+ugsTtnHZnQEotQFcyWx
-	eJdkjYVWZEQxv9CJxLN7XhZl1o97vD3UYUvq+f+6iWSecSnhUUW/QtS5nRxPTS8PfMLAVpaACxURU
-	ESZ5PT7W7GWnAlVBDH6Vp2PFChiHXszjKeNsQqVGlzkXvUKfew==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vSbgz-004PPM-0G;
-	Mon, 08 Dec 2025 14:54:21 +0100
-Message-ID: <2c8d4baa-679f-4af7-a78d-41774410e9a6@leemhuis.info>
-Date: Mon, 8 Dec 2025 14:54:20 +0100
+	s=arc-20240116; t=1765209333; c=relaxed/simple;
+	bh=RYT1iy3FBB6uZoZKycGu/YHF0Dzox5/SlFNTtF6/wMw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GsrxDv/RCnoIXes4+4YXXL9TG0FHzWlvXR1/pU3RXfQJgEmzFtrWXIfPJGIwj0uCwq5wHvrGcDHKliyrgVybc6NizEwMSScP+isV8N+B/OJJyjQ/UAjq0OJMEwvdxYDzcSbD6G4f2RYLTSnRB/Kczg0I5ozRDOVuJZz4J30HI80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dQ64t1wCRzJ46XJ;
+	Mon,  8 Dec 2025 23:55:10 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2E5224056E;
+	Mon,  8 Dec 2025 23:55:25 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 8 Dec
+ 2025 15:55:24 +0000
+Date: Mon, 8 Dec 2025 15:55:22 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>, Dave Jiang
+	<dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, Hanjun Guo
+	<guohanjun@huawei.com>, Huang Yiwei <quic_hyiwei@quicinc.com>, Ira Weiny
+	<ira.weiny@intel.com>, Jason Tian <jason@os.amperecomputing.com>, Len Brown
+	<lenb@kernel.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>, Tony Luck
+	<tony.luck@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] apei/ghes: don't go past the ARM processor CPER
+ record buffer
+Message-ID: <20251208155522.0000162e@huawei.com>
+In-Reply-To: <0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
+References: <cover.1764326826.git.mchehab+huawei@kernel.org>
+	<0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression: SYNA3602 I2C touchpad broken in Linux 6.17.7 (works
- in 6.17.6 and previous versions)
-To: Vijay <vijayg0127@gmail.com>
-Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-acpi@vger.kernel.org,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>, jikos@kernel.org
-References: <CAMBhvbYA=onQkkcgkODaTj=+tkybwo28Cdi6P3vodGpVZi8OVA@mail.gmail.com>
- <CAO-hwJJRisVpZWeSA+3_fLaa8_52f7ypUocDcD+PojuF3KjHYw@mail.gmail.com>
- <08000f1a-2c1e-4a0d-a5b5-fc7dcea3d8a8@leemhuis.info>
- <CAMBhvbZHcOwd-i04TGMXdbvi1vmpnyPD1p7SgkUtjfFsc+9nWQ@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <CAMBhvbZHcOwd-i04TGMXdbvi1vmpnyPD1p7SgkUtjfFsc+9nWQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1765202069;a3631cee;
-X-HE-SMSGID: 1vSbgz-004PPM-0G
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On 12/8/25 13:13, Vijay wrote:
-> 
-> Yes, the touchpad is not working in 6.18 also, getting the same errors
-> as mentioned previously, 
+On Fri, 28 Nov 2025 11:53:00 +0100
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-That's really good to know, thx!
+> There's a logic inside ghes/cper to detect if the section_length
+> is too small, but it doesn't detect if it is too big.
+> 
+> Currently, if the firmware receives an ARM processor CPER record
+> stating that a section length is big, kernel will blindly trust
+> section_lentgh, producing a very long dump. For instance, a 67
 
-Thing is: I fear that nobody will look into this, unless you or somebody
-else affected checks which change broke things. Benjamin mentioned three
-you could try reverting in 6.17.y; alternatively, perform a bisection in
-6.17.y. For details, see:
-https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
+section_length
 
-Ciao, Thorsten
+> bytes record with ERR_INFO_NUM set 46198 and section length
+> set to 854918320 would dump a lot of data going a way past the
+> firmware memory-mapped area.
+> 
+> Fix it by adding a logic to prevent it to go past the buffer
+> if ERR_INFO_NUM is too big, making it report instead:
+> 
+> 	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
+> 	[Hardware Error]: event severity: recoverable
+> 	[Hardware Error]:  Error 0, type: recoverable
+> 	[Hardware Error]:   section_type: ARM processor error
+> 	[Hardware Error]:   MIDR: 0xff304b2f8476870a
+> 	[Hardware Error]:   section length: 854918320, CPER size: 67
+> 	[Hardware Error]:   section length is too big
+> 	[Hardware Error]:   firmware-generated error record is incorrect
+> 	[Hardware Error]:   ERR_INFO_NUM is 46198
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  drivers/acpi/apei/ghes.c        | 13 +++++++++++++
+>  drivers/firmware/efi/cper-arm.c | 14 +++++++++-----
+>  drivers/firmware/efi/cper.c     |  3 ++-
+>  include/linux/cper.h            |  3 ++-
+>  4 files changed, 26 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 56107aa00274..8b90b6f3e866 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -557,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>  {
+>  	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+>  	int flags = sync ? MF_ACTION_REQUIRED : 0;
+> +	int length = gdata->error_data_length;
+>  	char error_type[120];
+>  	bool queued = false;
+>  	int sec_sev, i;
+> @@ -568,7 +569,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>  		return false;
+>  
+>  	p = (char *)(err + 1);
+> +	length -= sizeof(err);
+> +
+>  	for (i = 0; i < err->err_info_num; i++) {
+> +		if (length <= 0)
+> +			break;
+> +
+>  		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+>  		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
+>  		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+> @@ -580,10 +586,17 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>  		 * and don't filter out 'corrected' error here.
+>  		 */
+>  		if (is_cache && has_pa) {
+> +			length -= err_info->length;
+> +			if (length < 0)
+> +				break;
+>  			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
+>  			p += err_info->length;
+> +
+>  			continue;
+>  		}
+> +		length -= err_info->length;
+> +			if (length < 0)
+Indent odd.
 
+> +				break;
+>  
+>  		cper_bits_to_str(error_type, sizeof(error_type),
+>  				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
 
-> On Thu, 4 Dec 2025 at 20:40, Thorsten Leemhuis
-> <regressions@leemhuis.info <mailto:regressions@leemhuis.info>> wrote:
-> 
->     Lo!
-> 
->     @AM Vijay: 6.17.y will be EOL in about ten days, so this is unlikely to
->     get fixed there. The big question is:
-> 
->     Is 6.18 affected?
-> 
->     If it is, we need your help identifying want went wrong; if not, then
->     it's likely not worth looking closer into this
-> 
->     Ciao, Thorsten
-> 
->     On 11/28/25 09:05, Benjamin Tissoires wrote:
->     > Hi,
->     >
->     > On Fri, Nov 28, 2025 at 7:40 AM Vijay <vijayg0127@gmail.com
->     <mailto:vijayg0127@gmail.com>> wrote:
->     >>
->     >> Hello,
->     >>
->     >> I would like to report a regression in the Linux kernel affecting
->     I2C-HID
->     >> touchpads that run through the Intel ISH + DesignWare I2C controller.
->     >>
->     >> Hardware:
->     >> - Laptop: Infinix Y4 Max
->     >> - CPU: Intel (13th gen core i5)
->     >> - Touchpad: SYNA3602:00 093A:35ED (I2C HID)
->     >> - Bus path: SYNA3602 → i2c_designware → Intel ISH → HID
->     >> - OS: Linux (Arch/CachyOS)
->     >> - Kernel config: Default distro config
->     >>
->     >> Regression summary:
->     >> - Touchpad works perfectly in Linux 6.17.6 and below versions
->     >> - Touchpad stops working in Linux 6.17.7 and all newer versions
->     (6.17.8, 6.17.9, etc.)
->     >> - Desktop environment does not matter (Hyprland/GNOME both fail)
->     >> - The failure happens before userspace loads
->     >> - Touchpad also works fine in Linux 6.12 LTS
->     >>
->     >> This is a kernel-level regression introduced between:
->     >>     Good: Linux 6.17.6
->     >>     Bad:  Linux 6.17.7
->     >>
->     >> **Dmesg logs from broken kernel (6.17.7 and newer):**
->     >>
->     >>     i2c-SYNA3602:00: can't add hid device: -110
->     >>     hid_sensor_hub: reading report descriptor failed
->     >>     intel-hid INTC1078:00: failed to enable HID power button
->     >
->     > Looks like i2c-hid can't even communicate with any I2C device, so this
->     > is slightly worrying.
->     >
->     >>
->     >> And the DesignWare I2C controller logs around the failure:
->     >>     i2c_designware 0000:00:15.0: controller timed out
->     >>     i2c_designware 0000:00:15.0: lost arbitration
->     >>     i2c_designware 0000:00:15.0: transfer aborted (status = -110)
->     >>
->     >> These errors appear only on 6.17.7+ and not on 6.17.6.
->     >>
->     >> On working versions (6.17.6 and 6.12 LTS), the touchpad
->     initializes normally:
->     >>
->     >>     input: SYNA3602:00 093A:35ED Touchpad as /devices/.../input/
->     inputX
->     >>     hid-multitouch: I2C HID v1.00 device initialized
->     >>     i2c_designware 0000:00:15.0: controller operating normally
->     >>
->     >> This narrow regression window should make it possible to identify
->     the offending
->     >> change in either:
->     >> - HID core
->     >> - I2C-HID
->     >> - Intel ISH HID
->     >> - DesignWare I2C controller
->     >> - ACPI timing changes
->     >>
->     >> I can provide:
->     >> - Full dmesg (working and broken)
->     >> - acpidump
->     >
->     > Are you running on a full vanilla kernel?
->     >
->     > The changelog between 6.17.6 and 6.17.7 is rather small, so it should
->     > be easy enough to bisect and get the offending commit.
->     >
->     > I have my suspicions on:
->     > f1971d5ba2ef ("genirq/manage: Add buslock back in to enable_irq()")
->     > b990b4c6ea6b ("genirq/manage: Add buslock back in to
->     __disable_irq_nosync()")
->     > 3c97437239df ("genirq/chip: Add buslock back in to irq_set_handler()")
->     >
->     > Because anything else is unrelated to any component involved in
->     i2c-hid.
->     > (But that's also assuming you are running vanilla kernels without any
->     > extra patches.)
->     >
->     > OTOH, I've booted a 6.17.8 and 6.17.7 shipped by Fedora and I don't
->     > see any issues related to i2c-hid, so those 3 commits might not be the
->     > culprits.
->     >
->     >
->     >>
->     >> Please let me know what additional data is needed.
->     >
->     > Can you do a bisect between v6.17.7 and v6.17.6?
->     >
->     > Cheers,
->     > Benjamin
->     >
->     >>
->     >> Thank you,
->     >> Vijay.
->     >
->     >
->     >
-> 
 
 
