@@ -1,295 +1,323 @@
-Return-Path: <linux-acpi+bounces-19495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19496-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1C5CADF94
-	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 19:21:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6953DCAE203
+	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 21:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6038930153AE
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 18:21:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 283C2301CD86
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 20:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDA82820AC;
-	Mon,  8 Dec 2025 18:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF4526A1AF;
+	Mon,  8 Dec 2025 20:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DnE+34Yb"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="SEaZZaY/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4831D281358;
-	Mon,  8 Dec 2025 18:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765218100; cv=fail; b=Abmrzc8/WLsCHsC5E9N3TS1ZeI8JGg+HOsaW3ImgcEpzBMyqh527aO+IXvtwt+/cTY88cktKK+OtjSvWbZgv81hN1vARhsH0TjrQMKdZA7VR7xLwRivAT3XrD479t7tZyg4FTSypRNR1j1svuDwwbbqCMkS6L8vj7LIVAxRG7HA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765218100; c=relaxed/simple;
-	bh=cdFZVa06BHM2UF6cdLYkpHkWw1yf8kVOr0YmWfTcrck=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UCgJbddA6egGRSV+IVJmCQ81eaK0g+EcVDodHRTIrwhPcULupd4HJcZB+qo/MvjlkVbEj1TWZ2QkEkLJfzs/8rAi0NdkJG9OOe/wLdXSkWvildx3wvCyv8vS386EWe4WCJ4GoRGAW2huwrUpsl1Pl28ekFqbE6I9+95nCl5KtWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DnE+34Yb; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765218099; x=1796754099;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=cdFZVa06BHM2UF6cdLYkpHkWw1yf8kVOr0YmWfTcrck=;
-  b=DnE+34YbaF+QijE1WXqSPZc8M+FuxnwxzNw1sdnh5R2Bs1qlWeCVs3lF
-   XFKTGc6QhriamPdl0Jf8T27PdpXWvs31wigSsgVOz/R8U85I5LoOU9HN/
-   IWUy+evy+xxaqUh9oAvTNeIlj+r2XPsgm1HunFaGbocGaQiLQ+DJgFS53
-   l4bj/y+KvQ7mi0/2UMEid6WlPSD8Vv7xgvZRLKLJMDzgZLhTWEhykBn6F
-   iFmD2pmbnPPGFB2U1J55PmBpLk1czIHlK+enla0C7NoRuRK8luHtsSjuQ
-   0T7CqKg0a7TWVoNSkaSG3bNW3CAhowIEFYph0r+dVyKU4wpmy4NbNwdLh
-   Q==;
-X-CSE-ConnectionGUID: VmhA906YTriyYIyssA5HQw==
-X-CSE-MsgGUID: oF0yJcOQSxaKhxR8UQbOVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67129014"
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="67129014"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 10:21:38 -0800
-X-CSE-ConnectionGUID: z+RFCdsOS7qxvlyqSahQcg==
-X-CSE-MsgGUID: I6CXBmr9R5iO+DYdt/PgDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="201122547"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 10:21:38 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 8 Dec 2025 10:21:37 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Mon, 8 Dec 2025 10:21:37 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.65) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 8 Dec 2025 10:21:36 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=urpp+Xgk3bMWiLbLAXbhmNYdzV7lRt2aEMu3wGmnVw7Gr9mn+k4uPvH4GPRAZaJPy02o+2Tn8zUasRqdbz4KlWIEuFviCUu8dB0Zj7eha36xixdcPQTnKQ0Bb1khL2nN3GZ2V2Nh/92QUHvyMQKkFEsYszKY7a51OuDYOYS5P+67PBjYpOFCpiNoIoavvRyq1anisKD9zKtnIDOwYTuAtD7gTVXU+Qk2EIiGtyrhFmZ2XUY9v+GvcNAa7TuSdtXIPAZ3eqUu92mIjHs38KGo90tA7Y2OoA3eiPxHVatcai/NhS6JR909bdaYr6ifqAAWGg6QW7o6RTkLxbf1zYkpCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=boJouvugRUMfaSJmuU6IrhSK3SKembRCJvfb7QZDbjg=;
- b=LvTUnW0UMSWgGtW7i7qnXDBwAD+uY9Er+RhxF3jnQEaqf9CFr25trCl8zqVGN66ByO5WqmPMjE91XEZuu8kjsVADPkrAGNvwh3s6v3q0uQg2PDYnDGYbBBkevNA9D6pxp9VhOzBhdv079+tYLFNusyZCr82zrfoNyMirJhFBekG6LPb5bHMpOlpvizJRpUnX+alr9AzZyJnsqvj81Wo07H1rOgoIret8QiV7D7KQzf8b1ya6tL8LG6WDAt3mbHmGve8ENSsdGRUEn4mgRiHaVh5TIp++ir6jwzo5ubxzQ65lNXjn8b/SBaBxLbA04B6lABwQIDvyuWhBgYg4lr7mOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by CY8PR11MB7732.namprd11.prod.outlook.com (2603:10b6:930:71::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Mon, 8 Dec
- 2025 18:21:33 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf%3]) with mapi id 15.20.9388.013; Mon, 8 Dec 2025
- 18:21:32 +0000
-Message-ID: <f5095a4c-4617-441f-95af-9255cefdcf98@intel.com>
-Date: Mon, 8 Dec 2025 10:21:29 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/34] arm_mpam: Add basic mpam driver
-To: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-CC: James Morse <james.morse@arm.com>, Ben Horgan <ben.horgan@arm.com>,
-	<amitsinght@marvell.com>, <baisheng.gao@unisoc.com>,
-	<baolin.wang@linux.alibaba.com>, <bobo.shaobowang@huawei.com>,
-	<carl@os.amperecomputing.com>, <catalin.marinas@arm.com>, <dakr@kernel.org>,
-	<dave.martin@arm.com>, <david@redhat.com>, <dfustini@baylibre.com>,
-	<fenghuay@nvidia.com>, <gregkh@linuxfoundation.org>, <gshan@redhat.com>,
-	<guohanjun@huawei.com>, <jeremy.linton@arm.com>,
-	<jonathan.cameron@huawei.com>, <kobak@nvidia.com>, <lcherian@marvell.com>,
-	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<lpieralisi@kernel.org>, <peternewman@google.com>, <quic_jiles@quicinc.com>,
-	<rafael@kernel.org>, <robh@kernel.org>, <rohit.mathew@arm.com>,
-	<scott@os.amperecomputing.com>, <sdonthineni@nvidia.com>,
-	<sudeep.holla@arm.com>, <tan.shaopeng@fujitsu.com>, <will@kernel.org>,
-	<xhao@linux.alibaba.com>
-References: <20251119122305.302149-1-ben.horgan@arm.com>
- <877bvfa23i.fsf@stealth> <a04aa337-a3eb-42a0-855b-500ba549e2d8@arm.com>
- <87sedrlsjk.fsf@stealth> <642767c9-f926-490a-83a1-160978c37553@arm.com>
- <871pl9krdz.fsf@stealth> <5261337c-337d-44ca-aff1-0a927b81e593@intel.com>
- <87tsy0kgwy.fsf@stealth>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <87tsy0kgwy.fsf@stealth>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR02CA0007.namprd02.prod.outlook.com
- (2603:10b6:303:16d::33) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0214A22D4DC;
+	Mon,  8 Dec 2025 20:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765224117; cv=none; b=mLUNcQH/LqSQZS8Q/zNRRvL1wVp2MyhdBepxG4LRSxccf8ii6lSRqy7ANLAMbal+rhFIRHZpMnQ3acNjncgWMi5398quVAWkfRPEOm/XPkjli2y6eDPQrd3LLPdYtKcSyea+MhF48+OFARDkAYu8G/1HkWh0FqgzU7aOlLb0rK0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765224117; c=relaxed/simple;
+	bh=oCskKbOkupWufgytaRWMSAKqzYH72k5D4NHHZcaN0lM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n44q/XigWpY2Mnz+2O6k2+q3Mk9WH2oG6OT4SAXe+6EC2BjAH+F0xeP5vcGiQtVfka7al+NKaHCaBXWwPJweujIud+BP1oUOuC6vGmOOMaRNC22MbhSyoSrlcJyHRbQ7WwCTogiVekeCSY+kYP7yopEnWM+lJ74OeLbV3Y83OFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=SEaZZaY/; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1765224109; x=1765828909; i=w_armin@gmx.de;
+	bh=WYBhOdzvWmbOptA2wuOHH1P1xCu+i75Wa13+llk0biU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=SEaZZaY/9Q+6rBdM0OErtf7rkp1vOkcnSSOjnMjAMSmMpP7T69tzNau5vhsfQA0H
+	 fFTod+GJrdYQlhTHKzhWbl2xsgjKzPW5izosD+LbA6axxIPiIuv6LK+MpfKtY8RGl
+	 4xDSxnsnqAFC2upMK8nMl0OJvNMalnpiWB1ImGJmJCIULNM9KGOVwhynkMLuXW4Tx
+	 Pweo0BogDbF2rI8+CuU7uj/P8kW6F3ZWv6CA9ozg3nljKE+w9IkmM2pJJflYaV5fL
+	 C+DJSak0T4w47ygn7HBf/5wRwaWz0VDqGcYe91bVVJZRzpjERgeDXxqMxCUM9VeEA
+	 3EM3P/DZ6g3ie3NUYw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([93.202.247.91]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSKy8-1vdizM34EC-00LrCY; Mon, 08
+ Dec 2025 21:01:48 +0100
+Message-ID: <ab8b770c-08e9-4cf6-bd4f-f36c951fda4c@gmx.de>
+Date: Mon, 8 Dec 2025 21:01:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|CY8PR11MB7732:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc44b4f0-1f99-45a1-4bf6-08de36869d58
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?K1NWcDJyT0pVeUwycExER1U3K2YvaHo5em5qUzFnbXYzL1U1OThmdmVRT1Zz?=
- =?utf-8?B?R3plSDFtMnNRVDA2UEViZVhsY1NNMnpsZGthSmRsdXBQeEJZekxQSGZVTHJl?=
- =?utf-8?B?enZ0ZWFRNzhyOHdwTDZpT2VyL1FpaDh2N3podVVUWVRCN3RIdEg5UnAxUzFi?=
- =?utf-8?B?WUxzbk5pSEdmL3JQMmgzV1N5ckdDSmc1aDhkVENydms1cFpXb1J2MElpNDlM?=
- =?utf-8?B?K3BzMXNxcEFjQnRwb2JpcUtqZTkrRVE1cEZRcWhLUmlYL2Z6SUUrZGJOVzBE?=
- =?utf-8?B?cGN2MFlXMVBodjd2eEJDbWVDWVcrTVlMTEFoTEdLYW1pU3hRRUpLZlN2bUtu?=
- =?utf-8?B?M245RThIUGs5S0xMUDlKVTZKK2FBa1NWVkphOExHSFF4SWV5VVNJMEpQQmhn?=
- =?utf-8?B?OVVIYWRkeUdkOUFSV1A4a2hTbHNZSG5CSUNrU0l3Y29ORzN4aXdMMVJJMzJ2?=
- =?utf-8?B?bGtab0toUGM1dnl0ZEU5OVlKVERpWkEvZi9LYVF1NTU2Wm5RMUsyRThSS082?=
- =?utf-8?B?Yk5oREhEVUErS1lnUGg2SWVWVXQvQVRBUVdzVlhpVy80Z00vYUh6Mk9sQVdU?=
- =?utf-8?B?eE1XNnhDeTRNc0Z1NHhNbno5OS9BcTY5NW15cFlnVVYxODR6UEZjWkMySWEx?=
- =?utf-8?B?UnZueXlaUVJFenNHMXk4YXpUODBCNzcwbElnNDM4MjVxTUo4Qk55RDdwL1l0?=
- =?utf-8?B?U0llWWVUVGxzNDFPdDZBZ2p0WlFlNlJRZGMrSkJsRHIwSjB0MU56VGh4bmpl?=
- =?utf-8?B?U0RsK1JIeFpLM2dReEJPVUU4YkNwa1FKTndrNVp2TlNxSTdDNnNYWVVVb3A1?=
- =?utf-8?B?ajRORnZMVVFCR0FTczZYV1VuL28reHpyaDZwbmZsOXdycnZuMm1kOElpUG10?=
- =?utf-8?B?S3E5eE8yTWpJaW9VaTRwWUJGSlJCOExrVVBaTlh6WW5BRkRiWnRmTXVCa005?=
- =?utf-8?B?eFRtdTIxbHRQaGNVTXFET3RUWkhGcDRjY2F6ZmZQcnlkUExIM0JjK01Sc3Rt?=
- =?utf-8?B?YVM2VE1TQzdSVVdpMGV2ZzZnWDBZN0kxUE1URnJOTFlnVVlDd3FwM0NjdDk3?=
- =?utf-8?B?Wk56YVA4T1Q4Z3E1T2pNaGxjZjREL1lEaU1wd2VweW1LK1ZjZmhCbU5VMVNp?=
- =?utf-8?B?VzJDZlJmY2xBbmFkbzF4eHY1eXdSa1NIcmhUWGYwT3I2L01rQ2ZkY0ViUEJF?=
- =?utf-8?B?SEFOSi9pbmtzazNzenZxL2xGMGhnMGNIQ1FPdjlNNUdPei8wYjM2M25VSG1F?=
- =?utf-8?B?ZDBlRzQ4MmREYUMxZWJuc3JNMVVyYmxOYTNxdXg3RkpHOExEQ1IzRlRJL3lU?=
- =?utf-8?B?YXRVU1NiWXFvWFZJYmNqWkhsRzg1SjBPRHNwcGhFNGVBNlFiYXpRVk9XallR?=
- =?utf-8?B?MmtWdWtWaCtJeSs5UW44VDR5anJKTXY4QzBFQTQyT29nYUVhbmxSL2FuT0xz?=
- =?utf-8?B?VkQySk5STmJmOHhoY0I0ZTdIWDhQK1g0ZnNQRmZ5UU54am9MQUhObnN4OW1P?=
- =?utf-8?B?TzhCWk4ySWhobFJHaWkyS0dwWDEyNEdUVjNwWHpYN3N5NkFQakE2ZzJBTUZr?=
- =?utf-8?B?Qi9MejNTM3MvZUpDTmNGNUNhSE9LTGswOWN0M0twbUhvRUhlLzVlMHRhbUdS?=
- =?utf-8?B?dEIzRXBOWkljVXpFQmltU2dDVkVva3FxZlYwQm42cU5MUGUvY1lUaWQraHBH?=
- =?utf-8?B?MnFHYmNpWkRHMVg5SE9SWGxJalBKb2I5U3c0RUVnTWZVNW9RYlY3MlpubUdW?=
- =?utf-8?B?bmVRZGtBbnpvTHVtL0Y2TVIyR2hQS1JtaHh5UDlsZ0pTL2pnOEtVYWVLVEFK?=
- =?utf-8?B?d0lTLzdHbkllSFlZSWtTU2dKYzZsUWZEY0xuWitWbC96S2hkYjZGWGlOanFS?=
- =?utf-8?B?SVhVcG40TERsaHlRTVhXWVlGekhGd3ltK3gxVjdiektPaGc9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ckJxcUpvN28wNFMxRjRpRUNLQm9CRElJUDlJM2M4T3NHejVORzNJaW9keDVr?=
- =?utf-8?B?RFN6QTBLc0llTHhLRktyQlB2ZjFnWkJBWTN5RkpSZTc4U1Z2TElSVkpkUHZn?=
- =?utf-8?B?bnE5QXJncWdaWVVKdU9CMWMzdy9sQmtEZjNCSE9Ud29FVStSaFROdGVXSGdi?=
- =?utf-8?B?TmFmMTVxOU9IMTB2aXBsRXRzSWx6TmIyM0RWUXJtUWRyVDNFQWVUTUVYZ0lP?=
- =?utf-8?B?SkdiS2FjNGN3REd0TTVidU9vcnIyakVDM0toT3lIY2N4NitQRm5XeVIvNFdH?=
- =?utf-8?B?YkgvdXU2OGdBeXVXeEZsZ1J5NHpBRFJta0MyZUxJRzZTVXpPaXFCem1wWnRp?=
- =?utf-8?B?WUNQbVg4WEd5MzdnRmtwcUVheWMwL0w2R1dxK0dtd1dxQ2djZ3N5WjNNaE1h?=
- =?utf-8?B?R2dNako4WU1iSVJFdCtOYXIyMko5bzA0Nit4L1dzTjRCQmNYdDhBNGhhZmxT?=
- =?utf-8?B?SmdVaG0rcmxNOHZ5UVdqdG1GR0s0bElURklTUTZsQldOMGx1aHRuY2F3dyth?=
- =?utf-8?B?RDhOdmE0ditZbndoN3JTdW14N01jWXdrbG1ZK2FkWFJjYi9VaTkwQjBtWG1j?=
- =?utf-8?B?dWRoL1NOMittZ0J1aWR3Wm1pTEQyRVBRMjVRNDloRFNZSUJpWVVreUlocFp1?=
- =?utf-8?B?bmh6b0t2RmVZelQ4azFlS1YvM0VmUnlQQ2tTN0ZTY1pTMlBWdE9SRWMySGZQ?=
- =?utf-8?B?bStFeVNQT3lwYkZ5K2N3cHBidnpJajlmcVdydUU5cW10NGpKL1cyQnBjREl0?=
- =?utf-8?B?Z3RBVnY0b3M5VVllYTRJdXZnR1RVdS9Ia1BUQ3AraWhDZjZwL0dqcGFwMmlr?=
- =?utf-8?B?eXVNRnl2ek9vd2liZTcwUFhHTDVwc241ZXlxY2tUQmhoSkkvY0grVXY2azVY?=
- =?utf-8?B?VXUzeWdDUHRMT1lxeWliK09KZ3ZUMG1ubVBsQ0tMbHlvVm5GL05pM1ZvK1No?=
- =?utf-8?B?NTYxTk1kdEtoVFQ3K1VwbW1kVnhXTUdBSHljNVVrK0o4TzVVOUNoSisxWUFC?=
- =?utf-8?B?Z3lJMEUrQXcwdXBUdkppbzU3S0EvQ3h3MWdvdkVrYW0weXlleHVFSFB0b1pk?=
- =?utf-8?B?aFpOcWlCZ0t3Zmk4a2lyY2o3TXNFak1pOEVEQ29UdHVrb3k3UTQrUjQwZEJS?=
- =?utf-8?B?ZEVxNmttdkVoYVNIMDI3QVRPdnB5VURwVEErdXVEeWUxbEhQZW9nSkN5VFpu?=
- =?utf-8?B?NUxLUGVNU2ZCa1M2SWVnV21LUDBEUkQxNW1jQnVsa1JLWUttTXhKL2MzNG8y?=
- =?utf-8?B?RURDL3BBTm54d3ZSTE9CYXdCeVRLRkVQRWVMb0NITUUvOXYveG1ScTBLYktr?=
- =?utf-8?B?SlIwNjhvUFphQXBYOU9jV0FndmNDaW1GOFpRcU9aZFVEeS9YRVFjQ1N2VU9v?=
- =?utf-8?B?QkZyN1JwZXhITGJhUEZZL05Ud2hDQU9NeTdNN1UrRG5KUm83TVVkQWFHYWp1?=
- =?utf-8?B?QnQxdDV3OUlId1VWRE9VYjY3WVNxakhFTkVVUi9CeWphVThDeVZaUG9JVlZ6?=
- =?utf-8?B?MStTaTVRY2J2L1VwSmxZL25QOCtSSkE3eWVJQm83SU92WXhxNGQrK1o5dlNJ?=
- =?utf-8?B?RS9qK3B2aWEvMjJNekFqaHB1WUhjS2tYZHZJczdFOFA5aWxoRW1QaVRRTEk1?=
- =?utf-8?B?Nno5VUE5SW5ZelVsM21IcnRvOW5DVlczaWpyQjd3UWFlM2hUSG95Tis1ellK?=
- =?utf-8?B?MHBScC9HYytUY2xobWxBMWtvV3d3MThFMklVVGIrR0EvN1hVT2cwUzQ2K2F0?=
- =?utf-8?B?cno4Q2JGT2NYRjlheVFwYzdJSFNCYjBQcGs3UWplTTF0VkZ3eUpPUldxTTRt?=
- =?utf-8?B?dkgvSzAwSUoySHpicGRLbnUvR3JpYkp6TkJHUEV6TmprNXVGZzdKa0VhREpp?=
- =?utf-8?B?TDNaZE1DL2ZkR25QMzdvamNLQUdQUHVxbENXVXNBQWRMUXRuTFhJNkpNdHY0?=
- =?utf-8?B?ZHlpVkZrYnR3S2EzVXlZWEJtZzdJU2FMbCt1ZlRKSVRIaTlvZk9ubTdSZThO?=
- =?utf-8?B?aWU3WHhDSDF3NVJjb1pUYkFTdUZzSGxVc1NoSExVMlQzT3FpNzV6UFEyTCt6?=
- =?utf-8?B?T1FCVTIvL3RqRVZud3VxNHlDRFVsTTVtZlhmNUR1eEE0YVZjaUxCVWFZYTFR?=
- =?utf-8?B?K0kzaWpoRTlYaU5TV1FsY0tzeXhwSHYza2dqdEJYbW5nZ2dDZFFyNUphTWdG?=
- =?utf-8?B?b0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc44b4f0-1f99-45a1-4bf6-08de36869d58
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 18:21:32.8389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2Ac1qgaD41apRexUyN1n1pqd58tjE/ou9TZAfvJyZqo9KK1HKe2qSbHIzbbiKUx9ZQfjtXLpDcdd7DPhoVomarj2Rz5hdDIhcU31ipcqIF8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7732
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/2] PCI: ACPI: PM: Rework root bus wakeup notification
+ setup and wakeup source registration
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, Linux PCI
+ <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Bjorn Helgaas <helgaas@kernel.org>
+References: <2395536.ElGaqSPkdT@rafael.j.wysocki>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <2395536.ElGaqSPkdT@rafael.j.wysocki>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:+Q3rm7jNUG4fJgunNeiO1vnGELSbXsYXNR0ufi5FZULDaD7POzu
+ f0y05jVRPXLQDfEZbuL1xalg+uiRdZ7ufQSIIDsfWueUPdyxGf6FY1mHzO8vb/n2n51XqkO
+ 9QjqxdgiYCdxofoXz1ilRTWrEUtHTMNuEnstfpS1nvEpKYEOkbL2PgdXYi86ZD2qMIdsneH
+ Av8tYouPqAewM7IV76LVQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:tcTCUhaWPHM=;j9oJbCD8lQfrnVvcGCrzDqFG95H
+ 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
 
-Hi Punit,
+Am 08.12.25 um 13:09 schrieb Rafael J. Wysocki:
 
-On 12/8/25 9:43 AM, Punit Agrawal wrote:
-> Hi Reinette,
-> 
-> Reinette Chatre <reinette.chatre@intel.com> writes:
-> 
->> Hi Punit,
->>
->> On 12/5/25 5:08 AM, Punit Agrawal wrote:
->>> James Morse <james.morse@arm.com> writes:
->>>> On 03/12/2025 11:21, Punit Agrawal wrote:
->>>>> Ben Horgan <ben.horgan@arm.com> writes:
->>>>>> On 11/24/25 15:21, Punit Agrawal wrote:
->>
->>>>>>> The platform has MSCs attached
->>>>>>> to shared L2 caches which are being skipped during later stages of
->>>>>>> initialisation. IIUC, the L2 MSCs' limitations stems from the
->>>>>>> assumptions in the resctrl interface.
->>>>>>
->>>>>> What in particualar is being skipped?
->>>>
->>>>> The registration of the discovered MSCs with resctrl and subsequent
->>>>> exposing it to the user.
->>>>
->>>> resctrl's 'L2' support is limited to the CPOR bitmap.
->>>> If you have controls, there is no resctrl 'event' that can exposed them.
->>>> (the problem being they all have 'L3' in the name!)
->>>
->>>>>>> I was wondering if there are any patches available to relax these
->>>>>>> limitations?
->>>
->>>> Knowing which property it is will help - but some of these things are checked
->>>> to match resctrl's ABI. They can't necessarily be relaxed without breaking
->>>> user-space.
->>>
->>> This platform has portion, capacity and priority partitioning, as well
->>> as memory bandwidth and cache storage monitoring. The MPAM code seems to
->>> correctly parse the properties.
->>>
->>> But as you point out, the resctrl 'L2' support doesn't have anything
->>> other than CPOR bitmap yet. Have you looked at what's needed to extend
->>> resctrl to support some of the others?
->>
->> Please see [1] for a summary of ideas on how resctrl can support multiple
->> controls. Nothing is final, please do add your ideas and requirements.
->>
->> There are a couple of opens not included in the summary. If interested
->> [2] is where a lot of discussion happened that prompted the need for
->> a summary.
-> 
-> Thanks a lot for the pointers.
-> 
-> Let me catch up with what's already discussed and raise any points that
-> are not clear / need refining.
+> Hi All,
+>
+> Patch [1/2] updates the registration of PCI root bus wakeup notification setup
+> in order to simplify code in pci_acpi_wake_bus() and to prepare for the other
+> change.  This is not expected to affect functionality.
+>
+> Patch [2/2] modifies the ACPI PM notifier registration to add wakeup sources
+> under devices that are going to be affected by wakeup handling instead of
+> registering them under ACPI companions of those devices (rationale explained
+> in the patch changelog).  This will change the sysfs layout (wakeup source
+> devices associated with PCI wakeup are now going to appear under PCI devices
+> and the host bridge device), but it is not expected to affect user space
+> adversely.
+>
+> Thanks!
 
-Please do. There are already a few known open issues. I plan to raise awareness
-of these discussions (and the (so far known) sticky points still left to resolve) during
-the resctrl session at LPC:
-https://lpc.events/event/19/contributions/2093/
+I tested both patches, and the sysfs layout changes as expected:
 
-I am attending LPC remotely though so I hope increased awareness will result in more traffic
-to [1] to help us get this right.
+$ readlink /sys/class/wakeup/wakeup*/device
+../../../device:00
+../../../device:1a
+../../../device:1f
+../../../device:20
+../../../0000:00:08.1
+../../../device:36
+../../../device:31
+../../../device:32
+../../../device:3c
+../../../0000:01:00.0
+../../../device:3d
+../../../PNP0C02:00
+../../../0000:02:00.0
+../../../device:3e
+../../../device:3f
+../../../device:46
+../../../0000:04:00.0
+../../../device:47
+../../../0000:05:00.0
+../../../device:57
+../../../0000:05:08.0
+../../../device:59
+../../../device:01
+../../../0000:05:09.0
+../../../device:5b
+../../../0000:05:0a.0
+../../../device:5d
+../../../0000:05:0b.0
+../../../device:5f
+../../../0000:05:0c.0
+../../../device:74
+../../../0000:05:0d.0
+../../../device:5a
+../../../device:3a
+../../../device:5c
+../../../device:60
+../../../device:75
+../../../LNXVIDEO:00
+../../../device:22
+../../../PNP0C02:02
+../../../device:25
+../../../device:2b
+../../../device:24
+../../../device:37
+../../../0000:00:01.1
+../../../PNP0A08:00
+../../../LNXPWRBN:00
+../../../AMDI0010:00
+../../../AMDI0030:00
+../../../00:02
+../../../alarmtimer.0.auto
+../../../PNP0C0C:00
+../../../0000:0b:00.0
+../../../AMDIF031:00
+../../../PNP0C14:00
+../../../device:0a
+../../../PNP0C14:01
+../../../PNP0C14:02
+../../../PNP0C14:03
+../../../0000:0e:00.3
+../../../0000:0e:00.4
+../../../0000:0f:00.0
+../../../5-2
+../../../1-5.3
+../../hidpp_battery_0
+../../../device:44
+../../../0000:00:02.1
+../../../device:76
+../../../device:0b
 
-Reinette
+turns into:
 
+$ readlink /sys/class/wakeup/wakeup*/device
+../../../0000:00:00.0
+../../../0000:00:04.0
+../../../0000:00:08.0
+../../../0000:00:08.1
+../../../0000:00:08.1
+../../../0000:00:08.3
+../../../0000:00:14.0
+../../../0000:00:14.3
+../../../0000:01:00.0
+../../../0000:01:00.0
+../../../0000:02:00.0
+../../../0000:00:00.2
+../../../0000:02:00.0
+../../../0000:03:00.0
+../../../0000:03:00.1
+../../../0000:04:00.0
+../../../0000:04:00.0
+../../../0000:05:00.0
+../../../0000:05:00.0
+../../../0000:05:08.0
+../../../0000:05:08.0
+../../../0000:05:09.0
+../../../0000:00:01.0
+../../../0000:05:09.0
+../../../0000:05:0a.0
+../../../0000:05:0a.0
+../../../0000:05:0b.0
+../../../0000:05:0b.0
+../../../0000:05:0c.0
+../../../0000:05:0c.0
+../../../0000:05:0d.0
+../../../0000:05:0d.0
+../../../0000:08:00.0
+../../../0000:00:01.1
+../../../0000:09:00.0
+../../../0000:0b:00.0
+../../../0000:0c:00.0
+../../../0000:0e:00.0
+../../../0000:0e:00.1
+../../../0000:0e:00.2
+../../../0000:0e:00.3
+../../../0000:0e:00.4
+../../../0000:0e:00.6
+../../../0000:0f:00.0
+../../../0000:00:01.1
+../../../pci0000:00
+../../../LNXPWRBN:00
+../../../AMDI0010:00
+../../../AMDI0030:00
+../../../00:02
+../../../alarmtimer.0.auto
+../../../PNP0C0C:00
+../../../0000:0b:00.0
+../../../AMDIF031:00
+../../../PNP0C14:00
+../../../0000:00:02.0
+../../../PNP0C14:01
+../../../PNP0C14:02
+../../../PNP0C14:03
+../../../0000:0e:00.3
+../../../0000:0e:00.4
+../../../0000:0f:00.0
+../../../5-2
+../../../1-5.3
+../../hidpp_battery_0
+../../../0000:00:02.1
+../../../0000:00:02.1
+../../../0000:00:02.2
+../../../0000:00:03.0
 
-> 
->>
->> Reinette
->>
->> [1] https://lore.kernel.org/lkml/aPtfMFfLV1l%2FRB0L@e133380.arm.com/
->> [2] https://lore.kernel.org/lkml/aNFliMZTTUiXyZzd@e133380.arm.com/
+The remaining ACPI devices are likely caused by device drivers based upon struct acpi_driver.
+I was unable to test the wakeup itself since suspend is currently broken due to issues with
+cpuidle, but i suspect that this has nothing to do with the patch series.
+
+So for the whole series:
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 
 
