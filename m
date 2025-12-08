@@ -1,164 +1,120 @@
-Return-Path: <linux-acpi+bounces-19491-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19492-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BE6CADBA1
-	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 17:19:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5346ACADC02
+	for <lists+linux-acpi@lfdr.de>; Mon, 08 Dec 2025 17:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4CD7304C9ED
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 16:17:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F11753009AA6
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Dec 2025 16:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E39243964;
-	Mon,  8 Dec 2025 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7EF2E5437;
+	Mon,  8 Dec 2025 16:29:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1351E49F;
-	Mon,  8 Dec 2025 16:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC12F9C0;
+	Mon,  8 Dec 2025 16:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765210658; cv=none; b=G0nIzuy4i2f/YRScx8XM5Kr/1AleZ64I8j/mSq5/qlrr9KYfMjU7Q1CBbFwiEJ8jnf7WfSLpQAgv/icDMuQGsZwgFydjtDAFKleBMKg97xudRRf/UcN9mLIj7KurH+tqcA8D3axm2iutyE366yWQeAGk3B0phsvn+CmoFnLFf08=
+	t=1765211372; cv=none; b=KaQNvtBKLMhk9gwqWt/uXsOAt8oWejVYm03z09jap2Ldog/bhg1k5uuBkEkwkuHbz9irlw+Tteh2umdzBHv1V2FT8Ij6q/lil90ZBVwJLBCIirgLhl1vjgrtKisoH21j0vv9j24fARyDr56rUe07Ij+5vpEUzB/5JLVl181njOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765210658; c=relaxed/simple;
-	bh=t77iVpZAIeON6xw9l3th3ob/pJZ4A8In3x1rp7BkoVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K8wnjEfbmUXFbLqwBZYAxMIEiYc5Bjf7kDttoyFyarYab3oH+mj/6ZL8oOl6qkaHvUQ7OPzUYjvXh9uG4ZXaLK2l5DTezA313J1zRICFWcYp7F+lUAQeZmncXbUoAMIJIQtqxbLP7H5JThUqtFfoEWes8RGUauQgDuRNFjyTNJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0FD41691;
-	Mon,  8 Dec 2025 08:17:28 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80E0D3F740;
-	Mon,  8 Dec 2025 08:17:32 -0800 (PST)
-Date: Mon, 8 Dec 2025 17:17:30 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Jie Zhan <zhanjie9@hisilicon.com>
-Cc: viresh.kumar@linaro.org, rafael@kernel.org, ionela.voinescu@arm.com,
-	pierre.gondois@arm.com, zhenglifeng1@huawei.com,
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxarm@huawei.com,
-	jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
-	yubowen8@huawei.com, lihuisong@huawei.com, zhangpengjie2@huawei.com,
-	wangzhi12@huawei.com
-Subject: Re: [PATCH v4 1/3] ACPI: CPPC: Factor out and export per-cpu
- cppc_perf_ctrs_in_pcc_cpu()
-Message-ID: <aTb6Gvzvc9C7vnVP@arm.com>
-References: <20251203032422.3232957-1-zhanjie9@hisilicon.com>
- <20251203032422.3232957-2-zhanjie9@hisilicon.com>
+	s=arc-20240116; t=1765211372; c=relaxed/simple;
+	bh=+fFSSXxx2uY4ST/z9faoq6ULJhQzG6m2kPYgkKdUPhM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A7RAJDhbACVxYFPYxbDtjyklIBAWjJwKC5psKm/qt5FHmofj0otKR9XZLBNBxELSAHSOYbT33pHGW2n0yz4uNFYErljDL3Uf0a+9Kbr3YLVZpqdwDkhuebNA/hEml6Aj3NJF1iuK3LwNINfbCWc/x4cAtoMTQYyWSn/372IVIcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dQ6rH30jGzHnGjc;
+	Tue,  9 Dec 2025 00:29:19 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 37DA840565;
+	Tue,  9 Dec 2025 00:29:27 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 8 Dec
+ 2025 16:29:25 +0000
+Date: Mon, 8 Dec 2025 16:29:24 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <shiju.jose@huawei.com>, <rafael@kernel.org>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <linuxarm@huawei.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20251208162924.00004a38@huawei.com>
+In-Reply-To: <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+	<20251121182825.237-2-shiju.jose@huawei.com>
+	<20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203032422.3232957-2-zhanjie9@hisilicon.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Wed, Dec 03, 2025 at 11:24:20AM +0800, Jie Zhan wrote:
-> Factor out cppc_perf_ctrs_in_pcc_cpu() for checking whether per-cpu CPC
-> regs are defined in PCC channels, and export it out for further use.
-> 
-> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-> ---
->  drivers/acpi/cppc_acpi.c | 45 +++++++++++++++++++++-------------------
->  include/acpi/cppc_acpi.h |  5 +++++
->  2 files changed, 29 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 3bdeeee3414e..aa80dbcf42c0 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1422,6 +1422,29 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
->  }
->  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
->  
-> +bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
-> +{
-> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-> +	struct cpc_register_resource *ref_perf_reg;
-> +
-> +	/*
-> +	 * If reference perf register is not supported then we should use the
-> +	 * nominal perf value
-> +	 */
-> +	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
-> +	if (!CPC_SUPPORTED(ref_perf_reg))
-> +		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
-> +
-> +	if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
-> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
-> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
-> +	    CPC_IN_PCC(ref_perf_reg))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc_cpu);
-It is minor, but I would prefer the earlier version when we grab the reference
-performance reg only when none of the other regs is in the PCC.
+On Tue, 25 Nov 2025 08:36:27 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
----
-BR
-Beata
-> +
->  /**
->   * cppc_perf_ctrs_in_pcc - Check if any perf counters are in a PCC region.
->   *
-> @@ -1436,27 +1459,7 @@ bool cppc_perf_ctrs_in_pcc(void)
->  	int cpu;
->  
->  	for_each_online_cpu(cpu) {
-> -		struct cpc_register_resource *ref_perf_reg;
-> -		struct cpc_desc *cpc_desc;
-> -
-> -		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-> -
-> -		if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
-> -		    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
-> -		    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]))
-> -			return true;
-> -
-> -
-> -		ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
-> -
-> -		/*
-> -		 * If reference perf register is not supported then we should
-> -		 * use the nominal perf value
-> -		 */
-> -		if (!CPC_SUPPORTED(ref_perf_reg))
-> -			ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
-> -
-> -		if (CPC_IN_PCC(ref_perf_reg))
-> +		if (cppc_perf_ctrs_in_pcc_cpu(cpu))
->  			return true;
->  	}
->  
-> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 13fa81504844..4bcdcaf8bf2c 100644
-> --- a/include/acpi/cppc_acpi.h
-> +++ b/include/acpi/cppc_acpi.h
-> @@ -154,6 +154,7 @@ extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
->  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
->  extern int cppc_set_enable(int cpu, bool enable);
->  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
-> +extern bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu);
->  extern bool cppc_perf_ctrs_in_pcc(void);
->  extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf);
->  extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq);
-> @@ -204,6 +205,10 @@ static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
->  {
->  	return -EOPNOTSUPP;
->  }
-> +static inline bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
-> +{
-> +	return false;
-> +}
->  static inline bool cppc_perf_ctrs_in_pcc(void)
->  {
->  	return false;
-> -- 
-> 2.33.0
+> On Fri, Nov 21, 2025 at 06:28:20PM +0000, shiju.jose@huawei.com wrote:
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> > 
+> > ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
+> > Driver adds support for RAS2 feature table, which provides interfaces for
+> > platform RAS features, for eg. HW-based memory scrubbing, and logical to
+> > PA translation service. RAS2 uses PCC channel subspace for communicating
+> > with the ACPI compliant HW platform.
+> > 
+> > Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+
+Just picking out one point where I disagree.
+
 > 
+> > +
+> > +	struct ras2_mem_ctx **pctx_list __free(kfree) = kzalloc(ras2_tab->num_pcc_descs * sizeof(*pctx_list), GFP_KERNEL);  
+> 
+> Function member declarations at the beginning of the function, pls, and then
+> you can remove this ugly linebreak too.
+
+No to this suggestion.  Doing so breaks the rules that Linus has laid
+out for use of __free. Constructor and destructor must be next to each
+other. See guidance in cleanup.h.  This stuff is new, so it's perfectly
+fine for a subsystem maintainer to say they don't want it used, but
+if it is used then it should be done according to the agreed style.
+
+Various folk have already experienced a grumpy Linus when they put the
+declarations separate from the constructor.
+
+FWIW there is a long thread on the ksummit list that repeats and
+extends the discussions that lead to the guidance notes in the header.
+
+https://lore.kernel.org/ksummit/B92B21C0-093D-4F52-A7E3-1A7DDC83749B@zytor.com/T/#t
+
+Jonathan
+
+
 
