@@ -1,152 +1,304 @@
-Return-Path: <linux-acpi+bounces-19525-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19526-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D9DCB1463
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 23:14:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60040CB1477
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 23:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8147730A1F24
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 22:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10C5530B3A2E
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 22:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8172DF121;
-	Tue,  9 Dec 2025 22:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B262DF12F;
+	Tue,  9 Dec 2025 22:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="FXCo6que"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYVl3DSq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013422C236B;
-	Tue,  9 Dec 2025 22:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765318466; cv=pass; b=Jb7BOwRkQrC3oBTsePN6k8XJFidCzq/ygNOXq8FrnyZTtZAEfMbQDsYEpDchJjkm/qwvlKTOIKMdNYVI2cwisLdGc6ffKJDBJ8WTh9pYQ8cJJch6/pmMhL7FZog0lDc79clAIDEoWHHV3GtL7ebqkeoM+K3A8xWYrpAdzOOHB98=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765318466; c=relaxed/simple;
-	bh=ZjyW0kT1tkEComy9pfyQTi7DlVMVtAfGEm5l1s4gGqQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HJYhL+907d74A0fjCbLrzVvVWB7C4N3ruufQOQvkONDbndvczBHK71vtJwZosKxOahvZfcHVkuOVJogaA1bpXFhH06CkOgeGOtB7iXGYA3yh4Pg4K/66vamqp9CSjLb2z7NQsHR94gC01W3Oa8FjRC+ujhIgUXb0WUlfhqVTlt0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=FXCo6que; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1765318434; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=B1m3Eszbz+3tHdMyjTSgRcDzVdZBV6FrkiP2MmVYibeMzg2MKJtlgwmeuZYaiYZjIXutJ+IrwKcafZ3hHoBLBXLmZm7DZ7JcU/fRVJlSeSEO0vNW4hrNDSFQnQ/LIuSZsunox8KJqJcov3Ki3OyZwyIFh7DhyGFcwyUoz0u+WE0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1765318434; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wQdAWSkGZRVDZ/dUpzDBgDgRmc+jOeRLJeDqBxb7B4A=; 
-	b=FPDNlGfC40ATxvWRzTjP5R/aa86PXJmL1Squ8puxDp6XFmruLAM/bQ8cYF7v8GMjvVoyH2Gl1UZfGAqmoqb7Y4lXLXEyHGMwky/EQCJrPUblEvQM9npxsaZFlYCxDjvwdsgyMcSvto4mphQQzD+K9i20Uzr77sMMowWZUhF0F8k=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765318434;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=wQdAWSkGZRVDZ/dUpzDBgDgRmc+jOeRLJeDqBxb7B4A=;
-	b=FXCo6queHvIzhUMshag4qhinlim2IpSwMf0JbOAIUdXrX/diIPSmqRvGlRpfNKHV
-	gVGxRAsNqEQS9XFf9wucCXfbzr1XYIVMZG9rxk7mBjJqVx7Q/6c0u9euqdfbyjWRBX8
-	u9tOXOTXuBj2Hbq3mHgHOS2qafdPPY8GgGHE3uUY=
-Received: by mx.zohomail.com with SMTPS id 1765318433302607.335555883667;
-	Tue, 9 Dec 2025 14:13:53 -0800 (PST)
-Message-ID: <9e663a52-691c-4387-85b7-73e7f51086de@collabora.com>
-Date: Wed, 10 Dec 2025 01:13:47 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4108823D7FB
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 22:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765318703; cv=none; b=uIHiNmcSIE4fv8uNElMdayOPfkr6FS13G2gS/ABqVREu6+526RwoSUhEKcGdyjcmOfnnxSdLhZi13IOfOmxz8NI4vPkCIDKrPF3GlpKaEdUY33k3F1SgK/eaiQxizGQHZMaLtW9vB7evT/2/NtEzjvGaMoaBcoveumYR+dF6knc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765318703; c=relaxed/simple;
+	bh=xBJTl5KnoTYWVQf2uwQsAY/CqxdRSZb8arP25agma/Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bh5XqWk2bkIV8mYSTP6KnGFUSQu3YJkYltYnH7AqR09d/Lvikuphzy3nBYkKeWJDK5mSuEAqdI2ouuGxakxvGuJ/LgQBPqFPSlogs3+NtqsJB5ARSN7rYldM9TMGSD6tBDxaSSqMKNqu3I68i3fdGqKrDJ7qm0SunAJd1anv6Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYVl3DSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19163C4CEF5
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 22:18:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765318703;
+	bh=xBJTl5KnoTYWVQf2uwQsAY/CqxdRSZb8arP25agma/Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZYVl3DSq4rsIDE5Y3Yo8hiaG+Z5s/kj93YUIACEIIxbYPprPCG8r05rGIj4GnJN4p
+	 3oZDgAW3I27fjl3cHGKKnfqywNhJ6PvUFQ2vJdB8bpaFwvaZhgoZa0ra69uhWnE3XL
+	 v26qI68+NQ3Txw7Mlh8IFSSXKmL1vKpIVWL2YMeAMU4tz4A0D6jNrUh/4AjIPXUp2G
+	 7KKcuUTv9NFNiQ7Uen1qnpBBB35ERat43oId7iitOTQUv+GeSfeHDa8v7g/cEVhEm0
+	 bAQ3REertRhqwWoXkQowggrXgNr0LxOOQfqLx1uChD1NNICKT2aCJizWYrigoxTi3h
+	 yJZyrLsGrXlEg==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6597046fc87so2201674eaf.0
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Dec 2025 14:18:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXWSUpCu3zpiP8T9rUdEld28nvcFHaarGeJOS7wqzZPavxySamDvCPWHXU+8WNZUV2AndqyQoTJ0I/x@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKvymZqxp+/pL3SHPma6h+enRNp2jbsvEUBvaznRKWeXRNVMTz
+	GYltRpjgxdddSU6AzwMy6LjIi4JGR3Proztr+itSG/9HpnDckxbX5W34Zn3fynD9aVa3t04jnzQ
+	LUE9CFX7isPAlu6R649N9ALpqzXI29EA=
+X-Google-Smtp-Source: AGHT+IEad+Jn6q48+7s7QgpTy8nR94FyxrDyPQ9+Mq+gbbKtX5uUu2IkzFSX6etA2Y1+hAxNAg7ELwm14NXxpYO3+4k=
+X-Received: by 2002:a05:6820:824:b0:659:9a49:90c7 with SMTP id
+ 006d021491bc7-65b2ad3fbfamr247750eaf.70.1765318702367; Tue, 09 Dec 2025
+ 14:18:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 1/1] ACPI: PM: s2idle: Add lps0_screen_off sysfs
- interface
-To: Antheas Kapenekakis <lkml@antheas.dev>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mario Limonciello <superm1@kernel.org>,
- Robert Beckett <bob.beckett@collabora.com>, linux-acpi@vger.kernel.org,
- kernel@collabora.com, linux-kernel@vger.kernel.org,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Xaver Hugl <xaver.hugl@gmail.com>, Richard Hughes <richard@hughsie.com>,
- William Jon McCann <mccann@jhu.edu>, "Jaap A . Haitsma" <jaap@haitsma.org>,
- Benjamin Canou <bookeldor@gmail.com>, Bastien Nocera <hadess@hadess.net>,
- systemd-devel@lists.freedesktop.org,
- Lennart Poettering <lennart@poettering.net>
-References: <20251202043416.2310677-1-dmitry.osipenko@collabora.com>
- <20251202043416.2310677-2-dmitry.osipenko@collabora.com>
- <CAJZ5v0hRiA_AFTsBL0Ud5vdDyyqSJcwLtKaVtpYareh4URS_CQ@mail.gmail.com>
- <479b4a5a-a792-4d3d-8bf1-59ef296b7e96@collabora.com>
- <CAJZ5v0h_8aA+VwBb5B1tKn5Y0Herb3dG=Qjy1uueA4V83FUcCg@mail.gmail.com>
- <CAGwozwF4Xv=ePdHhF6B6dFgHUES1vyoU6f5KrrzM7pU8tao2Gg@mail.gmail.com>
- <CAJZ5v0i63EwNxaYU8S9W5a3jpzQtCNxTH+0hsjO_xLf_wXd1Qw@mail.gmail.com>
- <CAGwozwHd5196hr7Ckvh9wVJiyw0MBUriz+oqNWhOSkEYbCVMtQ@mail.gmail.com>
- <CAJZ5v0j71mic4y2+TjZyNKe6NbSA8B74WHdyh_AxC-rZkQND5A@mail.gmail.com>
- <CAJZ5v0j3wNtqYQDsVr+74-Gn-WM9FDmoqxrLULVD+UJtfVgLtQ@mail.gmail.com>
- <CAGwozwEgfH+QRpBXNGhZG5hxNF28A3ALbrABGYJg7RuFKDrM0A@mail.gmail.com>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <CAGwozwEgfH+QRpBXNGhZG5hxNF28A3ALbrABGYJg7RuFKDrM0A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+References: <2395536.ElGaqSPkdT@rafael.j.wysocki> <ab8b770c-08e9-4cf6-bd4f-f36c951fda4c@gmx.de>
+ <CAJZ5v0jAH9FZrO5AvVF90zgy-0EeM+rsB6Zf8cMf+sR8=FFuDA@mail.gmail.com>
+ <168f173d-0d1a-49b0-9461-72f8fb0fc701@gmx.de> <99b0d755-3e18-4bba-b8e7-ab344e6c2592@gmx.de>
+In-Reply-To: <99b0d755-3e18-4bba-b8e7-ab344e6c2592@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 9 Dec 2025 23:18:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ijOF+nRZrjnub9uqa_Pu54etmudWUUNWmNgiogVAwxFQ@mail.gmail.com>
+X-Gm-Features: AQt7F2qkiHmdqmGpZGoSJzRxhPH7WaT2Irn0DJNLZGPF0LhhonwhxQvPAderpgE
+Message-ID: <CAJZ5v0ijOF+nRZrjnub9uqa_Pu54etmudWUUNWmNgiogVAwxFQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] PCI: ACPI: PM: Rework root bus wakeup notification
+ setup and wakeup source registration
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	Linux PM <linux-pm@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-...
->> So let me repeat for extra clarity.
->>
->> The only change related to the LPS0 "screen off" and "screen on"
->> notifications that would be tentatively acceptable to me ATM, would be
->> to modify the suspend-to-idle flow to do the "screen off" notification
->> earlier (possibly even at the start of it) and the corresponding
->> "screen on" notification later (possibly at the end of it), provided
->> that one can convincingly argue that this should not introduce
->> regressions.
->>
-> 
-> From what I recall that was my original plan.
-> 
-> Yeah, it is a fair way forward. @Dmitry how would you like to approach
-> this? SInce you re-started the discussion. What is your timeline/KPIs
-> for this.
-> 
-> I could personally try to whip up a small series after the merge
-> window by rewriting what I have[1]. I have more experience now in
-> drafting this kind of thing and that series added some cruft to the pm
-> core with multiple additions to platform_s2idle_ops
-> 
-> There is a _small_ quantitative difference due to moving the calls.
-> Specifically, the power light responds a tad slower when waking a
-> device. For the legion go (non-s) devices, Lenovo added a dummy 5
-> second timer to resuming the controllers because of some Windows bugs,
-> and moving the calls causes the timer to start later. But that's the
-> OEM intended behavior...
-> 
-> Antheas
-> 
-> [1] https://github.com/bazzite-org/patchwork/commits/pm-bleeding/modern-standby/
+On Tue, Dec 9, 2025 at 11:00=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 09.12.25 um 14:56 schrieb Armin Wolf:
+>
+> > Am 09.12.25 um 12:31 schrieb Rafael J. Wysocki:
+> >
+> >> On Mon, Dec 8, 2025 at 9:01=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+> >>> Am 08.12.25 um 13:09 schrieb Rafael J. Wysocki:
+> >>>
+> >>>> Hi All,
+> >>>>
+> >>>> Patch [1/2] updates the registration of PCI root bus wakeup
+> >>>> notification setup
+> >>>> in order to simplify code in pci_acpi_wake_bus() and to prepare for
+> >>>> the other
+> >>>> change.  This is not expected to affect functionality.
+> >>>>
+> >>>> Patch [2/2] modifies the ACPI PM notifier registration to add
+> >>>> wakeup sources
+> >>>> under devices that are going to be affected by wakeup handling
+> >>>> instead of
+> >>>> registering them under ACPI companions of those devices (rationale
+> >>>> explained
+> >>>> in the patch changelog).  This will change the sysfs layout (wakeup
+> >>>> source
+> >>>> devices associated with PCI wakeup are now going to appear under
+> >>>> PCI devices
+> >>>> and the host bridge device), but it is not expected to affect user
+> >>>> space
+> >>>> adversely.
+> >>>>
+> >>>> Thanks!
+> >>> I tested both patches, and the sysfs layout changes as expected:
+> >>>
+> >>> $ readlink /sys/class/wakeup/wakeup*/device
+> >>> ../../../device:00
+> >>> ../../../device:1a
+> >>> ../../../device:1f
+> >>> ../../../device:20
+> >>> ../../../0000:00:08.1
+> >>> ../../../device:36
+> >>> ../../../device:31
+> >>> ../../../device:32
+> >>> ../../../device:3c
+> >>> ../../../0000:01:00.0
+> >>> ../../../device:3d
+> >>> ../../../PNP0C02:00
+> >>> ../../../0000:02:00.0
+> >>> ../../../device:3e
+> >>> ../../../device:3f
+> >>> ../../../device:46
+> >>> ../../../0000:04:00.0
+> >>> ../../../device:47
+> >>> ../../../0000:05:00.0
+> >>> ../../../device:57
+> >>> ../../../0000:05:08.0
+> >>> ../../../device:59
+> >>> ../../../device:01
+> >>> ../../../0000:05:09.0
+> >>> ../../../device:5b
+> >>> ../../../0000:05:0a.0
+> >>> ../../../device:5d
+> >>> ../../../0000:05:0b.0
+> >>> ../../../device:5f
+> >>> ../../../0000:05:0c.0
+> >>> ../../../device:74
+> >>> ../../../0000:05:0d.0
+> >>> ../../../device:5a
+> >>> ../../../device:3a
+> >>> ../../../device:5c
+> >>> ../../../device:60
+> >>> ../../../device:75
+> >>> ../../../LNXVIDEO:00
+> >>> ../../../device:22
+> >>> ../../../PNP0C02:02
+> >>> ../../../device:25
+> >>> ../../../device:2b
+> >>> ../../../device:24
+> >>> ../../../device:37
+> >>> ../../../0000:00:01.1
+> >>> ../../../PNP0A08:00
+> >>> ../../../LNXPWRBN:00
+> >>> ../../../AMDI0010:00
+> >>> ../../../AMDI0030:00
+> >>> ../../../00:02
+> >>> ../../../alarmtimer.0.auto
+> >>> ../../../PNP0C0C:00
+> >>> ../../../0000:0b:00.0
+> >>> ../../../AMDIF031:00
+> >>> ../../../PNP0C14:00
+> >>> ../../../device:0a
+> >>> ../../../PNP0C14:01
+> >>> ../../../PNP0C14:02
+> >>> ../../../PNP0C14:03
+> >>> ../../../0000:0e:00.3
+> >>> ../../../0000:0e:00.4
+> >>> ../../../0000:0f:00.0
+> >>> ../../../5-2
+> >>> ../../../1-5.3
+> >>> ../../hidpp_battery_0
+> >>> ../../../device:44
+> >>> ../../../0000:00:02.1
+> >>> ../../../device:76
+> >>> ../../../device:0b
+> >>>
+> >>> turns into:
+> >>>
+> >>> $ readlink /sys/class/wakeup/wakeup*/device
+> >>> ../../../0000:00:00.0
+> >>> ../../../0000:00:04.0
+> >>> ../../../0000:00:08.0
+> >>> ../../../0000:00:08.1
+> >>> ../../../0000:00:08.1
+> >>> ../../../0000:00:08.3
+> >>> ../../../0000:00:14.0
+> >>> ../../../0000:00:14.3
+> >>> ../../../0000:01:00.0
+> >>> ../../../0000:01:00.0
+> >>> ../../../0000:02:00.0
+> >>> ../../../0000:00:00.2
+> >>> ../../../0000:02:00.0
+> >>> ../../../0000:03:00.0
+> >>> ../../../0000:03:00.1
+> >>> ../../../0000:04:00.0
+> >>> ../../../0000:04:00.0
+> >>> ../../../0000:05:00.0
+> >>> ../../../0000:05:00.0
+> >>> ../../../0000:05:08.0
+> >>> ../../../0000:05:08.0
+> >>> ../../../0000:05:09.0
+> >>> ../../../0000:00:01.0
+> >>> ../../../0000:05:09.0
+> >>> ../../../0000:05:0a.0
+> >>> ../../../0000:05:0a.0
+> >>> ../../../0000:05:0b.0
+> >>> ../../../0000:05:0b.0
+> >>> ../../../0000:05:0c.0
+> >>> ../../../0000:05:0c.0
+> >>> ../../../0000:05:0d.0
+> >>> ../../../0000:05:0d.0
+> >>> ../../../0000:08:00.0
+> >>> ../../../0000:00:01.1
+> >>> ../../../0000:09:00.0
+> >>> ../../../0000:0b:00.0
+> >>> ../../../0000:0c:00.0
+> >>> ../../../0000:0e:00.0
+> >>> ../../../0000:0e:00.1
+> >>> ../../../0000:0e:00.2
+> >>> ../../../0000:0e:00.3
+> >>> ../../../0000:0e:00.4
+> >>> ../../../0000:0e:00.6
+> >>> ../../../0000:0f:00.0
+> >>> ../../../0000:00:01.1
+> >>> ../../../pci0000:00
+> >>> ../../../LNXPWRBN:00
+> >>> ../../../AMDI0010:00
+> >>> ../../../AMDI0030:00
+> >>> ../../../00:02
+> >>> ../../../alarmtimer.0.auto
+> >>> ../../../PNP0C0C:00
+> >>> ../../../0000:0b:00.0
+> >>> ../../../AMDIF031:00
+> >>> ../../../PNP0C14:00
+> >>> ../../../0000:00:02.0
+> >>> ../../../PNP0C14:01
+> >>> ../../../PNP0C14:02
+> >>> ../../../PNP0C14:03
+> >>> ../../../0000:0e:00.3
+> >>> ../../../0000:0e:00.4
+> >>> ../../../0000:0f:00.0
+> >>> ../../../5-2
+> >>> ../../../1-5.3
+> >>> ../../hidpp_battery_0
+> >>> ../../../0000:00:02.1
+> >>> ../../../0000:00:02.1
+> >>> ../../../0000:00:02.2
+> >>> ../../../0000:00:03.0
+> >>>
+> >>> The remaining ACPI devices are likely caused by device drivers based
+> >>> upon struct acpi_driver.
+> >>> I was unable to test the wakeup itself since suspend is currently
+> >>> broken due to issues with
+> >>> cpuidle,
+> >> Have you reported those?  What cpuidle driver is involved?
+> >>
+> >> If you happen to be using the ACPI idle driver, there is a regression
+> >> between 6.18-rc7 and final 6.18 due to a missing revert, but final
+> >> 6.18 should be as expected.
+> >
+> > If i remember correctly the official 6.18 kernel was not affected by
+> > this, i used the the bleeding-edge
+> > branch when building the test kernel.
+> >
+> > I will do some further debugging once i am back home.
+> >
+> > Thanks,
+> > Armin Wolf
+> >
+> Well, it turned out that the cpuidle driver was not involved in this, i j=
+ust got confused
+> by a separate stacktrace caused by the hid-roccat driver (i already repor=
+ted that).
+>
+> This seems to be the real issue:
+>
+> [  514.910759] ACPI Error: Aborting method \M402 due to previous error (A=
+E_AML_LOOP_TIMEOUT) (20250807/psparse-529)
+> [  514.910810] ACPI Error: Aborting method \_SB.PCI0.GPP0.M241 due to pre=
+vious error (AE_AML_LOOP_TIMEOUT) (20250807/psparse-529)
+> [  514.910890] ACPI Error: Aborting method \_SB.PCI0.GPP0.M237._OFF due t=
+o previous error (AE_AML_LOOP_TIMEOUT) (20250807/psparse-529)
 
-Am I understanding correctly that the plan is to have a 2-stage freezer
-for suspend-to-idle + standby mode? Rafael, could you please confirm
-that you're fine with this 2-stage freezer part of the proposal from
-Antheas?
+It looks like there is a problem with turning a power resource off.
 
-What you expect to be a proper way of implementing a 2-stage freezer?
-Would it be a new executable capability, a new syscall or extension of
-existing one, a new cgroup type? How would you mark processes that
-should not be frozen on the first stage? Or it would be only the process
-that writes to /sysfs/power?
+> Sleeping itself works, it just takes a long time for the machine to actua=
+lly suspend due to the timeout.
+> I attached the acpidump of the affected machine in case you are intereste=
+d.
+>
+> Since 6.18 is not affected by this i will wait till 6.19-rc1 is released =
+before i start debugging this issue.
+> Do you think that this approach is OK?
 
-Thanks everyone for the very detailed input. It is all very productive,
-helps a lot with adjusting my understanding of the modern suspend features.
-
-Agree that the usefulness of the visual aspect of the Display
-notification is questionable. Previously I thought this mode involves
-power-limiting. The Sleep notification might be much more interesting then.
-
-I'm heading to vacation till Jan. Antheas, I will be happy to review and
-test your code if you'll have time to type a working prototype.
-Otherwise, will continue after the Holidays and likely will use your
-patches for the base.
-
--- 
-Best regards,
-Dmitry
+It should be fine although you may as well check my pm-6.19-rc1,
+acpi-6.19-rc1 and thermal-6.19-rc1 tags on top of 6.18.  If the
+problem is in one of them, it should be possible to find it quicker
+than by dealing with the entire 6.19-rc1.
 
