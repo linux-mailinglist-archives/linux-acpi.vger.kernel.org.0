@@ -1,179 +1,174 @@
-Return-Path: <linux-acpi+bounces-19499-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19500-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935AECAF238
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 08:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9327CAFA43
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 11:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA08B304639F
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 07:29:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53CC33059AFE
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 10:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4533288525;
-	Tue,  9 Dec 2025 07:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B0B26F462;
+	Tue,  9 Dec 2025 10:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="XbITDAAx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BD8Ii3EU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2372868AB;
-	Tue,  9 Dec 2025 07:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD3C18DB35
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 10:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765265381; cv=none; b=G7G3wdIk0jN00E1vegXYaW+6YYR0exm2Nv2eSLb7+inLkRrwIq7oxMD8O00O5q8a+mWUIpY/MNoVRpRz3JzC2t7UuirR9svN0UorbD/JIT6xwEaVKiFVrRBF1qfbix77BAr6cL0I/HLfcjwsj8/3V7kbX9SanQ7DZW71LbebRwY=
+	t=1765276289; cv=none; b=u8J8wAWgC+/+j3pcRL6UObrqOxHdbsJ7n0M/ziab6y06Gfl5p6pT/xxrfF3Yi8IwwgC5YhaH4QRoskX5bRFFeiafkyKMA/vIJE9305VTMAtGAmJ26tikhCeV/KcY7rPCX0jmTrveidjQnM6a0vjhUPuo3revyAiOhTdAWDj1igY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765265381; c=relaxed/simple;
-	bh=Y7zyQ3Cc5DlKIsNW/GqayFZcqof4q0SiDOyea2py6q4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Irbk/v4N+V2ArM0Cd9G6Rihsps9W/V6CFf6bFFZYEGMjwgYHOQm0a3Q+kig6xPH7R3kJthJoSNQUN8opz1QQjoQ3d0LBhexDAFYQFb7xbMV5v6PakXsZ8IMBOPxDWZ6i1cy4I3j957EYV95dTqDnoiS0t+6MGNQaXFri2K+Pg40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=XbITDAAx; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=khkDOJh1/uYzmB+/MJQsODnByd/QEEA368wUov7qEg8=;
-	b=XbITDAAxKMXbJQw3hmqrBSUzOJ2BSUIeKOMULD/gTHZ+SbiTM46kWxY5u8cvvlZx9RJyNDoFA
-	yNqbHAa/WQk7bnXS3JYWWyyoUjBgB5HKZNyFxU8oLBmldmY30eYet4kFB6uk6VpwyRDlGX0F6Jt
-	bakeX9vPGScBYefSd4Q2MII=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dQVmp3d2qzLlTc;
-	Tue,  9 Dec 2025 15:27:38 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id E949F140155;
-	Tue,  9 Dec 2025 15:29:33 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Dec 2025 15:29:33 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 9 Dec
- 2025 15:29:33 +0800
-Message-ID: <09d66576-5d17-4a80-b41f-2f76a09d963b@huawei.com>
-Date: Tue, 9 Dec 2025 15:29:32 +0800
+	s=arc-20240116; t=1765276289; c=relaxed/simple;
+	bh=/aEq0x6MLRV/L6sOD9HPYDQFVJxKO9BW6KJrWnDuYm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mcmfDGvO/DDf7vqo8YYAelFY6pD5fON1nZYxZW2Z24wtUsFmozqpU3ClEvYByYJi9GBfpaeR8BEM0AUjBEY5FNx4ARXo54K1tslO+pPZqoU+pTWZ9FZe22iFlwCzIlBAKWK6d9sJKYQVyRDKEK8MfNaVRrXQwkYjZwuIrrcw59w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BD8Ii3EU; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29d7b019e0eso60749515ad.2
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Dec 2025 02:31:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765276288; x=1765881088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/yj0w8fdlKkFDRy9220y5hCmadloVvp4/iXerUe4NDE=;
+        b=BD8Ii3EUXU/i5X6wPGHDQEu3rezl/BSR/C3Wm6sB1kvRAkfJvfsf0SXwlS2/NZjl7a
+         YIPwQX+qFuig/YfDI3C+NQzhjAVe4Uwj4u170nongvBScdDTMB+3M3q6/L3t0VmzwruT
+         6TLGyopwkoMgsvr+m+5VYL8LnVM3xhGdd/lKTUyRn1DAAVBXmQIR0IpKoE+rMuQ3bZBV
+         mzn3E3FHxQSaESmDQR4mZg6F5lG/NuSQ8p0NFNc0Bmjwrkd1OI4wXLA6Gvl/AeeubjEA
+         1AUdv3qrXvIiwbeyj6Wg87FsXSRVThsiSC0hMrUtUKTnCf28NjTuTz5z7d7F9usCryLy
+         SjXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765276288; x=1765881088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/yj0w8fdlKkFDRy9220y5hCmadloVvp4/iXerUe4NDE=;
+        b=d2FvVrc31Cf5X1FAOQDC75qIMEkeNqNmSz0DbKO9ZRju5qX4FXBKkcOi2zGpPjXjxP
+         3I1jdieeiVB6OF6Ry2IqpN1351MBmd6NXv0IrxtwK3+Bdzw6lWR9qfdNX5A/zqYzIMtp
+         6H4kLRt86x3VntLMmaoNRRF1atk/0Lt9zEU0u88NBOUWom2kUttQFsLodTXJJeRa8Bxj
+         VoEV1ditGtMc4SNYrfz0dEEEE0VSVqqhLRPZmoMZZPbX+NmG1GNFTByyI5aFylky/syL
+         PRWw4Y7mt2iJc1X6NhadDLbY54s5/qEZmLjsA421PJG3vkFYiMMVk2Ir9qLMKDhXTmWJ
+         WVUA==
+X-Gm-Message-State: AOJu0YwtslSw4yOnA6LvNcIrAjLwmEwWyGm4FZ+m+iy+sd1vHDmuAS4k
+	Re8BJUXA0uxIYJTKoOE8SVOwTrgSus0oPE3lfL8FsimnNxX6PTSm2428
+X-Gm-Gg: AY/fxX4y4M/x1but2Eb6v5Jc1jPBrYGz6/LjDQ8wbjoboXqVk6bgm3nFpJe24vuJKNy
+	HQvyhedzO/Zm+BjTN9OMREJVgdsTOQzumwIq1L2Vn18KME27JZ6hkcq8RXUpl4BLsfImwXAkoQw
+	C5MYF8jkAjnSf8HPP+mwuwgVZ+YrZAjQU3UAH+9IJZ6CazuXqLpsTsfzz6pRfPdX60tS3LD/TU0
+	LqXPVLefLrdQ5F+RzBgHf19c2MdOWcQ3UCthO6VT06+z+VSUp29ji+vhosR4LBVkgZJ8Fpn1qXB
+	C5aVsa85ahUg7lHzAqxrt+9zXgM8NuWWo7e5MrZcdlse69U235sHa6LTDJlS/esBIzrQgx1LvmE
+	yQk+DBCW9wHsKyPkfJSy1pBhacDEK7f4NPJNBFojewyGLYbY0wC3E9QSd7T7E2qarhWLqB3W4FP
+	ibmx8gQmgKSZg=
+X-Google-Smtp-Source: AGHT+IGT96A1erd61gvFmTe3P8AK62zWKkju7VS5bZ29xeGcMHMfsVoc7tZR2o3bVREg1cKHPPBc6Q==
+X-Received: by 2002:a17:903:19e3:b0:29d:7b9b:515b with SMTP id d9443c01a7336-29df5791cb1mr77431165ad.20.1765276287542;
+        Tue, 09 Dec 2025 02:31:27 -0800 (PST)
+Received: from oslab.. ([2402:f000:4:1006:809:ffff:fffe:18ea])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99f20bsm149111715ad.46.2025.12.09.02.31.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 02:31:27 -0800 (PST)
+From: Tuo Li <islituo@gmail.com>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tuo Li <islituo@gmail.com>
+Subject: [PATCH] ACPI: processor: Fix a possible null-pointer dereference in acpi_processor_errata_piix4() when debug messages are enabled
+Date: Tue,  9 Dec 2025 18:31:13 +0800
+Message-ID: <20251209103114.3964322-1-islituo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] Urgent ACPI support fix for v6.18
-To: "Longia, Amandeep Kaur" <AmandeepKaur.Longia@amd.com>
-CC: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM
-	<linux-pm@vger.kernel.org>, Linux Kernel Mailing List
-	<linux-kernel@vger.kernel.org>, <kprateek.nayak@amd.com>, <dhsrivas@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, <lihuisong@huawei.com>
-References: <CAJZ5v0g6c1HNbxxh088xh_nTgD-SE6c2qtDr81AgD1+by-jnKA@mail.gmail.com>
- <1ea445d0-0949-4a28-9f76-325861a3c57f@huawei.com>
- <7487e99d-421b-4ac5-bb77-e61c3131bb13@amd.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <7487e99d-421b-4ac5-bb77-e61c3131bb13@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
-在 2025/11/28 3:03, Longia, Amandeep Kaur 写道:
-> Hi all,
->
-> On 11/27/2025 7:39 AM, lihuisong (C) wrote:
->> Hello Rafael,
->>
->> 在 2025/11/26 20:54, Rafael J. Wysocki 写道:
->>> Hi Linus,
->>>
->>> Please pull from the tag
->>>
->>> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->>>   acpi-6.18-rc8
->>>
->>> with top-most commit 43ff36c4a5a574ee83b4b0d3f3d74f09a3a8c2d3
->>>
->>>   Revert "ACPI: processor: idle: Optimize ACPI idle driver 
->>> registration"
->>>
->>> on top of commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
->>>
->>>   Linux 6.18-rc7
->>>
->>> to receive an urgent ACPI support fix for 6.18.
->>>
->>> This reverts a commit that attempted to make the code in the ACPI
->>> processor driver more straightforward, but it turned out to cause
->>> the kernel to crash on at least one system, along with some further
->>> cleanups on top of it.
->> I just found that "ACPI: processor: idle: Optimize ACPI idle driver 
->> registration" depends on the change
->> about cpuhp_setup_state in the commit [1]. Or many CPUs don't create 
->> cpuidle directory.
->> What is the crash? Do you have releated trace?
->>
->> [1] https://lore.kernel.org/all/20240529133446.28446-2- 
->> Jonathan.Cameron@huawei.com/
->
-> We have observed the same issue. After booting the system with the 
-> latest kernel, the sysfs path /sys/devices/system/cpu/cpu*/cpuidle 
-> does not exist. Bisecting between v6.18-rc7 (good) and master (bad) 
-> led us to the following commit:
->
-> 43ff36c4a5a574ee83b4b0d3f3d74f09a3a8c2d3 Revert "ACPI: processor: 
-> idle: Optimize ACPI idle driver registration"
->
->
-Hello Amandeep,
+In acpi_processor_errata_piix4(), the pointer dev is first assigned an IDE
+device and then reassigned an ISA device:
 
-I guess that your kernel doesn't have the following patch [1] if you 
-also encountered this issue.
+  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
+  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
 
-The __acpi_processor_start() of all CPUs are called when run 
-driver_register(&acpi_processor_driver).
-But acpi_processor_register_idle_driver() is called after 
-driver_register(&acpi_processor_driver).
-As a result, the acpi_processor_power_init() would not register cpuidle 
-device and create these directory.
+If the first lookup succeeds but the second fails, dev becomes NULL. This
+leads to a potential null-pointer dereference when dev_dbg() is called:
 
-I tested it ok on my platform under the following modification.
-Can you test it again using following modification based on kernel 
-without revert any ACPI idle patch?
-  I am looking forward to your reply. Thanks.
--->
-diff --git a/drivers/acpi/processor_driver.c 
-b/drivers/acpi/processor_driver.c
-index 4b906b56186a..b56a2a228693 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -268,12 +268,12 @@ static int __init acpi_processor_driver_init(void)
-                 acpi_processor_ignore_ppc_init();
-         }
+  if (errata.piix4.bmisx)
+    dev_dbg(&dev->dev, ...);
 
-+       acpi_processor_register_idle_driver();
-+
-         result = driver_register(&acpi_processor_driver);
-         if (result < 0)
-                 return result;
+To prevent this, use two temporary pointers and retrieve each device
+independently, avoiding overwriting dev with a possible NULL value.
 
--       acpi_processor_register_idle_driver();
--
-         result = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-                                            "acpi/cpu-drv:online",
-                                            acpi_soft_cpu_online, NULL);
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 66d8df5a37a6..a34983abb0b9 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1404,6 +1404,7 @@ void acpi_processor_register_idle_driver(void)
-                 if (!pr)
-                         continue;
+Signed-off-by: Tuo Li <islituo@gmail.com>
+---
+ drivers/acpi/acpi_processor.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-+               acpi_processor_cstate_first_run_checks();
-                 ret = acpi_processor_get_power_info(pr);
-                 if (!ret) {
-                         pr->flags.power_setup_done = 1;
-
-[1] 
-https://lore.kernel.org/all/20240529133446.28446-2-Jonathan.Cameron@huawei.com/
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 7ec1dc04fd11..ddd7081430f7 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ {
+ 	u8 value1 = 0;
+ 	u8 value2 = 0;
++	struct pci_dev *ide_dev, *isa_dev;
+ 
+ 
+ 	if (!dev)
+@@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		 * each IDE controller's DMA status to make sure we catch all
+ 		 * DMA activity.
+ 		 */
+-		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
++		ide_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+ 				     PCI_DEVICE_ID_INTEL_82371AB,
+ 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
+-		if (dev) {
+-			errata.piix4.bmisx = pci_resource_start(dev, 4);
+-			pci_dev_put(dev);
++		if (ide_dev) {
++			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
++			pci_dev_put(ide_dev);
+ 		}
+ 
+ 		/*
+@@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		 * disable C3 support if this is enabled, as some legacy
+ 		 * devices won't operate well if fast DMA is disabled.
+ 		 */
+-		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
++		isa_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+ 				     PCI_DEVICE_ID_INTEL_82371AB_0,
+ 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
+-		if (dev) {
+-			pci_read_config_byte(dev, 0x76, &value1);
+-			pci_read_config_byte(dev, 0x77, &value2);
++		if (isa_dev) {
++			pci_read_config_byte(isa_dev, 0x76, &value1);
++			pci_read_config_byte(isa_dev, 0x77, &value2);
+ 			if ((value1 & 0x80) || (value2 & 0x80))
+ 				errata.piix4.fdma = 1;
+-			pci_dev_put(dev);
++			pci_dev_put(isa_dev);
+ 		}
+ 
+ 		break;
+ 	}
+ 
+ 	if (errata.piix4.bmisx)
+-		dev_dbg(&dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
++		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
+ 	if (errata.piix4.fdma)
+-		dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
++		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
 
 
