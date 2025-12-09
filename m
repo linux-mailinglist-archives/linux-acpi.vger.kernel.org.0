@@ -1,772 +1,558 @@
-Return-Path: <linux-acpi+bounces-19520-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19521-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D0C8CB058C
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 15:58:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C637CB09CE
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 17:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9351F305D392
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 14:58:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2605830A5E80
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 16:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB682FF16F;
-	Tue,  9 Dec 2025 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C052FFDC9;
+	Tue,  9 Dec 2025 16:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jGUTpHUB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010041.outbound.protection.outlook.com [52.101.46.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1A51DD0EF;
-	Tue,  9 Dec 2025 14:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765292288; cv=none; b=mGLggqZPZ0C+q0fftTU25c3mfyzqi1amIbnKybAyskoo9yPhg9Fvw0PwWp3JR7RMZyIeXYYkZoBTblqjihioMDINVoBE1pPW9Ot2sqRwa2N/LttdugDbyqBndt1qz9Ush2iHxy7RDfJX0j7sB0yZ3ael2awBwE2FvIfkPXAnT/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765292288; c=relaxed/simple;
-	bh=c9+iSjWrlr9fgRMlknRQUNJEYZBmm10XXN1XJIJ6JQM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZtP6f7Ahus2qd8T3XGHmm+m3CXRWEvZ7iG58v1uyQ9HU2Nx+f4jxizTaLD0mS36u7FQJZHlle+d37wN/Q1d8BC1zefhd1GtLTCNnys7NKqfBPaX2INqcmjUrzRDoLZvj/UO9FpQBNgv1w4hc3F9kEtj5J27YFaKg17hXhSj02M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dQhm5576LzJ46ZQ;
-	Tue,  9 Dec 2025 22:57:41 +0800 (CST)
-Received: from dubpeml100008.china.huawei.com (unknown [7.214.145.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 29AB940565;
-	Tue,  9 Dec 2025 22:57:58 +0800 (CST)
-Received: from P_UKIT01-A7bmah.china.huawei.com (10.126.172.138) by
- dubpeml100008.china.huawei.com (7.214.145.227) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 9 Dec 2025 14:57:56 +0000
-From: <shiju.jose@huawei.com>
-To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
-	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
-	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
-	<mchehab@kernel.org>
-CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
-	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
-	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
-	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
-	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
-	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
-	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<shiju.jose@huawei.com>
-Subject: [PATCH v14 2/2] ras: mem: Add ACPI RAS2 memory driver
-Date: Tue, 9 Dec 2025 14:57:41 +0000
-Message-ID: <20251209145742.297-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20251209145742.297-1-shiju.jose@huawei.com>
-References: <20251209145742.297-1-shiju.jose@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B316327C1F;
+	Tue,  9 Dec 2025 16:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765298318; cv=fail; b=VuTom4kGjKpqfJ9FYQ7rSaDfd+aY6o2iBOKSmgF8Sm998kgheEMmviI9mPk2EIYNtSihAI1+X9NAT9V7ZsYk7D+M+PO+UEqtTXjaYXUWbE2zGDckRcqZJvtRDHCnb0R3TArIXModumRa3lY0MV8eIa+Mg8jgBsNggdE8jlO+fXg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765298318; c=relaxed/simple;
+	bh=OP0cyqq76pVvfR2I53qWCPVgwLJHpwnX2OXY1kcEmh8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tjVbypqgztMXrgNCG7sKRZFfhdmeZZK9gWRfUfdEiD2/QjmCRKpEzfv7IDHA7yIxlBIzyoeYYLvdO1f4COROGrwW+Ne0sptGIyPJLLwTta+f01tr6B437G1XcXFESEllIMN/Jsy00Mq269N+9rRjG72cx88gPjiWDw6po4KZOPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jGUTpHUB; arc=fail smtp.client-ip=52.101.46.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gZV5wZ0AxmxHSXEwSwBshSENJII4wfc9EL6/T/qjWmtQ8wqY9RLkJG2iQe6SFPA7cgfN6nn4X0tXkbrK/1zk5Ilv+D3yHRJDcjkfB0WfSikyPxP5+TIyLyJA+JuuAPO1TRkT9jy52t1hsKAKcs6LWQmI9UqlbozQpBH89e2DggVxUJASNriSk/kLw7RRfJc64FhSQ/t32ra66Jrhzj0hqcyc5tMKjkWD1Cbu0gabclOnSQlTGjgFbHKShN5i9v3LE0Uf6YFosKGBalDGwOJPbrFu0eeUGX1ZQiTT0G+7dLsJpRuf1GokvX1fDSNrA7BzOlc7DYdZ5yRbfCre/mxcdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lsLzCUbN60f49T3wQ+8firvnbmrtXmq32CSJGRJ2uCQ=;
+ b=bZzszdTQ7pCnNHj1u2VA1DdPOxdPXIJ5w7ELYb8Qhm1EyuIieuwU9rMxnl90YY9tGE10Hq33UN0mEApYUMkXQq2KFHmlIgMlJ5whEnBWX5Q2JuqmX6XyP8mmIlNqJIi/aKlNclui9qWfTOoXJGqcNYwQ/WtlDXeOvez9AyqUPCqoOL46DdzJcqs14JtSp7N35JVWH1g6TTKLDUVKn/fMk8k5k33Va7Lb/CXcTESRlUE1/3BqyWE/SirB/feCVJzMsxAz5GpBkYYuU1zngZ0kadjA78mui8VDKwPo8mACnuprw0FQpGmgThox2gzpXF/XwAJDIiCOFHfuiGya05O+Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lsLzCUbN60f49T3wQ+8firvnbmrtXmq32CSJGRJ2uCQ=;
+ b=jGUTpHUBVf2bM5d8QlBzxkovhCpi8dXY32SPV85pXopNMjdU9Bay2qSYon4HOsFqFI+G/34Gc+x2EulzzludoPx56c3xTD8BmKKSuO1GeF/5yEsBaansvI/agybbUo+1eB4mNuitC/qT4YqNkfZsukqCtWzF44pMLX0W6nzRAGC0DLM10BdqzCUGLILQQvvOaLU0nDoZkQ6AaW3eNlBRPHsjKnraYW+ugUzF5IUrwrbAysRqAFSXR5dxfs41bCGmpon6LGFj6IRWUzd6iDMPBBuVtCspyB0vrUi44LLy8q+H+cksYcn3hJBu7X1yBG16BaNlzd50g0JP2msXTyhgVA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BN9PR12MB5179.namprd12.prod.outlook.com (2603:10b6:408:11c::18)
+ by PH7PR12MB7188.namprd12.prod.outlook.com (2603:10b6:510:204::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Tue, 9 Dec
+ 2025 16:38:30 +0000
+Received: from BN9PR12MB5179.namprd12.prod.outlook.com
+ ([fe80::44e5:415d:e1a8:6e42]) by BN9PR12MB5179.namprd12.prod.outlook.com
+ ([fe80::44e5:415d:e1a8:6e42%7]) with mapi id 15.20.9412.005; Tue, 9 Dec 2025
+ 16:38:30 +0000
+Message-ID: <019bbcd9-7bbc-45bb-9c05-f59a4c90c26e@nvidia.com>
+Date: Tue, 9 Dec 2025 22:08:19 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/8] ACPI: CPPC: add APIs and sysfs interface for
+ min/max_perf
+To: Pierre Gondois <pierre.gondois@arm.com>
+Cc: linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-pm@vger.kernel.org, zhanjie9@hisilicon.com, ionela.voinescu@arm.com,
+ perry.yuan@amd.com, mario.limonciello@amd.com, gautham.shenoy@amd.com,
+ rdunlap@infradead.org, zhenglifeng1@huawei.com, corbet@lwn.net,
+ robert.moore@intel.com, lenb@kernel.org, viresh.kumar@linaro.org,
+ linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
+ vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
+ nhartman@nvidia.com, bbasu@nvidia.com, rafael@kernel.org, ray.huang@amd.com,
+ sumitg@nvidia.com
+References: <20251105113844.4086250-1-sumitg@nvidia.com>
+ <20251105113844.4086250-5-sumitg@nvidia.com>
+ <23baedfe-176a-42fd-9e5c-c8ad78107708@arm.com>
+Content-Language: en-US
+From: Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <23baedfe-176a-42fd-9e5c-c8ad78107708@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0226.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1f3::12) To BN9PR12MB5179.namprd12.prod.outlook.com
+ (2603:10b6:408:11c::18)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
- dubpeml100008.china.huawei.com (7.214.145.227)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5179:EE_|PH7PR12MB7188:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b4d20b6-0c2a-48d3-2162-08de3741628c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RHNyem9GUm1CaXA3eFpDdmZaaFArRGsyNkY4WE92NU9tZUxSaHViYmM1UUxP?=
+ =?utf-8?B?U0M2TkdpL3RUdzc4eGJSWHJTODIvazloQkoyTFZtZTU1c2pUWVFmR3BzdjRL?=
+ =?utf-8?B?SGxBajJZT1BMOVdJL3pWaHcvUTdpNWQwaW11SThDSWVFL0lUZjZQSERVZkl1?=
+ =?utf-8?B?NWNlYmJhUDVPUVpVL3lNdG13VE1aM0RSaGhoNFhaOXdpYnl2M1czQUl3ckJZ?=
+ =?utf-8?B?OW5iSEp2dWxGWVZVenZoa0FJRUdJYXJ3S0hJYjZqSUVXWG9QRS9iRmpwRFpt?=
+ =?utf-8?B?amJZRjI4eUVESithV0pZbzNkdy85ek5EYWQxRGVxT042alJTM3BLdU84QmNC?=
+ =?utf-8?B?bWd6S2c2cXlydDBpL2I2TTZVWWI5Y3RBK3lZcmhUclltbm11N2ZqVkc5T0VN?=
+ =?utf-8?B?a0pIanNPYkpON3ViRnhOUmhpN015VUl3akhWdUlVa0o1c2Z1anRtaFNTRXJK?=
+ =?utf-8?B?SCtCalQ4cTErVnhMSlBJVzRmKy9xbGYzNlJiSTk3T1MxVXFzUmY1bjlkOGd6?=
+ =?utf-8?B?cUNqc3cyZHJyQUJXVG12ZVdWc2gwSFpzd2pOOXVtcWQyZ1Q1djNtcmpwZE5z?=
+ =?utf-8?B?VC9URUYyd0hwZytNVUR5QllLOEt6Smd5dnZ0enhoQXU1UTBTZi9vRkgwREZy?=
+ =?utf-8?B?bnN1dU5TcnFaODVZc3luQ2NxbWNHR1VFSXJjd2NpT0dOeFhQMVowbWJXY1E1?=
+ =?utf-8?B?M01IMHlXcUh2OVR5OHlaWmdWODR1a0Y5SytJY0d3MWxOck5UdHpkZE14bGJ2?=
+ =?utf-8?B?bmlYb2VEallrSllyVy8xK3FFcDdVYlNRUEVzUTRtbVVjclN5VHZoc3VDUWVt?=
+ =?utf-8?B?RzA2VmppTHJOaFY0SXlBUXlDLzBBaUN6STBxRGRTQkhJeUtlTjdKVExYcmFV?=
+ =?utf-8?B?WHBwbnRGMlVsQzE5SVhHaHBXZE1DTEMrOWp6cU5aM0RIU0xaQTFYRkNFdEht?=
+ =?utf-8?B?QVlST1ZWZDhkdENBNzhtaGoxZFFpdktBRkF4Vndpc1RXYWxXK0hraGVpQnVk?=
+ =?utf-8?B?THNyY3p0bW53S2ZRSDRENVU4YXNRWFVNbGtrR1Y3eFNkRitMUFhnVEN0WEEv?=
+ =?utf-8?B?OE5sblRuemRIeWFSNjJqWC8zWnhrNVB4S01KRnEvSnRCS0N4VkNaa2x4SmMy?=
+ =?utf-8?B?NFdyQkFISUFONDNmcHkyT2MzYzcrUnF0eUVGVk9xM3YweG5pMUxoUHBvVTFl?=
+ =?utf-8?B?UU04TEFnS1RZV0MvaEZtK0JSMDZZcjc5RHpjNXVGTDExdHU3bkNLMzBXTlRP?=
+ =?utf-8?B?VitQd1hhaUtsbzNmb09uSENkamR3TC9FZVN3dzMzOVRNOVlqMXFucDlmaGx5?=
+ =?utf-8?B?ekQ0UHlzVjdYbzlyOTlKeGVTdlk0TEZlYjM5cForUTM3Sjg0ZGdPdU5OTDlo?=
+ =?utf-8?B?T2w4ekN0RFRuT1RqK05tWDlFWlJrTSs5RVJFa3ZQcngyTHNGemgzckQrbXo4?=
+ =?utf-8?B?U2Y3ZG55dEx5S3djNHJwZ1Y1YUpESC9LaFVEVk43Wm1Ea1Y1OTBiNEhGYkt6?=
+ =?utf-8?B?aUNGd0RIRS9VeVlmYUpCV2h3MWs5N01wTWpnWVN6bDhwSDBwRXljN2tsRkhC?=
+ =?utf-8?B?amlJdUVJM0RwSXgyb1M0RnhUay9HTUQ1NzdSMkFRVG9FUEQxQWxEbnlRZkdK?=
+ =?utf-8?B?aXhvVWtqbUZneWdueEZWVEE1ZlRsZ0YyczFZcnBzVjFvK3NrRG83NFRPMTNI?=
+ =?utf-8?B?bHNnYkwrQko1dXpiZFR4OVEwS2l4QTUzZ2xQVjVUKzB6RXNPWVlraXh4dDBQ?=
+ =?utf-8?B?WG9lMEFiVDNJZmJCcWtZVkg0ZWF5bklzVXN2WkpRTE56elZHYUxlM0JnODJL?=
+ =?utf-8?B?bTl6dmpkMVU3b1M1eFNrcEQ1U3pxSDgzNW5OdndacUFicUNpc2JEdVdwaUE5?=
+ =?utf-8?B?b1QySm9YQlAxOG5iRlY1YUJ4d3FuREVRYllCRVdPajJsRkx4MnFBMDI1Y2tR?=
+ =?utf-8?B?NDZWQVRiYWVzR0t5SkUyWEdrem5ZcmdybzBwamw5VWsrblA4d1EvbDMyZ1Iz?=
+ =?utf-8?B?Nlk1SlBucm93PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R2t1STZwcE9GRWxFS3EwbGU4ZXR6cjRIWTdjWlV6NFJNU0k5eW5acFlhM2NX?=
+ =?utf-8?B?cGtZZFVodWpmbjQ0SjhFVUNLNDRxVWVyZCs0bVZoaGllUDZ3eGdFSHZUNjU2?=
+ =?utf-8?B?SUNHWUhIYjZHcGx3VERBLzlMc01PcmV4aS9kUGlCM0E1N1VLajB2bHJlaVdR?=
+ =?utf-8?B?aXorbG5TcWVRaEIvUm5UVkw4UlF3M2poMGcwQlhKOUxCMWJVOU4vMFozZEZP?=
+ =?utf-8?B?VFF2RHdnYnBpOGtpc0pEY0NzcW9LSEpoTThoT1ZOSlpEUHF6S0kveWZiVzhB?=
+ =?utf-8?B?N2hpeXFXZmx5K0tWQ0tzTSthL05Ob3dCaHVNTm9Gc3dBSjYyeWhCMTU3Y0Fw?=
+ =?utf-8?B?M0N1Szc3ME1Rd09BWUE4dGw0c2hNLzlmMHFoZUpFeFUzSjlkcHlaRUoyU21P?=
+ =?utf-8?B?QUdLVldwdTZpUGtLNlVYalNFSmI3NUtDbHFvVzNFZERPMlRvbUZRcHpVaVd5?=
+ =?utf-8?B?OGtLYXV4NVNOS2xTV2NjZEZFaU1mRXZrTUpNV1N5Z1FlVWk1bU5CdHVxTnVV?=
+ =?utf-8?B?V1Faekl3NzR3eDZ4T2NKTjMyZy9veHZkNEhDbHlMODJVdXpUQnJGMEhvU1Bl?=
+ =?utf-8?B?d1l1SnJKajRvTTkzeUMwazdLOFcwbGlHejJYYWU3NEI4NXBFb2NRdE1hdXFT?=
+ =?utf-8?B?N28wMFpDcEpZc29YTWZ1NW14WVNITjY4MU96UW8zRHQ2cytWak5iS012WDd4?=
+ =?utf-8?B?bGZsN0ZTTEhHNnR6QzJUMXFScHdiWm1vZ3BTa29QczNaYWFKc3JLNEcwTjh5?=
+ =?utf-8?B?QjVvWUp3QlNTS3hEMVE0bThPUk5Rd1U1ZEZWT09hdUMrSEhmUkZyYmJFZVdJ?=
+ =?utf-8?B?b3ZuRTNxMVdKb25qWWdzSFIrbms4Z1R6NFZraWdHdVI0bkw4cGZyYWJWRUpX?=
+ =?utf-8?B?L0t2Y3V1eithUEhpZUpRVGczanJhaWYvUXRiWTFrSWo5U0h3ejJ3amtwTkRz?=
+ =?utf-8?B?Q1czNGIvQ01wR1ZwcTNNdTNJMDlIN3JmaVFVNGNHSVJBSndRZk5qR1J2eE8z?=
+ =?utf-8?B?Rnd0aFliTEcxbys3Z21mNFpmU0w5Q3JqVWJ3bkJMQnBKazFtSk5QZldjcWNG?=
+ =?utf-8?B?MmhrWi9paWlOWmFkbzRQcUJWQkZBR0ZuSlJ4Q2ErekZicTBkNUxYRW5CNHV4?=
+ =?utf-8?B?eDZycWJFRVl3NlZFNnB3bW5VVm41Z0Jrb0YyYm9VUE9TUkwvTFNnZ3Q4Y3cv?=
+ =?utf-8?B?NDJZdld3Nk5ZRzF4OUNzU0xsNmFXN21SNGxXSEJ1RGQ4TTk4S0t1K25HNmRJ?=
+ =?utf-8?B?VTNPQzZCL08yd1VWZVVxL010bzJUQ0RLQ29NZWhwdmRadG1jL3VOR0FtSE5r?=
+ =?utf-8?B?K2k5OVhFdnhGUTlsOXVha3o4K2dnemEya1pDdVFxektHK01oZzZRLzRGYzNt?=
+ =?utf-8?B?SFhOd0FTZ3BZaG9uakRvTnVJYTc2Y25DQmE5azhlYjlSbEhqSGpuclBqL0xm?=
+ =?utf-8?B?TkRyS2lxbmo5VzVwUDlQZkpPc1B5cWJJclI3OWlVd1hoTmsrWXdtRHRXZ3pz?=
+ =?utf-8?B?eVJQK29xRXVQS08rOEJVYll0YVZSM1VsMkFFclRFN0NMT1ZocHg4allTRkNi?=
+ =?utf-8?B?WkRYYUFOelIxTVY4cXBDMlNRVTIzbkwvSk1JbFNWZmpwMXFHT2VmeDJVRW5B?=
+ =?utf-8?B?Y3dXanNXc1dIMG5VMFZlak1jRDJOaldFT0lhMnRWaWppMGtPdVM3dVJON1Qv?=
+ =?utf-8?B?SEdUem84dnhmc09vbDdJbm80UmgyM3c1OW1pM2VLQ0NYeFN1WGtYTk1hK3Mx?=
+ =?utf-8?B?MWxFVWJoWEZLalo3MDMyMmpJQk4wUXRJRER4T3RvTkdHZWE2Q010c29tQklJ?=
+ =?utf-8?B?aGhxUkdiS1RRUnN2M2hDS0NuMnlUN3I4bFkvTkJhY1E0TzlXc1ZzN25RRjJt?=
+ =?utf-8?B?d3dYcDdxa0NadXBMR2VITTlsdWFHTXkxSTZxb3NtbC9heFFZMWI3MEhiY0xO?=
+ =?utf-8?B?R0pZUzhidXBXQ2E4dXRXS1d4ekwvMEU3OEFzVUEvY1NnamQ0Um43M3gxSFVF?=
+ =?utf-8?B?Q0g5b3lXUTNOem00aE5vNnJ5NkpnWnNXcks5eEo2RnQrY3hXb0tzejY2VzZT?=
+ =?utf-8?B?MlV1YU9UNll3Tmp1T080UHdNNFR4T3FpRWNmWjFMVWZjbDlBSFNyMEo2TElI?=
+ =?utf-8?Q?SZrCK8kRcq9jYjcR0wz6cMcKE?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b4d20b6-0c2a-48d3-2162-08de3741628c
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5179.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 16:38:30.4166
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jJBD4fZ8jeuCpuzEi1iZCGr5gqdsegNqNi8reNQPmZ2E2YcBh7eWzNIqfzF8GLBEEHHfioykSAfqxIhLBh8Mqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7188
 
-From: Shiju Jose <shiju.jose@huawei.com>
 
-ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
-Driver adds support for RAS2 feature table, which provides interfaces for
-platform RAS features, e.g., for HW-based memory scrubbing, and logical to
-PA translation service. RAS2 uses PCC channel subspace for communicating
-with the ACPI compliant HW platform.
+On 27/11/25 20:24, Pierre Gondois wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On 11/5/25 12:38, Sumit Gupta wrote:
+>> CPPC allows platforms to specify minimum and maximum performance
+>> limits that constrain the operating range for CPU performance scaling
+>> when Autonomous Selection is enabled. These limits can be dynamically
+>> adjusted to implement power management policies or workload-specific
+>> optimizations.
+>>
+>> Add cppc_get_min_perf() and cppc_set_min_perf() functions to read and
+>> write the MIN_PERF register, allowing dynamic adjustment of the minimum
+>> performance floor.
+>>
+>> Add cppc_get_max_perf() and cppc_set_max_perf() functions to read and
+>> write the MAX_PERF register, enabling dynamic ceiling control for
+>> maximum performance.
+>>
+>> Expose these capabilities through cpufreq sysfs attributes that accept
+>> frequency values in kHz (which are converted to/from performance values
+>> internally):
+>> - /sys/.../cpufreq/policy*/min_perf: Read/write min perf as freq (kHz)
+>> - /sys/.../cpufreq/policy*/max_perf: Read/write max perf as freq (kHz)
+>>
+>> The frequency-based interface provides a user-friendly abstraction which
+>> is similar to other cpufreq sysfs interfaces, while the driver handles
+>> conversion to hardware performance values.
+>>
+>> Also update EPP constants for better clarity:
+>> - Rename CPPC_ENERGY_PERF_MAX to CPPC_EPP_ENERGY_EFFICIENCY_PREF
+>> - Add CPPC_EPP_PERFORMANCE_PREF for the performance-oriented setting
+>>
+>> Signed-off-by: Sumit Gupta<sumitg@nvidia.com>
+>> ---
+>>   drivers/acpi/cppc_acpi.c       |  55 ++++++++++-
+>>   drivers/cpufreq/cppc_cpufreq.c | 166 +++++++++++++++++++++++++++++++++
+>>   include/acpi/cppc_acpi.h       |  23 ++++-
+>>   3 files changed, 242 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>> index 757e8ce87e9b..ef53eb8a1feb 100644
+>> --- a/drivers/acpi/cppc_acpi.c
+>> +++ b/drivers/acpi/cppc_acpi.c
+>> @@ -1634,7 +1634,7 @@ EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
+>>    */
+>>   int cppc_set_epp(int cpu, u64 epp_val)
+>>   {
+>> -     if (epp_val > CPPC_ENERGY_PERF_MAX)
+>> +     if (epp_val > CPPC_EPP_ENERGY_EFFICIENCY_PREF)
+>>               return -EINVAL;
+>>
+>>       return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
+>> @@ -1757,6 +1757,59 @@ int cppc_set_enable(int cpu, bool enable)
+>>       return cppc_set_reg_val(cpu, ENABLE, enable);
+>>   }
+>>   EXPORT_SYMBOL_GPL(cppc_set_enable);
+>> +
+>> +/**
+>> + * cppc_get_min_perf - Get the min performance register value.
+>> + * @cpu: CPU from which to get min performance.
+>> + * @min_perf: Return address.
+>> + *
+>> + * Return: 0 for success, -EIO on register access failure, 
+>> -EOPNOTSUPP if not supported.
+>> + */
+>> +int cppc_get_min_perf(int cpu, u64 *min_perf)
+>> +{
+>> +     return cppc_get_reg_val(cpu, MIN_PERF, min_perf);
+>> +}
+>> +EXPORT_SYMBOL_GPL(cppc_get_min_perf);
+>> +
+>> +/**
+>> + * cppc_set_min_perf() - Write the min performance register.
+>> + * @cpu: CPU on which to write register.
+>> + * @min_perf: Value to write to the MIN_PERF register.
+>> + *
+>> + * Return: 0 for success, -EIO otherwise.
+>> + */
+>> +int cppc_set_min_perf(int cpu, u64 min_perf)
+>> +{
+>> +     return cppc_set_reg_val(cpu, MIN_PERF, min_perf);
+>> +}
+>> +EXPORT_SYMBOL_GPL(cppc_set_min_perf);
+>> +
+>> +/**
+>> + * cppc_get_max_perf - Get the max performance register value.
+>> + * @cpu: CPU from which to get max performance.
+>> + * @max_perf: Return address.
+>> + *
+>> + * Return: 0 for success, -EIO on register access failure, 
+>> -EOPNOTSUPP if not supported.
+>> + */
+>> +int cppc_get_max_perf(int cpu, u64 *max_perf)
+>> +{
+>> +     return cppc_get_reg_val(cpu, MAX_PERF, max_perf);
+>> +}
+>> +EXPORT_SYMBOL_GPL(cppc_get_max_perf);
+>> +
+>> +/**
+>> + * cppc_set_max_perf() - Write the max performance register.
+>> + * @cpu: CPU on which to write register.
+>> + * @max_perf: Value to write to the MAX_PERF register.
+>> + *
+>> + * Return: 0 for success, -EIO otherwise.
+>> + */
+>> +int cppc_set_max_perf(int cpu, u64 max_perf)
+>> +{
+>> +     return cppc_set_reg_val(cpu, MAX_PERF, max_perf);
+>> +}
+>> +EXPORT_SYMBOL_GPL(cppc_set_max_perf);
+>> +
+>>   /**
+>>    * cppc_get_perf - Get a CPU's performance controls.
+>>    * @cpu: CPU for which to get performance controls.
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c 
+>> b/drivers/cpufreq/cppc_cpufreq.c
+>> index cf3ed6489a4f..cde6202e9c51 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -23,10 +23,12 @@
+>>   #include <uapi/linux/sched/types.h>
+>>
+>>   #include <linux/unaligned.h>
+>> +#include <linux/cleanup.h>
+>>
+>>   #include <acpi/cppc_acpi.h>
+>>
+>>   static struct cpufreq_driver cppc_cpufreq_driver;
+>> +static DEFINE_MUTEX(cppc_cpufreq_update_autosel_config_lock);
+>>
+>>   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
+>>   static enum {
+>> @@ -582,6 +584,68 @@ static void cppc_cpufreq_put_cpu_data(struct 
+>> cpufreq_policy *policy)
+>>       policy->driver_data = NULL;
+>>   }
+>>
+>> +/**
+>> + * cppc_cpufreq_set_mperf_limit - Generic function to set min/max 
+>> performance limit
+>> + * @policy: cpufreq policy
+>> + * @val: performance value to set
+>> + * @update_reg: whether to update hardware register
+>
+> I m not sure I see in which case we might not want to update the
+> hardware register.
+> Isn't the min/max_perf values relevant even when autonomous selection is
+> disabled/absent ?
+>
 
-ACPI RAS2 auxiliary driver for the memory features binds to the auxiliary
-device, which is added by the RAS2 table parser in the ACPI RAS2 driver.
+Explained in reply on 'patch 7/8'. Adding here also brief info.
+When disabling auto_sel, only the policy limits are reset, the
+min/max_perf registers are preserved.
+When re-enabled, these preserved values are restored to both
+hardware reg and policy.
 
-Given the address range is not provided to userspace (and hence no
-chance of exposing misleading values), even in the presence
-of disjoint address ranges, use the start to end of the NUMA node
-with the expectation that a firmware will allow that to indicate that
-the full node will be scrubbed, skipping address ranges that are from
-other NUMA nodes but happen to lie within this range.
+>
+>> + * @update_policy: whether to update policy constraints
+>> + * @is_min: true for min_perf, false for max_perf
+>> + */
+>> +static int cppc_cpufreq_set_mperf_limit(struct cpufreq_policy 
+>> *policy, u64 val,
+>> +                                     bool update_reg, bool 
+>> update_policy, bool is_min)
+>> +{
+>> +     struct cppc_cpudata *cpu_data = policy->driver_data;
+>> +     struct cppc_perf_caps *caps = &cpu_data->perf_caps;
+>> +     unsigned int cpu = policy->cpu;
+>> +     struct freq_qos_request *req;
+>> +     unsigned int freq;
+>> +     u32 perf;
+>> +     int ret;
+>> +
+>> +     perf = clamp(val, caps->lowest_perf, caps->highest_perf);
+>> +     freq = cppc_perf_to_khz(caps, perf);
+>> +
+>> +     pr_debug("cpu%d, %s_perf:%llu, update_reg:%d, 
+>> update_policy:%d\n", cpu,
+>> +              is_min ? "min" : "max", (u64)perf, update_reg, 
+>> update_policy);
+>> +
+>> + guard(mutex)(&cppc_cpufreq_update_autosel_config_lock);
+>> +
+>> +     if (update_reg) {
+>> +             ret = is_min ? cppc_set_min_perf(cpu, perf) : 
+>> cppc_set_max_perf(cpu, perf);
+>> +             if (ret) {
+>> +                     if (ret != -EOPNOTSUPP)
+>> +                             pr_warn("Failed to set %s_perf (%llu) 
+>> on CPU%d (%d)\n",
+>> +                                     is_min ? "min" : "max", 
+>> (u64)perf, cpu, ret);
+>> +                     return ret;
+>> +             }
+>> +
+>> +             if (is_min)
+>> +                     cpu_data->perf_ctrls.min_perf = perf;
+>> +             else
+>> +                     cpu_data->perf_ctrls.max_perf = perf;
+>> +     }
+>> +
+>> +     if (update_policy) {
+>> +             req = is_min ? policy->min_freq_req : 
+>> policy->max_freq_req;
+>> +
+>> +             ret = freq_qos_update_request(req, freq);
+>
+> IIUC, we are adding a qos constraint to the min_freq_req or
+> max_freq_req. However these constraints should match the
+> scaling_min/max_freq sysfs interface. So doesn't it mean that if we set
+> the 'max_perf', we are overwriting the the max_freq_req constraint ?
+>
+Yes.
 
-Driver retrieves the PA range of the NUMA domain and use it as the
-'Requested Address Range', when send RAS2 command GET_PATROL_PARAMETERS
-to get parameters that apply to all addresses in the NUMA domain as well
-as when send command START_PATROL_SCRUBBER to start the demand scrubbing.
+> If you have frequencies between 600000:1200000 # Init state:
+> max_perf:1200000 scaling_max_freq:1200000 # echo 10000000 > max_perf
+> max_perf:1000000 scaling_max_freq:1000000 # echo 900000 >
+> scaling_max_freq max_perf:1000000 scaling_max_freq:900000 # echo 1200000
+> > scaling_max_freq max_perf:1000000 scaling_max_freq:1200000
+>
+> The 2 values are not in sync. Is it the desired behaviour ?
+>
+>
 
-Device with ACPI RAS2 scrub feature registers with EDAC device driver,
-which retrieves the scrub descriptor from EDAC scrub and exposes
-the scrub control attributes for RAS2 scrub instance to userspace in
-/sys/bus/edac/devices/acpi_ras_memX/scrub0/.
+Making scaling_min/max_freq read-only in auto_sel mode will solve this.
+We can do this by setting policy limits to min/max_perf bounds in
+cppc_verify_policy() when the auto_sel is enabled.
+In autonomous mode, the hardware controls performance within these
+bounds, so scaling_min/max_freq is effectively read-only.
+Users must use min_perf/max_perf sysfs to change limits.
+Please share if you have different thoughts or another approach.
 
-Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
-the demand scrub, which is used in the RAS2 demand scrub control.
-When a demand scrub is started, any background scrub currently in progress
-will be stopped and then automatically restarted at the beginning when the
-demand scrub has completed.
+  cppc_verify_policy(struct cpufreq_policy_data *policy_data)
+  {
+     ...
+     if (caps->auto_sel) {
+       min_perf = cpu_data->perf_ctrls.min_perf ?: 
+caps->lowest_nonlinear_perf;
+       max_perf = cpu_data->perf_ctrls.max_perf ?: caps->nominal_perf;
 
-In the future, RAS2 driver may add support for the ‘addr’ and ‘size’ EDAC
-scrub-control attributes, to enable the user to set address range of the
-memory region to scrub.
+       /* set min/max_perf bounds (read-only behavior) */
+       policy_data->min = cppc_perf_to_khz(caps, min_perf);
+       policy_data->max = cppc_perf_to_khz(caps, max_perf);
+     } else {
+       cpufreq_verify_within_limits(policy_data, min_freq, max_freq);
+     }
+     ....
+  }
 
-Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- Documentation/ABI/testing/sysfs-edac-scrub |  13 +-
- Documentation/edac/scrub.rst               |  60 ++++
- drivers/edac/scrub.c                       |  12 +
- drivers/ras/Kconfig                        |  13 +
- drivers/ras/Makefile                       |   1 +
- drivers/ras/acpi_ras2.c                    | 394 +++++++++++++++++++++
- include/acpi/ras2.h                        |  17 +
- include/linux/edac.h                       |   4 +
- 8 files changed, 509 insertions(+), 5 deletions(-)
- create mode 100644 drivers/ras/acpi_ras2.c
 
-diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
-index ab6014743da5..3f68f63556f4 100644
---- a/Documentation/ABI/testing/sysfs-edac-scrub
-+++ b/Documentation/ABI/testing/sysfs-edac-scrub
-@@ -20,11 +20,7 @@ KernelVersion:	6.15
- Contact:	linux-edac@vger.kernel.org
- Description:
- 		(RW) The base address of the memory region to be scrubbed
--		for on-demand scrubbing. Setting address starts scrubbing.
--		The size must be set before that.
--
--		The readback addr value is non-zero if the requested
--		on-demand scrubbing is in progress, zero otherwise.
-+		for demand scrubbing.
- 
- What:		/sys/bus/edac/devices/<dev-name>/scrubX/size
- Date:		March 2025
-@@ -34,6 +30,13 @@ Description:
- 		(RW) The size of the memory region to be scrubbed
- 		(on-demand scrubbing).
- 
-+What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_demand
-+Date:		Jan 2026
-+KernelVersion:	6.19
-+Contact:	linux-edac@vger.kernel.org
-+Description:
-+		(RW) Start/Stop demand scrubbing if supported.
-+
- What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_background
- Date:		March 2025
- KernelVersion:	6.15
-diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-index 2cfa74fa1ffd..deefc45116ab 100644
---- a/Documentation/edac/scrub.rst
-+++ b/Documentation/edac/scrub.rst
-@@ -340,3 +340,63 @@ controller or platform when unexpectedly high error rates are detected.
- 
- Sysfs files for scrubbing are documented in
- `Documentation/ABI/testing/sysfs-edac-ecs`
-+
-+3. ACPI RAS2 Hardware-based Memory Scrubbing
-+
-+3.1. On demand scrubbing for a specific memory region.
-+
-+3.1.1. Query the status of demand scrubbing
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
-+
-+0
-+
-+3.1.2. Query what is device default/current scrub cycle setting.
-+
-+Applicable to both demand and background scrubbing. The unit of the
-+scrub cycle is seconds.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+36000
-+
-+3.1.3. Query the range of device supported scrub cycle for a memory region.
-+The unit of the scrub cycle range is seconds.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/min_cycle_duration
-+
-+3600
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/max_cycle_duration
-+
-+86400
-+
-+3.1.4. Program scrubbing for the memory region in RAS2 device to repeat every
-+43200 seconds (half a day).
-+
-+# echo 43200 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+3.1.5. Start 'demand scrubbing'.
-+
-+When a demand scrub is started, any background scrub currently in progress
-+will be stopped and then automatically restarted at the beginning when the
-+demand scrub has completed.
-+
-+# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
-+
-+3.2. Background scrubbing the entire memory
-+
-+3.2.1. Query the status of background scrubbing.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-+
-+0
-+
-+3.2.2. Program background scrubbing for RAS2 device to repeat in every 21600
-+seconds (quarter of a day).
-+
-+# echo 21600 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+3.2.3. Start 'background scrubbing'.
-+
-+# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-diff --git a/drivers/edac/scrub.c b/drivers/edac/scrub.c
-index f9d02af2fc3a..f3b9a2f04950 100644
---- a/drivers/edac/scrub.c
-+++ b/drivers/edac/scrub.c
-@@ -14,6 +14,7 @@ enum edac_scrub_attributes {
- 	SCRUB_ADDRESS,
- 	SCRUB_SIZE,
- 	SCRUB_ENABLE_BACKGROUND,
-+	SCRUB_ENABLE_DEMAND,
- 	SCRUB_MIN_CYCLE_DURATION,
- 	SCRUB_MAX_CYCLE_DURATION,
- 	SCRUB_CUR_CYCLE_DURATION,
-@@ -55,6 +56,7 @@ static ssize_t attrib##_show(struct device *ras_feat_dev,			\
- EDAC_SCRUB_ATTR_SHOW(addr, read_addr, u64, "0x%llx\n")
- EDAC_SCRUB_ATTR_SHOW(size, read_size, u64, "0x%llx\n")
- EDAC_SCRUB_ATTR_SHOW(enable_background, get_enabled_bg, bool, "%u\n")
-+EDAC_SCRUB_ATTR_SHOW(enable_demand, get_enabled_od, bool, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(min_cycle_duration, get_min_cycle, u32, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(max_cycle_duration, get_max_cycle, u32, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(current_cycle_duration, get_cycle_duration, u32, "%u\n")
-@@ -84,6 +86,7 @@ static ssize_t attrib##_store(struct device *ras_feat_dev,			\
- EDAC_SCRUB_ATTR_STORE(addr, write_addr, u64, kstrtou64)
- EDAC_SCRUB_ATTR_STORE(size, write_size, u64, kstrtou64)
- EDAC_SCRUB_ATTR_STORE(enable_background, set_enabled_bg, unsigned long, kstrtoul)
-+EDAC_SCRUB_ATTR_STORE(enable_demand, set_enabled_od, unsigned long, kstrtoul)
- EDAC_SCRUB_ATTR_STORE(current_cycle_duration, set_cycle_duration, unsigned long, kstrtoul)
- 
- static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
-@@ -119,6 +122,14 @@ static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int
- 				return 0444;
- 		}
- 		break;
-+	case SCRUB_ENABLE_DEMAND:
-+		if (ops->get_enabled_od) {
-+			if (ops->set_enabled_od)
-+				return a->mode;
-+			else
-+				return 0444;
-+		}
-+		break;
- 	case SCRUB_MIN_CYCLE_DURATION:
- 		if (ops->get_min_cycle)
- 			return a->mode;
-@@ -164,6 +175,7 @@ static int scrub_create_desc(struct device *scrub_dev,
- 		[SCRUB_ADDRESS] = EDAC_SCRUB_ATTR_RW(addr, instance),
- 		[SCRUB_SIZE] = EDAC_SCRUB_ATTR_RW(size, instance),
- 		[SCRUB_ENABLE_BACKGROUND] = EDAC_SCRUB_ATTR_RW(enable_background, instance),
-+		[SCRUB_ENABLE_DEMAND] = EDAC_SCRUB_ATTR_RW(enable_demand, instance),
- 		[SCRUB_MIN_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance),
- 		[SCRUB_MAX_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance),
- 		[SCRUB_CUR_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance)
-diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-index fc4f4bb94a4c..dfc3a899280e 100644
---- a/drivers/ras/Kconfig
-+++ b/drivers/ras/Kconfig
-@@ -46,4 +46,17 @@ config RAS_FMPM
- 	  Memory will be retired during boot time and run time depending on
- 	  platform-specific policies.
- 
-+config MEM_ACPI_RAS2
-+	tristate "Memory ACPI RAS2 driver"
-+	depends on ACPI_RAS2
-+	depends on EDAC
-+	depends on EDAC_SCRUB
-+	depends on NUMA_KEEP_MEMINFO
-+	help
-+	  The driver binds to the auxiliary device added by the ACPI RAS2
-+	  feature table parser. The driver uses a PCC channel subspace to
-+	  communicate with the ACPI-compliant platform and provides
-+	  control of the HW-based memory scrubber parameters to the user
-+	  through the EDAC scrub interface.
-+
- endif
-diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-index 11f95d59d397..a0e6e903d6b0 100644
---- a/drivers/ras/Makefile
-+++ b/drivers/ras/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_RAS)	+= ras.o
- obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
- obj-$(CONFIG_RAS_CEC)	+= cec.o
-+obj-$(CONFIG_MEM_ACPI_RAS2)	+= acpi_ras2.o
- 
- obj-$(CONFIG_RAS_FMPM)	+= amd/fmpm.o
- obj-y			+= amd/atl/
-diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-new file mode 100644
-index 000000000000..5abbf7c3f5b0
---- /dev/null
-+++ b/drivers/ras/acpi_ras2.c
-@@ -0,0 +1,394 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * ACPI RAS2 memory driver
-+ *
-+ * Copyright (c) 2024-2025 HiSilicon Limited.
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"ACPI RAS2 MEMORY: " fmt
-+
-+#include <linux/bitfield.h>
-+#include <linux/delay.h>
-+#include <linux/edac.h>
-+#include <linux/kthread.h>
-+#include <linux/platform_device.h>
-+#include <acpi/ras2.h>
-+
-+#define RAS2_SUPPORT_HW_PARTOL_SCRUB BIT(0)
-+#define RAS2_TYPE_PATROL_SCRUB 0x0000
-+
-+#define RAS2_GET_PATROL_PARAMETERS 0x01
-+#define RAS2_START_PATROL_SCRUBBER 0x02
-+#define RAS2_STOP_PATROL_SCRUBBER 0x03
-+
-+/*
-+ * RAS2 patrol scrub
-+ */
-+#define RAS2_PS_SC_HRS_IN_MASK GENMASK(15, 8)
-+#define RAS2_PS_EN_BACKGROUND BIT(0)
-+#define RAS2_PS_SC_HRS_OUT_MASK GENMASK(7, 0)
-+#define RAS2_PS_MIN_SC_HRS_OUT_MASK GENMASK(15, 8)
-+#define RAS2_PS_MAX_SC_HRS_OUT_MASK GENMASK(23, 16)
-+#define RAS2_PS_FLAG_SCRUB_RUNNING BIT(0)
-+
-+#define RAS2_SCRUB_NAME_LEN 128
-+#define RAS2_HOUR_IN_SECS 3600
-+
-+struct acpi_ras2_ps_shared_mem {
-+	struct acpi_ras2_shmem common;
-+	struct acpi_ras2_patrol_scrub_param params;
-+};
-+
-+#define TO_ACPI_RAS2_PS_SHMEM(_addr) \
-+	container_of(_addr, struct acpi_ras2_ps_shared_mem, common)
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable);
-+
-+static int ras2_is_patrol_scrub_support(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_shmem __iomem *common = (void *)ras2_ctx->comm_addr;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	common->set_caps[0] = 0;
-+
-+	return common->features[0] & RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+}
-+
-+static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	int ret;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.command = RAS2_GET_PATROL_PARAMETERS;
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	ras2_ctx->min_scrub_cycle = FIELD_GET(RAS2_PS_MIN_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	ras2_ctx->max_scrub_cycle = FIELD_GET(RAS2_PS_MAX_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	ras2_ctx->scrub_cycle_hrs = FIELD_GET(RAS2_PS_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	if (ras2_ctx->bg_scrub) {
-+		ras2_ctx->od_scrub = false;
-+		return 0;
-+	}
-+
-+	if  (ps_sm->params.flags & RAS2_PS_FLAG_SCRUB_RUNNING)
-+		ras2_ctx->od_scrub = true;
-+	else
-+		ras2_ctx->od_scrub = false;
-+
-+	return 0;
-+}
-+
-+/* Context - PCC lock must be held */
-+static int ras2_get_demand_scrub_running(struct ras2_mem_ctx *ras2_ctx, bool *running)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	int ret;
-+
-+	if (!ras2_ctx->od_scrub) {
-+		*running = false;
-+		return 0;
-+	}
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.command = RAS2_GET_PATROL_PARAMETERS;
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	*running = ps_sm->params.flags & RAS2_PS_FLAG_SCRUB_RUNNING;
-+	if (!(*running))
-+		ras2_ctx->od_scrub = false;
-+
-+	return 0;
-+}
-+
-+static int ras2_scrub_monitor_thread(void *p)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = (struct ras2_mem_ctx *)p;
-+	bool running;
-+	int ret;
-+
-+	while (!kthread_should_stop()) {
-+		if (!ras2_ctx->reenable_bg_scrub)
-+			return 0;
-+
-+		mutex_lock(ras2_ctx->pcc_lock);
-+		ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+		mutex_unlock(ras2_ctx->pcc_lock);
-+		if (ret)
-+			return ret;
-+
-+		if (!running)
-+			return ras2_hw_scrub_set_enabled_bg(ras2_ctx->dev, ras2_ctx, true);
-+		msleep(1000);
-+	}
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_min_scrub_cycle(struct device *dev, void *drv_data, u32 *min)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*min = ras2_ctx->min_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_max_scrub_cycle(struct device *dev, void *drv_data, u32 *max)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*max = ras2_ctx->max_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_read(struct device *dev, void *drv_data, u32 *scrub_cycle_secs)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*scrub_cycle_secs = ras2_ctx->scrub_cycle_hrs * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_write(struct device *dev, void *drv_data, u32 scrub_cycle_secs)
-+{
-+	u8 scrub_cycle_hrs = scrub_cycle_secs / RAS2_HOUR_IN_SECS;
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	if (ras2_ctx->bg_scrub)
-+		return -EBUSY;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (scrub_cycle_hrs < ras2_ctx->min_scrub_cycle ||
-+	    scrub_cycle_hrs > ras2_ctx->max_scrub_cycle)
-+		return -EINVAL;
-+
-+	ras2_ctx->scrub_cycle_hrs = scrub_cycle_hrs;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_get_enabled_bg(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*enabled = ras2_ctx->bg_scrub;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	if (enable) {
-+		if (ras2_ctx->bg_scrub || running)
-+			return -EBUSY;
-+
-+		ps_sm->params.req_addr_range[0] = 0;
-+		ps_sm->params.req_addr_range[1] = 0;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PS_SC_HRS_IN_MASK;
-+		ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_SC_HRS_IN_MASK,
-+							    ras2_ctx->scrub_cycle_hrs);
-+		ps_sm->params.command = RAS2_START_PATROL_SCRUBBER;
-+	} else {
-+		if (!ras2_ctx->bg_scrub)
-+			return -EPERM;
-+
-+		ps_sm->params.command = RAS2_STOP_PATROL_SCRUBBER;
-+	}
-+
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_EN_BACKGROUND;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_EN_BACKGROUND, enable);
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(dev, "Failed to %s background scrubbing\n",
-+			str_enable_disable(enable));
-+		return ret;
-+	}
-+
-+	ras2_ctx->bg_scrub = enable;
-+	if (enable)
-+		ras2_ctx->reenable_bg_scrub = false;
-+
-+	/* Update the cache to account for rounding of supplied parameters and similar */
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static int ras2_hw_scrub_get_enabled_od(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*enabled = ras2_ctx->od_scrub;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_od(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	struct task_struct *thrd;
-+	bool running;
-+	int ret;
-+
-+	/* Stop any background scrub currently in progress */
-+	if (ras2_ctx->bg_scrub && enable) {
-+		ret = ras2_hw_scrub_set_enabled_bg(dev, drv_data, false);
-+		if (ret)
-+			return ret;
-+
-+		ras2_ctx->reenable_bg_scrub = true;
-+		thrd = kthread_run(ras2_scrub_monitor_thread, ras2_ctx,
-+				   "ras2_scrub_nid%d", ras2_ctx->sys_comp_nid);
-+		if (IS_ERR(thrd)) {
-+			ras2_ctx->reenable_bg_scrub = false;
-+			ras2_hw_scrub_set_enabled_bg(dev, drv_data, true);
-+			return PTR_ERR(thrd);
-+		}
-+	}
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_SC_HRS_IN_MASK;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_SC_HRS_IN_MASK,
-+						    ras2_ctx->scrub_cycle_hrs);
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_EN_BACKGROUND;
-+	ps_sm->params.command = RAS2_START_PATROL_SCRUBBER;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(dev, "Failed to start demand scrubbing rc(%d)\n", ret);
-+		if (ret != -EBUSY) {
-+			ps_sm->params.req_addr_range[0] = 0;
-+			ps_sm->params.req_addr_range[1] = 0;
-+			ras2_ctx->od_scrub = false;
-+		}
-+		return ret;
-+	}
-+
-+	ras2_ctx->od_scrub = enable;
-+
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static const struct edac_scrub_ops ras2_scrub_ops = {
-+	.get_enabled_bg = ras2_hw_scrub_get_enabled_bg,
-+	.set_enabled_bg = ras2_hw_scrub_set_enabled_bg,
-+	.get_enabled_od = ras2_hw_scrub_get_enabled_od,
-+	.set_enabled_od = ras2_hw_scrub_set_enabled_od,
-+	.get_min_cycle = ras2_hw_scrub_read_min_scrub_cycle,
-+	.get_max_cycle = ras2_hw_scrub_read_max_scrub_cycle,
-+	.get_cycle_duration = ras2_hw_scrub_cycle_read,
-+	.set_cycle_duration = ras2_hw_scrub_cycle_write,
-+};
-+
-+static int ras2_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = container_of(auxdev, struct ras2_mem_ctx, adev);
-+	struct edac_dev_feature ras_features;
-+	char scrub_name[RAS2_SCRUB_NAME_LEN];
-+	unsigned long start_pfn, size_pfn;
-+	int ret;
-+
-+	if (!ras2_is_patrol_scrub_support(ras2_ctx))
-+		return -EOPNOTSUPP;
-+
-+	/*
-+	 * Retrieve the PA range of the NUMA domain and use it as the
-+	 * 'Requested Address Range', when send RAS2 command
-+	 * GET_PATROL_PARAMETERS to get parameters that apply to all addresses
-+	 * in the NUMA domain as well as when send command START_PATROL_SCRUBBER
-+	 * to start the demand scrubbing.
-+	 */
-+	start_pfn = node_start_pfn(ras2_ctx->sys_comp_nid);
-+	size_pfn = node_spanned_pages(ras2_ctx->sys_comp_nid);
-+	if (!size_pfn) {
-+		pr_debug("Failed to find PA range of NUMA node(%u)\n",
-+			 ras2_ctx->sys_comp_nid);
-+		return -EPERM;
-+	}
-+
-+	ras2_ctx->base = __pfn_to_phys(start_pfn);
-+	ras2_ctx->size = __pfn_to_phys(size_pfn);
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+
-+	sprintf(scrub_name, "acpi_ras_mem%d", auxdev->id);
-+
-+	ras_features.ft_type	= RAS_FEAT_SCRUB;
-+	ras_features.instance	= 0;
-+	ras_features.scrub_ops	= &ras2_scrub_ops;
-+	ras_features.ctx	= ras2_ctx;
-+
-+	return edac_dev_register(&auxdev->dev, scrub_name, NULL, 1, &ras_features);
-+}
-+
-+static const struct auxiliary_device_id ras2_mem_dev_id_table[] = {
-+	{ .name = RAS2_AUX_DEV_NAME "." RAS2_MEM_DEV_ID_NAME, },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(auxiliary, ras2_mem_dev_id_table);
-+
-+static struct auxiliary_driver ras2_mem_driver = {
-+	.name = RAS2_MEM_DEV_ID_NAME,
-+	.probe = ras2_probe,
-+	.id_table = ras2_mem_dev_id_table,
-+};
-+module_auxiliary_driver(ras2_mem_driver);
-+
-+MODULE_IMPORT_NS("ACPI_RAS2");
-+MODULE_DESCRIPTION("ACPI RAS2 memory driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/acpi/ras2.h b/include/acpi/ras2.h
-index 10deab0b5541..c0357f943bca 100644
---- a/include/acpi/ras2.h
-+++ b/include/acpi/ras2.h
-@@ -37,6 +37,15 @@ struct device;
-  *			is associated with. See ACPI spec 6.5 Table 5.80: RAS2
-  *			Platform Communication Channel Descriptor format,
-  *			Field: Instance
-+ * @base:		Base address of the memory region to scrub
-+ * @size:		Size of the memory region to scrub
-+ * @scrub_cycle_hrs:	Current scrub rate in hours
-+ * @min_scrub_cycle:	Minimum scrub rate supported
-+ * @max_scrub_cycle:	Maximum scrub rate supported
-+ * @od_scrub:		Status of demand scrubbing (memory region)
-+ * @bg_scrub:		Status of background patrol scrubbing
-+ * @reenable_bg_scrub:	Flag indicates restart background scrubbing after demand
-+ *			scrubbing is finished
-  */
- struct ras2_mem_ctx {
- 	struct auxiliary_device		adev;
-@@ -45,6 +54,14 @@ struct ras2_mem_ctx {
- 	void				*sspcc;
- 	struct mutex			*pcc_lock;
- 	u32				sys_comp_nid;
-+	u64				base;
-+	u64				size;
-+	u8				scrub_cycle_hrs;
-+	u8				min_scrub_cycle;
-+	u8				max_scrub_cycle;
-+	bool				od_scrub;
-+	bool				bg_scrub;
-+	bool				reenable_bg_scrub;
- };
- 
- #ifdef CONFIG_ACPI_RAS2
-diff --git a/include/linux/edac.h b/include/linux/edac.h
-index fa32f2aca22f..2342ff38e9d5 100644
---- a/include/linux/edac.h
-+++ b/include/linux/edac.h
-@@ -680,6 +680,8 @@ enum edac_dev_feat {
-  * @write_size: set offset of the scrubbing range.
-  * @get_enabled_bg: check if currently performing background scrub.
-  * @set_enabled_bg: start or stop a bg-scrub.
-+ * @get_enabled_od: check if currently performing demand scrub.
-+ * @set_enabled_od: start or stop a demand-scrub.
-  * @get_min_cycle: get minimum supported scrub cycle duration in seconds.
-  * @get_max_cycle: get maximum supported scrub cycle duration in seconds.
-  * @get_cycle_duration: get current scrub cycle duration in seconds.
-@@ -692,6 +694,8 @@ struct edac_scrub_ops {
- 	int (*write_size)(struct device *dev, void *drv_data, u64 size);
- 	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
- 	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
-+	int (*get_enabled_od)(struct device *dev, void *drv_data, bool *enable);
-+	int (*set_enabled_od)(struct device *dev, void *drv_data, bool enable);
- 	int (*get_min_cycle)(struct device *dev, void *drv_data,  u32 *min);
- 	int (*get_max_cycle)(struct device *dev, void *drv_data,  u32 *max);
- 	int (*get_cycle_duration)(struct device *dev, void *drv_data, u32 *cycle);
--- 
-2.43.0
+>> +             if (ret < 0) {
+>> +                     pr_warn("Failed to update %s_freq constraint 
+>> for CPU%d: %d\n",
+>> +                             is_min ? "min" : "max", cpu, ret);
+>> +                     return ret;
+>> +             }
+>> +     }
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +#define cppc_cpufreq_set_min_perf(policy, val, update_reg, 
+>> update_policy) \
+>> +     cppc_cpufreq_set_mperf_limit(policy, val, update_reg, 
+>> update_policy, true)
+>> +
+>> +#define cppc_cpufreq_set_max_perf(policy, val, update_reg, 
+>> update_policy) \
+>> +     cppc_cpufreq_set_mperf_limit(policy, val, update_reg, 
+>> update_policy, false)
+>> +
+>>   static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
+>>   {
+>>       unsigned int cpu = policy->cpu;
+>> @@ -881,16 +945,118 @@ static ssize_t 
+>> store_energy_performance_preference_val(struct cpufreq_policy *po
+>>       return cppc_cpufreq_sysfs_store_u64(policy->cpu, cppc_set_epp, 
+>> buf, count);
+>>   }
+>>
+>> +/**
+>> + * show_min_perf - Show minimum performance as frequency (kHz)
+>> + *
+>> + * Reads the MIN_PERF register and converts the performance value to
+>> + * frequency (kHz) for user-space consumption.
+>> + */
+>> +static ssize_t show_min_perf(struct cpufreq_policy *policy, char *buf)
+>> +{
+>> +     struct cppc_cpudata *cpu_data = policy->driver_data;
+>> +     u64 perf;
+>> +     int ret;
+>> +
+>> +     ret = cppc_get_min_perf(policy->cpu, &perf);
+>> +     if (ret == -EOPNOTSUPP)
+>> +             return sysfs_emit(buf, "<unsupported>\n");
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     /* Convert performance to frequency (kHz) for user */
+>> +     return sysfs_emit(buf, "%u\n", 
+>> cppc_perf_to_khz(&cpu_data->perf_caps, perf));
+>> +}
+>> +
+>> +/**
+>> + * store_min_perf - Set minimum performance from frequency (kHz)
+>> + *
+>> + * Converts the user-provided frequency (kHz) to a performance value
+>> + * and writes it to the MIN_PERF register.
+>> + */
+>> +static ssize_t store_min_perf(struct cpufreq_policy *policy, const 
+>> char *buf, size_t count)
+>> +{
+>> +     struct cppc_cpudata *cpu_data = policy->driver_data;
+>> +     unsigned int freq_khz;
+>> +     u64 perf;
+>> +     int ret;
+>> +
+>> +     ret = kstrtouint(buf, 0, &freq_khz);
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     /* Convert frequency (kHz) to performance value */
+>> +     perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
+>> +
+>> +     ret = cppc_cpufreq_set_min_perf(policy, perf, true, 
+>> cpu_data->perf_caps.auto_sel);
+>> +     if (ret)
+>> +             return ret;
+>> +
+>> +     return count;
+>> +}
+>> +
+>> +/**
+>> + * show_max_perf - Show maximum performance as frequency (kHz)
+>> + *
+>> + * Reads the MAX_PERF register and converts the performance value to
+>> + * frequency (kHz) for user-space consumption.
+>> + */
+>> +static ssize_t show_max_perf(struct cpufreq_policy *policy, char *buf)
+>
+> I think it might collide with the scaling_min/max_freq.
+> I saw that you answered this point at:
+> https://lore.kernel.org/lkml/b2bd3258-51bd-462a-ae29-71f1d6f823f3@nvidia.com/ 
+>
+>
+> But I m not sure I understood why it is needed to have 2 interfaces.
+> Would it be possible to explain it again ?
+
+Separate interface for min/max_perf are kept because we are writing
+to different CPPC hardware registers with that name.
+
+>
+> I don't see any case where we would like to make a distinction between:
+> - scaling_max_freq, i.e. the maximal freq. the cpufreq driver is allowed
+> to set
+> - max_perf, i.e. the maximal perf. level the firmware will set
+>
+> ------------
+>
+> Another point is that the min/max_perf interface actually uses freq. 
+> values.
+
+Changed the min/max_perf interfaces from perf to freq to sync their scale
+with other cpufreq sysfs interfaces after discussion in [1].
+
+  [1] 
+https://lore.kernel.org/lkml/80e16de0-63e4-4ead-9577-4ebba9b1a02d@nvidia.com/
+
+Thank you,
+Sumit Gupta
+
 
 
