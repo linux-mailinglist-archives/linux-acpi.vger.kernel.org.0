@@ -1,44 +1,44 @@
-Return-Path: <linux-acpi+bounces-19512-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A70CB0275
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 15:02:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95164CB028A
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 15:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B3F13035881
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 14:01:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6A7E8301977D
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 14:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E0E2BDC01;
-	Tue,  9 Dec 2025 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C674A2989BF;
+	Tue,  9 Dec 2025 14:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edGi/giR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYqmPoBQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580B326CE04;
-	Tue,  9 Dec 2025 14:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CB6288C34;
+	Tue,  9 Dec 2025 14:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765288862; cv=none; b=sjc5qswJAGI5OVPbsaHOkEb18BwnvWsLZKNzm1hdjaTSRlypPwKpzCS/qJDdSkJAbuarTlrZFUvdXq7S4nHPOTW0I9uayMRgeXDq6bIA9Uk5Htin/wNs85IJ9ny4rc09hGWQKwKeaDiW4EJ9MXLcfXQdpLQSOoMTlIZrsvmaK/Q=
+	t=1765288858; cv=none; b=cPwRToixwkpWVsF0iLauBLqLaN1XMOsIYOYtrh8CwZ1wN7H39st807nwI9tcn1bAFH6qxL+E0IVx5+IgltHQW3kgxOc3yHSCDNTbB0lmfIjoR787DOdDkbvfxukaWwFMzlbkXfYU004Q0zDOmu7GCXXhHhLlsm44DiV1tW+9c34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765288862; c=relaxed/simple;
-	bh=qm2y1m6xP8LoGLSwQeqts2s8oWJdEsfT9ZkJ1Mex+6E=;
+	s=arc-20240116; t=1765288858; c=relaxed/simple;
+	bh=9MYPvycO72qiUjiHEBTYvwZbNGMr66KlQdcFJE8oal0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cTu84fwoybnbgEcBYK7XGWi77MLGI4Oij8I7QgJUbczepCbrGrew4dKbMoUp8nVhKYgKMqUTPKDZ1DIKhNvOJzbmyUXzsZ9sHefoEmAVqfG/AlReWCnUtVQEvbquOM7LIgZjRyQgzwc/Qk8K3VC4oho7vrtXh9sbja1/MhfOgGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edGi/giR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BF4C113D0;
-	Tue,  9 Dec 2025 14:01:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NzfOjeiWOuWvj17YUDHAyJ15ghtP6IDmkAReBlCKBsfVDuCkBSeL5Il62wONQAz2PHnI5mulctiebUMCSbBZsEBYf5nPjCpMU5Bjn6J9QzmY+fRDW1bSs6Me1iWYAFvmihVh/6reTnKIwGHVJlT8SSrvtKpNDqye7snqUWMPjaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYqmPoBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8B6C113D0;
+	Tue,  9 Dec 2025 14:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765288862;
-	bh=qm2y1m6xP8LoGLSwQeqts2s8oWJdEsfT9ZkJ1Mex+6E=;
+	s=k20201202; t=1765288858;
+	bh=9MYPvycO72qiUjiHEBTYvwZbNGMr66KlQdcFJE8oal0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edGi/giRMvYXHL+ibSFhOvBRpoYbRiLWM5fdZQ4jEg2mk53CTg8Y4YirBfuup0jfL
-	 lLl7aITuyueHqiuCFayv6uBOJXIhd6f6KkW7qP6qYiTA87kSCfrFSpo++wHUaFn3se
-	 4QW8hR+wNnl07gqd4Qg6uuQSkQiKLtLdu6cdXYAoCMOoK97uNTTeGzlWEjTjW0n/RI
-	 +gf07eiurW/undvMJ5f2J0c/CMqYRLaMeM16kYhEJfH0YIijv7V7tx9o4rns/aC7Aa
-	 LSovEkDx50xU9ho2yvuV12ojNy02lcfxRIxZPnaHPok9vJ1J7bl8R6Nle9gIMcjMf/
-	 XSOi3OgDsZDiA==
+	b=PYqmPoBQiO5tpaEGzyC5In3Xa4ZA5uCvDli7CHqtTT1oaagqVTBjZaIdBdmnl1Bn7
+	 EiJA1TJTzZxi/go1MvLb7dSyOK7Egkp03IrwcqR7Zxra6al/rG0vYbWOpyC45ZbPPd
+	 y5uSRkbVZ3NUW7zf1vuboEaSbkd3cWuSMhfumhoEZTKKrmwUlDTReTnXMJiUlvkxUb
+	 ul+jBs7BhD8BFtQb0PrSUiAUJAKBqceG4p+x0khWhH1yW+uAJuZKE8xTZDxsGSQFRH
+	 aAFxD0qvYX4UohJFOL1x5Ty3vWMl/PNMwp+WPGfcniWYRRs7Eoi58TIq/YQzvdTp0u
+	 D/ZQ/otBMGLgQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: Hans de Goede <hdegoede@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
@@ -46,10 +46,9 @@ Cc: Hans de Goede <hdegoede@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
  Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
  Armin Wolf <w_armin@gmx.de>
 Subject:
- [PATCH v1 05/10] ACPI: tiny-power-button: Convert the driver to a platform
- one
-Date: Tue, 09 Dec 2025 14:55:12 +0100
-Message-ID: <24192980.6Emhk5qWAg@rafael.j.wysocki>
+ [PATCH v1 06/10] ACPI: scan: Do not bind ACPI drivers to fixed event buttons
+Date: Tue, 09 Dec 2025 14:56:06 +0100
+Message-ID: <4480030.ejJDZkT8p0@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <2339822.iZASKD2KPV@rafael.j.wysocki>
 References: <2339822.iZASKD2KPV@rafael.j.wysocki>
@@ -64,81 +63,38 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-While binding drivers directly to struct acpi_device objects allows
-basic functionality to be provided, at least in the majority of cases,
-there are some problems with it, related to general consistency, sysfs
-layout, power management operation ordering, and code cleanliness.
+Both ACPI button drivers have been converted to platform ones, so there
+is no reason to attempt to bind an ACPI driver to a struct acpi_device
+representing a fixed event device button.
 
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the ACPI tiny-power-button driver to a
-platform one.
+Update the relevant code accordingly.
 
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
+No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/tiny-power-button.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/acpi/scan.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/acpi/tiny-power-button.c
-+++ b/drivers/acpi/tiny-power-button.c
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
-+#include <linux/acpi.h>
- #include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/sched/signal.h>
--#include <linux/acpi.h>
- #include <acpi/button.h>
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2652,15 +2652,8 @@ static void acpi_bus_add_fixed_device_ob
+ 	struct acpi_device *adev = NULL;
  
- MODULE_AUTHOR("Josh Triplett");
-@@ -35,8 +36,9 @@ static u32 acpi_tiny_power_button_event(
- 	return ACPI_INTERRUPT_HANDLED;
+ 	acpi_add_single_object(&adev, NULL, type, false);
+-	if (adev) {
+-		adev->flags.match_driver = true;
+-		if (device_attach(&adev->dev) >= 0)
+-			device_init_wakeup(&adev->dev, true);
+-		else
+-			dev_dbg(&adev->dev, "No driver\n");
+-
++	if (adev)
+ 		acpi_default_enumeration(adev);
+-	}
  }
  
--static int acpi_tiny_power_button_add(struct acpi_device *device)
-+static int acpi_tiny_power_button_probe(struct platform_device *pdev)
- {
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	acpi_status status;
- 
- 	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
-@@ -55,8 +57,10 @@ static int acpi_tiny_power_button_add(st
- 	return 0;
- }
- 
--static void acpi_tiny_power_button_remove(struct acpi_device *device)
-+static void acpi_tiny_power_button_remove(struct platform_device *pdev)
- {
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+
- 	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
- 		acpi_remove_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
- 						acpi_tiny_power_button_event);
-@@ -67,14 +71,13 @@ static void acpi_tiny_power_button_remov
- 	acpi_os_wait_events_complete();
- }
- 
--static struct acpi_driver acpi_tiny_power_button_driver = {
--	.name = "tiny-power-button",
--	.class = "tiny-power-button",
--	.ids = tiny_power_button_device_ids,
--	.ops = {
--		.add = acpi_tiny_power_button_add,
--		.remove = acpi_tiny_power_button_remove,
--	},
-+static struct platform_driver acpi_tiny_power_button_driver = {
-+	.probe = acpi_tiny_power_button_probe,
-+	.remove = acpi_tiny_power_button_remove,
-+	.driver = {
-+		.name = "acpi-tiny-power-button",
-+		.acpi_match_table = tiny_power_button_device_ids,
-+ 	},
- };
- 
--module_acpi_driver(acpi_tiny_power_button_driver);
-+module_platform_driver(acpi_tiny_power_button_driver);
+ static void acpi_bus_scan_fixed(void)
 
 
 
