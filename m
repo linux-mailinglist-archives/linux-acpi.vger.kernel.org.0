@@ -1,111 +1,179 @@
-Return-Path: <linux-acpi+bounces-19498-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19499-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65D4CAF229
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 08:29:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935AECAF238
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 08:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9361300C370
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 07:29:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA08B304639F
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 07:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865CA2868B4;
-	Tue,  9 Dec 2025 07:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4533288525;
+	Tue,  9 Dec 2025 07:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="XbITDAAx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD512868AB;
-	Tue,  9 Dec 2025 07:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2372868AB;
+	Tue,  9 Dec 2025 07:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765265360; cv=none; b=ShUR49bUIit85i+t/zOHsrWXDSmSMc0zZJ7/jp8LahRsI/xhvKxOjQzsBocV6351qfMpM9YJvcyruhCuNHz3VEcvR9rbLd1guMbytfxSVOE/GPFjcuqx5qHdezKMR4nOBqFS3IOSrR0jh598NXb6uKfiuJdpbN+gD7yszlO28fU=
+	t=1765265381; cv=none; b=G7G3wdIk0jN00E1vegXYaW+6YYR0exm2Nv2eSLb7+inLkRrwIq7oxMD8O00O5q8a+mWUIpY/MNoVRpRz3JzC2t7UuirR9svN0UorbD/JIT6xwEaVKiFVrRBF1qfbix77BAr6cL0I/HLfcjwsj8/3V7kbX9SanQ7DZW71LbebRwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765265360; c=relaxed/simple;
-	bh=M//Kglc8Mjqi5Hj01Y3yWTLsrAAhyGA9laPJ2cDVUgA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F2yz/CzwkGdg1MSV9pAKUUMU6AjvMIHJyeva8hvKZjvor/69ghuObOt47h9o3AmspXrebyqGAdhXJOEv5gEPnohld0AXr4cP9mGJ08w/HPEvMy/mO2AiyERuAwBKBvudKBnkkdUSEOEGgkLX8y/gKAK1TSiZimwWGObd4bm3FIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: bfcbc6ded4d011f0a38c85956e01ac42-20251209
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:70b9dc01-c464-4773-b65d-57da3c9e2462,IP:15,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:70b9dc01-c464-4773-b65d-57da3c9e2462,IP:15,URL
-	:0,TC:0,Content:-5,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:d2e1b453e34067f4b6bfc02e2ad16eff,BulkI
-	D:251209152908USZPRCNP,BulkQuantity:0,Recheck:0,SF:10|66|78|102|127|850|89
-	8,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil
-	,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: bfcbc6ded4d011f0a38c85956e01ac42-20251209
-X-User: pengcan@kylinos.cn
-Received: from localhost.localdomain [(116.128.244.171)] by mailgw.kylinos.cn
-	(envelope-from <pengcan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1852824346; Tue, 09 Dec 2025 15:29:08 +0800
-From: Can Peng <pengcan@kylinos.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Can Peng <pengcan@kylinos.cn>
-Subject: [PATCH] acpi: use LIST_HEAD for stack-allocated list in acpi_watchdog_init
-Date: Tue,  9 Dec 2025 15:27:57 +0800
-Message-Id: <20251209072757.3110467-1-pengcan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765265381; c=relaxed/simple;
+	bh=Y7zyQ3Cc5DlKIsNW/GqayFZcqof4q0SiDOyea2py6q4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Irbk/v4N+V2ArM0Cd9G6Rihsps9W/V6CFf6bFFZYEGMjwgYHOQm0a3Q+kig6xPH7R3kJthJoSNQUN8opz1QQjoQ3d0LBhexDAFYQFb7xbMV5v6PakXsZ8IMBOPxDWZ6i1cy4I3j957EYV95dTqDnoiS0t+6MGNQaXFri2K+Pg40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=XbITDAAx; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=khkDOJh1/uYzmB+/MJQsODnByd/QEEA368wUov7qEg8=;
+	b=XbITDAAxKMXbJQw3hmqrBSUzOJ2BSUIeKOMULD/gTHZ+SbiTM46kWxY5u8cvvlZx9RJyNDoFA
+	yNqbHAa/WQk7bnXS3JYWWyyoUjBgB5HKZNyFxU8oLBmldmY30eYet4kFB6uk6VpwyRDlGX0F6Jt
+	bakeX9vPGScBYefSd4Q2MII=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dQVmp3d2qzLlTc;
+	Tue,  9 Dec 2025 15:27:38 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id E949F140155;
+	Tue,  9 Dec 2025 15:29:33 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Dec 2025 15:29:33 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 9 Dec
+ 2025 15:29:33 +0800
+Message-ID: <09d66576-5d17-4a80-b41f-2f76a09d963b@huawei.com>
+Date: Tue, 9 Dec 2025 15:29:32 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] Urgent ACPI support fix for v6.18
+To: "Longia, Amandeep Kaur" <AmandeepKaur.Longia@amd.com>
+CC: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM
+	<linux-pm@vger.kernel.org>, Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>, <kprateek.nayak@amd.com>, <dhsrivas@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, <lihuisong@huawei.com>
+References: <CAJZ5v0g6c1HNbxxh088xh_nTgD-SE6c2qtDr81AgD1+by-jnKA@mail.gmail.com>
+ <1ea445d0-0949-4a28-9f76-325861a3c57f@huawei.com>
+ <7487e99d-421b-4ac5-bb77-e61c3131bb13@amd.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <7487e99d-421b-4ac5-bb77-e61c3131bb13@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-Replace the separate declaration of 'resource_list' and subsequent
-INIT_LIST_HEAD() call with LIST_HEAD(), which declares and initializes
-the list head in one idiomatic step. This reduces code verbosity and
-aligns with common kernel coding patterns, without functional change.
+在 2025/11/28 3:03, Longia, Amandeep Kaur 写道:
+> Hi all,
+>
+> On 11/27/2025 7:39 AM, lihuisong (C) wrote:
+>> Hello Rafael,
+>>
+>> 在 2025/11/26 20:54, Rafael J. Wysocki 写道:
+>>> Hi Linus,
+>>>
+>>> Please pull from the tag
+>>>
+>>> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>>>   acpi-6.18-rc8
+>>>
+>>> with top-most commit 43ff36c4a5a574ee83b4b0d3f3d74f09a3a8c2d3
+>>>
+>>>   Revert "ACPI: processor: idle: Optimize ACPI idle driver 
+>>> registration"
+>>>
+>>> on top of commit ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+>>>
+>>>   Linux 6.18-rc7
+>>>
+>>> to receive an urgent ACPI support fix for 6.18.
+>>>
+>>> This reverts a commit that attempted to make the code in the ACPI
+>>> processor driver more straightforward, but it turned out to cause
+>>> the kernel to crash on at least one system, along with some further
+>>> cleanups on top of it.
+>> I just found that "ACPI: processor: idle: Optimize ACPI idle driver 
+>> registration" depends on the change
+>> about cpuhp_setup_state in the commit [1]. Or many CPUs don't create 
+>> cpuidle directory.
+>> What is the crash? Do you have releated trace?
+>>
+>> [1] https://lore.kernel.org/all/20240529133446.28446-2- 
+>> Jonathan.Cameron@huawei.com/
+>
+> We have observed the same issue. After booting the system with the 
+> latest kernel, the sysfs path /sys/devices/system/cpu/cpu*/cpuidle 
+> does not exist. Bisecting between v6.18-rc7 (good) and master (bad) 
+> led us to the following commit:
+>
+> 43ff36c4a5a574ee83b4b0d3f3d74f09a3a8c2d3 Revert "ACPI: processor: 
+> idle: Optimize ACPI idle driver registration"
+>
+>
+Hello Amandeep,
 
-Signed-off-by: Can Peng <pengcan@kylinos.cn>
----
- drivers/acpi/acpi_watchdog.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+I guess that your kernel doesn't have the following patch [1] if you 
+also encountered this issue.
 
-diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-index 14b24157799c..709993c535d1 100644
---- a/drivers/acpi/acpi_watchdog.c
-+++ b/drivers/acpi/acpi_watchdog.c
-@@ -103,7 +103,7 @@ void __init acpi_watchdog_init(void)
- {
- 	const struct acpi_wdat_entry *entries;
- 	const struct acpi_table_wdat *wdat;
--	struct list_head resource_list;
-+	LIST_HEAD(resource_list);
- 	struct resource_entry *rentry;
- 	struct platform_device *pdev;
- 	struct resource *resources;
-@@ -125,8 +125,6 @@ void __init acpi_watchdog_init(void)
- 	    wdat->pci_device != 0xff || wdat->pci_function != 0xff)
- 		goto fail_put_wdat;
- 
--	INIT_LIST_HEAD(&resource_list);
+The __acpi_processor_start() of all CPUs are called when run 
+driver_register(&acpi_processor_driver).
+But acpi_processor_register_idle_driver() is called after 
+driver_register(&acpi_processor_driver).
+As a result, the acpi_processor_power_init() would not register cpuidle 
+device and create these directory.
+
+I tested it ok on my platform under the following modification.
+Can you test it again using following modification based on kernel 
+without revert any ACPI idle patch?
+  I am looking forward to your reply. Thanks.
+-->
+diff --git a/drivers/acpi/processor_driver.c 
+b/drivers/acpi/processor_driver.c
+index 4b906b56186a..b56a2a228693 100644
+--- a/drivers/acpi/processor_driver.c
++++ b/drivers/acpi/processor_driver.c
+@@ -268,12 +268,12 @@ static int __init acpi_processor_driver_init(void)
+                 acpi_processor_ignore_ppc_init();
+         }
+
++       acpi_processor_register_idle_driver();
++
+         result = driver_register(&acpi_processor_driver);
+         if (result < 0)
+                 return result;
+
+-       acpi_processor_register_idle_driver();
 -
- 	entries = (struct acpi_wdat_entry *)(wdat + 1);
- 	for (i = 0; i < wdat->entries; i++) {
- 		const struct acpi_generic_address *gas;
--- 
-2.25.1
+         result = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
+                                            "acpi/cpu-drv:online",
+                                            acpi_soft_cpu_online, NULL);
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 66d8df5a37a6..a34983abb0b9 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1404,6 +1404,7 @@ void acpi_processor_register_idle_driver(void)
+                 if (!pr)
+                         continue;
+
++               acpi_processor_cstate_first_run_checks();
+                 ret = acpi_processor_get_power_info(pr);
+                 if (!ret) {
+                         pr->flags.power_setup_done = 1;
+
+[1] 
+https://lore.kernel.org/all/20240529133446.28446-2-Jonathan.Cameron@huawei.com/
 
 
