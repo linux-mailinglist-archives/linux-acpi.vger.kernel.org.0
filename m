@@ -1,124 +1,116 @@
-Return-Path: <linux-acpi+bounces-19505-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19517-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855CBCB015B
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 14:47:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB08CB02E1
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 15:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44CA830B6214
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 13:46:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6699303E549
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 14:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455D4329E46;
-	Tue,  9 Dec 2025 13:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D502E4266;
+	Tue,  9 Dec 2025 14:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0cVenlM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49222C08DC;
-	Tue,  9 Dec 2025 13:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8290C2D131A;
+	Tue,  9 Dec 2025 14:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765287477; cv=none; b=ex5HwLS2adzIXDSoc+WZb0ocezmtGiQ1dx5PQu2gW3bnNdNFx+01c3nYfIx5zK44BvkndaSHS0CDVC3Cz7LZ58/fKiYyBeoa/O2bYlYQ0Jg2hSXex9/tgtiVXNvfEbQ94BYEkt6rzkSYMpnO01Jn7md3a73k6oykEj1GIYv4iyw=
+	t=1765288883; cv=none; b=pineNOCmWxodm+dk8I1usVInoO8rYEK3/0GWJjI4qMqm1PtOhmtTceuQ9ZaVBvulcg8AYdWX3xrRBGQjmho7N2QPccaIVoG5rCTQRXlgfcdCYaJgqfkP4ykb+1+Y+n+yanYC7y85axXNLk9O5JPqhP2OgLVwPo1PH5Zcv5owQ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765287477; c=relaxed/simple;
-	bh=wbweG4FctRNk+yt3RR0+CAPeM/y4INczATZ8NDMFh+g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SNmjpkDdOhhwHNnA1N94cVyPJIrX/dkE6cwhdhbxfHawrLG/Je0jvBpqWMk2nAXMpiuHlCwVD6ujG1RIdOCd3OYQBNjgOKLW0/hosfbD/p4mUz4KfsqEXcLbleBIdAqlJzpTH++E7ehjpXIL/Zm2FWOHosyJNOBTZuOBFbtwc/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dQfwv6G51zcb2h;
-	Tue,  9 Dec 2025 21:35:11 +0800 (CST)
-Received: from kwepemf200017.china.huawei.com (unknown [7.202.181.10])
-	by mail.maildlp.com (Postfix) with ESMTPS id 037CB1400C8;
-	Tue,  9 Dec 2025 21:37:51 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by kwepemf200017.china.huawei.com
- (7.202.181.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 9 Dec
- 2025 21:37:50 +0800
-Message-ID: <4e850664-f883-4a26-b8d6-f484a9114ed2@hisilicon.com>
-Date: Tue, 9 Dec 2025 21:37:49 +0800
+	s=arc-20240116; t=1765288883; c=relaxed/simple;
+	bh=CVZQ9243uQdk0W2AonSWy0bOS/2S3BmJSxPZ6gHQqU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xz4QRUa/jq2wJqQ7E+FkL9N3ahvjQ8Qd+LD80eFDkVzL5zKsxi9Eeaod3Mss+tt7jgv8k/mHNHRHqMiWVXcpdS2hbpG2UPdNQd2H2Mbktszf8AyqYK7qvCc5TP+LDw9YJXI8+jkPem/ZFDtvEaNkUg/S6QzdwzGjhUh60XRy3kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0cVenlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43ECC113D0;
+	Tue,  9 Dec 2025 14:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765288883;
+	bh=CVZQ9243uQdk0W2AonSWy0bOS/2S3BmJSxPZ6gHQqU8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=A0cVenlMeNo4u6xCGtDpcnaQ1GRZ/wyI6AoyW7dnuaYxc01dGATAhkLRcfO3IUbjD
+	 l1fucU6vB4/xse36ITJQQ+ux8HkKUhVNltRUIr6CTTQLXD94EHWtLYaVq4peSszXtg
+	 yL15xAUS5dL9KJGIFuUKnsR15jNkhjryt87sbCFKcFukZlckCBkZPZYzLGSfLrxWtH
+	 Uv8Z6RDBcprMIuZKoBi6qNYdUF7eG6tdOJCnh7LkghrvbuqGmq6ZJeI5OjOJdL37zw
+	 DLyNUQypA2Y+gQaBBf9Ie8HaOHzyzoQuS4s78eqKBonzxGWW7ofkL0vhDw6/E1VTU7
+	 9O9OehRXYcjUA==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ Linux PM <linux-pm@vger.kernel.org>,
+ Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+ Armin Wolf <w_armin@gmx.de>
+Subject:
+ [PATCH v1 10/10] ACPI: Convert button and battery drivers to platform ones
+Date: Tue, 09 Dec 2025 14:49:38 +0100
+Message-ID: <2339822.iZASKD2KPV@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] ACPI: CPPC: Factor out and export per-cpu
- cppc_perf_ctrs_in_pcc_cpu()
-To: Beata Michalska <beata.michalska@arm.com>
-CC: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
-	<pierre.gondois@arm.com>, <zhenglifeng1@huawei.com>,
-	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
-	<yubowen8@huawei.com>, <lihuisong@huawei.com>, <zhangpengjie2@huawei.com>,
-	<wangzhi12@huawei.com>
-References: <20251203032422.3232957-1-zhanjie9@hisilicon.com>
- <20251203032422.3232957-2-zhanjie9@hisilicon.com> <aTb6Gvzvc9C7vnVP@arm.com>
-Content-Language: en-US
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <aTb6Gvzvc9C7vnVP@arm.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemf200017.china.huawei.com (7.202.181.10)
+
+Hi All,
+
+While binding drivers directly to struct acpi_device objects allows
+basic functionality to be provided, at least in the majority of cases,
+there are some problems with it, related to general consistency, sysfs
+layout, power management operation ordering, and code cleanliness.
+
+First of all, struct acpi_device objects represent firmware entities
+rather than hardware and in many cases they provide auxiliary information
+on devices enumerated independently (like PCI devices or CPUs).  It is
+therefore generally questionable to assign resources to them or create
+class devices and similar under them because they don't provide
+functionality associated with those entities by themselves (for example,
+they don't generate wakeup or input events).
+
+As a general rule, a struct acpi_device can only be a parent of another
+struct acpi_device.  If that's not the case, the location of the child
+device in the device hierarchy is at least confusing and it may not be
+straightforward to identify the piece of hardware corresponding to that
+device.
+
+Using system suspend and resume callbacks directly with struct acpi_device
+objects is questionable either because it may cause ordering problems to
+happen.  Namely, struct acpi_device objects are registered before any
+devices corresponded to by them and they land on the PM list before all
+of those devices.  Consequently, the execution ordering of their PM
+callbacks may be different from what is generally expected.  Moreover,
+dependencies returned by _DEP objects don't generally affect struct
+acpi_device objects themselves, only the "physical" device objects
+associated with them, which potentially is one more source of inconsistency.
+
+All of the above means that binding drivers to struct acpi_device "devices"
+should generally be avoided and so this series converts three generic ACPI
+device drivers, the button driver, the tiny power button driver, and the
+battery driver, to platform drivers.
+
+Patches [01-03/10] are preliminary for the button driver conversions.  Patch
+[01/10] causes platform devices to be registered for "fixed event device"
+buttons, patch [02/10] cleans up the "fixed event device" registration code,
+and patch [03/10] rearranges the notification handling code in the button
+driver to use internal "button" structures for passing data instead of
+struct acpi_device objects.
+
+Patches [04-05/10] convert the two button drivers to platform ones and
+patches [06-07/10] do some cleanups on top of them.
+
+Patches [08-09/10] are preliminary for the battery driver conversion which
+is carried out in patch [10/10].
+
+Thanks!
 
 
 
-On 12/9/2025 12:17 AM, Beata Michalska wrote:
-> On Wed, Dec 03, 2025 at 11:24:20AM +0800, Jie Zhan wrote:
->> Factor out cppc_perf_ctrs_in_pcc_cpu() for checking whether per-cpu CPC
->> regs are defined in PCC channels, and export it out for further use.
->>
->> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
->> ---
->>  drivers/acpi/cppc_acpi.c | 45 +++++++++++++++++++++-------------------
->>  include/acpi/cppc_acpi.h |  5 +++++
->>  2 files changed, 29 insertions(+), 21 deletions(-)
->>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index 3bdeeee3414e..aa80dbcf42c0 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -1422,6 +1422,29 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
->>  }
->>  EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
->>  
->> +bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
->> +{
->> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->> +	struct cpc_register_resource *ref_perf_reg;
->> +
->> +	/*
->> +	 * If reference perf register is not supported then we should use the
->> +	 * nominal perf value
->> +	 */
->> +	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
->> +	if (!CPC_SUPPORTED(ref_perf_reg))
->> +		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
->> +
->> +	if (CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
->> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
->> +	    CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
->> +	    CPC_IN_PCC(ref_perf_reg))
->> +		return true;
->> +
->> +	return false;
->> +}
->> +EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc_cpu);
-> It is minor, but I would prefer the earlier version when we grab the reference
-> performance reg only when none of the other regs is in the PCC.
-Why?
 
-It could return a little bit earlier for the PCC reg case, but this is only
-called in initialization so efficiency is not that important I guess.
-> 
-> ---
-> BR
-> Beata
 
-...
 
