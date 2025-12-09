@@ -1,174 +1,158 @@
-Return-Path: <linux-acpi+bounces-19500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9327CAFA43
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 11:32:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F1BCAFAAC
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 11:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53CC33059AFE
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 10:31:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B543B301118D
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 10:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B0B26F462;
-	Tue,  9 Dec 2025 10:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C502FD1D3;
+	Tue,  9 Dec 2025 10:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BD8Ii3EU"
+	dkim=pass (2048-bit key) header.d=sipearl.com header.i=@sipearl.com header.b="poR5QuP+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout.sipearl.com (smtpout.sipearl.com [178.170.11.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD3C18DB35
-	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 10:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA0C1FE46D;
+	Tue,  9 Dec 2025 10:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.170.11.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765276289; cv=none; b=u8J8wAWgC+/+j3pcRL6UObrqOxHdbsJ7n0M/ziab6y06Gfl5p6pT/xxrfF3Yi8IwwgC5YhaH4QRoskX5bRFFeiafkyKMA/vIJE9305VTMAtGAmJ26tikhCeV/KcY7rPCX0jmTrveidjQnM6a0vjhUPuo3revyAiOhTdAWDj1igY=
+	t=1765276833; cv=none; b=FXtdwreEJqKiPWD+8fSI5be6k6uJOkH3QJnEojSxfC+QjpP1scHJKhaoIj35FOBq87o/KvytrJuPW2I2LJjWJEM8Y3hokXW1fvwWxFYG07ORdCxWJW+DCoqWm3bkkQZhMM2NqKwCe+OeSzw/XW+Vd/6uoj9fmx5sen4JnY6f7lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765276289; c=relaxed/simple;
-	bh=/aEq0x6MLRV/L6sOD9HPYDQFVJxKO9BW6KJrWnDuYm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mcmfDGvO/DDf7vqo8YYAelFY6pD5fON1nZYxZW2Z24wtUsFmozqpU3ClEvYByYJi9GBfpaeR8BEM0AUjBEY5FNx4ARXo54K1tslO+pPZqoU+pTWZ9FZe22iFlwCzIlBAKWK6d9sJKYQVyRDKEK8MfNaVRrXQwkYjZwuIrrcw59w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BD8Ii3EU; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29d7b019e0eso60749515ad.2
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Dec 2025 02:31:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765276288; x=1765881088; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/yj0w8fdlKkFDRy9220y5hCmadloVvp4/iXerUe4NDE=;
-        b=BD8Ii3EUXU/i5X6wPGHDQEu3rezl/BSR/C3Wm6sB1kvRAkfJvfsf0SXwlS2/NZjl7a
-         YIPwQX+qFuig/YfDI3C+NQzhjAVe4Uwj4u170nongvBScdDTMB+3M3q6/L3t0VmzwruT
-         6TLGyopwkoMgsvr+m+5VYL8LnVM3xhGdd/lKTUyRn1DAAVBXmQIR0IpKoE+rMuQ3bZBV
-         mzn3E3FHxQSaESmDQR4mZg6F5lG/NuSQ8p0NFNc0Bmjwrkd1OI4wXLA6Gvl/AeeubjEA
-         1AUdv3qrXvIiwbeyj6Wg87FsXSRVThsiSC0hMrUtUKTnCf28NjTuTz5z7d7F9usCryLy
-         SjXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765276288; x=1765881088;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/yj0w8fdlKkFDRy9220y5hCmadloVvp4/iXerUe4NDE=;
-        b=d2FvVrc31Cf5X1FAOQDC75qIMEkeNqNmSz0DbKO9ZRju5qX4FXBKkcOi2zGpPjXjxP
-         3I1jdieeiVB6OF6Ry2IqpN1351MBmd6NXv0IrxtwK3+Bdzw6lWR9qfdNX5A/zqYzIMtp
-         6H4kLRt86x3VntLMmaoNRRF1atk/0Lt9zEU0u88NBOUWom2kUttQFsLodTXJJeRa8Bxj
-         VoEV1ditGtMc4SNYrfz0dEEEE0VSVqqhLRPZmoMZZPbX+NmG1GNFTByyI5aFylky/syL
-         PRWw4Y7mt2iJc1X6NhadDLbY54s5/qEZmLjsA421PJG3vkFYiMMVk2Ir9qLMKDhXTmWJ
-         WVUA==
-X-Gm-Message-State: AOJu0YwtslSw4yOnA6LvNcIrAjLwmEwWyGm4FZ+m+iy+sd1vHDmuAS4k
-	Re8BJUXA0uxIYJTKoOE8SVOwTrgSus0oPE3lfL8FsimnNxX6PTSm2428
-X-Gm-Gg: AY/fxX4y4M/x1but2Eb6v5Jc1jPBrYGz6/LjDQ8wbjoboXqVk6bgm3nFpJe24vuJKNy
-	HQvyhedzO/Zm+BjTN9OMREJVgdsTOQzumwIq1L2Vn18KME27JZ6hkcq8RXUpl4BLsfImwXAkoQw
-	C5MYF8jkAjnSf8HPP+mwuwgVZ+YrZAjQU3UAH+9IJZ6CazuXqLpsTsfzz6pRfPdX60tS3LD/TU0
-	LqXPVLefLrdQ5F+RzBgHf19c2MdOWcQ3UCthO6VT06+z+VSUp29ji+vhosR4LBVkgZJ8Fpn1qXB
-	C5aVsa85ahUg7lHzAqxrt+9zXgM8NuWWo7e5MrZcdlse69U235sHa6LTDJlS/esBIzrQgx1LvmE
-	yQk+DBCW9wHsKyPkfJSy1pBhacDEK7f4NPJNBFojewyGLYbY0wC3E9QSd7T7E2qarhWLqB3W4FP
-	ibmx8gQmgKSZg=
-X-Google-Smtp-Source: AGHT+IGT96A1erd61gvFmTe3P8AK62zWKkju7VS5bZ29xeGcMHMfsVoc7tZR2o3bVREg1cKHPPBc6Q==
-X-Received: by 2002:a17:903:19e3:b0:29d:7b9b:515b with SMTP id d9443c01a7336-29df5791cb1mr77431165ad.20.1765276287542;
-        Tue, 09 Dec 2025 02:31:27 -0800 (PST)
-Received: from oslab.. ([2402:f000:4:1006:809:ffff:fffe:18ea])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99f20bsm149111715ad.46.2025.12.09.02.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 02:31:27 -0800 (PST)
-From: Tuo Li <islituo@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tuo Li <islituo@gmail.com>
-Subject: [PATCH] ACPI: processor: Fix a possible null-pointer dereference in acpi_processor_errata_piix4() when debug messages are enabled
-Date: Tue,  9 Dec 2025 18:31:13 +0800
-Message-ID: <20251209103114.3964322-1-islituo@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765276833; c=relaxed/simple;
+	bh=lKaZnZiXITQBApRICQg3cVECIDLxPqcs9B66Vs1z+IQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=S3GU+kxEpR/hVxKjXLMWiibYnz2l5fTN4ProxkogbwS8ln9CNe8fHhYl2+ZkWtSUDwTAJIkPhMqrk0KyEOtE9T9Cu6fXVp6uidcin9sowWHPmp4kWR70NjohYXJNhyefcG03y9PMEkNhrsm57VFq1BpJn6/Bch9TaTztLDhynsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipearl.com; spf=pass smtp.mailfrom=sipearl.com; dkim=pass (2048-bit key) header.d=sipearl.com header.i=@sipearl.com header.b=poR5QuP+; arc=none smtp.client-ip=178.170.11.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipearl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipearl.com
+Received: from smtpout.sipearl.com ([172.31.29.2])
+	by smtpin.sipearl.com  with ESMTPS id 5B9Adsv4011057-5B9Adsv6011057
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Dec 2025 11:39:54 +0100
+Received: from dc2pvwexcz001.sipearl.corp (172.31.29.1) by
+ dc2pvwexcz002.sipearl.corp (172.31.29.2) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.36; Tue, 9 Dec 2025 11:39:54 +0100
+Received: from dc2pvwexcz001.sipearl.corp ([172.16.21.27]) by
+ dc2pvwexcz001.sipearl.corp ([172.16.21.27]) with mapi id 15.02.1748.036; Tue,
+ 9 Dec 2025 11:39:54 +0100
+From: Andrea Tomassetti <andrea.tomassetti@sipearl.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+CC: "jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>, "lenb@kernel.org"
+	<lenb@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lkp@intel.com" <lkp@intel.com>, "oe-kbuild-all@lists.linux.dev"
+	<oe-kbuild-all@lists.linux.dev>, Olivier Dautricourt
+	<Olivier.Dautricourt@sipearl.com>, "olivierdautricourt@gmail.com"
+	<olivierdautricourt@gmail.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	Thibault Cantori <thibault.cantori@sipearl.com>
+Subject: Re: Re: Re: [PATCH v3 1/2] mailbox: pcc: support polling mode when
+ there is no platform IRQ
+Thread-Topic: Re: Re: [PATCH v3 1/2] mailbox: pcc: support polling mode when
+ there is no platform IRQ
+Thread-Index: AQHcaPgnB2hPlGTceUuN1VHdEiqJ/g==
+Date: Tue, 9 Dec 2025 10:39:53 +0000
+Message-ID: <aTf8bzYaOPe9naLN@dc2pvlnosz001.pub.int.sipearl.com>
+References: <20251203-persimmon-condor-of-essence-9fc43d@sudeepholla>
+ <20251204125938.3025022-1-andrea.tomassetti@sipearl.com>
+ <20251204-mauve-bear-of-wholeness-e13a4b@sudeepholla>
+In-Reply-To: <20251204-mauve-bear-of-wholeness-e13a4b@sudeepholla>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <BEEE6929B9300A4796EB554CB3C29F30@sipearl.corp>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-FEAS-Client-IP: 172.31.29.2
+X-FE-Policy-ID: 2:2:2:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=sipearl.com; s=sipearl2024; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:references:content-type:mime-version;
+ bh=lKaZnZiXITQBApRICQg3cVECIDLxPqcs9B66Vs1z+IQ=;
+ b=poR5QuP+KeRPL6SCMo9KFDyWAt7y3eqcOjAnA5ecMa7VkDVJcXt2BT6f7PIVzqL1XYj8DXZ3ecJL
+	DVj5bBFXwjFsR2N6F0zhK4/rDCLFjc22uMDKoQK87mg8yNKua85HBxF4abIQ080dF+KG2vKz7Qfn
+	W5OriCksghRw2UTXyoVGoqr4bt/eoguBB7MxfJCTit7nOXJ7Bq39UJBQ6W2X32SKIUbIJUjItTZs
+	uSf99P/11pD84sypfqD/rtCzqQKxrJR/bVjVNWWRkTWeJBp9LYv0VK7X6SkEUwSFg304jB8TA9je
+	vFcMV5WaTUNmmfCrw9gk/K7WJ3EE27eIqaf2nA==
 
-In acpi_processor_errata_piix4(), the pointer dev is first assigned an IDE
-device and then reassigned an ISA device:
+On 25/12/04 01:14PM, Sudeep Holla wrote:
+> On Thu, Dec 04, 2025 at 01:59:38PM +0100, Andrea Tomassetti wrote:
+> > On 25/12/03 10:28AM, Sudeep Holla wrote:
+> > > On Tue, Dec 02, 2025 at 11:12:14AM +0100, Andrea Tomassetti wrote:
+> > > > The goal is to allow clients to submit a message in both irq and po=
+lling
+> > > > mode of the pcc mailbox. The ACPI specification does not require a
+> > > > platform irq for pcc channels. Let's implement the case where it is=
+ not
+> > > > available.
+> > > >
+> > >=20
+> > > Just curious if you have a real use case for this polling mode on you=
+r
+> > > platforms or ...
+> > >=20
+> > > > Tested-by: Thibault Cantori <thibault.cantori@sipearl.com>
+> > > > Co-developed-by: Olivier Dautricourt <olivier.dautricourt@sipearl.c=
+om>
+> > > > Signed-off-by: Olivier Dautricourt <olivier.dautricourt@sipearl.com=
+>
+> > > > Signed-off-by: Andrea Tomassetti <andrea.tomassetti@sipearl.com>
+> > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120243.soxAFpqQ=
+-lkp@intel.com/
+> > > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120558.Cln7LF6M=
+-lkp@intel.com/
+> > > > Closes: https://lore.kernel.org/oe-kbuild-all/202511120729.R3XQNSnx=
+-lkp@intel.com/
+> > >=20
+> > > You are just trying to fix these warnings. If it is latter, we don't =
+have to
+> > > add support for polling mode especially if it can't be tested on real
+> > > platforms.
+> > >
+> > In our target product, we're still investigating if PCC-based SCMI comm=
+unication will
+> > rely on interrupts or polling. When we started looking into it we reali=
+zed that polling
+> > wasn't supported and that's why we decided to work on and send this pat=
+ch. We thought it
+> > could have been beneficial to other members of the community and it bri=
+ngs the driver a
+> > bit closer to the ACPI specifications.
+> >=20
+> > We're using ARM Fast Models for prototyping and that's how we validated=
+ and tested this patch.
+> >=20
+>=20
+> I wouldn't consider that as real platform especially if it is not std. AE=
+M
+> models that are well maintained. Many Fast models are short lived and nev=
+er
+> maintained long term, so I don't want to push any feature based on that a=
+lone
+> unless you have a real platform with missing or broken interrupt that nee=
+ds
+> this polling feature.
+>=20
+> It is burden for long term maintenance if there is no regular way to test=
+ this
+> polling mode feature.
+>=20
+Fair, I totally get your point. Thank you very much for your time.
 
-  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
-  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
-
-If the first lookup succeeds but the second fails, dev becomes NULL. This
-leads to a potential null-pointer dereference when dev_dbg() is called:
-
-  if (errata.piix4.bmisx)
-    dev_dbg(&dev->dev, ...);
-
-To prevent this, use two temporary pointers and retrieve each device
-independently, avoiding overwriting dev with a possible NULL value.
-
-Signed-off-by: Tuo Li <islituo@gmail.com>
----
- drivers/acpi/acpi_processor.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7ec1dc04fd11..ddd7081430f7 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- {
- 	u8 value1 = 0;
- 	u8 value2 = 0;
-+	struct pci_dev *ide_dev, *isa_dev;
- 
- 
- 	if (!dev)
-@@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 		 * each IDE controller's DMA status to make sure we catch all
- 		 * DMA activity.
- 		 */
--		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
-+		ide_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
- 				     PCI_DEVICE_ID_INTEL_82371AB,
- 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
--		if (dev) {
--			errata.piix4.bmisx = pci_resource_start(dev, 4);
--			pci_dev_put(dev);
-+		if (ide_dev) {
-+			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
-+			pci_dev_put(ide_dev);
- 		}
- 
- 		/*
-@@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 		 * disable C3 support if this is enabled, as some legacy
- 		 * devices won't operate well if fast DMA is disabled.
- 		 */
--		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
-+		isa_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
- 				     PCI_DEVICE_ID_INTEL_82371AB_0,
- 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
--		if (dev) {
--			pci_read_config_byte(dev, 0x76, &value1);
--			pci_read_config_byte(dev, 0x77, &value2);
-+		if (isa_dev) {
-+			pci_read_config_byte(isa_dev, 0x76, &value1);
-+			pci_read_config_byte(isa_dev, 0x77, &value2);
- 			if ((value1 & 0x80) || (value2 & 0x80))
- 				errata.piix4.fdma = 1;
--			pci_dev_put(dev);
-+			pci_dev_put(isa_dev);
- 		}
- 
- 		break;
- 	}
- 
- 	if (errata.piix4.bmisx)
--		dev_dbg(&dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
-+		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
- 	if (errata.piix4.fdma)
--		dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
-+		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
- 
- 	return 0;
- }
--- 
-2.43.0
-
+Regards,
+Andrea
+> --=20
+> Regards,
+> Sudeep=
 
