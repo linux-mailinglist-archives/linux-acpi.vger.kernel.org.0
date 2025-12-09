@@ -1,86 +1,268 @@
-Return-Path: <linux-acpi+bounces-19502-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19503-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F89CAFB89
-	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 12:11:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D444CAFC7A
+	for <lists+linux-acpi@lfdr.de>; Tue, 09 Dec 2025 12:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93669300AC60
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 11:11:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A1C33025F89
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Dec 2025 11:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27AB2D23A8;
-	Tue,  9 Dec 2025 11:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F56128688C;
+	Tue,  9 Dec 2025 11:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLV5FeBE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B762046BA;
-	Tue,  9 Dec 2025 11:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA0723EAA1
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 11:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765278704; cv=none; b=bdRZ2qmcQ3hoDL6iT/ebqXCTUy5iJE6ydfPt6bGvsYkhYADPBdFGMIvrMZfp6HTFbx6hFk1kzzo3Xys3UkdhDL38qbbnLB+REO1OPTYnxj69uh1nMxBV3Zf0FGbxEObO6CqnN/Xt3faTl0qMdcUO4bk2VCoYJ6TwIysNlOBD7sU=
+	t=1765279892; cv=none; b=dHWvS4l6COIDhXcvxJDthLDDnJIsPYD8KGrxgqY6R57PYDKI6zAE7n5MGX6iIq4JqAwt9f6uMMCrvYZfsquGsakBND2Qsvt+P2lfYpkCVgd8zr93wNP8TPQ2gy6BwmTAm6NlpXPBlogjZHpCYhzOqBftGtIG9xWwKStExB/5xag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765278704; c=relaxed/simple;
-	bh=Z/nOVQTJ8VAST9aYHlScqt+p5Qz4dLTAUT/dWtvFh04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qNVfV1amY4qoZRcQU2pRMbxXwaWsax93hZrbR5kkDUBVYFCSXDXKDqEcm2u0DgtYd9V/dMXlNaSuxS+hxbHw2c2xW/hbHDgwBjL7oVOAFFx5896LiBg3mRjDFVx1TFsn7uYtvHNbtwzh1U1rRSAV3soOuEGahluvYpyTVnm2xkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 815A41691;
-	Tue,  9 Dec 2025 03:11:35 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B36433F762;
-	Tue,  9 Dec 2025 03:11:40 -0800 (PST)
-Date: Tue, 9 Dec 2025 11:11:37 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Andrea Tomassetti <andrea.tomassetti@sipearl.com>
-Cc: "jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lkp@intel.com" <lkp@intel.com>,
-	"oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
-	Olivier Dautricourt <Olivier.Dautricourt@sipearl.com>,
-	"olivierdautricourt@gmail.com" <olivierdautricourt@gmail.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	Thibault Cantori <thibault.cantori@sipearl.com>
-Subject: Re: Re: Re: [PATCH v3 1/2] mailbox: pcc: support polling mode when
- there is no platform IRQ
-Message-ID: <20251209-singing-organic-jackal-b8f2ec@sudeepholla>
-References: <20251203-persimmon-condor-of-essence-9fc43d@sudeepholla>
- <20251204125938.3025022-1-andrea.tomassetti@sipearl.com>
- <20251204-mauve-bear-of-wholeness-e13a4b@sudeepholla>
- <aTf8bzYaOPe9naLN@dc2pvlnosz001.pub.int.sipearl.com>
+	s=arc-20240116; t=1765279892; c=relaxed/simple;
+	bh=J/IOe5CTGP3RFLifuosyft8NxWk4Yo2Zm5latyruAVs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FCe13bV9uWGKzsbuOlUhHTq80PlGcaKVcWLFA/pG6sKOEbt9ODPotg0TQEGBPsUL2gQMYzNekcwDUTx9X9y6b/ry8m2m07a80R/pi7FwPRP0TqNK8VNZ+P+lzXkkSzKAsEcu27XJLfR97YegB/6yGXBz1ejCMBlosMO1rQ93Zf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLV5FeBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A698CC19422
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Dec 2025 11:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765279891;
+	bh=J/IOe5CTGP3RFLifuosyft8NxWk4Yo2Zm5latyruAVs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TLV5FeBE4E/FN1VE6rmUP6hPI6odOg1TY/fc6prnPSSdzcsG1S3rFHhteDqjTUPkI
+	 /25mp1jBGKTbbRRVd45vp3lKlSkL9qBtkQe/o87SZKk+fnstf8MhNPFBnKVIfCpaaG
+	 Ama7d6Tk03pZH1euCt/HgKFDXRKkcUSmEIMwnQnQNfDjaJjFUb71GExM2JHZ+fSaJ8
+	 us0TRDZzj7T31W/tuaXh1fKTiQykWCIDaNoylMywpMa2q+jzoltXwNp4gO23/OhBFJ
+	 FTl7uemMxHoC2HstzraOkWrlDMyKT7Y6fEhYUu5FZ3XtDLM0ak89VymWb1l9rGy9zz
+	 9oIjbDyZVUT+w==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4507605e19aso3410675b6e.2
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Dec 2025 03:31:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUMMLBuh1wLidBZrAHRj9P/w1Rv3f9WmsCezJ0pSdIo1QBN3rUnBWI7/0PIFo1SWc0SyalpRDijSA0s@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpnJ6IPk+m19t4Xqanvbf+LdOEfItdnkgclgG4/ySAtLMuLq9I
+	jsjIFcMahbIp/CFuZoGyMpOF8i7GXAfJZ9dF35N4vh0omqpT4Xv9Yr/utT9UVZGZb4tN/yv7vW8
+	l3LOSkGG9emUi8U2fMdMnQAUYldOOtsE=
+X-Google-Smtp-Source: AGHT+IGsBG1uJpRAlc5vsAML/Hp087Kg6cb5xR4T6EedaOpUEnRMdjXG61qBORELGfgV07cLQnq5NA5SuyajyvOJf00=
+X-Received: by 2002:a05:6808:238a:b0:44f:6a19:433e with SMTP id
+ 5614622812f47-4539df3cce5mr4237855b6e.15.1765279890960; Tue, 09 Dec 2025
+ 03:31:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTf8bzYaOPe9naLN@dc2pvlnosz001.pub.int.sipearl.com>
+References: <2395536.ElGaqSPkdT@rafael.j.wysocki> <ab8b770c-08e9-4cf6-bd4f-f36c951fda4c@gmx.de>
+In-Reply-To: <ab8b770c-08e9-4cf6-bd4f-f36c951fda4c@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 9 Dec 2025 12:31:18 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jAH9FZrO5AvVF90zgy-0EeM+rsB6Zf8cMf+sR8=FFuDA@mail.gmail.com>
+X-Gm-Features: AQt7F2p3VPpnP4yl_PF4fpf1p7sxQR7LJIHVngPgfQZ51QSxFjiMDxvnIX6VadE
+Message-ID: <CAJZ5v0jAH9FZrO5AvVF90zgy-0EeM+rsB6Zf8cMf+sR8=FFuDA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] PCI: ACPI: PM: Rework root bus wakeup notification
+ setup and wakeup source registration
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	Linux PM <linux-pm@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 09, 2025 at 10:39:53AM +0000, Andrea Tomassetti wrote:
-> On 25/12/04 01:14PM, Sudeep Holla wrote:
-> > 
-> > I wouldn't consider that as real platform especially if it is not std. AEM
-> > models that are well maintained. Many Fast models are short lived and never
-> > maintained long term, so I don't want to push any feature based on that alone
-> > unless you have a real platform with missing or broken interrupt that needs
-> > this polling feature.
-> > 
-> > It is burden for long term maintenance if there is no regular way to test this
-> > polling mode feature.
-> > 
-> Fair, I totally get your point. Thank you very much for your time.
-> 
+On Mon, Dec 8, 2025 at 9:01=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 08.12.25 um 13:09 schrieb Rafael J. Wysocki:
+>
+> > Hi All,
+> >
+> > Patch [1/2] updates the registration of PCI root bus wakeup notificatio=
+n setup
+> > in order to simplify code in pci_acpi_wake_bus() and to prepare for the=
+ other
+> > change.  This is not expected to affect functionality.
+> >
+> > Patch [2/2] modifies the ACPI PM notifier registration to add wakeup so=
+urces
+> > under devices that are going to be affected by wakeup handling instead =
+of
+> > registering them under ACPI companions of those devices (rationale expl=
+ained
+> > in the patch changelog).  This will change the sysfs layout (wakeup sou=
+rce
+> > devices associated with PCI wakeup are now going to appear under PCI de=
+vices
+> > and the host bridge device), but it is not expected to affect user spac=
+e
+> > adversely.
+> >
+> > Thanks!
+>
+> I tested both patches, and the sysfs layout changes as expected:
+>
+> $ readlink /sys/class/wakeup/wakeup*/device
+> ../../../device:00
+> ../../../device:1a
+> ../../../device:1f
+> ../../../device:20
+> ../../../0000:00:08.1
+> ../../../device:36
+> ../../../device:31
+> ../../../device:32
+> ../../../device:3c
+> ../../../0000:01:00.0
+> ../../../device:3d
+> ../../../PNP0C02:00
+> ../../../0000:02:00.0
+> ../../../device:3e
+> ../../../device:3f
+> ../../../device:46
+> ../../../0000:04:00.0
+> ../../../device:47
+> ../../../0000:05:00.0
+> ../../../device:57
+> ../../../0000:05:08.0
+> ../../../device:59
+> ../../../device:01
+> ../../../0000:05:09.0
+> ../../../device:5b
+> ../../../0000:05:0a.0
+> ../../../device:5d
+> ../../../0000:05:0b.0
+> ../../../device:5f
+> ../../../0000:05:0c.0
+> ../../../device:74
+> ../../../0000:05:0d.0
+> ../../../device:5a
+> ../../../device:3a
+> ../../../device:5c
+> ../../../device:60
+> ../../../device:75
+> ../../../LNXVIDEO:00
+> ../../../device:22
+> ../../../PNP0C02:02
+> ../../../device:25
+> ../../../device:2b
+> ../../../device:24
+> ../../../device:37
+> ../../../0000:00:01.1
+> ../../../PNP0A08:00
+> ../../../LNXPWRBN:00
+> ../../../AMDI0010:00
+> ../../../AMDI0030:00
+> ../../../00:02
+> ../../../alarmtimer.0.auto
+> ../../../PNP0C0C:00
+> ../../../0000:0b:00.0
+> ../../../AMDIF031:00
+> ../../../PNP0C14:00
+> ../../../device:0a
+> ../../../PNP0C14:01
+> ../../../PNP0C14:02
+> ../../../PNP0C14:03
+> ../../../0000:0e:00.3
+> ../../../0000:0e:00.4
+> ../../../0000:0f:00.0
+> ../../../5-2
+> ../../../1-5.3
+> ../../hidpp_battery_0
+> ../../../device:44
+> ../../../0000:00:02.1
+> ../../../device:76
+> ../../../device:0b
+>
+> turns into:
+>
+> $ readlink /sys/class/wakeup/wakeup*/device
+> ../../../0000:00:00.0
+> ../../../0000:00:04.0
+> ../../../0000:00:08.0
+> ../../../0000:00:08.1
+> ../../../0000:00:08.1
+> ../../../0000:00:08.3
+> ../../../0000:00:14.0
+> ../../../0000:00:14.3
+> ../../../0000:01:00.0
+> ../../../0000:01:00.0
+> ../../../0000:02:00.0
+> ../../../0000:00:00.2
+> ../../../0000:02:00.0
+> ../../../0000:03:00.0
+> ../../../0000:03:00.1
+> ../../../0000:04:00.0
+> ../../../0000:04:00.0
+> ../../../0000:05:00.0
+> ../../../0000:05:00.0
+> ../../../0000:05:08.0
+> ../../../0000:05:08.0
+> ../../../0000:05:09.0
+> ../../../0000:00:01.0
+> ../../../0000:05:09.0
+> ../../../0000:05:0a.0
+> ../../../0000:05:0a.0
+> ../../../0000:05:0b.0
+> ../../../0000:05:0b.0
+> ../../../0000:05:0c.0
+> ../../../0000:05:0c.0
+> ../../../0000:05:0d.0
+> ../../../0000:05:0d.0
+> ../../../0000:08:00.0
+> ../../../0000:00:01.1
+> ../../../0000:09:00.0
+> ../../../0000:0b:00.0
+> ../../../0000:0c:00.0
+> ../../../0000:0e:00.0
+> ../../../0000:0e:00.1
+> ../../../0000:0e:00.2
+> ../../../0000:0e:00.3
+> ../../../0000:0e:00.4
+> ../../../0000:0e:00.6
+> ../../../0000:0f:00.0
+> ../../../0000:00:01.1
+> ../../../pci0000:00
+> ../../../LNXPWRBN:00
+> ../../../AMDI0010:00
+> ../../../AMDI0030:00
+> ../../../00:02
+> ../../../alarmtimer.0.auto
+> ../../../PNP0C0C:00
+> ../../../0000:0b:00.0
+> ../../../AMDIF031:00
+> ../../../PNP0C14:00
+> ../../../0000:00:02.0
+> ../../../PNP0C14:01
+> ../../../PNP0C14:02
+> ../../../PNP0C14:03
+> ../../../0000:0e:00.3
+> ../../../0000:0e:00.4
+> ../../../0000:0f:00.0
+> ../../../5-2
+> ../../../1-5.3
+> ../../hidpp_battery_0
+> ../../../0000:00:02.1
+> ../../../0000:00:02.1
+> ../../../0000:00:02.2
+> ../../../0000:00:03.0
+>
+> The remaining ACPI devices are likely caused by device drivers based upon=
+ struct acpi_driver.
+> I was unable to test the wakeup itself since suspend is currently broken =
+due to issues with
+> cpuidle,
 
-Thanks for understanding. We can always revisit this if this becomes a
-requirement on a real platform in the future. I am not against that just FYI.
+Have you reported those?  What cpuidle driver is involved?
 
--- 
-Regards,
-Sudeep
+If you happen to be using the ACPI idle driver, there is a regression
+between 6.18-rc7 and final 6.18 due to a missing revert, but final
+6.18 should be as expected.
+
+> but i suspect that this has nothing to do with the patch series.
+
+Right, cpuidle is entirely orthogonal to this.
+
+> So for the whole series:
+> Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+
+Thank you!
 
