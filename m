@@ -1,53 +1,51 @@
-Return-Path: <linux-acpi+bounces-19541-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19540-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3BEFCB338C
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 15:53:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B01CB3373
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AE9E312FF2D
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 14:51:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3319300A2B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DFB23EAB7;
-	Wed, 10 Dec 2025 14:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ABB246788;
+	Wed, 10 Dec 2025 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mel6ryE6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/XbDvJx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E1182D2;
-	Wed, 10 Dec 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B904523EA8E;
+	Wed, 10 Dec 2025 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765378310; cv=none; b=VreU+IupALBMi6HyX6Mh0QAId7ijsbRNlFkVUWmG5DBHT9Xx3Sq7z2WrHjxCK2LqiYzp1Cls2Ny+TAbBeeP/KKTUkVxkXR1eWPoI8cmU56kCIlQ7veUwGilfUpsOH2f+OjDxSwQKm2XOXWIRhpk4Jc9ZOmlnkmO2bLYMg6Bf6WU=
+	t=1765378306; cv=none; b=P6LMNkkJuqViXx5mA5jYk5cXHCK9sFY9+aI1YZ2wcGBOxBM9SSYqqtuNaWwdhglat7zHvhWShAkjF2y+5ZQuUvfR+vlmnQprW/qvIgT2TsP450eN1DJNop3RkHIeXekofCdj3XO+RSmJLVRh4crFJ3HDGf6pje9FD8/zRKp7xTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765378310; c=relaxed/simple;
-	bh=SYv0H0lZoj3lrl3sdPTiWtjC5eWPebsA8f4rqhvvT2o=;
+	s=arc-20240116; t=1765378306; c=relaxed/simple;
+	bh=eM3RJTD+eALU7muGlyKlz9VBlWFpyKgL5Nd9DIYEwVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IoVhJ8DGQaq9/C21wZ/lmvdjr3hlw6YSZ2aW7uWN6vpj/CzVI4rfCz7yqgBYLQJdRAYCY0DNGT5qkWw+38RXaU6KZ4JXbXEppu8kGfJZN2qgNfkIigG+csb1yCX8zpIQLs4SiR1SE9iAW+l8Y/PKSLrd8fz2+Cjaw9bwpc1guj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mel6ryE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E54CC19421;
-	Wed, 10 Dec 2025 14:51:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ObUVwTsOhx2hagaaikNnKxebIxzIcqJ/8T5svclCU0fyQiZF+GMQz2Mi+ppXaocgdXrHOjog6bHlHEqWsC8Do2g+73Gip4bdAYwc3QAnL9iphqdrnxK+OHOMNkssXhjanaZh3KTgHUSLacFMykvOmKOxGj/uIbLn2x8q8+MHDqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/XbDvJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA17C4CEF1;
+	Wed, 10 Dec 2025 14:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765378309;
-	bh=SYv0H0lZoj3lrl3sdPTiWtjC5eWPebsA8f4rqhvvT2o=;
+	s=k20201202; t=1765378306;
+	bh=eM3RJTD+eALU7muGlyKlz9VBlWFpyKgL5Nd9DIYEwVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mel6ryE6jGiUjZhdo1SnymOKGroh9Hm83asqFbuzJ/X7iDoBiUCrQTY3kxF+R3Eql
-	 Ga2b6o57bR4Or4GOFE+YS8ud1QlMWAnZHaB5Vr9DXJ08mG6bfY9bnNUHvydr+UL2wu
-	 IjLWXi915RQO4WinWgbPOVoDnAZK2F9omAv9KJfMTx3oC9SgN83KI6t3wm7E5EmoWm
-	 KlvzEaUGsNcEyZKM2XKP844mjKghHw03hMpJ15JmQkgqN6pm+02cbaLh1QH3WhY1m1
-	 H8rZfUnMkuv/+xt5iL1oNDWD+3gdQXZeAjl6mkCl/FdphWIXe7RAC8IXOY/RPHR10l
-	 z4w5p/AVSYe+w==
+	b=b/XbDvJxeaRhQ6vqCbm9iHyH6sDZ40+kZEeWLQHQz8Che7VzTSAu49Hzz2fM66Pe+
+	 TaTgKPJLwbcroF+cOp/r8f+ODMGEZgKcviXDo9iCCVm1npIYx50d3HfAahl586vFd3
+	 Yx/ubDAS2LbYnZFDWzLCK9NfM2/FLIDgtAHWAZRy54sLeV561GSLR2teoZEMK322Hh
+	 mo5k+zb6ogVHYco+KpjRjWlAI/SipUvlm+iM7Dceuro7r97bFGoOUPKjtjc2qME+RU
+	 EvKgQ605pTwycQJjJhNKac3JjVZGdGZemxqU5aWzB079yznJ/b8d0dX2IEiMIRWe16
+	 LH8bQdX96txHw==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
  Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>
-Subject:
- [PATCH v1 1/3] ACPI: scan: Register platform devices for backlight device
- objects
-Date: Wed, 10 Dec 2025 15:48:29 +0100
-Message-ID: <2335304.iZASKD2KPV@rafael.j.wysocki>
+Subject: [PATCH v1 2/3] ACPI: video: Adjust event notification routine
+Date: Wed, 10 Dec 2025 15:50:28 +0100
+Message-ID: <22933299.EfDdHjke4D@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <8617910.T7Z3S40VBb@rafael.j.wysocki>
 References: <8617910.T7Z3S40VBb@rafael.j.wysocki>
@@ -62,82 +60,46 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-ACPI device objects associated with backlight interfaces are special
-because they are ACPI companions of PCI devices (GPUs), but the
-interfaces exposed by them resemble platform device one.
-
-Currently, the ACPI video driver binds to them with the help of a
-special "synthetic" device ID regardless of the pairing with the PCI
-devices, but since it is generally better to use platform drivers for
-handling such interfaces, the plan is to convert that drviver into a
-platform one.
-
-However, for this purpose, platform devices corresponding to the
-ACPI backlight device objects need to be registered, so update
-acpi_bus_attach() to apply the default ACPI enumeration to them
-and modify acpi_create_platform_device() to avoid bailing out early
-if a "physical" device is already attached to a backlight ACPI device
-object.
-
-In addition, update acpi_companion_match() to return a valid struct
-acpi_device pointer if the ACPI companion of the given device is a
-backlight ACPI device object, which will facilitate driver matching
-for platform devices corresponding to those objects.
+Adjust acpi_video_bus_notify() to cast its "data" argument to a struct
+acpi_video_bus pointer istead of a struct acpi_device one, which allows
+the use of acpi_driver_data() to be limited and will facilitate
+subsequent changes.
 
 No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpi_platform.c |    5 +++--
- drivers/acpi/bus.c           |    3 +++
- drivers/acpi/scan.c          |    3 ++-
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/acpi/acpi_video.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -120,7 +120,7 @@ struct platform_device *acpi_create_plat
- 	int count;
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1540,14 +1540,11 @@ static int acpi_video_bus_stop_devices(s
  
- 	/* If the ACPI node already has a physical device attached, skip it. */
--	if (adev->physical_node_count)
-+	if (adev->physical_node_count && !adev->pnp.type.backlight)
- 		return NULL;
+ static void acpi_video_bus_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct acpi_device *device = data;
+-	struct acpi_video_bus *video = acpi_driver_data(device);
++	struct acpi_video_bus *video = data;
++	struct acpi_device *device = video->device;
+ 	struct input_dev *input;
+ 	int keycode = 0;
  
- 	match = acpi_match_acpi_device(forbidden_id_list, adev);
-@@ -138,7 +138,8 @@ struct platform_device *acpi_create_plat
- 	}
+-	if (!video || !video->input)
+-		return;
+-
+ 	input = video->input;
  
- 	INIT_LIST_HEAD(&resource_list);
--	if (adev->device_type == ACPI_BUS_TYPE_DEVICE) {
-+	if (adev->device_type == ACPI_BUS_TYPE_DEVICE &&
-+	    !adev->pnp.type.backlight) {
- 		count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
- 		if (count < 0)
- 			return NULL;
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -761,6 +761,9 @@ const struct acpi_device *acpi_companion
- 	if (list_empty(&adev->pnp.ids))
- 		return NULL;
+ 	switch (event) {
+@@ -2076,7 +2073,7 @@ static int acpi_video_bus_add(struct acp
+ 		goto err_del;
  
-+	if (adev->pnp.type.backlight)
-+		return adev;
-+
- 	return acpi_primary_dev_companion(adev, dev);
- }
+ 	error = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
+-						acpi_video_bus_notify, device);
++						acpi_video_bus_notify, video);
+ 	if (error)
+ 		goto err_remove;
  
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2320,7 +2320,8 @@ static int acpi_bus_attach(struct acpi_d
- 	if (ret < 0)
- 		return 0;
- 
--	if (device->pnp.type.platform_id || device->flags.enumeration_by_parent)
-+	if (device->pnp.type.platform_id || device->pnp.type.backlight ||
-+	    device->flags.enumeration_by_parent)
- 		acpi_default_enumeration(device);
- 	else
- 		acpi_device_set_enumerated(device);
 
 
 
