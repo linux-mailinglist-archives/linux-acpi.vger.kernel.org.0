@@ -1,257 +1,102 @@
-Return-Path: <linux-acpi+bounces-19531-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19532-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC1ECB2E13
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 13:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E1CB3024
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 14:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18AA43106AA2
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 12:22:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D06DD305C820
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 13:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D373246EA;
-	Wed, 10 Dec 2025 12:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AE031E0EA;
+	Wed, 10 Dec 2025 13:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B2lhjLv0"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PJgDdlVl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81299322C99;
-	Wed, 10 Dec 2025 12:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6EE1F3BA4;
+	Wed, 10 Dec 2025 13:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765369334; cv=none; b=SuUZE1gDJJ0j2YzgvzhO8sL3TVyz0bEXOPVb47ejVvnvdOYboJCYaGyuZtLFRCP1AVpnXtXLQaZAZpyMuNTO/MUQE1vgSRwFpw7Rh/DDKVdzMcoWmrZ3RCv4hqbuzzrpFxc/ZGhL2Oqe/2ar3pYYvtDFJR+pyNr0DTCjvrqhPac=
+	t=1765372956; cv=none; b=g5fRD0XvP0RrroKHM2now4kNz05/Iyj1BuwDd8mCG+xmR2Z6FonTMBQrT5++/gvtmKYburYJR8O+2Ys484xP7GjuQusH5Qd9E5djIrPUL6GaOC6rkPDRr36J7vJ2kpDot+1Vf3NS1C7hfXZ0EPdV2/nvLRzDpcw4DKNzfrXphlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765369334; c=relaxed/simple;
-	bh=jd9K+mF97WGriGBzAJzag5o6OTccybfMhIaxrYKCKPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jVUOqfLhjjOjPZT9PBsp9z9oFQ8JMuuAjXUudlwugCxinFvg1mgiiWyQ+DeseqOKBkVF4loJwr9BHPZqHIaWugblrLBF2y3BU7jgJJ5RXJHkP5ZVEY6FXiXADZmsnN7zzMRDko1CieXHWqVfbAyVSvxlKiclu9veuC1Q3PWOp5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B2lhjLv0; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4A28AC180F4;
-	Wed, 10 Dec 2025 12:21:39 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F3EAA60714;
-	Wed, 10 Dec 2025 12:22:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12FF8119315B3;
-	Wed, 10 Dec 2025 13:21:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765369320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pOlUsVypsTSlBECjYHHoMGhNKvvFlUu0wSglyApNP7w=;
-	b=B2lhjLv08HCS4nwPMQdM5rtA1PxYKChropbNXfAwuDvzNvXOVjVCwFTmvmtb2ORCVRW7Qi
-	k66+Mas8QHLL/Sd+Ps87vPuBDRCwI7saahl3amPRs7SDyRx2/03xb8vTHThuJw2ga28vUp
-	mWJuGni+C/1JJduukHwT93M8LHqErcT1tCB506+eg0lsH1ug4WelgtBydwGEI8bQLgP21q
-	xgMbfofeVReqc6sRn9VIhYltwLdn5+wRI8qcr7mp32U/cqKfXDSUrrYJn+eHIG12gJQGaT
-	OtIuCTUfZrFJAHa0b3F7XsnAhwmX5iend8orwE0uMkCFCSYS7ZIq32q+F/8bOg==
-Date: Wed, 10 Dec 2025 13:21:40 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, Matti
- Vaittinen <mazziesaccount@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
- Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
- Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mark Brown <broonie@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
- overlays"
-Message-ID: <20251210132140.32dbc3d7@bootlin.com>
-In-Reply-To: <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com>
- <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
- <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
- <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
- <20251202102619.5cd971cc@bootlin.com>
- <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
- <20251202175836.747593c0@bootlin.com>
- <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
- <20251204083839.4fb8a4b1@bootlin.com>
- <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1765372956; c=relaxed/simple;
+	bh=uA6pspcMdyBlVw2LUfLXSRy/M11QN6NDIJoyPWyS8y8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QTSFBh53rHGC8g2HX1ptIlN0f0gRY2u2bnrsCjOjk2rbBPUOGKSUdbYpgsL/5K7W2qWi8mxTL6seDBezQvSEv2nW3Q2hCZo6RzkhKq2tTbiBL13cCWsTjq5ZPU4d8zXPjVPvZesxZNmCglWOovb/MHE3OM3Kzqx1eFD4q0xgFzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PJgDdlVl; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uG19g+zE76VkgZXz/kaqI7HCogznnjrlYP3lQjZOz6s=;
+	b=PJgDdlVlfM0lumg31OW/b80ouzP8ms34sz12fYUJI4uGCoat6A1TrL3eyH2pAlw46BUxVkWC6
+	MAoNUwdOPaFKhN6IWFHE/LOWS9Go6ey1HGTZb51SU7bQRB7cXLll4+7e63wJycUYsPSZexEOYOz
+	cCbKj39Z5q1gl8utBwMZYJU=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dRGYX0nVXzKm4G;
+	Wed, 10 Dec 2025 21:20:32 +0800 (CST)
+Received: from kwepemr200004.china.huawei.com (unknown [7.202.195.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3C6B6140142;
+	Wed, 10 Dec 2025 21:22:29 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by kwepemr200004.china.huawei.com
+ (7.202.195.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 10 Dec
+ 2025 21:22:28 +0800
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>,
+	<srinivas.pandruvada@linux.intel.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
+	<yubowen8@huawei.com>, <linhongye@h-partners.com>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhangpengjie2@huawei.com>,
+	<wangzhi12@huawei.com>
+Subject: [PATCH] ACPI: CPPC: Fix missing PCC check for guaranteed
+Date: Wed, 10 Dec 2025 21:22:27 +0800
+Message-ID: <20251210132227.1988380-1-zhangpengjie2@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr200004.china.huawei.com (7.202.195.241)
 
-Hi Geert, Kalle, Rob,
+the current implementation overlooks the 'guaranteed_perf'
+register in this check.
 
-On Thu, 4 Dec 2025 11:49:13 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+If the Guaranteed Performance register is located in the PCC
+subspace, the function currently attempts to read it without
+acquiring the lock and without sending the CMD_READ doorbell
+to the firmware. This can result in reading stale data.
 
-> Hi Hervé,
-> 
-> On Thu, 4 Dec 2025 at 08:39, Herve Codina <herve.codina@bootlin.com> wrote:
-> > Indeed, Kalle, Geert, I don't have your hardware, your related overlay or
-> > a similar one that could be used for test and also I don't have your out of
-> > tree code used to handle this overlay.
-> >
-> > I know overlays and fw_devlink have issues. Links created by fw_devlink
-> > when an overlay is applied were not correct on my side.
-> >
-> > Can you check your <supplier>--<consumer> links with 'ls /sys/class/devlinks'
-> >
-> > On my side, without my patches some links were not correct.
-> > They linked to the parent of the supplier instead of the supplier itself.
-> > The consequence is a kernel crash, use after free, refcounting failure, ...
-> > when the supplier device is removed.
-> >
-> > Indeed, with wrong links consumers were not removed before suppliers they
-> > used.
-> >
-> > Looking at Geert traces:
-> > --- 8< ---
-> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
-> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
-> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-> > [...]
-> > --- 8< ---
-> >
-> > Even if it is not correct, why the soc device cannot be a provider?
-> > I don't have the answer to this question yet.  
-> 
-> I have no idea. These failures (sound) are also not related to the
-> device I am adding through the overlay (SPI EEPROM).
-> Note that these failures appear only with your suggested fix, and are
-> not seen with just the patch in the subject of this email thread.
-> 
-> > Without having the exact tree structure of the base device-tree, the overlay
-> > and the way it is applied, and so without been able to reproduce the issue
-> > on my side, investigating the issue is going to be difficult.
-> >
-> > I hope to find some help to move forward and fix the issue.  
-> 
-> Base DTS is [1], overlay DTS is [2].
-> Applying and removing the overlay is done using OF_CONFIGFS[3],
-> and "overlay [add|rm] 25lc040"[4].
-> 
-> I assume you can reproduce the issue on any board that has an SPI
-> EEPROM, after moving the SPI bus enablement and SPI EEPROM node to an
-> overlay. Probably even with an I2C EEPROM instead.  Or even without
-> an actual EEPROM connected, as even the SPI bus fails to appear.
-> 
-> > Saravana's email (Saravana Kannan <saravanak@google.com>) seems incorrect.
-> > Got emails delivery failure with this email address.  
-> 
-> Yeah, he moved company.
-> He is still alive, I met him in the LPC Training Session yesterday ;-)
-> 
-> Thanks!
-> 
-> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
-> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu-cn41-msiof0-25lc040.dtso?h=topic/renesas-overlays-v6.17-rc1
-> [3] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v6.17-rc1
-> [4] https://elinux.org/R-Car/DT-Overlays#Helper_Script
-> [5] https://lore.kernel.org/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
-> 
+Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+---
+ drivers/acpi/cppc_acpi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I did some tests with boards I have.
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 3bdeeee3414e..e66e20d1f31b 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1366,7 +1366,8 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
+ 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
+-		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
++		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
++		CPC_IN_PCC(guaranteed_reg)) {
+ 		if (pcc_ss_id < 0) {
+ 			pr_debug("Invalid pcc_ss_id\n");
+ 			return -ENODEV;
+-- 
+2.33.0
 
-First I used a Marvel board based on an Armada 3720.
-
-In my overlay, I added the pinmux related to the SPI controller, enabled
-this SPI controller and added a SPI flash.
-
-It didn't work with or without culprit patches from my series applied.
-Indeed, the pinctrl driver used is an MFD driver an mixed pinmux definition
-nodes with device description (a clock) node.
-
-When a new node is added, a new device is created. Indeed, because the
-driver is an MFD driver, it is a bus driver and handled by of_platform bus.
-
-My new node is considered by devlink as a node that will have a device ready
-to work (driver attached and device probed). A link is created between this
-node and the consumers of this node (i.e. the SPI controller). devlink is
-waiting for this provider to be ready before allowing the its consumer to probe.
-This node (simple pinmux description) will never lead to a device and devlink
-will never see this "provider" ready.
-
-Did a test with a Renesas RZ/N1D (r9a06g032) based board and built a similar
-overlay involving I2C controller pinmux, I2C controller and an EEPROM.
-
-Here, also the overlay didn't work but the issue is different.
-
-The pinmux definition for pinctrl (i.e. pinctrl subnodes) are looked when
-the pinctrl driver probes. Adding a new node later is not handled by the
-pinctrl driver.
-Applying the overlay leads to a simple:
-  [   16.934168] rzn1-pinctrl 40067000.pinctrl: unable to find group for node /soc/pinctrl@40067000/pins_i2c2
-
-Indeed, the 'pins_i2c2' has been added by the overlay and was not present
-when the pinctrl probed.
-
-Tried without adding a new pinmux node (pinctrl subnode) from the overlay
-and used nodes already existing in the base DT.
-
-On my Marvell Armada 3720 board, it works with or without my patches.
-No regression detected due to my patches.
-
-On my RZ/N1D board, it works also with or without my patches.
-Here also, no regression detected.
-
-Also, on my Marvell Armada 3720 board, I can plug my LAN966x PCI board.
-The LAN966x PCI driver used an overlay to describe the LAN966x PCI board.
-
-With the upstream patch not reverted, i.e. 1a50d9403fb9 ("treewide: Fix
-probing of devices in DT overlays")" applied, devlinks created for the
-LAN966x PCI board internal devices are incorrect and lead to crashes when
-the LAN966x PCI driver is removed due to wrong provider/consumer dependencies.
-
-When this patch is reverted and replaced by "of: dynamic: Fix overlayed
-devices not probing because of fw_devlink", devlinks created for the LAN966x
-PCI board internal devices are corrects and crashes are no more present on
-removal.
-
-Kalle, Geert, can you perform a test on your hardware with my patches
-applied and moving your pinmux definition from the overlay to the base
-device-tree?
-
-The kernel you can use is for instance the kernel at the next-20251127 tag.
-Needed patches for test are present in this kernel:
-    - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
-    - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
-
-Best regards,
-Hervé
 
