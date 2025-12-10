@@ -1,210 +1,99 @@
-Return-Path: <linux-acpi+bounces-19539-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19543-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0F7CB3380
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 15:52:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D93CB3399
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 15:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 097F0302CB95
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 14:51:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CFD4304C9D8
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 14:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DFE21D3F2;
-	Wed, 10 Dec 2025 14:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bf1pEvnV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4E248880;
+	Wed, 10 Dec 2025 14:55:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75771E89C;
-	Wed, 10 Dec 2025 14:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D621D3F2;
+	Wed, 10 Dec 2025 14:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765378304; cv=none; b=H7wpX0bVbshVo2io/AGeUKGG02du0S3AfC1aQdWA32Zy0wnBVY/DrdMqKLBhSPfXPVVYoPzyNLKXbzgXnd4/TgL6OKyMkiCdv6WFeerpWrZOwTLQCUpa27aMnUsEN40b5rlVRoDksxM9jH0hhFgCEcxo9wlO3MIUagpw9aZbYqs=
+	t=1765378501; cv=none; b=M+V1XxvC87OZsddwxFse/7wdJGcpunAc6vIhDA7kmuEb3U4W92I4bApyUQD3bo3d9x7fDNggHLLCEkkV7DbKqhyQPZXsoYsnUpl+bXtpnwW3mCxO45+6ik2EErDzmI2Geud3GX9xLyPFpq5DlGyTxG6JrJroSmXHZx6g1q9Fqpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765378304; c=relaxed/simple;
-	bh=69GZ6K7myq31p73Xg9UwAxgxgZlzGN9bMfB9xCqhWns=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJPt/UBdtTRP2ybg/XIDNc5WM2EAG2HafCrjt1Q0EiF7VxMyzxNi7WajwN4TBf0//w44kM3EoCNl+4z+dCu451KuFMU4LAUQi81f2gxf9nOtvLM3Tjgz7V9y4PlAyqFWzjQVKYqO9AX+ogYtTrlga2e2iTDo10epL1lowqoc88A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bf1pEvnV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B50C4CEF1;
-	Wed, 10 Dec 2025 14:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765378303;
-	bh=69GZ6K7myq31p73Xg9UwAxgxgZlzGN9bMfB9xCqhWns=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf1pEvnVehVlO9hmDsLAt8l/ab9R0w0AqolMSB9QakzFdolSPcCZseQVhnLhbtm5h
-	 VezI8r+R3KrFj73LQJZ/gcim2d6zuabrOuhwuefCMzs1J3KXcI/uwMezHhQ6kM7S9p
-	 YSxkbkS4GgoL4rgsSMX8mmjEBrFAE4nsYjvPuRm/aPA5RRIBu9+BhPmxaWqR2L+lDu
-	 NTy9PggKjHBJ9ktgVEae4594RM7irAne1llmCOCZrokjsxac2Sqbeyfw/s/80Jr670
-	 0XY/suePEPp8dtNUqcXJBxLaDiro/DHZGbsK61jkgoFyH5uUaRRB2GOQenX6iv0GMc
-	 ThEXAB0LMztsA==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>
-Subject: [PATCH v1 3/3] ACPI: video: Convert the driver to a platform one
-Date: Wed, 10 Dec 2025 15:51:32 +0100
-Message-ID: <3920674.kQq0lBPeGt@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <8617910.T7Z3S40VBb@rafael.j.wysocki>
-References: <8617910.T7Z3S40VBb@rafael.j.wysocki>
+	s=arc-20240116; t=1765378501; c=relaxed/simple;
+	bh=qzf9way1qf81inuoDSxwgM9KVcolfnNm7DYakwUS+tc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ctOHu/iPM5q+yWidHwyT76j6jErVhrozCbX8DLN+9IFzITbpOKW/+LGHtmN3krKj82T2TH9Av2m/DLE0ufWbUjz1QFdQ6gl1/fCPcTt7T37nnm1AMts+MSX1Cso8JDRtlnSXY2GPvg1g8u9cv3KP3DDOxqNcp3R4J4md2tWFU/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B8C0153B;
+	Wed, 10 Dec 2025 06:54:52 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78A483F740;
+	Wed, 10 Dec 2025 06:54:57 -0800 (PST)
+Date: Wed, 10 Dec 2025 14:54:54 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Pengjie Zhang <zhangpengjie2@huawei.com>
+Cc: <rafael@kernel.org>, <lenb@kernel.org>, <lihuisong@huawei.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>,
+	<yubowen8@huawei.com>, <linhongye@h-partners.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<wangzhi12@huawei.com>
+Subject: Re: [PATCH] ACPI: PCC: Fix race condition by removing static
+ qualifier
+Message-ID: <20251210-valiant-watchful-guillemot-2bb5be@sudeepholla>
+References: <20251210132634.2050033-1-zhangpengjie2@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251210132634.2050033-1-zhangpengjie2@huawei.com>
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Dec 10, 2025 at 09:26:34PM +0800, Pengjie Zhang wrote:
+> The variable 'ret' in acpi_pcc_address_space_setup() is currently
+> declared with the 'static' storage specifier. This can lead to race
+> conditions in a multithreaded environment.
+> 
+> Remove the 'static' qualifier to ensure 'ret' is allocated directly
+> on the stack as a local variable.
+> 
 
-While binding drivers directly to struct acpi_device objects allows
-basic functionality to be provided, at least in the majority of cases,
-there are some problems with it, related to general consistency, sysfs
-layout, power management operation ordering, and code cleanliness.
+Ah, my mistake. I’m not sure how that slipped in other than a simple typo or
+copy/paste error. Thanks for catching it. Let me know if you spotted it
+because something broke or just from reading the code.
 
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the ACPI video driver to a platform one.
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
+> Fixes: a10b1c99e2dc ("ACPI: PCC: Setup PCC Opregion handler only if platform interrupt is available")
+> Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+> ---
+>  drivers/acpi/acpi_pcc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
+> index 97064e943768..e3f302b9dee5 100644
+> --- a/drivers/acpi/acpi_pcc.c
+> +++ b/drivers/acpi/acpi_pcc.c
+> @@ -52,7 +52,7 @@ acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
+>  	struct pcc_data *data;
+>  	struct acpi_pcc_info *ctx = handler_context;
+>  	struct pcc_mbox_chan *pcc_chan;
+> -	static acpi_status ret;
+> +	acpi_status ret;
+>  
+>  	data = kzalloc(sizeof(*data), GFP_KERNEL);
+>  	if (!data)
+> -- 
+> 2.33.0
+> 
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/acpi_video.c |   47 ++++++++++++++++++++++------------------------
- 1 file changed, 23 insertions(+), 24 deletions(-)
-
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -21,6 +21,7 @@
- #include <linux/sort.h>
- #include <linux/pci.h>
- #include <linux/pci_ids.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/dmi.h>
- #include <linux/suspend.h>
-@@ -76,8 +77,8 @@ static int register_count;
- static DEFINE_MUTEX(register_count_mutex);
- static DEFINE_MUTEX(video_list_lock);
- static LIST_HEAD(video_bus_head);
--static int acpi_video_bus_add(struct acpi_device *device);
--static void acpi_video_bus_remove(struct acpi_device *device);
-+static int acpi_video_bus_probe(struct platform_device *pdev);
-+static void acpi_video_bus_remove(struct platform_device *pdev);
- static void acpi_video_bus_notify(acpi_handle handle, u32 event, void *data);
- 
- /*
-@@ -98,14 +99,13 @@ static const struct acpi_device_id video
- };
- MODULE_DEVICE_TABLE(acpi, video_device_ids);
- 
--static struct acpi_driver acpi_video_bus = {
--	.name = "video",
--	.class = ACPI_VIDEO_CLASS,
--	.ids = video_device_ids,
--	.ops = {
--		.add = acpi_video_bus_add,
--		.remove = acpi_video_bus_remove,
--		},
-+static struct platform_driver acpi_video_bus = {
-+	.probe = acpi_video_bus_probe,
-+	.remove = acpi_video_bus_remove,
-+	.driver = {
-+		.name = "acpi-video",
-+		.acpi_match_table = video_device_ids,
-+ 	},
- };
- 
- struct acpi_video_bus_flags {
-@@ -1888,7 +1888,8 @@ static void acpi_video_dev_add_notify_ha
- 		device->flags.notify = 1;
- }
- 
--static int acpi_video_bus_add_notify_handler(struct acpi_video_bus *video)
-+static int acpi_video_bus_add_notify_handler(struct acpi_video_bus *video,
-+					     struct platform_device *pdev)
- {
- 	struct input_dev *input;
- 	struct acpi_video_device *dev;
-@@ -1911,7 +1912,7 @@ static int acpi_video_bus_add_notify_han
- 	input->phys = video->phys;
- 	input->id.bustype = BUS_HOST;
- 	input->id.product = 0x06;
--	input->dev.parent = &video->device->dev;
-+	input->dev.parent = &pdev->dev;
- 	input->evbit[0] = BIT(EV_KEY);
- 	set_bit(KEY_SWITCHVIDEOMODE, input->keybit);
- 	set_bit(KEY_VIDEO_NEXT, input->keybit);
-@@ -1983,8 +1984,9 @@ static int acpi_video_bus_put_devices(st
- 
- static int instance;
- 
--static int acpi_video_bus_add(struct acpi_device *device)
-+static int acpi_video_bus_probe(struct platform_device *pdev)
- {
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	struct acpi_video_bus *video;
- 	bool auto_detect;
- 	int error;
-@@ -2021,6 +2023,8 @@ static int acpi_video_bus_add(struct acp
- 		instance++;
- 	}
- 
-+	platform_set_drvdata(pdev, video);
-+
- 	video->device = device;
- 	strscpy(acpi_device_name(device), ACPI_VIDEO_BUS_NAME);
- 	strscpy(acpi_device_class(device), ACPI_VIDEO_CLASS);
-@@ -2068,7 +2072,7 @@ static int acpi_video_bus_add(struct acp
- 	    !auto_detect)
- 		acpi_video_bus_register_backlight(video);
- 
--	error = acpi_video_bus_add_notify_handler(video);
-+	error = acpi_video_bus_add_notify_handler(video, pdev);
- 	if (error)
- 		goto err_del;
- 
-@@ -2096,15 +2100,10 @@ err_free_video:
- 	return error;
- }
- 
--static void acpi_video_bus_remove(struct acpi_device *device)
-+static void acpi_video_bus_remove(struct platform_device *pdev)
- {
--	struct acpi_video_bus *video = NULL;
--
--
--	if (!device || !acpi_driver_data(device))
--		return;
--
--	video = acpi_driver_data(device);
-+	struct acpi_video_bus *video = platform_get_drvdata(pdev);
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 
- 	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
- 				       acpi_video_bus_notify);
-@@ -2167,7 +2166,7 @@ int acpi_video_register(void)
- 
- 	dmi_check_system(video_dmi_table);
- 
--	ret = acpi_bus_register_driver(&acpi_video_bus);
-+	ret = platform_driver_register(&acpi_video_bus);
- 	if (ret)
- 		goto leave;
- 
-@@ -2187,7 +2186,7 @@ void acpi_video_unregister(void)
- {
- 	mutex_lock(&register_count_mutex);
- 	if (register_count) {
--		acpi_bus_unregister_driver(&acpi_video_bus);
-+		platform_driver_unregister(&acpi_video_bus);
- 		register_count = 0;
- 		may_report_brightness_keys = false;
- 	}
-
-
-
+-- 
+Regards,
+Sudeep
 
