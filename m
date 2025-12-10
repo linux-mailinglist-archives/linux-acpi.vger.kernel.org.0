@@ -1,316 +1,257 @@
-Return-Path: <linux-acpi+bounces-19530-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19531-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E108DCB1AF1
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 02:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC1ECB2E13
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 13:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11DA53137F58
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 01:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18AA43106AA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Dec 2025 12:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3B923C4FD;
-	Wed, 10 Dec 2025 01:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D373246EA;
+	Wed, 10 Dec 2025 12:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wr4zfoJ1"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B2lhjLv0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263EA23BD1D
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Dec 2025 01:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81299322C99;
+	Wed, 10 Dec 2025 12:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765331800; cv=none; b=I2UK+r+QgwcnHqr3t89dEnvsUTkjVg+puI/3mHSd9F1zXa9Qe1fWNBLipzs/LQwIUjH/b1WYbmelqgGjsdaFPnhggQvqLERlZCBle1Kpydyn6rP4nmXXPpOPvD/Ufg5bnIxGYDqNXS3oaOZeorQ6PVEv6hKb0OTwOW30c90i1K0=
+	t=1765369334; cv=none; b=SuUZE1gDJJ0j2YzgvzhO8sL3TVyz0bEXOPVb47ejVvnvdOYboJCYaGyuZtLFRCP1AVpnXtXLQaZAZpyMuNTO/MUQE1vgSRwFpw7Rh/DDKVdzMcoWmrZ3RCv4hqbuzzrpFxc/ZGhL2Oqe/2ar3pYYvtDFJR+pyNr0DTCjvrqhPac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765331800; c=relaxed/simple;
-	bh=X4DJeGka0bu9RIKgKWMUJEI7buygestyhQMN3mRduqA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DMds1dXKFV4heNYVs2V4Bue0ZolyftZ+AZ2HmH/WZDwlsGvoA2CAP0aa6NQRrZqlyDxkvovxNkIRbqJZd8j7mUhaRTchijQgHMPCriTsuqyG4f4smCjPkI9hWIsEDJ+c6mxxCi9fxm6owG61ZM/atM/lfPHEXpsHJL7sjHIbxZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wr4zfoJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5543C2BC86
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Dec 2025 01:56:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765331799;
-	bh=X4DJeGka0bu9RIKgKWMUJEI7buygestyhQMN3mRduqA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Wr4zfoJ10i1/Nm2mLDBrH6HkszeMZLY9sRh8p0wqogXK0nNtD5OIydlN107B9lzN6
-	 /H6rL6l4i6kaeJ/sFUvE8kX2zfDIknjK+OdN0Yc2NgRc+8c87+0XeAmBOyB9rysLge
-	 ZaRQBNbzKrmivnBtJTKzkcnEKFvRisczreW2Alwi6oy3s5hGN8qftKJrdk9FDP0Tij
-	 hFETWRqdoWZX06DaDQ4h9lfjY4e3T2NKRoI8p0jbycgWlAMCAF5es1Lw/Lvxf8WXfg
-	 d1iP8Te0Dg2jhKoJhcSqdTkARKdyzWrhqmPHUwvjsfgiKG9XU4YhaeAzn4ocy3C3/R
-	 SqnVVhBtEycVA==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-3f584ab62c6so1080073fac.1
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Dec 2025 17:56:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXKQohNV3d6SV2Q+L3swboElvPdmfi16ecJfBMc7QLTiOmWaCrcLhgooPHkkZQVQglRsGz3/Y4PSJ+Y@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkILagk7yVpVro1lD5sXBcAR2I2CVL5S9GxEl7akVjLkS5+rsg
-	wswrk0TSjNgUWWcnoL9CiRBKF6pm369U9zrjPJ91eEjg9nh9Iwsn80xPCoEbrykAmCPWtVaK8MV
-	9jiJr011hp/DncnamzFo+MUEjXW5pbT4=
-X-Google-Smtp-Source: AGHT+IG/ZLGI/rhGVj2C1m7vvSVnbJrWDnoH75WeI4uetKadw0Oo6KCLlcHazzHyMTAmDC/8cjOQW1pj87b5UKX/YlE=
-X-Received: by 2002:a05:6808:1701:b0:43f:5619:ce72 with SMTP id
- 5614622812f47-45586345bb2mr621771b6e.4.1765331799091; Tue, 09 Dec 2025
- 17:56:39 -0800 (PST)
+	s=arc-20240116; t=1765369334; c=relaxed/simple;
+	bh=jd9K+mF97WGriGBzAJzag5o6OTccybfMhIaxrYKCKPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jVUOqfLhjjOjPZT9PBsp9z9oFQ8JMuuAjXUudlwugCxinFvg1mgiiWyQ+DeseqOKBkVF4loJwr9BHPZqHIaWugblrLBF2y3BU7jgJJ5RXJHkP5ZVEY6FXiXADZmsnN7zzMRDko1CieXHWqVfbAyVSvxlKiclu9veuC1Q3PWOp5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B2lhjLv0; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 4A28AC180F4;
+	Wed, 10 Dec 2025 12:21:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F3EAA60714;
+	Wed, 10 Dec 2025 12:22:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12FF8119315B3;
+	Wed, 10 Dec 2025 13:21:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765369320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pOlUsVypsTSlBECjYHHoMGhNKvvFlUu0wSglyApNP7w=;
+	b=B2lhjLv08HCS4nwPMQdM5rtA1PxYKChropbNXfAwuDvzNvXOVjVCwFTmvmtb2ORCVRW7Qi
+	k66+Mas8QHLL/Sd+Ps87vPuBDRCwI7saahl3amPRs7SDyRx2/03xb8vTHThuJw2ga28vUp
+	mWJuGni+C/1JJduukHwT93M8LHqErcT1tCB506+eg0lsH1ug4WelgtBydwGEI8bQLgP21q
+	xgMbfofeVReqc6sRn9VIhYltwLdn5+wRI8qcr7mp32U/cqKfXDSUrrYJn+eHIG12gJQGaT
+	OtIuCTUfZrFJAHa0b3F7XsnAhwmX5iend8orwE0uMkCFCSYS7ZIq32q+F/8bOg==
+Date: Wed, 10 Dec 2025 13:21:40 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20251210132140.32dbc3d7@bootlin.com>
+In-Reply-To: <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com>
+ <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+ <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+ <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+ <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+ <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+ <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+ <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
+ <20251202102619.5cd971cc@bootlin.com>
+ <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
+ <20251202175836.747593c0@bootlin.com>
+ <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
+ <20251204083839.4fb8a4b1@bootlin.com>
+ <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2395536.ElGaqSPkdT@rafael.j.wysocki> <ab8b770c-08e9-4cf6-bd4f-f36c951fda4c@gmx.de>
- <CAJZ5v0jAH9FZrO5AvVF90zgy-0EeM+rsB6Zf8cMf+sR8=FFuDA@mail.gmail.com>
- <168f173d-0d1a-49b0-9461-72f8fb0fc701@gmx.de> <99b0d755-3e18-4bba-b8e7-ab344e6c2592@gmx.de>
- <CAJZ5v0ijOF+nRZrjnub9uqa_Pu54etmudWUUNWmNgiogVAwxFQ@mail.gmail.com> <2ec8cf4c-62b2-4448-b4d6-563f519fd947@gmx.de>
-In-Reply-To: <2ec8cf4c-62b2-4448-b4d6-563f519fd947@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 10 Dec 2025 02:56:27 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h5jWx4vvxTXus80290zu7OjQY_FobLFHqYF205WadDOQ@mail.gmail.com>
-X-Gm-Features: AQt7F2pOCjJu2JoGgngTZpYCDvO4wsUKi9Q1dLDEly8-PkeomzKbOct6nkRsgzI
-Message-ID: <CAJZ5v0h5jWx4vvxTXus80290zu7OjQY_FobLFHqYF205WadDOQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] PCI: ACPI: PM: Rework root bus wakeup notification
- setup and wakeup source registration
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Linux PM <linux-pm@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Dec 10, 2025 at 1:29=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 09.12.25 um 23:18 schrieb Rafael J. Wysocki:
->
-> > On Tue, Dec 9, 2025 at 11:00=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wro=
-te:
-> >> Am 09.12.25 um 14:56 schrieb Armin Wolf:
-> >>
-> >>> Am 09.12.25 um 12:31 schrieb Rafael J. Wysocki:
-> >>>
-> >>>> On Mon, Dec 8, 2025 at 9:01=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> w=
-rote:
-> >>>>> Am 08.12.25 um 13:09 schrieb Rafael J. Wysocki:
-> >>>>>
-> >>>>>> Hi All,
-> >>>>>>
-> >>>>>> Patch [1/2] updates the registration of PCI root bus wakeup
-> >>>>>> notification setup
-> >>>>>> in order to simplify code in pci_acpi_wake_bus() and to prepare fo=
-r
-> >>>>>> the other
-> >>>>>> change.  This is not expected to affect functionality.
-> >>>>>>
-> >>>>>> Patch [2/2] modifies the ACPI PM notifier registration to add
-> >>>>>> wakeup sources
-> >>>>>> under devices that are going to be affected by wakeup handling
-> >>>>>> instead of
-> >>>>>> registering them under ACPI companions of those devices (rationale
-> >>>>>> explained
-> >>>>>> in the patch changelog).  This will change the sysfs layout (wakeu=
-p
-> >>>>>> source
-> >>>>>> devices associated with PCI wakeup are now going to appear under
-> >>>>>> PCI devices
-> >>>>>> and the host bridge device), but it is not expected to affect user
-> >>>>>> space
-> >>>>>> adversely.
-> >>>>>>
-> >>>>>> Thanks!
-> >>>>> I tested both patches, and the sysfs layout changes as expected:
-> >>>>>
-> >>>>> $ readlink /sys/class/wakeup/wakeup*/device
-> >>>>> ../../../device:00
-> >>>>> ../../../device:1a
-> >>>>> ../../../device:1f
-> >>>>> ../../../device:20
-> >>>>> ../../../0000:00:08.1
-> >>>>> ../../../device:36
-> >>>>> ../../../device:31
-> >>>>> ../../../device:32
-> >>>>> ../../../device:3c
-> >>>>> ../../../0000:01:00.0
-> >>>>> ../../../device:3d
-> >>>>> ../../../PNP0C02:00
-> >>>>> ../../../0000:02:00.0
-> >>>>> ../../../device:3e
-> >>>>> ../../../device:3f
-> >>>>> ../../../device:46
-> >>>>> ../../../0000:04:00.0
-> >>>>> ../../../device:47
-> >>>>> ../../../0000:05:00.0
-> >>>>> ../../../device:57
-> >>>>> ../../../0000:05:08.0
-> >>>>> ../../../device:59
-> >>>>> ../../../device:01
-> >>>>> ../../../0000:05:09.0
-> >>>>> ../../../device:5b
-> >>>>> ../../../0000:05:0a.0
-> >>>>> ../../../device:5d
-> >>>>> ../../../0000:05:0b.0
-> >>>>> ../../../device:5f
-> >>>>> ../../../0000:05:0c.0
-> >>>>> ../../../device:74
-> >>>>> ../../../0000:05:0d.0
-> >>>>> ../../../device:5a
-> >>>>> ../../../device:3a
-> >>>>> ../../../device:5c
-> >>>>> ../../../device:60
-> >>>>> ../../../device:75
-> >>>>> ../../../LNXVIDEO:00
-> >>>>> ../../../device:22
-> >>>>> ../../../PNP0C02:02
-> >>>>> ../../../device:25
-> >>>>> ../../../device:2b
-> >>>>> ../../../device:24
-> >>>>> ../../../device:37
-> >>>>> ../../../0000:00:01.1
-> >>>>> ../../../PNP0A08:00
-> >>>>> ../../../LNXPWRBN:00
-> >>>>> ../../../AMDI0010:00
-> >>>>> ../../../AMDI0030:00
-> >>>>> ../../../00:02
-> >>>>> ../../../alarmtimer.0.auto
-> >>>>> ../../../PNP0C0C:00
-> >>>>> ../../../0000:0b:00.0
-> >>>>> ../../../AMDIF031:00
-> >>>>> ../../../PNP0C14:00
-> >>>>> ../../../device:0a
-> >>>>> ../../../PNP0C14:01
-> >>>>> ../../../PNP0C14:02
-> >>>>> ../../../PNP0C14:03
-> >>>>> ../../../0000:0e:00.3
-> >>>>> ../../../0000:0e:00.4
-> >>>>> ../../../0000:0f:00.0
-> >>>>> ../../../5-2
-> >>>>> ../../../1-5.3
-> >>>>> ../../hidpp_battery_0
-> >>>>> ../../../device:44
-> >>>>> ../../../0000:00:02.1
-> >>>>> ../../../device:76
-> >>>>> ../../../device:0b
-> >>>>>
-> >>>>> turns into:
-> >>>>>
-> >>>>> $ readlink /sys/class/wakeup/wakeup*/device
-> >>>>> ../../../0000:00:00.0
-> >>>>> ../../../0000:00:04.0
-> >>>>> ../../../0000:00:08.0
-> >>>>> ../../../0000:00:08.1
-> >>>>> ../../../0000:00:08.1
-> >>>>> ../../../0000:00:08.3
-> >>>>> ../../../0000:00:14.0
-> >>>>> ../../../0000:00:14.3
-> >>>>> ../../../0000:01:00.0
-> >>>>> ../../../0000:01:00.0
-> >>>>> ../../../0000:02:00.0
-> >>>>> ../../../0000:00:00.2
-> >>>>> ../../../0000:02:00.0
-> >>>>> ../../../0000:03:00.0
-> >>>>> ../../../0000:03:00.1
-> >>>>> ../../../0000:04:00.0
-> >>>>> ../../../0000:04:00.0
-> >>>>> ../../../0000:05:00.0
-> >>>>> ../../../0000:05:00.0
-> >>>>> ../../../0000:05:08.0
-> >>>>> ../../../0000:05:08.0
-> >>>>> ../../../0000:05:09.0
-> >>>>> ../../../0000:00:01.0
-> >>>>> ../../../0000:05:09.0
-> >>>>> ../../../0000:05:0a.0
-> >>>>> ../../../0000:05:0a.0
-> >>>>> ../../../0000:05:0b.0
-> >>>>> ../../../0000:05:0b.0
-> >>>>> ../../../0000:05:0c.0
-> >>>>> ../../../0000:05:0c.0
-> >>>>> ../../../0000:05:0d.0
-> >>>>> ../../../0000:05:0d.0
-> >>>>> ../../../0000:08:00.0
-> >>>>> ../../../0000:00:01.1
-> >>>>> ../../../0000:09:00.0
-> >>>>> ../../../0000:0b:00.0
-> >>>>> ../../../0000:0c:00.0
-> >>>>> ../../../0000:0e:00.0
-> >>>>> ../../../0000:0e:00.1
-> >>>>> ../../../0000:0e:00.2
-> >>>>> ../../../0000:0e:00.3
-> >>>>> ../../../0000:0e:00.4
-> >>>>> ../../../0000:0e:00.6
-> >>>>> ../../../0000:0f:00.0
-> >>>>> ../../../0000:00:01.1
-> >>>>> ../../../pci0000:00
-> >>>>> ../../../LNXPWRBN:00
-> >>>>> ../../../AMDI0010:00
-> >>>>> ../../../AMDI0030:00
-> >>>>> ../../../00:02
-> >>>>> ../../../alarmtimer.0.auto
-> >>>>> ../../../PNP0C0C:00
-> >>>>> ../../../0000:0b:00.0
-> >>>>> ../../../AMDIF031:00
-> >>>>> ../../../PNP0C14:00
-> >>>>> ../../../0000:00:02.0
-> >>>>> ../../../PNP0C14:01
-> >>>>> ../../../PNP0C14:02
-> >>>>> ../../../PNP0C14:03
-> >>>>> ../../../0000:0e:00.3
-> >>>>> ../../../0000:0e:00.4
-> >>>>> ../../../0000:0f:00.0
-> >>>>> ../../../5-2
-> >>>>> ../../../1-5.3
-> >>>>> ../../hidpp_battery_0
-> >>>>> ../../../0000:00:02.1
-> >>>>> ../../../0000:00:02.1
-> >>>>> ../../../0000:00:02.2
-> >>>>> ../../../0000:00:03.0
-> >>>>>
-> >>>>> The remaining ACPI devices are likely caused by device drivers base=
-d
-> >>>>> upon struct acpi_driver.
-> >>>>> I was unable to test the wakeup itself since suspend is currently
-> >>>>> broken due to issues with
-> >>>>> cpuidle,
-> >>>> Have you reported those?  What cpuidle driver is involved?
-> >>>>
-> >>>> If you happen to be using the ACPI idle driver, there is a regressio=
-n
-> >>>> between 6.18-rc7 and final 6.18 due to a missing revert, but final
-> >>>> 6.18 should be as expected.
-> >>> If i remember correctly the official 6.18 kernel was not affected by
-> >>> this, i used the the bleeding-edge
-> >>> branch when building the test kernel.
-> >>>
-> >>> I will do some further debugging once i am back home.
-> >>>
-> >>> Thanks,
-> >>> Armin Wolf
-> >>>
-> >> Well, it turned out that the cpuidle driver was not involved in this, =
-i just got confused
-> >> by a separate stacktrace caused by the hid-roccat driver (i already re=
-ported that).
-> >>
-> >> This seems to be the real issue:
-> >>
-> >> [  514.910759] ACPI Error: Aborting method \M402 due to previous error=
- (AE_AML_LOOP_TIMEOUT) (20250807/psparse-529)
-> >> [  514.910810] ACPI Error: Aborting method \_SB.PCI0.GPP0.M241 due to =
-previous error (AE_AML_LOOP_TIMEOUT) (20250807/psparse-529)
-> >> [  514.910890] ACPI Error: Aborting method \_SB.PCI0.GPP0.M237._OFF du=
-e to previous error (AE_AML_LOOP_TIMEOUT) (20250807/psparse-529)
-> > It looks like there is a problem with turning a power resource off.
+Hi Geert, Kalle, Rob,
+
+On Thu, 4 Dec 2025 11:49:13 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+
+> Hi Hervé,
+> 
+> On Thu, 4 Dec 2025 at 08:39, Herve Codina <herve.codina@bootlin.com> wrote:
+> > Indeed, Kalle, Geert, I don't have your hardware, your related overlay or
+> > a similar one that could be used for test and also I don't have your out of
+> > tree code used to handle this overlay.
 > >
-> >> Sleeping itself works, it just takes a long time for the machine to ac=
-tually suspend due to the timeout.
-> >> I attached the acpidump of the affected machine in case you are intere=
-sted.
-> >>
-> >> Since 6.18 is not affected by this i will wait till 6.19-rc1 is releas=
-ed before i start debugging this issue.
-> >> Do you think that this approach is OK?
-> > It should be fine although you may as well check my pm-6.19-rc1,
-> > acpi-6.19-rc1 and thermal-6.19-rc1 tags on top of 6.18.  If the
-> > problem is in one of them, it should be possible to find it quicker
-> > than by dealing with the entire 6.19-rc1.
->
-> I tested all three tags atop of 6.18, and all can suspend just fine. I wi=
-ll thus wait for 6.19-rc1
-> before doing any further debugging.
+> > I know overlays and fw_devlink have issues. Links created by fw_devlink
+> > when an overlay is applied were not correct on my side.
+> >
+> > Can you check your <supplier>--<consumer> links with 'ls /sys/class/devlinks'
+> >
+> > On my side, without my patches some links were not correct.
+> > They linked to the parent of the supplier instead of the supplier itself.
+> > The consequence is a kernel crash, use after free, refcounting failure, ...
+> > when the supplier device is removed.
+> >
+> > Indeed, with wrong links consumers were not removed before suppliers they
+> > used.
+> >
+> > Looking at Geert traces:
+> > --- 8< ---
+> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
+> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
+> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
+> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
+> > [...]
+> > --- 8< ---
+> >
+> > Even if it is not correct, why the soc device cannot be a provider?
+> > I don't have the answer to this question yet.  
+> 
+> I have no idea. These failures (sound) are also not related to the
+> device I am adding through the overlay (SPI EEPROM).
+> Note that these failures appear only with your suggested fix, and are
+> not seen with just the patch in the subject of this email thread.
+> 
+> > Without having the exact tree structure of the base device-tree, the overlay
+> > and the way it is applied, and so without been able to reproduce the issue
+> > on my side, investigating the issue is going to be difficult.
+> >
+> > I hope to find some help to move forward and fix the issue.  
+> 
+> Base DTS is [1], overlay DTS is [2].
+> Applying and removing the overlay is done using OF_CONFIGFS[3],
+> and "overlay [add|rm] 25lc040"[4].
+> 
+> I assume you can reproduce the issue on any board that has an SPI
+> EEPROM, after moving the SPI bus enablement and SPI EEPROM node to an
+> overlay. Probably even with an I2C EEPROM instead.  Or even without
+> an actual EEPROM connected, as even the SPI bus fails to appear.
+> 
+> > Saravana's email (Saravana Kannan <saravanak@google.com>) seems incorrect.
+> > Got emails delivery failure with this email address.  
+> 
+> Yeah, he moved company.
+> He is still alive, I met him in the LPC Training Session yesterday ;-)
+> 
+> Thanks!
+> 
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
+> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu-cn41-msiof0-25lc040.dtso?h=topic/renesas-overlays-v6.17-rc1
+> [3] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v6.17-rc1
+> [4] https://elinux.org/R-Car/DT-Overlays#Helper_Script
+> [5] https://lore.kernel.org/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> 
 
-Sounds reasonable to me.
+I did some tests with boards I have.
+
+First I used a Marvel board based on an Armada 3720.
+
+In my overlay, I added the pinmux related to the SPI controller, enabled
+this SPI controller and added a SPI flash.
+
+It didn't work with or without culprit patches from my series applied.
+Indeed, the pinctrl driver used is an MFD driver an mixed pinmux definition
+nodes with device description (a clock) node.
+
+When a new node is added, a new device is created. Indeed, because the
+driver is an MFD driver, it is a bus driver and handled by of_platform bus.
+
+My new node is considered by devlink as a node that will have a device ready
+to work (driver attached and device probed). A link is created between this
+node and the consumers of this node (i.e. the SPI controller). devlink is
+waiting for this provider to be ready before allowing the its consumer to probe.
+This node (simple pinmux description) will never lead to a device and devlink
+will never see this "provider" ready.
+
+Did a test with a Renesas RZ/N1D (r9a06g032) based board and built a similar
+overlay involving I2C controller pinmux, I2C controller and an EEPROM.
+
+Here, also the overlay didn't work but the issue is different.
+
+The pinmux definition for pinctrl (i.e. pinctrl subnodes) are looked when
+the pinctrl driver probes. Adding a new node later is not handled by the
+pinctrl driver.
+Applying the overlay leads to a simple:
+  [   16.934168] rzn1-pinctrl 40067000.pinctrl: unable to find group for node /soc/pinctrl@40067000/pins_i2c2
+
+Indeed, the 'pins_i2c2' has been added by the overlay and was not present
+when the pinctrl probed.
+
+Tried without adding a new pinmux node (pinctrl subnode) from the overlay
+and used nodes already existing in the base DT.
+
+On my Marvell Armada 3720 board, it works with or without my patches.
+No regression detected due to my patches.
+
+On my RZ/N1D board, it works also with or without my patches.
+Here also, no regression detected.
+
+Also, on my Marvell Armada 3720 board, I can plug my LAN966x PCI board.
+The LAN966x PCI driver used an overlay to describe the LAN966x PCI board.
+
+With the upstream patch not reverted, i.e. 1a50d9403fb9 ("treewide: Fix
+probing of devices in DT overlays")" applied, devlinks created for the
+LAN966x PCI board internal devices are incorrect and lead to crashes when
+the LAN966x PCI driver is removed due to wrong provider/consumer dependencies.
+
+When this patch is reverted and replaced by "of: dynamic: Fix overlayed
+devices not probing because of fw_devlink", devlinks created for the LAN966x
+PCI board internal devices are corrects and crashes are no more present on
+removal.
+
+Kalle, Geert, can you perform a test on your hardware with my patches
+applied and moving your pinmux definition from the overlay to the base
+device-tree?
+
+The kernel you can use is for instance the kernel at the next-20251127 tag.
+Needed patches for test are present in this kernel:
+    - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
+    - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
+
+Best regards,
+Hervé
 
