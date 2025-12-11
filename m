@@ -1,191 +1,175 @@
-Return-Path: <linux-acpi+bounces-19550-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19557-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D84CCB62C7
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Dec 2025 15:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7A3CB64E9
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Dec 2025 16:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F36C3010A97
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Dec 2025 14:22:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23166303B190
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Dec 2025 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F27253340;
-	Thu, 11 Dec 2025 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83045303C9A;
+	Thu, 11 Dec 2025 15:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fssdghVQ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GZ04GN+Y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B7924A05D;
-	Thu, 11 Dec 2025 14:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D402FC00B
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Dec 2025 15:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765462930; cv=none; b=jg6Ar9XPsD55VbRaeYKpfQAl9BeIJF3IMlEN5xsQ/Nuan9WEg0gdoxV8yscDS/fhkrSmSj5OqgU4V8TSCvifTWJ/Dt6Whpp6BoXIzihTh+ebMnEFZ/Y0hKs0wTyl0Og29cxlmX/U9vwOSt9YptomvHNLepw4Tejw10HSBxgw0tA=
+	t=1765466366; cv=none; b=aFu2zDKlLEhV4I4GuNKilJ5UtlgVc+YFFC5QPBK12z1DIRHDFnqcCllQjwth+Fg0o8EraVVL9Pv5lf6YngUOA8QG6XsI4Ec7SrGka877VEobe4V6XVSGiuG9BRIaJKKllt+e7U61OOmQq79rgJBkbgCoTp8Tqf54K6x7/gNKEhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765462930; c=relaxed/simple;
-	bh=wo7OI8uOaxRflEssZX4egi7ehSYDFXojYA+F+vTiuas=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fNpnhB6AnDh84u+FkhWYTJsXjWqLL4JpuN5P2WSHS894F1xqgHjXfv12ldYyoIV2NJ39N8OvheXvTeP+jZbPa15a2k6nQdXpXAtWMXW8sRrN7MUzVri9muSB3LJFXMmi1f117VRqGiHCsERsvCOdsLdwZzVacrSqwDXdWaUhnEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fssdghVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B962C4CEF7;
-	Thu, 11 Dec 2025 14:22:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765462930;
-	bh=wo7OI8uOaxRflEssZX4egi7ehSYDFXojYA+F+vTiuas=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fssdghVQOIbfuasOMt556uIlYgAOZ2oDlgm21RhBbl9B3xO2FBNR5/AOuXqSWVV6J
-	 IlqxLXUEpgp3LQGhTlCj14ugf6QaXZx9SIsOkPq8SgLrDSFq29/zkQFevwvKdesGev
-	 9rlCilC0D1O5HfNcmsTDDjMg4i0sctGCoFGo/AzvUPKkkSfD79xiqj/GJabGbutpTK
-	 +4QkGCI2h22WmhcphOhtfd0GU7+0hM+VxZWJu/yHkriQtzatQ081vMzjAobNIAu7pD
-	 ccVlhochPXP4JnXneK5Ukz8xuj9xzlXxbZ0C7chYEYw4ig1Jz+olZ6PgCitFWqW1hd
-	 oEZxkxNwut65A==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, nvdimm@lists.linux.dev
-Subject:
- [RFT][PATCH v1 6/6] ACPI: NFIT: core: Convert the driver to a platform one
-Date: Thu, 11 Dec 2025 15:22:00 +0100
-Message-ID: <2028345.PYKUYFuaPT@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <5066996.31r3eYUQgx@rafael.j.wysocki>
-References: <5066996.31r3eYUQgx@rafael.j.wysocki>
+	s=arc-20240116; t=1765466366; c=relaxed/simple;
+	bh=fWpmLL1z7q9BxSPVUYz8JHtTujuBUEm3CzFbbQaDgtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PjGR9AdkR5Zm0Py/M6B+dh3Uanst0wXn8Pa4N9IXiczW3kU1tOdc17aXsfM8XoInM3AZB44KP4UYxOCS2GK7tgJLHeChf07hi7BTbhVaVKyc9PzrtXB3xJZZQKENPUPVoUHI5h32ffC2ZbOL9pXy1z5lG8y3absxC/Dlz6J/e9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GZ04GN+Y; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 00CF0C1934C;
+	Thu, 11 Dec 2025 15:18:58 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D5BA16068C;
+	Thu, 11 Dec 2025 15:19:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 641CD103C8C7B;
+	Thu, 11 Dec 2025 16:19:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765466359; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7YFG4wLJmjR/E/MqOc1NCEw1lot9ZBUWy77cdvC/abM=;
+	b=GZ04GN+YsE0cv0BQQYoZpyVYAYEsovdzJ9rXmDON0bJIZxnJU7VPl2eg1p8e0NQ9k+K5Dp
+	/LRca+qQVGSjdqk8rZVoLiG+Y+sqtI/yxaymDKJc9jZxsUrEC0ffilz5i/Pg3I8zRmwpJS
+	taMVcM89WUFFX51Ek3tAsGArlvFRqyRVPdmd6IrgjHKE7xrG4LzqbztURSYcKnyHSuVeO0
+	J67fZCzMN/AGR3a33M4QUHtoTEJbjcuY3+UKEhaz2RTDuiDFFZpLeGkOJMjJFnFSz1vbjo
+	hs+44nERIBIh7DW/ujTn09iVGaGgu0W9sZBJpf2sMe5nwN92PyYkCL/V4aE1wA==
+Date: Thu, 11 Dec 2025 16:19:02 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Rob Herring <robh@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Kalle Niemi <kaleposti@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Alison
+ Schofield <alison.schofield@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20251211161902.11ef4248@bootlin.com>
+In-Reply-To: <1b9fa77b-d74a-4fa7-b2e7-8b389d59a5a0@gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+	<CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+	<5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+	<CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+	<072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+	<CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+	<55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
+	<20251202102619.5cd971cc@bootlin.com>
+	<088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
+	<20251202175836.747593c0@bootlin.com>
+	<dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
+	<20251204083839.4fb8a4b1@bootlin.com>
+	<CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+	<20251210132140.32dbc3d7@bootlin.com>
+	<c50c40cc-69f6-436c-a94e-94a3a10f6727@gmail.com>
+	<20251211132044.10f5b1ea@bootlin.com>
+	<1b9fa77b-d74a-4fa7-b2e7-8b389d59a5a0@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Matti, Geert, all,
 
-While binding drivers directly to struct acpi_device objects allows
-basic functionality to be provided, at least in the majority of cases,
-there are some problems with it, related to general consistency, sysfs
-layout, power management operation ordering, and code cleanliness.
+On Thu, 11 Dec 2025 15:52:28 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the ACPI NFIT core driver to a platform one.
+> On 11/12/2025 14:20, Herve Codina wrote:
+> > Hi Matti,
+> > 
+> > On Thu, 11 Dec 2025 10:34:46 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> /snip
+> 
+> > 
+> > Do you see the same trace with:
+> > - "pinctrl-0 = <&i2c1_pins>;" in your overlay
+> > - fragment0 removed from the overlay (i2c1_pins definition removed from
+> >    the overlay.
+> > - i2c1_pins node defined in your base DT.  
+> 
+> Just tested. The i2c1 appears and the test-overlay probe gets called, 
+> when the i2c1_pins is in the base-dt and not in the overlay.
 
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
+Geert, do you expirement same results?
 
-This change was mostly developed by Michal Wilczynski [1].
+> 
+> > In other word, is the issues related to adding a pinctrl sub-node (pinctrl
+> > pins definition) in the overlay or is it something else?  
+> 
+> Seems to be related to the pinctrl.
+> 
 
-Linu: https://lore.kernel.org/linux-acpi/20231011083334.3987477-6-michal.wilczynski@intel.com/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/nfit/core.c |   34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+I don't think that the issue is related to pinctrl itself.
 
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright(c) 2013-2015 Intel Corporation. All rights reserved.
-  */
-+#include <linux/platform_device.h>
- #include <linux/list_sort.h>
- #include <linux/libnvdimm.h>
- #include <linux/module.h>
-@@ -98,7 +99,7 @@ static struct acpi_device *to_acpi_dev(s
- 			|| strcmp(nd_desc->provider_name, "ACPI.NFIT") != 0)
- 		return NULL;
- 
--	return to_acpi_device(acpi_desc->dev);
-+	return ACPI_COMPANION(acpi_desc->dev);
- }
- 
- static int xlat_bus_status(void *buf, unsigned int cmd, u32 status)
-@@ -3283,11 +3284,11 @@ static void acpi_nfit_put_table(void *ta
- 
- static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
- {
--	struct acpi_device *adev = data;
-+	struct device *dev = data;
- 
--	device_lock(&adev->dev);
--	__acpi_nfit_notify(&adev->dev, handle, event);
--	device_unlock(&adev->dev);
-+	device_lock(dev);
-+	__acpi_nfit_notify(dev, handle, event);
-+	device_unlock(dev);
- }
- 
- static void acpi_nfit_remove_notify_handler(void *data)
-@@ -3328,18 +3329,19 @@ void acpi_nfit_shutdown(void *data)
- }
- EXPORT_SYMBOL_GPL(acpi_nfit_shutdown);
- 
--static int acpi_nfit_add(struct acpi_device *adev)
-+static int acpi_nfit_probe(struct platform_device *pdev)
- {
- 	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct acpi_nfit_desc *acpi_desc;
--	struct device *dev = &adev->dev;
-+	struct device *dev = &pdev->dev;
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct acpi_table_header *tbl;
- 	acpi_status status = AE_OK;
- 	acpi_size sz;
- 	int rc = 0;
- 
- 	rc = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
--					     acpi_nfit_notify, adev);
-+					     acpi_nfit_notify, dev);
- 	if (rc)
- 		return rc;
- 
-@@ -3369,7 +3371,7 @@ static int acpi_nfit_add(struct acpi_dev
- 	acpi_desc = devm_kzalloc(dev, sizeof(*acpi_desc), GFP_KERNEL);
- 	if (!acpi_desc)
- 		return -ENOMEM;
--	acpi_nfit_desc_init(acpi_desc, &adev->dev);
-+	acpi_nfit_desc_init(acpi_desc, dev);
- 
- 	/* Save the acpi header for exporting the revision via sysfs */
- 	acpi_desc->acpi_header = *tbl;
-@@ -3474,11 +3476,11 @@ static const struct acpi_device_id acpi_
- };
- MODULE_DEVICE_TABLE(acpi, acpi_nfit_ids);
- 
--static struct acpi_driver acpi_nfit_driver = {
--	.name = KBUILD_MODNAME,
--	.ids = acpi_nfit_ids,
--	.ops = {
--		.add = acpi_nfit_add,
-+static struct platform_driver acpi_nfit_driver = {
-+	.probe = acpi_nfit_probe,
-+	.driver = {
-+		.name = "acpi-nfit",
-+		.acpi_match_table = acpi_nfit_ids,
- 	},
- };
- 
-@@ -3516,7 +3518,7 @@ static __init int nfit_init(void)
- 		return -ENOMEM;
- 
- 	nfit_mce_register();
--	ret = acpi_bus_register_driver(&acpi_nfit_driver);
-+	ret = platform_driver_register(&acpi_nfit_driver);
- 	if (ret) {
- 		nfit_mce_unregister();
- 		destroy_workqueue(nfit_wq);
-@@ -3529,7 +3531,7 @@ static __init int nfit_init(void)
- static __exit void nfit_exit(void)
- {
- 	nfit_mce_unregister();
--	acpi_bus_unregister_driver(&acpi_nfit_driver);
-+	platform_driver_unregister(&acpi_nfit_driver);
- 	destroy_workqueue(nfit_wq);
- 	WARN_ON(!list_empty(&acpi_descs));
- }
+IMHO, I think the issue is related to overlays and fw_devlink.
+The distinction between "a new node is going to lead to a device" vs "a new
+node is just data and will never been attached to a new device" when an
+overlay is applied is broken.
 
+This is broken with the upstream "treewide: Fix probing of devices in DT
+overlays" commit I've tried to revert. Indeed, on the LAN966x PCI device
+use case devlinks created are not correct with this commit applied.
 
+I am not sure also that devlinks created with a more complex overlay will be
+correct. For instance, Matti, with your overlay not sure that a phandle from
+the oscillator node referencing the pmic node will lead to a correct
+provider/consumer devlink between the pmic device and the oscillator device.
 
+On the other hand, this is broken with "of: dynamic: Fix overlayed devices
+not probing because of fw_devlink" works for the LAN966x PCI device use case
+an lead to correct devlinks but breaks your use cases.
+
+Does anyone have an idea about how to fix those issues?
+
+Best regards,
+Hervé
 
