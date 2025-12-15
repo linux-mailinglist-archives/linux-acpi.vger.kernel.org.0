@@ -1,55 +1,53 @@
-Return-Path: <linux-acpi+bounces-19579-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19578-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41B5CBECB3
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 16:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479B2CBE38D
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 15:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CA0C305B90B
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 15:51:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A9DF304B97C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 14:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332AC335546;
-	Mon, 15 Dec 2025 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59176335071;
+	Mon, 15 Dec 2025 14:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHv6KtNd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CYrG7WeG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805133509B;
-	Mon, 15 Dec 2025 14:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D94B335067;
+	Mon, 15 Dec 2025 14:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765807455; cv=none; b=a39UP4s9bUvrRCRpiFzNut6+h6mWPF+2IwtXRcwPDtmO7d80pi80n+o78sakIv/wUTOvV6zAQrq0dBJFNi+ZzqXoV6YL/gMswE/P/dEmpngGOMBtpadwN8Nu+gutcf6GkPIJX9P0b7thNeMoVdlgQWQpMxRm6zcNRbLz+IinPR0=
+	t=1765807452; cv=none; b=uraYbtGIsEcPpoPtRIOC/3BYt8Zv9X0hZfl0ZCRub2POjHLZUkwYA8KlX2TyyJLHCWPd/asHMRx0hmqmqWiO6OlJulqIZj+254ZSH+pFYarGLYnNGBauo50XlFyMhabSjNCHiEWY3AM89NVO8RqAqiOAGkgvHZqLgED2xdepsGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765807455; c=relaxed/simple;
-	bh=zyIu2O5DApBLBGi5U9UWuOX5VMmYTIhrwv6Kh5/hPMs=;
+	s=arc-20240116; t=1765807452; c=relaxed/simple;
+	bh=N1r2pocbdy2XGiuHK87va7mABtHkyVjSHcjeMoz1v2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=brWOviBUgcoKK1wZ7yzg2PQl1KV67Is4FFf1M3XjU2P+ofu1sZVMG8D8BB+zjie+PmnlV9W24g9mLJpRBRxF3fohgT1CiT4dNUAr3YeDENq/GE5relZG7ID/7caXjlH01y6yIf5VGJqqo7CyL8r6okPPltceGvYZOZYKMgVPgpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHv6KtNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910A1C4CEFB;
-	Mon, 15 Dec 2025 14:04:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W1tRWe5eORDLsEwvwpfWbpi5f6gQyue1QqiOg7w17R4auIT4vW4jlyvAktp9Q+YGMo92s4G15DA1/7AFFMtKCc94yqFwXOMe0OiEuuEzjmZdfq95bd/WTyHkZYE0g6Yheln225lS6f/bbloURFyuUIA29UPEDJcwXUQwwyRsbUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CYrG7WeG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F749C4CEFB;
+	Mon, 15 Dec 2025 14:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765807454;
-	bh=zyIu2O5DApBLBGi5U9UWuOX5VMmYTIhrwv6Kh5/hPMs=;
+	s=k20201202; t=1765807451;
+	bh=N1r2pocbdy2XGiuHK87va7mABtHkyVjSHcjeMoz1v2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHv6KtNdvXpJxzWJ8Er0BHUcGS3wx8k4ZwZ6gyBZ+yfUn+E/abuaN2iVHWCopBnc9
-	 kPBvI57T8p9JVPlL670mJqc43+K8R8GKPmsvG51VhAIGlTRrhC6Sm3LuFPP3Ez1RoU
-	 TyBjRi+QY2aux7l1cF3g1bXny9npIHYGQP14lNxrUa8RYUlVAkp6D8hWvCpTBzJ4By
-	 b0g/DJIMe/mszSRhZT27CQmt+UxFC0OYiNpHthOCBrDUHHMb8DhJrfqice0QR8rdwp
-	 zHFdgEHnIoC3GPt7SQaC+MOlHgWwkowTcnWRPM1xUUG6UT5auriMsq5sgSKMqUoaHW
-	 sk1M/heREmdcg==
+	b=CYrG7WeG2zLA+QoKkFKU/Pgv9DbZT4WSbVStIJ9KpNJRjBlU3pCFGwYeSVVK47Vis
+	 dLqODlHpgbD2PwJAe+ny0qfWA2gp70QxhSMpTUF4zwtMQFlyv/Dj5kyQ0WbVKq5Zta
+	 q76omXPhwVCg0CVI56yIElldVFXgZgys3qUTt2ZhJlECX3CoVQxmNleP/9gzkToArI
+	 szzZgTAPLWvJypB/ewmRXDbhqPT4YLPbZdF7le3Vnou8fEZSCCwv3U0Fqf8JsMsmYU
+	 Su9icnTk6HcCaV6RQC2nzVsdd18sELFxM9tmTF2PTkedNbjBzP1g7UpEMza3YqxEJo
+	 VuVCjbN0hTGIQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: Hans de Goede <hdegoede@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
  Linux PM <linux-pm@vger.kernel.org>,
  Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
  Armin Wolf <w_armin@gmx.de>
-Subject:
- [PATCH v2 07/10] ACPI: scan: Do not mark button ACPI devices as
- wakeup-capable
-Date: Mon, 15 Dec 2025 15:00:57 +0100
-Message-ID: <2891119.BEx9A2HvPv@rafael.j.wysocki>
+Subject: [PATCH v2 08/10] ACPI: battery: Adjust event notification routine
+Date: Mon, 15 Dec 2025 15:01:53 +0100
+Message-ID: <4344406.1IzOArtZ34@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <2685338.Lt9SDvczpP@rafael.j.wysocki>
 References: <2685338.Lt9SDvczpP@rafael.j.wysocki>
@@ -64,17 +62,12 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-It is generally questionable to mark struct acpi_device "devices" as
-wakeup-capable because they represent firmware entities that by
-themselves have no wakeup capabilities.
+Adjust acpi_battery_notify() to cast its "data" argument to a struct
+acpi_battery pointer istead of a struct acpi_device one, which allows
+the use of acpi_driver_data() to be limited and will facilitate
+subsequent changes.
 
-It was done for struct acpi_device "devices" corresponding to buttons
-because the ACPI button driver was binding to them directly, but now
-that corresponding platform devices are created for the buttons and
-they are marked as wakeup-capable by the ACPI button driver, there is
-no reason to continue doing it.
-
-Update acpi_wakeup_gpe_init() accordingly.
+No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
@@ -82,18 +75,30 @@ Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 v1 -> v2: No changes
 
 ---
- drivers/acpi/scan.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/acpi/battery.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1022,7 +1022,6 @@ static bool acpi_wakeup_gpe_init(struct
- 		    wakeup->sleep_state == ACPI_STATE_S5)
- 			wakeup->sleep_state = ACPI_STATE_S4;
- 		acpi_mark_gpe_for_wake(wakeup->gpe_device, wakeup->gpe_number);
--		device_set_wakeup_capable(&device->dev, true);
- 		return true;
- 	}
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1054,8 +1054,8 @@ static void acpi_battery_refresh(struct
+ /* Driver Interface */
+ static void acpi_battery_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct acpi_device *device = data;
+-	struct acpi_battery *battery = acpi_driver_data(device);
++	struct acpi_battery *battery = data;
++	struct acpi_device *device = battery->device;
+ 	struct power_supply *old;
+ 
+ 	if (!battery)
+@@ -1249,7 +1249,7 @@ static int acpi_battery_add(struct acpi_
+ 	device_init_wakeup(&device->dev, 1);
+ 
+ 	result = acpi_dev_install_notify_handler(device, ACPI_ALL_NOTIFY,
+-						 acpi_battery_notify, device);
++						 acpi_battery_notify, battery);
+ 	if (result)
+ 		goto fail_pm;
  
 
 
