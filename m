@@ -1,150 +1,112 @@
-Return-Path: <linux-acpi+bounces-19588-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19589-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001EDCBE6DA
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 15:56:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B892FCBEAD8
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 16:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6232530012ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 14:56:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B562F3069027
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFA8347BDD;
-	Mon, 15 Dec 2025 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0C73346A5;
+	Mon, 15 Dec 2025 15:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uw5yic3m"
+	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="H6FJAc8X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA52347BD1
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Dec 2025 14:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C367433469F
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Dec 2025 15:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765810003; cv=none; b=pGkPL+UGKsA7vIbCfYImIlkUJkRes2aztiLN4P/0o6hRAy7BUhAHzwZtzGt4uYS/tXQTUlQC+YHPopgimDEJdZpa/68sxkKyOHt9RgZK3dJWOa8Wj+M6lFCLiD3V2ff9zNEqXsrXPhLLJebURWRhgj4XPxh+AqdyrFZO64CUlJY=
+	t=1765812332; cv=none; b=BuJO2GjLeRfWWzhOxnGVK9w/6MIavqIm8gX31YgNbfm7n+p3szMmSv2KWd7WAcvRUuV/RNGL3LPq0Sh6aC+Pavp3EZbnzMbun2wNcyRw5ccxJfFQzgCKd9weXRljuK/DIYQRb8KdC3uGWt8Ni/y3+pfUWFqVCfLy2NIs5ZR5fEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765810003; c=relaxed/simple;
-	bh=twWhoUbJKPR/8jVZTfxHVigTMhKmw6JiszbW5iJiawE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fj5tiv84I8lLlp2YOPi2YSRpMzfrNE/Xnman+YnXV9dEGxTxP/g9FX4fDkgSUQoM52PmWNSggKhqJNdrRim6KPB6kQ7avt8dHIG2JNOIaSIF+oPlJnH8BFuBpQHA5gQuqMpk4N8L3Gh/YZR4od76arKdILhxI4jTVgHFBhDildY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uw5yic3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A79C19423
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Dec 2025 14:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765810003;
-	bh=twWhoUbJKPR/8jVZTfxHVigTMhKmw6JiszbW5iJiawE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Uw5yic3m7ycP1ZdHW63H5RjHppNQeqtrcbTLGlO1dJJkHUYX9TH5YKaALNqdhWVWO
-	 iCFTX76JFmMo+8aLA7/19yZYRZE6101LZguK7tgwXMJuU377UZtRmNtj9//UmzbKlb
-	 4yljpsn2iJfa+wCLblZZ1sAOzwJwUDnWbYndI3mnEtAl0BAqKVCJxc954zesBESKzq
-	 SCTlyjTSbcyN8hJBZ3teVlWHUt7vENE6odNV1xi8JMltrMYgymwqy+lAbxxscFyh7x
-	 yP3GCdJVOBreF0YCQ1W2X7kgsBcxGyQyd1ON1IIGdwZIw8Vl9i5idFIrVEt54vB9+o
-	 pWnTyOV8KdiBg==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-65749fe614bso1170401eaf.1
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Dec 2025 06:46:43 -0800 (PST)
-X-Gm-Message-State: AOJu0YxD/R0v37ckoUpDFemvTvsSqq2aSansBu/fDIh0bY8xjZlQSeS6
-	7jEkdmiAjONRl5DIT32EbgEWUTmlYxFA1WKhPchoxJDTDGesAMSJmrmi/mMY5EFfhDqhIXAYdG/
-	/bvZXiERggeKRIYSntPVXkR7Ocvp3jZI=
-X-Google-Smtp-Source: AGHT+IExAZVKeKHHhGzainu6YEOfQfX04W9eWTU0VrAgmVhc0oxLZYiptzPIMkdPYDLOrSgfpGyYd0PmNj4UfPBwwaU=
-X-Received: by 2002:a05:6820:1ca9:b0:659:9a49:8e43 with SMTP id
- 006d021491bc7-65b451af82cmr4794298eaf.19.1765810002683; Mon, 15 Dec 2025
- 06:46:42 -0800 (PST)
+	s=arc-20240116; t=1765812332; c=relaxed/simple;
+	bh=p6TXBvjDh6qgcaWnx0SV8owIsLEZuQUARmz03l/TRN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A4QimFqbkXVG4tjiWJzSrMPL7904vzYrLeFf7u+8dxiiFljDpvFBloWws0G3BpwyH9pXA6GjehJ9oxencZE+qNiHgCipGBgXBlTS/JejIgTLbReY9N9/4dnltNF7ccMLbHHkHszej4A2neSih17ouFu51H1AucrDrYzZxYaOaV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=H6FJAc8X; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3eae4e590a4so1833366fac.1
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Dec 2025 07:25:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1765812330; x=1766417130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p6TXBvjDh6qgcaWnx0SV8owIsLEZuQUARmz03l/TRN4=;
+        b=H6FJAc8XM34CfT5y9WJgYJy8xQdV/Evi5kiJLZWMYgz9J3zDpA12uF2ti2IaB1RjE4
+         rrHZ7k3DX8XGJHR3LCvu4WaIMFUEN8Vp3PAXt7XkgKgDOv97raB9pvT5dNfbBUZ9dYMO
+         GmwrzAxou9AnPK/s3QrFatz4BA2Pxjm/KiTu/6a21RePaSLd43DUz+gySUCd4UWwE3QT
+         LIe/MrfBjdsdIHw1rjwEnbUT+XVCtH7csj29QPXmPDq+bZEfUL+FgHjeuI9OH/AfyjmU
+         7mLs2IA6rwzkk3DrvvG2UcmaN0fSRPHXHDFLF+OhiQ5X44BO5m6odGX1Ny1Sjbhc7680
+         5eOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765812330; x=1766417130;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p6TXBvjDh6qgcaWnx0SV8owIsLEZuQUARmz03l/TRN4=;
+        b=nUkXlU5e8TiXk0IPIFgZIUi7f2iJoGKquuo7EZzjX58mSiN1L+EcemUx+cdC9Ft0VD
+         t4/gj1CeYdTrzl1A1HFD9A4tYE1shU2sFGVbTnsVC4C7OicoQq0Q/ZUnN3hYIzcCcR/y
+         4azu2fli5sHVuc1IPsSBRkOvmZklyjqLQGum0LcgWhiEXjiU2XpsZP/6NPkWDY6eIUqK
+         ossZHgPOK6zCIEIcZuo+qRs0nGFShR60SwDRrlUExPEYhkKdjzVQgDOvmchm75VVrjho
+         h/xFCns2DofnV/yVD6quQHSPrwzyx4J6Z19gkNjR74YOrdVprr+BQAjJH0FCby08jLvr
+         ZPMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWpMcYkaZcSu/VZk0aZ+6yGdOYVlLX285SpMddIEgb3Jm9//kBkYIf+6vzAgevwEk55G3SUbSCLeJ5q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx3yMPzyOoKnNskF2EtTq6KUoaQ9kcius5Jx4zLiGOUahyK4OJ
+	lftMS6TQTPpCwf0+bR50kq1twR1AWZjUBcXDQdMOBV4JcAt+JpZaYfoyB0Ijy69tP1l03be1s/N
+	/qS6l
+X-Gm-Gg: AY/fxX6RYS31bzNwYHxDpXLipCiTILSGklkeI79FDNZPOMP+zJTnXT3ldxQTndi3+W8
+	ZUeUTYek2cjlXzmv88z+RKcnhO1wlheG854NLYTdGrzQ8uCrcJ6Rd0zy+syPVjtncOseOGkXDQd
+	9xFesdFMbdw0u4Bg/WF0ApCOIRt+/8Eu1D5c93kWt2Q+uGCK8XSUAA/2fGdJ7va00EDQc0yPvdB
+	blOj/CI75jrD+K3ZIJsq0S7p7C4Z0lnX8H2TJHex7NN71m3IN1JAaueTQJ2sjawcM+dBtz8z2sR
+	zQkWMD4EXgJmqki9LqKQ8f/4vyCCiWhTY6qq3Wyr95chSBJ8svm40XXIyLwK4Xq8mKLfydMxIWJ
+	8xqklRZ6fCRQADTeWptruJ5yCgpoHOP8AB5zyuW+UvmHR9DQkGgfeIe+cUZuW5BGpJHRE+OjgbA
+	sGfAZWJAkKkwUfQqWoYw==
+X-Google-Smtp-Source: AGHT+IHgPOrTRQF96zNhkM8x9pVuVnBQeIOdwAMQvt+xZMsAf4Jl3TGl+PrLSZ4K+eyqWUAooZJ3oQ==
+X-Received: by 2002:a4a:e905:0:b0:65b:31e2:2e0f with SMTP id 006d021491bc7-65b45284858mr5277127eaf.66.1765812329818;
+        Mon, 15 Dec 2025 07:25:29 -0800 (PST)
+Received: from kf-m2g5 ([2607:fb90:bf8f:aac:6528:d0df:8e4f:ea9c])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f614b7c66fsm4718564fac.3.2025.12.15.07.25.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 07:25:29 -0800 (PST)
+Date: Mon, 15 Dec 2025 09:25:25 -0600
+From: Aaron Rainbolt <arainbolt@kfocus.org>
+To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: kernel-team@lists.ubuntu.com, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, mmikowski@kfocus.org,
+ rjw@rjwysocki.net
+Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
+ detected on Arrow Lake hardware
+Message-ID: <20251215092525.6ea95739@kf-m2g5>
+In-Reply-To: <33fc5ba96b80f1eeb69777822cfddefe64100540.camel@linux.intel.com>
+References: <20251214184507.21f95134@kf-m2g5>
+	<33fc5ba96b80f1eeb69777822cfddefe64100540.camel@linux.intel.com>
+Organization: Kubuntu Focus
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2685338.Lt9SDvczpP@rafael.j.wysocki>
-In-Reply-To: <2685338.Lt9SDvczpP@rafael.j.wysocki>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Dec 2025 15:46:29 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iYCVW09z0P2UUS6bGiYV6R5ajPaxVfDZeBKwF4Q+Fhkw@mail.gmail.com>
-X-Gm-Features: AQt7F2pgh5clWqf0HzR_BfIvoqyimoEoW88PxeX7k8RqwBex2QB63V3XrFRxlgA
-Message-ID: <CAJZ5v0iYCVW09z0P2UUS6bGiYV6R5ajPaxVfDZeBKwF4Q+Fhkw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] ACPI: Convert button and battery drivers to
- platform ones
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Linux PM <linux-pm@vger.kernel.org>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 15, 2025 at 3:04=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> Hi All,
->
-> This is a v2 of
->
-> https://lore.kernel.org/linux-acpi/2339822.iZASKD2KPV@rafael.j.wysocki/
->
-> with the majority of patches unchanged and some of them updated, mostly
-> for cleanliness.
->
-> The following intro still applies.
->
-> While binding drivers directly to struct acpi_device objects allows
-> basic functionality to be provided, at least in the majority of cases,
-> there are some problems with it, related to general consistency, sysfs
-> layout, power management operation ordering, and code cleanliness.
->
-> First of all, struct acpi_device objects represent firmware entities
-> rather than hardware and in many cases they provide auxiliary information
-> on devices enumerated independently (like PCI devices or CPUs).  It is
-> therefore generally questionable to assign resources to them or create
-> class devices and similar under them because they don't provide
-> functionality associated with those entities by themselves (for example,
-> they don't generate wakeup or input events).
->
-> As a general rule, a struct acpi_device can only be a parent of another
-> struct acpi_device.  If that's not the case, the location of the child
-> device in the device hierarchy is at least confusing and it may not be
-> straightforward to identify the piece of hardware corresponding to that
-> device.
->
-> Using system suspend and resume callbacks directly with struct acpi_devic=
-e
-> objects is questionable either because it may cause ordering problems to
-> happen.  Namely, struct acpi_device objects are registered before any
-> devices corresponded to by them and they land on the PM list before all
-> of those devices.  Consequently, the execution ordering of their PM
-> callbacks may be different from what is generally expected.  Moreover,
-> dependencies returned by _DEP objects don't generally affect struct
-> acpi_device objects themselves, only the "physical" device objects
-> associated with them, which potentially is one more source of inconsisten=
-cy.
->
-> All of the above means that binding drivers to struct acpi_device "device=
-s"
-> should generally be avoided and so this series converts three generic ACP=
-I
-> device drivers, the button driver, the tiny power button driver, and the
-> battery driver, to platform drivers.
->
-> Patches [01-03/10] are preliminary for the button driver conversions.  Pa=
-tch
-> [01/10] causes platform devices to be registered for "fixed event device"
-> buttons, patch [02/10] cleans up the "fixed event device" registration co=
-de,
-> and patch [03/10] rearranges the notification handling code in the button
-> driver to use internal "button" structures for passing data instead of
-> struct acpi_device objects.
->
-> Patches [04-05/10] convert the two button drivers to platform ones and
-> patches [06-07/10] do some cleanups on top of them.
->
-> Patches [08-09/10] are preliminary for the battery driver conversion whic=
-h
-> is carried out in patch [10/10].
+On Mon, 15 Dec 2025 06:16:10 -0800
+srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
 
-This series is now present in the acpi-queue branch in my tree:
+> This data is not consistent with the reported frequencies M-TEST
+> frequencies.
+> I need to get hold of such internal system with the same processor and
+> check what is reported.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-acpi-queue
+Thank you Srinivas! Please let me know if you need anything else
+from here.
 
-along with some other material (mostly related to driver conversions)
-posted recently.
-
-Thanks!
+--
+Aaron
 
