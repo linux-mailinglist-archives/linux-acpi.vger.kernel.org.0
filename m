@@ -1,60 +1,54 @@
-Return-Path: <linux-acpi+bounces-19571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19586-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB3FCBE1FC
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 14:46:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8388DCBE590
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 15:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A587300310F
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 13:46:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 51CC1300FA5D
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Dec 2025 14:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C59327BF8;
-	Mon, 15 Dec 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D687E3385A7;
+	Mon, 15 Dec 2025 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZNAKkxA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+JcviIx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D27327202;
-	Mon, 15 Dec 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB17F3385A2;
+	Mon, 15 Dec 2025 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765805818; cv=none; b=mNq3U8dllQK9ofHnnUVZzrpQw4aApKlp1zndOwdJ2Iu/rReTfF0t0TRxGnrTT+RvZFoblV3MUBfTgTZJXHT7Exucfs0RaLjNnbU/7F5dP3ipJYXMzWUwwLcMTzAUqx0R3Jcxx9x4TxYcJU56zOBrOWUvfDhiDZsfA5Sn0ixCFnw=
+	t=1765807475; cv=none; b=gBV0tjdqrXnOAQlPkVKgeZc0orcZxBkOlOaob7U8CTIFs8WnwUlX/2oecWeZpgS7dKmwWsKfcjvharTtDWXaDElOcP5iEqRcVkMcffZg8kftWePDzja/6BaNgZdqoSxs76XizstL3Ban1na6aA5SOBEhL7SDYLT0RG+YOT6nYrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765805818; c=relaxed/simple;
-	bh=SxFIlck54wFFH4N7Ix/Ab4hh95qP/TLreCxLHycXs9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bvRuHf01WB1nEa8qbE6d+RZX2ymJ2R0G7/+lSphXv0ZvV176RJKc87eVe353yyRH79EjUiwLo+VLnq7XX0ZZD/F76ATf89zxiNyQYmXiQTBXXbqgESWyESFHdZFUD/ksWYF/EBXH9MEoFs2AEzfJEoVz8r2y2Tn5BaslJpCDDBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZNAKkxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FC2C4CEF5;
-	Mon, 15 Dec 2025 13:36:56 +0000 (UTC)
+	s=arc-20240116; t=1765807475; c=relaxed/simple;
+	bh=LclMBG+oMB2W3XcVZd5f9au0ndsmhr3xP+voKeNCflc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b6yyfu7D6GDNAFEaibcadKcbkShd4G9k8jZ8ADjhshanDoMsujcVGljaA7T8s2Md38OOIcRezymnbS1fTATy7fJTnRqRRSZt5x57Hii4z9QUj74pbClEJNb2F02AyT8iG44P9dn2PZpIj8ERzQwqwC4u2FttoJaoO6RGBqkUVMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+JcviIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29030C19423;
+	Mon, 15 Dec 2025 14:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765805818;
-	bh=SxFIlck54wFFH4N7Ix/Ab4hh95qP/TLreCxLHycXs9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZNAKkxAZpy40Lt0lmDglR67L6V96McwexlJfrn5lktJtbJPBDRFsYCwwsJt0PKw0
-	 tUZcjqlGrNvclAu8FtU8NHXjQW1LQyjyo554Js2Va1+00v8RKMc0Ae/56+jpdOeEso
-	 zk9nlHQNfVvBdwh6tYVPV2oQ13wo3wKhmk1WWedhpFCcqXjmDvfSiqpYojcHOFJd3i
-	 +oB70nQdaagJP7787lo3VI6JrZQuMHgZ/HfynWUqqdbxvuRPXXqk+pYRB19TCgHkkj
-	 cbZOfNranble9b8JRUgBUa/9tV7UHJyguPLOdr/5w8NOdV6xweI+d3lzCIkptX0v9f
-	 4GQXuN4kss42Q==
+	s=k20201202; t=1765807475;
+	bh=LclMBG+oMB2W3XcVZd5f9au0ndsmhr3xP+voKeNCflc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Q+JcviIxS8mVhMtj3xW2UX48UygXiuHGYNPzHEI8BoXl46Xfb1eexQMnnBsBngabY
+	 84SHaO8a/uo4QsK06R1CFkgmMgQlVN4xNf9znyBDOiZNoZz15PP9jxV7b6qWcxcyEX
+	 DZE6eB/e+yBk1JtXPEQ+EO99d1hRo/5TNx7brjp0kIPoQ2h2WsxHGbF/Dwnw0VjGxv
+	 3Pvpxs7WcE9J7x7AsN93ezamHSnqbzHp8gxVBcPUEAR9JiCE/IEKxSnAn9E/pswBAV
+	 yOrzTrkhax4TxCxjkBMDKbRFC3B7BI4Of51Nwh/wyH1I4s1glxzoAMcOsBCXIYcxUe
+	 uZjUOfwfr4+gw==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Linux PCI <linux-pci@vger.kernel.org>, Alex Hung <alexhung@gmail.com>,
- Hans de Goede <hansg@kernel.org>,
- Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- platform-driver-x86@vger.kernel.org, AceLan Kao <acelan.kao@canonical.com>
-Subject: [PATCH v1 4/4] ACPI: PNP: Drop acpi_nonpnp_device_ids[]
-Date: Mon, 15 Dec 2025 14:36:49 +0100
-Message-ID: <3587570.QJadu78ljV@rafael.j.wysocki>
+Cc: Hans de Goede <hdegoede@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ Linux PM <linux-pm@vger.kernel.org>,
+ Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+ Armin Wolf <w_armin@gmx.de>
+Subject:
+ [PATCH v2 00/10] ACPI: Convert button and battery drivers to platform ones
+Date: Mon, 15 Dec 2025 14:50:25 +0100
+Message-ID: <2685338.Lt9SDvczpP@rafael.j.wysocki>
 Organization: Linux Kernel Development
-In-Reply-To: <7888874.EvYhyI6sBW@rafael.j.wysocki>
-References: <7888874.EvYhyI6sBW@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,51 +58,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi All,
 
-Now that "system" devices are represented as platform devices, they
-are not claimed by the PNP ACPI scan handler any more and platform
-devices can be created for ACPI device objects listing "system"
-device IDs as their compatible device IDs.
+This is a v2 of
 
-Accordingly, it should not be necessary any more to add device IDs
-to acpi_nonpnp_device_ids[], so drop it.
+https://lore.kernel.org/linux-acpi/2339822.iZASKD2KPV@rafael.j.wysocki/
 
-No intentional functional impact.
+with the majority of patches unchanged and some of them updated, mostly
+for cleanliness.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/acpi_pnp.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+The following intro still applies.
 
---- a/drivers/acpi/acpi_pnp.c
-+++ b/drivers/acpi/acpi_pnp.c
-@@ -344,24 +344,10 @@ static bool acpi_pnp_match(const char *i
- 	return false;
- }
- 
--/*
-- * If one of the device IDs below is present in the list of device IDs of a
-- * given ACPI device object, the PNP scan handler will not attach to that
-- * object, because there is a proper non-PNP driver in the kernel for the
-- * device represented by it.
-- */
--static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
--	{"INT3F0D"},
--	{"INTC1080"},
--	{"INTC1081"},
--	{"INTC1099"},
--	{""},
--};
--
- static int acpi_pnp_attach(struct acpi_device *adev,
- 			   const struct acpi_device_id *id)
- {
--	return !!acpi_match_device_ids(adev, acpi_nonpnp_device_ids);
-+	return true;
- }
- 
- static struct acpi_scan_handler acpi_pnp_handler = {
+While binding drivers directly to struct acpi_device objects allows
+basic functionality to be provided, at least in the majority of cases,
+there are some problems with it, related to general consistency, sysfs
+layout, power management operation ordering, and code cleanliness.
+
+First of all, struct acpi_device objects represent firmware entities
+rather than hardware and in many cases they provide auxiliary information
+on devices enumerated independently (like PCI devices or CPUs).  It is
+therefore generally questionable to assign resources to them or create
+class devices and similar under them because they don't provide
+functionality associated with those entities by themselves (for example,
+they don't generate wakeup or input events).
+
+As a general rule, a struct acpi_device can only be a parent of another
+struct acpi_device.  If that's not the case, the location of the child
+device in the device hierarchy is at least confusing and it may not be
+straightforward to identify the piece of hardware corresponding to that
+device.
+
+Using system suspend and resume callbacks directly with struct acpi_device
+objects is questionable either because it may cause ordering problems to
+happen.  Namely, struct acpi_device objects are registered before any
+devices corresponded to by them and they land on the PM list before all
+of those devices.  Consequently, the execution ordering of their PM
+callbacks may be different from what is generally expected.  Moreover,
+dependencies returned by _DEP objects don't generally affect struct
+acpi_device objects themselves, only the "physical" device objects
+associated with them, which potentially is one more source of inconsistency.
+
+All of the above means that binding drivers to struct acpi_device "devices"
+should generally be avoided and so this series converts three generic ACPI
+device drivers, the button driver, the tiny power button driver, and the
+battery driver, to platform drivers.
+
+Patches [01-03/10] are preliminary for the button driver conversions.  Patch
+[01/10] causes platform devices to be registered for "fixed event device"
+buttons, patch [02/10] cleans up the "fixed event device" registration code,
+and patch [03/10] rearranges the notification handling code in the button
+driver to use internal "button" structures for passing data instead of
+struct acpi_device objects.
+
+Patches [04-05/10] convert the two button drivers to platform ones and
+patches [06-07/10] do some cleanups on top of them.
+
+Patches [08-09/10] are preliminary for the battery driver conversion which
+is carried out in patch [10/10].
+
+Thanks!
+
+
 
 
 
