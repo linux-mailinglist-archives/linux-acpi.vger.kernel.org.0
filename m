@@ -1,116 +1,174 @@
-Return-Path: <linux-acpi+bounces-19626-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19627-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC37CC7784
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 13:02:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C87CC789D
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 13:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E061F301029F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:02:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB32830206C0
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663D63164D6;
-	Wed, 17 Dec 2025 12:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B3733C503;
+	Wed, 17 Dec 2025 12:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="VSHXLGl/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZk1DshR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4D6313E2F
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 12:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3CE344046
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 12:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765972926; cv=none; b=NIFGZ1HaYkB6VI68TvbdOkOM/XZezU390JsZm+ZJ3PcpEfGf81uOQD4epFo75fRePDS5k61h3XrnxfANWDuRKQ00ahaeu4mtm0ux+r+CEHE8iuCBFtrd75B7/dJO2W1BujVyrBZJLxp89cVdAoq39nhijlqukeOSz5iXNKYLEW0=
+	t=1765973727; cv=none; b=lBTm0qxbrjxOM8dRTgvuPjnalpIPWND80EKsQokd+comIq2QN/FSdRrEnMcOWmV21SFXkEPTgUS9V1LTOrGFWBEyaSUAGdpQjivvwslB1w+/T/86IJKyuTK70829w/dlM5F9wSFHXkVUllRz3vSD2gpme8+Zeq5leDw2e2RqNg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765972926; c=relaxed/simple;
-	bh=8GyF7YDaQPe51UBzhsW5j+a+kF+47fTpcqJ9od5cgtw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g2rytmfJOZH8S5/TWnGkN0iWk5jQxYI4TveSv1Kn1CaDgBAOlxijGwQa3IvF2j3eoeDgxhujewizlAvIwj/b26bkfsBL+syqIX41n2idpm5ZkT+AO7F74bxOjkVxD/5DTOp1RK5TnWe6RsGHRUPDAdPEKqpqMCo+fHMdi36AkBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=VSHXLGl/; arc=none smtp.client-ip=185.70.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1765972915; x=1766232115;
-	bh=8GyF7YDaQPe51UBzhsW5j+a+kF+47fTpcqJ9od5cgtw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VSHXLGl/ACYsYoQ2/lf8EEaHuIw2Rtwp9qoVnaG7gEXhjI0JZu9ZZO73YSNyoPaMz
-	 DwtUExF3UMMqVJbOyFzpqyH6rRcnm4KjJzUR09kDubwt0k/9cNS9ftRtbXT0kPftx5
-	 Cv5fzDzDk9UKrYNvz0IBrH38daiXN1kN/vF/zWDKvUzykohd0RskjjXOmXTfs5hDBL
-	 R24h8sX6sXktvtcJ2gQCD5MuaB/N1PRc0pNFEE0jkm4I9bGe/b6mCjXvGVtSFRGRxw
-	 rXW5mEjZrEzav8AvUxyFSyj43SY6jxfAy3+YHS5NgJ3wh7qqUazNn34SCxA5U46qG5
-	 CQhF+9CcEbsDQ==
-Date: Wed, 17 Dec 2025 12:01:52 +0000
-To: Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-From: francesco.lauritano1@protonmail.com
-Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, Francesco Lauritano <francesco.lauritano1@protonmail.com>
-Subject: [PATCH] gpiolib: acpi: Disable edge events on boot on ASUS ROG Strix G16 G614PP
-Message-ID: <20251217120146.51321-1-francesco.lauritano1@protonmail.com>
-In-Reply-To: <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
-References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com> <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
-Feedback-ID: 66654272:user:proton
-X-Pm-Message-ID: d4bf165738a203d71d7c7edc4aa5b456e875c602
+	s=arc-20240116; t=1765973727; c=relaxed/simple;
+	bh=/V8ME6f+TcgocYWeUfh3JcmMnxNfhnvIgnWS2xnaweE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ucw+8geRBQsRorL6MzZrbvKi/KUxuM3kS0l1xjwgBWxqcXjrEgLaObpPm8PT49hHVed9wdT6o47R0GqWHrChMcANOnmxWMKqEl67uvPQc6+aVw//fkNfWKvzp6lgn5TDZ+3npLWId5TbevpzYjlHCEt1zgTG5LZfLo7iWtkeouQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZk1DshR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA178C4AF0B
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 12:15:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765973726;
+	bh=/V8ME6f+TcgocYWeUfh3JcmMnxNfhnvIgnWS2xnaweE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WZk1DshRF4J8H62SIWCs+GT0cHE9p8SDp+FfTS1QjiVp/HeNxOw5xWp4IY4a8Vpzt
+	 TZQft9cB1IDI8t5gAli9IFhZVKg9F7WAwv8i9exLJnyHFKEOE1suY9JJ5XzAnmXwO7
+	 aBEsb0WN2iO8c3cmxO6KN5jLp3xzrxiExdwwzXS2qD+BwvkLSePR+KyCu9nunBF+rZ
+	 fBD30EDyqY57UPe7RS1wHs0GBdwy1RLLwCgRE8+P4lMm0UrDKlHa5wEWkG/yZwiNJg
+	 6JWpCBQ920XRKV+qYSycQUXJxNkqRsmG5JrmL5C8AW+g5LAajpm35IIkxK0QfOzNSI
+	 JGt/8bRPGFEFg==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-3eae4e590a4so3001444fac.1
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 04:15:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX4XGbZRJz2g/dRzDqOjmrE7455iha9QCAvL5r3HuPJek8LQS8I5fZRSiZ/Wf4q1LQQ5zoKiR5UhdNy@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOtRQnvonC1jgZtgUFb4ueuZfE/oLMv/q6cjI6PeyhulWFI8wG
+	dxCkTCAO1SrRaSZesF0o/ezAiEf5/B8euMSTes4tVHzhN43DQMpcxLjUkEgF5Mp8oSg9SCviOPK
+	Ut2jgakeHdOXjFlWwntCygf2BbSrGdBc=
+X-Google-Smtp-Source: AGHT+IFyPbK46RYLF3hgXBIkJIBqNyWVP/G0zIpkadF1YIRRTqJbQ/yhJ/sPg9kgC4x6e6vBet5QlpdwjzUpLYOVIYQ=
+X-Received: by 2002:a05:6820:229c:b0:659:9a49:8e54 with SMTP id
+ 006d021491bc7-65b451c58bdmr8367653eaf.36.1765973725926; Wed, 17 Dec 2025
+ 04:15:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <12803663.O9o76ZdvQC@rafael.j.wysocki> <6225184.lOV4Wx5bFT@rafael.j.wysocki>
+ <5536fc1a-4bc9-413e-a903-08090217979b@amd.com>
+In-Reply-To: <5536fc1a-4bc9-413e-a903-08090217979b@amd.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 17 Dec 2025 13:15:14 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iaH9eU1A7d0TmJC4cktO=zh1r998R-59FyDQa1xJOCrQ@mail.gmail.com>
+X-Gm-Features: AQt7F2pYJy-v4RTgH2Xseqt9He4niysrExACC7GMuG2cmFyoAqN6C3IhQFnIKEY
+Message-ID: <CAJZ5v0iaH9eU1A7d0TmJC4cktO=zh1r998R-59FyDQa1xJOCrQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] ACPI: bus: Adjust error handling in acpi_run_osc()
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Bjorn Helgaas <helgaas@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: Francesco Lauritano <francesco.lauritano1@protonmail.com>
+On Tue, Dec 16, 2025 at 11:04=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+>
+>
+> On 12/16/2025 2:17 PM, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Some platform firmware incorrectly sets the OSC_CAPABILITIES_MASK_ERROR
+> > bit in its _OSC return buffer even if no support bits have been actuall=
+y
+> > masked, which causes acpi_run_osc() to return an error when executed
+> > with OSC_QUERY_ENABLE clear in the OC capabilities buffer.  As a result=
+,
+> > the OS assumes that the _OSC evaluation has failed and the platform has
+> > not acknowledged any capabilities, while the platform assumes that it
+> > actually has acknowledged some of them.  This confusion may lead to
+> > missing functionality (and possibly other issues) down the road.
+> >
+> > To address this problem, adjust acpi_run_osc() to avoid returning an
+> > error when OSC_CAPABILITIES_MASK_ERROR is set in the return buffer
+> > and OSC_QUERY_ENABLE is clear in the OC capabilities, but all of the
+> > bits in the support mask supplied by the OS are also set in the bit
+> > mask returned by the platform firmware.
+>
+> If possible can you add some more context to explain which _OSC was
+> behaving this way?
 
-On the ASUS ROG Strix G16 G614PP (2025), the kernel can stall for ~36
-seconds during late init in acpi_gpio_handle_deferred_request_irqs().
+\_SB._OSC
 
-Booting with gpiolib_acpi.run_edge_events_on_boot=3D0 avoids the stall and
-restores normal boot times.
+>  And if it's production hardware what hardware was affected?
 
-Add a DMI quirk to disable edge events on boot by default on this model.
+No, it isn't, but this was not caught by Windows validation, so it is
+likely that Linux will be exposed to this again.
 
-Link: https://lore.kernel.org/platform-driver-x86/6iFCwGH2vssb7NRUTWGpkubGM=
-NbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hz=
-PguTa0s=3D@protonmail.com/
-
-Tested-by: Francesco Lauritano <francesco.lauritano1@protonmail.com>
-Signed-off-by: Francesco Lauritano <francesco.lauritano1@protonmail.com>
----
- drivers/gpio/gpiolib-acpi-quirks.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi=
--quirks.c
-index a0116f004..763dd3cbd 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -370,6 +370,22 @@ static const struct dmi_system_id gpiolib_acpi_quirks[=
-] __initconst =3D {
- =09=09=09.ignore_wake =3D "ASCP1A00:00@8",
- =09=09},
- =09},
-+=09{
-+=09=09/*
-+=09=09 * The ASUS ROG Strix G16 (2025) has a buggy ACPI GPIO configuration
-+=09=09 * causing acpi_gpio_handle_deferred_request_irqs() to stall for
-+=09=09 * ~36 seconds during boot.
-+=09=09 *
-+=09=09 * Found in BIOS G614PP.307.
-+=09=09 */
-+=09=09.matches =3D {
-+=09=09=09DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+=09=09=09DMI_MATCH(DMI_PRODUCT_NAME, "ROG Strix G16 G614PP_G614PP"),
-+=09=09},
-+=09=09.driver_data =3D &(struct acpi_gpiolib_dmi_quirk) {
-+=09=09=09.no_edge_events_on_boot =3D true,
-+=09=09},
-+=09},
- =09{
- =09=09/*
- =09=09 * Spurious wakeups, likely from touchpad controller
---=20
-2.52.0
-
-
+> It sounds like a viable workaround, I just want to make sure that if we
+> have to change this again later we have more information to look back upo=
+n.
+>
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >   drivers/acpi/bus.c |   23 +++++++++++++++--------
+> >   1 file changed, 15 insertions(+), 8 deletions(-)
+> >
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -240,9 +240,13 @@ acpi_status acpi_run_osc(acpi_handle han
+> >               status =3D AE_TYPE;
+> >               goto out_kfree;
+> >       }
+> > +     if (out_obj->buffer.length <=3D OSC_SUPPORT_DWORD) {
+> > +             status =3D AE_BAD_DATA;
+> > +             goto out_kfree;
+> > +     }
+> >       /* Need to ignore the bit0 in result code */
+> >       errors =3D *((u32 *)out_obj->buffer.pointer) & ~(1 << 0);
+> > -     if (errors) {
+> > +     if (errors & ~OSC_CAPABILITIES_MASK_ERROR) {
+> >               if (errors & OSC_REQUEST_ERROR)
+> >                       acpi_print_osc_error(handle, context,
+> >                               "_OSC request failed");
+> > @@ -252,17 +256,20 @@ acpi_status acpi_run_osc(acpi_handle han
+> >               if (errors & OSC_INVALID_REVISION_ERROR)
+> >                       acpi_print_osc_error(handle, context,
+> >                               "_OSC invalid revision");
+> > -             if (errors & OSC_CAPABILITIES_MASK_ERROR) {
+> > -                     if (((u32 *)context->cap.pointer)[OSC_QUERY_DWORD=
+]
+> > -                         & OSC_QUERY_ENABLE)
+> > -                             goto out_success;
+> > +             status =3D AE_ERROR;
+> > +             goto out_kfree;
+> > +     }
+> > +     if (errors) {
+> > +             u32 retbuf =3D ((u32 *)out_obj->buffer.pointer)[OSC_SUPPO=
+RT_DWORD];
+> > +             u32 capbuf =3D ((u32 *)context->cap.pointer)[OSC_SUPPORT_=
+DWORD];
+> > +             u32 querybuf =3D ((u32 *)context->cap.pointer)[OSC_QUERY_=
+DWORD];
+> > +
+> > +             /* OSC_CAPABILITIES_MASK_ERROR is set in errors. */
+> > +             if (!(querybuf & OSC_QUERY_ENABLE) && (capbuf & retbuf) !=
+=3D capbuf) {
+> >                       status =3D AE_SUPPORT;
+> >                       goto out_kfree;
+> >               }
+> > -             status =3D AE_ERROR;
+> > -             goto out_kfree;
+> >       }
+> > -out_success:
+> >       context->ret.length =3D out_obj->buffer.length;
+> >       context->ret.pointer =3D kmemdup(out_obj->buffer.pointer,
+> >                                      context->ret.length, GFP_KERNEL);
+> >
+> >
+> >
+>
 
