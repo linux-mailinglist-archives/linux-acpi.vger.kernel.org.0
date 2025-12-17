@@ -1,36 +1,36 @@
-Return-Path: <linux-acpi+bounces-19616-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19617-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC7ECC755D
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:29:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67EECC7578
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5BA23009FE7
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 11:29:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3D2830440F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 11:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368A0350A31;
-	Wed, 17 Dec 2025 11:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B9935293C;
+	Wed, 17 Dec 2025 11:30:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9809F350A28;
-	Wed, 17 Dec 2025 11:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E64350D61;
+	Wed, 17 Dec 2025 11:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765970993; cv=none; b=H7y7UcoqDIaCYOs/s7xVaPSD7OSwlMvISKXnhLusBrPzQZhq5Mr9D/rlhiwpWFS9jXLNh5g8zEu5LIly1lJogyqacAoKhtnXMLsjoRy9ZpVUjSd7jnac01EVnWraIobslZieoAief9WnzF+tiRLrwV44S0sDm8Y73KKXoR8PVDI=
+	t=1765971009; cv=none; b=eCOHBKUSrCFyBJFNYSU0aIZEN2eEP0PWVtts97hp6VeYILS9PAAbaqjb8tf3Z0vlbR1+exDpqt23hka+7nIs0sQ2X8+8oF5Yod/uq71XY3SrE2CTY0kLoYAiUvvKFle2uAPJ+ZoeRESePjhp/Mvjg8q3JOgKB+4LYLr8R7YStyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765970993; c=relaxed/simple;
-	bh=4dJow6oM0o/c2WNql+5NWkbYQLnVpx+lhpuMOSpZUgI=;
+	s=arc-20240116; t=1765971009; c=relaxed/simple;
+	bh=gITIBRpPiEtbePwwBSTKwprEbZSzEixCYoK28vfg3xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZX/aydgaPkK2CDV3XxAX9w7jDbBOto2Yh626xX1cHQxWoxC7ITb8KceSBh/9ZKjL+/ZTxJy06acpnOGMYpl4Pw5edzKDMcbPH0XRkPeeGaeebXEOYsW8B1JGZMmrr14LgdggSGYd4Zt7C5b7Z8qvX8rLJVxWhjmQpNnflEvMou0=
+	 MIME-Version; b=qNuAJCkmvL3W+OuY0NQFXZaXyIPqWrdnzMOha3z1CR7Q4I0ISQ7Uz9ALxwE08mD2E2HTZDdEMC70SHq7AUOsAwIX8Bba3jiS+Dsmvm3mHuS+V53wMB+JHbiqNzK4HSIoKta6kof3081u18xNumSMUDD1w5mh+ByjEqo99mzPGc4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE87914BF;
-	Wed, 17 Dec 2025 03:29:43 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 529A71516;
+	Wed, 17 Dec 2025 03:30:00 -0800 (PST)
 Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 063213F73B;
-	Wed, 17 Dec 2025 03:29:48 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 971CD3F73B;
+	Wed, 17 Dec 2025 03:30:05 -0800 (PST)
 From: Ahmed Tiba <ahmed.tiba@arm.com>
 To: linux-acpi@vger.kernel.org,
 	devicetree@vger.kernel.org
@@ -47,9 +47,9 @@ Cc: tony.luck@intel.com,
 	Dmitry.Lamerov@arm.com,
 	Michael.Zhao2@arm.com,
 	ahmed.tiba@arm.com
-Subject: [PATCH 04/12] ras: add estatus queuing and IRQ/NMI handling
-Date: Wed, 17 Dec 2025 11:28:37 +0000
-Message-ID: <20251217112845.1814119-5-ahmed.tiba@arm.com>
+Subject: [PATCH 05/12] ras: flesh out estatus processing core
+Date: Wed, 17 Dec 2025 11:28:38 +0000
+Message-ID: <20251217112845.1814119-6-ahmed.tiba@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251217112845.1814119-1-ahmed.tiba@arm.com>
 References: <20251217112845.1814119-1-ahmed.tiba@arm.com>
@@ -61,119 +61,110 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hook the estatus core into the IRQ-work and NMI-safe queues that used to
-live in GHES. The new code records CPER payloads into a per-source node,
-ships them via irq_work so heavy processing happens out of the NMI path,
-and adds the task_work hook used by memory-failure. Behaviour remains the
-same as before, but the logic now lives alongside the rest of the estatus
-infrastructure so both GHES and DeviceTree providers can reuse it.
+Complete the estatus core by adding the cache throttling logic, vendor
+record notifier plumbing, IRQ/NMI queue handling and the processing
+paths that walk CPER records. Landing the full implementation ahead of
+the GHES conversion keeps the follow-on patches focused on their call
+sites while leaving behaviour unchanged for existing users.
 
 Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
 ---
- drivers/firmware/efi/estatus.c | 78 ++++++++++++++++++++++++++++++++++
- include/linux/estatus.h        |  3 +-
- 2 files changed, 79 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/estatus.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/firmware/efi/estatus.c b/drivers/firmware/efi/estatus.c
-index 5a848d1b218e..8b62b23e2e93 100644
+index 8b62b23e2e93..8043d68f907b 100644
 --- a/drivers/firmware/efi/estatus.c
 +++ b/drivers/firmware/efi/estatus.c
-@@ -973,3 +973,81 @@ void estatus_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- 	arch_apei_report_mem_error(sev, mem_err);
- #endif
- }
-+
-+int estatus_in_nmi_queue_one_entry(struct estatus_source *source, enum fixed_addresses fixmap_idx)
-+{
-+	estatus_generic_status *estatus, tmp_header;
-+	struct estatus_node *estatus_node;
-+	u32 len, node_len;
-+	phys_addr_t buf_paddr;
-+	int sev, rc;
-+
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG))
-+		return -EOPNOTSUPP;
-+
-+	rc = __estatus_peek_estatus(source, &tmp_header, &buf_paddr,
-+				    fixmap_idx);
-+	if (rc) {
-+		estatus_clear_estatus(source, &tmp_header, buf_paddr,
-+				      fixmap_idx);
-+		return rc;
-+	}
-+
-+	rc = __estatus_check_estatus(source, &tmp_header);
-+	if (rc) {
-+		estatus_clear_estatus(source, &tmp_header, buf_paddr,
-+				      fixmap_idx);
-+		return rc;
-+	}
-+
-+	len = estatus_len(&tmp_header);
-+	node_len = ESTATUS_NODE_LEN(len);
-+	estatus_node = (void *)gen_pool_alloc(estatus_pool, node_len);
-+	if (!estatus_node)
-+		return -ENOMEM;
-+
-+	estatus_node->source = source;
-+	estatus = ESTATUS_FROM_NODE(estatus_node);
-+
-+	if (__estatus_read_estatus(source, estatus, buf_paddr, fixmap_idx,
-+				   len)) {
-+		estatus_clear_estatus(source, estatus, buf_paddr, fixmap_idx);
-+		rc = -ENOENT;
-+		goto no_work;
-+	}
-+
-+	sev = estatus_severity(estatus->error_severity);
-+	if (sev >= ESTATUS_SEV_PANIC) {
-+		estatus_print_queued_estatus();
-+		__estatus_panic(source, estatus, buf_paddr, fixmap_idx);
-+	}
-+
-+	estatus_clear_estatus(source, &tmp_header, buf_paddr, fixmap_idx);
-+
-+	/* This error has been reported before, don't process it again. */
-+	if (estatus_cached(estatus))
-+		goto no_work;
-+
-+	llist_add(&estatus_node->llnode, &estatus_llist);
-+
-+	return rc;
-+
-+no_work:
-+	gen_pool_free(estatus_pool, (unsigned long)estatus_node,
-+		      node_len);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(estatus_in_nmi_queue_one_entry);
-+
-+void estatus_register_report_chain(struct notifier_block *nb)
-+{
-+	atomic_notifier_chain_register(&estatus_report_chain, nb);
-+}
-+EXPORT_SYMBOL_GPL(estatus_register_report_chain);
-+
-+void estatus_unregister_report_chain(struct notifier_block *nb)
-+{
-+	atomic_notifier_chain_unregister(&estatus_report_chain, nb);
-+}
-+EXPORT_SYMBOL_GPL(estatus_unregister_report_chain);
-diff --git a/include/linux/estatus.h b/include/linux/estatus.h
-index 002a9533c85a..506a74ad60b9 100644
---- a/include/linux/estatus.h
-+++ b/include/linux/estatus.h
-@@ -122,8 +122,7 @@ enum {
- };
+@@ -32,6 +32,7 @@
  
- int estatus_proc(struct estatus_source *ghes);
--int estatus_in_nmi_queue_one_entry(struct estatus_source *ghes,
--				   enum fixed_addresses fixmap_idx);
-+int estatus_in_nmi_queue_one_entry(struct estatus_source *ghes, enum fixed_addresses fixmap_idx);
- void estatus_proc_in_irq(struct irq_work *irq_work);
+ void estatus_pool_region_free(unsigned long addr, u32 size);
  
- /**
++/* Emit a printk at the exact level encoded in the HW_ERR tag we build. */
+ static void estatus_log_hw_error(char level, const char *seq_tag,
+ 				 const char *name)
+ {
+@@ -704,7 +705,7 @@ static bool estatus_handle_arm_hw_error(estatus_generic_data *gdata, int sev, bo
+  * ESTATUS_SEV_PANIC does not make it to this handling since the kernel must
+  *     panic.
+  */
+-static void estatus_handle_aer(estatus_generic_data *gdata)
++static void estatus_handle_aer(struct acpi_hest_generic_data *gdata)
+ {
+ #ifdef CONFIG_ACPI_APEI_PCIEAER
+ 	struct cper_sec_pcie *pcie_err = estatus_get_payload(gdata);
+@@ -759,7 +760,7 @@ EXPORT_SYMBOL_GPL(estatus_unregister_vendor_record_notifier);
+ static void estatus_vendor_record_work_func(struct work_struct *work)
+ {
+ 	struct estatus_vendor_record_entry *entry;
+-	estatus_generic_data *gdata;
++	struct acpi_hest_generic_data *gdata;
+ 	u32 len;
+ 
+ 	entry = container_of(work, struct estatus_vendor_record_entry, work);
+@@ -774,7 +775,7 @@ static void estatus_vendor_record_work_func(struct work_struct *work)
+ 
+ static void estatus_defer_non_standard_event(estatus_generic_data *gdata, int sev)
+ {
+-	estatus_generic_data *copied_gdata;
++	struct acpi_hest_generic_data *copied_gdata;
+ 	struct estatus_vendor_record_entry *entry;
+ 	u32 len;
+ 
+@@ -806,7 +807,7 @@ static inline bool estatus_is_sync_notify(struct estatus_source *source)
+ static void estatus_do_proc(struct estatus_source *source, const estatus_generic_status *estatus)
+ {
+ 	int sev, sec_sev;
+-	estatus_generic_data *gdata;
++	struct acpi_hest_generic_data *gdata;
+ 	guid_t *sec_type;
+ 	const guid_t *fru_id = &guid_null;
+ 	char *fru_text = "";
+@@ -871,7 +872,7 @@ static void __estatus_panic(struct estatus_source *source, estatus_generic_statu
+ 
+ int estatus_proc(struct estatus_source *source)
+ {
+-	estatus_generic_status *estatus = source->estatus;
++	struct acpi_hest_generic_status *estatus = source->estatus;
+ 	phys_addr_t buf_paddr;
+ 	enum fixed_addresses fixmap_idx = estatus_source_fixmap(source);
+ 	int rc;
+@@ -913,7 +914,7 @@ void estatus_proc_in_irq(struct irq_work *irq_work)
+ {
+ 	struct llist_node *llnode, *next;
+ 	struct estatus_node *estatus_node;
+-	struct estatus_source *source;
++	struct acpi_hest_generic_status *source;
+ 	estatus_generic_status *estatus;
+ 	u32 len, node_len;
+ 
+@@ -927,7 +928,7 @@ void estatus_proc_in_irq(struct irq_work *irq_work)
+ 		next = llnode->next;
+ 		estatus_node = llist_entry(llnode, struct estatus_node,
+ 					   llnode);
+-		source = estatus_node->source;
++		struct estatus_source *source = estatus_node->source;
+ 		estatus = ESTATUS_FROM_NODE(estatus_node);
+ 		len = estatus_len(estatus);
+ 		node_len = ESTATUS_NODE_LEN(len);
+@@ -949,7 +950,7 @@ static void estatus_print_queued_estatus(void)
+ 	struct llist_node *llnode;
+ 	struct estatus_node *estatus_node;
+ 	struct estatus_source *source;
+-	estatus_generic_status *estatus;
++	struct acpi_hest_generic_status *estatus;
+ 
+ 	llnode = llist_del_all(&estatus_llist);
+ 	/*
+@@ -976,7 +977,7 @@ void estatus_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+ 
+ int estatus_in_nmi_queue_one_entry(struct estatus_source *source, enum fixed_addresses fixmap_idx)
+ {
+-	estatus_generic_status *estatus, tmp_header;
++	struct acpi_hest_generic_status *estatus, tmp_header;
+ 	struct estatus_node *estatus_node;
+ 	u32 len, node_len;
+ 	phys_addr_t buf_paddr;
 -- 
 2.43.0
 
