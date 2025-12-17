@@ -1,174 +1,197 @@
-Return-Path: <linux-acpi+bounces-19627-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19628-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C87CC789D
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 13:16:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E38CC7C00
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 14:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB32830206C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:16:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B838304F679
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 13:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B3733C503;
-	Wed, 17 Dec 2025 12:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CA034C13B;
+	Wed, 17 Dec 2025 12:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZk1DshR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CpDTLyEU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3CE344046
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 12:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F7434BA54;
+	Wed, 17 Dec 2025 12:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765973727; cv=none; b=lBTm0qxbrjxOM8dRTgvuPjnalpIPWND80EKsQokd+comIq2QN/FSdRrEnMcOWmV21SFXkEPTgUS9V1LTOrGFWBEyaSUAGdpQjivvwslB1w+/T/86IJKyuTK70829w/dlM5F9wSFHXkVUllRz3vSD2gpme8+Zeq5leDw2e2RqNg0=
+	t=1765975120; cv=none; b=bFg5xdb0CGM2uFKeiBogf4fBhaErFkT6hL7KdTXzQTHX3w8oWHbMeDL1LgDtts0/t0EbiHH/3vXF5gJy8iJj5pBCTih6cpfKOMO4HFTpTOq8EDC0PhKqXKdWQTe3AdIVajTLp+idJChjvqKdbgBaXZZ35S9czurqKRjfgMyqddA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765973727; c=relaxed/simple;
-	bh=/V8ME6f+TcgocYWeUfh3JcmMnxNfhnvIgnWS2xnaweE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ucw+8geRBQsRorL6MzZrbvKi/KUxuM3kS0l1xjwgBWxqcXjrEgLaObpPm8PT49hHVed9wdT6o47R0GqWHrChMcANOnmxWMKqEl67uvPQc6+aVw//fkNfWKvzp6lgn5TDZ+3npLWId5TbevpzYjlHCEt1zgTG5LZfLo7iWtkeouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZk1DshR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA178C4AF0B
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 12:15:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765973726;
-	bh=/V8ME6f+TcgocYWeUfh3JcmMnxNfhnvIgnWS2xnaweE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WZk1DshRF4J8H62SIWCs+GT0cHE9p8SDp+FfTS1QjiVp/HeNxOw5xWp4IY4a8Vpzt
-	 TZQft9cB1IDI8t5gAli9IFhZVKg9F7WAwv8i9exLJnyHFKEOE1suY9JJ5XzAnmXwO7
-	 aBEsb0WN2iO8c3cmxO6KN5jLp3xzrxiExdwwzXS2qD+BwvkLSePR+KyCu9nunBF+rZ
-	 fBD30EDyqY57UPe7RS1wHs0GBdwy1RLLwCgRE8+P4lMm0UrDKlHa5wEWkG/yZwiNJg
-	 6JWpCBQ920XRKV+qYSycQUXJxNkqRsmG5JrmL5C8AW+g5LAajpm35IIkxK0QfOzNSI
-	 JGt/8bRPGFEFg==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-3eae4e590a4so3001444fac.1
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 04:15:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX4XGbZRJz2g/dRzDqOjmrE7455iha9QCAvL5r3HuPJek8LQS8I5fZRSiZ/Wf4q1LQQ5zoKiR5UhdNy@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOtRQnvonC1jgZtgUFb4ueuZfE/oLMv/q6cjI6PeyhulWFI8wG
-	dxCkTCAO1SrRaSZesF0o/ezAiEf5/B8euMSTes4tVHzhN43DQMpcxLjUkEgF5Mp8oSg9SCviOPK
-	Ut2jgakeHdOXjFlWwntCygf2BbSrGdBc=
-X-Google-Smtp-Source: AGHT+IFyPbK46RYLF3hgXBIkJIBqNyWVP/G0zIpkadF1YIRRTqJbQ/yhJ/sPg9kgC4x6e6vBet5QlpdwjzUpLYOVIYQ=
-X-Received: by 2002:a05:6820:229c:b0:659:9a49:8e54 with SMTP id
- 006d021491bc7-65b451c58bdmr8367653eaf.36.1765973725926; Wed, 17 Dec 2025
- 04:15:25 -0800 (PST)
+	s=arc-20240116; t=1765975120; c=relaxed/simple;
+	bh=eeUnqeI6tLQv+2V0Y1miyui0jNaQQlncVAbnq6o2Kmk=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=TFUuifiDreclvO9TTmz+5jP/UZszaQYM9uaz9hSKWbFFc/H9V19M0Y0ocE3qo34eX0JryiPVScgmv0sxy+BcAk5yrRRtc1i31pxKaCyGLRDDjn/+ZaPRGdhFD0tCpfvxzy+SWx8zvWZssbHhRM4bQhPpZeI8Y/DVwWtnQBByLNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=fail smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CpDTLyEU; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765975119; x=1797511119;
+  h=date:from:to:cc:subject:message-id;
+  bh=eeUnqeI6tLQv+2V0Y1miyui0jNaQQlncVAbnq6o2Kmk=;
+  b=CpDTLyEU8EC51kwW7MUSK0Wp6HYUUFnWuf6XbaLvO6KuCF7J1TLBm7zk
+   BfSSTBfL7K+USKMt0uINLT1HjLLJBLcLDziyxX3esNs8vwLEym76kJzyE
+   kBHCiuvQuNGZbTE/ob45O0al4dYsd869ot6ZdoB9NM5LtCkz5iY57juZl
+   yjiSlybI4lyK0j7gjUavIu502zwvwJ8C8eyO8xjFJ3A+F5WfeHeYbEQ87
+   sfjDPPUN1+C8vV7oZ3dwYF3RykqZnxPoMXkGIDCHbIchU2MSeyWbAddYZ
+   LqBC3U1GB1k2hpRtVaCA480oayPlbqS7EF2KWXltHQTx0DsYwSk7fA4yu
+   Q==;
+X-CSE-ConnectionGUID: 6Epx+DJBSFS9mSLvOfgFPQ==
+X-CSE-MsgGUID: uGjfDQUYSE2dd/C+Zz373w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67951383"
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="67951383"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 04:38:38 -0800
+X-CSE-ConnectionGUID: xLHlDevLTuKV9DzRj19iww==
+X-CSE-MsgGUID: 2pYf90vgSjehZjhDeNJqYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,155,1763452800"; 
+   d="scan'208";a="198548429"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 17 Dec 2025 04:38:37 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVqnb-000000000Xd-0vVa;
+	Wed, 17 Dec 2025 12:38:35 +0000
+Date: Wed, 17 Dec 2025 20:37:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:fixes] BUILD SUCCESS
+ 58f624da50dfe607d0c90d062d9558130e97e763
+Message-ID: <202512172045.GgV6ZBcX-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <12803663.O9o76ZdvQC@rafael.j.wysocki> <6225184.lOV4Wx5bFT@rafael.j.wysocki>
- <5536fc1a-4bc9-413e-a903-08090217979b@amd.com>
-In-Reply-To: <5536fc1a-4bc9-413e-a903-08090217979b@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 17 Dec 2025 13:15:14 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iaH9eU1A7d0TmJC4cktO=zh1r998R-59FyDQa1xJOCrQ@mail.gmail.com>
-X-Gm-Features: AQt7F2pYJy-v4RTgH2Xseqt9He4niysrExACC7GMuG2cmFyoAqN6C3IhQFnIKEY
-Message-ID: <CAJZ5v0iaH9eU1A7d0TmJC4cktO=zh1r998R-59FyDQa1xJOCrQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] ACPI: bus: Adjust error handling in acpi_run_osc()
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	Bjorn Helgaas <helgaas@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 16, 2025 at 11:04=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
->
->
-> On 12/16/2025 2:17 PM, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Some platform firmware incorrectly sets the OSC_CAPABILITIES_MASK_ERROR
-> > bit in its _OSC return buffer even if no support bits have been actuall=
-y
-> > masked, which causes acpi_run_osc() to return an error when executed
-> > with OSC_QUERY_ENABLE clear in the OC capabilities buffer.  As a result=
-,
-> > the OS assumes that the _OSC evaluation has failed and the platform has
-> > not acknowledged any capabilities, while the platform assumes that it
-> > actually has acknowledged some of them.  This confusion may lead to
-> > missing functionality (and possibly other issues) down the road.
-> >
-> > To address this problem, adjust acpi_run_osc() to avoid returning an
-> > error when OSC_CAPABILITIES_MASK_ERROR is set in the return buffer
-> > and OSC_QUERY_ENABLE is clear in the OC capabilities, but all of the
-> > bits in the support mask supplied by the OS are also set in the bit
-> > mask returned by the platform firmware.
->
-> If possible can you add some more context to explain which _OSC was
-> behaving this way?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
+branch HEAD: 58f624da50dfe607d0c90d062d9558130e97e763  Merge branch 'pm-runtime' into fixes
 
-\_SB._OSC
+elapsed time: 1449m
 
->  And if it's production hardware what hardware was affected?
+configs tested: 106
+configs skipped: 1
 
-No, it isn't, but this was not caught by Windows validation, so it is
-likely that Linux will be exposed to this again.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> It sounds like a viable workaround, I just want to make sure that if we
-> have to change this again later we have more information to look back upo=
-n.
->
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >   drivers/acpi/bus.c |   23 +++++++++++++++--------
-> >   1 file changed, 15 insertions(+), 8 deletions(-)
-> >
-> > --- a/drivers/acpi/bus.c
-> > +++ b/drivers/acpi/bus.c
-> > @@ -240,9 +240,13 @@ acpi_status acpi_run_osc(acpi_handle han
-> >               status =3D AE_TYPE;
-> >               goto out_kfree;
-> >       }
-> > +     if (out_obj->buffer.length <=3D OSC_SUPPORT_DWORD) {
-> > +             status =3D AE_BAD_DATA;
-> > +             goto out_kfree;
-> > +     }
-> >       /* Need to ignore the bit0 in result code */
-> >       errors =3D *((u32 *)out_obj->buffer.pointer) & ~(1 << 0);
-> > -     if (errors) {
-> > +     if (errors & ~OSC_CAPABILITIES_MASK_ERROR) {
-> >               if (errors & OSC_REQUEST_ERROR)
-> >                       acpi_print_osc_error(handle, context,
-> >                               "_OSC request failed");
-> > @@ -252,17 +256,20 @@ acpi_status acpi_run_osc(acpi_handle han
-> >               if (errors & OSC_INVALID_REVISION_ERROR)
-> >                       acpi_print_osc_error(handle, context,
-> >                               "_OSC invalid revision");
-> > -             if (errors & OSC_CAPABILITIES_MASK_ERROR) {
-> > -                     if (((u32 *)context->cap.pointer)[OSC_QUERY_DWORD=
-]
-> > -                         & OSC_QUERY_ENABLE)
-> > -                             goto out_success;
-> > +             status =3D AE_ERROR;
-> > +             goto out_kfree;
-> > +     }
-> > +     if (errors) {
-> > +             u32 retbuf =3D ((u32 *)out_obj->buffer.pointer)[OSC_SUPPO=
-RT_DWORD];
-> > +             u32 capbuf =3D ((u32 *)context->cap.pointer)[OSC_SUPPORT_=
-DWORD];
-> > +             u32 querybuf =3D ((u32 *)context->cap.pointer)[OSC_QUERY_=
-DWORD];
-> > +
-> > +             /* OSC_CAPABILITIES_MASK_ERROR is set in errors. */
-> > +             if (!(querybuf & OSC_QUERY_ENABLE) && (capbuf & retbuf) !=
-=3D capbuf) {
-> >                       status =3D AE_SUPPORT;
-> >                       goto out_kfree;
-> >               }
-> > -             status =3D AE_ERROR;
-> > -             goto out_kfree;
-> >       }
-> > -out_success:
-> >       context->ret.length =3D out_obj->buffer.length;
-> >       context->ret.pointer =3D kmemdup(out_obj->buffer.pointer,
-> >                                      context->ret.length, GFP_KERNEL);
-> >
-> >
-> >
->
+tested configs:
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20251217    gcc-8.5.0
+arc                   randconfig-002-20251217    gcc-10.5.0
+arm                                 defconfig    clang-22
+arm                   randconfig-001-20251217    clang-18
+arm                   randconfig-002-20251217    clang-22
+arm                   randconfig-003-20251217    clang-22
+arm                   randconfig-004-20251217    clang-22
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20251217    gcc-8.5.0
+arm64                 randconfig-002-20251217    clang-22
+arm64                 randconfig-003-20251217    clang-22
+arm64                 randconfig-004-20251217    clang-20
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20251217    gcc-15.1.0
+csky                  randconfig-002-20251217    gcc-9.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20251217    clang-22
+hexagon               randconfig-002-20251217    clang-22
+i386                             allmodconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20251217    clang-20
+i386        buildonly-randconfig-002-20251217    gcc-14
+i386        buildonly-randconfig-003-20251217    gcc-13
+i386        buildonly-randconfig-004-20251217    clang-20
+i386        buildonly-randconfig-005-20251217    gcc-14
+i386        buildonly-randconfig-006-20251217    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251217    clang-20
+i386                  randconfig-002-20251217    clang-20
+i386                  randconfig-003-20251217    clang-20
+i386                  randconfig-004-20251217    gcc-14
+i386                  randconfig-005-20251217    gcc-13
+i386                  randconfig-006-20251217    clang-20
+i386                  randconfig-007-20251217    clang-20
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251217    clang-22
+loongarch             randconfig-002-20251217    clang-22
+m68k                                defconfig    gcc-15.1.0
+m68k                        m5272c3_defconfig    gcc-15.1.0
+m68k                       m5475evb_defconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                   sb1250_swarm_defconfig    gcc-15.1.0
+mips                        vocore2_defconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20251217    gcc-11.5.0
+nios2                 randconfig-002-20251217    gcc-8.5.0
+openrisc                         allmodconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251217    gcc-15.1.0
+parisc                randconfig-002-20251217    gcc-14.3.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                      bamboo_defconfig    clang-22
+powerpc               randconfig-001-20251217    gcc-8.5.0
+powerpc               randconfig-002-20251217    clang-22
+powerpc64             randconfig-001-20251217    gcc-14.3.0
+powerpc64             randconfig-002-20251217    clang-18
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251217    gcc-14.3.0
+riscv                 randconfig-002-20251217    clang-18
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251217    gcc-10.5.0
+s390                  randconfig-002-20251217    gcc-8.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                        edosk7705_defconfig    gcc-15.1.0
+sh                    randconfig-001-20251217    gcc-15.1.0
+sh                    randconfig-002-20251217    gcc-12.5.0
+sh                           se7780_defconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    clang-20
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                           x86_64_defconfig    clang-22
+x86_64                           allmodconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20251217    clang-20
+x86_64      buildonly-randconfig-004-20251217    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                randconfig-001-20251217    clang-20
+x86_64                randconfig-002-20251217    gcc-14
+x86_64                randconfig-003-20251217    clang-20
+x86_64                randconfig-004-20251217    clang-20
+x86_64                randconfig-005-20251217    clang-20
+x86_64                randconfig-006-20251217    gcc-14
+x86_64                randconfig-011-20251217    clang-20
+x86_64                randconfig-012-20251217    gcc-14
+x86_64                randconfig-013-20251217    clang-20
+x86_64                randconfig-014-20251217    gcc-14
+x86_64                randconfig-015-20251217    gcc-14
+x86_64                randconfig-016-20251217    gcc-14
+x86_64                randconfig-071-20251217    clang-20
+x86_64                randconfig-072-20251217    gcc-13
+x86_64                randconfig-073-20251217    gcc-14
+x86_64                randconfig-074-20251217    clang-20
+x86_64                randconfig-075-20251217    clang-20
+x86_64                randconfig-076-20251217    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
