@@ -1,171 +1,219 @@
-Return-Path: <linux-acpi+bounces-19632-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19633-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3677CC8345
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 15:32:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B1ECC855F
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 16:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEE89306D33F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 14:24:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E16A3059055
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 14:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7382333F8DE;
-	Wed, 17 Dec 2025 14:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A404D33BBAC;
+	Wed, 17 Dec 2025 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9gPmFlq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IACCM4D6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458B533B6F8;
-	Wed, 17 Dec 2025 14:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78505313273
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765981383; cv=none; b=tBA4Jl6SbQIZEsrNq/mezXm8bfISWy7vd+688wzIs2LrsGesyZNnRrT+xwZx5XA9kYwLSHLAqtBCMPlVWBFMzI1lIVdtkuE9ZdyQlE3YaW0RGP3teN6hCS6/8rL/MFZhjLEue175iIJRaNKQqzGkj9Wtg6Vk4siucyXMsScke3s=
+	t=1765982754; cv=none; b=UegX1tgFkRCvO7Y+aI5RsqNpxxkPC3cW/zR7+1PE8YKC1DuKRveSbshHxJIXV2+oj4AFc7q0JFQAduDkxqg4kBEqkjRnaGac/mOK3Tvsgy1sVpCGNdUh2e4xKHiR3qTu7W2ZLaxy1viB0v3Ej2+KSjQVzml7mJkQAwIn8Zi/azo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765981383; c=relaxed/simple;
-	bh=SEcdHCQ4hyzEe6q3rbznOxDqeVfF4KdBSqC+7BJbnqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FGIbownjnZt+HzC6nYzhiTeXIoUneu7QodZvLzdQqdZ/iW0u1NqSUpRBP27um/vSXtBhP6+zaOWUwsiVCUGdAfHaGtKe6+GAmKUuMbJumhe6QwDl5cx8Gzq2Kaijc/99OXnyVpcCY+yeC465oNWWu1UIuVYeegvnZ1sIcl+MX8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9gPmFlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C4AC4CEF5;
-	Wed, 17 Dec 2025 14:23:01 +0000 (UTC)
+	s=arc-20240116; t=1765982754; c=relaxed/simple;
+	bh=Uj7Jw3bncBxQcTu24XpGcQ5wlaHtL0/IWdbHSJUyeAw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DJ9Vr24KPuP/J4F6Ib5b9gzu8s4moDiNwmbQnt7JzI2AsHhim2GPVqOcSyyAY+WBmTGDaRvE7z7KVZWtehZsL8RfGjMV0FRY56fJQ1rHKYTo8EPlbICzmu+LUS42ECFPO0KgCFZtRUsY8QQMokAzCJx2oBJsj4h49UoQoAHztbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IACCM4D6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A06C19422
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 14:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765981381;
-	bh=SEcdHCQ4hyzEe6q3rbznOxDqeVfF4KdBSqC+7BJbnqg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R9gPmFlqb+KS5GweeIXUizpWihybg6WdSUGsBXJqze0npuf0c+7xP0z42rpkpkCyR
-	 RFCJ71xX+MMVlMnhF2MzBqptmW5WKaBjKNPg+fQXjXjfS0eeRYKcyQmJzzExVJEALm
-	 vvTXQZkn74Bcs5SQY7hoW/sqV2DslFF59lkPZIFwqRzRzz2UhxSA+HHLvJrfY9q+Yp
-	 gmzvQ1UnzgRfI+wuR6OugjzA3ZjsDIjYLoFm0TqYjhfKXRESY0O1Zx0sUjnZl0rCLU
-	 R3htBRoohyF2QDFowUGm0oj91Miw2t+/F67d17k34kjXB67AT6eEeLOAvvKoIzA02n
-	 bcZgyQxeB/0+A==
-Message-ID: <4402ed86-77f5-4a47-a9e1-8d57a709bb15@kernel.org>
-Date: Wed, 17 Dec 2025 08:23:00 -0600
+	s=k20201202; t=1765982754;
+	bh=Uj7Jw3bncBxQcTu24XpGcQ5wlaHtL0/IWdbHSJUyeAw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IACCM4D61JuktvxKtKybvg9PGVdrAZm+MI3xSTbym1oXs9qGhlkkVUfFWt8QdEqVg
+	 rvQs43htlWRxHIn5Cx+uOvkuUAi6DZdkg0kSiqYQxvl6nOF3hAGpCOD/y8ZKWAhXtV
+	 pgYl9ewooQiO3TM1JdB9e3LclxzP/sKzzW8xRot+KLOV1IoDA7D/TZsAp511+8uAPZ
+	 qaOz2EZaiArvkcSRwPTae5NeNH0tyecH5/6Tx0xrckv4sTytVUsDoPX+MJIVQ1uSvg
+	 wJG8B64fHbpyx7uq0rx7odnbzYRf7Qyfe5J+gX+uhQ71JxN0OIbCN9WjhfBJlNWmAO
+	 ohNESUmyZvQHQ==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-65b3d3ac972so3404512eaf.0
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 06:45:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWgweGTzVmw98NFh+uvHKNJu9GY8zS4zyWlqPTKRD2cq6rIsrnTdiqoJPLes3SaaTwgK3jighWAFFER@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3mnQBc5xQ9luq2pQC9oboOTBxDRFvCVA40TmOd2MGdLrsWfn1
+	C9P9dRY72qx+p1+6DbHs/SUknEncbZviIIlqOwqXQfT933PaEKYmYT7RuBC6Xj3cz9djTrctuhd
+	Q+b3t9/sbjF0N+D/DVQvHq456iw8Tz24=
+X-Google-Smtp-Source: AGHT+IGru571n6LEQRQcP3oWM3KWt3LuuRTYuBI1b7zy9ahwnzID+Z1zO4ejogcUX3WIGEvnl9hOFuDYJYjxL430aVE=
+X-Received: by 2002:a05:6820:2201:b0:659:9a49:8eb2 with SMTP id
+ 006d021491bc7-65b4523b585mr7664762eaf.54.1765982752979; Wed, 17 Dec 2025
+ 06:45:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] 36-second boot delay due to by
- acpi_gpio_handle_deferred_request_irqs on ASUS ROG Strix G16 (2025)
-To: Francesco Lauritano <francesco.lauritano1@protonmail.com>,
- Hans de Goede <hansg@kernel.org>
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
- "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
-References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com>
- <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251015080710.1468409-1-badal.nilawar@intel.com> <20251015080710.1468409-3-badal.nilawar@intel.com>
+In-Reply-To: <20251015080710.1468409-3-badal.nilawar@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 17 Dec 2025 15:45:41 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0itN6X-_vRTbNsaUPkYMZB5KQGDgX3=3oSeq_DkxB7drw@mail.gmail.com>
+X-Gm-Features: AQt7F2pgXVF39xZ30iWTdXcNXovHLxA7Mbsd-D9NbtqAfNiN3IUzyVoKlWqsRSE
+Message-ID: <CAJZ5v0itN6X-_vRTbNsaUPkYMZB5KQGDgX3=3oSeq_DkxB7drw@mail.gmail.com>
+Subject: Re: [PATCH v5 02/12] PCI/ACPI: Per Root/Switch Downstream Port allow
+ one aux power limit request
+To: Badal Nilawar <badal.nilawar@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org, anshuman.gupta@intel.com, rafael@kernel.org, 
+	lenb@kernel.org, bhelgaas@google.com, ilpo.jarvinen@linux.intel.com, 
+	lucas.demarchi@intel.com, rodrigo.vivi@intel.com, varun.gupta@intel.com, 
+	ville.syrjala@linux.intel.com, uma.shankar@intel.com, karthik.poosa@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-++linux-gpio, Hans
+On Wed, Oct 15, 2025 at 10:02=E2=80=AFAM Badal Nilawar <badal.nilawar@intel=
+.com> wrote:
+>
+> Since aggregation of auxiliary power across multiple devices under a
+> Root or Switch Downstream Port is not supported, allow only one device
+> is to request auxiliary power
+>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
 
-On 12/17/25 4:06 AM, Francesco Lauritano wrote:
-> ASUS ROG Strix G16 G614PP (2025) experiences a 36-second kernel boot delay caused by `acpi_gpio_handle_deferred_request_irqs()` hanging during late_initcall_sync. The workaround is `gpiolib_acpi.run_edge_events_on_boot=0`.
-> 
-> System Information
-> ------------------
-> 
-> -   Hardware: ASUS ROG Strix G16 G614PP_G614PP
-> -   DMI Product: ROG Strix G16 G614PP_G614PP
-> -   DMI Vendor: ASUSTeK COMPUTER INC.
-> -   BIOS Version: G614PP.307 (08/14/2025)
-> -   CPU: AMD Ryzen (Strix Point)
-> -   GPU: NVIDIA (with nvidia-open 580.105.08)
-> -   Distribution: EndeavourOS
-> -   Kernel: 6.17.9 (also reproduced on zem)
-> -   Bootloader: systemd-boot with dracut
-> 
-> Problem Description
-> -------------------
-> 
-> The system takes approximately 56 seconds to boot, with 37.8 seconds spent in the kernel phase. Using `initcall_debug`, the culprit was identified as:
-> 
->      [    1.739645] calling  acpi_gpio_handle_deferred_request_irqs+0x0/0x40 @ 1
->      [   38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0/0x40 returned 0 after 36338138 usecs
-> 
-> The kernel goes completely silent between ~2 seconds and ~38 seconds (no dmesg output during this period):
-> 
->      [    2.607764] clocksource: Switched to clocksource tsc
->      [   37.828217] clk: Disabling unused clocks
-> 
-> Windows boots normally on the same hardware, indicating this is a Linux-specific ACPI handling issue.
-> 
-> systemd-analyze output
-> ----------------------
-> 
->      Startup finished in 8.593s (firmware) + 1.273s (loader) + 37.877s (kernel) + 4.645s (initrd) + 3.831s (userspace) = 56.221s
-> 
-> ACPI Errors During Boot
-> -----------------------
-> 
-> The following ACPI errors appear in dmesg (though these complete quickly and are not the direct cause of the delay):
-> 
->      ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GPP2], AE_NOT_FOUND (20250404/dswload2-162)
->      ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20250404/psobject-220)
->      ACPI: Skipping parse of AML opcode: Scope (0x0010)
->      ACPI Error: AE_NOT_FOUND, While resolving a named reference package element - \_SB_.PCI0.GPP7.UP00.DP00.U4UP.U4P3.UHI0 (20250404/dspkginit-438)
->      ACPI: [Firmware Bug]: BIOS _OSI(Linux) query ignored
-> 
-> GPIO-related dmesg output
-> -------------------------
-> 
->      [    0.257981] calling  pinctrl_init+0x0/0xc0 @ 1
->      [    0.257982] pinctrl core: initialized pinctrl subsystem
->      [    0.257994] initcall pinctrl_init+0x0/0xc0 returned 0 after 0 usecs
->      [    1.612848] calling  amd_gpio_driver_init+0x0/0x20 @ 1
->      [    1.613779] initcall amd_gpio_driver_init+0x0/0x20 returned 0 after 930 usecs
->      [    1.739645] calling  acpi_gpio_handle_deferred_request_irqs+0x0/0x40 @ 1
->      [   38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0/0x40 returned 0 after 36338138 usecs
-> 
-> Workaround
-> ----------
-> 
-> Adding the following kernel parameter resolves the issue and reduces boot time to ~10 seconds:
-> 
->      gpiolib_acpi.run_edge_events_on_boot=0
-> 
-> Impact of Workaround
-> --------------------
-> 
-> Testing with the workaround applied, no obvious regressions have been observed:
-> 
-> -   Lid switch works
-> -   Power button works
-> -   Keyboard function keys work
-> -   Sleep/wake works
-> 
-> Long-term, a DMI quirk entry for this device would be preferable.
-> 
-> Suggested Fix
-> -------------
-> 
-> Add a DMI quirk entry to `drivers/gpio/gpiolib-acpi.c` for the ASUS ROG Strix G16 G614PP, though it may be needed on other ROG/Strix/Zephyrus models from 2021-2025.
-> 
-> Steps to Reproduce
-> ------------------
-> 
-> 1.  Install Linux on ASUS ROG Strix G16 G614PP (2025)
-> 2.  Boot without `gpiolib_acpi.run_edge_events_on_boot=0`
-> 3.  Observe ~40 second boot time with `systemd-analyze time`
-> 4.  Add `initcall_debug` to kernel parameters and observe the 36-second hang in `acpi_gpio_handle_deferred_request_ir`
-> 
-> 
-> 
+Sorry for the long delay, but in addition to the comments posted
+earlier, I have some more to say regarding this patch (see below).
 
-The behavior to run these interrupts at boot was introduced by:
+> ---
+> V1:
+>  - Use guard(mutex) for new mutex (Rafael)
+>  - Add mutex_detroy (Ilpo J=C3=A4rvinen)
+>  - %s/pci_warn/pci_info/ for -EAGAIN
+>  - Allow the same device to re-request auxiliary power if it has already =
+been granted
+> ---
+>  drivers/acpi/scan.c     |  3 +++
+>  drivers/pci/pci-acpi.c  | 22 ++++++++++++++++++++++
+>  include/acpi/acpi_bus.h |  3 +++
+>  3 files changed, 28 insertions(+)
+>
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index ef16d58b2949..4573fb0f4f3e 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -518,6 +518,7 @@ static void acpi_device_release(struct device *dev)
+>         acpi_free_properties(acpi_dev);
+>         acpi_free_pnp_ids(&acpi_dev->pnp);
+>         acpi_free_power_resources_lists(acpi_dev);
+> +       mutex_destroy(&acpi_dev->power.aux_pwr_lock);
+>         kfree(acpi_dev);
+>  }
+>
+> @@ -746,6 +747,8 @@ int acpi_device_add(struct acpi_device *device)
+>         INIT_LIST_HEAD(&device->physical_node_list);
+>         INIT_LIST_HEAD(&device->del_list);
+>         mutex_init(&device->physical_node_lock);
+> +       mutex_init(&device->power.aux_pwr_lock);
+> +       device->power.dev =3D NULL;
+>
+>         mutex_lock(&acpi_device_lock);
+>
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index c7eab1e75dd5..74f118016b1d 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1477,6 +1477,7 @@ int pci_acpi_request_d3cold_aux_power(struct pci_de=
+v *dev, u32 requested_mw,
+>         union acpi_object *out_obj;
+>         int result, ret =3D -EINVAL;
+>         struct pci_dev *bdev;
+> +       struct acpi_device *adev;
+>
+>         if (!dev || PCI_FUNC(dev->devfn) !=3D 0)
+>                 return -EINVAL;
+> @@ -1486,6 +1487,19 @@ int pci_acpi_request_d3cold_aux_power(struct pci_d=
+ev *dev, u32 requested_mw,
+>         if (IS_ERR(bdev))
+>                 return PTR_ERR(bdev);
+>
+> +       adev =3D ACPI_COMPANION(&bdev->dev);
+> +       if (!adev)
+> +               return -EINVAL;
+> +
+> +       guard(mutex)(&adev->power.aux_pwr_lock);
+> +
+> +       /* Check if aux power already granted to different device */
+> +       if (adev->power.dev && adev->power.dev !=3D &dev->dev) {
+> +               pci_info(to_pci_dev(adev->power.dev), "D3cold Aux Power r=
+equest already granted: %u mW\n",
+> +                        adev->power.aux_power_limit);
+> +               return -EPERM;
+> +       }
+> +
+>         out_obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(&bdev->dev),
+>                                           &pci_acpi_dsm_guid, 4,
+>                                           DSM_PCI_D3COLD_AUX_POWER_LIMIT,
+> @@ -1501,14 +1515,20 @@ int pci_acpi_request_d3cold_aux_power(struct pci_=
+dev *dev, u32 requested_mw,
+>         case AUX_PWR_REQ_DENIED:
+>                 pci_dbg(bdev, "D3cold Aux Power %u mW request denied\n",
+>                         requested_mw);
+> +               adev->power.aux_power_limit =3D 0;
+> +               adev->power.dev =3D NULL;
+>                 break;
+>         case AUX_PWR_REQ_GRANTED:
+>                 pci_info(bdev, "D3cold Aux Power request granted: %u mW\n=
+",
+>                          requested_mw);
+> +               adev->power.aux_power_limit =3D requested_mw;
+> +               adev->power.dev =3D &dev->dev;
+>                 ret =3D 0;
+>                 break;
+>         case AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL:
+>                 pci_info(bdev, "D3cold Aux Power: Main power won't be rem=
+oved\n");
+> +               adev->power.aux_power_limit =3D 0;
+> +               adev->power.dev =3D NULL;
+>                 ret =3D -EBUSY;
+>                 break;
+>         default:
+> @@ -1524,6 +1544,8 @@ int pci_acpi_request_d3cold_aux_power(struct pci_de=
+v *dev, u32 requested_mw,
+>                         pci_err(bdev, "D3cold Aux Power: Reserved or unsu=
+pported response: 0x%x\n",
+>                                 result);
+>                 }
+> +               adev->power.aux_power_limit =3D 0;
+> +               adev->power.dev =3D NULL;
+>                 break;
+>         }
+>
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index aad1a95e6863..cfa0c7233f13 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -294,6 +294,9 @@ struct acpi_device_power {
+>         struct acpi_device_power_flags flags;
+>         struct acpi_device_power_state states[ACPI_D_STATE_COUNT];      /=
+* Power states (D0-D3Cold) */
+>         u8 state_for_enumeration; /* Deepest power state for enumeration =
+*/
+> +       u32 aux_power_limit;            /* aux power limit granted by pla=
+tform firmware */
+> +       struct device *dev;             /* device to which aux power is g=
+ranted */
+> +       struct mutex aux_pwr_lock;      /* prevent concurrent aux power l=
+imit requests */
+>  };
 
-https://git.kernel.org/torvalds/c/ca876c7483b6
+So this adds a u32, a device pointer, and a mutex structure to every
+struct acpi_device object in the system even on systems that don't
+care about the use case at hand at all.
 
-Have you already analyzed the ACPI tables to understand where the large 
-delay is coming from?  I think before jumping into the quirk like the 
-LLM you used suggests we should understand which deferred interrupt 
-handler is causing the issue to make sure we're not masking another issue.
-
-Could you please attach the acpidump to a kernel Bugzilla to look over?
+You need to find a different way to attach the information needed to
+synchronize the aux power requests to the PCI bridge the _DSM is
+evaluated for, sorry.
 
