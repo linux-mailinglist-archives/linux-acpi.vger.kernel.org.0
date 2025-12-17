@@ -1,217 +1,224 @@
-Return-Path: <linux-acpi+bounces-19634-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19635-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60139CC84F6
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 15:58:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C80CCC863E
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 16:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 500E5309BE1A
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 14:52:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14F37303270C
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 15:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E8B37A3E5;
-	Wed, 17 Dec 2025 14:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204A92459D4;
+	Wed, 17 Dec 2025 15:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="crjuyvWM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="C5Nzx1ma"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Y7b659Kh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B04B35A92E
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 14:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714AA3A1E6F;
+	Wed, 17 Dec 2025 15:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765983177; cv=none; b=mJrkaaCXW+T5ozpKjS8RXm4qZ7BX4+dw06rYtydMT5FeINd0hS0hZVfmg1EbxbrR+QCKsCMVom6XlgnqbEnKBYyHDc1LkmqO6KuXgsRGEoCXcx0bRMIIHvjYw5OWA26DL61EQozK+OGRd7JQJZq5tirRMdM2ujeKALSiCXDG3Zk=
+	t=1765984360; cv=none; b=rNW1JsCW7Np8k1A1Mv5z+FGwD/PwEP8wUIRhUta6EYI1Brc/OgD5+v/l9aUdOeJC+W6PE4xORdaHZXo/0GXWkXCmfF1tU+lCnh0AcGaMb++d0FPTu+HGp8i47cVUrX43Q5ACtT+lSZUn7utLbxAE7cY2WBEtmcbx8vw+i+1AAx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765983177; c=relaxed/simple;
-	bh=bpn6PnaPqjW9QoU4/thXPDyr0QvWsFZ2GeYnd3BcwnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=n+n34VuM1MoWScBTOh7SO8s/3QWJSW/na7HUZje2g+Cpi1ZpQyYx7lvD2HwSDJUAWFu+cwTVUDWQ7IZnebckJqeOZ2dg8298IqdPj4Qc3Xtf/JwJHsilwrXEBo9msDcAj5YA0FdfJVrRsegP/eYDufwzWc/+y4PqD9Rdg7is1gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=crjuyvWM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=C5Nzx1ma; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765983174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=qwTEyD7EyX3W8awcOGf5hUhLWAjEt5Iu/15FJwOP12c=;
-	b=crjuyvWMxp+BfLKiXmj6Cl0h+NdpMwD8fXEidcpqfJWZqtK8GAomXnK9X75PynDi+XSsac
-	SbhtMTANy78LFGcmr/C9UxufGSkX/75ToirMB0SwxRs7JAxgguPv2cTK2UAXNSUgbSzjf1
-	9/NWJeOq/JuRkkNKai6jaweNP62yAFM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-QR1hiN9bPh2qjgi4aOE62A-1; Wed, 17 Dec 2025 09:52:53 -0500
-X-MC-Unique: QR1hiN9bPh2qjgi4aOE62A-1
-X-Mimecast-MFC-AGG-ID: QR1hiN9bPh2qjgi4aOE62A_1765983172
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-430f79b8d4dso2292011f8f.3
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 06:52:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765983172; x=1766587972; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qwTEyD7EyX3W8awcOGf5hUhLWAjEt5Iu/15FJwOP12c=;
-        b=C5Nzx1maGLs5yDsk7rp14VAr2xazEckdDnMCe3/WhVl5h0TffB+3OvRcX33QsZXfAe
-         UrmYkp6BTztJ1b4F7C9pgNPK9gyQkrxYF1WWPxFIrgXVIRzz/LqftSpU6dhlQ9p0M/Wt
-         97WkWZDiv6A10ECD7OscrtwREwiiLAg7cgyVJfuSCMQIXHOP2G6dtK3GAzQXZ4QKl3J0
-         4VKQcAf/ulVSoYF4P8bMMDUIhhasg+A1hqulCZbMrBZ32bESm7JW/q+XcBJs/sCBo67p
-         FTwezMZM8nIKOf8xmFgN3sJmChd6iQTLXN1Jg87MoMX76FZrryKWgG1Gbd0GmMrP9Fs0
-         bjIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765983172; x=1766587972;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qwTEyD7EyX3W8awcOGf5hUhLWAjEt5Iu/15FJwOP12c=;
-        b=pHAOLn0DPk+SdPAt5gRVFiAv4+SrgvqYtA4u4/MEAma7Zym6bz9ItjO4axTs6csPVM
-         e0s+L2QzFkf0Tnwlrq569889PAzBEb+8/75+WTvsaJks14f57WcWGVdNVTQDDDzSu7nN
-         J6GwRkLa+acqvbO0WTNfqLjni+c9CF1Peblcg+4a3DnrErNTQRd8WHee6jRNcZpUMNJU
-         WdszibBGT+CkxGkiVGs2DJalMp5HegjRWyR5n2cJ985ju+jcp+bpTAP/z2Uy7iQ7ESU6
-         iWC2VbndSp93oud6G7bi4WB7aqme6CyvQIKhc2avkFj1FTTdUZDfvmEuNzOo8xAPEBhk
-         5Mbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbyt3IA+N3GL087LUcEWdcIiwJ4cpkLJrhSmdbekbLN8/x/iGloIy1uvmua3YI1hJdDIRxv8EdoQOk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxt1UO54Jotm0H3DOvQcSvSBboW5GpYHb45azPKxEwsmALQ7abO
-	pYZsr2N7GIGese8LH8SNURApm58TMatsG2EG9oV5PCKTTeV6slg82+hy+fsdvOs9APZiaD42dJO
-	7LTaSZonQAB5/BLVJuhyzilISZjXC4o08GD1NJjfPfpvD5qmoqWfuAeiH7fOecGs=
-X-Gm-Gg: AY/fxX7S+P6y9+wVGm2aoJdK+jWZkJ1Z8iyQYPfmG7cHMFvwo8KI1qY4pcjloj0r5HZ
-	BROC9S5i2FYUJ6xWOz8p5Wv955KsWOXLXqgQ7LArsXNm4FXV5976yLsIG6V1OacnFnhK9azQbVi
-	L63thjJWJTb1phRcnANBjHP7RElF5HN4VFWl0/F28PW4P9JpDfxUD98a0GJuuIknfKPobZkSOL3
-	JE4rtFtO99EAy795ZW+Ps8AdukVH7+NHqSPaBxfh5KRQ6eI8jMkndV0PrgwxynaJCFYPT5NLGDC
-	i8TzJLr9LMa80ExR8q2esTXEI5rSWLTQGu4He0bRDs9iJvJUfaiwVrxDGl/lBLEZ1jRGEtAAbZd
-	zJ0rcLxxiCKPNE5U9QDFiuLPFkRju5DmMfvQfE41a
-X-Received: by 2002:a5d:5d0e:0:b0:430:f3ab:56af with SMTP id ffacd0b85a97d-430f3ab5950mr16820302f8f.48.1765983172376;
-        Wed, 17 Dec 2025 06:52:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLP/5gl/yOSrne+8o7qzbeeGelDz1lhEWbsMui55R/X+/B6Wtdik9SdMqV5CH1CuwyFBA5SQ==
-X-Received: by 2002:a5d:5d0e:0:b0:430:f3ab:56af with SMTP id ffacd0b85a97d-430f3ab5950mr16820278f8f.48.1765983171865;
-        Wed, 17 Dec 2025 06:52:51 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.129.40])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4310ada846bsm5103573f8f.9.2025.12.17.06.52.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 06:52:51 -0800 (PST)
-Date: Wed, 17 Dec 2025 15:52:49 +0100
-From: Juri Lelli <juri.lelli@redhat.com>
-To: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-rt-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Tommaso Cucinotta <tommaso.cucinotta@santannapisa.it>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
-Subject: [ANNOUNCE][CFP] Power Management and Scheduling in the Linux Kernel
- VIII edition (OSPM-summit 2026)
-Message-ID: <aULDwbALUj0V7cVk@jlelli-thinkpadt14gen4.remote.csb>
+	s=arc-20240116; t=1765984360; c=relaxed/simple;
+	bh=kAkTPuxAPRaLZC3z8AnNk53JT3zWUlJ5FKb8MymCJSQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h/AsX8t2HftLJtm7i/Ls4PULGFIW3L8p3G3E3/pUlXIskyzT/TWt58ZNPknQFJGEwOeWpmBuVBdEu/+j6snL7oHk7FgmJDLNA56kcTepKVhGmYwq95xvMrj6vvkb1eNndsClfSrh89YJlQaE+6HRswy6pb8G8UwfVEyhZeYMWO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Y7b659Kh; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1765984349; x=1766243549;
+	bh=kAkTPuxAPRaLZC3z8AnNk53JT3zWUlJ5FKb8MymCJSQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Y7b659KhdBnBosslUoZETCoe44mrE9LfbDxRXeJvaYewQ/5aApGPSFgc2nAPuEDYP
+	 fNsmMsuVVdTP8uEuZGFQ5fOiw3Ryt7ftVuF+AI6X4MEsKFYG2ARTwuC0S9ythxQG2y
+	 XOMYcTPszdhIH4ziyGnzEF6Of9uHXIG5ou/PFKOATbHU5ne8XwFHvFpNSGTy1Cxwqc
+	 AXFOadR3BtJM+8uO2b39pF7NzGl1vdnbv/GaOBaphoVcphe65/f4SisfddUcLC8peA
+	 tQsrLDQsCdwqw2jRYaHg/oD8z3NoGPar2TCeMzFGL3UttbyAaOD1JdUBO7lrtqvQe+
+	 Do/gLr937+jjg==
+Date: Wed, 17 Dec 2025 15:12:25 +0000
+To: Mario Limonciello <superm1@kernel.org>
+From: Francesco Lauritano <francesco.lauritano1@protonmail.com>
+Cc: Hans de Goede <hansg@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>, "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, "westeri@kernel.org" <westeri@kernel.org>
+Subject: Re: [BUG] 36-second boot delay due to by acpi_gpio_handle_deferred_request_irqs on ASUS ROG Strix G16 (2025)
+Message-ID: <woxnPhTYiKi2aLzBK8GnO8DpvdgYjQc-P42uhJOzyrcYC3Gdstht27hML8yNHgOklhm2MgGA7wt9gGZ17BHoWlG0vqJuVVJDgCSev8udfds=@protonmail.com>
+In-Reply-To: <4402ed86-77f5-4a47-a9e1-8d57a709bb15@kernel.org>
+References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com> <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com> <4402ed86-77f5-4a47-a9e1-8d57a709bb15@kernel.org>
+Feedback-ID: 66654272:user:proton
+X-Pm-Message-ID: f8c4b38d580819dae605cd7bb0f4493480d0bc74
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Power Management and Scheduling in the Linux Kernel (OSPM-summit) VIII
-edition
+Hi Mario,
 
-April 14-16, 2026 - Arm, Cambridge (UK)
++Mika (sent him the dumps earlier)
 
-.:: FOCUS
+dmesg: https://gist.github.com/kylan11/63ec3ec319cd6bcaa043fa0b1366965a
 
-The VIII edition of the Power Management and Scheduling in the Linux
-Kernel (OSPM) summit aims at fostering discussions on power management
-and (real-time) scheduling techniques. The summit will be held at Arm in
-Cambridge (UK) on April 14-16, 2026.
+acpidump: https://gist.githubusercontent.com/kylan11/7956bbf75714265107f088=
+6f6ed2a381/raw/1614845eb1dc6ab7e2effb6fe56b585a746abe4f/gistfile1.txt
 
-We welcome anybody interested in having discussions on the broad scope
-of scheduler techniques for reducing energy consumption while meeting
-performance and latency requirements, real-time systems, real-time and
-non-real-time scheduling, tooling, debugging and tracing.
+Agreed, got way too excited, still learning. Did some more digging.
 
-Feel free to take a look at what happened previous years:
+The _AEI defines 5 GPIO interrupts. Narrowed it down to two:
 
-I   edition - https://lwn.net/Articles/721573/
-II  edition - https://lwn.net/Articles/754923/
-III edition - https://lwn.net/Articles/793281/
-IV  edition - https://lwn.net/Articles/820337/ (online)
-V   edition - https://lwn.net/Articles/934142/
-              https://lwn.net/Articles/934459/
-              https://lwn.net/Articles/935180/
-VI  edition - https://lwn.net/Articles/981371/
-VII edition - https://lwn.net/Articles/1020596/
-              https://lwn.net/Articles/1021332/
-              https://lwn.net/Articles/1022054/
+gpiolib_acpi.ignore_interrupt=3DAMDI0030:00@21,AMDI0030:00@24
 
-.:: FORMAT
+This fixes the delay. Pins 0x15 and 0x18 both call: \_SB.PCI0.SBRG.HNC0()=
+=20
+that method stalls around 18s per pin. Ignoring just one cuts the delay in =
+half (32s vs 56s boot), so both are hitting the same broken path.
 
-The summit is organized to cover three days of discussions and talks.
+Also found another similar report on a G614PR (same chassis, different GPU)=
+: https://rog-forum.asus.com/t5/rog-strix-series/rog-strix-g614pr-long-boot=
+-time-on-linux/m-p/1112775
 
-The list of topics of interest includes (but it is not limited to):
+Happy to test patches.
 
-- Power management techniques
-- Scheduling techniques (real-time and non real-time)
-- Energy consumption and CPU capacity aware scheduling
-- Real-time virtualization
-- Mobile/Server power management real-world use cases (successes and
-  failures)
-- Power management and scheduling tooling (configuration, integration,
-  testing, etc.)
-- Tracing
-- Recap/lightning talks
+(Re: LLM - used it to format the report, debugging was done the old fashion=
+ed way :) )
 
-Presentations (50 min) can cover recently developed technologies,
-ongoing work and new ideas. Please understand that this workshop is not
-intended for presenting sales and marketing pitches.
+Francesco
 
-.:: SUBMIT A TOPIC/PRESENTATION
 
-To submit a topic/presentation use the form available at
-https://forms.gle/dR5FuzQRFNXZEQBb8.
 
-Or, if you prefer, simply reply (only to me, please :) to this email
-specifying:
+On Wednesday, December 17th, 2025 at 3:23 PM, Mario Limonciello <superm1@ke=
+rnel.org> wrote:
 
-- name/surname
-- affiliation
-- short bio
-- email address
-- title
-- abstract
-
-The deadline for submitting topics/presentations is January 30, 2026.
-Notifications for accepted topics/presentations will be sent out
-February 6, 2026.
-
-.:: ATTENDING
-
-Attending the OSPM-summit is free of charge, but registration to the
-event is mandatory. The event can allow a maximum of 50 people (so, be
-sure to register early!).
-
-Registrations open on February 6, 2025.
-
-To register, fill in the registration form available at
-https://forms.gle/TZwvdg7196G5CWyH6.
-
-While it is not strictly required to submit a topic/presentation,
-registrations with a topic/presentation proposal will take precedence.
-
-.:: VENUE
-
-OSPM26 is hosted at the Arm Cambridge campus (in Cambridge, UK), in the
-lecture theater and breakout area. We appreciate Arm's generous support
-in providing the venue.
-
-Although the event takes place on Arm's premises, it is fully
-independent of Arm's business operations. The summit is organized by and
-for the open-source community, and everyone is welcome to take part in
-an open, collaborative environment.
-
-.:: ORGANIZERS
-
-Juri Lelli (Red Hat)
-Dietmar Eggemann (Arm)
-Tommaso Cucinotta (SSSA)
-Lorenzo Pieralisi (Linaro)
-
-http://retis.sssup.it/ospm-summit/
-
+> ++linux-gpio, Hans
+>
+> On 12/17/25 4:06 AM, Francesco Lauritano wrote:
+>
+> > ASUS ROG Strix G16 G614PP (2025) experiences a 36-second kernel boot de=
+lay caused by `acpi_gpio_handle_deferred_request_irqs()` hanging during lat=
+e_initcall_sync. The workaround is `gpiolib_acpi.run_edge_events_on_boot=3D=
+0`.
+> >
+> > System Information
+> > ------------------
+> >
+> > - Hardware: ASUS ROG Strix G16 G614PP_G614PP
+> > - DMI Product: ROG Strix G16 G614PP_G614PP
+> > - DMI Vendor: ASUSTeK COMPUTER INC.
+> > - BIOS Version: G614PP.307 (08/14/2025)
+> > - CPU: AMD Ryzen (Strix Point)
+> > - GPU: NVIDIA (with nvidia-open 580.105.08)
+> > - Distribution: EndeavourOS
+> > - Kernel: 6.17.9 (also reproduced on zem)
+> > - Bootloader: systemd-boot with dracut
+> >
+> > Problem Description
+> > -------------------
+> >
+> > The system takes approximately 56 seconds to boot, with 37.8 seconds sp=
+ent in the kernel phase. Using `initcall_debug`, the culprit was identified=
+ as:
+> >
+> > [ 1.739645] calling acpi_gpio_handle_deferred_request_irqs+0x0/0x40 @ 1
+> > [ 38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0/0x40 r=
+eturned 0 after 36338138 usecs
+> >
+> > The kernel goes completely silent between ~2 seconds and ~38 seconds (n=
+o dmesg output during this period):
+> >
+> > [ 2.607764] clocksource: Switched to clocksource tsc
+> > [ 37.828217] clk: Disabling unused clocks
+> >
+> > Windows boots normally on the same hardware, indicating this is a Linux=
+-specific ACPI handling issue.
+> >
+> > systemd-analyze output
+> > ----------------------
+> >
+> > Startup finished in 8.593s (firmware) + 1.273s (loader) + 37.877s (kern=
+el) + 4.645s (initrd) + 3.831s (userspace) =3D 56.221s
+> >
+> > ACPI Errors During Boot
+> > -----------------------
+> >
+> > The following ACPI errors appear in dmesg (though these complete quickl=
+y and are not the direct cause of the delay):
+> >
+> > ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GPP2], AE_NO=
+T_FOUND (20250404/dswload2-162)
+> > ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20250404/psobject=
+-220)
+> > ACPI: Skipping parse of AML opcode: Scope (0x0010)
+> > ACPI Error: AE_NOT_FOUND, While resolving a named reference package ele=
+ment - \SB.PCI0.GPP7.UP00.DP00.U4UP.U4P3.UHI0 (20250404/dspkginit-438)
+> > ACPI: [Firmware Bug]: BIOS _OSI(Linux) query ignored
+> >
+> > GPIO-related dmesg output
+> > -------------------------
+> >
+> > [ 0.257981] calling pinctrl_init+0x0/0xc0 @ 1
+> > [ 0.257982] pinctrl core: initialized pinctrl subsystem
+> > [ 0.257994] initcall pinctrl_init+0x0/0xc0 returned 0 after 0 usecs
+> > [ 1.612848] calling amd_gpio_driver_init+0x0/0x20 @ 1
+> > [ 1.613779] initcall amd_gpio_driver_init+0x0/0x20 returned 0 after 930=
+ usecs
+> > [ 1.739645] calling acpi_gpio_handle_deferred_request_irqs+0x0/0x40 @ 1
+> > [ 38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0/0x40 r=
+eturned 0 after 36338138 usecs
+> >
+> > Workaround
+> > ----------
+> >
+> > Adding the following kernel parameter resolves the issue and reduces bo=
+ot time to ~10 seconds:
+> >
+> > gpiolib_acpi.run_edge_events_on_boot=3D0
+> >
+> > Impact of Workaround
+> > --------------------
+> >
+> > Testing with the workaround applied, no obvious regressions have been o=
+bserved:
+> >
+> > - Lid switch works
+> > - Power button works
+> > - Keyboard function keys work
+> > - Sleep/wake works
+> >
+> > Long-term, a DMI quirk entry for this device would be preferable.
+> >
+> > Suggested Fix
+> > -------------
+> >
+> > Add a DMI quirk entry to `drivers/gpio/gpiolib-acpi.c` for the ASUS ROG=
+ Strix G16 G614PP, though it may be needed on other ROG/Strix/Zephyrus mode=
+ls from 2021-2025.
+> >
+> > Steps to Reproduce
+> > ------------------
+> >
+> > 1. Install Linux on ASUS ROG Strix G16 G614PP (2025)
+> > 2. Boot without `gpiolib_acpi.run_edge_events_on_boot=3D0`
+> > 3. Observe ~40 second boot time with `systemd-analyze time`
+> > 4. Add `initcall_debug` to kernel parameters and observe the 36-second =
+hang in `acpi_gpio_handle_deferred_request_ir`
+>
+>
+> The behavior to run these interrupts at boot was introduced by:
+>
+> https://git.kernel.org/torvalds/c/ca876c7483b6
+>
+> Have you already analyzed the ACPI tables to understand where the large
+> delay is coming from? I think before jumping into the quirk like the
+> LLM you used suggests we should understand which deferred interrupt
+> handler is causing the issue to make sure we're not masking another issue=
+.
+>
+> Could you please attach the acpidump to a kernel Bugzilla to look over?
 
