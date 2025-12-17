@@ -1,102 +1,175 @@
-Return-Path: <linux-acpi+bounces-19610-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19611-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B009ACC6D2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 10:35:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6260CC6F88
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 11:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FF523062BF7
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 09:33:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FA9930281B3
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 10:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B5D33B6D8;
-	Wed, 17 Dec 2025 09:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B979A3451BB;
+	Wed, 17 Dec 2025 10:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="P/shgKP1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mail-24431.protonmail.ch (mail-24431.protonmail.ch [109.224.244.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E05277CAF;
-	Wed, 17 Dec 2025 09:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8384E347BA7
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 10:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765963995; cv=none; b=ajWwZky9AbUCbwywTDAdS8vGQmjb9MCf1fvociUYyXaNjplA1BjkQlerjhohcWtoE5EEzGLk3PE/1IAI8QJowa15+ezAKAdhZGO2ZZXhsDjJo32u/glUMXAFm8pFKfu0pO3Hxo4Z8KpQg7K93RQycxyErRuDiHUTaVXyJa/UVK4=
+	t=1765965999; cv=none; b=ObJw5rth0tn/cUZBc1Naq7GP1364cWAtjvZBlTC8NLRJuRCeHHeMgYV9/AGaynYjiNsy2eAjuFN25Zum0ip+O7AwDwWHWVBVFF453XT1YfDZhUVXTW2QhnOsqiML65ZNC8AmB4igUEvBksKvInij8ZbtR0/H0ABCuoiDZKiFOY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765963995; c=relaxed/simple;
-	bh=lhUAAyW2nf5zdVzrWdMqP/A+MUrbyUVRmzZVyRzSO7k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lONDMNGN3Pe9VzWtDBYsc5LKk4QEBOGE6FPvdri36xxoAFYYEh2OC4bJG+j6lIIGKyBF5CUWD3O5wpL1bz2U86Gz0BaIa9cdR9uPEeODRuhLgP5LGwjOj7OY5jEDlNEKZ31ckpAlKxNrJ4bXpOteR6Y4qfLHgv89C6jxEz/fSVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 660e0c0edb2b11f0a38c85956e01ac42-20251217
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:1f1ef67e-943d-4777-b55f-52c99ce21a9e,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:a9d874c,CLOUDID:2e41b52dafa57e876e5c1268609958da,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|123|850|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 660e0c0edb2b11f0a38c85956e01ac42-20251217
-X-User: fengchenguang@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <fengchenguang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 172906047; Wed, 17 Dec 2025 17:33:09 +0800
-From: fengchenguang@kylinos.cn
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	fengchenguang <fengchenguang@kylinos.cn>,
-	k2ci <kernel-bot@kylinos.cn>
-Subject: [PATCH] ACPICA: Fix RSDP signature validation to avoid -Wstringop-overread
-Date: Wed, 17 Dec 2025 17:33:04 +0800
-Message-Id: <20251217093304.116728-1-fengchenguang@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765965999; c=relaxed/simple;
+	bh=3Xb05DB3Q6WIcLEHMe2seSQ1dmwYv75KsTNmo5UtLtE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dr7KXKrrb/ZmjRCbwRL1ANNC5LfPmzq2CSSNVSxSPBX5KuGc5bWDHMDodY8F63Jy4pCZvAaxgyu1phOotAoa2XlKnGKFHuDP1088L654K18eHhHmZW+Tbax6GglzxLG9qc3+bBKLSwR885fNaK7wLlxnYomaqB/k/eYgAg9bjC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=P/shgKP1; arc=none smtp.client-ip=109.224.244.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1765965990; x=1766225190;
+	bh=2RnnQuGifjV/kTBTetVRhHsLJSG1bJ9UnM5JJ2WVBrA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=P/shgKP1kIMs1lYT7l9kDcVEv9dsrIjAeH+G1tAZq/7uZ3/7YXOR510z/lwKG5pk7
+	 jwfcxDUMgVh/x87VGvdJJcYzOpMrb+Gjk9cllPTPVHahdC87Pvd4CYWK2/0s9OGDVd
+	 3utEZtEj7TYqyFdpGJmcsEnTZyLcWXTItzRPwG26grA946VOZf/4oo3HX2b4MGdOKN
+	 H9oW6C2AZ8eMDNd7D8+vO6Da8QGqamRvC/B1Wk+A9QKJ2aabnZ5WLOtJjoMB42yUlW
+	 K3K4XZATjMnw1u3xvy6MPzrfJMjUokYu4/NkEJbYGnV6FzQZkeYHmj9j10tpNDIcW9
+	 p693ClKzxreMg==
+Date: Wed, 17 Dec 2025 10:06:24 +0000
+To: "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
+From: Francesco Lauritano <francesco.lauritano1@protonmail.com>
+Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: [BUG] 36-second boot delay due to by acpi_gpio_handle_deferred_request_irqs on ASUS ROG Strix G16 (2025)
+Message-ID: <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
+In-Reply-To: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com>
+References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com>
+Feedback-ID: 66654272:user:proton
+X-Pm-Message-ID: f4e4ecbc07449d31ab46ad4031982754970d5bba
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: fengchenguang <fengchenguang@kylinos.cn>
+ASUS ROG Strix G16 G614PP (2025) experiences a 36-second kernel boot delay =
+caused by `acpi_gpio_handle_deferred_request_irqs()` hanging during late_in=
+itcall_sync. The workaround is `gpiolib_acpi.run_edge_events_on_boot=3D0`.
 
-The RSDP signature is an 8-byte binary identifier,not a NUL-terminated
-C string. Using strncmp() on it triggers a -Wstringop-overread warning
-with GCC 8+, because the source operand is smaller than the requested
-compare length of 8 bytes.
+System Information
+------------------
 
-Replace strncmp() with memcmp() for exact 8-byte binary comparison,
-and remove the redundant (sizeof(a) < 8) conditional, as the RSDP
-signature field is always 8 bytes per the ACPI specification.
+-   Hardware: ASUS ROG Strix G16 G614PP_G614PP
+-   DMI Product: ROG Strix G16 G614PP_G614PP
+-   DMI Vendor: ASUSTeK COMPUTER INC.
+-   BIOS Version: G614PP.307 (08/14/2025)
+-   CPU: AMD Ryzen (Strix Point)
+-   GPU: NVIDIA (with nvidia-open 580.105.08)
+-   Distribution: EndeavourOS
+-   Kernel: 6.17.9 (also reproduced on zem)
+-   Bootloader: systemd-boot with dracut
 
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: fengchenguang <fengchenguang@kylinos.cn>
----
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Problem Description
+-------------------
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 8fe893d776dd..3714b197b1dd 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
- 
- /* Support for the special RSDP signature (8 characters) */
- 
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!memcmp(ACPI_CAST_PTR(char, (a)), ACPI_SIG_RSDP, 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
- 
- /* Support for OEMx signature (x can be any character) */
--- 
-2.25.1
+The system takes approximately 56 seconds to boot, with 37.8 seconds spent =
+in the kernel phase. Using `initcall_debug`, the culprit was identified as:
+
+    [ =C2=A0 =C2=A01.739645] calling =C2=A0acpi_gpio_handle_deferred_reques=
+t_irqs+0x0/0x40 @ 1
+    [ =C2=A0 38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0=
+/0x40 returned 0 after 36338138 usecs
+
+The kernel goes completely silent between ~2 seconds and ~38 seconds (no dm=
+esg output during this period):
+
+    [ =C2=A0 =C2=A02.607764] clocksource: Switched to clocksource tsc
+    [ =C2=A0 37.828217] clk: Disabling unused clocks
+
+Windows boots normally on the same hardware, indicating this is a Linux-spe=
+cific ACPI handling issue.
+
+systemd-analyze output
+----------------------
+
+    Startup finished in 8.593s (firmware) + 1.273s (loader) + 37.877s (kern=
+el) + 4.645s (initrd) + 3.831s (userspace) =3D 56.221s
+
+ACPI Errors During Boot
+-----------------------
+
+The following ACPI errors appear in dmesg (though these complete quickly an=
+d are not the direct cause of the delay):
+
+    ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GPP2], AE_NO=
+T_FOUND (20250404/dswload2-162)
+    ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20250404/psobject=
+-220)
+    ACPI: Skipping parse of AML opcode: Scope (0x0010)
+    ACPI Error: AE_NOT_FOUND, While resolving a named reference package ele=
+ment - \_SB_.PCI0.GPP7.UP00.DP00.U4UP.U4P3.UHI0 (20250404/dspkginit-438)
+    ACPI: [Firmware Bug]: BIOS _OSI(Linux) query ignored
+
+GPIO-related dmesg output
+-------------------------
+
+    [ =C2=A0 =C2=A00.257981] calling =C2=A0pinctrl_init+0x0/0xc0 @ 1
+    [ =C2=A0 =C2=A00.257982] pinctrl core: initialized pinctrl subsystem
+    [ =C2=A0 =C2=A00.257994] initcall pinctrl_init+0x0/0xc0 returned 0 afte=
+r 0 usecs
+    [ =C2=A0 =C2=A01.612848] calling =C2=A0amd_gpio_driver_init+0x0/0x20 @ =
+1
+    [ =C2=A0 =C2=A01.613779] initcall amd_gpio_driver_init+0x0/0x20 returne=
+d 0 after 930 usecs
+    [ =C2=A0 =C2=A01.739645] calling =C2=A0acpi_gpio_handle_deferred_reques=
+t_irqs+0x0/0x40 @ 1
+    [ =C2=A0 38.077788] initcall acpi_gpio_handle_deferred_request_irqs+0x0=
+/0x40 returned 0 after 36338138 usecs
+
+Workaround
+----------
+
+Adding the following kernel parameter resolves the issue and reduces boot t=
+ime to ~10 seconds:
+
+    gpiolib_acpi.run_edge_events_on_boot=3D0
+
+Impact of Workaround
+--------------------
+
+Testing with the workaround applied, no obvious regressions have been obser=
+ved:
+
+-   Lid switch works
+-   Power button works
+-   Keyboard function keys work
+-   Sleep/wake works
+
+Long-term, a DMI quirk entry for this device would be preferable.
+
+Suggested Fix
+-------------
+
+Add a DMI quirk entry to `drivers/gpio/gpiolib-acpi.c` for the ASUS ROG Str=
+ix G16 G614PP, though it may be needed on other=C2=A0ROG/Strix/Zephyrus mod=
+els from 2021-2025.
+
+Steps to Reproduce
+------------------
+
+1.  Install Linux on ASUS ROG Strix G16 G614PP (2025)
+2.  Boot without `gpiolib_acpi.run_edge_events_on_boot=3D0`
+3.  Observe ~40 second boot time with `systemd-analyze time`
+4.  Add `initcall_debug` to kernel parameters and observe the 36-second han=
+g in `acpi_gpio_handle_deferred_request_ir`
+
 
 
