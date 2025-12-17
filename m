@@ -1,111 +1,267 @@
-Return-Path: <linux-acpi+bounces-19624-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19625-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310F7CC765C
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:43:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1598CC761E
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 12:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 144F430C228C
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 11:40:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C93E83003FFC
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 11:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11DE33FE12;
-	Wed, 17 Dec 2025 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6444B49659;
+	Wed, 17 Dec 2025 11:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgkJUJJe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52D233893C;
-	Wed, 17 Dec 2025 11:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521E0259CAF;
+	Wed, 17 Dec 2025 11:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765971127; cv=none; b=d8Xu35MXOoQ6JxCgxbrDaQ50saXy0VexE22aAb+vyGP9zknVfAAerSIpsQ1yZ0xJXjCLjRvEt5NX5jr1W6knnFxwfbfdlxGjkM7sg6o8hLdoNm/juepwSH6OYceG9bkjw2YYIfBvaQlXSNIAs4v4JMBR/+dESEZayb8mCnwAoM0=
+	t=1765971690; cv=none; b=gGVykpvF/AdSwbHoxE/a47/bFcs4lkSBdyD7n3wx6RfRxzxyKGzxBMDfrHYLWY8+AlMjiG+J8x1bVO9USNG30TvwKHhfdhT1pcHDU91lQgbo2fg12OyqhSU8a9VTSPInvETxV3+Xo9eX+TWFdt/loKN+DBxdOswKrsqOvYq8nUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765971127; c=relaxed/simple;
-	bh=N2v9bsf7j7PYYsfqFDEyn/Yauym+j4KV8NEbr5nawRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B18ec824z2aM4AXGM0IkfuSUQKuJzjD7PbJosJChwB3WTZz56jOoPAmvI5Ntk+fOvdQvU0QoKjhSg3lvsGIAdnvYvE0G/O+tPlFJPnmI/6S9geML2QPKZ1DZ2DJxsAA5GMHCoPcdOwujAx3wyLMs+8hAWlxHA6R7khL6wZCdryI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83C89169C;
-	Wed, 17 Dec 2025 03:31:55 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB9843F73B;
-	Wed, 17 Dec 2025 03:32:00 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: tony.luck@intel.com,
-	bp@alien8.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	ahmed.tiba@arm.com
-Subject: [PATCH 12/12] doc: ras: describe firmware-first estatus flow
-Date: Wed, 17 Dec 2025 11:28:45 +0000
-Message-ID: <20251217112845.1814119-13-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251217112845.1814119-1-ahmed.tiba@arm.com>
-References: <20251217112845.1814119-1-ahmed.tiba@arm.com>
+	s=arc-20240116; t=1765971690; c=relaxed/simple;
+	bh=QureFGhz+Rjaa7+iRO0a7okZDgRSIaqdEUA2PUeZ2+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VhyscdyKiolCJYaXJuuIWlNaAuUu+00x4y/CoI4yJpvHxXMdmHD9fIE6/VuC+u9OMNRo8vBMy30tWd6SrJDG5R7+/Cinou0izkJJQE0o0zPScEQ3w7SLAUza1db8ACILM3qGuy19FQXGhk4G+kGJSqqA5BCbazMHPQv/djZQSTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgkJUJJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E161C4CEF5;
+	Wed, 17 Dec 2025 11:41:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765971689;
+	bh=QureFGhz+Rjaa7+iRO0a7okZDgRSIaqdEUA2PUeZ2+8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rgkJUJJeavzzA6Zd4VIHKmnMsfK5r/NGqBnqhpFApPQXqcWT3yMqr8Cj3AIz6ge1Z
+	 0KSN1tj76FCMnrybq+qoTCQEbD9zLHhchKTW0qtyhfrN9plYZLACOBkVHIG6A0Agxg
+	 26bbp9klTjMvQq+88v+OfOMjeCqYCp5DrzbkrCovU2CV5Zlej+QFoRzgldbNYS0onp
+	 doDQpcDEmhmlN2StpdeGS+woTTldhTQjDKofpcibeATt/nP8Gfy/fiFWCTtHgAFp6t
+	 f3kujRaryd48v6qxdJxaWWuki1JRhcGoAsYbMUcz7OsGwAnLLvp8yyFQP0qX2SmUYl
+	 TIxsgbUX96jGg==
+Message-ID: <cd04e23a-9523-4d25-8240-29a0dffa0e75@kernel.org>
+Date: Wed, 17 Dec 2025 12:41:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/12] dt-bindings: ras: document estatus provider
+To: Ahmed Tiba <ahmed.tiba@arm.com>, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: tony.luck@intel.com, bp@alien8.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+ linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com, Michael.Zhao2@arm.com
+References: <20251217112845.1814119-1-ahmed.tiba@arm.com>
+ <20251217112845.1814119-11-ahmed.tiba@arm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251217112845.1814119-11-ahmed.tiba@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a short section to the RAS admin guide that explains how the new
-estatus core and DeviceTree provider are enabled, and point readers to
-the binding that describes the firmware-first CPER layout.
+On 17/12/2025 12:28, Ahmed Tiba wrote:
+> Add a binding for firmware-first CPER providers described via
+> DeviceTree. It covers the shared status block, optional acknowledgment
+> registers, interrupt versus polling modes and the SEA notification
+> flag so non-ACPI platforms can describe their error sources.
+> 
+> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
+> ---
+>  .../devicetree/bindings/ras/arm,ras-ffh.yaml  | 95 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 96 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml b/Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
+> new file mode 100644
+> index 000000000000..0d2acbf8e8a8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
 
-Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
----
- Documentation/admin-guide/RAS/main.rst | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+What is ras? There is no such directory so some description would be
+useful. Usually you do not get your own directory per binding.
 
-diff --git a/Documentation/admin-guide/RAS/main.rst b/Documentation/admin-guide/RAS/main.rst
-index 5a45db32c49b..adff8b4bc84b 100644
---- a/Documentation/admin-guide/RAS/main.rst
-+++ b/Documentation/admin-guide/RAS/main.rst
-@@ -205,6 +205,30 @@ Architecture (MCA)\ [#f3]_.
- .. [#f3] For more details about the Machine Check Architecture (MCA),
-   please read Documentation/arch/x86/x86_64/machinecheck.rst at the Kernel tree.
- 
-+Firmware-first CPER status providers
-+------------------------------------
-+
-+Some systems expose Common Platform Error Record (CPER) data via firmware
-+interfaces instead of relying on CPU machine-check banks. The kernel routes
-+those records through the shared *estatus* core:
-+
-+* ``CONFIG_RAS_ESTATUS_CORE`` hosts the in-kernel data movers and notifiers.
-+  It is selected automatically when ACPI/APEI GHES support is enabled or when
-+  the DeviceTree provider below is built.
-+* ``CONFIG_RAS_ESTATUS_DT`` adds the ``drivers/ras/estatus-dt.c`` provider that
-+  maps a firmware-advertised CPER status block on non-ACPI platforms. The
-+  DeviceTree binding is documented in
-+  ``Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml`` and describes the
-+  status-buffer region and the notification signal (interrupt or polling) that
-+  firmware uses to advertise new records.
-+
-+Once a platform describes a firmware-first provider, both ACPI GHES and the
-+DeviceTree driver reuse the same code paths: CPER sections are iterated with
-+``estatus_for_each_section()``, logged through ``cper_estatus_print()``, and
-+handed to the RAS notifier chains that trigger memory-offline, PCIe AER, or
-+vendor-specific handlers. This keeps the behaviour consistent regardless of
-+whether the error source is described via ACPI tables or DeviceTree.
-+
- EDAC - Error Detection And Correction
- *************************************
- 
--- 
-2.43.0
+> @@ -0,0 +1,95 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/ras/arm,ras-ffh.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Arm Firmware-First Handler (FFH) CPER provider
+> +
+> +maintainers:
+> +  - Ahmed Tiba <ahmed.tiba@arm.com>
+> +
+> +description: |
+> +  Some Arm platforms describe a firmware-first error handler that exposes a
+> +  Common Platform Error Record (CPER) buffer directly via DeviceTree. The OS
+> +  maps the buffer to consume the error records, and firmware signals that a new
+> +  record is ready either by asserting an interrupt or by relying on a periodic
+> +  poll. This binding describes the buffer and the associated notification
 
+Do not describe what the binding does. Describe the hardware or firmware.
+
+> +  signal. If firmware delivers the error via Synchronous External Abort (SEA),
+> +  the optional sea-notify flag marks the source accordingly.
+> +
+> +properties:
+> +  compatible:
+> +    const: arm,ras-ffh
+
+Again ras - what's that? Your patch or binding must explain that.
+
+> +
+> +  reg:
+> +    minItems: 1
+
+Why is this flexible?
+
+> +    items:
+> +      - description: CPER status block exposed by firmware
+> +      - description:
+> +          Optional 32- or 64-bit acknowledgment register. Firmware watches this
+> +          register and expects bit 0 to be written to 1 once the OS consumes the
+> +          status buffer so it can reuse the record.
+> +
+> +  reg-names:
+> +    items:
+> +      - const: status
+> +      - const: ack
+
+Does not match reg.
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description:
+> +      Optional interrupt used to signal that a new status record is ready. If
+> +      omitted, the OS relies on the polling interval property.
+
+What OS is doing should not really matter. Either you have the interrupt
+or not.
+
+
+> +
+> +  poll-interval:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 1
+> +    description:
+> +      Optional polling interval, in milliseconds, for platforms that cannot
+> +      route an interrupt.
+
+That's OS policy, not suitable for binding.
+
+> +
+> +  arm,sea-notify:
+> +    type: boolean
+> +    description:
+> +      Set if the platform delivers these errors as Synchronous External Aborts.
+
+This is implied by the compatible, no?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        poll-interval: false
+> +    then:
+> +      required:
+> +        - interrupts
+> +  - if:
+> +      properties:
+> +        interrupts: false
+> +    then:
+> +      required:
+> +        - poll-interval
+> +  - if:
+> +      properties:
+> +        reg:
+> +          minItems: 2
+> +    then:
+> +      required:
+> +        - reg-names
+
+Drop all this.
+
+> +
+> +unevaluatedProperties: false
+
+I do not see any schema referenced.
+
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    ras-ffh@fe800000 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+If you cannot find a name matching your device, please check in kernel
+sources for similar cases or you can grow the spec (via pull request to
+DT spec repo).
+
+> +        compatible = "arm,ras-ffh";
+> +        reg = <0xfe800000 0x1000>,
+> +              <0xfe810000 0x4>;
+> +        reg-names = "status", "ack";
+> +        interrupts = <0 32 IRQ_TYPE_LEVEL_HIGH>;
+
+Use proper defines.
+
+Best regards,
+Krzysztof
 
