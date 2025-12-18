@@ -1,168 +1,92 @@
-Return-Path: <linux-acpi+bounces-19648-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19649-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F52CCA8E1
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 07:57:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E993BCCAD7B
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 09:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 368B930813CE
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 06:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C881302CF7B
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 08:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0E132FA12;
-	Thu, 18 Dec 2025 06:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="DAny6Ucp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C065338F20;
+	Thu, 18 Dec 2025 08:20:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24B2FCC0E;
-	Thu, 18 Dec 2025 06:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D2033373E;
+	Thu, 18 Dec 2025 08:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766040523; cv=none; b=rKKOlHsxhSX5p6rIcKDS28CGkqMJttD4gDm9jAK7eodZuQLo4XIvDca/ZMV273xFwYog9JSRR5gw5NsEN2eR8rBeS+CbvIz+pP2UP0TGeObnRBoBEAdHupsUjB1UbHGWKkb2ixp0I4tVczH0TuatXN2snilTrFDDSSMMNoj+FIE=
+	t=1766046011; cv=none; b=dLonQH+qPxujJoEMotHQa/083pPQM7hexWr6JgYyZpl8EL+dNSZigp/84wibmHgu5P/5AwfaomvdR+RwwtsC+1RbFovYjR7FyRh4y8Da2NZRmJLrrlkvlht3WOmXue/FiU33xOebrHc9Di3VgyYhdUTfTMDNCgXzsub5Y7KnVYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766040523; c=relaxed/simple;
-	bh=Bvb5nZ22E/b873OqxdM4nSK/zggRk9sx7lpf3PWsqXo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=duApAcy89Zu0vUvgTGIRMG3vOJs3C52cfdy80CtOLuJxMG9aj2Aymvj75vG5s7Sg5mGVdX9WHnwNlI9xXuzUBv844AROtBQhCmLCYqbv7P+XNkcckdv1cX6hsbDh2pseM30rzvONRFurxCLdtVRUr6FkdlCaqi/sKgygXKV7XhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=DAny6Ucp; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ScoFQ/ansEWIXKq9P4dDY9uGDVCyUcrXN7vBp9sF7wc=;
-	b=DAny6UcpfOnH2UDzatQ/BtphXMG9GlG9hypD2m3XmDVu0Eyg0eplA8jK1IcMrL8/+sVYTFlcN
-	E80unBrng28gbwcva1IhWyX49pDrrjgxkC++zo1iiHo4mxEMpi6JGLLVs0JeVAo1VKH6lZX9DFg
-	pfhYjNcFXuPLTAdUypEo/dA=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dX1R35KmWz1T4KF;
-	Thu, 18 Dec 2025 14:46:23 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 281CF140278;
-	Thu, 18 Dec 2025 14:48:37 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Dec 2025 14:48:36 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 18 Dec
- 2025 14:48:36 +0800
-Message-ID: <be2d54f7-77f1-4412-b650-4266f3b8882d@huawei.com>
-Date: Thu, 18 Dec 2025 14:48:35 +0800
+	s=arc-20240116; t=1766046011; c=relaxed/simple;
+	bh=rPLXOZC3Wt6koNftBuHRaL3/E30W8zFZBc7CjteOnXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qtbCT73y8QU9EBisZekqihIZodWqOdvQreLvSUmlLbRELBrBmG//GSGixpRZ1nOTpsXtc6X8uCamtUxRRf9MkeWzmV+wtouopeq+jdiWjeCeG5Wc5NplxLknzxwk27fYs5xJ8LMxxSeYy71sXhmAgNWXaUY6ZHsFFCOAx8Ucn/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-05 (Coremail) with SMTP id zQCowAA3zRAsuUNpBp0PAQ--.5448S2;
+	Thu, 18 Dec 2025 16:19:56 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: rafael@kernel.org,
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] PNP: add put_device() in pnpbios_init()
+Date: Thu, 18 Dec 2025 16:19:55 +0800
+Message-Id: <20251218081955.548521-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] ACPI: thermal: Rework system suspend and resume
- handling
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI
-	<linux-acpi@vger.kernel.org>
-CC: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
-	Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>,
-	<lihuisong@huawei.com>
-References: <6222428.lOV4Wx5bFT@rafael.j.wysocki>
- <3024049.e9J7NaK4W3@rafael.j.wysocki>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <3024049.e9J7NaK4W3@rafael.j.wysocki>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+X-CM-TRANSID:zQCowAA3zRAsuUNpBp0PAQ--.5448S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Jr1UXF47Gry3Gr17uF4xXrb_yoW3CrgEgF
+	y0gFy2qrWrC397Gr1UJr1xZFWUK3ZruFs29r4ktF4Yy34Iqr1qg3s8Zr98A34Uua1xAryD
+	AFW5trWxArs7GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbckFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
+	Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCRETE2lCxptgmQABsW
 
+If pnp_register_protocol() fails, call put_device()
+to drop the device reference.
 
-在 2025/12/10 22:44, Rafael J. Wysocki 写道:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> In the process of handling system resume, acpi_thermal_resume() attempts
-> to power up active cooling devices to guarantee that they will be
-> operational when the ACPI thermal check queued by it runs.  However,
-> the only kind of cooling devices that can be bound to ACPI thermal zones
-> is fans and they are already powered up by the ACPI fan driver resume,
-> which additionally takes "ACPI 4" fans that don't need to be powered
-> up into account.
->
-> For this reason, remove the part of acpi_thermal_resume() related to
-> fans and in order to ensure that it will run after powering up all fans,
-> rename it to acpi_thermal_complete() and point the .complete() driver
-> callback to it.  Analogously, rename acpi_thermal_suspend() to
-> acpi_thermal_prepare() and point the .prepare() driver callback to it.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->   drivers/acpi/thermal.c |   37 +++++++++++++------------------------
->   1 file changed, 13 insertions(+), 24 deletions(-)
->
-> --- a/drivers/acpi/thermal.c
-> +++ b/drivers/acpi/thermal.c
-> @@ -911,37 +911,26 @@ static void acpi_thermal_remove(struct p
->   }
->   
->   #ifdef CONFIG_PM_SLEEP
-> -static int acpi_thermal_suspend(struct device *dev)
-> +static int acpi_thermal_prepare(struct device *dev)
->   {
->   	/* Make sure the previously queued thermal check work has been done */
->   	flush_workqueue(acpi_thermal_pm_queue);
->   	return 0;
->   }
->   
-> -static int acpi_thermal_resume(struct device *dev)
-> +static void acpi_thermal_complete(struct device *dev)
->   {
-> -	struct acpi_thermal *tz = dev_get_drvdata(dev);
-> -	int i, j;
-> -
-> -	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-> -		struct acpi_thermal_trip *acpi_trip = &tz->trips.active[i].trip;
-> -
-> -		if (!acpi_thermal_trip_valid(acpi_trip))
-> -			break;
-> -
-> -		for (j = 0; j < acpi_trip->devices.count; j++)
-> -			acpi_bus_update_power(acpi_trip->devices.handles[j], NULL);
-> -	}
-> -
-> -	acpi_queue_thermal_check(tz);
-> -
-> -	return AE_OK;
-> +	acpi_queue_thermal_check(dev_get_drvdata(dev));
->   }
-> -#else
-> -#define acpi_thermal_suspend	NULL
-> -#define acpi_thermal_resume	NULL
-> -#endif
-> -static SIMPLE_DEV_PM_OPS(acpi_thermal_pm, acpi_thermal_suspend, acpi_thermal_resume);
-> +
-> +static const struct dev_pm_ops acpi_thermal_pm_ops = {
-> +	.prepare = acpi_thermal_prepare,
-> +	.complete = acpi_thermal_complete,
-> +};
-> +#define ACPI_THERMAL_PM	&acpi_thermal_pm_ops
-> +#else /* !CONFIG_PM_SLEEP */
-> +#define ACPI_THERMAL_PM	NULL
-> +#endif /* CONFIG_PM_SLEEP */
->   
->   static const struct acpi_device_id  thermal_device_ids[] = {
->   	{ACPI_THERMAL_HID, 0},
-> @@ -955,7 +944,7 @@ static struct platform_driver acpi_therm
->   	.driver = {
->   		.name = "acpi-thermal",
->   		.acpi_match_table = thermal_device_ids,
-> -		.pm = &acpi_thermal_pm,
-> +		.pm = ACPI_THERMAL_PM,
->   	},
->   };
->   
-This rework is good to me. It is more reasonable.
-Acked-by: lihuisong@huawei.com
->
->
->
->
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/pnp/pnpbios/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/pnp/pnpbios/core.c b/drivers/pnp/pnpbios/core.c
+index f7e86ae9f72f..997e0153d6e3 100644
+--- a/drivers/pnp/pnpbios/core.c
++++ b/drivers/pnp/pnpbios/core.c
+@@ -538,6 +538,7 @@ static int __init pnpbios_init(void)
+ 	/* register with the pnp layer */
+ 	ret = pnp_register_protocol(&pnpbios_protocol);
+ 	if (ret) {
++		put_device(&pnpbios_protocol.dev)
+ 		printk(KERN_ERR
+ 		       "PnPBIOS: Unable to register driver.  Aborting.\n");
+ 		return ret;
+-- 
+2.25.1
+
 
