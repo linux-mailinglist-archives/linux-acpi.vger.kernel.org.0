@@ -1,46 +1,57 @@
-Return-Path: <linux-acpi+bounces-19647-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19648-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C990CCA8CF
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 07:57:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F52CCA8E1
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 07:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9001306D8D4
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 06:55:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 368B930813CE
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 06:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE2132E698;
-	Thu, 18 Dec 2025 06:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0E132FA12;
+	Thu, 18 Dec 2025 06:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUi+MWJ1"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="DAny6Ucp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E7E329C6E;
-	Thu, 18 Dec 2025 06:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24B2FCC0E;
+	Thu, 18 Dec 2025 06:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766040513; cv=none; b=m9h/ZFnh5GuVZUbQFJA0YcKK5nQRjCyPG7P+UAMcQvRpwyq2bmxLtqUSbC05rkifWa1PVS4e1pFEPYuKEdxqB5jtOhCVf+yauSD2YjbJpUqO+ezRq/kbzPZPOqO5h80lqXtiTspYYP24oR6rSloB2+ewOEWapCSB71LcKKuAxsU=
+	t=1766040523; cv=none; b=rKKOlHsxhSX5p6rIcKDS28CGkqMJttD4gDm9jAK7eodZuQLo4XIvDca/ZMV273xFwYog9JSRR5gw5NsEN2eR8rBeS+CbvIz+pP2UP0TGeObnRBoBEAdHupsUjB1UbHGWKkb2ixp0I4tVczH0TuatXN2snilTrFDDSSMMNoj+FIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766040513; c=relaxed/simple;
-	bh=LP52q0y4w97pKIkgFw09eC7QgAi5ZrZf9nSc0NpqLYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RtCdcxy+v/fEHmqFqI7AsWZXiKRMlEbe2/J+g/lcHMerHamCSBumSkqJzkXtEAxKidRqi/MsQc8JA467nxvy3iGexhiI5dL+TVYiMU4rwfkN8IVYV90+WgsLipo11+AVV6vljAsM6yIPqN4iZrJQDxANZsw2ahuQFSYXB1ZA4J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUi+MWJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D00C19422;
-	Thu, 18 Dec 2025 06:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766040511;
-	bh=LP52q0y4w97pKIkgFw09eC7QgAi5ZrZf9nSc0NpqLYI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KUi+MWJ1coE0AofShTJxbnhYwnkpNsHcxDjhFbAMIUxfj43LSocc4Ft34dIHOI+mS
-	 jqUfAF0aAXyefgMhnWdn0ZIN3xg4yyb9qZScvmgHABeDbmPhmzrw/qWg2wzYt38AqS
-	 QOoRuKpFGl9i8QfkgQD5dSEwGnwLVNY6B4nwFTUdSy0e0JH6aJH+NSfGhQZUfFzY2u
-	 fvT+tOddJpmpMM9cU3VphuHC9boWM390916gQtR0r+XbbXu9mezjsXzt4ap4sJbeWY
-	 PTJ5ei8JLkgvOm6pObeBChJA1jAHjFbmVxeswwtH/Z0t7LoFfml8eYlAb6W2klVytO
-	 jhiXjH/Rp0rpA==
-Message-ID: <2a2baef6-c294-4c31-bec2-10fbaa3f7941@kernel.org>
-Date: Thu, 18 Dec 2025 07:48:26 +0100
+	s=arc-20240116; t=1766040523; c=relaxed/simple;
+	bh=Bvb5nZ22E/b873OqxdM4nSK/zggRk9sx7lpf3PWsqXo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=duApAcy89Zu0vUvgTGIRMG3vOJs3C52cfdy80CtOLuJxMG9aj2Aymvj75vG5s7Sg5mGVdX9WHnwNlI9xXuzUBv844AROtBQhCmLCYqbv7P+XNkcckdv1cX6hsbDh2pseM30rzvONRFurxCLdtVRUr6FkdlCaqi/sKgygXKV7XhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=DAny6Ucp; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ScoFQ/ansEWIXKq9P4dDY9uGDVCyUcrXN7vBp9sF7wc=;
+	b=DAny6UcpfOnH2UDzatQ/BtphXMG9GlG9hypD2m3XmDVu0Eyg0eplA8jK1IcMrL8/+sVYTFlcN
+	E80unBrng28gbwcva1IhWyX49pDrrjgxkC++zo1iiHo4mxEMpi6JGLLVs0JeVAo1VKH6lZX9DFg
+	pfhYjNcFXuPLTAdUypEo/dA=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dX1R35KmWz1T4KF;
+	Thu, 18 Dec 2025 14:46:23 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 281CF140278;
+	Thu, 18 Dec 2025 14:48:37 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Dec 2025 14:48:36 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 18 Dec
+ 2025 14:48:36 +0800
+Message-ID: <be2d54f7-77f1-4412-b650-4266f3b8882d@huawei.com>
+Date: Thu, 18 Dec 2025 14:48:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -48,85 +59,110 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] dt-bindings: ras: document estatus provider
-To: Ahmed Tiba <ahmed.tiba@arm.com>, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: tony.luck@intel.com, bp@alien8.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
- linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com, Michael.Zhao2@arm.com
-References: <cd04e23a-9523-4d25-8240-29a0dffa0e75@kernel.org>
- <20251217174933.1938909-1-ahmed.tiba@arm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251217174933.1938909-1-ahmed.tiba@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v1 4/4] ACPI: thermal: Rework system suspend and resume
+ handling
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI
+	<linux-acpi@vger.kernel.org>
+CC: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+	Armin Wolf <w_armin@gmx.de>, Hans de Goede <hansg@kernel.org>,
+	<lihuisong@huawei.com>
+References: <6222428.lOV4Wx5bFT@rafael.j.wysocki>
+ <3024049.e9J7NaK4W3@rafael.j.wysocki>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <3024049.e9J7NaK4W3@rafael.j.wysocki>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On 17/12/2025 18:49, Ahmed Tiba wrote:
-> On 17/12/2025 12:41, Krzysztof Kozlowski wrote:
->> What is ras? There is no such directory so some description would be
->> useful. Usually you do not get your own directory per binding.
-> 
-> Would it make sense to move it under `Documentation/devicetree/bindings/firmware`
-> and expand the description so it spells out that
-> Arm RAS refers to reliability, availability and serviceability firmware.
-> 
->> Do not describe what the binding does. Describe the hardware or firmware.
-> 
-> I'll reword that section.
-> 
->> Again ras - what's that? Your patch or binding must explain that.
 
-You cut almost entire context, so I don't know what these parts are
-referring to.
-
-Please follow standard mailing list reply style. I am not reading the
-rest and I still expect to implement my feedback fully.
-
-Best regards,
-Krzysztof
+在 2025/12/10 22:44, Rafael J. Wysocki 写道:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> In the process of handling system resume, acpi_thermal_resume() attempts
+> to power up active cooling devices to guarantee that they will be
+> operational when the ACPI thermal check queued by it runs.  However,
+> the only kind of cooling devices that can be bound to ACPI thermal zones
+> is fans and they are already powered up by the ACPI fan driver resume,
+> which additionally takes "ACPI 4" fans that don't need to be powered
+> up into account.
+>
+> For this reason, remove the part of acpi_thermal_resume() related to
+> fans and in order to ensure that it will run after powering up all fans,
+> rename it to acpi_thermal_complete() and point the .complete() driver
+> callback to it.  Analogously, rename acpi_thermal_suspend() to
+> acpi_thermal_prepare() and point the .prepare() driver callback to it.
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>   drivers/acpi/thermal.c |   37 +++++++++++++------------------------
+>   1 file changed, 13 insertions(+), 24 deletions(-)
+>
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -911,37 +911,26 @@ static void acpi_thermal_remove(struct p
+>   }
+>   
+>   #ifdef CONFIG_PM_SLEEP
+> -static int acpi_thermal_suspend(struct device *dev)
+> +static int acpi_thermal_prepare(struct device *dev)
+>   {
+>   	/* Make sure the previously queued thermal check work has been done */
+>   	flush_workqueue(acpi_thermal_pm_queue);
+>   	return 0;
+>   }
+>   
+> -static int acpi_thermal_resume(struct device *dev)
+> +static void acpi_thermal_complete(struct device *dev)
+>   {
+> -	struct acpi_thermal *tz = dev_get_drvdata(dev);
+> -	int i, j;
+> -
+> -	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+> -		struct acpi_thermal_trip *acpi_trip = &tz->trips.active[i].trip;
+> -
+> -		if (!acpi_thermal_trip_valid(acpi_trip))
+> -			break;
+> -
+> -		for (j = 0; j < acpi_trip->devices.count; j++)
+> -			acpi_bus_update_power(acpi_trip->devices.handles[j], NULL);
+> -	}
+> -
+> -	acpi_queue_thermal_check(tz);
+> -
+> -	return AE_OK;
+> +	acpi_queue_thermal_check(dev_get_drvdata(dev));
+>   }
+> -#else
+> -#define acpi_thermal_suspend	NULL
+> -#define acpi_thermal_resume	NULL
+> -#endif
+> -static SIMPLE_DEV_PM_OPS(acpi_thermal_pm, acpi_thermal_suspend, acpi_thermal_resume);
+> +
+> +static const struct dev_pm_ops acpi_thermal_pm_ops = {
+> +	.prepare = acpi_thermal_prepare,
+> +	.complete = acpi_thermal_complete,
+> +};
+> +#define ACPI_THERMAL_PM	&acpi_thermal_pm_ops
+> +#else /* !CONFIG_PM_SLEEP */
+> +#define ACPI_THERMAL_PM	NULL
+> +#endif /* CONFIG_PM_SLEEP */
+>   
+>   static const struct acpi_device_id  thermal_device_ids[] = {
+>   	{ACPI_THERMAL_HID, 0},
+> @@ -955,7 +944,7 @@ static struct platform_driver acpi_therm
+>   	.driver = {
+>   		.name = "acpi-thermal",
+>   		.acpi_match_table = thermal_device_ids,
+> -		.pm = &acpi_thermal_pm,
+> +		.pm = ACPI_THERMAL_PM,
+>   	},
+>   };
+>   
+This rework is good to me. It is more reasonable.
+Acked-by: lihuisong@huawei.com
+>
+>
+>
+>
 
