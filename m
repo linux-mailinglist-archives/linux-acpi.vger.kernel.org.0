@@ -1,102 +1,96 @@
-Return-Path: <linux-acpi+bounces-19677-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19687-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2BACCD764
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 21:05:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C65CCD97F
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 21:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3EF6B302BC42
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 20:05:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72478309AF08
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 20:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4743F2BEFED;
-	Thu, 18 Dec 2025 20:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C160934CFD4;
+	Thu, 18 Dec 2025 20:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9PosWJj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gk8MpisC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A142BD036
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Dec 2025 20:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9644E34CFAB;
+	Thu, 18 Dec 2025 20:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766088303; cv=none; b=pqbi4n58/skzir4xXQVplqN9Vs4LXIRQy2PJRf/PlCHyJVOurLuV8Csj2H/1gy2o0P4sxOjOA51mM9eZ6sbstEmUxfMe432u0MFWfO9L22QXQwdaQq2PW+nNwiOePg0BFAllJg/tjEFJpNRohWzw6fkU3FWmts5FRFF1aHFPhds=
+	t=1766090616; cv=none; b=fTjDUqk2LbMgFggcn96OkJqtGCK+Coa/fXAm35/jIMwWqWO2udS+9NJdfhcMmY6Y/oIpEwbsc3fKxAdVP398IzvsZuMZEs+2OfOlwfx+AZ5jsEFMadFlQrsqeNNB0bEp+gmGUYMb/fOHxmhPCV/LdvW9PH/ndcHsv5Xp0M0uGDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766088303; c=relaxed/simple;
-	bh=3ePV+3sRnR83TZIiS6AHywO8mupB/UBGmUQ1EodpoiQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=F20MUjJ8jM8GHtcuiBfB+SIDX9WBwsvC5IxSU66a5c8tt7o++0JarI53paoivK1azIR+mqxe8BajBn6KpXF1HiEZG44PhMLJXQenNd7Utx+e61qq60jjopGW92kd/y2WQyUn0FhqdYnyJipI4kLtbXTOlwt2Uw61YrONE+llvL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9PosWJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1F1C116D0
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Dec 2025 20:05:02 +0000 (UTC)
+	s=arc-20240116; t=1766090616; c=relaxed/simple;
+	bh=fCy/Wex3WYIT9VqJQWpmMAZe/B9Xqn+9Ch8KYPH3iWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r25IlXno/UNsAJRVskrXL0xdwwl2Rc1ItMBD06s+lEWKy2DwsSMP6RWqv06rq2YCG4k0vDtD8Vkwbt/PuQQFjoVxd3zyMBxlJH0CI7SUuZrbxw+j0qij/Nudb74I2Qhbyx4L8esfaMjqtmyP4p5UgP7/83iv6StrG/inTqMUbDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gk8MpisC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E117C116D0;
+	Thu, 18 Dec 2025 20:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766088302;
-	bh=3ePV+3sRnR83TZIiS6AHywO8mupB/UBGmUQ1EodpoiQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=t9PosWJjpRqp1maTyRSzJrr3sN8q7BGkfEFSjdOQF9WajNP+ZzqspMpenfrHYYoHB
-	 C4YD7MbtYiORx+PD5b8RbmYFB5X8eW1vfk5hesVAInq4v1MLMzG1IUVohoPcU62a8m
-	 voTvpiLwnqtn/M+GzJZ0/+kzbHlHS+dqaoxnfg3831t+O+JPac57ilD2/lgacv7HvU
-	 hfuUuIzKtmJyEXKJfJh/yQDO+cByrp7MsdFhnppn7NE7p9e8+Bz3OQJRgRoSLquO16
-	 x57RAyuhPknurEPBGcZYufF0YrAgAJotjyD6Xa6yjeAGCV8Sz1q4S5WR2ECuRcwwnF
-	 CXiOh2hKYxK1g==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-657a6028fbbso521551eaf.3
-        for <linux-acpi@vger.kernel.org>; Thu, 18 Dec 2025 12:05:02 -0800 (PST)
-X-Gm-Message-State: AOJu0YzQN6RlfUwa+rSoftApz0JzcEfWBtu80vZ3a/bh/nROoTGm8LHA
-	Ti+BE03sKg1jxzohA4CiZmJElOx7vN1+zrAoB3mwVfk5pRJ5zNXkDREcenN+sZS7+uk0aOb4aRF
-	/4cnZreNe2a0enqwvirlse51IGd+08NA=
-X-Google-Smtp-Source: AGHT+IFEGfqpvQ5vmng7BzeGcanzt+hq+MaFF1zdaMsZ0INrxzwtPFGZhevcfzSbdpSUgkKyJ76HepPJajFdO8yHPCs=
-X-Received: by 2002:a05:6820:2d8e:20b0:65c:f660:57be with SMTP id
- 006d021491bc7-65d0eaa43abmr305944eaf.37.1766088301945; Thu, 18 Dec 2025
- 12:05:01 -0800 (PST)
+	s=k20201202; t=1766090615;
+	bh=fCy/Wex3WYIT9VqJQWpmMAZe/B9Xqn+9Ch8KYPH3iWc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gk8MpisCrLbpa/Mn5S7d0uTTTxTLstfeeflYPUj3lYumtazib6okEgNq6niC0k/+8
+	 rejTLi+Haqk52XbVZHpO+/XPgTIrMUywbLl25ZZM1//v9qwduPcPcTz5VlvNDyXYiL
+	 2cTPD9L9RrzBKALOYbwIcGDRKk7E4SDU3YM5axk2c6f+Slc5iUjwpOO7jP0X07CiBM
+	 568O71GdcDaNvvjY/5liZ51bMZNJn5yJDJ27DEerYI1cW0OFh4OPzZ4dpo5v1lYWza
+	 OKoS0zp6l3bNt54LbyouLWC7drrvazR81F7t5I3UcbLFA8KVK2Ur2Aco9mQUpIVTva
+	 1dgEJmJ9ba0iQ==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v1 0/8] ACPI: bus: Rework of the \_SB._OSC handling
+Date: Thu, 18 Dec 2025 21:29:03 +0100
+Message-ID: <5049211.GXAFRqVoOG@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 18 Dec 2025 21:04:50 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hDvMiDFZ1B_bcn1+bHBma0qtjw11rYJycV0JevK9DkbA@mail.gmail.com>
-X-Gm-Features: AQt7F2qgOdenLuwl6JZ6wlGowjvdNioPA3KzIAWZ_XHUVhMnW6TOzd5YgG7ai7U
-Message-ID: <CAJZ5v0hDvMiDFZ1B_bcn1+bHBma0qtjw11rYJycV0JevK9DkbA@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.19-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+Hi All,
 
-Please pull from the tag
+While this is a replacement for
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.19-rc2
+https://lore.kernel.org/linux-acpi/12803663.O9o76ZdvQC@rafael.j.wysocki/
 
-with top-most commit f103fa127c93016bcd89b05d8e11dc1a84f6990d
+it goes much farther than the simple workaround, so I've decided to start
+over version numbering from 1.
 
- ACPI: PCC: Fix race condition by removing static qualifier
+The motivation is (again) to make the _OSC evaluation more robust against
+platform firmware deficiencies related to setting error bits in _OSC
+return buffers by mistake (which apparently don't affect alternative OSes),
+but the approach is more in-depth now.
 
-on top of commit 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+The first 5 patches are preliminary.  The first one fixes the current
+inconsistent handling of _OSC error bits.  The second one reworks the
+printing of debug messages from acpi_run_osc() for clarity.  Patch
+[3/8] splits the _OSC evaluation code out of acpi_run_osc() (so it
+can be used in other functions), and patch [4/8] splits the handling
+of _OSC error bits out of it (for the same purpose).  Patch [5/8] is
+just a by-the-way simple cleanup.
 
- Linux 6.19-rc1
+Patch [6/8] introduces a new function for handling _OSC handshakes in
+a way that should be less susceptible to failing in certain cases due
+to platform firmware mistakes that should not be fatal and makes the
+\_SB._OSC platform features handling code use it.
 
-to receive ACPI fixes for 6.19-rc2.
-
-These add a missing PCC check for guaranteed_perf in the ACPI CPPC
-library and fix a static local variable access race condition in
-acpi_pcc_address_space_setup() (Pengjie Zhang).
+Patch [7/8] is a cleanup on top of the previous one, and patch [8/8]
+updates the USB4 \_SB._OSC features handling to use the new function
+introduced in patch [8/8].
 
 Thanks!
 
 
----------------
 
-Pengjie Zhang (2):
-      ACPI: CPPC: Fix missing PCC check for guaranteed_perf
-      ACPI: PCC: Fix race condition by removing static qualifier
-
----------------
-
- drivers/acpi/acpi_pcc.c  | 2 +-
- drivers/acpi/cppc_acpi.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
 
