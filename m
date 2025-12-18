@@ -1,141 +1,167 @@
-Return-Path: <linux-acpi+bounces-19640-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19641-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ACBCC966F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 20:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D15ACCA697
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 07:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 606C7302D28F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Dec 2025 19:20:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57D3A304C287
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 06:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88CA230D0F;
-	Wed, 17 Dec 2025 19:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35B6330320;
+	Thu, 18 Dec 2025 06:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="OLmNAUZe"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cGJB9mPn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-244123.protonmail.ch (mail-244123.protonmail.ch [109.224.244.123])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46F461668
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Dec 2025 19:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E1932FA36;
+	Thu, 18 Dec 2025 06:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765999207; cv=none; b=m0gqUx6C+g1UiHw2HiahuGfuu+QCu94IcqJQ1r4Ujpx9eB+DPeAjkrqfi2jXgBfbvbzhoZhJNGMpvAvd3ZStGIXhZROF3zlgYnQ9tWUdqormJXlAYmBEUerklF96O3nbWB41JWojtyDY2vZAqfbs9spetO7txFAtxUGKag8Wcbs=
+	t=1766037720; cv=none; b=Z5WKvppzoOiDWImM+jo1m8fRm+CaVTIkTsCqVqa0dwIp51jf9dYh2HuZKOO8bRDGBP3L0i2TVWEc7PMigEVJc6/kCrUC6mB1ibT8cix7LhOSG5x6E9xQGZ/0Io7AjKvgtbzzonfFnwCcLkhp+ZlZsDWriWgFc/ILjCJMJGGmsNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765999207; c=relaxed/simple;
-	bh=1+wQu3DU4CveI1Mh+k8iA2Z1S2uievEyjDzxJ+b0qXk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lD7lSaW5qt1plaerWHQGSgLuocbMOPkBzu1rDJWz/MErdrQ48FbC7thsCo2mTa4ZwIfuw5mc1DiNYPdVowewp0Y/f91frH2zxk/XcrZD82pwxXo36kErdI3kfOn0pgbaobydOMqKvfNnsRYV8qnOhng95Nmuzghjh7vSDY/B49Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=OLmNAUZe; arc=none smtp.client-ip=109.224.244.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1765999202; x=1766258402;
-	bh=SxDHQdz0UsAAfomsYBxGUPDOxZEVHiqHRxjT3siJq0Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OLmNAUZeqWq7HeJDwGUR9ZexOwdIfVY0lTN3vV8I7B5fsJ1Y74OnrPVVULnJHJTPc
-	 bm1PViGhKNofLwWUu9psDlsj+J69cNFQy+6JLWz5ZTUt2qrRtcceGOwMXL8w8ilstY
-	 nhQFJSZc7lDyq5D20eQYYgkti9k1NcO8qMKkpOdphN+ZmbUMqar9hVnLBt6qgcE69s
-	 73vkTNXYx9ZfYwe2hLPE2faJRbjcSXDUn2bz6HaZAiPj+n4AjUXPswgDoRE8DkmVt8
-	 K6hGP0cR0/pXrcEexJNvDtx+sqOp4LUOX5yt5/fiT+Eto5U+XARqPy3rzohbOCn696
-	 TkmQbb35ISf4A==
-Date: Wed, 17 Dec 2025 19:19:56 +0000
-To: Mario Limonciello <superm1@kernel.org>
-From: Francesco Lauritano <francesco.lauritano1@protonmail.com>
-Cc: Hans de Goede <hansg@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>, "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, "westeri@kernel.org" <westeri@kernel.org>
-Subject: Re: [BUG] 36-second boot delay due to by acpi_gpio_handle_deferred_request_irqs on ASUS ROG Strix G16 (2025)
-Message-ID: <ReQS8sQSGy3UTuG6tyPvoOb8_037sC6A2yXsSFNuXY1PlTFtCcDHnjf8vufEsk8avBSIL46U0qE-ZjTJD1xsbVYZ6_d2-wlTOZ2NJ2coTsc=@protonmail.com>
-In-Reply-To: <e8ed4d4e-37e1-4577-bf80-62fcefbef7dc@kernel.org>
-References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com> <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com> <4402ed86-77f5-4a47-a9e1-8d57a709bb15@kernel.org> <woxnPhTYiKi2aLzBK8GnO8DpvdgYjQc-P42uhJOzyrcYC3Gdstht27hML8yNHgOklhm2MgGA7wt9gGZ17BHoWlG0vqJuVVJDgCSev8udfds=@protonmail.com> <NIIS8XD_nSRvp36X39GxcDRAWsaScQIFx6o9JsFCbyBZk5PqznRdxg9EDDb_9tzWd5TcjzxrRtFx5_uLCVa5wJAYykW2k0Ue_XPMPtWCQiY=@protonmail.com> <e8ed4d4e-37e1-4577-bf80-62fcefbef7dc@kernel.org>
-Feedback-ID: 66654272:user:proton
-X-Pm-Message-ID: e296eaddc6befbe5480d0ef28284d40fa59a5ac2
+	s=arc-20240116; t=1766037720; c=relaxed/simple;
+	bh=NbXxcpEA2Pj03nTaueUILN7jZNO7BE5witQTMbnv1mY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DjRVKFsjeozah7zwbdjgHRFSnUnzirFwqYPhPM6s+8xQPb9HPa9p3QHuMIG+0x8UYZPGX1tZ8kpnviQPijuAoyyVMmobG6m3ElD2/2OZhyMOyRu1Eg1U366V6gEcQhlrJV174oTUefnoSOIge+zyNqZ5ZMPi8Sb4Bcc8H0Xwhyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cGJB9mPn; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766037711; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=tUSXsbBST/K/r80Y0FxI8W0AL34NCaR5mGeMFDDANpc=;
+	b=cGJB9mPn5bwTHaQDHjx6zF51UcCaFws8t6MdEPSXv8f08yci1z8czBGMDvYran+JKt4uR5/A30qTkAEGOPb3Ge1UXkZIoroUrjFrSkNeCNAixpB+9I6V23uuTah5+bniViVdZb2yonY4RGv+co+bq13DYZGDjSU74xiuKHek6Hw=
+Received: from 30.246.178.18(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wv7D6FQ_1766037708 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Dec 2025 14:01:49 +0800
+Message-ID: <9838f123-2628-440c-afe5-6e50b8dc85e8@linux.alibaba.com>
+Date: Thu, 18 Dec 2025 14:01:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ACPI: APEI: GHES: Improve ghes_notify_nmi() status
+ check
+To: Hanjun Guo <guohanjun@huawei.com>, tony.luck@intel.com,
+ mchehab@kernel.org, yazen.ghannam@amd.com
+Cc: dave.jiang@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ leitao@debian.org, pengdonglin@xiaomi.com, baolin.wang@linux.alibaba.com,
+ benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com,
+ james.morse@arm.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rafael@kernel.org, zhuo.song@linux.alibaba.com
+References: <20251203130253.73888-1-xueshuai@linux.alibaba.com>
+ <20251203130253.73888-2-xueshuai@linux.alibaba.com>
+ <f40cff8b-56b5-58e5-5652-457e681c0964@huawei.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <f40cff8b-56b5-58e5-5652-457e681c0964@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wednesday, December 17th, 2025 at 7:01 PM, Mario Limonciello <superm1@ke=
-rnel.org> wrote:
+Hi, Hanjun
 
-> On 12/17/25 10:57 AM, Francesco Lauritano wrote:
->=20
-> > On Wednesday, December 17th, 2025 at 4:12 PM, Francesco Lauritano franc=
-esco.lauritano1@protonmail.com wrote:
-> >=20
-> > > The _AEI defines 5 GPIO interrupts. Narrowed it down to two:
-> > >=20
-> > > gpiolib_acpi.ignore_interrupt=3DAMDI0030:00@21,AMDI0030:00@24
-> > >=20
-> > > This fixes the delay. Pins 0x15 and 0x18 both call: \_SB.PCI0.SBRG.HN=
-C0()
-> >=20
-> > Traced it further. HNC0(pin, 0) takes the Else branch and calls:
-> > ATKM(0xC0)
-> > ADTM(Zero)
-> >=20
-> > ADTM calls NOD2(), which is the actual culprit:
-> >=20
-> > While ((Arg0 !=3D RDNT))
-> > {
-> > If ((Local0 >=3D 0x0F)) { Break }
-> > Notify (^^GPP0.PEGP, Arg0)
-> > Local0++
-> > Sleep (Local0 * 0x64)
-> > }
-> >=20
-> > It notifies the dGPU and polls RDNT, sleeping 100, 200, ... 1500ms per =
-iteration.
-> > Max 15 loops =3D ~12s per pin. GPU doesn't respond at boot so it maxes =
-out.
-> >=20
-> > Two pins, ~12s each, ~24-36s total.
-> >=20
-> > Francesco
->=20
->=20
-> Any idea why isn't the dGPU responding? I would have expected
-> https://git.kernel.org/torvalds/c/4d4c10f763d78 sets up policy that it's
-> in D0.
->=20
-> Is the dGPU turned off in BIOS or through some reverse engineered
-> tool/API or something?
+On 12/17/25 9:13 AM, Hanjun Guo wrote:
+> Hi Shuai,
+> 
+> Some minor comments inline.
+> 
+> On 2025/12/3 21:02, Shuai Xue wrote:
+>> From: Tony Luck <tony.luck@intel.com>
+>>
+>> ghes_notify_nmi() is called for every NMI and must check whether the NMI was
+>> generated because an error was signalled by platform firmware.
+>>
+>> This check is very expensive as for each registered GHES NMI source it reads
+>> from the acpi generic address attached to this error source to get the physical
+>> address of the acpi_hest_generic_status block.  It then checks the "block_status"
+>> to see if an error was logged.
+>>
+>> The ACPI/APEI code must create virtual mappings for each of those physical
+>> addresses, and tear them down afterwards. On an Icelake system this takes around
+>> 15,000 TSC cycles. Enough to disturb efforts to profile system performance.
+>>
+>> If that were not bad enough, there are some atomic accesses in the code path
+>> that will cause cache line bounces between CPUs. A problem that gets worse as
+>> the core count increases.
+>>
+>> But BIOS changes neither the acpi generic address nor the physical address of
+>> the acpi_hest_generic_status block. So this walk can be done once when the NMI is
+>> registered to save the virtual address (unmapping if the NMI is ever unregistered).
+>> The "block_status" can be checked directly in the NMI handler. This can be done
+>> without any atomic accesses.
+>>
+>> Resulting time to check that there is not an error record is around 900 cycles.
+>>
+>> Reported-by: Andi Kleen <andi.kleen@intel.com>
+>> Signed-off-by: Tony Luck <tony.luck@intel.com>
+>> ---
+>>   drivers/acpi/apei/ghes.c | 39 ++++++++++++++++++++++++++++++++++++---
+>>   include/acpi/ghes.h      |  1 +
+>>   2 files changed, 37 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 97ee19f2cae0..62713b612865 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -1425,7 +1425,21 @@ static LIST_HEAD(ghes_nmi);
+>>   static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
+>>   {
+>>       static DEFINE_RAW_SPINLOCK(ghes_notify_lock_nmi);
+>> +    bool active_error = false;
+>>       int ret = NMI_DONE;
+>> +    struct ghes *ghes;
+>> +
+>> +    rcu_read_lock();
+>> +    list_for_each_entry_rcu(ghes, &ghes_nmi, list) {
+>> +        if (ghes->error_status_vaddr && readl(ghes->error_status_vaddr)) {
+>> +            active_error = true;
+>> +            break;
+>> +        }
+>> +    }
+>> +    rcu_read_unlock();
+>> +
+>> +    if (!active_error)
+>> +        return ret;
+>>       if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
+>>           return ret;
+>> @@ -1439,13 +1453,26 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
+>>       return ret;
+>>   }
+>> -static void ghes_nmi_add(struct ghes *ghes)
+>> +static int ghes_nmi_add(struct ghes *ghes)
+>>   {
+>> +    struct acpi_hest_generic *g = ghes->generic;
+>> +    u64 paddr;
+>> +    int rc;
+>> +
+>> +    rc = apei_read(&paddr, &g->error_status_address);
+>> +    if (rc)
+>> +        return rc;
+> 
+> It will be good to add a empty line here.
 
-dmesg without the workaround:
-[    1.005184] pci 0000:01:00.0: PME# supported from D0 D3hot
-[    1.288811] pci 0000:01:00.0: vgaarb: VGA device added
-[   38.250139] nvidia: loading out-of-tree module taints kernel.
-[   38.369358] nvidia 0000:01:00.0: enabling device (0000 -> 0003)
-[   39.744421] NVRM: GPS ACPI DSM called before _acpiDsmSupportedFuncCacheI=
-nit
+Sure, will fix it.
 
-GPU is in D0 from 1.0s. nvidia loads at 38.2s after the GPIO hang completes=
-.
+> 
+>> +    ghes->error_status_vaddr = acpi_os_ioremap(paddr, sizeof(ghes->estatus->block_status));
+>> +    if (!ghes->error_status_vaddr)
+>> +        return AE_BAD_ADDRESS;
+> 
+> It's static int for ghes_nmi_add(), and AE_BAD_ADDRESS is the type of
+> acpi_status, it's better to return -EINVAL here.
 
-No weird tools/APIs besides userspace utils (asusctl/supergfxctl).=20
+Thanks for pointing it out, will fix it.
 
-No changes to BIOS factory defaults other than disabling Fast Boot.
-dGPU is active, Display Mode is Dynamic (hybrid).
+> 
+> Thanks
+> Hanjun
 
-Traced RDNT - it's set by GPS function 19 in the ACPI tables:
-Case (0x13)
-{
-    Debug =3D "GPS fun 19"
-    \_SB.PCI0.SBRG.RDNT =3D (Local1 + 0xD1)
-}
-
-As far as I can understand GPIO initcall blocks at late_initcall_sync, prev=
-enting nvidia=20
-from loading in time to respond. Based on the timing, GPU is awake but noth=
-ing can=20
-register a handler while kernel is stuck at NOD2 polling loop.
-
-Thanks,
-Francesco
+Thanks.
+Shuai
 
 
