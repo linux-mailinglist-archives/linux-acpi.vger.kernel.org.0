@@ -1,77 +1,86 @@
-Return-Path: <linux-acpi+bounces-19670-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19671-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED00CCBD06
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 13:40:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015B2CCBF5D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 14:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A91130281B9
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 12:40:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F5FD305D989
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Dec 2025 13:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9B83328EF;
-	Thu, 18 Dec 2025 12:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFj1ZYty"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528B1337B9A;
+	Thu, 18 Dec 2025 13:07:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295703314CE;
-	Thu, 18 Dec 2025 12:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091BD33556B;
+	Thu, 18 Dec 2025 13:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766061613; cv=none; b=sA7gmYDAOvDG+YldEC8M1FE87cLiO8DGciSXlmhOJLMbz/O6w6C9BCp2bp/h6jaq2uRdiQ6IQMSweUYGDq4Fq37d/XHA4FDzShqzIoD8EzdtvCYPmz86flAIAIUTGXE9w1WBrpboMCtaLWKKcjOr6oLABae+wQAa1l2jOX2yJrw=
+	t=1766063274; cv=none; b=aLeqXWNB5sojsYemt1qoOypkFC5epZytZyb4BcI9B2XDhbcSBGWvou/1691F8aF/lSavvtDg++oa2UVLxw+i3y4vLBioHjJdCFnp4iB5QUrALCCCvlqI7nszUb1BfB7U8HAqFqoqNSzkhr0I9x8dzeoCq5qR/1hwdv53xo/rP0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766061613; c=relaxed/simple;
-	bh=sre1twFs1oaMSWJWmMpYhlzmqOCAaTMsnJ9nVhzfEvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MErXX4XLlgJopibPWEvDIcIBZEq3lpcwAk1NeadeHljckTFb26Zvb7BDXV6MqyMsAYRrnFmZ60UHCJCqoNHATEuQNQde21XUP4EUP2Fe+uKMK1FJ2MBwkrlbwuqh0OGNMZz8ccoK435IRmxhI7KbM0OL5r+FRZ5ptHKQ+Zh97bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFj1ZYty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3E9C4CEFB;
-	Thu, 18 Dec 2025 12:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766061612;
-	bh=sre1twFs1oaMSWJWmMpYhlzmqOCAaTMsnJ9nVhzfEvg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZFj1ZYtyUlODolz7RGNALvEqy31J7fNPPQefSXOY1SRUJ/ghBHpSBKBgIROHDeoTw
-	 76/rTGWCN5PtcX025cTFj+Fuo33YcMpCPK/5p1+Yfa4DggkH3GjsoXCj8GLNK17nMp
-	 tys81Kp9Unm22LyzjbkQNN5QaUylgCiAZd/ERpEw=
-Date: Thu, 18 Dec 2025 13:40:09 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rafael@kernel.org,
+	s=arc-20240116; t=1766063274; c=relaxed/simple;
+	bh=22V7USUJSShCtUIFitOP6omn1agMvbGW+3lAtbiKGdE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KUWIgO6Kv/SZD+jrP/bMQlfZU8MlMlz5K77OKZzh/j53snkuAyD9XGhJ9qrCa5IoV5+uG8Wi8NGsopPD+4pW7fvMmC7HraDQAHXO5+3ZLT5IRLAMCXOfYNHlhYxWob2JhZ5ALDK8dfwkijuw0Bgm4PBpKZJOVqvT/oJw5oOI6Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-01 (Coremail) with SMTP id qwCowABnEW2h_ENpAFUEAQ--.36667S2;
+	Thu, 18 Dec 2025 21:07:45 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: gregkh@linuxfoundation.org
+Cc: lenb@kernel.org,
+	lihaoxiang@isrc.iscas.ac.cn,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rafael@kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] PNP: add a error handling in pnpacpi_init()
-Message-ID: <2025121811-password-reroute-6880@gregkh>
-References: <2025121841-unwoven-twelve-e65b@gregkh>
- <20251218122422.573466-1-lihaoxiang@isrc.iscas.ac.cn>
+Date: Thu, 18 Dec 2025 21:07:45 +0800
+Message-Id: <20251218130745.577593-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2025121811-password-reroute-6880@gregkh>
+References: <2025121811-password-reroute-6880@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251218122422.573466-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowABnEW2h_ENpAFUEAQ--.36667S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYc7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+	6xAIw20EY4v20xvaj40_JFC_Wr1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
+	cVCY1x0267AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aV
+	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
+	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
+	CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
+	42xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_JF0_Jw1l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
+	evJa73UjIFyTuYvjfUoOJ5UUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAYAE2lD2WFq5QAAsE
 
-On Thu, Dec 18, 2025 at 08:24:22PM +0800, Haoxiang Li wrote:
-> On Thu, 18 Dec 2025 12:33:05 +0100, Greg KH Wrote:
-> > What tool are you all using to "find" these issues?  Why aren't you
-> > properly documenting it?
-> 
-> Sorry for the inconvenience. I found these through manual code review.
+On Thu, 18 Dec 2025 13:40:09 +0100, Greg KH Wrote:
+> Manually?  Really?  Why are you manually reviewing pnp code?  Do you
+> have this hardware?  Why not focus on code for hardware you have and can
+> test the fix for?
 
-Manually?  Really?  Why are you manually reviewing pnp code?  Do you
-have this hardware?  Why not focus on code for hardware you have and can
-test the fix for?
+I apologize for the confusion. I did a targeted search for device_register()
+and check their error handling. And Thanks for your guidance and patience!
 
-> I will document how the issue was identified later.
+> It should be in the changelog text, as is required.
 
-It should be in the changelog text, as is required.
+Copy that. I will follow the rule.
 
-thanks,
+Thanks,
+Haoxiang Li
 
-greg k-h
 
