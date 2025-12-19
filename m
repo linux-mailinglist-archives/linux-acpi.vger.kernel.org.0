@@ -1,116 +1,247 @@
-Return-Path: <linux-acpi+bounces-19729-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19730-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A057CCD1E19
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 21:58:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A4ECD1F55
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 22:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D29C3070C01
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 20:55:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB2BF3039761
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 21:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C9B33B6D2;
-	Fri, 19 Dec 2025 20:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F5332C30A;
+	Fri, 19 Dec 2025 21:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="fHLo7h2x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPjel0Dk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EDA2E0402;
-	Fri, 19 Dec 2025 20:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.84.1.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC41B3242AC;
+	Fri, 19 Dec 2025 21:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766177739; cv=none; b=p1zyvRP34xQLSnOkp6imLY5Ta09L7wjrffoisc0JX5eSBhdMQEeKYBiuUbIUES9odmbMsHwCnXCcXi4w80k/3tYUb4w+PW9UPezNxKXwoK178rGvBLov4SYABScQZCqOgMuheYMr7xdj8cSxIWneqOEmx1GjqNdrpMP+7fwW/as=
+	t=1766179687; cv=none; b=b6VBPNnxiqDOBTkEh3V2L6mJAOH1/h5MDD9Qq3VAW+TxfsDgdtCUXfEEEaKoMwYAD8h/MfdU3dDHrJaQ8X6gfzActYRWjciPmu6nY9B/D9i/lrviIjP4siFqpZN8Q/S17xL9Cff2wL/IdnkxsVSxQXvxIpXKHZb/MFVK1W3h4bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766177739; c=relaxed/simple;
-	bh=902N7+vSq4ZtgNz/0oajexrC3xsamP0KPKTs2JdrpEA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oyTwj9r/X1cM2L6G6zgGA6nJTogM8hMFyHBZqo3nnKy1RS63rzo7CvQ6yaFE40ju/e2JprpXqQwg2TFUoEejPtKXdbMESB1mOLI8eDjHCkHe7sJI4SOTrH09VP2d3RJgOQXH/KNoD4+wikVOdzbWrosEmnss2iio5EVZRvUC0tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=fHLo7h2x; arc=none smtp.client-ip=166.84.1.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=panix.com
-Received: from [192.168.123.3] (kenny-tx.gotdns.com [162.196.229.233])
-	by mailbackend.panix.com (Postfix) with ESMTPSA id 4dY0DN36Ldz4SSl;
-	Fri, 19 Dec 2025 15:55:32 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
-	t=1766177735; bh=902N7+vSq4ZtgNz/0oajexrC3xsamP0KPKTs2JdrpEA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fHLo7h2xpB/TslaDr47UJ2ca80htNrHviXZyT/1DLKooZSuUCvGY1HXciWIqZR2C1
-	 loy01eHGMtYjPwOTp7qJn28lI3Z2ai9XgIQ1PVHSCIRJy/oR9XETe6zbJ44ZJoXDvz
-	 dujiFZ8pZPqFY2eNsRSgvwGzGza5nRXFEuhRkTjc=
-Message-ID: <48b94c22-c1ca-4220-b184-f38e22544b9d@panix.com>
-Date: Fri, 19 Dec 2025 12:55:30 -0800
+	s=arc-20240116; t=1766179687; c=relaxed/simple;
+	bh=nNAe7kYDbW9AIdmKv4Ap5BzVRHVfIUyt0aoxrmUdK98=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JqHBTR1IKWCRTnvgh046WQU5wnTDUziLI3gKe83w/icx+1t4m8RD2DLELcUAwEjJvJ+dySkhtWgGWHXnWVko0gGYPdnIFpjA/cF5/WtD259bB9Pcn2IqWLuNy1kyZReylyoKGqt2yeo8OwCv/0Mk3gf4vQHYdFuuci4w+a0+jeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPjel0Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5538C4CEF1;
+	Fri, 19 Dec 2025 21:28:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766179685;
+	bh=nNAe7kYDbW9AIdmKv4Ap5BzVRHVfIUyt0aoxrmUdK98=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YPjel0Dk7ck0TDiRlcNLJViPHtOt107ixvutukjbDd+aJikB4GNEh6cJL+RE4tT7Z
+	 Y2JfNfbMfyWUvWeVqaj8xISEBqocFK4OxXUd9rvHyG6o0PvTZHigKOnph6KuE3Zf5z
+	 OLgArOJRDu1x1qvPE4JGFWXoEhy4+pNo54HZzGoMFndB+Naicv/CuGOJSQ2q8vj+Z8
+	 JrGU5BnrDMnvzRiZ99afPvyLvU1rHCJDgnoI8dVMfQuz7mid/v+HlngWsEacV1x0Pd
+	 WubUslv3D3WIj0oyS8KQphQaFx9pw5yL+lv1TgZOK0AWVUc2t65TheeYff52jVvUP6
+	 fWA3sSAg37Ijw==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v2] ACPI: bus: Fix handling of _OSC errors in acpi_run_osc()
+Date: Fri, 19 Dec 2025 22:28:02 +0100
+Message-ID: <5967663.DvuYhMxLoT@rafael.j.wysocki>
+Organization: Linux Kernel Development
+In-Reply-To:
+ <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
+References:
+ <5049211.GXAFRqVoOG@rafael.j.wysocki> <20251219122620.00002049@huawei.com>
+ <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] software node: Also support referencing non-constant
- software nodes
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Charles Keepax <ckeepax@opensource.cirrus.com>, linux-acpi@vger.kernel.org,
- linux-media@vger.kernel.org, johannes.goede@oss.qualcomm.com,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <af773b82-bef2-4209-baaf-526d4661b7fc@panix.com>
- <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
-Content-Language: en-US
-From: Kenneth Crudup <kenny@panix.com>
-In-Reply-To: <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+On Friday, December 19, 2025 9:38:44 PM CET Rafael J. Wysocki wrote:
+> On Fri, Dec 19, 2025 at 1:26=E2=80=AFPM Jonathan Cameron
+> <jonathan.cameron@huawei.com> wrote:
+> >
+> > On Thu, 18 Dec 2025 21:34:26 +0100
+> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> >
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > The handling of _OSC errors in acpi_run_osc() is inconsistent.
+> >
+> > I wonder if this would be easier to follow with a brief statement
+> > of why we threat OSC_CAPABILITIES_MASK_ERROR as an error in the first
+> > place for non query cases?  It took me a brief think and spec read
+> > to figure that out, but maybe more coffee needed.
+>=20
+> Well, this is a good question and it is not obvious IMV.
+>=20
+> The current code treats it as an error, but arguably it is not really an =
+error.
+>=20
+> If it is a query, it doesn't even make sense to print a debug message
+> for it, but if it is not a query, the feature mask in the _OSC return
+> buffer still represents the feature that the OS is expected to
+> control.  So print the debug messages, but do not fail in that case.
+>=20
+> I'll update the patch.
+
+I have come to the conclusion that the underlying issue can be addressed in
+this patch and it basically boils down to the compliance with the spec.
+
+Please see below.  If we can agree that this is the way to go, I'll rework
+the rest of the patch series as a follow-up on top of this one.
+
+Thanks!
+
+=2D--
+=46rom: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH v2] ACPI: bus: Fix handling of _OSC errors in acpi_run_osc()
+
+The handling of _OSC errors in acpi_run_osc() is inconsistent and
+arguably not compliant with the _OSC definition (cf. Section 6.2.12 of
+ACPI 6.6 [1]).
+
+Namely, if OSC_QUERY_ENABLE is not set in the capabilities buffer and
+any of the error bits are set in the _OSC return buffer, acpi_run_osc()
+returns an error code and the _OSC return buffer is discarded.  However,
+in that case, depending on what error bits are set, the return buffer
+may contain acknowledged bits for features that need to be controlled by
+the kernel going forward.
+
+If the OSC_INVALID_UUID_ERROR bit is set, the request could not be
+processed at all and so in that particular case discarding the _OSC
+return buffer and returning an error is the right thing to do regardless
+of whether or not OSC_QUERY_ENABLE is set in the capabilities buffer.
+
+If OSC_QUERY_ENABLE is set in the capabilities buffer and the
+OSC_REQUEST_ERROR or OSC_INVALID_REVISION_ERROR bits are set in the
+return buffer, acpi_run_osc() may return an error and discard the _OSC
+return buffer because in that case the platform configuration does not
+change.  However, if any of them is set in the return buffer when
+OSC_QUERY_ENABLE is not set in the capabilities buffer, the feature
+mask in the _OSC return buffer still representes a set of acknowleded
+features as per the _OSC definition:
+
+ The platform acknowledges the Capabilities Buffer by returning a
+ buffer of DWORDs of the same length. Set bits indicate acknowledgment
+ that OSPM may take control of the capability and cleared bits indicate
+ that the platform either does not support the capability or that OSPM
+ may not assume control.
+
+which is not conditional on the error bits being clear, so in that case,
+discarding the _OSC return buffer is questionable.  There is also no
+reason to return an error and discard the _OSC return buffer if the
+OSC_CAPABILITIES_MASK_ERROR bit is set in it, but printing diagnostic
+messages is not unreasonable when that happens with OSC_QUERY_ENABLE
+clear in the capabilities buffer.
+
+Adress this issue by making acpi_run_osc() follow the rules outlined
+above.
+
+Moreover, make acpi_run_osc() only take the defined _OSC error bits into
+account when checking _OSC errors.
+
+Link: https://uefi.org/specs/ACPI/6.6/06_Device_Configuration.html#osc-oper=
+ating-system-capabilities
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+=2D--
+ drivers/acpi/bus.c |   50 ++++++++++++++++++++++++++++++++++++------------=
+=2D-
+ 1 file changed, 36 insertions(+), 14 deletions(-)
+
+=2D-- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -194,14 +194,18 @@ static void acpi_print_osc_error(acpi_ha
+ 	pr_debug("\n");
+ }
+=20
++#define OSC_ERROR_MASK 	(OSC_REQUEST_ERROR | OSC_INVALID_UUID_ERROR | \
++			 OSC_INVALID_REVISION_ERROR | \
++			 OSC_CAPABILITIES_MASK_ERROR)
++
+ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *cont=
+ext)
+ {
++	u32 errors, *capbuf =3D context->cap.pointer;
+ 	acpi_status status;
+ 	struct acpi_object_list input;
+ 	union acpi_object in_params[4];
+ 	union acpi_object *out_obj;
+ 	guid_t guid;
+=2D	u32 errors;
+ 	struct acpi_buffer output =3D {ACPI_ALLOCATE_BUFFER, NULL};
+=20
+ 	if (!context)
+@@ -240,29 +244,47 @@ acpi_status acpi_run_osc(acpi_handle han
+ 		status =3D AE_TYPE;
+ 		goto out_kfree;
+ 	}
+=2D	/* Need to ignore the bit0 in result code */
+=2D	errors =3D *((u32 *)out_obj->buffer.pointer) & ~(1 << 0);
++	/* Only take defined error bits into account. */
++	errors =3D *((u32 *)out_obj->buffer.pointer) & OSC_ERROR_MASK;
++	/*
++	 * If OSC_QUERY_ENABLE is set, ignore the "capabilities masked"
++	 * bit because it merely means that some features have not been
++	 * acknowledged which is not unexpected.
++	 */
++	if (capbuf[OSC_QUERY_DWORD] & OSC_QUERY_ENABLE)
++		errors &=3D ~OSC_CAPABILITIES_MASK_ERROR;
++
+ 	if (errors) {
++		if (errors & OSC_INVALID_UUID_ERROR) {
++			acpi_print_osc_error(handle, context,
++				"_OSC invalid UUID");
++			/*
++			 * Always fail if this bit is set because it means that
++			 * the request could not be processed.
++			 */
++			status =3D AE_ERROR;
++			goto out_kfree;
++		}
+ 		if (errors & OSC_REQUEST_ERROR)
+ 			acpi_print_osc_error(handle, context,
+ 				"_OSC request failed");
+=2D		if (errors & OSC_INVALID_UUID_ERROR)
+=2D			acpi_print_osc_error(handle, context,
+=2D				"_OSC invalid UUID");
+ 		if (errors & OSC_INVALID_REVISION_ERROR)
+ 			acpi_print_osc_error(handle, context,
+ 				"_OSC invalid revision");
+=2D		if (errors & OSC_CAPABILITIES_MASK_ERROR) {
+=2D			if (((u32 *)context->cap.pointer)[OSC_QUERY_DWORD]
+=2D			    & OSC_QUERY_ENABLE)
+=2D				goto out_success;
+=2D			status =3D AE_SUPPORT;
++		if (errors & OSC_CAPABILITIES_MASK_ERROR)
++			acpi_print_osc_error(handle, context,
++				"_OSC capability bits masked");
++
++		/*
++		 * Fail only if OSC_QUERY_ENABLE is set because otherwise the
++		 * acknowledged features need to be controlled.
++		 */
++		if (capbuf[OSC_QUERY_DWORD] & OSC_QUERY_ENABLE) {
++			status =3D AE_ERROR;
+ 			goto out_kfree;
+ 		}
+=2D		status =3D AE_ERROR;
+=2D		goto out_kfree;
+ 	}
+=2Dout_success:
++
+ 	context->ret.length =3D out_obj->buffer.length;
+ 	context->ret.pointer =3D kmemdup(out_obj->buffer.pointer,
+ 				       context->ret.length, GFP_KERNEL);
 
 
-Apparently last to the party :) but:
-
-Tested-By: Kenneth R. Crudup <kenny@panix.com>
-
--K
-
-On 12/19/25 00:36, Sakari Ailus wrote:
-> Fwnode references are be implemented differently if referenced node is a
-> software node. _Generic() is used to differentiate between the two cases
-> but only const software nodes were present in the selection. Also add
-> non-const software nodes.
-> 
-> Reported-by: Kenneth Crudup <kenny@panix.com>
-> Closes: https://lore.kernel.org/all/af773b82-bef2-4209-baaf-526d4661b7fc@panix.com/
-> Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
-> Hi Kenneth,
-> 
-> Many thanks for reporting the issue and bisecting the offending patch!
-> Could you confirm whether this fixes the issue (it does for me)?
-> 
-> - Sakari
-> 
->   include/linux/property.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 272bfbdea7bf..e30ef23a9af3 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -371,6 +371,7 @@ struct software_node_ref_args {
->   (const struct software_node_ref_args) {				\
->   	.swnode = _Generic(_ref_,				\
->   			   const struct software_node *: _ref_,	\
-> +			   struct software_node *: _ref_,	\
->   			   default: NULL),			\
->   	.fwnode = _Generic(_ref_,				\
->   			   struct fwnode_handle *: _ref_,	\
-
--- 
-Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
-County CA
 
 
