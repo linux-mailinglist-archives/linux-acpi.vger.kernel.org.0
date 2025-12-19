@@ -1,166 +1,100 @@
-Return-Path: <linux-acpi+bounces-19696-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19697-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBA3CCF76B
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 11:50:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CB7CCFC80
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 13:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 510083016902
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:50:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 241B2300C6E0
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 12:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CBB3043D2;
-	Fri, 19 Dec 2025 10:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIpnsFTp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2680F33EAED;
+	Fri, 19 Dec 2025 12:26:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF6C3019DA;
-	Fri, 19 Dec 2025 10:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277142D061D;
+	Fri, 19 Dec 2025 12:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766141407; cv=none; b=tfEWqZxcVT/m+drkeZpsoUaQfYrhXwdspvCjhuaKclJSitswLXaPbpQ5vXrIvq2M06ZtRUX/jt42okkMXpCXJuBHJwClaCZ1O5EqW0OIQQuSp8SNHMdrwiQdrBUCmHSsOOFTR/dI/BFdNJQlXo9s5n22b2BkKPfX89maV5W1bs0=
+	t=1766147188; cv=none; b=LH4iJC5s3TZVsj11pvx0d3wnM6AUFc0ctrJj2X0u6KcvvuRMZzVN8sjbFiJHMF3nrTzxDbJACmBGML/O7SOe7+BDKTgn1vUFV18cE3HgGPhbMTlR10pLdtPQ0GABQUKj12o3PMJJ32QSyM4vPgwbYTYnjBAEhmRiAiRCgR3Dau0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766141407; c=relaxed/simple;
-	bh=pjJIBdeGr/2HUnvT1qt1BXIGueYL8pPwlvX7pDcJC/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci+wy5iXOCXtW12qb1YSK34T7dzTwc+GL/iuesogfUxtdIUonHO2vbVPFntitgNlQlSVsEcEsfibJbYU6WNFZvOE0rgGGqkR3yzF/myDHtso5AroLQY7t8sjKhGeaxGZDyBMDzvkHT9mBFw/6Ft4/f0IjHLl+DUlK4wH/zZqe10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIpnsFTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89109C116B1;
-	Fri, 19 Dec 2025 10:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766141406;
-	bh=pjJIBdeGr/2HUnvT1qt1BXIGueYL8pPwlvX7pDcJC/U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIpnsFTposEf9LaayPmV7b9g2qGsufTEBUhXelKdEp+KVnjxExelQIX96bSXHrDsb
-	 TtA5QP4NKGGTT8IYtjov1JDCZwCVTU87Cew6mxiXoBFFdYnLOGq2n6Al6w2ZehFWl2
-	 EduotUCzL9i6t8SITlkSclq6T1olyF11LUnSJaf/huDWghmWsTM3E5kHRh8kTozw5p
-	 HhDB7/SQYascUQXpOqlDM/VoqrZ2DUqv5ouPAdWwDjMUiNlvpdRT217peaHv8E3NcR
-	 /c32Ory2720+TSB7GoWXetsvJFAnQxbtgEjOGytbrN4ZywVLF1Vet1jlO2Ratbr9uQ
-	 60VQ3hJGCg2Ug==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vWY3g-00000005oLA-2bvr;
-	Fri, 19 Dec 2025 11:50:04 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1766147188; c=relaxed/simple;
+	bh=FVTqb8USUxk2i4GkkIGGu4WeITUNyws2HsmMu4s8mzg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DYxLmzHWKD1YRhAHabcRh7yCe0NbKjcRssaAKZpm+oQVQ2AjUfOW44ZDfXu3mPBSbLkHTLRzK2nYBpoU9lXjo2akAhBZPsuEDzl+hh6Uqeu0L/LDPj2w/db1qG1CpxYaWjQtcB0ZHbalbLMFamxT3Vm2uxnHkoiv++ztHv9tDZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXmwF4ZLkzJ46BV;
+	Fri, 19 Dec 2025 20:25:49 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A29940569;
+	Fri, 19 Dec 2025 20:26:22 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
+ 2025 12:26:21 +0000
+Date: Fri, 19 Dec 2025 12:26:20 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Ard Biesheuvel" <ardb@kernel.org>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Dave Jiang" <dave.jiang@intel.com>,
-	"Fan Ni" <fan.ni@samsung.com>,
-	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-	"Shuai Xue" <xueshuai@linux.alibaba.com>,
-	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>,
-	linux-efi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] efi/cper: don't go past the ARM processor CPER record buffer
-Date: Fri, 19 Dec 2025 11:50:00 +0100
-Message-ID: <da407d200220221ec2ed48bb213a51893131c2c7.1766140788.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1766140788.git.mchehab+huawei@kernel.org>
-References: <cover.1766140788.git.mchehab+huawei@kernel.org>
+CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn
+ Helgaas <helgaas@kernel.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v1 1/8] ACPI: bus: Fix handling of _OSC errors in
+ acpi_run_osc()
+Message-ID: <20251219122620.00002049@huawei.com>
+In-Reply-To: <2261695.irdbgypaU6@rafael.j.wysocki>
+References: <5049211.GXAFRqVoOG@rafael.j.wysocki>
+	<2261695.irdbgypaU6@rafael.j.wysocki>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-There's a logic inside ghes/cper to detect if the section_length
-is too small, but it doesn't detect if it is too big.
+On Thu, 18 Dec 2025 21:34:26 +0100
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-Currently, if the firmware receives an ARM processor CPER record
-stating that a section length is big, kernel will blindly trust
-section_length, producing a very long dump. For instance, a 67
-bytes record with ERR_INFO_NUM set 46198 and section length
-set to 854918320 would dump a lot of data going a way past the
-firmware memory-mapped area.
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The handling of _OSC errors in acpi_run_osc() is inconsistent.
 
-Fix it by adding a logic to prevent it to go past the buffer
-if ERR_INFO_NUM is too big, making it report instead:
+I wonder if this would be easier to follow with a brief statement
+of why we threat OSC_CAPABILITIES_MASK_ERROR as an error in the first
+place for non query cases?  It took me a brief think and spec read
+to figure that out, but maybe more coffee needed.
 
-	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-	[Hardware Error]: event severity: recoverable
-	[Hardware Error]:  Error 0, type: recoverable
-	[Hardware Error]:   section_type: ARM processor error
-	[Hardware Error]:   MIDR: 0xff304b2f8476870a
-	[Hardware Error]:   section length: 854918320, CPER size: 67
-	[Hardware Error]:   section length is too big
-	[Hardware Error]:   firmware-generated error record is incorrect
-	[Hardware Error]:   ERR_INFO_NUM is 46198
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- drivers/firmware/efi/cper-arm.c | 12 ++++++++----
- drivers/firmware/efi/cper.c     |  3 ++-
- include/linux/cper.h            |  3 ++-
- 3 files changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 76542a53e202..b21cb1232d82 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -226,7 +226,8 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- }
- 
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc)
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length)
- {
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
-@@ -238,9 +239,12 @@ void cper_print_proc_arm(const char *pfx,
- 
- 	len = proc->section_length - (sizeof(*proc) +
- 		proc->err_info_num * (sizeof(*err_info)));
--	if (len < 0) {
--		printk("%ssection length: %d\n", pfx, proc->section_length);
--		printk("%ssection length is too small\n", pfx);
-+
-+	if (len < 0 || proc->section_length > length) {
-+		printk("%ssection length: %d, CPER size: %d\n",
-+		       pfx, proc->section_length, length);
-+		printk("%ssection length is too %s\n", pfx,
-+		       (len < 0) ? "small" : "big");
- 		printk("%sfirmware-generated error record is incorrect\n", pfx);
- 		printk("%sERR_INFO_NUM is %d\n", pfx, proc->err_info_num);
- 		return;
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 0232bd040f61..88fc0293f876 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -659,7 +659,8 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 
- 		printk("%ssection_type: ARM processor error\n", newpfx);
- 		if (gdata->error_data_length >= sizeof(*arm_err))
--			cper_print_proc_arm(newpfx, arm_err);
-+			cper_print_proc_arm(newpfx, arm_err,
-+					    gdata->error_data_length);
- 		else
- 			goto err_section_too_small;
- #endif
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 5b1236d8c65b..440b35e459e5 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -595,7 +595,8 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *,
- const char *cper_mem_err_unpack(struct trace_seq *,
- 				struct cper_mem_err_compact *);
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc);
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length);
- void cper_print_proc_ia(const char *pfx,
- 			const struct cper_sec_proc_ia *proc);
- int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
--- 
-2.52.0
-
+> 
+> For example, if OSC_CAPABILITIES_MASK_ERROR is set in the return buffer
+> and OSC_QUERY_ENABLE is set in the capabilities buffer, all of the
+> _OSC errors will be ignored even though some of them indicate that
+> _OSC evaluation has failed.  However, if OSC_QUERY_ENABLE is not set in
+> the capabilities buffer, all _OSC errors will be reported, but the error
+> value returned by acpi_run_osc() depends on whether or not
+> OSC_CAPABILITIES_MASK_ERROR is set in the return buffer.
+> 
+> Adress this by making acpi_run_osc() clear OSC_CAPABILITIES_MASK_ERROR
+> in the return buffer if OSC_QUERY_ENABLE is set in the capabilities
+> buffer and then check if any other _OSC errors have been returned.  Also
+> make it use the same error return value for all _OSC errors and print
+> a message for OSC_CAPABILITIES_MASK_ERROR like for the other error
+> types.
+> 
+> Moreover, make acpi_run_osc() only take the defined _OSC error bits into
+> account when checking _OSC errors.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Changes look good to me.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
