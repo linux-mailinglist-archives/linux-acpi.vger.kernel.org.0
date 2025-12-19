@@ -1,108 +1,99 @@
-Return-Path: <linux-acpi+bounces-19693-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19694-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46922CCF78C
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 11:52:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6E1CCF7B9
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 11:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B62A230081B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:48:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D79EB30E64F3
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4E226A1CF;
-	Fri, 19 Dec 2025 10:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E284F302167;
+	Fri, 19 Dec 2025 10:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIkIwwPw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A94074BE1;
-	Fri, 19 Dec 2025 10:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2F33A1E7F;
+	Fri, 19 Dec 2025 10:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766141292; cv=none; b=uzsoicJF60cjoynCqayxeBekAZXwisdwzIEr86XWlWd5SU+hmNZNYMx/HmjHsl2S3VQCOsf1eZIwSOodwAQHo+syyRR8reIRzTdmh5ub1GsFyD+bjCxdQRSezD5lyc1DiLOODBPUCMRu7rhhFaE1jyGg+hu1ATouSi+93TjqdKc=
+	t=1766141406; cv=none; b=Yofj2UZO1U8ro8upChhicGNO1CaM5Cpi1JnHQn4N8d7Z8aV1jJhj+9rYAhQxwDBzVAfo2ukZ1iLLzISV25yqXDXXwdH9E090gJjM4O0YMw+Srx4PATIHjmNJ/rUEeSTNU8bwDKCypSPxC9EJUowUbKVQsFgiHbysSw27NFwpChg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766141292; c=relaxed/simple;
-	bh=mGsn0FM6mPE/Zvdf2Mf1taBhL3tfR6lmIzngSQM89TM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gmfBxIw7+ch+ax3SPCzj4qXqc+A5RyibSYvX5Hqzynh+yj+nfO0kpNc+CnMVIAhtWztL7CZ0n8dNOIn8F/zG+56+mus6iFW7DlwoHtZAG6OA9xhZX+J5CpwmoYd11VqEQaa3gp4V4okMIqDoJbxIe/rsAP0sqK+dlsh5ZFuJyFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B75DFEC;
-	Fri, 19 Dec 2025 02:48:03 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD0803F5CA;
-	Fri, 19 Dec 2025 02:48:08 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>,
+	s=arc-20240116; t=1766141406; c=relaxed/simple;
+	bh=qlnsmk1hfgBCfkjAJgu3xnKFX5ByU2V866y+vzYYr3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tbrI4dqKKdCTyzCK8vQQfpM2Ok6OKQSNanzI8pU4YUkdQLCxUHaiJJxVM7EvMZ6pBcRVnzpa3IYu3XI1OKRV/U6oaW8dEFmtAS6lcFkfq7euo2bOraUE7yAdzkecxWwx6MoSm7H3X7R222is/w4kLqMKtLB4OggQff7ko07bk8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIkIwwPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E09BC4CEF1;
+	Fri, 19 Dec 2025 10:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766141406;
+	bh=qlnsmk1hfgBCfkjAJgu3xnKFX5ByU2V866y+vzYYr3A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SIkIwwPwzPSonPZPwGbNEN+rQPmG0y61zEqbgPvLCvFKzBF7xfUSvaBqS2/avuMOD
+	 6LJakwcfwsRKsKmNcM7TOjAM0Zmz2GIVAlUEHqkpsPe73n0rGH+8HPsqX2P2zHd++c
+	 AoVVkfTGO19M+Y3meUWh8Wr9XUpCXJOzYoGxeux4xqtqsB7a2kL0RyDgSO3XN32t45
+	 aUho6Aq472NlB2zqnEpMChWPJFA5rGGXjMvYfSkHVqOq+klUWi9xEbytY50YdJCk0q
+	 78u0kYTbqeiZtOcZEXxEi7/ZiwPLxX3xNlRtLD/s1eLihsVpZ5ENahEVRCN+J/ZIxo
+	 nf2TcXplleaFQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.99)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1vWY3g-00000005oL3-2KdW;
+	Fri, 19 Dec 2025 11:50:04 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	linux-efi@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: tony.luck@intel.com,
-	bp@alien8.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	Ahmed.Tiba@arm.com
-Subject: Re: [PATCH 10/12] dt-bindings: ras: document estatus provider
-Date: Fri, 19 Dec 2025 10:47:53 +0000
-Message-ID: <20251219104759.2726164-1-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <57772b40-e4d9-4152-9709-04ba897608d0@kernel.org>
-References: 
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] apei/ghes: don't OOPS with bad ARM error CPER records
+Date: Fri, 19 Dec 2025 11:49:58 +0100
+Message-ID: <cover.1766140788.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+Current parsing logic at apei/ghes for ARM Processor Error
+assumes that the record sizes are correct. Yet, a bad BIOS
+might produce malformed GHES reports.
+
+Worse than that, it may end exposing data from other memory
+addresses, as the logic may end dumping large portions of
+the memory.
+
+Avoid that by checking the buffer sizes where needed.
+
+---
+
+v3:
+  - addressed Shuai feedback;
+  - moved all ghes code to one patch;
+  - fixed a typo and a bad indent;
+  - cleanup the size check logic at ghes.c.
+
+Mauro Carvalho Chehab (2):
+  apei/ghes: ARM processor Error: don't go past allocated memory
+  efi/cper: don't go past the ARM processor CPER record buffer
+
+ drivers/acpi/apei/ghes.c        | 33 +++++++++++++++++++++++++++++----
+ drivers/firmware/efi/cper-arm.c | 12 ++++++++----
+ drivers/firmware/efi/cper.c     |  3 ++-
+ drivers/ras/ras.c               |  6 +++++-
+ include/linux/cper.h            |  3 ++-
+ 5 files changed, 46 insertions(+), 11 deletions(-)
+
+-- 
+2.52.0
 
 
-On 19/12/2025 10:53, Krzysztof Kozlowski wrote:
->> On 17/12/2025 12:41, Krzysztof Kozlowski wrote:
->>>> +properties:
->>>> +  compatible:
->>>> +    const: arm,ras-ffh
->>>
->>> Again ras - what's that? Your patch or binding must explain that.
->>
->> That updated description will explicitly expand the Arm RAS acronym so the
->> compatible string is self-explanatory.
->>
->>>> +
->>>> +  reg:
->>>> +    minItems: 1
->>>
->>> Why is this flexible?
->>
->> I'll keep `reg` describing the CPER status buffer, cap it at two entries, and
->> document the second entry as the optional doorbell register that some firmware
->> requires before reusing the buffer.
->
-> I still do not understand why this is flexible or in other words - why
-> second address space appears and disappears.
-
-The second address space is only present for firmware that exposes an ACK register.
-Not all platforms require this extra handshake so that address shows up only
-when the extra handshake exists. I’ll say that clearly in the binding
-so it’s obvious the region is optional.
-
->>
->>>> +    items:
->>>> +      - description: CPER status block exposed by firmware
->>>> +      - description:
->>>> +          Optional 32- or 64-bit acknowledgment register. Firmware watches this
->>>> +          register and expects bit 0 to be written to 1 once the OS consumes the
->>>> +          status buffer so it can reuse the record.
->>>> +
-
-
-Best regards,
-Ahmed
 
