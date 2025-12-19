@@ -1,188 +1,153 @@
-Return-Path: <linux-acpi+bounces-19722-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19723-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8431CD11A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:20:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C73ECD11E0
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61209301E3B4
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:20:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E77E3303E5DE
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C0D2BEFE7;
-	Fri, 19 Dec 2025 17:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFs+q2jo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3EE24468B;
+	Fri, 19 Dec 2025 17:22:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E376E285419
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBFC23EA82;
+	Fri, 19 Dec 2025 17:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766164826; cv=none; b=ZcXbtQ3tjVQXHvyIE1FpvMIw4Q+rmFRSI5MIWNxYE0AxrmiacA1lzA3J4Y/R29gVm+tqFw97MOllU9rSd50TOT7QGF08467kQs+JBzf0OBZeVuhnWvFQSEyYFbwrtRYRybtmW9ju5sJwsZ4nj0CbjLdNHNJpF6eGHaiSKzMQq5g=
+	t=1766164948; cv=none; b=F147PIf6tS/jYUjHYxaq6Ieud46nrOVA7sfvXhQ77srafGrbb9/eeWe0v0UitQ9ubJ0SswL6h84P1vUQ4wQUJAJ6Xu9ui672b5H5cUJ6f2Zm2gRcXqNrj7ideG1+sXEHF6v5bDNifGOsRdD2oW4BwGvjhTaeZWLWhkovBLAFbiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766164826; c=relaxed/simple;
-	bh=gS0vJZS1Q2G6ZMQ50QIRMXn1y6w+zebL4C3mxh6tWgc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gXvhgWaBeoYS/3O0mlAsk4tOtdUlwYvY1zJZqcZxnFaufsAC1lIPdUFZWfkymRMrhfzhhbDipP4MjG0D7ZK859AcUhYoZhDPI2Cvz5MSlVMbqjJcTZf/vjz4HruVK5WON3DRIp7Bs5icmAbthALRk3JBuFcODuwl5aqeuYai9nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFs+q2jo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C21C116D0
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:20:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766164825;
-	bh=gS0vJZS1Q2G6ZMQ50QIRMXn1y6w+zebL4C3mxh6tWgc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bFs+q2joHvuOO6AsFgGaQ+H7U8NRoCy57xkPCOArdHYjFZktCWhA8PTl+PQQYaI9Z
-	 mrxvVfpXFqkw0JB0IJKmVg5IUMeX3r3e+2PZn5Vwwa1EVip4/9c2XVCUg910sHNcJr
-	 VnBvibEHLiTWlo2gZeoK37CtROYhCLQqGZJD/8dkjYjMTqqyhe2pcaUKfRfNUBjLZg
-	 QTcQNAsIZRIAU8TQrajhWZByGHYxYfFQR7UbuUTKbKKOPU0s6w1ra4cfZwU/Oa+1n4
-	 WQ+VoIZyd8lo+EXsrZXoWB5k3m9pfp+UeSRGgf6hd9eOdBwfBmyq3vGkuRwLFqgp/h
-	 SQwz1ZPXFOefg==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-657464a9010so737687eaf.3
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 09:20:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWsCMLAsNuILGQ0bpDYTesnELi1PXsQPtFxC96MRXlAT1jRMZx5KCwRCfpuuRnk3WhbE4E69+WLEtKc@vger.kernel.org
-X-Gm-Message-State: AOJu0YypT8AmnwdlF6AZSnqaGhGdj6QQH1bNLWxdcMoPcunmzflBOWBf
-	3Q8HAG1OxFbIp1z8nfH62UHIOL1MLoFrOqnhfMs+K3OSdf+zHbWPV8wz/wvGxOYznw8M9+FaCoK
-	gjsZWGbPB0wkoVNo2iJCBNboYsvQQvWE=
-X-Google-Smtp-Source: AGHT+IE2wxi3ctNVzIp4rjh6qWyS9VkZFfUdBN0QiVrvNHfJFwkoiFupXNFLqDfw9yKvJK6Iw6i7+wEpZdpyxI0/hFI=
-X-Received: by 2002:a05:6820:f028:b0:65b:38e2:33b5 with SMTP id
- 006d021491bc7-65d0ea5a20cmr1755311eaf.49.1766164824659; Fri, 19 Dec 2025
- 09:20:24 -0800 (PST)
+	s=arc-20240116; t=1766164948; c=relaxed/simple;
+	bh=5adtQGEsmql7kNYZuPJLKOR3AirF0fKcZftpFBcrCPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fb/WnvHhRxjBhRhcdfmbmDMJcD1uyke7JdbTlZEnx6uCUZRdf8dtyqGZ4BlgaRZNnE33rM6R1D1ZCDmMHSqLPvbiiloJDXjyiOKyzi9cxBfANn8LSjhuqLzRvWqa4vSW1awApj7+nj400uPaaL2OOtBAf+cE4325ww3U6rdbZU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAC2DFEC;
+	Fri, 19 Dec 2025 09:22:17 -0800 (PST)
+Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 421CB3F73F;
+	Fri, 19 Dec 2025 09:22:22 -0800 (PST)
+From: Ahmed Tiba <ahmed.tiba@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	tony.luck@intel.com,
+	bp@alien8.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	catalin.marinas@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org,
+	linux-doc@vger.kernel.org,
+	Dmitry.Lamerov@arm.com,
+	Michael.Zhao2@arm.com,
+	Ahmed.Tiba@arm.com
+Subject: Re: [PATCH 11/12] ras: add DeviceTree estatus provider driver
+Date: Fri, 19 Dec 2025 17:21:54 +0000
+Message-ID: <20251219172212.2844694-1-ahmed.tiba@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <aUVMWMMmiG8_I2I2@willie-the-truck>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5049211.GXAFRqVoOG@rafael.j.wysocki> <3036574.e9J7NaK4W3@rafael.j.wysocki>
- <20251219123319.00001e98@huawei.com>
-In-Reply-To: <20251219123319.00001e98@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 19 Dec 2025 18:20:12 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jgo4uCs9xcK0mKxO1yKy3NP1eubO01R7KE0G1AcBf9MQ@mail.gmail.com>
-X-Gm-Features: AQt7F2oPPGCdvtBge9BJUT5Z7u_WA9mzZrImP9GaLAG1wHPv_3XW4an3eFIet2E
-Message-ID: <CAJZ5v0jgo4uCs9xcK0mKxO1yKy3NP1eubO01R7KE0G1AcBf9MQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/8] ACPI: bus: Rework printing debug messages on _OSC errors
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	Bjorn Helgaas <helgaas@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 19, 2025 at 1:33=E2=80=AFPM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
->
-> On Thu, 18 Dec 2025 21:35:27 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Instead of using one function, acpi_print_osc_error(), for printing a
-> > debug message and dumping the _OSC request data in one go, use
-> > acpi_handle_debug() directly for printing messages and a separate
-> > function called acpi_dump_osc_data() for dumping the _OSC request data
-> > after printing one or more of them.
-> >
-> > This allows the message printing in the _OSC handling code to be
-> > organized so that the messages printed by it are easier to parse.
->
-> Hi Rafael,
->
-> Perhaps an example of the print to motivate this change clearly?
-> The absence of a guid on the error string line for instance may
-> or may not bother people. It's there in the dump but that comes
-> after the error print I think.
+On Fri, 19 Dec 2025 13:00:08 +0000, Will Deacon wrote:
+>On Fri, Dec 19, 2025 at 09:02:35AM +0000, Ahmed Tiba wrote:
+>> On Thu, 18 Dec 2025 03:19:17PM +0000, Will Deacon wrote:
+>> > On Thu, Dec 18, 2025 at 01:42:47PM +0000, Ahmed Tiba wrote:
+>> >> On Thu, 18 Dec 2025 12:13:25PM +0000, Will Deacon wrote:
+>> >> >> Introduce a platform driver that maps the CPER status block described
+>> >> >> in DeviceTree, feeds it into the estatus core and handles either IRQ- or
+>> >> >> poll-driven notifications. Arm64 gains a FIX_ESTATUS_IRQ slot so the
+>> >> >> driver can safely map the shared buffer while copying records.
+>> >> >>
+>> >> >> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
+>> >> >> ---
+>> >> >>  MAINTAINERS                     |   1 +
+>> >> >>  arch/arm64/include/asm/fixmap.h |   5 +
+>> >> >>  drivers/ras/Kconfig             |  14 ++
+>> >> >>  drivers/ras/Makefile            |   1 +
+>> >> >>  drivers/ras/estatus-dt.c        | 318 ++++++++++++++++++++++++++++++++
+>> >> >>  include/linux/estatus.h         |   3 +-
+>> >> >>  6 files changed, 341 insertions(+), 1 deletion(-)
+>> >> >>  create mode 100644 drivers/ras/estatus-dt.c
+>> >> >>
+>> >> >> diff --git a/MAINTAINERS b/MAINTAINERS
+>> >> >> index 6b2ef2ddc0c7..5567d5e82053 100644
+>> >> >> --- a/MAINTAINERS
+>> >> >> +++ b/MAINTAINERS
+>> >> >> @@ -21761,6 +21761,7 @@ RAS ERROR STATUS
+>> >> >>  M:   Ahmed Tiba <ahmed.tiba@arm.com>
+>> >> >>  S:   Maintained
+>> >> >>  F:   Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
+>> >> >> +F:   drivers/ras/estatus-dt.c
+>> >> >>  F:   drivers/firmware/efi/estatus.c
+>> >> >>  F:   include/linux/estatus.h
+>> >> >>
+>> >> >> diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
+>> >> >> index 65555284446e..85ffba87bab9 100644
+>> >> >> --- a/arch/arm64/include/asm/fixmap.h
+>> >> >> +++ b/arch/arm64/include/asm/fixmap.h
+>> >> >> @@ -64,6 +64,11 @@ enum fixed_addresses {
+>> >> >>  #endif
+>> >> >>  #endif /* CONFIG_ACPI_APEI_GHES */
+>> >> >>
+>> >> >> +#ifdef CONFIG_RAS_ESTATUS_DT
+>> >> >> +     /* Used for ESTATUS mapping from assorted contexts */
+>> >> >> +     FIX_ESTATUS_IRQ,
+>> >> >> +#endif /* CONFIG_RAS_ESTATUS_DT */
+>> >> >
+>> >> > Why do we need this in addition to the four existing GHES slots? The DT
+>> >> > code doesn't use it and I was assuming that the ACPI code would continue
+>> >> > to use the existing irq; is that not the case?
+>> >>
+>> >>
+>> >> We still need a dedicated slot when only the DT provider is built.
+>> >> All four GHES slots are defined as part of the ACPI implementation,
+>> >> so they are not present in a DT-only configuration.
+>> >>
+>> >> The estatus core always requests a fixmap index from each provider
+>> >> before copying a CPER record. As a result, the DT driver must supply
+>> >> its own slot to return a valid enum value to satisfy the common code.
+>> >
+>> > Sorry, but I still don't follow this. The DT code doesn't use the fixmap,
+>> > does it? It looks like it maps the buffer ahead of time using
+>> > devm_ioremap_resource() and then the accessors don't use the fixmap
+>> > index at all, hence the horrible '(void)fixmap_idx;' cast which presumably
+>> > stops the compiler from complaining about an unused variable.
+>> 
+>> Correct. The current DT driver keeps the CPER buffer permanently mapped with
+>> devm_ioremap_resource() and that (void)fixmap_idx; line is just silencing
+>> the warning. I’ll fix that by dropping the permanent mapping and copying the
+>> status block via the fixmap entry, so the DT implementation mirrors GHES. That
+>> gets rid of the cast and makes FIX_ESTATUS_IRQ do real work.
 
-Yes, it's there.
+> Why can't you just drop FIX_ESTATUS_IRQ entirely? Your original
+> justification was:
+>
+>> We still need a dedicated slot when only the DT provider is built.
+>
+> but as above, the DT driver doesn't actually need it.
 
-I guess I can add examples of "before" and "after" printouts to the
-patch changelog.
+The DT provider is intended to mirror the GHES path, so both need to supply a
+fixmap slot to satisfy the estatus core interface.
 
-> > Also, use %pUL for UUID printing instead of printing UUIDs as strings
-> > and include the revision number into the dumped _OSC request data.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/acpi/bus.c |   35 ++++++++++++++++-------------------
-> >  1 file changed, 16 insertions(+), 19 deletions(-)
-> >
-> > --- a/drivers/acpi/bus.c
-> > +++ b/drivers/acpi/bus.c
-> > @@ -180,18 +180,15 @@ void acpi_bus_detach_private_data(acpi_h
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_bus_detach_private_data);
-> >
-> > -static void acpi_print_osc_error(acpi_handle handle,
-> > -                              struct acpi_osc_context *context, char *=
-error)
-> > +static void acpi_dump_osc_data(acpi_handle handle, const guid_t *guid,=
- int rev,
-> > +                            struct acpi_buffer *cap)
-> >  {
-> > +     u32 *capbuf =3D cap->pointer;
-> >       int i;
-> >
-> > -     acpi_handle_debug(handle, "(%s): %s\n", context->uuid_str, error)=
-;
-> > -
-> > -     pr_debug("_OSC request data:");
-> > -     for (i =3D 0; i < context->cap.length; i +=3D sizeof(u32))
-> > -             pr_debug(" %x", *((u32 *)(context->cap.pointer + i)));
-> > -
-> > -     pr_debug("\n");
-> > +     for (i =3D 0; i < cap->length / sizeof(u32); i++)
-> > +             acpi_handle_debug(handle, "(%pUL, %d): capabilities DWORD=
- %i: [%08x]\n",
-> > +                               guid, rev, i, capbuf[i]);
-> >  }
-> >
-> >  #define OSC_ERROR_MASK       (OSC_REQUEST_ERROR | OSC_INVALID_UUID_ERR=
-OR | \
-> > @@ -239,8 +236,8 @@ acpi_status acpi_run_osc(acpi_handle han
-> >       out_obj =3D output.pointer;
-> >       if (out_obj->type !=3D ACPI_TYPE_BUFFER
-> >               || out_obj->buffer.length !=3D context->cap.length) {
-> > -             acpi_print_osc_error(handle, context,
-> > -                     "_OSC evaluation returned wrong type");
-> > +             acpi_handle_debug(handle, "_OSC evaluation returned wrong=
- type");
-> > +             acpi_dump_osc_data(handle, &guid, context->rev, &context-=
->cap);
-> >               status =3D AE_TYPE;
-> >               goto out_kfree;
-> >       }
-> > @@ -252,18 +249,18 @@ acpi_status acpi_run_osc(acpi_handle han
-> >
-> >       if (errors) {
-> >               if (errors & OSC_REQUEST_ERROR)
-> > -                     acpi_print_osc_error(handle, context,
-> > -                             "_OSC request failed");
-> > +                     acpi_handle_debug(handle, "_OSC request failed");
-> > +
-> >               if (errors & OSC_INVALID_UUID_ERROR)
-> > -                     acpi_print_osc_error(handle, context,
-> > -                             "_OSC invalid UUID");
-> > +                     acpi_handle_debug(handle, "_OSC invalid UUID");
-> > +
-> >               if (errors & OSC_INVALID_REVISION_ERROR)
-> > -                     acpi_print_osc_error(handle, context,
-> > -                             "_OSC invalid revision");
-> > +                     acpi_handle_debug(handle, "_OSC invalid revision"=
-);
-> > +
-> >               if (errors & OSC_CAPABILITIES_MASK_ERROR)
-> > -                     acpi_print_osc_error(handle, context,
-> > -                             "_OSC capability bits masked");
-> > +                     acpi_handle_debug(handle, "_OSC capability bits m=
-asked");
-> >
-> > +             acpi_dump_osc_data(handle, &guid, context->rev, &context-=
->cap);
-> >               status =3D AE_ERROR;
-> >               goto out_kfree;
-> >       }
+I could drop FIX_ESTATUS_IRQ entirely, but that would require relaxing the
+estatus core so a provider can explicitly indicate that it does not use a
+fixmap and instead relies on a permanent mapping. If we want to stay aligned
+with the ACPI/GHES model, keeping the fixmap-based approach seems preferable.
+
+Thanks,
+Ahmed
 
