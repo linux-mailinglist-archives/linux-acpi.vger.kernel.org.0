@@ -1,153 +1,123 @@
-Return-Path: <linux-acpi+bounces-19723-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19724-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C73ECD11E0
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:22:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6273CD120D
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E77E3303E5DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:22:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE901306FE6D
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3EE24468B;
-	Fri, 19 Dec 2025 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B613C31ED94;
+	Fri, 19 Dec 2025 17:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZHsFLCU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBFC23EA82;
-	Fri, 19 Dec 2025 17:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B6528689A
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766164948; cv=none; b=F147PIf6tS/jYUjHYxaq6Ieud46nrOVA7sfvXhQ77srafGrbb9/eeWe0v0UitQ9ubJ0SswL6h84P1vUQ4wQUJAJ6Xu9ui672b5H5cUJ6f2Zm2gRcXqNrj7ideG1+sXEHF6v5bDNifGOsRdD2oW4BwGvjhTaeZWLWhkovBLAFbiw=
+	t=1766164956; cv=none; b=oedQRu0PIZD98Bc2VO4FjY5zgDbFuBMRF/u9FkzfuWJw5xBxzglO5b7RFu+vBOUFjwfFLFyKQYUjejrAGll8UDdsdVT3f0/CzQIiKB+UNECaibU2EY3P1aWcHguA8ec8p+unkhRgNoCa1K7VttfxwJl1PMf5cA5dG5O4qDIDOGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766164948; c=relaxed/simple;
-	bh=5adtQGEsmql7kNYZuPJLKOR3AirF0fKcZftpFBcrCPQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fb/WnvHhRxjBhRhcdfmbmDMJcD1uyke7JdbTlZEnx6uCUZRdf8dtyqGZ4BlgaRZNnE33rM6R1D1ZCDmMHSqLPvbiiloJDXjyiOKyzi9cxBfANn8LSjhuqLzRvWqa4vSW1awApj7+nj400uPaaL2OOtBAf+cE4325ww3U6rdbZU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAC2DFEC;
-	Fri, 19 Dec 2025 09:22:17 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 421CB3F73F;
-	Fri, 19 Dec 2025 09:22:22 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	Ahmed.Tiba@arm.com
-Subject: Re: [PATCH 11/12] ras: add DeviceTree estatus provider driver
-Date: Fri, 19 Dec 2025 17:21:54 +0000
-Message-ID: <20251219172212.2844694-1-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aUVMWMMmiG8_I2I2@willie-the-truck>
-References: 
+	s=arc-20240116; t=1766164956; c=relaxed/simple;
+	bh=51v80vuIoLBHyp+xqmm+MZ/h09/A74izSzDgSNSD8JA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aHL77MgLtD8AzmCy6DwdH5WagCKutXaqiMvtFDybXZmEbNuMA7HbSImH6K8AOLexSW+tPtZfOwczn1guEzT5l3uoio6y2P9k6e2lde6da5BjNpPS53ffePiCHIGE1ZGJBIDj+spz89V8cvbMtRR/En3EfeuX2BSFhdxeUlZxkcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZHsFLCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43305C4CEF1
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766164956;
+	bh=51v80vuIoLBHyp+xqmm+MZ/h09/A74izSzDgSNSD8JA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SZHsFLCUG5iOsa0xFmemdqpHdQ0IjuSeQoz/Hn3FCIwpt3sJ7Bqay6a2XLywkCGns
+	 pHuD4zMqFg4sAe5rCTVlJoG0mNLzYI42y9PBtloWhbs8z3i0pwXIgxtWSBkV9OVQdL
+	 b8E1kk5ewORYSYxDMAgREC6hEhSa8HUDScFc2avREtTnME8NkfzXB7POk1LrBWAAt2
+	 mW4AwT3J4phxbEYkGJ4KSEsOsQTdkE+TJb0SfW7gFAy+LDCOT9kORrlMZceUey99FC
+	 p0ti0RkNC+TgkNxElcvxuKywrlWzD+MZ/a8tXTEray1JYaaOeMHKBY0vnGEAiuVZ+S
+	 CWtEFWu8o+JzQ==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6579872f00dso993677eaf.1
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 09:22:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUd1+2sUdqIBN67WCTrDpluo/drIOvrhOh4Jok0P5eBXsq4Py4HAL6+v/mQgW6p6jPBzt/BluUUA9vT@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXFmgAVkycryshZDB/TEJhR9Lk0eKdrUBF2I0XjSkePaPlt4LC
+	MMERMqMhJi1g+hFLwCfLeymCcnQFQupgd7g+Y9lQBH3xZhRfNdnI6oAz9tnBaVRM6L5aDlxSb8/
+	/z3wFYIXcrMSy9PBStEGO8GWGEpff9Gg=
+X-Google-Smtp-Source: AGHT+IEPziboAv0SjFN6LRGSAEPjVo0OdDZx8uWJVKPI0XREcCFfiC22XnVGk0v8QKC/wFrNMUW+AHnsnQF7xdeDQko=
+X-Received: by 2002:a05:6820:22a6:b0:659:9a49:9009 with SMTP id
+ 006d021491bc7-65d0ea7234dmr1596923eaf.54.1766164955384; Fri, 19 Dec 2025
+ 09:22:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <5049211.GXAFRqVoOG@rafael.j.wysocki> <3407425.44csPzL39Z@rafael.j.wysocki>
+ <20251219124409.00002f4e@huawei.com>
+In-Reply-To: <20251219124409.00002f4e@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 19 Dec 2025 18:22:24 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gS1yvORG_+Z80y6McBhu_QLNfY7-RqJKZ1HjGevzGJFQ@mail.gmail.com>
+X-Gm-Features: AQt7F2pQuubjq7dHC5JuGMZJBDhFiLI8iYB6uMa5VMISG27dVolh_1x_vPmFnHY
+Message-ID: <CAJZ5v0gS1yvORG_+Z80y6McBhu_QLNfY7-RqJKZ1HjGevzGJFQ@mail.gmail.com>
+Subject: Re: [PATCH v1 3/8] ACPI: bus: Split _OSC evaluation out of acpi_run_osc()
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Bjorn Helgaas <helgaas@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 19 Dec 2025 13:00:08 +0000, Will Deacon wrote:
->On Fri, Dec 19, 2025 at 09:02:35AM +0000, Ahmed Tiba wrote:
->> On Thu, 18 Dec 2025 03:19:17PM +0000, Will Deacon wrote:
->> > On Thu, Dec 18, 2025 at 01:42:47PM +0000, Ahmed Tiba wrote:
->> >> On Thu, 18 Dec 2025 12:13:25PM +0000, Will Deacon wrote:
->> >> >> Introduce a platform driver that maps the CPER status block described
->> >> >> in DeviceTree, feeds it into the estatus core and handles either IRQ- or
->> >> >> poll-driven notifications. Arm64 gains a FIX_ESTATUS_IRQ slot so the
->> >> >> driver can safely map the shared buffer while copying records.
->> >> >>
->> >> >> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
->> >> >> ---
->> >> >>  MAINTAINERS                     |   1 +
->> >> >>  arch/arm64/include/asm/fixmap.h |   5 +
->> >> >>  drivers/ras/Kconfig             |  14 ++
->> >> >>  drivers/ras/Makefile            |   1 +
->> >> >>  drivers/ras/estatus-dt.c        | 318 ++++++++++++++++++++++++++++++++
->> >> >>  include/linux/estatus.h         |   3 +-
->> >> >>  6 files changed, 341 insertions(+), 1 deletion(-)
->> >> >>  create mode 100644 drivers/ras/estatus-dt.c
->> >> >>
->> >> >> diff --git a/MAINTAINERS b/MAINTAINERS
->> >> >> index 6b2ef2ddc0c7..5567d5e82053 100644
->> >> >> --- a/MAINTAINERS
->> >> >> +++ b/MAINTAINERS
->> >> >> @@ -21761,6 +21761,7 @@ RAS ERROR STATUS
->> >> >>  M:   Ahmed Tiba <ahmed.tiba@arm.com>
->> >> >>  S:   Maintained
->> >> >>  F:   Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
->> >> >> +F:   drivers/ras/estatus-dt.c
->> >> >>  F:   drivers/firmware/efi/estatus.c
->> >> >>  F:   include/linux/estatus.h
->> >> >>
->> >> >> diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
->> >> >> index 65555284446e..85ffba87bab9 100644
->> >> >> --- a/arch/arm64/include/asm/fixmap.h
->> >> >> +++ b/arch/arm64/include/asm/fixmap.h
->> >> >> @@ -64,6 +64,11 @@ enum fixed_addresses {
->> >> >>  #endif
->> >> >>  #endif /* CONFIG_ACPI_APEI_GHES */
->> >> >>
->> >> >> +#ifdef CONFIG_RAS_ESTATUS_DT
->> >> >> +     /* Used for ESTATUS mapping from assorted contexts */
->> >> >> +     FIX_ESTATUS_IRQ,
->> >> >> +#endif /* CONFIG_RAS_ESTATUS_DT */
->> >> >
->> >> > Why do we need this in addition to the four existing GHES slots? The DT
->> >> > code doesn't use it and I was assuming that the ACPI code would continue
->> >> > to use the existing irq; is that not the case?
->> >>
->> >>
->> >> We still need a dedicated slot when only the DT provider is built.
->> >> All four GHES slots are defined as part of the ACPI implementation,
->> >> so they are not present in a DT-only configuration.
->> >>
->> >> The estatus core always requests a fixmap index from each provider
->> >> before copying a CPER record. As a result, the DT driver must supply
->> >> its own slot to return a valid enum value to satisfy the common code.
->> >
->> > Sorry, but I still don't follow this. The DT code doesn't use the fixmap,
->> > does it? It looks like it maps the buffer ahead of time using
->> > devm_ioremap_resource() and then the accessors don't use the fixmap
->> > index at all, hence the horrible '(void)fixmap_idx;' cast which presumably
->> > stops the compiler from complaining about an unused variable.
->> 
->> Correct. The current DT driver keeps the CPER buffer permanently mapped with
->> devm_ioremap_resource() and that (void)fixmap_idx; line is just silencing
->> the warning. I’ll fix that by dropping the permanent mapping and copying the
->> status block via the fixmap entry, so the DT implementation mirrors GHES. That
->> gets rid of the cast and makes FIX_ESTATUS_IRQ do real work.
-
-> Why can't you just drop FIX_ESTATUS_IRQ entirely? Your original
-> justification was:
+On Fri, Dec 19, 2025 at 1:44=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
->> We still need a dedicated slot when only the DT provider is built.
+> On Thu, 18 Dec 2025 21:36:08 +0100
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
 >
-> but as above, the DT driver doesn't actually need it.
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Split a function for evaluating _OSL called acpi_eval_osc() out of
+>
+> _OSC
 
-The DT provider is intended to mirror the GHES path, so both need to supply a
-fixmap slot to satisfy the estatus core interface.
+Yup, thanks!
 
-I could drop FIX_ESTATUS_IRQ entirely, but that would require relaxing the
-estatus core so a provider can explicitly indicate that it does not use a
-fixmap and instead relies on a permanent mapping. If we want to stay aligned
-with the ACPI/GHES model, keeping the fixmap-based approach seems preferable.
+> > acpi_run_osc() to facilitate subsequent changes and add some more
+> > parameters sanity checks to the latter.
+> >
+> > No intentional functional impact.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> One comment on the fun static keyword usage.  Next time I have
+> to ask/answer some silly C questions in an interview that one is definite=
+ly going
+> in :)
+> > ---
+> >  drivers/acpi/bus.c |   89 ++++++++++++++++++++++++++++++--------------=
+---------
+> >  1 file changed, 52 insertions(+), 37 deletions(-)
+> >
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -195,52 +195,67 @@ static void acpi_dump_osc_data(acpi_hand
+> >                        OSC_INVALID_REVISION_ERROR | \
+> >                        OSC_CAPABILITIES_MASK_ERROR)
+> >
+> > -acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *=
+context)
+> > +static int acpi_eval_osc(acpi_handle handle, guid_t *guid, int rev,
+> > +                      struct acpi_buffer *cap,
+> > +                      union acpi_object in_params[static 4],
+>
+> This static usage has such non intuitive behavior maybe use
+> the new at_least marking in compiler_types.h to indicate
+> what protection against wrong sizes it can offer.
 
-Thanks,
-Ahmed
+I'll have a look at that, thanks!
 
