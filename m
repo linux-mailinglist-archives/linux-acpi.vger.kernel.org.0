@@ -1,145 +1,194 @@
-Return-Path: <linux-acpi+bounces-19691-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19692-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51688CCF360
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:53:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA24CCF720
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 11:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8BD73007604
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 09:53:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E422E30A323F
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6B02E7F3E;
-	Fri, 19 Dec 2025 09:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B342FF662;
+	Fri, 19 Dec 2025 10:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qAlUgOY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1GSHabA"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DE02E7186;
-	Fri, 19 Dec 2025 09:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175B123314B;
+	Fri, 19 Dec 2025 10:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766138011; cv=none; b=o2hawAbOzty9kjTXtImuBf8yL76IAsRIpud43teuozacb3gfsXXnr4YL0HlTyvQeooODVvpmBjklZe1s0Qq5GgMIzxRo5I7g1+KLlIDS72D7uEtK8RtS/0Pbop1JN1O/VFGdUOB0onJ3o2wTfeF96SE9z+Czuzwn5aHpV/TlGIc=
+	t=1766140866; cv=none; b=fDQhOcUmC6Mbw+BA6KNxa+2yzcAwCRHaje8+X6E+hK4jSQ7+nC1nxpQqEoNcQz5Ci20RUg1RtHP6dGIsNeiMzliY2wta8kgelplZkmv8CbURJKpzsmCPU90Q/9r8bXMHfHwxhnUUncAIscOmqEjaAO8Xpa8y5eZUi4aTap91HRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766138011; c=relaxed/simple;
-	bh=sl0ToJdj8GtY2WKfJtUDvAjMTXApJ1WA925UTLERc+0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hBehHClpAjYK/zcs/rDGBRRPZDBuVXO0tVddK5j/UpVBe1yvUi1WsEfhCz95fx+5Yd+DuGubAWzUxkinbUHMGPb0Q9AYrAbUP6p35w94nwYesLAtfgWopRHKHqPYrePr/Nr8IIiaaK/+MD99oDv0qK6k0H1YIv0mRBjM6r7BDDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qAlUgOY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6E0C4CEF1;
-	Fri, 19 Dec 2025 09:53:25 +0000 (UTC)
+	s=arc-20240116; t=1766140866; c=relaxed/simple;
+	bh=v46pcnHDRBpxHY5Ds3ULk0J6LHLabnL9oEV2KY94S9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g2+FPCF6OiRFpX06VNL2t3X++ZHaFKxdd3yU6D1DPbJ0rOx3/7VGf3b6D5LA5sapM+62ywmldVVuCqxFBChJ2TLTCk24iy39oIl5Iu7eWiCNS2pwWdsTc+xrBmXfDduoUr4NQ4uAXtLtqV5Wz24Yoz+w4nzJhe/NTuvcyN36jSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1GSHabA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7332C4CEF1;
+	Fri, 19 Dec 2025 10:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766138011;
-	bh=sl0ToJdj8GtY2WKfJtUDvAjMTXApJ1WA925UTLERc+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qAlUgOY2vxgJpx/AXLk17UkZ0pVIiYuRAg4S6R5WQY1oXyYOLvM/SIE99bqpT01it
-	 dnt04FuRlps70Cbt24VyWckXVPrbQJjuELRBimp+SnTfIvtwoZHkP5dP1TIjna9uR1
-	 tghyz8i1lz51LjSwmV25PArwtrZvkHww39oWVv5zRK5wdHmIKPgpEdHFk30xrAtoGh
-	 0f4eBRD73iX5dj26UynZ0LPj5V6DNx9w23grJSdhwSP/3X/Kqs9sd3NHQanQtpAWxt
-	 R/fCm/KjBnJ7Ni+nos4ScQYZ0Jzc1BwtQ4t8Nc5tBC5C7tWXfIuhBlnIvkbHlpQ0zU
-	 DtMqsYNaNPIgg==
-Message-ID: <57772b40-e4d9-4152-9709-04ba897608d0@kernel.org>
-Date: Fri, 19 Dec 2025 10:53:23 +0100
+	s=k20201202; t=1766140865;
+	bh=v46pcnHDRBpxHY5Ds3ULk0J6LHLabnL9oEV2KY94S9A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Z1GSHabAeoKmV7ma9FklYGIYhdkrxjd0d+q6wjREiDkHmuVFm2DmrslBjbTq1G2Hu
+	 rNFJ484wWOa/FXXRwwPDAhPQ0KtU+WZ0DvCU028IkQtvlHvz0SC7o6AvJgACiY/jPa
+	 kIlmlBgpZJMxNi/kBMK99Q8WJGLAm0lqL99r3SdjdNisFvjHwWuiAtMYh4hZwMO5br
+	 HemoyWGDPyztjtAOavl/+pLh2egC1PbU22tDEdz1j8fXgOBrfnTTjTVirm1l4HEU3N
+	 7XxI2gbRujPZKoxNsBTWe7QvCa1h8NMD369QP6CDGFU2rYvJTrL8IpXlWJpKPy8V/M
+	 yD9+rjnECY3GQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.99)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1vWXux-00000005ktq-3yNu;
+	Fri, 19 Dec 2025 11:41:03 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Ankit Agrawal" <ankita@nvidia.com>,
+	"Borislav Petkov" <bp@alien8.de>,
+	"Breno Leitao" <leitao@debian.org>,
+	"Hanjun Guo" <guohanjun@huawei.com>,
+	"Ingo Molnar" <mingo@kernel.org>,
+	"Jason Tian" <jason@os.amperecomputing.com>,
+	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+	"Len Brown" <lenb@kernel.org>,
+	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
+	"Shuai Xue" <xueshuai@linux.alibaba.com>,
+	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>,
+	"Tony Luck" <tony.luck@intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] apei/ghes: ARM processor Error: don't go past allocated memory
+Date: Fri, 19 Dec 2025 11:40:43 +0100
+Message-ID: <e80bc4eba43d0211713fe66958ec0c582d9bfda7.1766140788.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1766140788.git.mchehab+huawei@kernel.org>
+References: <cover.1766140788.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] dt-bindings: ras: document estatus provider
-To: Ahmed Tiba <ahmed.tiba@arm.com>, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: tony.luck@intel.com, bp@alien8.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
- linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com, Michael.Zhao2@arm.com
-References: <2a2baef6-c294-4c31-bec2-10fbaa3f7941@kernel.org>
- <20251218103139.2238844-1-ahmed.tiba@arm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251218103139.2238844-1-ahmed.tiba@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On 18/12/2025 11:31, Ahmed Tiba wrote:
-> On 17/12/2025 12:41, Krzysztof Kozlowski wrote:
->>> +properties:
->>> +  compatible:
->>> +    const: arm,ras-ffh
->>
->> Again ras - what's that? Your patch or binding must explain that.
-> 
-> That updated description will explicitly expand the Arm RAS acronym so the
-> compatible string is self-explanatory.
-> 
->>> +
->>> +  reg:
->>> +    minItems: 1
->>
->> Why is this flexible?
-> 
-> I'll keep `reg` describing the CPER status buffer, cap it at two entries, and
-> document the second entry as the optional doorbell register that some firmware
-> requires before reusing the buffer.
+If the BIOS generates a very small ARM Processor Error, or
+an incomplete one, the current logic will fail to deferrence
 
-I still do not understand why this is flexible or in other words - why
-second address space appears and disappears.
+	err->section_length
+and
+	ctx_info->size
 
-> 
->>> +    items:
->>> +      - description: CPER status block exposed by firmware
->>> +      - description:
->>> +          Optional 32- or 64-bit acknowledgment register. Firmware watches this
->>> +          register and expects bit 0 to be written to 1 once the OS consumes the
->>> +          status buffer so it can reuse the record.
->>> +
+Add checks to avoid that. With such changes, such GHESv2
+records won't cause OOPSes like this:
 
+[    1.492129] Internal error: Oops: 0000000096000005 [#1]  SMP
+[    1.495449] Modules linked in:
+[    1.495820] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.18.0-rc1-00017-gabadcc3553dd-dirty #18 PREEMPT
+[    1.496125] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
+[    1.496433] Workqueue: kacpi_notify acpi_os_execute_deferred
+[    1.496967] pstate: 814000c5 (Nzcv daIF +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[    1.497199] pc : log_arm_hw_error+0x5c/0x200
+[    1.497380] lr : ghes_handle_arm_hw_error+0x94/0x220
 
-Best regards,
-Krzysztof
+0xffff8000811c5324 is in log_arm_hw_error (../drivers/ras/ras.c:75).
+70		err_info = (struct cper_arm_err_info *)(err + 1);
+71		ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
+72		ctx_err = (u8 *)ctx_info;
+73
+74		for (n = 0; n < err->context_info_num; n++) {
+75			sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
+76			ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
+77			ctx_len += sz;
+78		}
+79
+
+and similar ones while trying to access section_length on an
+error dump with too small size.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ drivers/acpi/apei/ghes.c | 33 +++++++++++++++++++++++++++++----
+ drivers/ras/ras.c        |  6 +++++-
+ 2 files changed, 34 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 0dc767392a6c..9bf4ec84f160 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -552,21 +552,46 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+ 	int flags = sync ? MF_ACTION_REQUIRED : 0;
++	int length = gdata->error_data_length;
+ 	char error_type[120];
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+ 
+ 	sec_sev = ghes_severity(gdata->error_severity);
+-	log_arm_hw_error(err, sec_sev);
++	if (length >= sizeof(*err)) {
++		log_arm_hw_error(err, sec_sev);
++	} else {
++		pr_warn(FW_BUG "arm error length: %d\n", length);
++		pr_warn(FW_BUG "length is too small\n");
++		pr_warn(FW_BUG "firmware-generated error record is incorrect\n");
++		return false;
++	}
++
+ 	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
+ 		return false;
+ 
+ 	p = (char *)(err + 1);
++	length -= sizeof(err);
++
+ 	for (i = 0; i < err->err_info_num; i++) {
+-		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+-		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
+-		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
++		struct cper_arm_err_info *err_info;
++		bool is_cache, has_pa;
++
++		/* Ensure we have enough data for the error info header */
++		length -= sizeof(*err_info);
++		if (length < 0)
++			break;
++
++		err_info = (struct cper_arm_err_info *)p;
++
++		/* Validate the claimed length before using it */
++		length -= err_info->length;
++		if (length < 0)
++			break;
++
++		is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
++		has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+ 
+ 		/*
+ 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
+diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
+index 2a5b5a9fdcb3..03df3db62334 100644
+--- a/drivers/ras/ras.c
++++ b/drivers/ras/ras.c
+@@ -72,7 +72,11 @@ void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
+ 	ctx_err = (u8 *)ctx_info;
+ 
+ 	for (n = 0; n < err->context_info_num; n++) {
+-		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
++		sz = sizeof(struct cper_arm_ctx_info);
++
++		if (sz + (long)ctx_info - (long)err >= err->section_length)
++			sz += ctx_info->size;
++
+ 		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
+ 		ctx_len += sz;
+ 	}
+-- 
+2.52.0
+
 
