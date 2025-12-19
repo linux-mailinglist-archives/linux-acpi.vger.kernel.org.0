@@ -1,105 +1,185 @@
-Return-Path: <linux-acpi+bounces-19714-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19716-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5FFCD065F
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 15:55:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A1BCD072D
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 16:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7B7E3017647
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 14:49:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09CCF30B7C2A
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 15:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219C630FC08;
-	Fri, 19 Dec 2025 14:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CB8329388;
+	Fri, 19 Dec 2025 15:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cuXI98sC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JrT7uXZx";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EU6N1hQn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC8427FB35
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 14:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FAD325492
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 15:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766155786; cv=none; b=RODaLOz/1zDCkKRpZ89FTHKYPvpHLHlbNoek8h6N+qQUZXECYI/JdvriJ76ITozKwU/rKhsJJRyCy67AbL1ODDxsdAKILrQw0t2JpFCG7yZwlq1+G1DNB9XjB/leUvBICGjRII1WkkNkHwqOS0JpPbo7IQGn9R+DyJWAXJis2kc=
+	t=1766156717; cv=none; b=PVFzbCH5TJ6yEWN2c6zgt3BrlaberSlzMXLy8Ul1q1rokocCftjlHIrPUaBguuL3nv6gHZMGW8up6O3atpkK+Q/Rg3UK9jVb2P5j90wZwOu4jabjSerdmeAVc/oQvSiEhxsoMnQNF9h0PKIbhf5TLzFFL+sjiivJ/qmBEIpv0L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766155786; c=relaxed/simple;
-	bh=+Tp8CMDnW7asxzuHa3KneanYjFNAYllglbT23a6t4zk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R7ybU42E4AtHDsIzkmCpnl04UANwDakRFB+Lv4BlpDaHB8xeFmTrbkjCRRGDf7bzA1o71xsClcNrlu+90rBZowIVxU3QyQGYW9k1zZkppYzkjZBEIirLcBubBPGQ216zfLj2fdAM+9ScLsHG4xY7R/r1a8liQkooTNUrzEUWPOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cuXI98sC; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FxRRySUQAmQQGS37Z35MmmKWhPZZY2M1tezZ/ckkK0Y=;
-	b=cuXI98sCVP2g5k/pY2YI6OFXvVTZwb5i9qBNyu4Pc857dpkQbiY32UTM+NaI/FDw9HoaLoQyg
-	lBGJQkLWdHEY3fV6fZduB0xX+UGhEvXbOnEMlVCOmPLsSKhmz+FIpMQDL4aBvaa1830orUb8vai
-	al5qC5KxcswKQmcqk9GCtvM=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dXr3b2JtGz1T4G3;
-	Fri, 19 Dec 2025 22:47:23 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 975F520109;
-	Fri, 19 Dec 2025 22:49:38 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 19 Dec 2025 22:49:38 +0800
-From: Hanjun Guo <guohanjun@huawei.com>
-To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla
-	<sudeep.holla@arm.com>
-CC: "Rafael J . Wysocki" <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH] MAINTAINERS: Update the maintainers for ARM64 ACPI
-Date: Fri, 19 Dec 2025 22:49:06 +0800
-Message-ID: <20251219144906.348353-1-guohanjun@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1766156717; c=relaxed/simple;
+	bh=JzQT/NtUVd2ORVFQ2U/bDKhVUcQjuET+Od9RvZC5XGA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PBi24b57Sb+NofuFV5uQ+ebOCeNRnHw3cWZLaBdKP7MLnBqGJu4jHni1E+QZoeFnzYItZi4tnhT4cahiaa8mRzuf0DZrLl+5zi5Fpzvh8d8cagG7VG4SKyYuiOiSD3rUUflx6/Pxk6EXHyX4l7nLoAhfD3kc/05SDwNN/QyDo34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JrT7uXZx; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EU6N1hQn; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJBgrOi3700883
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 15:05:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hyPkgDMn/MnopwxbaLBNTvT5oHT9fKr6kLbD6Kdh7D0=; b=JrT7uXZx4Sr8OVYg
+	eWEKi3F0dXYVb/FM7RKP1cijKxQ/iHvfnNKrDAO+4P4qycDiAIBD6vLR5qmeFmQg
+	plcMLXDAx5/qwymq62xJ6OyMiLFDesXrKpInYFM9r3SZfUgUwRyxYpGHxZ9whTIk
+	7uu70kDZg/XGDqYF7gvGzs+42lfV+tD2cMnXTFX2KZ9K54OcPlJUBkF+RJtaVtcQ
+	z0qqXLTaAREWVTrIsfUmzlVu0imv2sINoufegd0S3kp0jDHCQj0l8CkYADtyeHCp
+	WgJPUdTZSBnapW2+EYtywxewU/75mllWPZNQBUUfNXs7UKF9Z4aZJk5pTSLqG6Yk
+	vz7Jjg==
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b4r2ejyqy-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 15:05:14 +0000 (GMT)
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65d12f446c2so1087163eaf.1
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 07:05:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766156714; x=1766761514; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hyPkgDMn/MnopwxbaLBNTvT5oHT9fKr6kLbD6Kdh7D0=;
+        b=EU6N1hQnpX4iiUr1v/bPeqboQ2h4BUGSQhx0z3JEa9+nxx1lmVwsMj1PE4bJYpaVgo
+         +B9Dihja3HmXmjBOgEKmhvItNRqCx+Jr1j51o9TmfdnGXn5b+skkzf5A89d5KLczywuh
+         tUjbzrwpwG/LiZDXdV12RsWOMxcYeYEmnnMpR/3YPmWNNnFHRRmYmNujYqbtTu8w2kmP
+         Z37zVsRDu6bNtUtMuOAKh19En0+ursOruzfB0iAJEmHIxN60LV3MrFvJlIwvoBuwVudq
+         SrSsoKeCJN0KFDhjeDK5pWDKHXL9pXGtbTvGtC5bw47jj23yCQuqGr1d0ZtyWSrru1d5
+         +TgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766156714; x=1766761514;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hyPkgDMn/MnopwxbaLBNTvT5oHT9fKr6kLbD6Kdh7D0=;
+        b=wJoG/nVyXn+FM6pX9l4URZeIDMT38YMlqkxcPtV5H4auNKrXDEFJsZi+xxyQGzlwEM
+         WZbQmt0ikceL1W/LWMSAUBX8kmpNMl+jfTz2qtCVEDEFt1APmk3deoa9jJ6nnmRlcjcL
+         /FATTtlvsigaTkV+LyLh/nIP6kAtlQw76/HQGXzw+g41AO+Y20Wae3rSY8/LaeSSI9R/
+         nsxyyPezIJ/RpmTP1GjG4L3UNAfCz9EvPSw1IUo8vn7Jz9xwLfxzwdTUz+iaTxDnMDlT
+         9GPjovtPVCXYUb2lsgBRLyN0ec6Wfik3H/xtALmjzs3iVtLErZpNmtPOpXU9Bo7TU0H2
+         efNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdBHCcO3hzbjYmcHhu/jt1h5q+BePHe8JaO5DFEhLVpo3ZV7pB4PVms9TxG9nSIxoPYdxljVRmHHxC@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywvq9uEK8vUWNe9uo4rNCO2E6QVdEiZXR7Uu4g5D0SsvbtWPeUh
+	giGcIC07q6LAs72dPT6OQbzdBIuIJm2bY40nieUh4+OjqIke2KwBPIF8sUU9Yh0KXC+Ti5B4+fT
+	TFJUradLKYQ1ItKdA6H5aurBDMH5+Hn15KG2tmYq1hLzgXFnjyNn4oIarj2e/9UWz
+X-Gm-Gg: AY/fxX6gNmpK7YTSNN0ZCAoe9DEIY0PvKHlj+0V+h/4wJX3Ytkq0iHYAxFse+Z5ydvo
+	lyWvZ73gBfWrgM83WHq+yI8IvQapNtD3kMU7Q8UTC+fZjlkL2m36R9/bs6byjuHjBKUsqf85su5
+	8CdlRwn7NXH+FgF1LB/v51ulUGyUxbXzP27uYPBfGS9rlg2+l0ahH2JUdkdP1A9rFL7J/NvIdPs
+	fkNaKwbpadyRggy8mDBTilgV4mZsdsoKB2CY/p5Zgp3YXHCM9QXUbCSz6sxwNKHO5oqpHUBfkhF
+	ra/yePb6W4H6JI027n5TYcLsCCHzDSTaxPNlcdbj2hE9LTte1pZEqrp6CsnwwPNqNHMpTdz1HXs
+	F6mDQ3c5v+VJHg0LwQeS0SKL7gSd/WUbgjrwSYNvUdrnwCqtUI3qyTm3IRBaD0UshJfRqCPh1Xj
+	3EONbOGLOkkY1lYTsdODT3FqN7tZK/rKn4mjQFoiRq9KSfvqs8wQNzAjeV00AwW6yEIBY3+XQJ7
+	wVn
+X-Received: by 2002:a05:6820:16a7:b0:65d:a21:d1ee with SMTP id 006d021491bc7-65d0ea5b641mr1457077eaf.23.1766156713750;
+        Fri, 19 Dec 2025 07:05:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE1gRQg9YXoN7VVxE423HZMBksLPSR7QBgFUhic0mQqygRzSXkJPLsd8xwEFkYJsS1XCMv3gA==
+X-Received: by 2002:a05:6820:16a7:b0:65d:a21:d1ee with SMTP id 006d021491bc7-65d0ea5b641mr1457052eaf.23.1766156713371;
+        Fri, 19 Dec 2025 07:05:13 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b9159a4eesm2341064a12.24.2025.12.19.07.05.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Dec 2025 07:05:11 -0800 (PST)
+Message-ID: <7d04ba37-b505-4207-95c3-b0ffb0736ea4@oss.qualcomm.com>
+Date: Fri, 19 Dec 2025 16:05:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+User-Agent: Mozilla Thunderbird
+From: johannes.goede@oss.qualcomm.com
+Subject: Re: [PATCH 1/1] software node: Also support referencing non-constant
+ software nodes
+To: Mehdi Djait <mehdi.djait@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        linux-acpi@vger.kernel.org, Kenneth Crudup <kenny@panix.com>,
+        linux-media@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <af773b82-bef2-4209-baaf-526d4661b7fc@panix.com>
+ <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
+ <erf3c6r46lscxeqj3iqc24rkzpuuwrdhob7isva523pxtxtoy4@45gxuhkdbubx>
+Content-Language: en-US, nl
+In-Reply-To: <erf3c6r46lscxeqj3iqc24rkzpuuwrdhob7isva523pxtxtoy4@45gxuhkdbubx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: G2AaRlQgNKO_VCz-UB8euRuqa7ETOdD2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDEyNyBTYWx0ZWRfXyCUvjEhwwg4R
+ 6v71xF06MRhs3POHTlhPOY5VUqrOxWXM26DbXjvH+EXLb9dBvRqNAJ4FQo4LyzY3rtAB/aVC4ss
+ Jvixh/0IJeZgGrtygB25rCYtW8Q73QBfidnYT0gOPuwnws/vJAIHCpqeOHrGOt267L+OntUqKIV
+ J3GkQhhvAlbgtlEn4qdF2lkdFbua6ABknuEvczA4XetyejDaSeXTpeBQ72J0XRIBnCcXjCMQNcV
+ Rxtvb1teANA3IHGq2ymL513TyDyNpxLx5KZWnFJS8xrkFe34lqZBGD1OUs+Rbf0GNqEBpg79jOo
+ sduSa2tlXWyfM4U9A8S4nXBRlNMITLuNhdBimFOrYXj0ISE4hwQJi7L/kzo3M2x9qyLXo90gKOu
+ +gcM6/vr3ZZmOAbszQojIlokD3eAiG5w6YRaI6mxpOThARVSKXpkPsDhX9ubCAr/LHNEaPb/0Ui
+ +SBGn2H0Dlkhmoujj2w==
+X-Proofpoint-ORIG-GUID: G2AaRlQgNKO_VCz-UB8euRuqa7ETOdD2
+X-Authority-Analysis: v=2.4 cv=EabFgfmC c=1 sm=1 tr=0 ts=694569aa cx=c_pps
+ a=wURt19dY5n+H4uQbQt9s7g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=QyXUC8HyAAAA:8 a=FVsJegLj7527lu8xIQwA:9 a=QEXdDO2ut3YA:10
+ a=-UhsvdU3ccFDOXFxFb4l:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_05,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512190127
 
-ARM64 ACPI patches go via ARM64 tree, but the listed maintainers
-for ARM64 ACPI don't include Catalin and Will, and there is no
-F: line under the ARM64 architecture entry, so emails will not
-route to Catalin and Will in an automatic way.
+Hi,
 
-Adding Catalin and Will to the maintainers entry for ARM64 ACPI
-to fix the problem, it will make life easy for merging ARM64 ACPI
-patches.
+On 19-Dec-25 14:13, Mehdi Djait wrote:
+> Hi Sakari,
+> 
+> Thank you for the patch.
+> 
+> On Fri, Dec 19, 2025 at 10:36:38AM +0200, Sakari Ailus wrote:
+>> Fwnode references are be implemented differently if referenced node is a
+>> software node. _Generic() is used to differentiate between the two cases
+>> but only const software nodes were present in the selection. Also add
+>> non-const software nodes.
+>>
+> 
+> it works for me.
+> 
+> Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
+> Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
 
-Adding new maintainer entries for ARM64 ACPI doesn't mean the review
-work will balance to the new maintainer, patches still need to be
-acked by currently listed folks (Lorenzo, Hanjun, Sudeep) before
-merging them.
+Sakari, thank you for fixing this.
 
-Link: https://lore.kernel.org/linux-acpi/aS2ZTfS9YVO98Exe@willie-the-truck/
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+Since this fixes a 6.19 regression: Can someone please submit
+a pull-request with "[GIT FIXES for v6.19]" pull-request to
+Hans + Mauro with this patch?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9d..6050d94a50ec 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -335,6 +335,8 @@ ACPI FOR ARM64 (ACPI/arm64)
- M:	Lorenzo Pieralisi <lpieralisi@kernel.org>
- M:	Hanjun Guo <guohanjun@huawei.com>
- M:	Sudeep Holla <sudeep.holla@arm.com>
-+M:	Catalin Marinas <catalin.marinas@arm.com>
-+M:	Will Deacon <will@kernel.org>
- L:	linux-acpi@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
--- 
-2.25.1
+Regards,
+
+Hans
+
 
 
