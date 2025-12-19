@@ -1,137 +1,145 @@
-Return-Path: <linux-acpi+bounces-19690-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C611DCCF135
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:02:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51688CCF360
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 10:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D39E3007694
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 09:02:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8BD73007604
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 09:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3EE2EB5AF;
-	Fri, 19 Dec 2025 09:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6B02E7F3E;
+	Fri, 19 Dec 2025 09:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qAlUgOY2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E620B212;
-	Fri, 19 Dec 2025 09:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DE02E7186;
+	Fri, 19 Dec 2025 09:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766134968; cv=none; b=dlE77flt4DBJKH84Pvcotksxoei2ei6MKh1IvkT74Qp4UQsx8hWcFWXK+nKJvPhcyb294KXA1s+UxHJKlY9GVPXuakXfcALmeuxucVPx9WaonbDitTostnqDM8p5QVPBiPrqjTtspsMpqSUhEBNLEKkGqfHrhRlNzwWFaWselwk=
+	t=1766138011; cv=none; b=o2hawAbOzty9kjTXtImuBf8yL76IAsRIpud43teuozacb3gfsXXnr4YL0HlTyvQeooODVvpmBjklZe1s0Qq5GgMIzxRo5I7g1+KLlIDS72D7uEtK8RtS/0Pbop1JN1O/VFGdUOB0onJ3o2wTfeF96SE9z+Czuzwn5aHpV/TlGIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766134968; c=relaxed/simple;
-	bh=zhllQ8Zcx/Tc0SP1HXazq5bAp/XnRul0Eb+KeWR/JFA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gIwcJFBy/++E2nn78eLfJnAKk/UE/0N7hERDW193Zct3Dte/MI54ijmTcGimUaXW9vIeOO3pK1tds6setMvirbu0cZyQzUk7W89tsWFzBMi/i1RxT9GN0L8uPguYD9Q4Di62FiFc1zUhOFtlJmfOxBUjlxvhG4iKpGP/FI73ZR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9578EFEC;
-	Fri, 19 Dec 2025 01:02:36 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 865ED3F73F;
-	Fri, 19 Dec 2025 01:02:41 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: will@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	Ahmed.Tiba@arm.com
-Subject: Re: [PATCH 11/12] ras: add DeviceTree estatus provider driver
-Date: Fri, 19 Dec 2025 09:02:35 +0000
-Message-ID: <20251219090239.2692458-1-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aUQbdZHkzumTnwVP@willie-the-truck>
-References: <aUQbdZHkzumTnwVP@willie-the-truck>
+	s=arc-20240116; t=1766138011; c=relaxed/simple;
+	bh=sl0ToJdj8GtY2WKfJtUDvAjMTXApJ1WA925UTLERc+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hBehHClpAjYK/zcs/rDGBRRPZDBuVXO0tVddK5j/UpVBe1yvUi1WsEfhCz95fx+5Yd+DuGubAWzUxkinbUHMGPb0Q9AYrAbUP6p35w94nwYesLAtfgWopRHKHqPYrePr/Nr8IIiaaK/+MD99oDv0qK6k0H1YIv0mRBjM6r7BDDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qAlUgOY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6E0C4CEF1;
+	Fri, 19 Dec 2025 09:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766138011;
+	bh=sl0ToJdj8GtY2WKfJtUDvAjMTXApJ1WA925UTLERc+0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qAlUgOY2vxgJpx/AXLk17UkZ0pVIiYuRAg4S6R5WQY1oXyYOLvM/SIE99bqpT01it
+	 dnt04FuRlps70Cbt24VyWckXVPrbQJjuELRBimp+SnTfIvtwoZHkP5dP1TIjna9uR1
+	 tghyz8i1lz51LjSwmV25PArwtrZvkHww39oWVv5zRK5wdHmIKPgpEdHFk30xrAtoGh
+	 0f4eBRD73iX5dj26UynZ0LPj5V6DNx9w23grJSdhwSP/3X/Kqs9sd3NHQanQtpAWxt
+	 R/fCm/KjBnJ7Ni+nos4ScQYZ0Jzc1BwtQ4t8Nc5tBC5C7tWXfIuhBlnIvkbHlpQ0zU
+	 DtMqsYNaNPIgg==
+Message-ID: <57772b40-e4d9-4152-9709-04ba897608d0@kernel.org>
+Date: Fri, 19 Dec 2025 10:53:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/12] dt-bindings: ras: document estatus provider
+To: Ahmed Tiba <ahmed.tiba@arm.com>, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: tony.luck@intel.com, bp@alien8.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+ linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com, Michael.Zhao2@arm.com
+References: <2a2baef6-c294-4c31-bec2-10fbaa3f7941@kernel.org>
+ <20251218103139.2238844-1-ahmed.tiba@arm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251218103139.2238844-1-ahmed.tiba@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Dec 2025 03:19:17PM +0000, Will Deacon wrote:
-> On Thu, Dec 18, 2025 at 01:42:47PM +0000, Ahmed Tiba wrote:
->> On Thu, 18 Dec 2025 12:13:25PM +0000, Will Deacon wrote:
->> >> Introduce a platform driver that maps the CPER status block described
->> >> in DeviceTree, feeds it into the estatus core and handles either IRQ- or
->> >> poll-driven notifications. Arm64 gains a FIX_ESTATUS_IRQ slot so the
->> >> driver can safely map the shared buffer while copying records.
->> >>
->> >> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
->> >> ---
->> >>  MAINTAINERS                     |   1 +
->> >>  arch/arm64/include/asm/fixmap.h |   5 +
->> >>  drivers/ras/Kconfig             |  14 ++
->> >>  drivers/ras/Makefile            |   1 +
->> >>  drivers/ras/estatus-dt.c        | 318 ++++++++++++++++++++++++++++++++
->> >>  include/linux/estatus.h         |   3 +-
->> >>  6 files changed, 341 insertions(+), 1 deletion(-)
->> >>  create mode 100644 drivers/ras/estatus-dt.c
->> >>
->> >> diff --git a/MAINTAINERS b/MAINTAINERS
->> >> index 6b2ef2ddc0c7..5567d5e82053 100644
->> >> --- a/MAINTAINERS
->> >> +++ b/MAINTAINERS
->> >> @@ -21761,6 +21761,7 @@ RAS ERROR STATUS
->> >>  M:   Ahmed Tiba <ahmed.tiba@arm.com>
->> >>  S:   Maintained
->> >>  F:   Documentation/devicetree/bindings/ras/arm,ras-ffh.yaml
->> >> +F:   drivers/ras/estatus-dt.c
->> >>  F:   drivers/firmware/efi/estatus.c
->> >>  F:   include/linux/estatus.h
->> >>
->> >> diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
->> >> index 65555284446e..85ffba87bab9 100644
->> >> --- a/arch/arm64/include/asm/fixmap.h
->> >> +++ b/arch/arm64/include/asm/fixmap.h
->> >> @@ -64,6 +64,11 @@ enum fixed_addresses {
->> >>  #endif
->> >>  #endif /* CONFIG_ACPI_APEI_GHES */
->> >>
->> >> +#ifdef CONFIG_RAS_ESTATUS_DT
->> >> +     /* Used for ESTATUS mapping from assorted contexts */
->> >> +     FIX_ESTATUS_IRQ,
->> >> +#endif /* CONFIG_RAS_ESTATUS_DT */
->> >
->> > Why do we need this in addition to the four existing GHES slots? The DT
->> > code doesn't use it and I was assuming that the ACPI code would continue
->> > to use the existing irq; is that not the case?
+On 18/12/2025 11:31, Ahmed Tiba wrote:
+> On 17/12/2025 12:41, Krzysztof Kozlowski wrote:
+>>> +properties:
+>>> +  compatible:
+>>> +    const: arm,ras-ffh
 >>
+>> Again ras - what's that? Your patch or binding must explain that.
+> 
+> That updated description will explicitly expand the Arm RAS acronym so the
+> compatible string is self-explanatory.
+> 
+>>> +
+>>> +  reg:
+>>> +    minItems: 1
 >>
->> We still need a dedicated slot when only the DT provider is built.
->> All four GHES slots are defined as part of the ACPI implementation,
->> so they are not present in a DT-only configuration.
->>
->> The estatus core always requests a fixmap index from each provider
->> before copying a CPER record. As a result, the DT driver must supply
->> its own slot to return a valid enum value to satisfy the common code.
->
-> Sorry, but I still don't follow this. The DT code doesn't use the fixmap,
-> does it? It looks like it maps the buffer ahead of time using
-> devm_ioremap_resource() and then the accessors don't use the fixmap
-> index at all, hence the horrible '(void)fixmap_idx;' cast which presumably
-> stops the compiler from complaining about an unused variable.
+>> Why is this flexible?
+> 
+> I'll keep `reg` describing the CPER status buffer, cap it at two entries, and
+> document the second entry as the optional doorbell register that some firmware
+> requires before reusing the buffer.
 
-Correct. The current DT driver keeps the CPER buffer permanently mapped with
-devm_ioremap_resource() and that (void)fixmap_idx; line is just silencing
-the warning. I’ll fix that by dropping the permanent mapping and copying the
-status block via the fixmap entry, so the DT implementation mirrors GHES. That
-gets rid of the cast and makes FIX_ESTATUS_IRQ do real work.
+I still do not understand why this is flexible or in other words - why
+second address space appears and disappears.
+
+> 
+>>> +    items:
+>>> +      - description: CPER status block exposed by firmware
+>>> +      - description:
+>>> +          Optional 32- or 64-bit acknowledgment register. Firmware watches this
+>>> +          register and expects bit 0 to be written to 1 once the OS consumes the
+>>> +          status buffer so it can reuse the record.
+>>> +
 
 
-Thanks,
-Ahmed
+Best regards,
+Krzysztof
 
