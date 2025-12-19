@@ -1,140 +1,102 @@
-Return-Path: <linux-acpi+bounces-19727-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19728-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62469CD1635
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 19:39:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F09CD1CD2
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 21:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30C0A30D5553
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:36:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA99B30C0E6C
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 20:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AA834845C;
-	Fri, 19 Dec 2025 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E92EB5CD;
+	Fri, 19 Dec 2025 20:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2fRtwHw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B62346E51;
-	Fri, 19 Dec 2025 18:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B502D9EE7
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 20:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766167966; cv=none; b=dd5JwNMj5bjeSzyf8ymWLU8J8IKvEv28kaw5ZSrSFAybNzK19+GYDI9eDxpXMaW4jKTm1pD3wbv0Gzn9SJqJC0gZRLWfL9w5zvly0niMOAO0pfHgFfu848+7ypRImORe/55lbsTXBc3lYnogNlVvRjvPT2pQsOjM4sZuwGM2LX0=
+	t=1766176737; cv=none; b=WY4EUZVkx6M971kFb5e97feone+QELBpsBPlzVFZ+VMM7EpFJ1Hmh2rQd66KW31Uh0KalZEN39UHX5m6x4YWVyH/brhzsYs3i3aOLgMjFyX4acpVjX473QY82D281LVL+Ev44Plp9pCZNcqa7Ww3wuuw8BU1GGvl2ZvHAVt9KTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766167966; c=relaxed/simple;
-	bh=YeMY+B0Q44lIJGztxvKNv0YHzaENYYbek8WIV+DQ3D4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOObBzDvhr6Q9ST+mhH6uAOVX88IWh0Qn7uRrewzs1Bt4zJ6l9esM0Norhajrf7OaJge+KlQd+NDx+wFkHhtNjSdc54IRkGxJdz4z0/uXnOyVJmZd579xjO6V8/iJJPpWXTY5RoeWV/exO2nA4IVVqybSngFQKyATCV+HR3D/pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B3421684;
-	Fri, 19 Dec 2025 10:12:35 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 75E093F7BD;
-	Fri, 19 Dec 2025 10:12:40 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	Ahmed.Tiba@arm.com
-Subject: Re: [PATCH 03/12] ras: add estatus vendor handling and processing
-Date: Fri, 19 Dec 2025 18:11:54 +0000
-Message-ID: <20251219181226.2859763-1-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <euhams5heiuaawxq4e5ty7iijuvwt5gvdx3flsm4npligjeulq@lv3cwekyb2o2>
-References: 
+	s=arc-20240116; t=1766176737; c=relaxed/simple;
+	bh=7MQxHdBah0ML4bAcIMYzoH8Q6NX7+IStQQKHoOCifDw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cDIRnJy3Sr5z3aMnCpDCwLO8EQ6y0nxl6p16LjXA2wISDSU+39XIBCu4J+WMuG3cYH0MY8KRhXZmwbL9NfS2a/7HZeGdbIy84pFBmV0Xip6P3c7hdM198V7IDBQvGjdRY/Ml2o5djtyx7QWRbvNc3+12OKtH4rvkH03zdbangWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2fRtwHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77FDC19422
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 20:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766176736;
+	bh=7MQxHdBah0ML4bAcIMYzoH8Q6NX7+IStQQKHoOCifDw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=W2fRtwHwM1WopYhRi1cWQhhb425235yq60PRrWZpddod1723eN2/WGLlaE45L6nMO
+	 aNXsf5+E14033+QRGN/j/aoQ1DteUuj8UQKhIaSyfyNRbtd9EjpfjEUDYFvrFWjMk6
+	 ZTqodp0391+qUy4bhDXRVxEogkkeBevLMgOenyaw+IlOqTIrbRaUOq4sXmt43jox2q
+	 irTqj7lPyf0zCt9y2la2vUBCwvy/uPZlWvMTyL87LNiKNVqCLQ5WhPuMNphairfFku
+	 Tv3fjTyyxktzXex0JTPxMVJl6rITFszKe3/3Jrm5Kmm19KLHhySfgq8nQDTBdUxf3M
+	 ZSbFfRMWzLo0w==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3ece54945d9so770010fac.0
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 12:38:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWia1psY70QYtAuBzGA/Ul7YGd+uq/QcBsAMITMoavk89yk8v8y3w+YJ17E7LsgpvPmPKprmoBtLzWm@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn9xrg+IQ49tFHFHAGiKuppgf0shFqHSW9sUpece4CiXHNPHXv
+	CM1LgL7Aa9tzItb3lhaR+uQzw6O9B5hoAaugrfxPCCxZvhAmXmd1vZgCYTTkZmK7O7DsutkG19D
+	rBd+MpsH44ilnBsFETq5Cs370r+Hb2o0=
+X-Google-Smtp-Source: AGHT+IE+3/YBFazCnYLF+aNwuAsPkLBq0YGZbDpjOWVFTlJyhpo9yqws1BKd8A+1CRWyLY80BDKnlccQ7zJLT257Ua4=
+X-Received: by 2002:a05:6820:162a:b0:659:9a49:8e0d with SMTP id
+ 006d021491bc7-65d0ec0cb4fmr1897747eaf.79.1766176735905; Fri, 19 Dec 2025
+ 12:38:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <5049211.GXAFRqVoOG@rafael.j.wysocki> <2261695.irdbgypaU6@rafael.j.wysocki>
+ <20251219122620.00002049@huawei.com>
+In-Reply-To: <20251219122620.00002049@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 19 Dec 2025 21:38:44 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
+X-Gm-Features: AQt7F2p7o2-hlUURGmmE4LXj9kh2YbRtJ-oXKyzs-Q0R1I2eezY9FRGUtF3HqI0
+Message-ID: <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/8] ACPI: bus: Fix handling of _OSC errors in acpi_run_osc()
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Bjorn Helgaas <helgaas@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On Fri, Dec 19, 2025 at 04:30:40PM +0100, Mauro Carvalho Chehab wrote:
->On Fri, Dec 19, 2025 at 02:49:02PM +0000, Ahmed Tiba wrote:
->>
->> On Wed, Dec 18, 2025 at 05:04:53PM +0100, Mauro Carvalho Chehab wrote:
->>
->> >> Teach the estatus core how to walk CPER records and expose the vendor
->> >> record notification path. This adds the section iteration helpers,
->> >> the logging helpers that mirror the GHES behaviour, and the deferred
->> >> work used to hand vendor GUIDs to interested drivers. No users switch
->> >> over yet; this simply moves the common logic out of GHES so the next
->> >> patches can wire it up.
->> >>
->> >> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
->> >
->> >...
->> >
->> >> +static bool estatus_handle_arm_hw_error(estatus_generic_data *gdata, int sev, bool sync)
->> >
->> > Huh?
->> >
->> > This is a CPER record from GHES. Why are you moving CPER code out
->> > of ghes.c, placing in a file named estatus.c? Doesn't make much
->> > sense on my eyes...
->> >
->> > Same applies to to other GHES CPER record types.
->>
->> GHES still fills in the CPER record, but the parsing and logging logic is
->> shared with the new DeviceTree provider so I pulled those helpers into the
->> estatus core.
+On Fri, Dec 19, 2025 at 1:26=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
-> I see, but this is not really estatus core. Instead, it is part of GHES CPER
-> handling logic, which is defined at ACPI and UEFI specs. moving it to estatus
-> sounds odd, at least on my eyes.
-> 
-> Perhaps I'm failing to see where at ACPI/UEFI specs how CPER would be
-> integrated with an OpenFirmware approach to handle CPER without GHES.
-> Care to point to the relevant specs, if any?
+> On Thu, 18 Dec 2025 21:34:26 +0100
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The handling of _OSC errors in acpi_run_osc() is inconsistent.
+>
+> I wonder if this would be easier to follow with a brief statement
+> of why we threat OSC_CAPABILITIES_MASK_ERROR as an error in the first
+> place for non query cases?  It took me a brief think and spec read
+> to figure that out, but maybe more coffee needed.
 
-ACPI/APEI (via GHES) defines how CPER records are discovered and notified on ACPI systems,
-but there is no ACPI or UEFI-defined equivalent for OpenFirmware/DeviceTree platforms.
-UEFI standardises the CPER record format itself, not the transport or discovery mechanism.
+Well, this is a good question and it is not obvious IMV.
 
-On non-ACPI systems we still receive the same UEFI-defined CPER payload
-from firmware, but Linux needs a different, platform-specific contract
-to locate and acknowledge it. The DT binding is a Linux-side description
-of that contract rather than something defined by ACPI/UEFI.
+The current code treats it as an error, but arguably it is not really an er=
+ror.
 
->> Both providers already call into the same notifier chain and
->> memory-pool helpers; this patch just moves the generic CPER walking routines
->> next to the rest of the common code so the DT path doesn’t have to grow its
->> own copy. If you’d prefer a different file layout or naming to make that
->> intent clearer, I’m happy to adjust.
+If it is a query, it doesn't even make sense to print a debug message
+for it, but if it is not a query, the feature mask in the _OSC return
+buffer still represents the feature that the OS is expected to
+control.  So print the debug messages, but do not fail in that case.
 
-> Moving the code from ghes.c to estatus.c or to elsewhere shouldn't make any
-> difference, as the DT handling logic could simply be calling the functions
-> from ghes.c (or estatus.c). I fail to see why they need to be moved.
-
-The motivation is to provide a shared implementation for non-ACPI providers,
-so that the DT path does not depend on ACPI/APEI.
-
-While the helpers currently live in ghes.c, they are CPER-specific and do not rely on ACPI tables,
-APEI infrastructure, or GHES notification semantics. Keeping them there effectively makes GHES
-the only place those helpers can live, even though the logic itself is provider-agnostic.
-
-By moving the CPER parsing and logging pieces into a common location,
-both GHES and the DT provider can reuse the same implementation,
-while the ACPI-specific discovery and notification code remains under drivers/acpi/apei/.
-This avoids having the DT provider reach into GHES internals or duplicate CPER handling code.
-
-If the current naming or file layout makes that separation unclear, I’m happy to adjust it.
-
-Thanks,
-Ahmed
+I'll update the patch.
 
