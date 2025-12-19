@@ -1,102 +1,116 @@
-Return-Path: <linux-acpi+bounces-19728-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19729-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F09CD1CD2
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 21:41:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A057CCD1E19
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 21:58:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA99B30C0E6C
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 20:39:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D29C3070C01
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 20:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E92EB5CD;
-	Fri, 19 Dec 2025 20:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C9B33B6D2;
+	Fri, 19 Dec 2025 20:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2fRtwHw"
+	dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b="fHLo7h2x"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B502D9EE7
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 20:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EDA2E0402;
+	Fri, 19 Dec 2025 20:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.84.1.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766176737; cv=none; b=WY4EUZVkx6M971kFb5e97feone+QELBpsBPlzVFZ+VMM7EpFJ1Hmh2rQd66KW31Uh0KalZEN39UHX5m6x4YWVyH/brhzsYs3i3aOLgMjFyX4acpVjX473QY82D281LVL+Ev44Plp9pCZNcqa7Ww3wuuw8BU1GGvl2ZvHAVt9KTA=
+	t=1766177739; cv=none; b=p1zyvRP34xQLSnOkp6imLY5Ta09L7wjrffoisc0JX5eSBhdMQEeKYBiuUbIUES9odmbMsHwCnXCcXi4w80k/3tYUb4w+PW9UPezNxKXwoK178rGvBLov4SYABScQZCqOgMuheYMr7xdj8cSxIWneqOEmx1GjqNdrpMP+7fwW/as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766176737; c=relaxed/simple;
-	bh=7MQxHdBah0ML4bAcIMYzoH8Q6NX7+IStQQKHoOCifDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cDIRnJy3Sr5z3aMnCpDCwLO8EQ6y0nxl6p16LjXA2wISDSU+39XIBCu4J+WMuG3cYH0MY8KRhXZmwbL9NfS2a/7HZeGdbIy84pFBmV0Xip6P3c7hdM198V7IDBQvGjdRY/Ml2o5djtyx7QWRbvNc3+12OKtH4rvkH03zdbangWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2fRtwHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77FDC19422
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 20:38:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766176736;
-	bh=7MQxHdBah0ML4bAcIMYzoH8Q6NX7+IStQQKHoOCifDw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W2fRtwHwM1WopYhRi1cWQhhb425235yq60PRrWZpddod1723eN2/WGLlaE45L6nMO
-	 aNXsf5+E14033+QRGN/j/aoQ1DteUuj8UQKhIaSyfyNRbtd9EjpfjEUDYFvrFWjMk6
-	 ZTqodp0391+qUy4bhDXRVxEogkkeBevLMgOenyaw+IlOqTIrbRaUOq4sXmt43jox2q
-	 irTqj7lPyf0zCt9y2la2vUBCwvy/uPZlWvMTyL87LNiKNVqCLQ5WhPuMNphairfFku
-	 Tv3fjTyyxktzXex0JTPxMVJl6rITFszKe3/3Jrm5Kmm19KLHhySfgq8nQDTBdUxf3M
-	 ZSbFfRMWzLo0w==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3ece54945d9so770010fac.0
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 12:38:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWia1psY70QYtAuBzGA/Ul7YGd+uq/QcBsAMITMoavk89yk8v8y3w+YJ17E7LsgpvPmPKprmoBtLzWm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn9xrg+IQ49tFHFHAGiKuppgf0shFqHSW9sUpece4CiXHNPHXv
-	CM1LgL7Aa9tzItb3lhaR+uQzw6O9B5hoAaugrfxPCCxZvhAmXmd1vZgCYTTkZmK7O7DsutkG19D
-	rBd+MpsH44ilnBsFETq5Cs370r+Hb2o0=
-X-Google-Smtp-Source: AGHT+IE+3/YBFazCnYLF+aNwuAsPkLBq0YGZbDpjOWVFTlJyhpo9yqws1BKd8A+1CRWyLY80BDKnlccQ7zJLT257Ua4=
-X-Received: by 2002:a05:6820:162a:b0:659:9a49:8e0d with SMTP id
- 006d021491bc7-65d0ec0cb4fmr1897747eaf.79.1766176735905; Fri, 19 Dec 2025
- 12:38:55 -0800 (PST)
+	s=arc-20240116; t=1766177739; c=relaxed/simple;
+	bh=902N7+vSq4ZtgNz/0oajexrC3xsamP0KPKTs2JdrpEA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oyTwj9r/X1cM2L6G6zgGA6nJTogM8hMFyHBZqo3nnKy1RS63rzo7CvQ6yaFE40ju/e2JprpXqQwg2TFUoEejPtKXdbMESB1mOLI8eDjHCkHe7sJI4SOTrH09VP2d3RJgOQXH/KNoD4+wikVOdzbWrosEmnss2iio5EVZRvUC0tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com; spf=pass smtp.mailfrom=panix.com; dkim=pass (1024-bit key) header.d=panix.com header.i=@panix.com header.b=fHLo7h2x; arc=none smtp.client-ip=166.84.1.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=panix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=panix.com
+Received: from [192.168.123.3] (kenny-tx.gotdns.com [162.196.229.233])
+	by mailbackend.panix.com (Postfix) with ESMTPSA id 4dY0DN36Ldz4SSl;
+	Fri, 19 Dec 2025 15:55:32 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
+	t=1766177735; bh=902N7+vSq4ZtgNz/0oajexrC3xsamP0KPKTs2JdrpEA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fHLo7h2xpB/TslaDr47UJ2ca80htNrHviXZyT/1DLKooZSuUCvGY1HXciWIqZR2C1
+	 loy01eHGMtYjPwOTp7qJn28lI3Z2ai9XgIQ1PVHSCIRJy/oR9XETe6zbJ44ZJoXDvz
+	 dujiFZ8pZPqFY2eNsRSgvwGzGza5nRXFEuhRkTjc=
+Message-ID: <48b94c22-c1ca-4220-b184-f38e22544b9d@panix.com>
+Date: Fri, 19 Dec 2025 12:55:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5049211.GXAFRqVoOG@rafael.j.wysocki> <2261695.irdbgypaU6@rafael.j.wysocki>
- <20251219122620.00002049@huawei.com>
-In-Reply-To: <20251219122620.00002049@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 19 Dec 2025 21:38:44 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
-X-Gm-Features: AQt7F2p7o2-hlUURGmmE4LXj9kh2YbRtJ-oXKyzs-Q0R1I2eezY9FRGUtF3HqI0
-Message-ID: <CAJZ5v0hnyBCv-=nq5XbimupJ5T9DS9f4eCgDEC2SiH1gw3zH-A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/8] ACPI: bus: Fix handling of _OSC errors in acpi_run_osc()
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	Bjorn Helgaas <helgaas@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] software node: Also support referencing non-constant
+ software nodes
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>, linux-acpi@vger.kernel.org,
+ linux-media@vger.kernel.org, johannes.goede@oss.qualcomm.com,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <af773b82-bef2-4209-baaf-526d4661b7fc@panix.com>
+ <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
+Content-Language: en-US
+From: Kenneth Crudup <kenny@panix.com>
+In-Reply-To: <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 19, 2025 at 1:26=E2=80=AFPM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
->
-> On Thu, 18 Dec 2025 21:34:26 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The handling of _OSC errors in acpi_run_osc() is inconsistent.
->
-> I wonder if this would be easier to follow with a brief statement
-> of why we threat OSC_CAPABILITIES_MASK_ERROR as an error in the first
-> place for non query cases?  It took me a brief think and spec read
-> to figure that out, but maybe more coffee needed.
 
-Well, this is a good question and it is not obvious IMV.
+Apparently last to the party :) but:
 
-The current code treats it as an error, but arguably it is not really an er=
-ror.
+Tested-By: Kenneth R. Crudup <kenny@panix.com>
 
-If it is a query, it doesn't even make sense to print a debug message
-for it, but if it is not a query, the feature mask in the _OSC return
-buffer still represents the feature that the OS is expected to
-control.  So print the debug messages, but do not fail in that case.
+-K
 
-I'll update the patch.
+On 12/19/25 00:36, Sakari Ailus wrote:
+> Fwnode references are be implemented differently if referenced node is a
+> software node. _Generic() is used to differentiate between the two cases
+> but only const software nodes were present in the selection. Also add
+> non-const software nodes.
+> 
+> Reported-by: Kenneth Crudup <kenny@panix.com>
+> Closes: https://lore.kernel.org/all/af773b82-bef2-4209-baaf-526d4661b7fc@panix.com/
+> Fixes: d7cdbbc93c56 ("software node: allow referencing firmware nodes")
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+> Hi Kenneth,
+> 
+> Many thanks for reporting the issue and bisecting the offending patch!
+> Could you confirm whether this fixes the issue (it does for me)?
+> 
+> - Sakari
+> 
+>   include/linux/property.h | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 272bfbdea7bf..e30ef23a9af3 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -371,6 +371,7 @@ struct software_node_ref_args {
+>   (const struct software_node_ref_args) {				\
+>   	.swnode = _Generic(_ref_,				\
+>   			   const struct software_node *: _ref_,	\
+> +			   struct software_node *: _ref_,	\
+>   			   default: NULL),			\
+>   	.fwnode = _Generic(_ref_,				\
+>   			   struct fwnode_handle *: _ref_,	\
+
+-- 
+Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
+County CA
+
 
