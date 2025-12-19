@@ -1,84 +1,188 @@
-Return-Path: <linux-acpi+bounces-19721-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19722-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3A6CD0ADE
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:00:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8431CD11A7
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 18:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E04C53038171
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 15:59:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 61209301E3B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Dec 2025 17:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336AD350A0F;
-	Fri, 19 Dec 2025 15:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C0D2BEFE7;
+	Fri, 19 Dec 2025 17:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1wla5W2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFs+q2jo"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA18350A07;
-	Fri, 19 Dec 2025 15:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E376E285419
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766159256; cv=none; b=VQGZZpH9lyAVUPxEQXcI8NZa1WmSwLuJlv779LmPCURBvOl8fu453nwmIhhTbMXsPXrQeUma+vyqlaqVhy+a4iYy5epkJ+Si3l5yBmCsm93NauXZqr+2+CoUTbPBvgrEdMhRiGBrWMcfpG7ppsrQBcOsirme2zHgEOqpn8IHmS4=
+	t=1766164826; cv=none; b=ZcXbtQ3tjVQXHvyIE1FpvMIw4Q+rmFRSI5MIWNxYE0AxrmiacA1lzA3J4Y/R29gVm+tqFw97MOllU9rSd50TOT7QGF08467kQs+JBzf0OBZeVuhnWvFQSEyYFbwrtRYRybtmW9ju5sJwsZ4nj0CbjLdNHNJpF6eGHaiSKzMQq5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766159256; c=relaxed/simple;
-	bh=hY7V/ckCmkzyRlGJ9pUx9rPpk1r96bmRzZM0U/1jHQA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MfZk7HHgEjHCqd9Hb0Bi43LWoKUUCsb1/3nMjJZjz6Q3vAUJ3h6c4w3iiYm4dMV2og36YwjFR40dhGAz2BocOZxTt7JrwL4S49MAPOoIc53kpZE18xr5DALfVYzuREWiNojEFMcf+GDKa88L91Tf7P6wq3qlRr00/AGs2/QCauc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1wla5W2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351AFC4CEF1;
-	Fri, 19 Dec 2025 15:47:31 +0000 (UTC)
+	s=arc-20240116; t=1766164826; c=relaxed/simple;
+	bh=gS0vJZS1Q2G6ZMQ50QIRMXn1y6w+zebL4C3mxh6tWgc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gXvhgWaBeoYS/3O0mlAsk4tOtdUlwYvY1zJZqcZxnFaufsAC1lIPdUFZWfkymRMrhfzhhbDipP4MjG0D7ZK859AcUhYoZhDPI2Cvz5MSlVMbqjJcTZf/vjz4HruVK5WON3DRIp7Bs5icmAbthALRk3JBuFcODuwl5aqeuYai9nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFs+q2jo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C21C116D0
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 17:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766159255;
-	bh=hY7V/ckCmkzyRlGJ9pUx9rPpk1r96bmRzZM0U/1jHQA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=M1wla5W2pkDGp2D7Io0qs9dmvuf0jzuwf2gB7L5Ys3Ce9sHQQoAQ6dkJ/gk/hFwcq
-	 ZQB9XjknAQFudYX/lf3+ogI5/zpxhOc6MfDQ3pf4KmXVr4QIeyhqsM+6c3c0ho5sEY
-	 PsahWZgmOR+BmKXdEY0tAjcQHgsQp2Mht/q/5O9gqjCV2NWl/aszHI+7YZwzARXzrb
-	 Kj+9qGViWeE40zTH87ZQ0ILP/UlikqXVLKKVdKOPrqiiQstAwPVd4rjfqCnsNPdVBQ
-	 w/k+upzdIc+cUVh+AcGSoe9XJ04T+rPG+CK6qFBYPiwEtDcUevfLyQCiDLC7umlsIz
-	 RhWqLTd4ydUwg==
+	s=k20201202; t=1766164825;
+	bh=gS0vJZS1Q2G6ZMQ50QIRMXn1y6w+zebL4C3mxh6tWgc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bFs+q2joHvuOO6AsFgGaQ+H7U8NRoCy57xkPCOArdHYjFZktCWhA8PTl+PQQYaI9Z
+	 mrxvVfpXFqkw0JB0IJKmVg5IUMeX3r3e+2PZn5Vwwa1EVip4/9c2XVCUg910sHNcJr
+	 VnBvibEHLiTWlo2gZeoK37CtROYhCLQqGZJD/8dkjYjMTqqyhe2pcaUKfRfNUBjLZg
+	 QTcQNAsIZRIAU8TQrajhWZByGHYxYfFQR7UbuUTKbKKOPU0s6w1ra4cfZwU/Oa+1n4
+	 WQ+VoIZyd8lo+EXsrZXoWB5k3m9pfp+UeSRGgf6hd9eOdBwfBmyq3vGkuRwLFqgp/h
+	 SQwz1ZPXFOefg==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-657464a9010so737687eaf.3
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Dec 2025 09:20:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWsCMLAsNuILGQ0bpDYTesnELi1PXsQPtFxC96MRXlAT1jRMZx5KCwRCfpuuRnk3WhbE4E69+WLEtKc@vger.kernel.org
+X-Gm-Message-State: AOJu0YypT8AmnwdlF6AZSnqaGhGdj6QQH1bNLWxdcMoPcunmzflBOWBf
+	3Q8HAG1OxFbIp1z8nfH62UHIOL1MLoFrOqnhfMs+K3OSdf+zHbWPV8wz/wvGxOYznw8M9+FaCoK
+	gjsZWGbPB0wkoVNo2iJCBNboYsvQQvWE=
+X-Google-Smtp-Source: AGHT+IE2wxi3ctNVzIp4rjh6qWyS9VkZFfUdBN0QiVrvNHfJFwkoiFupXNFLqDfw9yKvJK6Iw6i7+wEpZdpyxI0/hFI=
+X-Received: by 2002:a05:6820:f028:b0:65b:38e2:33b5 with SMTP id
+ 006d021491bc7-65d0ea5a20cmr1755311eaf.49.1766164824659; Fri, 19 Dec 2025
+ 09:20:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <5049211.GXAFRqVoOG@rafael.j.wysocki> <3036574.e9J7NaK4W3@rafael.j.wysocki>
+ <20251219123319.00001e98@huawei.com>
+In-Reply-To: <20251219123319.00001e98@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 19 Dec 2025 18:20:12 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jgo4uCs9xcK0mKxO1yKy3NP1eubO01R7KE0G1AcBf9MQ@mail.gmail.com>
+X-Gm-Features: AQt7F2oPPGCdvtBge9BJUT5Z7u_WA9mzZrImP9GaLAG1wHPv_3XW4an3eFIet2E
+Message-ID: <CAJZ5v0jgo4uCs9xcK0mKxO1yKy3NP1eubO01R7KE0G1AcBf9MQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/8] ACPI: bus: Rework printing debug messages on _OSC errors
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Bjorn Helgaas <helgaas@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 19 Dec 2025 16:47:30 +0100
-Message-Id: <DF2B7AJU1HWM.27NQV4BLY8QWJ@kernel.org>
-Subject: Re: [PATCH 1/1] software node: Also support referencing
- non-constant software nodes
-Cc: "Mehdi Djait" <mehdi.djait@linux.intel.com>, "Sakari Ailus"
- <sakari.ailus@linux.intel.com>, <linux-kernel@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- "Daniel Scally" <djrscally@gmail.com>, "Heikki Krogerus"
- <heikki.krogerus@linux.intel.com>, "Linus Walleij"
- <linus.walleij@linaro.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
- "Charles Keepax" <ckeepax@opensource.cirrus.com>,
- <linux-acpi@vger.kernel.org>, "Kenneth Crudup" <kenny@panix.com>,
- <linux-media@vger.kernel.org>, "Bartosz Golaszewski"
- <bartosz.golaszewski@linaro.org>
-To: <johannes.goede@oss.qualcomm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <af773b82-bef2-4209-baaf-526d4661b7fc@panix.com>
- <20251219083638.2454138-1-sakari.ailus@linux.intel.com>
- <erf3c6r46lscxeqj3iqc24rkzpuuwrdhob7isva523pxtxtoy4@45gxuhkdbubx>
- <7d04ba37-b505-4207-95c3-b0ffb0736ea4@oss.qualcomm.com>
- <DF2AFGGXTTFI.1AXC4N182UUYD@kernel.org>
- <29830128-8b75-4c57-ac55-0158f3688f12@oss.qualcomm.com>
-In-Reply-To: <29830128-8b75-4c57-ac55-0158f3688f12@oss.qualcomm.com>
 
-On Fri Dec 19, 2025 at 4:38 PM CET, johannes.goede wrote:
-> No reason other then me not paying attention and since this fixes
-> an issue related to IPU6 cameras I typed the above on auto-pilot,
-> my bad.
+On Fri, Dec 19, 2025 at 1:33=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
-> You're completely right this should go upstream through driver core
-> and my request makes no sense, sorry.
+> On Thu, 18 Dec 2025 21:35:27 +0100
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Instead of using one function, acpi_print_osc_error(), for printing a
+> > debug message and dumping the _OSC request data in one go, use
+> > acpi_handle_debug() directly for printing messages and a separate
+> > function called acpi_dump_osc_data() for dumping the _OSC request data
+> > after printing one or more of them.
+> >
+> > This allows the message printing in the _OSC handling code to be
+> > organized so that the messages printed by it are easier to parse.
+>
+> Hi Rafael,
+>
+> Perhaps an example of the print to motivate this change clearly?
+> The absence of a guid on the error string line for instance may
+> or may not bother people. It's there in the dump but that comes
+> after the error print I think.
 
-No worries, could have been there is a specific reason. :)
+Yes, it's there.
+
+I guess I can add examples of "before" and "after" printouts to the
+patch changelog.
+
+> > Also, use %pUL for UUID printing instead of printing UUIDs as strings
+> > and include the revision number into the dumped _OSC request data.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/bus.c |   35 ++++++++++++++++-------------------
+> >  1 file changed, 16 insertions(+), 19 deletions(-)
+> >
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -180,18 +180,15 @@ void acpi_bus_detach_private_data(acpi_h
+> >  }
+> >  EXPORT_SYMBOL_GPL(acpi_bus_detach_private_data);
+> >
+> > -static void acpi_print_osc_error(acpi_handle handle,
+> > -                              struct acpi_osc_context *context, char *=
+error)
+> > +static void acpi_dump_osc_data(acpi_handle handle, const guid_t *guid,=
+ int rev,
+> > +                            struct acpi_buffer *cap)
+> >  {
+> > +     u32 *capbuf =3D cap->pointer;
+> >       int i;
+> >
+> > -     acpi_handle_debug(handle, "(%s): %s\n", context->uuid_str, error)=
+;
+> > -
+> > -     pr_debug("_OSC request data:");
+> > -     for (i =3D 0; i < context->cap.length; i +=3D sizeof(u32))
+> > -             pr_debug(" %x", *((u32 *)(context->cap.pointer + i)));
+> > -
+> > -     pr_debug("\n");
+> > +     for (i =3D 0; i < cap->length / sizeof(u32); i++)
+> > +             acpi_handle_debug(handle, "(%pUL, %d): capabilities DWORD=
+ %i: [%08x]\n",
+> > +                               guid, rev, i, capbuf[i]);
+> >  }
+> >
+> >  #define OSC_ERROR_MASK       (OSC_REQUEST_ERROR | OSC_INVALID_UUID_ERR=
+OR | \
+> > @@ -239,8 +236,8 @@ acpi_status acpi_run_osc(acpi_handle han
+> >       out_obj =3D output.pointer;
+> >       if (out_obj->type !=3D ACPI_TYPE_BUFFER
+> >               || out_obj->buffer.length !=3D context->cap.length) {
+> > -             acpi_print_osc_error(handle, context,
+> > -                     "_OSC evaluation returned wrong type");
+> > +             acpi_handle_debug(handle, "_OSC evaluation returned wrong=
+ type");
+> > +             acpi_dump_osc_data(handle, &guid, context->rev, &context-=
+>cap);
+> >               status =3D AE_TYPE;
+> >               goto out_kfree;
+> >       }
+> > @@ -252,18 +249,18 @@ acpi_status acpi_run_osc(acpi_handle han
+> >
+> >       if (errors) {
+> >               if (errors & OSC_REQUEST_ERROR)
+> > -                     acpi_print_osc_error(handle, context,
+> > -                             "_OSC request failed");
+> > +                     acpi_handle_debug(handle, "_OSC request failed");
+> > +
+> >               if (errors & OSC_INVALID_UUID_ERROR)
+> > -                     acpi_print_osc_error(handle, context,
+> > -                             "_OSC invalid UUID");
+> > +                     acpi_handle_debug(handle, "_OSC invalid UUID");
+> > +
+> >               if (errors & OSC_INVALID_REVISION_ERROR)
+> > -                     acpi_print_osc_error(handle, context,
+> > -                             "_OSC invalid revision");
+> > +                     acpi_handle_debug(handle, "_OSC invalid revision"=
+);
+> > +
+> >               if (errors & OSC_CAPABILITIES_MASK_ERROR)
+> > -                     acpi_print_osc_error(handle, context,
+> > -                             "_OSC capability bits masked");
+> > +                     acpi_handle_debug(handle, "_OSC capability bits m=
+asked");
+> >
+> > +             acpi_dump_osc_data(handle, &guid, context->rev, &context-=
+>cap);
+> >               status =3D AE_ERROR;
+> >               goto out_kfree;
+> >       }
 
