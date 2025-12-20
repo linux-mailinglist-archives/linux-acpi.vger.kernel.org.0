@@ -1,73 +1,72 @@
-Return-Path: <linux-acpi+bounces-19735-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19736-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C4ECD33B9
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Dec 2025 17:42:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984E4CD3745
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Dec 2025 22:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF50E300955F
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Dec 2025 16:42:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04957300E151
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Dec 2025 21:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EB630C635;
-	Sat, 20 Dec 2025 16:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F242DA75F;
+	Sat, 20 Dec 2025 21:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pqs5G2mV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y5qn5VqM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376B1267B92;
-	Sat, 20 Dec 2025 16:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B181126C384;
+	Sat, 20 Dec 2025 21:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766248950; cv=none; b=jl1EE2DPxMXbj7p7NFI2KgqwesnCU9vATkNqhOmXiFW3XsRPv1KL3yiLh0j072PznoqywCSQv93usUX5Mm+8Fg4EBxioGDbgOuij9GBTynpFumZftD57IkR+wqEj9wb/QN92zlZpVPb/xvFUu6iYMtLxft+K1+oEHMc/KT9B9m4=
+	t=1766264748; cv=none; b=GxScoTfkFunYboU1PolyDuFnrzS5FgRy4WmIp7ewwycIUFdxmaD2fArICGA8i/8sJ0JkM2o55TofAYbSYsh3FTfn4tyApM2LW7JCA7+rI4292Ru+9aOnK1ph/MFFLH312oaY3RdLn1TVdaJN8Pbhb6lTep7ZKaaHDeAPs3jyEbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766248950; c=relaxed/simple;
-	bh=UKq/YKhdCfvwv8fxPQ2c+bvnJLltn0AWOmEr4EYaDGE=;
+	s=arc-20240116; t=1766264748; c=relaxed/simple;
+	bh=wa+v52Li3qRacGPhfk7l8xyCaQD+bSWOz9EQOM/HaU4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f84DLmrg7GAg3OaY2CR3o5loXuBbJrO7EbR1mLLjkmM4xx+nTQ7kxzmmAV8Zx2DazWYTT6+cYTaANWcZ16MdGcWaDjA6mQOGUUXz5Ulg6hXGlQ1CvQ/kei95pm3HVoBpB6RbsWnn/dUAyGK2Xx5HK/kYNrz9nU9AMqICzVBOrvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pqs5G2mV; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ep+uDaPxKUoHCq3xY9vCvINtOirwW5+WCVoGi4GnuSuysC3Qg3q3fOkyZMZ99Yfz0/2gNN0C5o3qKTajRu3/SM0vFf+M3kOD2n84GbaiWkmkCpN83BBX4qunEqrk0gtuxB3MKbNSARszS4GOYPjTitSKNkMMRfOk3yGsxO8EuxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y5qn5VqM; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766248949; x=1797784949;
+  t=1766264747; x=1797800747;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=UKq/YKhdCfvwv8fxPQ2c+bvnJLltn0AWOmEr4EYaDGE=;
-  b=Pqs5G2mVEfQDMXlYwHgqr1HBXrGZZz78kDTC3Wynz8OeQtpe8ZYV4G9l
-   cUwHi6lcNa3CJvfgEwqDDoRlB64AeZoKRI9vluNxVo/D8PVSHS2c+UOMg
-   5UW29vnv+h2jaeiDXQq8E6ZM0ZSaUFjEA3Ueb8YvpxL0BntXC3grgptxw
-   5+xOJOSq9WOS2k3y68UTuwiZbJSjYt+cX2MTYg+gA9GkywEfqA1WPgliB
-   xkNr2kRsGp0BTWInlwfSSiAUvxeE87QhDc/DlV+heON8G7qugVdFXtUw/
-   6q2+MPen06GZzTbmN633WonsCL1BVmQzFayhhdHRMd337nZGiNUc75D6T
-   A==;
-X-CSE-ConnectionGUID: ClK4BbeHTV2Zi1w81PgVBw==
-X-CSE-MsgGUID: NxxgkyH2QZmNWeACsJlSrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="85764590"
+  bh=wa+v52Li3qRacGPhfk7l8xyCaQD+bSWOz9EQOM/HaU4=;
+  b=Y5qn5VqMKxbRcByPw4NPqy+5mDfEgeuw6xZ/VBDW2wWL0WlTQBwzYA8d
+   xV0dK4XjXM2JVpAfRS8Fpb/XhHXnz7kEqQBYspk+q5DpBZy6iQcoJWg/H
+   QL0zmkahPQnKR3pkP+0QAuIJyzOvzmZajhhmkbftX9eBgUcwsG+LACYx5
+   EcgEGOzXR/g1gN+X1UIHeWqgLvOR42V/m8JabbCqG6GOWGIPT3xb+J6HU
+   Y5lch2iOqLDsOrC1hOWzquCrsH0XyTHIiMlLc2pAnsdjtZq9WmcTCvVcJ
+   mvWUq/tRm+J07Dd1LOY9gTMpvIEphYlKM/rv+LzECNBdW8zVATNihYooS
+   g==;
+X-CSE-ConnectionGUID: BhmbINIxS8+b78QsFI7Pnw==
+X-CSE-MsgGUID: nBX1cfGVSsCO+lZVt7LBRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="67180704"
 X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="85764590"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 08:42:29 -0800
-X-CSE-ConnectionGUID: 8712+kArTMieRGw7RtjfXw==
-X-CSE-MsgGUID: YWhwKq7rRjqiflXSjEQIrA==
+   d="scan'208";a="67180704"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 13:05:46 -0800
+X-CSE-ConnectionGUID: AxXQ3QDXStSUIQbHLkspYQ==
+X-CSE-MsgGUID: kSn/eufzRP2VgsFe3FOtvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="199170423"
+   d="scan'208";a="199688317"
 Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 20 Dec 2025 08:42:26 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 20 Dec 2025 13:05:44 -0800
 Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vX02B-000000004tF-2oj0;
-	Sat, 20 Dec 2025 16:42:23 +0000
-Date: Sun, 21 Dec 2025 00:41:47 +0800
+	id 1vX490-0000000058H-0pSz;
+	Sat, 20 Dec 2025 21:05:42 +0000
+Date: Sun, 21 Dec 2025 05:05:31 +0800
 From: kernel test robot <lkp@intel.com>
 To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, rafael@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] PNP: add put_device() in pnpbios_init()
-Message-ID: <202512210013.9DqxXceY-lkp@intel.com>
+Message-ID: <202512210401.KjSlGMtG-lkp@intel.com>
 References: <20251218081955.548521-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -93,71 +92,83 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Haoxiang-Li/PNP-add-put_d
 base:   linus/master
 patch link:    https://lore.kernel.org/r/20251218081955.548521-1-lihaoxiang%40isrc.iscas.ac.cn
 patch subject: [PATCH] PNP: add put_device() in pnpbios_init()
-config: i386-randconfig-004-20251219 (https://download.01.org/0day-ci/archive/20251221/202512210013.9DqxXceY-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251221/202512210013.9DqxXceY-lkp@intel.com/reproduce)
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251221/202512210401.KjSlGMtG-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251221/202512210401.KjSlGMtG-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512210013.9DqxXceY-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512210401.KjSlGMtG-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   drivers/pnp/pnpbios/core.c:90:13: warning: variable 'value' set but not used [-Wunused-but-set-variable]
+   drivers/pnp/pnpbios/core.c: In function 'pnp_dock_event':
+   drivers/pnp/pnpbios/core.c:90:20: warning: variable 'value' set but not used [-Wunused-but-set-variable]
       90 |         int i = 0, value;
-         |                    ^
->> drivers/pnp/pnpbios/core.c:542:3: error: expected expression
-     542 |                 printk(KERN_ERR
-         |                 ^
-   include/linux/printk.h:512:26: note: expanded from macro 'printk'
-     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-         |                          ^
-   include/linux/printk.h:482:3: note: expanded from macro 'printk_index_wrap'
+         |                    ^~~~~
+   In file included from include/asm-generic/bug.h:31,
+                    from arch/x86/include/asm/bug.h:193,
+                    from arch/x86/include/asm/alternative.h:9,
+                    from arch/x86/include/asm/barrier.h:5,
+                    from include/asm-generic/bitops/generic-non-atomic.h:7,
+                    from include/linux/bitops.h:28,
+                    from include/linux/kernel.h:23,
+                    from drivers/pnp/pnpbios/core.c:38:
+   drivers/pnp/pnpbios/core.c: In function 'pnpbios_init':
+>> include/linux/printk.h:482:10: error: expected expression before '{' token
      482 |         ({                                                              \
          |          ^
-   1 warning and 1 error generated.
+   include/linux/printk.h:512:26: note: in expansion of macro 'printk_index_wrap'
+     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                          ^~~~~~~~~~~~~~~~~
+   drivers/pnp/pnpbios/core.c:542:17: note: in expansion of macro 'printk'
+     542 |                 printk(KERN_ERR
+         |                 ^~~~~~
+>> drivers/pnp/pnpbios/core.c:541:17: error: called object is not a function or function pointer
+     541 |                 put_device(&pnpbios_protocol.dev)
+         |                 ^~~~~~~~~~
 
 
-vim +542 drivers/pnp/pnpbios/core.c
+vim +541 drivers/pnp/pnpbios/core.c
 
-^1da177e4c3f41 Linus Torvalds 2005-04-16  522  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  523  	/* scan the system for pnpbios support */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  524  	if (!pnpbios_probe_system())
-^1da177e4c3f41 Linus Torvalds 2005-04-16  525  		return -ENODEV;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  526  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  527  	/* make preparations for bios calls */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  528  	pnpbios_calls_init(pnp_bios_install);
-^1da177e4c3f41 Linus Torvalds 2005-04-16  529  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  530  	/* read the node info */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  531  	ret = pnp_bios_dev_node_info(&node_info);
-^1da177e4c3f41 Linus Torvalds 2005-04-16  532  	if (ret) {
-9dd78466c956ac Bjorn Helgaas  2007-07-26  533  		printk(KERN_ERR
-9dd78466c956ac Bjorn Helgaas  2007-07-26  534  		       "PnPBIOS: Unable to get node info.  Aborting.\n");
-^1da177e4c3f41 Linus Torvalds 2005-04-16  535  		return ret;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  536  	}
-^1da177e4c3f41 Linus Torvalds 2005-04-16  537  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  538  	/* register with the pnp layer */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  539  	ret = pnp_register_protocol(&pnpbios_protocol);
-^1da177e4c3f41 Linus Torvalds 2005-04-16  540  	if (ret) {
-72a4fc1c3483e8 Haoxiang Li    2025-12-18  541  		put_device(&pnpbios_protocol.dev)
-9dd78466c956ac Bjorn Helgaas  2007-07-26 @542  		printk(KERN_ERR
-9dd78466c956ac Bjorn Helgaas  2007-07-26  543  		       "PnPBIOS: Unable to register driver.  Aborting.\n");
-^1da177e4c3f41 Linus Torvalds 2005-04-16  544  		return ret;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  545  	}
-^1da177e4c3f41 Linus Torvalds 2005-04-16  546  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  547  	/* start the proc interface */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  548  	ret = pnpbios_proc_init();
-^1da177e4c3f41 Linus Torvalds 2005-04-16  549  	if (ret)
-^1da177e4c3f41 Linus Torvalds 2005-04-16  550  		printk(KERN_ERR "PnPBIOS: Failed to create proc interface.\n");
-^1da177e4c3f41 Linus Torvalds 2005-04-16  551  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  552  	/* scan for pnpbios devices */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  553  	build_devlist();
-^1da177e4c3f41 Linus Torvalds 2005-04-16  554  
-8f81dd149806bc Bjorn Helgaas  2007-05-08  555  	pnp_platform_devices = 1;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  556  	return 0;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  557  }
-^1da177e4c3f41 Linus Torvalds 2005-04-16  558  
+   522	
+   523		/* scan the system for pnpbios support */
+   524		if (!pnpbios_probe_system())
+   525			return -ENODEV;
+   526	
+   527		/* make preparations for bios calls */
+   528		pnpbios_calls_init(pnp_bios_install);
+   529	
+   530		/* read the node info */
+   531		ret = pnp_bios_dev_node_info(&node_info);
+   532		if (ret) {
+   533			printk(KERN_ERR
+   534			       "PnPBIOS: Unable to get node info.  Aborting.\n");
+   535			return ret;
+   536		}
+   537	
+   538		/* register with the pnp layer */
+   539		ret = pnp_register_protocol(&pnpbios_protocol);
+   540		if (ret) {
+ > 541			put_device(&pnpbios_protocol.dev)
+   542			printk(KERN_ERR
+   543			       "PnPBIOS: Unable to register driver.  Aborting.\n");
+   544			return ret;
+   545		}
+   546	
+   547		/* start the proc interface */
+   548		ret = pnpbios_proc_init();
+   549		if (ret)
+   550			printk(KERN_ERR "PnPBIOS: Failed to create proc interface.\n");
+   551	
+   552		/* scan for pnpbios devices */
+   553		build_devlist();
+   554	
+   555		pnp_platform_devices = 1;
+   556		return 0;
+   557	}
+   558	
 
 -- 
 0-DAY CI Kernel Test Service
