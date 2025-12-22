@@ -1,320 +1,227 @@
-Return-Path: <linux-acpi+bounces-19746-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19747-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBEECD4D37
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 07:55:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9C7CD4F05
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E9983007268
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 06:55:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17B033008887
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 08:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F09E23EAB8;
-	Mon, 22 Dec 2025 06:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DE630BB9D;
+	Mon, 22 Dec 2025 08:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="jvKNXPCa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+xFP6nK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C893F2222BF;
-	Mon, 22 Dec 2025 06:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEEE24E4C3;
+	Mon, 22 Dec 2025 08:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766386529; cv=none; b=t2BwDTX45KhHGyP7MH9s4a42h0IWaLBD801j2bN8/+Y80eesSfdfKcCtB9PeYL9XcaZVQ1TnIsPL/CkkPOvmE4x3CAlTrTYrevzrpz6dHaFhjMfwGK67eT7p6ouCjWMw4UVRbpwVarJTepki/an/02GbJ2y/He4iYpc4QSkRY4c=
+	t=1766391221; cv=none; b=F06rvlsd7dlVrGb3lJSDzjf12pxQ8OOhz0Ya43LvH4s/8lZ8gwxzeyFRUZBHdrMtyOkXnq7QxZK3L9/iYugfUgumhaQiRS250+zIB2MkSnpqGP8wXGOhoZbsv1FhLKOK098B8wV/3xIukgLLCIgWlGMoP5lspCTGS6wfYJdHsSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766386529; c=relaxed/simple;
-	bh=bTaSSWqtn98z2Qj6qEHjHoQ1Z9LeLdTFS9bX5rBwXd4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ZTyvIt+lh8M/GUKT221/SDdAZcixv+FGvoS//k8F0soPVbU6PfHEu2XDA1POcuLx/F1kqeZlBcjtE2bBF9mhYw/aPgfIzisyfFIsNn0O9eN/gmQLsL97fdqmHfm1DTaYYI2zTYUOOtxYlgka+794JZ7kI3Xr/VLAPji2PJJbciQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com; spf=pass smtp.mailfrom=aa.jp.fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=jvKNXPCa; arc=none smtp.client-ip=139.138.37.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aa.jp.fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1766386526; x=1797922526;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bTaSSWqtn98z2Qj6qEHjHoQ1Z9LeLdTFS9bX5rBwXd4=;
-  b=jvKNXPCaRkKsC/ceW+1nNUt6HgjRPCcEvvp86v9Q1bFywqKNy23dbVXx
-   OcPgL8aSyLuY1LDC7hVREJR+0fgjLg733NY6XqtCNRIOzeKpvNADqKin+
-   zJbpknUXAbYYNkELNfg6rCeZI7xQafelo1UwDMmhY46FH90r2J3VOsFLp
-   WsbmYOkIIw/cO3ob18jdNT4OS9Z/J+LnkOFaIV7oS7CDzVXbPneweoGW2
-   PxUoAUiApNvDSp1+kYDG1yJoTYBMfoS0hqTe1M2BwyKzzc78RU7d++fBB
-   LnJGYdi+1G06ZQjuF0cDym7kNnbqMES7B3YA3QsYeadkjZyBZB1YIcsda
-   Q==;
-X-CSE-ConnectionGUID: 1kmgMkHcTqmnoCxSIC628A==
-X-CSE-MsgGUID: J54pDeJrQxeBQ8HKj7FmRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="202429930"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763391600"; 
-   d="scan'208";a="202429930"
-Received: from unknown (HELO az2uksmgr2.o.css.fujitsu.com) ([52.151.125.128])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 15:54:15 +0900
-Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgr2.o.css.fujitsu.com (Postfix) with ESMTPS id 572C58200B4;
-	Mon, 22 Dec 2025 06:54:16 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (az2uksmom4.o.css.fujitsu.com [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 0C4E28D65F9;
-	Mon, 22 Dec 2025 06:54:16 +0000 (UTC)
-Received: from sm-arm-grace07.ssoft.mng.com (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with ESMTP id 2D0A34046BC;
-	Mon, 22 Dec 2025 06:54:10 +0000 (UTC)
-From: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>,
-	Koichi Okuno <fj2767dz@aa.jp.fujitsu.com>
-Subject: [PATCH v5] ACPI: AGDI: Add interrupt signaling mode support
-Date: Mon, 22 Dec 2025 15:53:34 +0900
-Message-ID: <20251222065359.27330-1-fj1078ii@aa.jp.fujitsu.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1766391221; c=relaxed/simple;
+	bh=+LZc9sH1FCeBixh1w4vXv6wQcF1lRDxb/ilDg7ghLhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FicflmfnslndAfEfzgzlfNV4/asrqRLbzcsWrKPBCLPrHXfGOO9wqGOsxhY+mNOr0NTWOwGjVr+2T7U4yjfrXRjlT5YAK0vkeq0kVSZprrwguJlWdwPjHIk42s30I7XYpkvxakGekqC6l5pRLVDJols1HqIynXcffQm9cXv3Yv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+xFP6nK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD91EC4CEF1;
+	Mon, 22 Dec 2025 08:13:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766391220;
+	bh=+LZc9sH1FCeBixh1w4vXv6wQcF1lRDxb/ilDg7ghLhQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=R+xFP6nK0qe53POnY7jjyszn3iOUZuinw6ZqS6AJsoqWcuZII35RkzQ7YGVYI1xeK
+	 LQE264oNB8kS+JJ5I3UO561Y3JAxbMY/Zf5Vi3PjC7YxsXnP/dPk+0tWsSiMPcd732
+	 /olnqcnrwQ6tECTPRewTAgLaNLMGayFaJi8zIzSAmQAG8ZzZuW+5VQmFraNq2XDYE/
+	 oHRotrUO1oKqgjF1gSLrHo2x7YcBsUUyGzXES/pEXpIT/lxGg6TJ2AStLzGOzjSvRE
+	 0JTBn7ixNl1imKBUIDCPicOnAe5qbaF4/hzD6C1QAZidh6OB6uCAWY6P8ZjyYQddYh
+	 oX2BxKQQyK2+g==
+Date: Mon, 22 Dec 2025 09:13:34 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Ahmed Tiba <ahmed.tiba@arm.com>
+Cc: linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+ tony.luck@intel.com, bp@alien8.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+ linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com, Michael.Zhao2@arm.com,
+ linux-efi@vger.kernel.org
+Subject: Re: [PATCH 03/12] ras: add estatus vendor handling and processing
+Message-ID: <20251222091334.5cb8465f@foz.lan>
+In-Reply-To: <20251219181226.2859763-1-ahmed.tiba@arm.com>
+References: <euhams5heiuaawxq4e5ty7iijuvwt5gvdx3flsm4npligjeulq@lv3cwekyb2o2>
+	<20251219181226.2859763-1-ahmed.tiba@arm.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-AGDI has two types of signaling modes: SDEI and interrupt.
-Currently, the AGDI driver only supports SDEI.
-Therefore, add support for interrupt signaling mode.
-The interrupt vector is retrieved from the AGDI table, and call panic
-function when an interrupt occurs.
+Em Fri, 19 Dec 2025 18:11:54 +0000
+Ahmed Tiba <ahmed.tiba@arm.com> escreveu:
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+> On Fri, Dec 19, 2025 at 04:30:40PM +0100, Mauro Carvalho Chehab wrote:
+> >On Fri, Dec 19, 2025 at 02:49:02PM +0000, Ahmed Tiba wrote: =20
+> >>
+> >> On Wed, Dec 18, 2025 at 05:04:53PM +0100, Mauro Carvalho Chehab wrote:
+> >> =20
+> >> >> Teach the estatus core how to walk CPER records and expose the vend=
+or
+> >> >> record notification path. This adds the section iteration helpers,
+> >> >> the logging helpers that mirror the GHES behaviour, and the deferred
+> >> >> work used to hand vendor GUIDs to interested drivers. No users swit=
+ch
+> >> >> over yet; this simply moves the common logic out of GHES so the next
+> >> >> patches can wire it up.
+> >> >>
+> >> >> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com> =20
+> >> >
+> >> >...
+> >> > =20
+> >> >> +static bool estatus_handle_arm_hw_error(estatus_generic_data *gdat=
+a, int sev, bool sync) =20
+> >> >
+> >> > Huh?
+> >> >
+> >> > This is a CPER record from GHES. Why are you moving CPER code out
+> >> > of ghes.c, placing in a file named estatus.c? Doesn't make much
+> >> > sense on my eyes...
+> >> >
+> >> > Same applies to to other GHES CPER record types. =20
+> >>
+> >> GHES still fills in the CPER record, but the parsing and logging logic=
+ is
+> >> shared with the new DeviceTree provider so I pulled those helpers into=
+ the
+> >> estatus core. =20
+> >
+> > I see, but this is not really estatus core. Instead, it is part of GHES=
+ CPER
+> > handling logic, which is defined at ACPI and UEFI specs. moving it to e=
+status
+> > sounds odd, at least on my eyes.
+> >=20
+> > Perhaps I'm failing to see where at ACPI/UEFI specs how CPER would be
+> > integrated with an OpenFirmware approach to handle CPER without GHES.
+> > Care to point to the relevant specs, if any? =20
+>=20
+> ACPI/APEI (via GHES) defines how CPER records are discovered and notified=
+ on ACPI systems,
+> but there is no ACPI or UEFI-defined equivalent for OpenFirmware/DeviceTr=
+ee platforms.
+> UEFI standardises the CPER record format itself, not the transport or dis=
+covery mechanism.
+>=20
+> On non-ACPI systems we still receive the same UEFI-defined CPER payload
+> from firmware, but Linux needs a different, platform-specific contract
+> to locate and acknowledge it. The DT binding is a Linux-side description
+> of that contract rather than something defined by ACPI/UEFI.
 
----
-This patch (v5) has been rebased to align with the 6.19-rc1 release.
-There are no functional changes since v4.
-The IRQF_NO_AUTOEN flag discussed in the v4 patch review was ultimately left unchanged.
-It has been tested and confirmed to work without issues.
-Please let us know if you have any questions or concerns.
+That's where I'm failing to understand: CPER is part of UEFI spec, and
+the only deliverable mechanism I'm aware of for CPER is via GHES or
+GHESv2 - e.g. via ACPI.
 
-v4->v5
- - Rebase to 6.19-rc1.
- - Add acked-by from Hanjun Guo.
+Within the scope of https://uefi.org/specifications, I'm failing
+to see any other deliverable mechanism.
+=20
+> >> Both providers already call into the same notifier chain and
+> >> memory-pool helpers; this patch just moves the generic CPER walking ro=
+utines
+> >> next to the rest of the common code so the DT path doesn=E2=80=99t hav=
+e to grow its
+> >> own copy. If you=E2=80=99d prefer a different file layout or naming to=
+ make that
+> >> intent clearer, I=E2=80=99m happy to adjust. =20
+>=20
+> > Moving the code from ghes.c to estatus.c or to elsewhere shouldn't make=
+ any
+> > difference, as the DT handling logic could simply be calling the functi=
+ons
+> > from ghes.c (or estatus.c). I fail to see why they need to be moved. =20
+>=20
+> The motivation is to provide a shared implementation for non-ACPI provide=
+rs,
+> so that the DT path does not depend on ACPI/APEI.
+>=20
+> While the helpers currently live in ghes.c, they are CPER-specific and do=
+ not rely on ACPI tables,
+> APEI infrastructure, or GHES notification semantics. Keeping them there e=
+ffectively makes GHES
+> the only place those helpers can live, even though the logic itself is pr=
+ovider-agnostic.
 
-v4: https://lore.kernel.org/all/20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com/
-v3->v4
- - Add a comment to the flags member.
- - Fix agdi_interrupt_probe.
- - Fix agdi_interrupt_remove.
- - Add space in struct initializsation.
- - Delete curly braces.
+The logic is related to GHES, as this seems to be the only standardized
+mechanism to report CPER records. As it is part of APEI, get_maintainers
+points to the people that have been maintaining it as:
 
-v3: https://lore.kernel.org/all/20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com/
-v2->v3
- - Fix bug in the return value of agdi_probe function.
- - Remove unnecessary curly braces in the agdi_remove function.
+	$ ./scripts/get_maintainer.pl -f ./drivers/acpi/apei/ghes.c
+	"Rafael J. Wysocki" <rafael@kernel.org> (maintainer:ACPI APEI,commit_signe=
+r:6/13=3D46%)
+	Tony Luck <tony.luck@intel.com> (reviewer:ACPI APEI,commit_signer:3/13=3D2=
+3%)
+	Borislav Petkov <bp@alien8.de> (reviewer:ACPI APEI,removed_lines:5/62=3D8%)
+	Hanjun Guo <guohanjun@huawei.com> (reviewer:ACPI APEI,commit_signer:4/13=
+=3D31%)
+	Mauro Carvalho Chehab <mchehab@kernel.org> (reviewer:ACPI APEI,authored:1/=
+13=3D8%,removed_lines:6/62=3D10%)
+	Shuai Xue <xueshuai@linux.alibaba.com> (reviewer:ACPI APEI,commit_signer:5=
+/13=3D38%,authored:2/13=3D15%,added_lines:56/218=3D26%,removed_lines:34/62=
+=3D55%)
+	Len Brown <lenb@kernel.org> (reviewer:ACPI)
+	Jonathan Cameron <Jonathan.Cameron@huawei.com> (commit_signer:5/13=3D38%)
+	Breno Leitao <leitao@debian.org> (authored:2/13=3D15%,added_lines:38/218=
+=3D17%)
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> (authored:2/13=
+=3D15%,added_lines:103/218=3D47%)
+	Ankit Agrawal <ankita@nvidia.com> (authored:1/13=3D8%,removed_lines:6/62=
+=3D10%)
+	Jason Tian <jason@os.amperecomputing.com> (removed_lines:7/62=3D11%)
+	linux-acpi@vger.kernel.org (open list:ACPI APEI)
+	linux-kernel@vger.kernel.org (open list)
 
-v2: https://lore.kernel.org/all/20250829101154.2377800-1-fj1078ii@aa.jp.fujitsu.com/
-v1->v2
- - Remove acpica update since there is no need to update define value
-   for this patch.
----
- drivers/acpi/arm64/agdi.c | 114 +++++++++++++++++++++++++++++++++++---
- include/acpi/actbl2.h     |   4 +-
- 2 files changed, 110 insertions(+), 8 deletions(-)
+Moving it elsewhere would make it confusing, as the expected deliverable
+mechanism for CPER is via GHES - as this is the only one defined at the
+uefi.org specs.
 
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index e0df3daa4abf..c514bb874c5d 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -16,7 +16,11 @@
- #include "init.h"
- 
- struct agdi_data {
-+	unsigned char flags;
- 	int sdei_event;
-+	unsigned int gsiv;
-+	bool use_nmi;
-+	int irq;
- };
- 
- static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
-@@ -48,6 +52,55 @@ static int agdi_sdei_probe(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
-+{
-+	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
-+{
-+	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static int agdi_interrupt_probe(struct platform_device *pdev,
-+				struct agdi_data *adata)
-+{
-+	unsigned long irq_flags;
-+	int ret;
-+	int irq;
-+
-+	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
-+		return irq;
-+	}
-+
-+	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
-+		    IRQF_NO_THREAD;
-+	/* try NMI first */
-+	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
-+			  "agdi_interrupt_nmi", NULL);
-+	if (ret) {
-+		ret = request_irq(irq, &agdi_interrupt_handler_irq,
-+				  irq_flags, "agdi_interrupt_irq", NULL);
-+		if (ret) {
-+			dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
-+			acpi_unregister_gsi(adata->gsiv);
-+			return ret;
-+		}
-+		enable_irq(irq);
-+		adata->irq = irq;
-+	} else {
-+		enable_nmi(irq);
-+		adata->irq = irq;
-+		adata->use_nmi = true;
-+	}
-+
-+	return 0;
-+}
-+
- static int agdi_probe(struct platform_device *pdev)
- {
- 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-@@ -55,12 +108,20 @@ static int agdi_probe(struct platform_device *pdev)
- 	if (!adata)
- 		return -EINVAL;
- 
--	return agdi_sdei_probe(pdev, adata);
-+	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-+	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-+		return agdi_sdei_probe(pdev, adata);
-+
-+	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-+		return agdi_interrupt_probe(pdev, adata);
-+	}
-+
-+	return 0;
- }
- 
--static void agdi_remove(struct platform_device *pdev)
-+static void agdi_sdei_remove(struct platform_device *pdev,
-+			     struct agdi_data *adata)
- {
--	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
- 	int err, i;
- 
- 	err = sdei_event_disable(adata->sdei_event);
-@@ -83,6 +144,34 @@ static void agdi_remove(struct platform_device *pdev)
- 			adata->sdei_event, ERR_PTR(err));
- }
- 
-+static void agdi_interrupt_remove(struct platform_device *pdev,
-+				  struct agdi_data *adata)
-+{
-+	if (adata->irq != -1) {
-+		if (adata->use_nmi)
-+			free_nmi(adata->irq, NULL);
-+		else
-+			free_irq(adata->irq, NULL);
-+
-+		acpi_unregister_gsi(adata->gsiv);
-+	}
-+}
-+
-+static void agdi_remove(struct platform_device *pdev)
-+{
-+	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-+
-+	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-+	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-+		agdi_sdei_remove(pdev, adata);
-+		break;
-+
-+	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-+		agdi_interrupt_remove(pdev, adata);
-+		break;
-+	}
-+}
-+
- static struct platform_driver agdi_driver = {
- 	.driver = {
- 		.name = "agdi",
-@@ -94,7 +183,7 @@ static struct platform_driver agdi_driver = {
- void __init acpi_agdi_init(void)
- {
- 	struct acpi_table_agdi *agdi_table;
--	struct agdi_data pdata;
-+	struct agdi_data pdata = {0};
- 	struct platform_device *pdev;
- 	acpi_status status;
- 
-@@ -103,12 +192,23 @@ void __init acpi_agdi_init(void)
- 	if (ACPI_FAILURE(status))
- 		return;
- 
--	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
--		pr_warn("Interrupt signaling is not supported");
-+	switch (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-+	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-+		pdata.sdei_event = agdi_table->sdei_event;
-+		break;
-+
-+	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-+		pdata.gsiv = agdi_table->gsiv;
-+		break;
-+
-+	default:
-+		pr_warn("Signaling mode(%d) is not supported",
-+			agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK);
- 		goto err_put_table;
- 	}
- 
--	pdata.sdei_event = agdi_table->sdei_event;
-+	pdata.irq = -1;
-+	pdata.flags = agdi_table->flags;
- 
- 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
- 	if (IS_ERR(pdev))
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index f726bce3eb84..706699f3f294 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -340,7 +340,9 @@ struct acpi_table_agdi {
- 
- /* Mask for Flags field above */
- 
--#define ACPI_AGDI_SIGNALING_MODE (1)
-+#define ACPI_AGDI_SIGNALING_MODE_MASK (3)
-+#define ACPI_AGDI_SIGNALING_MODE_SDEI (0)
-+#define ACPI_AGDI_SIGNALING_MODE_INTERRUPT (1)
- 
- /*******************************************************************************
-  *
--- 
-2.43.0
+While it might be moved to EFI and placed under cper.c,=20
+get_maintainers.pl would point to:
 
+	$ ./scripts/get_maintainer.pl -f ./drivers/firmware/efi/cper.c
+	Ard Biesheuvel <ardb@kernel.org> (maintainer:EXTENSIBLE FIRMWARE INTERFACE=
+ (EFI))
+	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
+	linux-kernel@vger.kernel.org (open list)
+
+which is not the people that have been maintaining RAS.
+
+Placing it under a "estatus.c" file would make it completely
+dissociated with UEFI/ACPI specs, as this name means nothing at
+the specs.
+
+Also, adding a new maintainer's entry won't make any sense, as the
+people that currently reviews and maintains GHES/CPER records
+should be kept.
+
+> By moving the CPER parsing and logging pieces into a common location,
+> both GHES and the DT provider can reuse the same implementation,
+> while the ACPI-specific discovery and notification code remains under dri=
+vers/acpi/apei/.
+> This avoids having the DT provider reach into GHES internals or duplicate=
+ CPER handling code.
+
+As Boris mentioned on patch 00/12, we need to better understand
+the high level scenario, as it is still not clear to me how a
+firmware-first notification would happen without ACPI.
+
+> If the current naming or file layout makes that separation unclear, I=E2=
+=80=99m happy to adjust it.
+
+Thanks,
+Mauro
 
