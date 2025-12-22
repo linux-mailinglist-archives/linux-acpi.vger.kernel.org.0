@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-19766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19764-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BE1CD5661
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:51:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE02CD55F8
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61893301EF87
+	by tor.lore.kernel.org (Postfix) with ESMTP id D75CF3007E47
 	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD231355B;
-	Mon, 22 Dec 2025 09:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C509C313286;
+	Mon, 22 Dec 2025 09:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="S0exGpHH"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="dUPSGp1a"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C67313294;
-	Mon, 22 Dec 2025 09:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4699831328B;
+	Mon, 22 Dec 2025 09:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766396690; cv=none; b=CDEwQNxy2kE3KDMwJ16gmGf5WMMavmQQ/Kn+WOubpkvzzAitXQQdgohLioDYG73m8WdAcbaTuZduQNQI7EBEFTxlfUhZpoFGdLagQQpJn7pUsUsAnuEGbKwssNBb4VgQJ5wNcXFtoEjwG9eULNzfy83MFUkdy4yBzeczoHCrk74=
+	t=1766396687; cv=none; b=Ru0pK9XlTOTITlWaFFVCTxaunND7OT5/fbFWlLFVfRc89M3CR0eCFPlchjka0C8Iyt2ZUJNURb1rSbEzMalAFtmK5XCj959GPZKVZojJeP9RVkLnDf5s0npWRFHD4OntxMnr4YL27Tl+TC7o/OpaEh6QBnkVGB19TnAnu3k7YKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766396690; c=relaxed/simple;
-	bh=eWwLxENgLU7z7XZ/WUbyRESjF0mIjuxJwcei3xLWZWQ=;
+	s=arc-20240116; t=1766396687; c=relaxed/simple;
+	bh=sIRwoj7+NNLSM5sC8VDFwaBjRhUUpP3NvmW0A1rR1aw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KA9RLp8WpFQPk3SoTk+KRzIaICtc3/Cr53qLVRMi/JEN13gK/VrRGmx9ubFMsloOXZoEKbj7PsvC0CPpjIIYKVvxIxF4cXX15fI64pAQ7TVQmUbMe3ZEcyVhFQppPxv53+iGDLu4KOZMcxRw7KBsu63oR98Y0sbafoH+rPIH0hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=S0exGpHH; arc=none smtp.client-ip=115.124.30.110
+	 MIME-Version; b=fyC+OmmjVF3iNk9tcUTuSowr1JgUdLoJoJ4zWyOs++OTZO4RbyMRPB7B8hOZyyorqJ4mKI0czL9jtyMbViivfExCq9CLsGi4C7N1gYeWYsotVBe4sW1Iwn8LHBO+KlvZj9fbDlhscUCjdAYLiUy9RmnC3jyIyTLGOC7FAp3WulY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=dUPSGp1a; arc=none smtp.client-ip=115.124.30.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1766396680; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=jZ/B4MXERfJ26Le+E/44WzHr/HfvoQfr2TdZTK6VJkU=;
-	b=S0exGpHHikVzkGMaQ6HtwaST4SYlhHcLhUC+vL433zQCbBltwtkPiT3cjhgzJMnygw/I8abwzIC1AsV4kfjQ3sQY1fTKEMfl7gB4krOYL4noAfKqBL8aUMPUn7qggULqVvvdGSHrP7A2obwuVQ+zyqDgDp44vgUV7FWfOREqIVw=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOl8BF_1766396678 cluster:ay36)
+	t=1766396683; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=AoqWJ1dxlNdJjayDm9oLfOd+l+dPhqJVnP8eZKUK5qI=;
+	b=dUPSGp1aQGGplyBDZicUfylUbCX6nXaSgyxOUwr2SQXF1xNPd15mNubimNBDmU5PGBYfak3V4ct13s7pA8xjX8uNqaCmPYeSkYR/W4CD/qKDzj9KqorbIA9rx7u/udgbuCEoTSGGn9oadl7ezJL1+erQHSyQTpJNVueZUw1WMYs=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvORvbn_1766396681 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Dec 2025 17:44:39 +0800
+          Mon, 22 Dec 2025 17:44:42 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -54,9 +54,9 @@ To: catalin.marinas@arm.com,
 	yazen.ghannam@amd.com,
 	misono.tomohiro@fujitsu.com
 Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
-Date: Mon, 22 Dec 2025 17:43:48 +0800
-Message-Id: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
+Subject: [PATCH v4 15/17] ras: AEST: Add framework to process AEST vendor node
+Date: Mon, 22 Dec 2025 17:43:49 +0800
+Message-Id: <20251222094351.38792-17-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
 References: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
@@ -68,188 +68,82 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Certain components report errors using their internal physical addresses.
-For instance, on AMD platforms, the UMC (Unified Memory Controller) reports
-normalized addresses, while on Arm systems, memory controllers may report
-logical addresses. These addresses must be translated into System Physical
-Addresses (SPA) before the OS can utilize them effectively.
+AEST table include vendor error node to support the component that do
+not implement standard Arm RAS architecture[1]. Each vendor node may
+have their own initialize and interrupt handle function. This patch
+supply a framework to process vendor error nodes, the vendor process
+function is binded with vendor HID.
 
-AMD already provides the amd_atl_umc_na_to_spa interface for physical address
-translation. This patch introduces a common function, atl_ras_la_to_spa,
-intended for use by both AMD and Arm64 architectures. The parameters of this
-function are architecture-specific data required for the address translation
-process.
+[1]: https://developer.arm.com/documentation/ddi0587/latest/
 
 Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- drivers/edac/amd64_edac.c      |  2 +-
- drivers/ras/aest/aest-core.c   |  3 +++
- drivers/ras/amd/atl/core.c     |  4 ++--
- drivers/ras/amd/atl/internal.h |  2 +-
- drivers/ras/amd/atl/umc.c      |  3 ++-
- drivers/ras/ras.c              | 24 +++++++++++-------------
- include/linux/ras.h            |  9 ++++-----
- 7 files changed, 24 insertions(+), 23 deletions(-)
+ drivers/ras/aest/aest-core.c | 28 +++++++++++++++++++++++++++-
+ drivers/ras/aest/aest.h      |  5 +++++
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index 2391f3469961..478cfef37892 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -2847,7 +2847,7 @@ static void decode_umc_error(int node_id, struct mce *m)
- 	a_err.ipid = m->ipid;
- 	a_err.cpu  = m->extcpu;
- 
--	sys_addr = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
-+	sys_addr = convert_ras_la_to_spa(&a_err);
- 	if (IS_ERR_VALUE(sys_addr)) {
- 		err.err_code = ERR_NORM_ADDR;
- 		goto log_error;
 diff --git a/drivers/ras/aest/aest-core.c b/drivers/ras/aest/aest-core.c
-index a290b482bf8b..052211ca3e2a 100644
+index 052211ca3e2a..4d20e54832fd 100644
 --- a/drivers/ras/aest/aest-core.c
 +++ b/drivers/ras/aest/aest-core.c
-@@ -235,6 +235,9 @@ static void aest_node_pool_process(struct work_struct *work)
- 		    (status & (ERR_STATUS_UE | ERR_STATUS_DE))) {
- 			if (event->addressing_mode == AEST_ADDREESS_SPA)
- 				addr = event->regs.err_addr & PHYS_MASK;
-+			else
-+				addr = convert_ras_la_to_spa(event);
-+
- 			aest_handle_memory_failure(addr);
- 		}
- 
-diff --git a/drivers/ras/amd/atl/core.c b/drivers/ras/amd/atl/core.c
-index 0f7cd6dab0b0..4f44c0ce97ec 100644
---- a/drivers/ras/amd/atl/core.c
-+++ b/drivers/ras/amd/atl/core.c
-@@ -210,7 +210,7 @@ static int __init amd_atl_init(void)
- 
- 	/* Increment this module's recount so that it can't be easily unloaded. */
- 	__module_get(THIS_MODULE);
--	amd_atl_register_decoder(convert_umc_mca_addr_to_sys_addr);
-+	atl_register_decoder(convert_umc_mca_addr_to_sys_addr);
- 
- 	pr_info("AMD Address Translation Library initialized\n");
+@@ -925,6 +925,29 @@ static int aest_setup_irq(struct platform_device *pdev,
  	return 0;
-@@ -222,7 +222,7 @@ static int __init amd_atl_init(void)
-  */
- static void __exit amd_atl_exit(void)
- {
--	amd_atl_unregister_decoder();
-+	atl_unregister_decoder();
  }
  
- module_init(amd_atl_init);
-diff --git a/drivers/ras/amd/atl/internal.h b/drivers/ras/amd/atl/internal.h
-index 82a56d9c2be1..423a6193fdc7 100644
---- a/drivers/ras/amd/atl/internal.h
-+++ b/drivers/ras/amd/atl/internal.h
-@@ -279,7 +279,7 @@ int denormalize_address(struct addr_ctx *ctx);
- int dehash_address(struct addr_ctx *ctx);
- 
- unsigned long norm_to_sys_addr(u8 socket_id, u8 die_id, u8 coh_st_inst_id, unsigned long addr);
--unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err);
-+unsigned long convert_umc_mca_addr_to_sys_addr(void *data);
- 
- u64 add_base_and_hole(struct addr_ctx *ctx, u64 addr);
- u64 remove_base_and_hole(struct addr_ctx *ctx, u64 addr);
-diff --git a/drivers/ras/amd/atl/umc.c b/drivers/ras/amd/atl/umc.c
-index befc616d5e8a..57a78c380467 100644
---- a/drivers/ras/amd/atl/umc.c
-+++ b/drivers/ras/amd/atl/umc.c
-@@ -399,8 +399,9 @@ static u8 get_coh_st_inst_id(struct atl_err *err)
- 	return FIELD_GET(UMC_CHANNEL_NUM, err->ipid);
- }
- 
--unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
-+unsigned long convert_umc_mca_addr_to_sys_addr(void *data)
++static struct aest_vendor_match vendor_match[] = {
++	{  },
++};
++
++static int
++aest_vendor_probe(struct aest_device *adev, struct aest_hnode *ahnode)
++{
++	int i;
++	struct acpi_aest_node *anode;
++
++	anode = list_first_entry(&ahnode->list, struct acpi_aest_node, list);
++	if (!anode)
++		return -ENODEV;
++
++	aest_dev_dbg(adev, "Try to probe vendor node %s\n", anode->vendor->acpi_hid);
++	for (i = 0; i < ARRAY_SIZE(vendor_match); i++) {
++		if (!strncmp(vendor_match[i].hid, anode->vendor->acpi_hid, 8))
++			return vendor_match[i].probe(adev, ahnode);
++	}
++
++	return -ENODEV;
++}
++
+ static int aest_device_probe(struct platform_device *pdev)
  {
-+	struct atl_err *err = data;
- 	u8 socket_id = topology_physical_package_id(err->cpu);
- 	u8 coh_st_inst_id = get_coh_st_inst_id(err);
- 	unsigned long addr = get_addr(err->addr);
-diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
-index 2a5b5a9fdcb3..050b49466a18 100644
---- a/drivers/ras/ras.c
-+++ b/drivers/ras/ras.c
-@@ -10,36 +10,34 @@
- #include <linux/ras.h>
- #include <linux/uuid.h>
+ 	int ret;
+@@ -950,7 +973,10 @@ static int aest_device_probe(struct platform_device *pdev)
+ 	}
+ 	init_llist_head(&adev->event_list);
  
--#if IS_ENABLED(CONFIG_AMD_ATL)
- /*
-  * Once set, this function pointer should never be unset.
-  *
-  * The library module will set this pointer if it successfully loads. The module
-  * should not be unloaded except for testing and debug purposes.
-  */
--static unsigned long (*amd_atl_umc_na_to_spa)(struct atl_err *err);
-+static unsigned long (*atl_ras_la_to_spa)(void *err);
+-	ret = aest_init_nodes(adev, ahnode);
++	if (ahnode->type == ACPI_AEST_VENDOR_ERROR_NODE)
++		ret = aest_vendor_probe(adev, ahnode);
++	else
++		ret = aest_init_nodes(adev, ahnode);
+ 	if (ret)
+ 		return ret;
  
--void amd_atl_register_decoder(unsigned long (*f)(struct atl_err *))
-+void atl_register_decoder(unsigned long (*f)(void *))
- {
--	amd_atl_umc_na_to_spa = f;
-+	atl_ras_la_to_spa = f;
- }
--EXPORT_SYMBOL_GPL(amd_atl_register_decoder);
-+EXPORT_SYMBOL_GPL(atl_register_decoder);
- 
--void amd_atl_unregister_decoder(void)
-+void atl_unregister_decoder(void)
- {
--	amd_atl_umc_na_to_spa = NULL;
-+	atl_ras_la_to_spa = NULL;
- }
--EXPORT_SYMBOL_GPL(amd_atl_unregister_decoder);
-+EXPORT_SYMBOL_GPL(atl_unregister_decoder);
- 
--unsigned long amd_convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
-+unsigned long convert_ras_la_to_spa(void *err)
- {
--	if (!amd_atl_umc_na_to_spa)
-+	if (!atl_ras_la_to_spa)
- 		return -EINVAL;
- 
--	return amd_atl_umc_na_to_spa(err);
-+	return atl_ras_la_to_spa(err);
- }
--EXPORT_SYMBOL_GPL(amd_convert_umc_mca_addr_to_sys_addr);
--#endif /* CONFIG_AMD_ATL */
-+EXPORT_SYMBOL_GPL(convert_ras_la_to_spa);
- 
- #define CREATE_TRACE_POINTS
- #define TRACE_INCLUDE_PATH ../../include/ras
-diff --git a/include/linux/ras.h b/include/linux/ras.h
-index 05096f049dac..2270a8eb1038 100644
---- a/include/linux/ras.h
-+++ b/include/linux/ras.h
-@@ -42,14 +42,9 @@ struct atl_err {
+diff --git a/drivers/ras/aest/aest.h b/drivers/ras/aest/aest.h
+index 2f6a7b9ca4ef..304c03839d31 100644
+--- a/drivers/ras/aest/aest.h
++++ b/drivers/ras/aest/aest.h
+@@ -244,6 +244,11 @@ static const char *const aest_node_name[] = {
+ 	[ACPI_AEST_PROXY_ERROR_NODE] = "proxy",
  };
  
- #if IS_ENABLED(CONFIG_AMD_ATL)
--void amd_atl_register_decoder(unsigned long (*f)(struct atl_err *));
--void amd_atl_unregister_decoder(void);
- void amd_retire_dram_row(struct atl_err *err);
--unsigned long amd_convert_umc_mca_addr_to_sys_addr(struct atl_err *err);
- #else
- static inline void amd_retire_dram_row(struct atl_err *err) { }
--static inline unsigned long
--amd_convert_umc_mca_addr_to_sys_addr(struct atl_err *err) { return -EINVAL; }
- #endif /* CONFIG_AMD_ATL */
- 
- #if defined(CONFIG_ARM) || defined(CONFIG_ARM64)
-@@ -63,6 +58,10 @@ amd_convert_umc_mca_addr_to_sys_addr(struct atl_err *err) { return -EINVAL; }
- #define GET_LOGICAL_INDEX(mpidr) -EINVAL
- #endif /* CONFIG_ARM || CONFIG_ARM64 */
- 
-+void atl_register_decoder(unsigned long (*f)(void *));
-+void atl_unregister_decoder(void);
-+unsigned long convert_ras_la_to_spa(void *err);
++struct aest_vendor_match {
++	char hid[ACPI_ID_LEN];
++	int (*probe)(struct aest_device *adev, struct aest_hnode *anode);
++};
 +
- #if IS_ENABLED(CONFIG_AEST)
- void aest_register_decode_chain(struct notifier_block *nb);
- void aest_unregister_decode_chain(struct notifier_block *nb);
+ static inline int aest_set_name(struct aest_device *adev,
+ 				struct aest_hnode *ahnode)
+ {
 -- 
 2.51.2.612.gdc70283dfc
 
