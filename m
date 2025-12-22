@@ -1,218 +1,95 @@
-Return-Path: <linux-acpi+bounces-19770-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19771-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C2DCD5D26
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 12:35:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EE1CD5D32
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 12:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43C5330021DC
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 11:35:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FC0E3028FE1
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 11:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E5531961E;
-	Mon, 22 Dec 2025 11:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4MTqpYf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE35319873;
+	Mon, 22 Dec 2025 11:36:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EA9313E24;
-	Mon, 22 Dec 2025 11:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C2031961E;
+	Mon, 22 Dec 2025 11:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766403314; cv=none; b=PYhQSLWi6GzyKf2Eso7jdo3R0vBlHHei/RJYWuIsvSB2s9Sp5j4K9NxduA/I0veQNuVhJoLjWOKc3hcG9aIOA6AjRfkFuK66GtyUibzWVI5VEPk55NjtF2lapQO/DsCw0t3Tj1UmfWMxFOJHcCqN+OuoLi7fj+INE5oCoSKFHcw=
+	t=1766403398; cv=none; b=ZpI+94yMGZakwqQXuJtmPpLSaLkKg6e9Vwi3F9WSwZ+u+T3yRJYIo60C9lNnb4tMBNjKjHt0mVNM2Zkycn3uKG81G8J7FOIQXZlZ/ukJXqFYHD9xZMTMMeKFt17q6xXSJpIOLXvQdvHkQxYsPaVV9+Hy1w4/Q8CfpKe9mcfEauc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766403314; c=relaxed/simple;
-	bh=BofS04asxFICi56vUDiVBEg4qyYf90vaa4Ld2Hab65I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=Qf85TkvvTUVpOAY6byPrTlLA0+pH70xo9ccnmd1zkHrCdYrPilmT/LqV0OdA5TgX/2liaf3IW1U/QhIjNCzLkK718LuRLCvCQgsxogmRGItYDlGYHKAkY9YHu+i3em3egwUPPZBiJ8SJIc2hQHSELaWkXXQjvRIVbGhMRBzcqSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4MTqpYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4840C4CEF1;
-	Mon, 22 Dec 2025 11:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766403313;
-	bh=BofS04asxFICi56vUDiVBEg4qyYf90vaa4Ld2Hab65I=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=p4MTqpYfLYrV41B2H7R8TP1GCquSJjiBNHONStnG494lkxiwgfTGZW+mEZ6AdLhbo
-	 Ze+U9USO4FE5R9vqxyrBev74V+veq2DbI9Jlg1mGwyw+gd2iYyHwLr02r8u6fPLT3+
-	 dreYMVykdtBowaEDE+qn0zhG6XtMEXooHssmOGFwTrOLY+Aaz4GwIoCgU0gFIL7h64
-	 fMWznhVmIOLHo2Z5KGxYfpVEKJlVpiNceJKKkY0uXAClOTJv5FJRVZwVzfML+QtziO
-	 2e1+vj+MOsh32F2tnBw1lYxGVd4SKxal/SkI6Um3SkD3AP21lajpnHElmJvK1b4mne
-	 J8d88ArYC49Jw==
+	s=arc-20240116; t=1766403398; c=relaxed/simple;
+	bh=H6jBWWzMl8taSvgdCiEpv2ziFuD/EHlQ1Ojyfn60FyA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FK4gjWB2OUrVSIf0oiv2T0jCaP9syQLkD+4bYb6rEZ/kjoFdXTY+XOzT5pIu4rjT6r1Ugg+3/Sl27xDhnlhzQms9m68D3UvyfdH/21BLbyaqEerGllaKB38UymvN2H4ts3ByXbnLiJXlEYfUpYVUScpjECi10+Fkg8yBDE5AMSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dZbgH6m71zJ46Zf;
+	Mon, 22 Dec 2025 19:35:55 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5F3FE40570;
+	Mon, 22 Dec 2025 19:36:33 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 22 Dec
+ 2025 11:36:32 +0000
+Date: Mon, 22 Dec 2025 11:36:30 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Dave Jiang <dave.jiang@intel.com>, Fan Ni
+	<fan.ni@samsung.com>, Shuai Xue <xueshuai@linux.alibaba.com>, Smita
+ Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	<linux-efi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] efi/cper: don't go past the ARM processor CPER
+ record buffer
+Message-ID: <20251222113630.00002826@huawei.com>
+In-Reply-To: <da407d200220221ec2ed48bb213a51893131c2c7.1766140788.git.mchehab+huawei@kernel.org>
+References: <cover.1766140788.git.mchehab+huawei@kernel.org>
+	<da407d200220221ec2ed48bb213a51893131c2c7.1766140788.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Dec 2025 12:35:08 +0100
-Message-Id: <DF4PPPGQBPNA.13TJNSRSRUW0A@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
-Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, "Len
- Brown" <lenb@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Tamir
- Duberstein" <tamird@gmail.com>, "Armin Wolf" <W_Armin@gmx.de>,
- <platform-driver-x86@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-To: "Gladyshev Ilya" <foxido@foxido.dev>
-References: <cover.1766331321.git.foxido@foxido.dev>
- <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
-In-Reply-To: <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Sun Dec 21, 2025 at 7:22 PM CET, Gladyshev Ilya wrote:
-> +/// An ACPI object.
-> +///
-> +/// This structure represents the Rust abstraction for a C [`struct acpi=
-_object`].
-> +/// You probably want to convert it into actual object type.
+On Fri, 19 Dec 2025 11:50:00 +0100
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-I think this is a good place to link the corresponding types.
-
-> +///
-> +/// # Example
-> +/// ```
-> +/// # use kernel::prelude::*
-> +/// use kernel::acpi::{AcpiObject};
-
-Braces not needed.
-
-> +///
-> +/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
-> +///     if obj.type_id() !=3D AcpiBuffer::ACPI_TYPE {
-> +///         return Err(EINVAL);
-> +///     }
-
-Given the try_into() conversion below this check is unnecessary.
-
-> +///     let obj: &AcpiBuffer =3D obj.try_into()?;
-> +///
-> +///     Ok(obj.payload()[0])
-> +/// }
-> +/// ```
-> +#[repr(transparent)]
-> +pub struct AcpiObject(bindings::acpi_object);
-> +
-> +impl AcpiObject {
-> +    /// Returns object type (see `acpitypes.h`)
-> +    pub fn type_id(&self) -> u32 {
-> +        // SAFETY: `type` field is valid in all union variants
-
-Here and in a lot of other places, please end with a period.
-
-> +        unsafe { self.0.type_ }
-> +    }
-> +}
-> +
-> +/// Generate AcpiObject subtype
-> +///
-> +/// For given subtype implements
-> +/// - `TryFrom<&AcpiObject> for &SubType` trait
-> +/// - unsafe try_from_unchecked() with same semantics, but without type =
-check
-> +macro_rules! acpi_object_subtype {
-> +    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union=
-_type:ty)) =3D> {
-> +        /// Wraps `acpi_object` subtype
-> +        #[repr(transparent)]
-> +        pub struct $subtype_name($union_type);
-> +
-> +        impl TryFrom<&AcpiObject> for &$subtype_name {
-> +            type Error =3D Error;
-> +
-> +            fn try_from(value: &AcpiObject) -> core::result::Result<Self=
-, Self::Error> {
-> +                // SAFETY: type_ field present in all union types and is=
- always valid
-> +                let real_type =3D unsafe { value.0.type_ };
-> +
-> +                if (real_type !=3D $subtype_name::ACPI_TYPE) {
-> +                    return Err(EINVAL);
-> +                }
-
-This should just be
-
-	if (value.type_id() !=3D $subtype_name::ACPI_TYPE) {
-	    return Err(EINVAL);
-	}
-
-> +
-> +                // SAFETY: We validated union subtype
-
-When writing safety comments, please read the safety documentation of the
-corresponding function and try to cover all requirements listed as bullet
-points.
-
-> +                Ok(unsafe {
-> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
-e>(&value.0.$field_name)
-> +                })
-> +            }
-> +        }
-> +
-> +        impl $subtype_name {
-> +            /// This ACPI type int value (see `acpitypes.h`)
-> +            pub const ACPI_TYPE: u32 =3D bindings::$acpi_type;
-> +
-> +            /// Converts AcpiObject reference into exact ACPI type wrapp=
-er
-> +            ///
-> +            /// # Safety
-> +            ///
-> +            /// Assumes that value is correct (`Self`) subtype
-> +            pub unsafe fn try_from_unchecked(value: &AcpiObject) -> &Sel=
-f {
-
-The name try_from_unchecked() implies that the function is fallible, but it
-isn't. I suggest calling it something along the lines of cast_unchecked().
-
-> +                // SAFETY: Only unsafety comes from unchecked transforma=
-tion and
-> +                // we transfered
-> +                unsafe {
-> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
-e>(&value.0.$field_name)
-> +                }
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +acpi_object_subtype!(AcpiInteger
-> +    <- (ACPI_TYPE_INTEGER, integer, bindings::acpi_object__bindgen_ty_1)=
-);
-> +acpi_object_subtype!(AcpiString
-> +    <- (ACPI_TYPE_STRING, string, bindings::acpi_object__bindgen_ty_2));
-> +acpi_object_subtype!(AcpiBuffer
-> +    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
-> +acpi_object_subtype!(AcpiPackage
-> +    <- (ACPI_TYPE_PACKAGE, package, bindings::acpi_object__bindgen_ty_4)=
-);
-> +acpi_object_subtype!(AcpiReference
-> +    <- (ACPI_TYPE_LOCAL_REFERENCE, reference, bindings::acpi_object__bin=
-dgen_ty_5));
-> +acpi_object_subtype!(AcpiProcessor
-> +    <- (ACPI_TYPE_PROCESSOR, processor, bindings::acpi_object__bindgen_t=
-y_6));
-> +acpi_object_subtype!(AcpiPowerResource
-> +    <- (ACPI_TYPE_POWER, power_resource, bindings::acpi_object__bindgen_=
-ty_7));
-> +
-> +impl AcpiBuffer {
-> +    /// Get Buffer's content
-> +    pub fn payload(&self) -> &[u8] {
-> +        // SAFETY: (pointer, length) indeed represents byte slice
-> +        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.le=
-ngth as usize) }
-> +    }
-> +}
-
-What about the values of the other types? How are they accessed?
-
-Also, I think it would be better to use a Deref impl rather than a method.
+> There's a logic inside ghes/cper to detect if the section_length
+> is too small, but it doesn't detect if it is too big.
+> 
+> Currently, if the firmware receives an ARM processor CPER record
+> stating that a section length is big, kernel will blindly trust
+> section_length, producing a very long dump. For instance, a 67
+> bytes record with ERR_INFO_NUM set 46198 and section length
+> set to 854918320 would dump a lot of data going a way past the
+> firmware memory-mapped area.
+> 
+> Fix it by adding a logic to prevent it to go past the buffer
+> if ERR_INFO_NUM is too big, making it report instead:
+> 
+> 	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
+> 	[Hardware Error]: event severity: recoverable
+> 	[Hardware Error]:  Error 0, type: recoverable
+> 	[Hardware Error]:   section_type: ARM processor error
+> 	[Hardware Error]:   MIDR: 0xff304b2f8476870a
+> 	[Hardware Error]:   section length: 854918320, CPER size: 67
+> 	[Hardware Error]:   section length is too big
+> 	[Hardware Error]:   firmware-generated error record is incorrect
+> 	[Hardware Error]:   ERR_INFO_NUM is 46198
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
