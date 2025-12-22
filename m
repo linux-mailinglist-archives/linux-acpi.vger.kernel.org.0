@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-19755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19758-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EAACD55FB
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:46:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82CBCD5619
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E45C3048095
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:44:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93A913076E0F
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E25A3126D4;
-	Mon, 22 Dec 2025 09:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DC53126A9;
+	Mon, 22 Dec 2025 09:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Zt5nLT9l"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rSgatthQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B431195B;
-	Mon, 22 Dec 2025 09:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DA8311C2D;
+	Mon, 22 Dec 2025 09:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766396661; cv=none; b=H1CxHFl1vQfRVljRdo+8878V1vT1gMMJ2WtrsVPU5hXu5SJizMFcIuLow2JGL1zBe+Yg7Tq2W27FRW2PlcpYIxADjNAlA88XWVqHN72T7lD6XEuS+G1Y+BTERQOP5LXRNwY2YBMJdDWpBUCWTO3GW5SIc6UtrPuRGo0xILrC14U=
+	t=1766396670; cv=none; b=fhDox+xN1T0n6s8L1k5D58qgOcqerOdX/IFaCRXoHxgOoTKkBFpwN7b1nwZ5NHAj92WPtssVBwf0nWF5ruzzlP/kbJ/Qgv6MwUpRFOzIfOdeifiU65d2BITubaahPj1AD70Wur8lxxL0AEdni8dRpgPVCpZczj3es78x9sfqltA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766396661; c=relaxed/simple;
-	bh=DnMBcfwUjtt1RUKLWGSecejfX5UC0YZOIdosE1gy7YA=;
+	s=arc-20240116; t=1766396670; c=relaxed/simple;
+	bh=FYHQ2NSy3TDY2wK1LOyjcZpK4nX67c7v2GeuD71vwYk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jA4SXgDbhxSeJimxQ1VCwFxKmm9eXtdhyt40GfHDQlgYriGgrBwBjGMyJsjgwy3izDK1akE5IzOd4t+3ahbE6uk/1Uy7/Gtq6yPK2JuInT3yp8Km0KVNABDXXZlO2izPVxyRHVLao3P5T3e9UDC45SFt8ADhZTl82hfhjeZOMtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Zt5nLT9l; arc=none smtp.client-ip=115.124.30.97
+	 MIME-Version; b=BBTYRA7/XRtdSN1ZxbzrGknsi1PwposWZwVIyNEtQnxMl+zfEL9WDDWI4d2xsK74mMz9g6VMrE4ODKNAhrwTfgH2rQh8H1wicmv1792JIQ4dHG39mJIjdP6GHn8I5VK2l+SiY/QeWEnXXBuCqis7ov+585A9zUuYGnkJ7L95fPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rSgatthQ; arc=none smtp.client-ip=115.124.30.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1766396655; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=a2pQ+C4SUP4Ig2ZogJ3bhHxA66J4i8YOEkIhS0I/+MI=;
-	b=Zt5nLT9lNnFKgrYRuBXdLvwUx/TARg7pog+L6uZfdWv0MvdD0Gra+eiJT1MNs8sMgO/HZb0R54ar9kvW+QfoMW+eoOZ5aAgj9f9gXQB42xW+DVBCCsD28+n1PiAl3e2g70V2z++8akVr7snXqERGTExhsj+1sF0NLK1LzlLckXQ=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOl83P_1766396653 cluster:ay36)
+	t=1766396659; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=QcihiQmex/U1JPCJ48hvx3ZiYeIXF1MRCpJ0DSZDo4k=;
+	b=rSgatthQWKL8Cv7Honsn+oLgi5sz6VemIBeidSv3BBJww7ZbHeZB4yQLQHcPv4noXe8KVfGDQMm7wJwLpJ9RD3XZ12RxATl+IJkeRcPWQcF2xwzaabh+Hmbcb/IjEb6TBnaKSfUQqsaDAMaXSEK2kNsCX4p4qYtrG4eA5Qdu+7s=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvORXCf_1766396657 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Dec 2025 17:44:15 +0800
+          Mon, 22 Dec 2025 17:44:18 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -54,9 +54,9 @@ To: catalin.marinas@arm.com,
 	yazen.ghannam@amd.com,
 	misono.tomohiro@fujitsu.com
 Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v4 06/17] ras: AEST: Support RAS Common Fault Injection Model Extension
-Date: Mon, 22 Dec 2025 17:43:39 +0800
-Message-Id: <20251222094351.38792-7-tianruidong@linux.alibaba.com>
+Subject: [PATCH v4 07/17] ras: AEST: Support CE threshold of error record
+Date: Mon, 22 Dec 2025 17:43:40 +0800
+Message-Id: <20251222094351.38792-8-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
 References: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
@@ -68,90 +68,224 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add inject register descripted in Common Fault Injection Model
-Extension.
+The CE threshold defines the number of Correctable Errors (CE) that
+must occur in a record before triggering an interrupt. Error records
+support multiple threshold configurations, including 8B, 16B, and 32B.
+This patch detects the supported threshold settings for error records
+and sets the default threshold to 1, ensuring an interrupt is generated
+for every CE occurrence.
 
 Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- drivers/ras/aest/aest-core.c | 15 ++++++++++++++-
- drivers/ras/aest/aest.h      | 10 ++++++++++
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/ras.h | 41 ++++++++++++++++++++
+ drivers/ras/aest/aest-core.c | 74 ++++++++++++++++++++++++++++++++++++
+ drivers/ras/aest/aest.h      | 17 +++++++++
+ include/linux/acpi_aest.h    |  3 ++
+ 4 files changed, 135 insertions(+)
 
+diff --git a/arch/arm64/include/asm/ras.h b/arch/arm64/include/asm/ras.h
+index da7c441252fe..6c51d27520c0 100644
+--- a/arch/arm64/include/asm/ras.h
++++ b/arch/arm64/include/asm/ras.h
+@@ -4,9 +4,50 @@
+ 
+ #include <linux/types.h>
+ 
++/* ERR<n>FR */
++#define ERR_FR_CE GENMASK_ULL(54, 53)
++#define ERR_FR_RP BIT(15)
++#define ERR_FR_CEC GENMASK_ULL(14, 12)
++
++#define ERR_FR_RP_SINGLE_COUNTER 0
++#define ERR_FR_RP_DOUBLE_COUNTER 1
++
++#define ERR_FR_CEC_0B_COUNTER 0
++#define ERR_FR_CEC_8B_COUNTER BIT(1)
++#define ERR_FR_CEC_16B_COUNTER BIT(2)
++
++/* ERR<n>MISC0 */
++
++/* ERR<n>FR.CEC == 0b010, ERR<n>FR.RP == 0  */
++#define ERR_MISC0_8B_OF BIT(39)
++#define ERR_MISC0_8B_CEC GENMASK_ULL(38, 32)
++
++/* ERR<n>FR.CEC == 0b100, ERR<n>FR.RP == 0  */
++#define ERR_MISC0_16B_OF BIT(47)
++#define ERR_MISC0_16B_CEC GENMASK_ULL(46, 32)
++
++#define ERR_MISC0_CEC_SHIFT 31
++
++#define ERR_8B_CEC_MAX (ERR_MISC0_8B_CEC >> ERR_MISC0_CEC_SHIFT)
++#define ERR_16B_CEC_MAX (ERR_MISC0_16B_CEC >> ERR_MISC0_CEC_SHIFT)
++
++/* ERR<n>FR.CEC == 0b100, ERR<n>FR.RP == 1  */
++#define ERR_MISC0_16B_OFO BIT(63)
++#define ERR_MISC0_16B_CECO GENMASK_ULL(62, 48)
++#define ERR_MISC0_16B_OFR BIT(47)
++#define ERR_MISC0_16B_CECR GENMASK_ULL(46, 32)
++
+ /* ERRDEVARCH */
+ #define ERRDEVARCH_REV GENMASK(19, 16)
+ 
++enum ras_ce_threshold {
++	RAS_CE_THRESHOLD_0B,
++	RAS_CE_THRESHOLD_8B,
++	RAS_CE_THRESHOLD_16B,
++	RAS_CE_THRESHOLD_32B,
++	UNKNOWN,
++};
++
+ struct ras_ext_regs {
+ 	u64 err_fr;
+ 	u64 err_ctlr;
 diff --git a/drivers/ras/aest/aest-core.c b/drivers/ras/aest/aest-core.c
-index 84b2fb8127ff..1218ae51079c 100644
+index 1218ae51079c..5cfe91a6d72a 100644
 --- a/drivers/ras/aest/aest-core.c
 +++ b/drivers/ras/aest/aest-core.c
-@@ -124,7 +124,7 @@ static int aest_init_node(struct aest_device *adev, struct aest_node *node,
- 			  struct acpi_aest_node *anode)
- {
- 	int i, ret;
--	u64 address;
-+	u64 address, flags;
+@@ -16,6 +16,79 @@ DEFINE_PER_CPU(struct aest_device, percpu_adev);
+ #undef pr_fmt
+ #define pr_fmt(fmt) "AEST: " fmt
  
- 	node->adev = adev;
- 	node->info = anode;
-@@ -145,6 +145,19 @@ static int aest_init_node(struct aest_device *adev, struct aest_node *node,
- 			return -ENOMEM;
- 	}
- 
-+	flags = anode->interface_hdr->flags;
-+	address = node->info->common->fault_inject_register_base;
-+	if ((flags & AEST_XFACE_FLAG_FAULT_INJECT) && address) {
-+		if (address - anode->interface_hdr->address < node->group->size)
-+			node->inj = node->base +
-+				    (address - anode->interface_hdr->address);
-+		else {
-+			node->inj = devm_ioremap(adev->dev, address, PAGE_SIZE);
-+			if (!node->inj)
-+				return -ENOMEM;
-+		}
++static enum ras_ce_threshold aest_get_ce_threshold(struct aest_record *record)
++{
++	u64 err_fr, err_fr_cec, err_fr_rp = -1;
++
++	err_fr = record_read(record, ERXFR);
++	err_fr_cec = FIELD_GET(ERR_FR_CEC, err_fr);
++	err_fr_rp = FIELD_GET(ERR_FR_RP, err_fr);
++
++	if (err_fr_cec == ERR_FR_CEC_0B_COUNTER)
++		return RAS_CE_THRESHOLD_0B;
++	else if (err_fr_rp == ERR_FR_RP_DOUBLE_COUNTER)
++		return RAS_CE_THRESHOLD_32B;
++	else if (err_fr_cec == ERR_FR_CEC_8B_COUNTER)
++		return RAS_CE_THRESHOLD_8B;
++	else if (err_fr_cec == ERR_FR_CEC_16B_COUNTER)
++		return RAS_CE_THRESHOLD_16B;
++	else
++		return UNKNOWN;
++}
++
++static const struct ce_threshold_info ce_info[] = {
++	[RAS_CE_THRESHOLD_0B] = { 0 },
++	[RAS_CE_THRESHOLD_8B] = {
++		.max_count = ERR_8B_CEC_MAX,
++		.mask = ERR_MISC0_8B_CEC,
++		.shift = ERR_MISC0_CEC_SHIFT,
++	},
++	[RAS_CE_THRESHOLD_16B] = {
++		.max_count = ERR_16B_CEC_MAX,
++		.mask = ERR_MISC0_16B_CEC,
++		.shift = ERR_MISC0_CEC_SHIFT,
++	},
++};
++
++static void aest_set_ce_threshold(struct aest_record *record)
++{
++	u64 err_misc0;
++	struct ce_threshold *ce = &record->ce;
++	const struct ce_threshold_info *info;
++
++	record->threshold_type = aest_get_ce_threshold(record);
++
++	switch (record->threshold_type) {
++	case RAS_CE_THRESHOLD_0B:
++		aest_record_dbg(record, "do not support CE threshold!\n");
++		return;
++	case RAS_CE_THRESHOLD_8B:
++		aest_record_dbg(record, "support 8 bit CE threshold!\n");
++		break;
++	case RAS_CE_THRESHOLD_16B:
++		aest_record_dbg(record, "support 16 bit CE threshold!\n");
++		break;
++	case RAS_CE_THRESHOLD_32B:
++		aest_record_dbg(record, "not support 32 bit CE threshold!\n");
++		break;
++	default:
++		aest_record_dbg(record, "Unknown misc0 ce threshold!\n");
 +	}
 +
- 	ret = aest_node_set_errgsr(adev, node);
- 	if (ret)
- 		return ret;
++	err_misc0 = record_read(record, ERXMISC0);
++	info = &ce_info[record->threshold_type];
++	ce->info = info;
++
++	// Default CE threshold is 1.
++	ce->count = info->max_count;
++	ce->threshold = DEFAULT_CE_THRESHOLD;
++	ce->reg_val = err_misc0 | info->mask;
++
++	record_write(record, ERXMISC0, ce->reg_val);
++	aest_record_dbg(record, "CE threshold is %llx, controlled by Kernel",
++			ce->threshold);
++}
++
+ static int get_aest_node_ver(struct aest_node *node)
+ {
+ 	u64 reg;
+@@ -54,6 +127,7 @@ static int aest_init_record(struct aest_record *record, int i,
+ 	record->addressing_mode = test_bit(i, node->info->addressing_mode);
+ 	record->index = i;
+ 	record->node = node;
++	aest_set_ce_threshold(record);
+ 
+ 	aest_record_dbg(record, "base: %p, index: %d, address mode: %x\n",
+ 			record->regs_base, record->index,
 diff --git a/drivers/ras/aest/aest.h b/drivers/ras/aest/aest.h
-index bf0b9a49fdaa..505ecd9635bc 100644
+index 505ecd9635bc..85eeed79bcbe 100644
 --- a/drivers/ras/aest/aest.h
 +++ b/drivers/ras/aest/aest.h
-@@ -60,6 +60,9 @@
- #define ERXMISC1 0x28
- #define ERXMISC2 0x30
- #define ERXMISC3 0x38
-+#define ERXPFGF 0x800
-+#define ERXPFGCTL 0x808
-+#define ERXPFGCDN 0x810
+@@ -9,6 +9,7 @@
+ #include <asm/ras.h>
  
- #define GIC_ERRDEVARCH 0xFFBC
+ #define MAX_GSI_PER_NODE 2
++#define DEFAULT_CE_THRESHOLD 1
  
-@@ -120,6 +123,7 @@ struct aest_node {
- 	u8 type;
- 	void *errgsr;
- 	void *base;
-+	void *inj;
+ #define record_read(record, offset) \
+ 	record->access->read(record->regs_base, offset)
+@@ -71,6 +72,19 @@ struct aest_access {
+ 	void (*write)(void *base, u32 offset, u64 val);
+ };
  
- 	/*
- 	 * This bitmap indicates which of the error records within this error
-@@ -208,6 +212,9 @@ static inline u64 aest_sysreg_read(void *__unused, u32 offset)
- 		CASE_READ(res, ERXMISC1)
- 		CASE_READ(res, ERXMISC2)
- 		CASE_READ(res, ERXMISC3)
-+		CASE_READ(res, ERXPFGF)
-+		CASE_READ(res, ERXPFGCTL)
-+		CASE_READ(res, ERXPFGCDN)
- 	default :
- 		res = 0;
- 	}
-@@ -225,6 +232,9 @@ static inline void aest_sysreg_write(void *base, u32 offset, u64 val)
- 		CASE_WRITE(val, ERXMISC1)
- 		CASE_WRITE(val, ERXMISC2)
- 		CASE_WRITE(val, ERXMISC3)
-+		CASE_WRITE(val, ERXPFGF)
-+		CASE_WRITE(val, ERXPFGCTL)
-+		CASE_WRITE(val, ERXPFGCDN)
- 	default :
- 		return;
- 	}
++struct ce_threshold_info {
++	const u64 max_count;
++	const u64 mask;
++	const u64 shift;
++};
++
++struct ce_threshold {
++	const struct ce_threshold_info *info;
++	u64 count;
++	u64 threshold;
++	u64 reg_val;
++};
++
+ struct aest_record {
+ 	char *name;
+ 	int index;
+@@ -88,6 +102,9 @@ struct aest_record {
+ 	int addressing_mode;
+ 	struct aest_node *node;
+ 	const struct aest_access *access;
++
++	struct ce_threshold ce;
++	enum ras_ce_threshold threshold_type;
+ };
+ 
+ struct aest_group {
+diff --git a/include/linux/acpi_aest.h b/include/linux/acpi_aest.h
+index 77187ce43d44..a7898c643896 100644
+--- a/include/linux/acpi_aest.h
++++ b/include/linux/acpi_aest.h
+@@ -13,6 +13,9 @@
+ /* AEST interrupt */
+ #define AEST_INTERRUPT_MODE BIT(0)
+ 
++#define AEST_INTERRUPT_FHI_UE_SUPPORT		BIT(0)
++#define AEST_INTERRUPT_FHI_UE_NO_SUPPORT		BIT(1)
++
+ #define AEST_MAX_INTERRUPT_PER_NODE 2
+ 
+ /* AEST interface */
 -- 
 2.51.2.612.gdc70283dfc
 
