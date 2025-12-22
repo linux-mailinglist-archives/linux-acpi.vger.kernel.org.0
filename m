@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-19762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19765-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC032CD5652
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:50:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DEDCD566A
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08448301B495
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:45:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98FB6304283D
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54DD312822;
-	Mon, 22 Dec 2025 09:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE37313535;
+	Mon, 22 Dec 2025 09:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rMF2aAbi"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Wpk44VVx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B283126C1;
-	Mon, 22 Dec 2025 09:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA753126B3;
+	Mon, 22 Dec 2025 09:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766396678; cv=none; b=okydaJ6xhzw//EvvoCUZOTKC/1ptQwcbK7HYhLIpcJhn3ZKFr1oNGBOuc/A5yqoyEhzrI9qx0mkKRhhsi1pAT2VPAotcyp0qK228GG+OnYZczrMuluDQUvezVbY19mvCDopQzT1CNrr1n30aWII7Dknutzu13/qJrkk0CvrNERQ=
+	t=1766396688; cv=none; b=CefnwyEhneIWVWC56ggkXS048JWe25aFsROneLhrq44KvfQ+22/vIKMJAl3RvKLRVko5iUj6jh65Fw8XRa6E11hZVQ//02cVCeSL9nWGgiJahuaL3NN7jxlKTzfb3PXwGxs0AU3Hdgr0g3wtQxDAerUEkMugCRXsqf8mSlPdZUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766396678; c=relaxed/simple;
-	bh=RoBhdZh2mMQ2EdPvodoFkQFkBo5ObbvfC8qDfvU9TOM=;
+	s=arc-20240116; t=1766396688; c=relaxed/simple;
+	bh=k7h5pMebczfWHyZpuF6Dgu/4VltmsizLaomXo2kKj9w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UHfVmp2pHdoR82INAz2eRq+p/NajMc6Qsjez5aw6k7ppSv1gZio9OInz+MinFDdd85Xr3uW0ws+qOYdeeVQFC0aHS4Nu+UmV0IrsaCM8+mJ2pmBBvUL41U2YMhoXT9Xssncr2JDPw4NIyfHlKxEHQjENzRP0Dx48KOqsqRO3cQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rMF2aAbi; arc=none smtp.client-ip=115.124.30.113
+	 MIME-Version; b=fugTNhWt/7jBw/3Gvx4viPM2tDEX4DD9H5TK+5HNqi/974Fcg1pZAB4yonag0IfoV4ZyeNgdJVuGMdqxyYw6oDMQxlUCqZM2BsP6uAh/socvVvKp6T+WDsJwW0hbLg4YmmUK5AUqWXVdquIlZFNIJ6NC0WSMrN2U+q+vn1GGlEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Wpk44VVx; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1766396673; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=DnOhC3gDzjPKL1u8Gf/D8zWgsYNDRy9TN8Idu01s0JM=;
-	b=rMF2aAbibPp3HYvGlbGj+pKiAZyi4vBsuH3sC4gdekfGbhGTfDiyA8U3fqmylOSGolkLEazsMuqL10uMhvKj0qwLWxxJFSwXo0Z7IMMY0hpTGqZjbQmSc08AvlS4D4cvyDkyARf/snQ91VmsdSN8Jl3A+KVPw3EiS7zMZfkfO4Q=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOT.WZ_1766396671 cluster:ay36)
+	t=1766396676; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=xo2GhQ1Tiqx6z7szxh9Vno7FSfPcVPwc3Jhu4A8FaNw=;
+	b=Wpk44VVx5Vv0X9HdsGuh7ZfXLgYyWfSfcIxTVAs8QroBEOe4VLvzjN2RRXN2LUIuxpOrmkOiImguA3T8G+67LP+Ti/4143zadHT8TZKO+dIUZxmWzC8LkSiSjQH0E7t8eAfy/FHG7kfH5DortUOgfzADYN2bvoNjPDPiSBnhkso=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOU8aH_1766396673 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Dec 2025 17:44:33 +0800
+          Mon, 22 Dec 2025 17:44:35 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -54,9 +54,9 @@ To: catalin.marinas@arm.com,
 	yazen.ghannam@amd.com,
 	misono.tomohiro@fujitsu.com
 Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v4 12/17] ras: AEST: Allow configuring CE threshold via debugfs
-Date: Mon, 22 Dec 2025 17:43:45 +0800
-Message-Id: <20251222094351.38792-13-tianruidong@linux.alibaba.com>
+Subject: [PATCH v4 13/17] ras: AEST: Introduce AEST inject interface to test AEST driver
+Date: Mon, 22 Dec 2025 17:43:46 +0800
+Message-Id: <20251222094351.38792-14-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
 References: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
@@ -68,117 +68,329 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This commit introduces the ability to configure the Corrected Error (CE)
-threshold for AEST records through debugfs. This allows administrators to
-dynamically adjust the CE threshold for error reporting.
+AEST offers both soft and hard injection. Soft injection simulates errors
+in software, providing flexibility to define the error register content.
+Hard injection, on the other hand, utilizes error injection registers to
+introduce hardware faults, strictly requiring values that adhere to their
+specifications.
+
+Read Documentation/ABI/testing/debugfs-aest to learn how to use them.
 
 Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- Documentation/ABI/testing/debugfs-aest | 16 ++++++++++
- drivers/ras/aest/aest-sysfs.c          | 42 ++++++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+ Documentation/ABI/testing/debugfs-aest |  37 +++++++
+ drivers/ras/aest/Makefile              |   1 +
+ drivers/ras/aest/aest-core.c           |  24 +++--
+ drivers/ras/aest/aest-inject.c         | 131 +++++++++++++++++++++++++
+ drivers/ras/aest/aest-sysfs.c          |   8 +-
+ drivers/ras/aest/aest.h                |   2 +
+ 6 files changed, 193 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/ras/aest/aest-inject.c
 
 diff --git a/Documentation/ABI/testing/debugfs-aest b/Documentation/ABI/testing/debugfs-aest
-index a984fcedede2..76ba1b77b274 100644
+index 76ba1b77b274..bd7742a36321 100644
 --- a/Documentation/ABI/testing/debugfs-aest
 +++ b/Documentation/ABI/testing/debugfs-aest
-@@ -23,6 +23,14 @@ Description:
- 		See more at:
- 			https://developer.arm.com/documentation/den0085/latest/
- 
-+What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/ce_threshold
-+Date:		Dec 2025
-+KernelVersion	6.19
-+Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
-+Description:
-+		(WO) Write the ce threshold to all records of this node. Failed
-+		if input exceeded the maximum threshold
-+
- What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/err_count
- Date:		Dec 2025
- KernelVersion	6.19
-@@ -37,6 +45,14 @@ Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
+@@ -59,3 +59,40 @@ KernelVersion	6.19
+ Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
  Description:
- 		(RO) Read err_* register and return val.
- 
-+What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/record<index>/ce_threshold
+ 		(RO) Outputs error statistics for all this records.
++
++What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/record<index>/inject/err_*
 +Date:		Dec 2025
 +KernelVersion	6.19
 +Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
 +Description:
-+		(RW) Read and write the ce threshold to this record. Failed
-+		if input exceeded the maximum threshold
++		(RW) These registers are used to simulate soft injection errors
++		by holding error register values. You can write any values
++		to them. To trigger the injection, you need to write soft_inject
++		at last. The validity of the injected error depends on the
++		value written to err_status.
 +
- What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/record<index>/err_count
- Date:		Dec 2025
- KernelVersion	6.19
++		Accepts values -  any.
++
++What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/record<index>/inject/soft_inject
++Date:		Dec 2025
++KernelVersion	6.19
++Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
++Description:
++		(WO) Write any value to this file to trigger the error
++		injection. Make sure you have specified all necessary error
++		parameters, i.e. this write should be the last step when
++		injecting errors.
++
++		Accepts values -  any.
++
++What:		/sys/kernel/debug/aest/<name>.<id>/<node_name>/record<index>/inject/hard_inject
++Date:		Dec 2025
++KernelVersion	6.19
++Contact:	Ruidong Tian <tianruidong@linux.alibaba.com>
++Description:
++		(WO) If the AEST table provides error injection registers,
++		you can write to them via this interface. For instance,
++		values can be written to the ERXPFGCTL register. The post-injection
++		behavior is then determined by the hardware specification.
++
++		Accepts values - any.
+diff --git a/drivers/ras/aest/Makefile b/drivers/ras/aest/Makefile
+index 75495413d2b6..5ee10fc8b2e9 100644
+--- a/drivers/ras/aest/Makefile
++++ b/drivers/ras/aest/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_AEST) 	+= aest.o
+ 
+ aest-y		:= aest-core.o
+ aest-y		+= aest-sysfs.o
++aest-y		+= aest-inject.o
+diff --git a/drivers/ras/aest/aest-core.c b/drivers/ras/aest/aest-core.c
+index 75cca98024ad..a290b482bf8b 100644
+--- a/drivers/ras/aest/aest-core.c
++++ b/drivers/ras/aest/aest-core.c
+@@ -273,7 +273,7 @@ static void aest_panic(struct aest_record *record, struct ras_ext_regs *regs,
+ 	panic(msg);
+ }
+ 
+-static void aest_proc_record(struct aest_record *record, void *data)
++void aest_proc_record(struct aest_record *record, void *data, bool fake)
+ {
+ 	struct ras_ext_regs regs = { 0 };
+ 	int *count = data;
+@@ -315,9 +315,15 @@ static void aest_proc_record(struct aest_record *record, void *data)
+ 	/* panic if unrecoverable and uncontainable error encountered */
+ 	ue = FIELD_GET(ERR_STATUS_UET, regs.err_status);
+ 	if ((regs.err_status & ERR_STATUS_UE) &&
+-	    (ue == ERR_STATUS_UET_UC || ue == ERR_STATUS_UET_UEU))
+-		aest_panic(record, &regs,
+-			   "AEST: unrecoverable error encountered");
++	    (ue == ERR_STATUS_UET_UC || ue == ERR_STATUS_UET_UEU)) {
++		if (fake)
++			aest_record_info(
++				record,
++				"Simulated error! Skip panic due to fault injection\n");
++		else
++			aest_panic(record, &regs,
++				   "AEST: unrecoverable error encountered");
++	}
+ 
+ 	aest_log(record, &regs);
+ 
+@@ -335,7 +341,8 @@ static void aest_proc_record(struct aest_record *record, void *data)
+ 	record_write(record, ERXSTATUS, regs.err_status);
+ }
+ 
+-static void aest_node_foreach_record(void (*func)(struct aest_record *, void *),
++static void aest_node_foreach_record(void (*func)(struct aest_record *, void *,
++						  bool),
+ 				     struct aest_node *node, void *data,
+ 				     unsigned long *bitmap)
+ {
+@@ -344,7 +351,7 @@ static void aest_node_foreach_record(void (*func)(struct aest_record *, void *),
+ 	for_each_clear_bit(i, bitmap, node->record_count) {
+ 		aest_select_record(node, i);
+ 
+-		func(&node->records[i], data);
++		func(&node->records[i], data, false);
+ 
+ 		aest_sync(node);
+ 	}
+@@ -379,7 +386,7 @@ static int aest_proc(struct aest_node *node)
+ 			if (test_bit(i * BITS_PER_LONG + j,
+ 				     node->status_reporting))
+ 				continue;
+-			aest_proc_record(&node->records[j], &count);
++			aest_proc_record(&node->records[j], &count, false);
+ 		}
+ 	}
+ 
+@@ -595,7 +602,8 @@ static int aest_init_record(struct aest_record *record, int i,
+ 	return 0;
+ }
+ 
+-static void aest_online_record(struct aest_record *record, void *data)
++static void aest_online_record(struct aest_record *record, void *data,
++			       bool __unused)
+ {
+ 	if (record_read(record, ERXFR) & ERR_FR_CE)
+ 		aest_set_ce_threshold(record);
+diff --git a/drivers/ras/aest/aest-inject.c b/drivers/ras/aest/aest-inject.c
+new file mode 100644
+index 000000000000..fe6ccac8338e
+--- /dev/null
++++ b/drivers/ras/aest/aest-inject.c
+@@ -0,0 +1,131 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * ARM Error Source Table Support
++ *
++ * Copyright (c) 2024, Alibaba Group.
++ */
++
++#include "aest.h"
++
++static struct ras_ext_regs regs_inj;
++
++struct inj_attr {
++	struct attribute attr;
++	ssize_t (*show)(struct aest_node *n, struct inj_attr *a, char *b);
++	ssize_t (*store)(struct aest_node *n, struct inj_attr *a, const char *b,
++				size_t c);
++};
++
++struct aest_inject {
++	struct aest_node *node;
++	struct kobject kobj;
++};
++
++#define to_inj(k)	container_of(k, struct aest_inject, kobj)
++#define to_inj_attr(a)	container_of(a, struct inj_attr, attr)
++
++static u64 aest_sysreg_read_inject(void *__unused, u32 offset)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	return p[offset/8];
++}
++
++static void aest_sysreg_write_inject(void *base, u32 offset, u64 val)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	p[offset/8] = val;
++}
++
++static u64 aest_iomem_read_inject(void *base, u32 offset)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	return p[offset/8];
++}
++
++static void aest_iomem_write_inject(void *base, u32 offset, u64 val)
++{
++	u64 *p = (u64 *)&regs_inj;
++
++	p[offset/8] = val;
++}
++
++static struct aest_access aest_access_inject[] = {
++	[ACPI_AEST_NODE_SYSTEM_REGISTER] = {
++		.read = aest_sysreg_read_inject,
++		.write = aest_sysreg_write_inject,
++	},
++
++	[ACPI_AEST_NODE_MEMORY_MAPPED] = {
++		.read = aest_iomem_read_inject,
++		.write = aest_iomem_write_inject,
++	},
++	[ACPI_AEST_NODE_SINGLE_RECORD_MEMORY_MAPPED] = {
++		.read = aest_iomem_read_inject,
++		.write = aest_iomem_write_inject,
++	},
++	{ }
++};
++
++static int soft_inject_store(void *data, u64 val)
++{
++	int count = 0;
++	struct aest_record record_inj, *record = data;
++	struct aest_node node_inj, *node = record->node;
++
++	memcpy(&node_inj, node, sizeof(*node));
++	node_inj.name = "AEST-injection";
++
++	record_inj.access = &aest_access_inject[node->info->interface_hdr->type];
++	record_inj.node = &node_inj;
++	record_inj.index = record->index;
++
++	regs_inj.err_status |= ERR_STATUS_V;
++
++	aest_proc_record(&record_inj, &count, true);
++
++	if (count != 1)
++		return -EIO;
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(soft_inject_ops, NULL, soft_inject_store, "%llu\n");
++
++static int hard_inject_store(void *data, u64 val)
++{
++	struct aest_record *record = data;
++	struct aest_node *node = record->node;
++
++	if (!node->inj)
++		return -EPERM;
++
++	aest_select_record(node, record->index);
++	record_write(record, ERXPFGCTL, val);
++	record_write(record, ERXPFGCDN, 0x100);
++	aest_sync(node);
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(hard_inject_ops, NULL, hard_inject_store, "%llu\n");
++
++void aest_inject_init_debugfs(struct aest_record *record)
++{
++	struct dentry *inj;
++
++	inj = debugfs_create_dir("inject", record->debugfs);
++
++	debugfs_create_u64("err_fr", 0600, inj, &regs_inj.err_fr);
++	debugfs_create_u64("err_ctrl", 0600, inj, &regs_inj.err_ctlr);
++	debugfs_create_u64("err_status", 0600, inj, &regs_inj.err_status);
++	debugfs_create_u64("err_addr", 0600, inj, &regs_inj.err_addr);
++	debugfs_create_u64("err_misc0", 0600, inj, &regs_inj.err_misc[0]);
++	debugfs_create_u64("err_misc1", 0600, inj, &regs_inj.err_misc[1]);
++	debugfs_create_u64("err_misc2", 0600, inj, &regs_inj.err_misc[2]);
++	debugfs_create_u64("err_misc3", 0600, inj, &regs_inj.err_misc[3]);
++	debugfs_create_file("soft_inject", 0400, inj, record, &soft_inject_ops);
++
++	if (record->node->inj)
++		debugfs_create_file("hard_inject", 0400, inj, record, &hard_inject_ops);
++}
 diff --git a/drivers/ras/aest/aest-sysfs.c b/drivers/ras/aest/aest-sysfs.c
-index b54e879506aa..392e7ad8328e 100644
+index 392e7ad8328e..66e9c1103f99 100644
 --- a/drivers/ras/aest/aest-sysfs.c
 +++ b/drivers/ras/aest/aest-sysfs.c
-@@ -7,6 +7,25 @@
- 
- #include "aest.h"
- 
-+static void
-+aest_store_threshold(struct aest_record *record, void *data)
-+{
-+	u64 err_misc0, *threshold = data;
-+	struct ce_threshold *ce = &record->ce;
-+
-+	if (*threshold > ce->info->max_count)
-+		return;
-+
-+	ce->threshold = *threshold;
-+	ce->count = ce->info->max_count - ce->threshold + 1;
-+
-+	err_misc0 = record_read(record, ERXMISC0);
-+	ce->reg_val = (err_misc0 & ~ce->info->mask) |
-+			(ce->count << ce->info->shift);
-+
-+	record_write(record, ERXMISC0, ce->reg_val);
-+}
-+
- static void
- aest_error_count(struct aest_record *record, void *data)
- {
-@@ -77,6 +96,27 @@ DEFINE_AEST_DEBUGFS_ATTR(err_misc1, ERXMISC1);
- DEFINE_AEST_DEBUGFS_ATTR(err_misc2, ERXMISC2);
- DEFINE_AEST_DEBUGFS_ATTR(err_misc3, ERXMISC3);
- 
-+static int record_ce_threshold_get(void *data, u64 *val)
-+{
-+	struct aest_record *record = data;
-+
-+	*val = record->ce.threshold;
-+	return 0;
-+}
-+
-+static int record_ce_threshold_set(void *data, u64 val)
-+{
-+	u64 threshold = val;
-+	struct aest_record *record = data;
-+
-+	aest_store_threshold(record, &threshold);
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(record_ce_threshold_ops, record_ce_threshold_get,
-+					record_ce_threshold_set, "%llu\n");
-+
- static int aest_record_err_count_show(struct seq_file *m, void *data)
- {
- 	struct aest_record *record = m->private;
-@@ -116,6 +156,8 @@ static void aest_record_init_debugfs(struct aest_record *record)
- 								&err_misc3_ops);
- 	debugfs_create_file("err_count", 0400, record->debugfs, record,
+@@ -158,6 +158,7 @@ static void aest_record_init_debugfs(struct aest_record *record)
  						&aest_record_err_count_fops);
-+	debugfs_create_file("ce_threshold", 0600, record->debugfs, record,
-+						&record_ce_threshold_ops);
+ 	debugfs_create_file("ce_threshold", 0600, record->debugfs, record,
+ 						&record_ce_threshold_ops);
++	aest_inject_init_debugfs(record);
  }
  
  static void
+@@ -190,8 +191,8 @@ aest_oncore_dev_init_debugfs(struct aest_device *adev)
+ 	for_each_possible_cpu(cpu) {
+ 		percpu_dev = this_cpu_ptr(adev->adev_oncore);
+ 
+-		snprintf(name, sizeof(name), "processor%u", cpu);
+-		percpu_dev->debugfs = debugfs_create_dir(name, aest_debugfs);
++		snprintf(name, sizeof(name), "processor%u%u", cpu);
++		percpu_dev->debugfs = debugfs_create_dir(name, adev->debugfs);
+ 
+ 		for (i = 0; i < adev->node_cnt; i++) {
+ 			node = &adev->nodes[i];
+@@ -208,6 +209,9 @@ void aest_dev_init_debugfs(struct aest_device *adev)
+ 	int i;
+ 	struct aest_node *node;
+ 
++	if (!aest_debugfs)
++		dev_err(adev->dev, "debugfs not enabled\n");
++
+ 	adev->debugfs = debugfs_create_dir(dev_name(adev->dev), aest_debugfs);
+ 	if (aest_dev_is_oncore(adev)) {
+ 		aest_oncore_dev_init_debugfs(adev);
+diff --git a/drivers/ras/aest/aest.h b/drivers/ras/aest/aest.h
+index 802430857dc4..2f6a7b9ca4ef 100644
+--- a/drivers/ras/aest/aest.h
++++ b/drivers/ras/aest/aest.h
+@@ -362,3 +362,5 @@ static inline bool aest_dev_is_oncore(struct aest_device *adev)
+ }
+ 
+ void aest_dev_init_debugfs(struct aest_device *adev);
++void aest_inject_init_debugfs(struct aest_record *record);
++void aest_proc_record(struct aest_record *record, void *data, bool fake);
 -- 
 2.51.2.612.gdc70283dfc
 
