@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-19763-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19766-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F66CD5649
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:50:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BE1CD5661
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 10:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86AA93037519
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:45:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61893301EF87
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 09:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70685312800;
-	Mon, 22 Dec 2025 09:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD231355B;
+	Mon, 22 Dec 2025 09:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ydqZ8wnY"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="S0exGpHH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939FC3128B8;
-	Mon, 22 Dec 2025 09:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C67313294;
+	Mon, 22 Dec 2025 09:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766396683; cv=none; b=qNMZMphWmawA3QXNGj9svZbh5z2mYmcgA/ZEpeqh/4nFFNqmilDSIwp6gaVXednv1wqpo5hxdtOP14mL3t4gBZMoyypi6WnbtQDepxmvaaU0I4FpPsCYb4bjYrPN2FzBaRkTEUbuj0Qho6S3b5qwQF5lAjo2Gg0IMbed8UDALVM=
+	t=1766396690; cv=none; b=CDEwQNxy2kE3KDMwJ16gmGf5WMMavmQQ/Kn+WOubpkvzzAitXQQdgohLioDYG73m8WdAcbaTuZduQNQI7EBEFTxlfUhZpoFGdLagQQpJn7pUsUsAnuEGbKwssNBb4VgQJ5wNcXFtoEjwG9eULNzfy83MFUkdy4yBzeczoHCrk74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766396683; c=relaxed/simple;
-	bh=xC1SOZNAbMOTNg3DPTnK04IkfoeXo/89tWhiQrdjPbU=;
+	s=arc-20240116; t=1766396690; c=relaxed/simple;
+	bh=eWwLxENgLU7z7XZ/WUbyRESjF0mIjuxJwcei3xLWZWQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kcZUU4q534a5StJNpR9wH2AZ3ReMv2U41JwfxK6wlpqY1521z/Jx3M+TuZxl+3FGOMsETY2lDV8mV8903ISB3HZW9qo2Sg7HLcwKbP2xd206fQFzfwqeirDsn5kmMU3JpWYXTrGqZHUNY5nkuQ2E2NMojB8kGf+8bd1EfqPyN6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ydqZ8wnY; arc=none smtp.client-ip=115.124.30.131
+	 MIME-Version; b=KA9RLp8WpFQPk3SoTk+KRzIaICtc3/Cr53qLVRMi/JEN13gK/VrRGmx9ubFMsloOXZoEKbj7PsvC0CPpjIIYKVvxIxF4cXX15fI64pAQ7TVQmUbMe3ZEcyVhFQppPxv53+iGDLu4KOZMcxRw7KBsu63oR98Y0sbafoH+rPIH0hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=S0exGpHH; arc=none smtp.client-ip=115.124.30.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1766396678; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=LbcgRIezxDawY7xcu3ovX9hkaM5X1wVXgi1CFgzLbWo=;
-	b=ydqZ8wnYzU6Te4rFlWlBcLIrZfCHsuMFGjVUJQhGmFd+1To21SePwq+WgJ8f63fGhQztpQwn9olU9FRdR6wVjo941IcS7vLySO7HTZBViM4wR4hwwXIPYAX4kqJUzYpJz+GRhjhN7MqIy6M8BAs4a1Ysu1MxGBqugrq8m8p4vAc=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOT.Y9_1766396676 cluster:ay36)
+	t=1766396680; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=jZ/B4MXERfJ26Le+E/44WzHr/HfvoQfr2TdZTK6VJkU=;
+	b=S0exGpHHikVzkGMaQ6HtwaST4SYlhHcLhUC+vL433zQCbBltwtkPiT3cjhgzJMnygw/I8abwzIC1AsV4kfjQ3sQY1fTKEMfl7gB4krOYL4noAfKqBL8aUMPUn7qggULqVvvdGSHrP7A2obwuVQ+zyqDgDp44vgUV7FWfOREqIVw=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvOl8BF_1766396678 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Dec 2025 17:44:37 +0800
+          Mon, 22 Dec 2025 17:44:39 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -54,9 +54,9 @@ To: catalin.marinas@arm.com,
 	yazen.ghannam@amd.com,
 	misono.tomohiro@fujitsu.com
 Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v4 14/17] ras: ATL: Unified ATL interface for ARM64 and AMD
-Date: Mon, 22 Dec 2025 17:43:47 +0800
-Message-Id: <20251222094351.38792-15-tianruidong@linux.alibaba.com>
+Subject: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
+Date: Mon, 22 Dec 2025 17:43:48 +0800
+Message-Id: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
 References: <20251222094351.38792-1-tianruidong@linux.alibaba.com>
@@ -68,9 +68,17 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Translate device normalize address in AMD, also named logical address,
-to system physical address is a common interface in RAS. Provides common
-interface both for AMD and ARM.
+Certain components report errors using their internal physical addresses.
+For instance, on AMD platforms, the UMC (Unified Memory Controller) reports
+normalized addresses, while on Arm systems, memory controllers may report
+logical addresses. These addresses must be translated into System Physical
+Addresses (SPA) before the OS can utilize them effectively.
+
+AMD already provides the amd_atl_umc_na_to_spa interface for physical address
+translation. This patch introduces a common function, atl_ras_la_to_spa,
+intended for use by both AMD and Arm64 architectures. The parameters of this
+function are architecture-specific data required for the address translation
+process.
 
 Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
