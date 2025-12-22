@@ -1,159 +1,147 @@
-Return-Path: <linux-acpi+bounces-19744-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19745-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997E5CD474A
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 00:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6311DCD4B1C
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 05:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A0CF301A1A6
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Dec 2025 23:40:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 097993006F5B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Dec 2025 04:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642D430F524;
-	Sun, 21 Dec 2025 23:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08069237A4F;
+	Mon, 22 Dec 2025 04:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cno3pLJj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEFoCh10"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248EB2BE7AB;
-	Sun, 21 Dec 2025 23:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0892155326;
+	Mon, 22 Dec 2025 04:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766360420; cv=none; b=OtX/EC/QDapPsbDEp4OmHsWIqD4A44oVRcleE+8sBECs0FaMDKBMONkHIX9ayNejujl6JmypZo9ofSOqzsM4GO+gEhOU9rZZ5QTmj341ELY80sSYl7xLGvEzoSLY95tC5SAY6yw4IoW3VyU+kQWalJqP8CtK34nr2f7CJAnDxWg=
+	t=1766378415; cv=none; b=nblPTFgZ+S8yMRess3Bwdin/czoI+QKoCnWuZYvqJmKwob+fhUUEWC0RgQ9ZHlobt0BnUvwUcvNpHKaPCZzDYsyZoxPOPu0XIeQFlm8mNSu71IhtqVozoU8T1/B4dUl3N6snJwhma7hSeq17o86OdQZzGk0k61Avs2Q2qLdrwwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766360420; c=relaxed/simple;
-	bh=e9eJeejx8g4//rFgeHHEHuKIrp9YsEoXUX37jxFDU1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fea7kaKXTH8AZCIyHbFHb+d9Xx7duwXuZ9gZ+QvabS0tOK5SA5xcZxrlgwFhSAnUmIeEHPGnvKQhcV4pqwsFY6jObDQdpO6XUHtK1rPrqUQkfsKUWKWO43UGhMoMKCozt7KQzpvrzAjdJ+Cp5G8f/xGAPUQA/1QjIwuFF3SL3Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cno3pLJj; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766360417; x=1797896417;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e9eJeejx8g4//rFgeHHEHuKIrp9YsEoXUX37jxFDU1k=;
-  b=cno3pLJjQRQUuWZiDjIqzomHdiGyApocZZF1ySBK4eshAIExXweueDpp
-   M3YQofGhamMnJwvAOeylnT/DbcfRohwKygwn1jwrLdm2/vAeAaACExn6r
-   RezkCW/+3CKiWRjBY0HdcINC1IHqEFbmWcZcLdsxAYP92glKgf/Z//wpI
-   dSkpsp9qOl2vA7Ny3TSnVuUy+csm9g8Jxd9QSjoPG8U4rN7goVCIHgxIh
-   FF1SkMsARrRZL7mRbUOg1tNVbWsOCzaFlDsSqhENfIsMNJsPX4l4w9EBC
-   X/uAj+84nb8n81F54SKMec3opltn2SHvwQitqG5WLyE1jc1lz0P5ql9fz
-   g==;
-X-CSE-ConnectionGUID: 80GOKc8hT4CK2yDtGaOH/Q==
-X-CSE-MsgGUID: smJ7yMIxSPmX6G9PGspCFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="85805556"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="85805556"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 15:40:14 -0800
-X-CSE-ConnectionGUID: IAayTUEtQcmpvCzIfBzPsw==
-X-CSE-MsgGUID: tZ7Ss/XWR3ibjJDzWPED2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="230040405"
-Received: from igk-lkp-server01.igk.intel.com (HELO 8a0c053bdd2a) ([10.211.93.152])
-  by orviesa002.jf.intel.com with ESMTP; 21 Dec 2025 15:40:09 -0800
-Received: from kbuild by 8a0c053bdd2a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXT1z-000000005H6-24HZ;
-	Sun, 21 Dec 2025 23:40:07 +0000
-Date: Mon, 22 Dec 2025 00:39:10 +0100
-From: kernel test robot <lkp@intel.com>
-To: Ahmed Tiba <ahmed.tiba@arm.com>, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, tony.luck@intel.com, bp@alien8.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	catalin.marinas@arm.com, will@kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com, ahmed.tiba@arm.com
-Subject: Re: [PATCH 03/12] ras: add estatus vendor handling and processing
-Message-ID: <202512220010.sdcS5LYV-lkp@intel.com>
-References: <20251217112845.1814119-4-ahmed.tiba@arm.com>
+	s=arc-20240116; t=1766378415; c=relaxed/simple;
+	bh=59RINjXBROtdfqnPC4dtWKuiuAB2h20wNTa080CYBZw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mQe3g5YOjbMTPItjDdpGLTRqjk1Z/TnLzel68jR1kFeYpeGteSxLiJCdlKH+JcaahxSHCyVmAAh1s1dpBxMcLKc0aZXwnynoCKQen51FFTFNS8s/29uYkxW7elhqljQwG9lWWjV52Y2YivrROGcaTilYTl+1ArGLyikwda+w7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEFoCh10; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D98C4CEF1;
+	Mon, 22 Dec 2025 04:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766378415;
+	bh=59RINjXBROtdfqnPC4dtWKuiuAB2h20wNTa080CYBZw=;
+	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EEFoCh10HKBznipcniS9TErcGHUjR/HWpi2BVyG2coQkvipR5IDSYJUqXr7KTxXLA
+	 iZV3Yx8682Kht0cPq1usDVI/Fb7O1or2+pXl0dQqtSyIYVmMabUYU4QrlOFarxddCk
+	 Fpl+7YUNS3Xp96QAFDINeU/vyPzFdsTMmyPPX+XBVGqenuZx9LO9mdowgv4DGucppm
+	 rfjcCphqd6EymNeyogvW6u2pM4vfaqy9tjLpeUJ0cSpZVntQxYbcQ/nXUgyX4coHwG
+	 PKIEITTVnBkTzqFG/bp9QgtxWBVEoyb5Pyq2Q+CbOvY7y3DnZN+Wl9o0QAHFK2Dul2
+	 Ws6Z1C/mGj6Vg==
+Message-ID: <8a43a502-af65-41d9-9ae0-81f9a27ff45e@kernel.org>
+Date: Mon, 22 Dec 2025 05:40:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251217112845.1814119-4-ahmed.tiba@arm.com>
+User-Agent: Mozilla Thunderbird
+Reply-To: Daniel Gomez <da.gomez@kernel.org>
+Subject: Re: [PATCH] software node: replace -EEXIST with -EBUSY
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Lucas De Marchi <demarchi@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Gomez <da.gomez@samsung.com>
+References: <20251220-dev-module-init-eexists-linux-acpi-v1-1-af59b1a0e217@samsung.com>
+ <aUht13bTn-lEnNM-@kekkonen.localdomain>
+Content-Language: en-US
+From: Daniel Gomez <da.gomez@kernel.org>
+Organization: kernel.org
+In-Reply-To: <aUht13bTn-lEnNM-@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Ahmed,
+On 21/12/2025 22.59, Sakari Ailus wrote:
+> Hi Daniel,
+> 
+> Thanks for the patch.
+> 
+> On Sat, Dec 20, 2025 at 04:55:00AM +0100, Daniel Gomez wrote:
+>> From: Daniel Gomez <da.gomez@samsung.com>
+>>
+>> The -EEXIST error code is reserved by the module loading infrastructure
+>> to indicate that a module is already loaded. When a module's init
+>> function returns -EEXIST, userspace tools like kmod interpret this as
+>> "module already loaded" and treat the operation as successful, returning
+>> 0 to the user even though the module initialization actually failed.
+>>
+>> This follows the precedent set by commit 54416fd76770 ("netfilter:
+>> conntrack: helper: Replace -EEXIST by -EBUSY") which fixed the same
+>> issue in nf_conntrack_helper_register().
+>>
+>> Affected modules:
+>>   * meraki_mx100 pcengines_apuv2
+>>
+>> Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+>> ---
+>> The error code -EEXIST is reserved by the kernel module loader to
+>> indicate that a module with the same name is already loaded. When a
+>> module's init function returns -EEXIST, kmod interprets this as "module
+>> already loaded" and reports success instead of failure [1].
+>>
+>> The kernel module loader will include a safety net that provides -EEXIST
+>> to -EBUSY with a warning [2], and a documentation patch has been sent to
+>> prevent future occurrences [3].
+>>
+>> These affected code paths were identified using a static analysis tool
+>> [4] that traces -EEXIST returns to module_init(). The tool was developed
+>> with AI assistance and all findings were manually validated.
+> 
+> This might not be the only case where -EEXIST may be returned by loading a
+> module.
 
-kernel test robot noticed the following build errors:
+That is correct. There are 40+ places detected and around 20+ more where
+the error is returned but at some point ignored and not propagated back to
+userspace. I have all the series ready for the first case, but I've only sent
+the first 6.
 
-[auto build test ERROR on efi/next]
-[also build test ERROR on rafael-pm/linux-next rafael-pm/bleeding-edge robh/for-next arm64/for-next/core linus/master v6.19-rc1 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> The patch is fine IMO but I'd just change -EEXIST to -EBUSY in e.g.
+> do_init_module() to avoid this being an actual bug elsewhere.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ahmed-Tiba/ras-add-estatus-core-interfaces/20251217-200718
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20251217112845.1814119-4-ahmed.tiba%40arm.com
-patch subject: [PATCH 03/12] ras: add estatus vendor handling and processing
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20251222/202512220010.sdcS5LYV-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512220010.sdcS5LYV-lkp@intel.com/reproduce)
+We are planning to merge that too. Link [2] refers to Lucas's "[PATCH 0/2]
+module: Tweak return and warning" series, which replaces -EEXIST with -EBUSY at
+runtime and warns. However, we do not consider that to be the actual fix. I am
+starting to send these fixes out to avoid "spamming" unnecessarily the kernel
+log in cases we can already detect.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512220010.sdcS5LYV-lkp@intel.com/
+> 
+> I wonder what others think.
 
-All errors (new ones prefixed by >>):
+Please, find the rest of the series sent:
+https://lore.kernel.org/all/20251220-dev-module-init-eexists-linux-scsi-v1-0-5379db749d54@samsung.com
+https://lore.kernel.org/all/20251219-dev-module-init-eexists-netfilter-v1-1-efd3f62412dc@samsung.com
+https://lore.kernel.org/all/20251220-dev-module-init-eexists-bpf-v1-1-7f186663dbe7@samsung.com
+https://lore.kernel.org/all/20251220-dev-module-init-eexists-keyring-v1-1-a2f23248c300@samsung.com
+https://lore.kernel.org/all/20251220-dev-module-init-eexists-dm-devel-v1-1-90ed00444ea0@samsung.com
 
-   drivers/firmware/efi/estatus.c: In function 'estatus_source_fixmap':
->> drivers/firmware/efi/estatus.c:126:24: error: 'FIX_HOLE' undeclared (first use in this function)
-     126 |                 return FIX_HOLE;
-         |                        ^~~~~~~~
-   drivers/firmware/efi/estatus.c:126:24: note: each undeclared identifier is reported only once for each function it appears in
-   drivers/firmware/efi/estatus.c: In function 'estatus_handle_arm_hw_error':
-   drivers/firmware/efi/estatus.c:656:9: error: too few arguments to function 'log_arm_hw_error'
-     656 |         log_arm_hw_error(err);
-         |         ^~~~~~~~~~~~~~~~
-   In file included from drivers/firmware/efi/estatus.c:23:
-   include/linux/ras.h:27:6: note: declared here
-      27 | void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev);
-         |      ^~~~~~~~~~~~~~~~
-   In file included from drivers/firmware/efi/estatus.c:30:
-   drivers/firmware/efi/estatus.c: In function 'estatus_do_proc':
-   include/linux/estatus.h:231:71: warning: passing argument 2 of 'estatus_section_iter_next' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
-     231 |              ((_section) = estatus_section_iter_next(&__estatus_iter, (_estatus))); \
-         |                                                                       ^~~~~~~~~~
-   drivers/firmware/efi/estatus.c:817:9: note: in expansion of macro 'estatus_for_each_section'
-     817 |         estatus_for_each_section(estatus, gdata) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/estatus.h:208:51: note: expected 'struct acpi_hest_generic_status *' but argument is of type 'const struct acpi_hest_generic_status *'
-     208 |                           estatus_generic_status *estatus)
-         |                                                   ^
-   drivers/firmware/efi/estatus.c: At top level:
-   drivers/firmware/efi/estatus.c:947:13: warning: 'estatus_print_queued_estatus' defined but not used [-Wunused-function]
-     947 | static void estatus_print_queued_estatus(void)
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/firmware/efi/estatus.c:118:12: warning: 'estatus_panic_timeout' defined but not used [-Wunused-variable]
-     118 | static int estatus_panic_timeout __read_mostly = 30;
-         |            ^~~~~~~~~~~~~~~~~~~~~
+FYI, these docs go on top of Lucas' changes with the hope this is clear in the
+docs.
 
+https://lore.kernel.org/all/20251218-dev-module-init-eexists-modules-docs-v1-0-361569aa782a@samsung.com
 
-vim +/FIX_HOLE +126 drivers/firmware/efi/estatus.c
-
-   122	
-   123	static enum fixed_addresses estatus_source_fixmap(struct estatus_source *source)
-   124	{
-   125		if (WARN_ON_ONCE(!source->fixmap_idx))
- > 126			return FIX_HOLE;
-   127	
-   128		return source->fixmap_idx;
-   129	}
-   130	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+>>
+>> Link: https://lore.kernel.org/all/aKEVQhJpRdiZSliu@orbyte.nwl.cc/ [1]
+>> Link: https://lore.kernel.org/all/20251013-module-warn-ret-v1-0-ab65b41af01f@intel.com/ [2]
+>> Link: https://lore.kernel.org/all/20251218-dev-module-init-eexists-modules-docs-v1-0-361569aa782a@samsung.com/ [3]
+>> Link: https://gitlab.com/-/snippets/4913469 [4]
 
