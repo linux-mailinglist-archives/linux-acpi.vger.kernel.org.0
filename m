@@ -1,41 +1,41 @@
-Return-Path: <linux-acpi+bounces-19820-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19821-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CBECD935C
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 13:16:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2179FCD9372
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 13:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBEDA305E71E
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 12:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E7EE3024E4D
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 12:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC5E331A6E;
-	Tue, 23 Dec 2025 12:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E434F3321D4;
+	Tue, 23 Dec 2025 12:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NrM/x5y4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qcFAfepa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012034.outbound.protection.outlook.com [52.101.53.34])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC1F330646;
-	Tue, 23 Dec 2025 12:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26744330646;
+	Tue, 23 Dec 2025 12:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766492060; cv=fail; b=HmVn6X8NGc7M0J6rqMUSti32LuNrMWBQ0VjBrkvDf+1NBliI+z8mCsR3MWUYSOaDwk0vPUhVLpg04EG5gD1wXjUs2yECue2ayEkr5y41d0HPAcJQLs2vjLvaSTMbzIFQhvyTjIDummckc8pN1nksrVvCwyywJuLlgTY0UeRsCEk=
+	t=1766492075; cv=fail; b=r8+QkKE3UIVWQ7nOajZHkQsui7NwszV8fUj9nDLM3iaahZuQTzSsA+bopSM6keqIuiBs+lxllt2o0e/NrPTGOIyFwR7AMPB0u/3pbeWhjM0X1QxJRfbHxb4qKZcZ8W6c6pJUkvDr/qNIZB8pWGAzHLYrGpZLOttlNeXah67ANOc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766492060; c=relaxed/simple;
-	bh=shdKa5h2p18t6+JtyVP5tfIbvV3xxqQNgzynS2mRYEE=;
+	s=arc-20240116; t=1766492075; c=relaxed/simple;
+	bh=jqVoojmB2FuGX+NjrxKdcXJAEWKwh7Ioa/di9BL0dNg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c8FkVvI2L9iOLSyjofiWNpMacb3cecuchRVnDjd//lsMZsxoiUYcBa2uEX1U/cn63G2m4AzFqGYFvgMbu05bFsFxkHOf7L9e6j9qRpmGVvHSAcl06ZazGTan8is5D0+XTNDWivaqT9WMdYAR+c5tEurKLPRSRw+14rAHK9ekQrI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NrM/x5y4; arc=fail smtp.client-ip=52.101.53.34
+	 MIME-Version:Content-Type; b=Lyw/TZMjlX0aBN+UmWcM1bQgPGYn+W4+HtkO5w4YE+Uaim5uSThiFsl3oCzppM7YRPIB9HFGQra/MbLtIa7t71dVLVwOzKC9/x5afbfZADaF68fmaIEgYQOdrDdP7ZakpuGhv1ORTDNuQQMF1/mvi9YlQx9fqySV2yHDz41PFdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qcFAfepa; arc=fail smtp.client-ip=52.101.85.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OapVgQLpofZRnPVmKLZYXgUqlKxKqyKE88PjSPh0IV572NYM+gc2GJuFT2LUjHEdREn6onw6U6P28pMCjMNkjSFqPognYZmJj8HL9ld/ZSwcwHzKWOHEVngiXmNCnFcRARCbJBGKX4Ids2TL2rKvDHgh2PiavHBn/UwVxLsxfcyJdJAP7re6Dr/Mb774ejbsoFV3O1C6Y8zRE5cZuxh/AdmN5YInNPTpRUH3g6YGGizuBO7frCbqbbkhpYwWybOaseX76ChW2aVxTE4UiNzoPM0zS4cfbSOpTNc8srt96kvIwubIiUIjnBVAe8PfGvGtG2aE3Fl/acxOjqTyarebLA==
+ b=qMBhzaAO0s+KunTN0bpKlxHroT4eD+rCIJU88FY+RL0cDzr7Qb2K6UUvOu75M7i+fYMJufNqH19FVnk5xIxtUEBFh6aQ6JZ+9XMVyyx1ScTh1cFMX5i6TPzJ1Smr43WWfX3pImvpPVB0/3UuzyofnS8naHQYxyndDErEQ8c69vzc1hLTvkdcJILVCKNC/vSBXUtm8ob3P7V/crPcO5QMLfL1UHpcnGxAMbM85akc2e2PCuXcWENqflDvtxVVw1xTnnqG/iWJUnXajgyXP7S9s4b7+ARLN9vTKEbAIihhwhHBO/rI5MW0zBqCUNyxybPW/6aUst7QV6vwZQH0cGC9AQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=83kf3fk6F8ypQOgtwJ2pzGIMfoyGA2hx1odEXex+gj4=;
- b=oUoqN67zhETO/+ErjBO1IYxXqZtkNMcUjIIWLZVhvzKzqDRYFub5KoRjUiVXTShYPLnmSLm+d9f9BstCk4x9Kuja19odnlbZeWSjSzoyOi9jZtDI43WQFhmvKooprqN5V39aGrNhAXT7M7JIaZIJmFA4eZIVpqvc+D2X9hc/wxxU+l6CPTwBa+twTme26tBDC7/GnEGXLYww4yA5LMaEFNGfyQcN2GsiCgtb3g85ciJY+BtUQLyP8rb9o4dT19D3YznKBo/MNTmgeMxvOMygdi+TCeRiRmByObEYuhmi6N6EyS85WJyKA4sFFLlUL2cevk9MxRIkmq5Ass3MZvRGLQ==
+ bh=rVdeNsGG/txkSwOfF+JHPgUGK4izmGc700A2tS6XRlY=;
+ b=HKEPydLs3mO1KmX8BJicwcdz44Vgv9y7fvSvvErZfBfDTsfQ8yf0SBWe/e/EukDRfFcmYpt5A9bzmDn53SvKz2a5z6tTOc1CZ1QSrw52CiYLiEm8amJ3dFaOqBvvW2SKifsOqI8SZ3fHJ9ePjcSPaI6aKXtPSjFDjZb7SKReUV1OziZ0lciquzhhgcmnOk+zqnzCGKKEN4beEDsziIV+jPcVCE57yPoQvcWxRhrSq11gXoSWWntnt2Z663E7fYyKDReDCgPw8RwiQGdze44ISXcY5E7KivFqF6OjvNoqaTOx6dSX1zwP3MX4L6o2pUXg9wwFSs31e5BRc4/msnMWTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -43,18 +43,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=83kf3fk6F8ypQOgtwJ2pzGIMfoyGA2hx1odEXex+gj4=;
- b=NrM/x5y4w65qotulVgxbctJRgsrRlYID8NBzG+LndFj4foM+T0KCGRMJfJUck9xp2ySgyyQeyyqKJY7Mx/vGG3YslM49V+/e8f146gC8SQ0kHqKXhQk1SVU7/+HZUW+ombInh4DKBMa9eikC/Tekw4Zk5pcxMDjgDW/EbwKpNFfZUXHEpky/AQi9sSxltwkQO1ycJniwqI1UcO039T2t6sbB/6nZ1Qc5MLvb2DFIrDgVHcoglNCk3S4DDFiQf6i3IOAwg0tFAUdEJXNXeD/YcJds44S9hVEpHpQodTEywGoGgF+/FImsPqr3r1XNHpDp7xOmYsZaNosDaQU0/FpT+w==
-Received: from PH8PR02CA0030.namprd02.prod.outlook.com (2603:10b6:510:2da::34)
- by SA3PR12MB7975.namprd12.prod.outlook.com (2603:10b6:806:320::11) with
+ bh=rVdeNsGG/txkSwOfF+JHPgUGK4izmGc700A2tS6XRlY=;
+ b=qcFAfepa1xj//mpmrkikjy9U3WXoUpiQmKsgRFC39QhOSr0Bu2z52xw6okl89dPBUpgLdRMcnwTWJjCmc54C1qkJ0OntHna5w+pVWDwNbB9tnY9coXFPuE2h7Vpy+N61wqah8nfdC+a7ak1tz/iqPLBf7UU4nn18KdJ7IaS3s3EWNK2Tzq9vCnf6WANYo0qKuAoOmVE3EfwX9LI3953mi0DQSIPYlSTCz7XWYXB54QCXweup8SahIRuLB0Et9ojXTPQw1ZnxTvgc0TELssdZahnK5eW2N/2zrsYTHK1PQJttnIirArBhKgqglD6F5NFHUbTsc4Ypu9FjiNevqudsYQ==
+Received: from PH8PR02CA0042.namprd02.prod.outlook.com (2603:10b6:510:2da::31)
+ by CH3PR12MB8235.namprd12.prod.outlook.com (2603:10b6:610:120::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Tue, 23 Dec
- 2025 12:14:12 +0000
+ 2025 12:14:29 +0000
 Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
- (2603:10b6:510:2da:cafe::92) by PH8PR02CA0030.outlook.office365.com
- (2603:10b6:510:2da::34) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:510:2da:cafe::15) by PH8PR02CA0042.outlook.office365.com
+ (2603:10b6:510:2da::31) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.11 via Frontend Transport; Tue,
- 23 Dec 2025 12:14:12 +0000
+ 23 Dec 2025 12:14:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -64,18 +64,18 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.160) by
  CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9456.9 via Frontend Transport; Tue, 23 Dec 2025 12:14:12 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ 15.20.9456.9 via Frontend Transport; Tue, 23 Dec 2025 12:14:28 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 23 Dec
- 2025 04:13:58 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 04:14:14 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 23 Dec
- 2025 04:13:57 -0800
+ 2025 04:14:13 -0800
 Received: from sumitg-l4t.nvidia.com (10.127.8.14) by mail.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 23 Dec 2025 04:13:50 -0800
+ Transport; Tue, 23 Dec 2025 04:14:06 -0800
 From: Sumit Gupta <sumitg@nvidia.com>
 To: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <lenb@kernel.org>,
 	<robert.moore@intel.com>, <corbet@lwn.net>, <pierre.gondois@arm.com>,
@@ -89,9 +89,9 @@ CC: <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
 	<jonathanh@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
 	<sanjayc@nvidia.com>, <nhartman@nvidia.com>, <bbasu@nvidia.com>,
 	<sumitg@nvidia.com>
-Subject: [PATCH v5 04/11] ACPI: CPPC: Extend cppc_set_epp_perf() to support auto_sel and epp
-Date: Tue, 23 Dec 2025 17:43:00 +0530
-Message-ID: <20251223121307.711773-5-sumitg@nvidia.com>
+Subject: [PATCH v5 05/11] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
+Date: Tue, 23 Dec 2025 17:43:01 +0530
+Message-ID: <20251223121307.711773-6-sumitg@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251223121307.711773-1-sumitg@nvidia.com>
 References: <20251223121307.711773-1-sumitg@nvidia.com>
@@ -107,154 +107,359 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|SA3PR12MB7975:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b3d1d24-0c11-4514-2900-08de421cc871
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|CH3PR12MB8235:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc236c0f-5d28-4997-16e2-08de421cd24f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|7416014|82310400026|376014|921020;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UHkNIJMaHTlXEURG5e54IhMPNiRq1FD64MU1EO+Vi91NOiJpEaG2CWghUUT8?=
- =?us-ascii?Q?in1nvMs4IuzZu8qFXchLfHY7dV3fNy0fHFmmbOxVrMwsD7UqsBd0aeiXiDN7?=
- =?us-ascii?Q?whpiMvPLoEh/9NszHNdHj+ljzJRnEugK059xFPHClXE30gSGcI2DrPErfbR3?=
- =?us-ascii?Q?ZVxWL8qqm3/ZSMKkrRSB378oKn3BMhDb6aWUghtcqOZe5od/EtRaN0RX0OeI?=
- =?us-ascii?Q?yG6RZer7G8RAZvegdiqmpTL2okUZ10nq//o+g2YwcKf9DYAVGmPHMWVcyoOa?=
- =?us-ascii?Q?r93H+CiwwmaVEVHT+Q6Jj9B2byFNnC9zMo+MVkruZViFhw7SYThihBBJyIbW?=
- =?us-ascii?Q?gnD9OmR60h19FY6rVE+cygs3g0vOU63fug/W855NHyjWVhHZ59+LT9u25I41?=
- =?us-ascii?Q?EpFkJLb1YQPSvE6Vft7QKkBQQci2rawdyNfCVnzr833PZukcT7mNjdf4Kh7H?=
- =?us-ascii?Q?n40MeWgFeVh/TMzacF1dBzTq1OJo5HuYt6Fdy/TYnQoipbLXlb4jxUksATmb?=
- =?us-ascii?Q?e4Jt2KWeeHHGp84zWd3wMnblWh8E4gCGEG/zaj4RrsqF5g0rfYqaeVM4TegC?=
- =?us-ascii?Q?GAy9FFIRLQiInRC/la0V+j198Fm1zQw8NcsFI8ZDbws4dncQKHhN+iFty1CW?=
- =?us-ascii?Q?2wGFAz9Gfuju1sCu3XnwbHlCqTnjdLnRVPgKScbo+xAkah51asF8xYi5ksRR?=
- =?us-ascii?Q?1PKZs8sbEG1TKEa+WNTngDvO1E7E+CJE/W4OwJtJ2sUnOAX8IS66vr4v0qhD?=
- =?us-ascii?Q?kI/4xbNXh1sR0ngUvCGNNW2LvWFw55/zIi48YXk5rh24Z2i4uDHrtMs+UGfh?=
- =?us-ascii?Q?zhLr67ZFbGi0vLBdaTDy1Tvwahwu9cflkvcfjnqlTHHxQsE6myZn33wV/H5k?=
- =?us-ascii?Q?PNsSr+UDQqXnt1HE1Lgp3mjfOrwS+w+AjVQgo2jYVpgObMdD9SL5EOKektPl?=
- =?us-ascii?Q?Dl15NCRjQs/3LYQWeC6vgIaZ6TdbzCvaJ+ouY1Cet8Pm0MEqigYC5kdIX4J4?=
- =?us-ascii?Q?1hOeTTn0VaU9yk9OFFmCxcLUxdC6mcZqDglaQcfQ2Pzo/YCmuuSXqELjhVI2?=
- =?us-ascii?Q?7otH58bccVRkNrU4ecT2up48uC54Sk6SrCrB6E0vhnxNV2g0jitgdiRLwBXY?=
- =?us-ascii?Q?Mdm8gHkQPPMaaAiiRUKDULiHtv4ZOOgclX4JiDSXspfucN5yv7tgLZ8gCDzR?=
- =?us-ascii?Q?Aqmi6jhXBFqAFPqh7QJzRgzMOL2N2Cqa3V/HIxR4agYniyAszUwKI/OFWyh8?=
- =?us-ascii?Q?UYUiX4LCR0w9SIYTl/l95HxjBpaOaDN4vc8BjoaxPEb5iQDw7B+WmQIhtuSw?=
- =?us-ascii?Q?mwdKkEbztzUGJsmXpOT2bSGouC1Q+hIbk4ESuCTqf4RD7XSduIcXfisvkSHV?=
- =?us-ascii?Q?UGqupEzBEYiS0ty07VCnmLX3A8zpGdDE5EGmbNM79BzBVXAbaS8I9CftQKI6?=
- =?us-ascii?Q?dJHZZx/hmS0H3Yll96DyU7/OcyWPWwgm3qHtTY0Rf0qX1lKPvnnHz2m+6TPN?=
- =?us-ascii?Q?P4BQ/gX0/mB58HKKnAS6ohkOT4CSqLb85SfhnatNtj5lqdIO8HNeLWsz6J5F?=
- =?us-ascii?Q?g1wA+pz2jBHtJ+fgprqhj8k/HoO2l/GXtGZANM3m?=
+	=?us-ascii?Q?rEwZEoMxbcAEUx6qBcxqEpjZ2Y+wuLASSADihnIXmuDUJfhsIK4cOnYsSzCP?=
+ =?us-ascii?Q?KIvK6yKeVmjTzvb2/9xI40bo6aJ6IXtwUWHb9adf2C6r3V3UMDl3ucWT/7PZ?=
+ =?us-ascii?Q?9jDwq1unW7SQVlVQ3RDtq4PmnAeKOP1jw6oQseG7OPSB466RyRSx9/eeOX6D?=
+ =?us-ascii?Q?KogVW4O2dRg9W8OU4oplDpRe6kF+8kowohRc8VOSywvVVCfSuCI+LOSAFJK9?=
+ =?us-ascii?Q?7VZXZdgQJOE7g3j3/sJYVKfKqMlbQzR+zsv9zKUz22c5BR9OeEW6AWfyzdqU?=
+ =?us-ascii?Q?3ZRNTSQcgqTLLn9vFV63Z7fvJM37QiT4lLLdWn2nra2u0nNf1pcevw7GEuXL?=
+ =?us-ascii?Q?V0AvAkDkY+F4TWGjMyj1XNzIz/lTlPSYrI91BhjpYE/DVsxSAW2x6vF6YpxB?=
+ =?us-ascii?Q?86DzgHWEL7a1HWizprxmA/NpKUB059+AERCOMDVe6myoD5QqT/4Jip+18jvb?=
+ =?us-ascii?Q?3b5nt/q75pblL3xiOWrXJx/wPuhKLKcws/d6GYicqNvyypXc6Z61sx9Q2AXT?=
+ =?us-ascii?Q?opzYQdA9EPRHTN7d0JxelcpJSVoX949Fcfpkw8tPKj1Ox3BeJKKwZQv3iTF9?=
+ =?us-ascii?Q?iQKfqSwafW4cMB7B0vWJLq84pXQSNaKZ1o89DedjzdeFQSHT5G/ppxKFnsx9?=
+ =?us-ascii?Q?Jeb4Lb9cMOm93RJtenVc735UtD1nY/gFKVWH0bSA1XG5LFfKflwRY0yeszkN?=
+ =?us-ascii?Q?coOr6EA2KGRAgZfVRMUDKicqlW0hRqXuJ7fHR2tN12iS4NAWCuCjBWYSX3ky?=
+ =?us-ascii?Q?/vvfz+sT6z6e7bzwV/tdp2FKPkz1Hf7EDz6zASddONboHI9iw+Qx9BWXhVRl?=
+ =?us-ascii?Q?SegnNvJNqnCUK09bDJZdwpM94Io6M9jFPDXbBMR5Tuc8/+cmrxtzZ8Gn0kXO?=
+ =?us-ascii?Q?lv2MSRtIBVfi6GKIHjwidOq+fnh3meOH2MfEQAbXWMoPOk9HbfDTAUBDcqy0?=
+ =?us-ascii?Q?KpjIGd4mx/jmO0Z5zQ2h1ReJlBDJ9p9Bp1PpdIhitUlewLzze1OB8HUhJYpR?=
+ =?us-ascii?Q?9DKAT6JZapcSIijbz4oGDmItzpYTUn9yvrPQi5FaEoGEq5XbBZpchCzM+C8l?=
+ =?us-ascii?Q?xrQWxlWzJLERQA8yu0Z+lL2Dil0IU+DdCwOQjAOoTJrm07bxPvMub9TaSy7L?=
+ =?us-ascii?Q?oEJ54/claPrk3ciGALh4xD95Ev+qP0OVPOdZm5wkJc9Tog0BSPjQo25+W6Dn?=
+ =?us-ascii?Q?C93wj7nmfrdfAQa3rGOKJyBTrp7U6ttLKZacQKoxQrtuEqchq88EwjbS3Qjy?=
+ =?us-ascii?Q?s4lwqyhhzfFAKNeHGoYf+eiPIYd39dPNuTnUxI1JoJf3BjfgNDP+YfmJRZKz?=
+ =?us-ascii?Q?DvcnWgBFbcv6EcsxRUqjuH5b+Vy7xnfkewpl8awkwwsulRLrhrkX4/SS1g0i?=
+ =?us-ascii?Q?dfb8jKBjwpaYdR+agZLMW8M28OKD4t3c5yMFZmexVfMHFP98m5NxF3TFEU4w?=
+ =?us-ascii?Q?9UyDw1YhQz8nuDvyuJAo7o23OucP/mPE3f3WceZpmmEh7dFXWoGYoFMwCFhZ?=
+ =?us-ascii?Q?/kysN8X9RDDoQXkgZtDcyLwetC9tw0aEP6Z4yKxGYbQuAPXCc3ni+G2VoTIg?=
+ =?us-ascii?Q?op6SwXcIFALpMz9aDZyi64/o3Ceu5SM39wuETVRv?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(82310400026)(376014)(921020);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 12:14:12.1442
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 12:14:28.7048
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b3d1d24-0c11-4514-2900-08de421cc871
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc236c0f-5d28-4997-16e2-08de421cd24f
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CY4PEPF0000EE30.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7975
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8235
 
-Extend cppc_set_epp_perf() to write both auto_sel and energy_perf
-registers when they are in FFH or SystemMemory address space.
+Add cppc_get/set_min_perf() and cppc_get/set_max_perf() APIs to read and
+write the MIN_PERF and MAX_PERF registers.
 
-This keeps the behavior consistent with PCC case where both registers
-are already updated together, but was missing for FFH/SystemMemory.
+Also add sysfs interfaces (min_perf, max_perf) in cppc_cpufreq driver
+to expose these controls to userspace. The sysfs values are in frequency
+(kHz) for consistency with other cpufreq sysfs files.
 
-Also update EPP constants for better clarity:
-- Add CPPC_EPP_PERFORMANCE_PREF (0x00) for performance preference
-- Add CPPC_EPP_ENERGY_EFFICIENCY_PREF (0xFF) for energy efficiency
+A mutex is used to serialize sysfs store operations to ensure hardware
+register writes and perf_ctrls updates are atomic.
 
 Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
 ---
- drivers/acpi/cppc_acpi.c | 35 +++++++++++++++++++++++++++++------
- include/acpi/cppc_acpi.h |  3 ++-
- 2 files changed, 31 insertions(+), 7 deletions(-)
+ drivers/acpi/cppc_acpi.c       |  44 +++++++++
+ drivers/cpufreq/cppc_cpufreq.c | 160 +++++++++++++++++++++++++++++++++
+ include/acpi/cppc_acpi.h       |  20 +++++
+ 3 files changed, 224 insertions(+)
 
 diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index a4e89fe6aab5..403ee988a8c6 100644
+index 403ee988a8c6..9f28c20d902d 100644
 --- a/drivers/acpi/cppc_acpi.c
 +++ b/drivers/acpi/cppc_acpi.c
-@@ -1556,6 +1556,8 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 	struct cpc_register_resource *auto_sel_reg;
- 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
- 	struct cppc_pcc_data *pcc_ss_data = NULL;
-+	bool autosel_ffh_sysmem;
-+	bool epp_ffh_sysmem;
- 	int ret;
- 
- 	if (!cpc_desc) {
-@@ -1566,6 +1568,11 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 	auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
- 	epp_set_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
- 
-+	epp_ffh_sysmem = CPC_SUPPORTED(epp_set_reg) &&
-+		(CPC_IN_FFH(epp_set_reg) || CPC_IN_SYSTEM_MEMORY(epp_set_reg));
-+	autosel_ffh_sysmem = CPC_SUPPORTED(auto_sel_reg) &&
-+		(CPC_IN_FFH(auto_sel_reg) || CPC_IN_SYSTEM_MEMORY(auto_sel_reg));
-+
- 	if (CPC_IN_PCC(epp_set_reg) || CPC_IN_PCC(auto_sel_reg)) {
- 		if (pcc_ss_id < 0) {
- 			pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
-@@ -1590,14 +1597,30 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 		/* after writing CPC, transfer the ownership of PCC to platform */
- 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
- 		up_write(&pcc_ss_data->pcc_lock);
--	} else if (osc_cpc_flexible_adr_space_confirmed &&
--		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
--		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
-+	} else if (osc_cpc_flexible_adr_space_confirmed) {
-+		if (!epp_ffh_sysmem && !autosel_ffh_sysmem) {
-+			ret = -EOPNOTSUPP;
-+		} else {
-+			if (autosel_ffh_sysmem) {
-+				ret = cpc_write(cpu, auto_sel_reg, enable);
-+				if (ret)
-+					return ret;
-+			}
-+
-+			if (epp_ffh_sysmem) {
-+				ret = cpc_write(cpu, epp_set_reg,
-+						perf_ctrls->energy_perf);
-+				if (ret)
-+					return ret;
-+			}
-+		}
- 	} else {
--		ret = -ENOTSUPP;
--		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
-+		ret = -EOPNOTSUPP;
- 	}
- 
-+	if (ret == -EOPNOTSUPP)
-+		pr_debug("CPU%d: _CPC not in PCC/FFH/SystemMemory\n", cpu);
-+
- 	return ret;
+@@ -1742,6 +1742,50 @@ int cppc_set_auto_sel(int cpu, bool enable)
  }
- EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
-@@ -1609,7 +1632,7 @@ EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
-  */
- int cppc_set_epp(int cpu, u64 epp_val)
- {
--	if (epp_val > CPPC_ENERGY_PERF_MAX)
-+	if (epp_val > CPPC_EPP_ENERGY_EFFICIENCY_PREF)
- 		return -EINVAL;
+ EXPORT_SYMBOL_GPL(cppc_set_auto_sel);
  
- 	return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
++/**
++ * cppc_get_min_perf - Read minimum performance register.
++ * @cpu: CPU from which to read register.
++ * @min_perf: Return address.
++ */
++int cppc_get_min_perf(int cpu, u64 *min_perf)
++{
++	return cppc_get_reg_val(cpu, MIN_PERF, min_perf);
++}
++EXPORT_SYMBOL_GPL(cppc_get_min_perf);
++
++/**
++ * cppc_set_min_perf - Write minimum performance register.
++ * @cpu: CPU to which to write register.
++ * @min_perf: the desired minimum performance value to be updated.
++ */
++int cppc_set_min_perf(int cpu, u32 min_perf)
++{
++	return cppc_set_reg_val(cpu, MIN_PERF, min_perf);
++}
++EXPORT_SYMBOL_GPL(cppc_set_min_perf);
++
++/**
++ * cppc_get_max_perf - Read maximum performance register.
++ * @cpu: CPU from which to read register.
++ * @max_perf: Return address.
++ */
++int cppc_get_max_perf(int cpu, u64 *max_perf)
++{
++	return cppc_get_reg_val(cpu, MAX_PERF, max_perf);
++}
++EXPORT_SYMBOL_GPL(cppc_get_max_perf);
++
++/**
++ * cppc_set_max_perf - Write maximum performance register.
++ * @cpu: CPU to which to write register.
++ * @max_perf: the desired maximum performance value to be updated.
++ */
++int cppc_set_max_perf(int cpu, u32 max_perf)
++{
++	return cppc_set_reg_val(cpu, MAX_PERF, max_perf);
++}
++EXPORT_SYMBOL_GPL(cppc_set_max_perf);
++
+ /**
+  * cppc_set_enable - Set to enable CPPC on the processor by writing the
+  * Continuous Performance Control package EnableRegister field.
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index a87e7bb2e2f1..1e282dfabc76 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -28,6 +28,8 @@
+ 
+ static struct cpufreq_driver cppc_cpufreq_driver;
+ 
++static DEFINE_MUTEX(cppc_cpufreq_update_autosel_config_lock);
++
+ #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
+ static enum {
+ 	FIE_UNSET = -1,
+@@ -538,6 +540,46 @@ static void populate_efficiency_class(void)
+ }
+ #endif
+ 
++/**
++ * cppc_cpufreq_set_mperf_limit - Set min/max performance limit
++ * @policy: cpufreq policy
++ * @val: performance value to set
++ * @is_min: true for min_perf, false for max_perf
++ */
++static int cppc_cpufreq_set_mperf_limit(struct cpufreq_policy *policy, u64 val,
++					bool is_min)
++{
++	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
++	unsigned int cpu = policy->cpu;
++	u32 perf;
++	int ret;
++
++	perf = clamp(val, caps->lowest_perf, caps->highest_perf);
++
++	ret = is_min ? cppc_set_min_perf(cpu, perf) :
++		       cppc_set_max_perf(cpu, perf);
++	if (ret) {
++		if (ret != -EOPNOTSUPP)
++			pr_warn("Failed to set %s_perf (%llu) on CPU%d (%d)\n",
++				is_min ? "min" : "max", (u64)perf, cpu, ret);
++		return ret;
++	}
++
++	if (is_min)
++		cpu_data->perf_ctrls.min_perf = perf;
++	else
++		cpu_data->perf_ctrls.max_perf = perf;
++
++	return 0;
++}
++
++#define cppc_cpufreq_set_min_perf(policy, val) \
++	cppc_cpufreq_set_mperf_limit(policy, val, true)
++
++#define cppc_cpufreq_set_max_perf(policy, val) \
++	cppc_cpufreq_set_mperf_limit(policy, val, false)
++
+ static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
+ {
+ 	struct cppc_cpudata *cpu_data;
+@@ -896,16 +938,134 @@ store_energy_performance_preference_val(struct cpufreq_policy *policy,
+ 					    buf, count);
+ }
+ 
++/**
++ * show_min_perf - Show minimum performance as frequency (kHz)
++ * @policy: cpufreq policy
++ * @buf: buffer to write the frequency value to
++ *
++ * Reads the MIN_PERF register and converts the performance value to
++ * frequency (kHz).
++ */
++static ssize_t show_min_perf(struct cpufreq_policy *policy, char *buf)
++{
++	struct cppc_cpudata *cpu_data = policy->driver_data;
++	u64 perf;
++	int ret;
++
++	ret = cppc_get_min_perf(policy->cpu, &perf);
++	if (ret == -EOPNOTSUPP)
++		return sysfs_emit(buf, "<unsupported>\n");
++	if (ret)
++		return ret;
++
++	/* Convert performance to frequency (kHz) for user */
++	return sysfs_emit(buf, "%u\n",
++			  cppc_perf_to_khz(&cpu_data->perf_caps, perf));
++}
++
++/**
++ * store_min_perf - Set minimum performance from frequency (kHz)
++ * @policy: cpufreq policy
++ * @buf: buffer containing the frequency value
++ * @count: size of @buf
++ *
++ * Converts the user-provided frequency (kHz) to a performance value
++ * and writes it to the MIN_PERF register.
++ */
++static ssize_t store_min_perf(struct cpufreq_policy *policy, const char *buf,
++			      size_t count)
++{
++	struct cppc_cpudata *cpu_data = policy->driver_data;
++	unsigned int freq_khz;
++	u64 perf;
++	int ret;
++
++	ret = kstrtouint(buf, 0, &freq_khz);
++	if (ret)
++		return ret;
++
++	/* Convert frequency (kHz) to performance value */
++	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
++
++	guard(mutex)(&cppc_cpufreq_update_autosel_config_lock);
++	ret = cppc_cpufreq_set_min_perf(policy, perf);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++/**
++ * show_max_perf - Show maximum performance as frequency (kHz)
++ * @policy: cpufreq policy
++ * @buf: buffer to write the frequency value to
++ *
++ * Reads the MAX_PERF register and converts the performance value to
++ * frequency (kHz).
++ */
++static ssize_t show_max_perf(struct cpufreq_policy *policy, char *buf)
++{
++	struct cppc_cpudata *cpu_data = policy->driver_data;
++	u64 perf;
++	int ret;
++
++	ret = cppc_get_max_perf(policy->cpu, &perf);
++	if (ret == -EOPNOTSUPP)
++		return sysfs_emit(buf, "<unsupported>\n");
++	if (ret)
++		return ret;
++
++	/* Convert performance to frequency (kHz) for user */
++	return sysfs_emit(buf, "%u\n",
++			  cppc_perf_to_khz(&cpu_data->perf_caps, perf));
++}
++
++/**
++ * store_max_perf - Set maximum performance from frequency (kHz)
++ * @policy: cpufreq policy
++ * @buf: buffer containing the frequency value
++ * @count: size of @buf
++ *
++ * Converts the user-provided frequency (kHz) to a performance value
++ * and writes it to the MAX_PERF register.
++ */
++static ssize_t store_max_perf(struct cpufreq_policy *policy, const char *buf,
++			      size_t count)
++{
++	struct cppc_cpudata *cpu_data = policy->driver_data;
++	unsigned int freq_khz;
++	u64 perf;
++	int ret;
++
++	ret = kstrtouint(buf, 0, &freq_khz);
++	if (ret)
++		return ret;
++
++	/* Convert frequency (kHz) to performance value */
++	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
++
++	guard(mutex)(&cppc_cpufreq_update_autosel_config_lock);
++	ret = cppc_cpufreq_set_max_perf(policy, perf);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
+ cpufreq_freq_attr_ro(freqdomain_cpus);
+ cpufreq_freq_attr_rw(auto_select);
+ cpufreq_freq_attr_rw(auto_act_window);
+ cpufreq_freq_attr_rw(energy_performance_preference_val);
++cpufreq_freq_attr_rw(min_perf);
++cpufreq_freq_attr_rw(max_perf);
+ 
+ static struct freq_attr *cppc_cpufreq_attr[] = {
+ 	&freqdomain_cpus,
+ 	&auto_select,
+ 	&auto_act_window,
+ 	&energy_performance_preference_val,
++	&min_perf,
++	&max_perf,
+ 	NULL,
+ };
+ 
 diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 12a1dc31bf2a..2860a0252313 100644
+index 2860a0252313..a49b50bddaf9 100644
 --- a/include/acpi/cppc_acpi.h
 +++ b/include/acpi/cppc_acpi.h
-@@ -39,7 +39,8 @@
- /* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
- #define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
- 
--#define CPPC_ENERGY_PERF_MAX	(0xFF)
-+#define CPPC_EPP_PERFORMANCE_PREF		0x00
-+#define CPPC_EPP_ENERGY_EFFICIENCY_PREF		0xFF
- 
- /* Each register has the folowing format. */
- struct cpc_reg {
+@@ -173,6 +173,10 @@ extern int cppc_get_auto_act_window(int cpu, u64 *auto_act_window);
+ extern int cppc_set_auto_act_window(int cpu, u64 auto_act_window);
+ extern int cppc_get_auto_sel(int cpu, bool *enable);
+ extern int cppc_set_auto_sel(int cpu, bool enable);
++extern int cppc_get_min_perf(int cpu, u64 *min_perf);
++extern int cppc_set_min_perf(int cpu, u32 min_perf);
++extern int cppc_get_max_perf(int cpu, u64 *max_perf);
++extern int cppc_set_max_perf(int cpu, u32 max_perf);
+ extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+ extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
+ extern int amd_detect_prefcore(bool *detected);
+@@ -265,6 +269,22 @@ static inline int cppc_set_auto_sel(int cpu, bool enable)
+ {
+ 	return -EOPNOTSUPP;
+ }
++static inline int cppc_get_min_perf(int cpu, u64 *min_perf)
++{
++	return -EOPNOTSUPP;
++}
++static inline int cppc_set_min_perf(int cpu, u32 min_perf)
++{
++	return -EOPNOTSUPP;
++}
++static inline int cppc_get_max_perf(int cpu, u64 *max_perf)
++{
++	return -EOPNOTSUPP;
++}
++static inline int cppc_set_max_perf(int cpu, u32 max_perf)
++{
++	return -EOPNOTSUPP;
++}
+ static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
+ {
+ 	return -ENODEV;
 -- 
 2.34.1
 
