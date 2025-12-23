@@ -1,128 +1,168 @@
-Return-Path: <linux-acpi+bounces-19834-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19835-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0A9CDA566
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 20:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E2FCDADDE
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Dec 2025 00:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D9423027CF6
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 19:22:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4A2C30402E3
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 23:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48923431E6;
-	Tue, 23 Dec 2025 19:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0255E2FE07F;
+	Tue, 23 Dec 2025 23:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SCoP7vjZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AmDktxGz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B5E2D3231;
-	Tue, 23 Dec 2025 19:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CE02F12C9;
+	Tue, 23 Dec 2025 23:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766517729; cv=none; b=igOCQO1/hTACA8+gN1tMLF+0ETZBLD7JCH6ipD1PtAeo8SShyR8AElGiRIDNP4qr6vGffYg/2NVvqHGONkw5nBrHx6dxacwWOcSp+pK2pOAODJvmVY+obgylM4EDX+/5CyMgPdYjJO//4hJXAM5dDnjHlWIcOE9IgDxI/0iGBSc=
+	t=1766534340; cv=none; b=uNpxfzfcqsxgIhhsu2X7EC0CXV75nhTwlZLPuF0cpMkqevYEbIAWGeLUGBFAdOVejJcZy4j1KeuXVWk/CsftCUma57GlRxXh8b9xsLP8pgzVZKTt6a+fBtqzU68zVcpG0rGEA7Nd/JEZ28rev52OvpdRDgbr6c+RMPKH4Nmbb6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766517729; c=relaxed/simple;
-	bh=pliM/YfSrbKWPt0QBAhdRpwIux5X0ur1FKG+K5KviLc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U69yGiyqdzggcHjfd9yPgJPhihOrB2Mq3gX2A3H9f3+RKa8cLV/jpOUpUR+VncHWFNoeGEPUhQ54Kj8rtYR3eYL9aP2f4Ir6kzna4he2keUG9GVUqVk+9qMvPoBbwHMAhIwMlx6oLELtxc/H3til5PntRxz9Phv5IUBLods8If0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SCoP7vjZ; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1766534340; c=relaxed/simple;
+	bh=wbLqI2F7wg0GAZJFEKzvgXl0WujlC0eAlfgVTwT4Pnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ekClxg3LPZuJUM73b4rVkYiseA0Z6Z+bZ8YMAR/yWGPS3sjkyz7f/oU5d5Bl1JK8h2yzzW0Uwe+Iyy1IA+0zGYSlKxBgxmlr4Zg4OTY+HDJ2wRnpNOlIyVKOe8FZkO7vboY2E2bI3/+yXQ1GnH4dJhqPy8Yz58M3MpAQdYhlNJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AmDktxGz; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766517727; x=1798053727;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=pliM/YfSrbKWPt0QBAhdRpwIux5X0ur1FKG+K5KviLc=;
-  b=SCoP7vjZoini8Mffqni/pfuUFS4ucKXqKNqBTUmLLDSs/aB20sH6hAVf
-   75n1JWzGVZgAfPc+XkDBknfdAdmB1uNGdyJmrvys2Bsw26rCHI106i24P
-   Buc0jjJV8W9TlYTNqR5ZBDrNBiX3pRdDIS8UvnMdGKN1jvbPsFWlF0BKa
-   IM1kYZRHBSyWPmbNNSou27IXED8vzEwFdKQnz3qVItUTYMtKsZOA23e3i
-   Byu6fke57KBr9H5jJ1LY8/xMrahA06GYaGQ/p2CHMber5zZ9mO545lZhQ
-   ubin5N96axQtlgnJ/0Lsm6Unzo34zxDes2OxPqT2mJWbxQ7Evm2OsyoOO
-   w==;
-X-CSE-ConnectionGUID: XV9LNSUmQuCOwdDOkklAkA==
-X-CSE-MsgGUID: 4LaJgH0GTvipINOyDzQYbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="72232196"
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="72232196"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 11:21:56 -0800
-X-CSE-ConnectionGUID: Yvjtap7MS9eGRblpWvRoeA==
-X-CSE-MsgGUID: IqGaRZkxSPSx5Y6/LXnAwQ==
+  t=1766534339; x=1798070339;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wbLqI2F7wg0GAZJFEKzvgXl0WujlC0eAlfgVTwT4Pnc=;
+  b=AmDktxGz6As7TDCDiArpZwUFI3TctiOPKvOD/dPZr7Td8xbNWYrfcCZD
+   TcOvxhoIEQIURoUYhs2NgcsG/tQV2RIYDuWd01BKB+TvFkndrmzPrllxu
+   aPoqKMhOifXhHzwbZnOSAi0oW7qRPkpV99STDCs6qRK2u+lfwbRzqz4z1
+   1KOj4GMUbD9AhcL7E8T4ySpV/iOkT9wqx9WCoco648s9mUbBNo5rZqaP7
+   Pe2bFr8vPw2xle5rL1bsDhqGDEpdbHHaPprBwpGFNZgXq2NouvUbv3CVs
+   HELKrVvq16CVay0rylfefexnteFhNKbWHCXJ7aiTddMdXQyq60kz3Cjjv
+   g==;
+X-CSE-ConnectionGUID: /QR2UOgAQYewr1OliCngag==
+X-CSE-MsgGUID: DSDhPZVIRdiiTnmHKw+7VQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79016466"
+X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
+   d="scan'208";a="79016466"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 15:58:58 -0800
+X-CSE-ConnectionGUID: TcJUReP5Qwy+NGFGsQ85Gg==
+X-CSE-MsgGUID: K0cnw6bARF6boThsyEe6Hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="230514214"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.124.220.160]) ([10.124.220.160])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 11:21:53 -0800
-Message-ID: <08052bbd0a6fa2ca2d0c349936086cd31be87b37.camel@linux.intel.com>
-Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
- detected on Arrow Lake hardware
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Aaron Rainbolt <arainbolt@kfocus.org>
-Cc: kernel-team@lists.ubuntu.com, lenb@kernel.org,
- linux-acpi@vger.kernel.org, 	linux-pm@vger.kernel.org,
- mmikowski@kfocus.org, rjw@rjwysocki.net
-Date: Tue, 23 Dec 2025 11:21:51 -0800
-In-Reply-To: <20251223114122.0227dab8@kf-m2g5>
-References: <20251214184507.21f95134@kf-m2g5>
-		<33fc5ba96b80f1eeb69777822cfddefe64100540.camel@linux.intel.com>
-		<20251215092525.6ea95739@kf-m2g5>
-		<250bec4336d5e7adbc841e4945e50e589b10c375.camel@linux.intel.com>
-	 <20251223114122.0227dab8@kf-m2g5>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
+   d="scan'208";a="199870155"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 23 Dec 2025 15:58:52 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vYCHC-000000002Uf-0n58;
+	Tue, 23 Dec 2025 23:58:50 +0000
+Date: Wed, 24 Dec 2025 07:58:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+	linux-cxl@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Rafael J Wysocki <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, Shuai Xue <xueshuai@linux.alibaba.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+Subject: Re: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol
+ errors checks
+Message-ID: <202512240711.Iv57ik8I-lkp@intel.com>
+References: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
 
-Hi Aaron,
+Hi Fabio,
 
-On Tue, 2025-12-23 at 11:41 -0600, Aaron Rainbolt wrote:
-> On Wed, 17 Dec 2025 05:33:08 -0800
-> srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
->=20
-> > Hi Aaron,
-> >=20
-> > Tested on a platform with the similar CPU (100 MHz more max). There
-> > is
-> > no issue in max frequency or base frequency display.
->=20
-> Hi Srinivas,
->=20
-> Thanks for taking the time to look into this. For reference, the
-> X560WNR-G that we last reported has the INSYDE BIOS version
-> 1.07.07S3min29. That might be useful when reaching out to Clevo.
->=20
-> Since we=E2=80=99ve seen this on hardware from Clevo, TongFang, and ASUS,
-> we=E2=80=99ll
-> want to report to all of them. Can you tell us what tool you are
-> using
-> to measure the max and base frequency displays?
+kernel test robot noticed the following build errors:
 
-I checked the sysfs display of base and scalig_max freq from cpufreq.
-For current frequencies used turbotstat  with stress 1 CPU busy.
+[auto build test ERROR on ea1013c1539270e372fc99854bc6e4d94eaeff66]
 
->  Are both P and E cores
-> displaying the proper frequencies on your end?
-Yes.
+url:    https://github.com/intel-lab-lkp/linux/commits/Fabio-M-De-Francesco/ACPI-extlog-Trace-CPER-Non-standard-Section-Body/20251219-204338
+base:   ea1013c1539270e372fc99854bc6e4d94eaeff66
+patch link:    https://lore.kernel.org/r/20251219124042.3759749-4-fabio.m.de.francesco%40linux.intel.com
+patch subject: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol errors checks
+config: arm64-defconfig (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/reproduce)
 
->  We can then share that
-> with the ODMs.
->=20
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512240711.Iv57ik8I-lkp@intel.com/
 
-Sure.
+All errors (new ones prefixed by >>):
 
-Thanks,
-Srinivas
+   drivers/acpi/apei/ghes_helpers.c: In function 'cxl_cper_sec_prot_err_valid':
+>> drivers/acpi/apei/ghes_helpers.c:9:17: error: implicit declaration of function 'pr_err_ratelimited' [-Wimplicit-function-declaration]
+       9 |                 pr_err_ratelimited("CXL CPER invalid agent type\n");
+         |                 ^~~~~~~~~~~~~~~~~~
+>> drivers/acpi/apei/ghes_helpers.c:27:17: error: implicit declaration of function 'pr_warn_ratelimited' [-Wimplicit-function-declaration]
+      27 |                 pr_warn_ratelimited(FW_WARN
+         |                 ^~~~~~~~~~~~~~~~~~~
+>> drivers/acpi/apei/ghes_helpers.c:27:37: error: 'FW_WARN' undeclared (first use in this function)
+      27 |                 pr_warn_ratelimited(FW_WARN
+         |                                     ^~~~~~~
+   drivers/acpi/apei/ghes_helpers.c:27:37: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/acpi/apei/ghes_helpers.c:27:44: error: expected ')' before string constant
+      27 |                 pr_warn_ratelimited(FW_WARN
+         |                                    ~       ^
+         |                                            )
+      28 |                                     "CXL CPER no device serial number\n");
+         |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-> Thanks again,
->=20
-> --
-> Aaron
+
+vim +/pr_err_ratelimited +9 drivers/acpi/apei/ghes_helpers.c
+
+     5	
+     6	int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+     7	{
+     8		if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
+   > 9			pr_err_ratelimited("CXL CPER invalid agent type\n");
+    10			return -EINVAL;
+    11		}
+    12	
+    13		if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
+    14			pr_err_ratelimited("CXL CPER invalid protocol error log\n");
+    15			return -EINVAL;
+    16		}
+    17	
+    18		if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
+    19			pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+    20					   prot_err->err_len);
+    21			return -EINVAL;
+    22		}
+    23	
+    24		if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
+    25		     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
+    26		    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+  > 27			pr_warn_ratelimited(FW_WARN
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
