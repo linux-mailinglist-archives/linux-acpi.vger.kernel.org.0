@@ -1,146 +1,90 @@
-Return-Path: <linux-acpi+bounces-19831-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19832-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF8DCD9E8E
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 17:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629DDCD9FFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 17:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7D7A3019BB7
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 16:14:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93DB03022A8C
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 16:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129512E2665;
-	Tue, 23 Dec 2025 16:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2066288C2B;
+	Tue, 23 Dec 2025 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcOvFjqg"
+	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="DPsZ/D6e";
+	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="2uPdkJDm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DE72D77F7
-	for <linux-acpi@vger.kernel.org>; Tue, 23 Dec 2025 16:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068332D6E73;
+	Tue, 23 Dec 2025 16:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766506448; cv=none; b=T2cs/5h7Fk+XK65qJiEcljI5AWjgmRQPZmUVpc+WytblYG/QdJpmbZ++n3MGUdrXh64q7eertIeMnK8iinK4Fb8h8KJFwSZVJ9jcRj7zX7J6/XVDFIkWxs0fOdfro5uM6wYO62ghLVA4UF5EV082qy4g7bgn2tH8a1D1XUCxHr0=
+	t=1766508419; cv=none; b=A06ERPali68MWgW77j7MzfTj2kyWq7hs0h1Xv7CTwKVcijULMDIbNUSf9DK0QOvF7wMGwIh001FC9VQjbt/Vueg4eUk+AhxG+n5Nnnih1jBoMMwdED/VpTk/m6yR9c2NU+vG1y8O+yPSbjIKWkPbGFLoZCqGftnCmNCKWr2gg+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766506448; c=relaxed/simple;
-	bh=jOJvb/c/LP7iQlRmzr6t7IKIeRPUA7elH42S1yBiDo8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AQrN5wcHE/JbwVSwanWBKRW+4/qDt//UxAhbbevmYRIr2lWYVMgonXW10laTjhBXpmTeG7wDcoNFQTBoSJe/Wjer5bZMANrxmm4TcYhOs9mA4ue1Kz77sU5HZmCCsO2fhC+wDJasmm4Xsh4OeMzCrk6cL6ULAeakQNqPOslTn8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcOvFjqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BAAC113D0
-	for <linux-acpi@vger.kernel.org>; Tue, 23 Dec 2025 16:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766506447;
-	bh=jOJvb/c/LP7iQlRmzr6t7IKIeRPUA7elH42S1yBiDo8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NcOvFjqgv1CpJyNJ1V64dD8Fsmfp4tUxf+eMEl4wtWOgqkwyBaevpen1qBU6xJMQH
-	 9V8wtwxKUicm392HoRXuyDSrPbT15qekhBX9tAjgWrIaftZEi5NdY1owlSgwhxitXQ
-	 FxyFXntQsUUdjccD+iSO5THsunM88vMsxY0rpB5wZEEEstamlgdyov6+RpuIex31l2
-	 zqMdrLq0z9ztTsyj3WVntoBcjZRmbTEHXedNe/TxNWgaBYiHIUfw9tS7Laoee44zak
-	 VQbgmyYmXq964bDKxTJnmfTztQhbwdQRYYIcu5NLk7qDwDI+8gYz4Xk/6inS102/P4
-	 hIMXIDf12TbGg==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7cdae63171aso1769365a34.1
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Dec 2025 08:14:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWOLFBoW4MyeLOLccnB2slCwEKI5XaG1egSTZgHdgKmbiMLXaU/f3itmuoe0Im/g3fCttCO3/LBIf8X@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/OUxyQ481gTi+OuIDjbU9jEXp9iFQ7nh7Syy3fDaG+FtyZMDh
-	kqwIqZjsiBW3k7c7uppoL8QDgLHnYQ+WozsyEsGNrkXZb9I7ZPbsugtyR7r3s2uwQVYyfJ0x0t4
-	USb3gW613QGKAxfOnvoQMyG0BmFT5GB4=
-X-Google-Smtp-Source: AGHT+IHDGB/lVrrd1mvqVkTN59z5wrMUPq02VPbT4JwrllBJx7qu6NmHgKJCRAYr6eN2oh1Ouv3cfAfystYI+sj+FNU=
-X-Received: by 2002:a05:6830:2e07:b0:7c7:5f09:879c with SMTP id
- 46e09a7af769-7cc66ace8b3mr8401173a34.26.1766506446544; Tue, 23 Dec 2025
- 08:14:06 -0800 (PST)
+	s=arc-20240116; t=1766508419; c=relaxed/simple;
+	bh=c3oruc5JNPL3tmclWUMJaqookCpPc3ku7t6M4H9XVBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P7crlxJJOztqDxB7EP07X8fK3VYwJFyXtXZRFfWmP0eJT2RfmTVnZhx3vhb+aq/6E6UR4rzHGFR/m+tPYYIEz8iUbc0iBXYfGBtBnHCdBQtErP0+ytWudGYyn9PElOjMUIlKki55eRFqzT0yb1JnvA8RXPHhCj7DHTjtEdKvVrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=DPsZ/D6e; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=2uPdkJDm; arc=none smtp.client-ip=81.177.217.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
+DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1766507796; bh=ZWOnZuUMlVXzgHCTwvw9NNQ
+	mfdOfpyNA3gzYuFDdTAM=; b=DPsZ/D6eonS0NWChqhm2efhUulODxaaaQ3iRcbOxJoo+5KV/16
+	NW9CB/OhCf3knj49qwGXS7SkDlYCBNqshWPBBX4rhPmKvNm4wgPm2vuvHQQ7fbdnp7ptX9oqx55
+	7zBoXCmixWP4rp4Oqzbmvgsqjb4AxybIzUXEjS8ATB2JRxLObcFv1mvlTHSHPADPLfD7jFoUZC1
+	m96hsqGjvHJVo9Qalku2abprUax3RlbKo0D82eNqruwem5ftCVpmXdatfbDePD9uSyjc8wRIciY
+	5KbWpyTm0E6KjCW/CvYc8zl8J/NfPZZDSclURl4Im3Dwzlsp0OLAz5iIqJjaG0hUX0g==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1766507796; bh=ZWOnZuUMlVXzgHCTwvw9NNQ
+	mfdOfpyNA3gzYuFDdTAM=; b=2uPdkJDmvR/9Ge6TcjQfAu6c81SN9E3FTLtLEN+GukIZVLTgys
+	d0nY/WA/qg9AjtpMB/99fBIRf/w11tpKOJBg==;
+Message-ID: <3aa3ef74-ee40-4a57-94c8-bf642e23aee5@foxido.dev>
+Date: Tue, 23 Dec 2025 19:36:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2413407.ElGaqSPkdT@rafael.j.wysocki> <3042649.e9J7NaK4W3@rafael.j.wysocki>
- <20251223111207.0000595d@huawei.com>
-In-Reply-To: <20251223111207.0000595d@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 23 Dec 2025 17:13:54 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h5gQtPBw-KBrdrSqwmx1qdcv0r3bmXe8h9YqoEd=L5YA@mail.gmail.com>
-X-Gm-Features: AQt7F2rxYUihUeZ3XGUW4pn3mX7gwcTV52YD2g9BE48cgwbSauHwpeMYd6Xd4hE
-Message-ID: <CAJZ5v0h5gQtPBw-KBrdrSqwmx1qdcv0r3bmXe8h9YqoEd=L5YA@mail.gmail.com>
-Subject: Re: [PATCH v2.1 1/8] ACPI: bus: Fix handling of _OSC errors in acpi_run_osc()
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	Bjorn Helgaas <helgaas@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
+ Armin Wolf <W_Armin@gmx.de>, platform-driver-x86@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <cover.1766331321.git.foxido@foxido.dev>
+ <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
+ <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
+Content-Language: en-US
+From: Gladyshev Ilya <foxido@foxido.dev>
+In-Reply-To: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 23, 2025 at 12:12=E2=80=AFPM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
->
-> On Mon, 22 Dec 2025 20:05:44 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The handling of _OSC errors in acpi_run_osc() is inconsistent and
-> > arguably not compliant with the _OSC definition (cf. Section 6.2.12 of
-> > ACPI 6.6 [1]).
-> >
-> > Namely, if OSC_QUERY_ENABLE is not set in the capabilities buffer and
-> > any of the error bits are set in the _OSC return buffer, acpi_run_osc()
-> > returns an error code and the _OSC return buffer is discarded.  However=
-,
-> > in that case, depending on what error bits are set, the return buffer
-> > may contain acknowledged bits for features that need to be controlled b=
-y
-> > the kernel going forward.
-> >
-> > If the OSC_INVALID_UUID_ERROR bit is set, the request could not be
-> > processed at all and so in that particular case discarding the _OSC
-> > return buffer and returning an error is the right thing to do regardles=
-s
-> > of whether or not OSC_QUERY_ENABLE is set in the capabilities buffer.
-> >
-> > If OSC_QUERY_ENABLE is set in the capabilities buffer and the
-> > OSC_REQUEST_ERROR or OSC_INVALID_REVISION_ERROR bits are set in the
-> > return buffer, acpi_run_osc() may return an error and discard the _OSC
-> > return buffer because in that case the platform configuration does not
-> > change.  However, if any of them is set in the return buffer when
-> > OSC_QUERY_ENABLE is not set in the capabilities buffer, the feature
-> > mask in the _OSC return buffer still representes a set of acknowleded
->
-> typo: represents
+On 12/22/25 22:32, Rafael J. Wysocki wrote:
+> On Sun, Dec 21, 2025 at 7:24 PM Gladyshev Ilya <foxido@foxido.dev> wrote:
+>>
+>> ACPI Object is represented via union on C-side. On Rust side, it's
+>> zero-cost type wrapper for each ACPI Type, with individual methods for
+>> getters and other interactions.
+> 
+> This is ACPICA stuff though and switching over ACPICA to Rust any time
+> soon is rather unlikely.
+> 
+> Is this really needed on the Rust side?
 
-Thanks, fixed while applying.
+At least acpi_buffer is needed, and for now, only that will be wrapped 
+(I will remove other types).
 
-> > features as per the _OSC definition:
-> >
-> >  The platform acknowledges the Capabilities Buffer by returning a
-> >  buffer of DWORDs of the same length. Set bits indicate acknowledgment
-> >  that OSPM may take control of the capability and cleared bits indicate
-> >  that the platform either does not support the capability or that OSPM
-> >  may not assume control.
-> >
-> > which is not conditional on the error bits being clear, so in that case=
-,
-> > discarding the _OSC return buffer is questionable.  There is also no
-> > reason to return an error and discard the _OSC return buffer if the
-> > OSC_CAPABILITIES_MASK_ERROR bit is set in it, but printing diagnostic
-> > messages is appropriate when that happens with OSC_QUERY_ENABLE clear
-> > in the capabilities buffer.
-> >
-> > Adress this issue by making acpi_run_osc() follow the rules outlined
-> > above.
-> >
-> > Moreover, make acpi_run_osc() only take the defined _OSC error bits int=
-o
-> > account when checking _OSC errors.
-> >
-> > Link: https://uefi.org/specs/ACPI/6.6/06_Device_Configuration.html#osc-=
-operating-system-capabilities [1]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-Thank you!
-
-And thanks for all of the reviews!
+Note that there are no actual types on the Rust side, only transparent 
+wrappers around C acpi structs (for type safety).
 
