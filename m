@@ -1,110 +1,121 @@
-Return-Path: <linux-acpi+bounces-19810-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19811-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52284CD8F48
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 11:50:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF06CD90FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 12:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D14BB30B17BB
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 10:44:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 035A63061EA3
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 11:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2805E32C31C;
-	Tue, 23 Dec 2025 10:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bB9Gi0xH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62A52FE07F;
+	Tue, 23 Dec 2025 11:12:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F41315D3E;
-	Tue, 23 Dec 2025 10:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879EE28A1E6;
+	Tue, 23 Dec 2025 11:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766486520; cv=none; b=Flct4cLCdURbg07kAxhl2uOx1R/RUCvk33P45GHt3Z5RT7gZimLRM4CRefCteCzKqxdmodtPlJ894wTqEqzSaCweP2zgugLsICWiQyCvCfMC9JSq2Z2Z+j9s9Tgx9kJBbRhKU40H8nfYw+fQNuDHApOyateCX7QN+QwubxY6EtQ=
+	t=1766488335; cv=none; b=vElGtY2OFrnqm83Q/i/VgZR78GlaBOLGv3aNeGW8HGKa9W9JYQ3NPz6xNJ25KzLAjPbFaTa4Tdez1BuWKwmorjJ+UchzlVuJi0Ga0fpf09feUPjKmAJQsJ6nN3a8ZTOK/j/v4tYFbbumWPc7b+IpLSo1iunlrEOWZOkqJIO2zW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766486520; c=relaxed/simple;
-	bh=UFw3iIBjIOQhDLXO7EWczIafIBrzpn1pV/Yc2YaQ6Rs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=ZE/v6AdLiwEHD3vui/NovcjOJz4g++p0acdAQWWQWgXpPBKMFft9SLUJWb639FtgryZzR2D4r16YDNyN/ekqP5QSo3/UO1Z0MGsrkwZj680t0h9aeyxIxmRN1GO5SsjF8ZdPhbhKr9Am3Bjs/jRtwTrsbXAzhQSwVWvqw8h/e30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bB9Gi0xH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD325C113D0;
-	Tue, 23 Dec 2025 10:41:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766486519;
-	bh=UFw3iIBjIOQhDLXO7EWczIafIBrzpn1pV/Yc2YaQ6Rs=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=bB9Gi0xH+Xstu+d5D3qkSvWf/MUNfAXsJcn2rD7o/ZTbUNdYIZZLYXOaSgMbqZFSB
-	 kOP4uO/cbfu+RhxgUbDUsG7rfpkKG60bPoJg8nHF0N6+504HLM2L6ebCF+cMehQl68
-	 QreicZhaSonuMnCL+ZadqXii0AG9//fztuqbcnUQq2PtIPtacx4sXMOSBAXNs6wvKR
-	 z0u9Dnx7xoJ7k8udqSPzt+1XHRCZqWkHN2PcuILSb4WL9vQ8Z/CpkAQx4USmsFN0M/
-	 jCL6oqXmSupgKj7+4MGECsd4hwlwo+EuQb5+chk1IJQhIpaK+LSUCZhRYVMaSHKKHO
-	 w/v8zKYPH5HVg==
+	s=arc-20240116; t=1766488335; c=relaxed/simple;
+	bh=eDH5SH3C74f20IHQKIV+ZEM+AhPSBxC4WVYw50K30FY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hf+x6CRnnLEWcPJqgLlywdVf7XSTVpV1Y8oI8+gZPfR2nueHO2BkKFXQXMtpOdctmdF7oFR8ZcwlVCO9Sj+sfoK3TeCPIS7GkcDwKePQ0dH1wBWWFcsyUk+wom1dfQ+A46lPGwiJz0R6FP4+zKEA5Twu3DL5WwRySHvxSVRFu9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dbC4h59pYzHnH6q;
+	Tue, 23 Dec 2025 19:11:32 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9241D4056C;
+	Tue, 23 Dec 2025 19:12:09 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 23 Dec
+ 2025 11:12:08 +0000
+Date: Tue, 23 Dec 2025 11:12:07 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn
+ Helgaas <helgaas@kernel.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2.1 1/8] ACPI: bus: Fix handling of _OSC errors in
+ acpi_run_osc()
+Message-ID: <20251223111207.0000595d@huawei.com>
+In-Reply-To: <3042649.e9J7NaK4W3@rafael.j.wysocki>
+References: <2413407.ElGaqSPkdT@rafael.j.wysocki>
+	<3042649.e9J7NaK4W3@rafael.j.wysocki>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Dec 2025 11:41:52 +0100
-Message-Id: <DF5J7H0BSBTK.362ZAJTRBK6U1@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v7 3/9] software node: allow referencing firmware nodes
-Cc: "'Bartosz Golaszewski'" <brgl@kernel.org>, "'Bartosz Golaszewski'"
- <bartosz.golaszewski@linaro.org>, <andriy.shevchenko@linux.intel.com>,
- <andy@kernel.org>, <broonie@kernel.org>, <ckeepax@opensource.cirrus.com>,
- <david.rhodes@cirrus.com>, <djrscally@gmail.com>,
- <gregkh@linuxfoundation.org>, <heikki.krogerus@linux.intel.com>,
- <krzk@kernel.org>, <linus.walleij@linaro.org>,
- <linux-acpi@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-sound@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <mstrozek@opensource.cirrus.com>,
- <p.zabel@pengutronix.de>, <patches@opensource.cirrus.com>,
- <rafael@kernel.org>, <rf@opensource.cirrus.com>,
- <sakari.ailus@linux.intel.com>
-To: "Jiawen Wu" <jiawenwu@trustnetic.com>
-References: <02fd01dc73df$3b641bf0$b22c53d0$@trustnetic.com>
- <CAMRc=Mf2A++CHYcMdBi0bQ0DOAGLaSatQEOmu=aAEG_YjCqEWg@mail.gmail.com>
- <030001dc73e8$56e38330$04aa8990$@trustnetic.com>
- <CAMRc=Meugd9tEDefPnYHidDMTdCP+8fptVXNvqjSi1tjXPuVRA@mail.gmail.com>
- <030101dc73f1$46a62b40$d3f281c0$@trustnetic.com>
-In-Reply-To: <030101dc73f1$46a62b40$d3f281c0$@trustnetic.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Tue Dec 23, 2025 at 10:48 AM CET, Jiawen Wu wrote:
-> On Tue, Dec 23, 2025 5:37 PM, Bartosz Golaszewski wrote:
->> On Tue, Dec 23, 2025 at 9:44=E2=80=AFAM Jiawen Wu <jiawenwu@trustnetic.c=
-om> wrote:
->> > And I temporarily added this line to fix it:
->> >
->> > diff --git a/include/linux/property.h b/include/linux/property.h
->> > index 272bfbdea7bf..e30ef23a9af3 100644
->> > --- a/include/linux/property.h
->> > +++ b/include/linux/property.h
->> > @@ -371,6 +371,7 @@ struct software_node_ref_args {
->> >  (const struct software_node_ref_args) {                              =
-  \
->> >         .swnode =3D _Generic(_ref_,                               \
->> >                            const struct software_node *: _ref_, \
->> > +                          struct software_node *: _ref_,       \
->> >                            default: NULL),                      \
->> >         .fwnode =3D _Generic(_ref_,                               \
->> >                            struct fwnode_handle *: _ref_,       \
->> >
->>=20
->> Ah I see, we'd assign struct software_node * to const struct
->> software_node * and it used to work but with _Generic() we need the
->> exact type. I agree with this approach, do you want to send a proper
->> patch?
->
-> It might be more appropriate for you to send the patch, and could also
-> check if there are any other missed details, like for fwnode...
-> I'm not very proficient in this field. :)
+On Mon, 22 Dec 2025 20:05:44 +0100
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-There is already [1], which I queued up in the driver-core tree to send as =
-fix
-for -rc3.
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The handling of _OSC errors in acpi_run_osc() is inconsistent and
+> arguably not compliant with the _OSC definition (cf. Section 6.2.12 of
+> ACPI 6.6 [1]).
+> 
+> Namely, if OSC_QUERY_ENABLE is not set in the capabilities buffer and
+> any of the error bits are set in the _OSC return buffer, acpi_run_osc()
+> returns an error code and the _OSC return buffer is discarded.  However,
+> in that case, depending on what error bits are set, the return buffer
+> may contain acknowledged bits for features that need to be controlled by
+> the kernel going forward.
+> 
+> If the OSC_INVALID_UUID_ERROR bit is set, the request could not be
+> processed at all and so in that particular case discarding the _OSC
+> return buffer and returning an error is the right thing to do regardless
+> of whether or not OSC_QUERY_ENABLE is set in the capabilities buffer.
+> 
+> If OSC_QUERY_ENABLE is set in the capabilities buffer and the
+> OSC_REQUEST_ERROR or OSC_INVALID_REVISION_ERROR bits are set in the
+> return buffer, acpi_run_osc() may return an error and discard the _OSC
+> return buffer because in that case the platform configuration does not
+> change.  However, if any of them is set in the return buffer when
+> OSC_QUERY_ENABLE is not set in the capabilities buffer, the feature
+> mask in the _OSC return buffer still representes a set of acknowleded
 
-[1] https://lore.kernel.org/lkml/20251219083638.2454138-1-sakari.ailus@linu=
-x.intel.com/
+typo: represents
+
+> features as per the _OSC definition:
+> 
+>  The platform acknowledges the Capabilities Buffer by returning a
+>  buffer of DWORDs of the same length. Set bits indicate acknowledgment
+>  that OSPM may take control of the capability and cleared bits indicate
+>  that the platform either does not support the capability or that OSPM
+>  may not assume control.
+> 
+> which is not conditional on the error bits being clear, so in that case,
+> discarding the _OSC return buffer is questionable.  There is also no
+> reason to return an error and discard the _OSC return buffer if the
+> OSC_CAPABILITIES_MASK_ERROR bit is set in it, but printing diagnostic
+> messages is appropriate when that happens with OSC_QUERY_ENABLE clear
+> in the capabilities buffer.
+> 
+> Adress this issue by making acpi_run_osc() follow the rules outlined
+> above.
+> 
+> Moreover, make acpi_run_osc() only take the defined _OSC error bits into
+> account when checking _OSC errors.
+> 
+> Link: https://uefi.org/specs/ACPI/6.6/06_Device_Configuration.html#osc-operating-system-capabilities [1]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
