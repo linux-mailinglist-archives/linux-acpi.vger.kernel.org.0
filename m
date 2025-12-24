@@ -1,168 +1,117 @@
-Return-Path: <linux-acpi+bounces-19835-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19836-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E2FCDADDE
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Dec 2025 00:59:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2847BCDB1DA
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Dec 2025 02:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4A2C30402E3
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Dec 2025 23:59:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 197E1300B68E
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Dec 2025 01:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0255E2FE07F;
-	Tue, 23 Dec 2025 23:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03783286D70;
+	Wed, 24 Dec 2025 01:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AmDktxGz"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BGvBXEBr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CE02F12C9;
-	Tue, 23 Dec 2025 23:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326A32765C0;
+	Wed, 24 Dec 2025 01:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766534340; cv=none; b=uNpxfzfcqsxgIhhsu2X7EC0CXV75nhTwlZLPuF0cpMkqevYEbIAWGeLUGBFAdOVejJcZy4j1KeuXVWk/CsftCUma57GlRxXh8b9xsLP8pgzVZKTt6a+fBtqzU68zVcpG0rGEA7Nd/JEZ28rev52OvpdRDgbr6c+RMPKH4Nmbb6E=
+	t=1766541503; cv=none; b=BuI5No7NdfHfJTzXe2Q+tf8CufacYbRBQwqoqHkRSzQ35uuqvTOnckgYC53a1XoCg90K0Ef9RD0NGWdCGenuzWmoE3QilZDMsevDoglSmOw8TAqT2nznEZcI+0bUeLEMlh4A/7HcriKynnL/MzUZgfd4/7VGCxXOL1VpwwVjkFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766534340; c=relaxed/simple;
-	bh=wbLqI2F7wg0GAZJFEKzvgXl0WujlC0eAlfgVTwT4Pnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ekClxg3LPZuJUM73b4rVkYiseA0Z6Z+bZ8YMAR/yWGPS3sjkyz7f/oU5d5Bl1JK8h2yzzW0Uwe+Iyy1IA+0zGYSlKxBgxmlr4Zg4OTY+HDJ2wRnpNOlIyVKOe8FZkO7vboY2E2bI3/+yXQ1GnH4dJhqPy8Yz58M3MpAQdYhlNJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AmDktxGz; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766534339; x=1798070339;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wbLqI2F7wg0GAZJFEKzvgXl0WujlC0eAlfgVTwT4Pnc=;
-  b=AmDktxGz6As7TDCDiArpZwUFI3TctiOPKvOD/dPZr7Td8xbNWYrfcCZD
-   TcOvxhoIEQIURoUYhs2NgcsG/tQV2RIYDuWd01BKB+TvFkndrmzPrllxu
-   aPoqKMhOifXhHzwbZnOSAi0oW7qRPkpV99STDCs6qRK2u+lfwbRzqz4z1
-   1KOj4GMUbD9AhcL7E8T4ySpV/iOkT9wqx9WCoco648s9mUbBNo5rZqaP7
-   Pe2bFr8vPw2xle5rL1bsDhqGDEpdbHHaPprBwpGFNZgXq2NouvUbv3CVs
-   HELKrVvq16CVay0rylfefexnteFhNKbWHCXJ7aiTddMdXQyq60kz3Cjjv
-   g==;
-X-CSE-ConnectionGUID: /QR2UOgAQYewr1OliCngag==
-X-CSE-MsgGUID: DSDhPZVIRdiiTnmHKw+7VQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79016466"
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="79016466"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 15:58:58 -0800
-X-CSE-ConnectionGUID: TcJUReP5Qwy+NGFGsQ85Gg==
-X-CSE-MsgGUID: K0cnw6bARF6boThsyEe6Hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="199870155"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 23 Dec 2025 15:58:52 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vYCHC-000000002Uf-0n58;
-	Tue, 23 Dec 2025 23:58:50 +0000
-Date: Wed, 24 Dec 2025 07:58:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
-	linux-cxl@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Rafael J Wysocki <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-media@vger.kernel.org, Shuai Xue <xueshuai@linux.alibaba.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: Re: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol
- errors checks
-Message-ID: <202512240711.Iv57ik8I-lkp@intel.com>
-References: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
+	s=arc-20240116; t=1766541503; c=relaxed/simple;
+	bh=m/XRO2FBMScXGiJHPuEPh4Kr05SMipu8waJ+Pl6bQN8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tRsXwnqQUd8BaZm0TGiIxX2/A4vFYONHotvHEF1UhKGyfS3VZQgCPIIkQpOGFWnO1CPZg1dmEwcbEyPDjmwHUjfkAsF1npg4HoaMp47/zGFdmC5Sy+hdHXSoIVp+VrIqyez3rXrHM5Q2SXcwMvuS2s5HsD+4I/NSJ0k9j6wGCgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BGvBXEBr; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766541492; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=vpb/Ndy+7I56xYp04RK+U275InGboh5GyjLPiBNNVmE=;
+	b=BGvBXEBrWR7/KzLo2KNjbkw5hBC+NeQjOor44Ea/i4fwe+9Sseo/aRhcEZO5d41nrUkXDYX8CR9uE5EeUr4Ay0Rrync7/93xEhtU281Ft3ERmDK/7bAdId6KneMrW8NJNeI5Zs5JA3k4CQpjScbXF4sqTUtZdpeGbkZTb0m9ctg=
+Received: from 30.246.163.226(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WvZQeTD_1766541489 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Dec 2025 09:58:10 +0800
+Message-ID: <b1b0071f-ce69-41ac-adc8-54fb0bdb7116@linux.alibaba.com>
+Date: Wed, 24 Dec 2025 09:58:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
-
-Hi Fabio,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on ea1013c1539270e372fc99854bc6e4d94eaeff66]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Fabio-M-De-Francesco/ACPI-extlog-Trace-CPER-Non-standard-Section-Body/20251219-204338
-base:   ea1013c1539270e372fc99854bc6e4d94eaeff66
-patch link:    https://lore.kernel.org/r/20251219124042.3759749-4-fabio.m.de.francesco%40linux.intel.com
-patch subject: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol errors checks
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512240711.Iv57ik8I-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/acpi/apei/ghes_helpers.c: In function 'cxl_cper_sec_prot_err_valid':
->> drivers/acpi/apei/ghes_helpers.c:9:17: error: implicit declaration of function 'pr_err_ratelimited' [-Wimplicit-function-declaration]
-       9 |                 pr_err_ratelimited("CXL CPER invalid agent type\n");
-         |                 ^~~~~~~~~~~~~~~~~~
->> drivers/acpi/apei/ghes_helpers.c:27:17: error: implicit declaration of function 'pr_warn_ratelimited' [-Wimplicit-function-declaration]
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                 ^~~~~~~~~~~~~~~~~~~
->> drivers/acpi/apei/ghes_helpers.c:27:37: error: 'FW_WARN' undeclared (first use in this function)
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                                     ^~~~~~~
-   drivers/acpi/apei/ghes_helpers.c:27:37: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/acpi/apei/ghes_helpers.c:27:44: error: expected ')' before string constant
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                                    ~       ^
-         |                                            )
-      28 |                                     "CXL CPER no device serial number\n");
-         |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5 v8] ACPI: extlog: Trace CPER Non-standard Section Body
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ linux-cxl@vger.kernel.org
+Cc: Rafael J Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+References: <20251219124042.3759749-1-fabio.m.de.francesco@linux.intel.com>
+ <20251219124042.3759749-2-fabio.m.de.francesco@linux.intel.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20251219124042.3759749-2-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-vim +/pr_err_ratelimited +9 drivers/acpi/apei/ghes_helpers.c
 
-     5	
-     6	int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
-     7	{
-     8		if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
-   > 9			pr_err_ratelimited("CXL CPER invalid agent type\n");
-    10			return -EINVAL;
-    11		}
-    12	
-    13		if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
-    14			pr_err_ratelimited("CXL CPER invalid protocol error log\n");
-    15			return -EINVAL;
-    16		}
-    17	
-    18		if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
-    19			pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
-    20					   prot_err->err_len);
-    21			return -EINVAL;
-    22		}
-    23	
-    24		if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
-    25		     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
-    26		    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-  > 27			pr_warn_ratelimited(FW_WARN
+On 12/19/25 8:39 PM, Fabio M. De Francesco wrote:
+> ghes_do_proc() has a catch-all for unknown or unhandled CPER formats
+> (UEFI v2.11 Appendix N 2.3), extlog_print() does not. This gap was
+> noticed by a RAS test that injected CXL protocol errors which were
+> notified to extlog_print() via the IOMCA (I/O Machine Check
+> Architecture) mechanism. Bring parity to the extlog_print() path by
+> including a similar log_non_standard_event().
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> ---
+>   drivers/acpi/acpi_extlog.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index f6b9562779de0..47d11cb5c9120 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -183,6 +183,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+>   			if (gdata->error_data_length >= sizeof(*mem))
+>   				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
+>   						       (u8)gdata->error_severity);
+> +		} else {
+> +			void *err = acpi_hest_get_payload(gdata);
+> +
+> +			log_non_standard_event(sec_type, fru_id, fru_text,
+> +					       gdata->error_severity, err,
+> +					       gdata->error_data_length);
+>   		}
+>   	}
+>   
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+
+Thanks.
+Shuai
 
