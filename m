@@ -1,194 +1,180 @@
-Return-Path: <linux-acpi+bounces-19842-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19843-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678B0CDD441
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 04:56:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C9CCDD639
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 08:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B09C30019E2
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 03:56:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B1775300C165
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 07:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CBB26E708;
-	Thu, 25 Dec 2025 03:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398D72D97BA;
+	Thu, 25 Dec 2025 06:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FITWrUDr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G0stUJ6n"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5EA26CE1E;
-	Thu, 25 Dec 2025 03:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAD62D780A;
+	Thu, 25 Dec 2025 06:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766634977; cv=none; b=dy4t2CgBGO9X5mgGRsiT7dwU3NkJexgqzYbLVNMmh+b/ut1p9RJFJXm8zjGkvB7y7IgGlwpUCTotqsW2wMIsFQpKsMUxR+lhCXL/iyOLJIrda31fbKJYaf9ZCVA5YktMQ9rBW1/RrXKamYkljspMOGyVD5hZwIA0kRldzV+Ls84=
+	t=1766645994; cv=none; b=cPUq49KurnmMyShvNazv/UfWNHyhxFLcQ6w1WSpoYsiMKEmJBHVjvxNn3sXgu2Sxxw3z82LyXSDBBtnQIopPp0S1GwHO3FlMlVnA8P3K0Ay6PBNQ2XCeasZeqFK5g1s6x19AE5EoHa0Ancsyd8rGIv+OfMQoU3XCKAtEDyrB5is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766634977; c=relaxed/simple;
-	bh=fMmt53/JJWWP4pjndh+z3lihgDw1Gcx+TyH5M8i6tiw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=tXbE4xMxZhnchfF9YdFxNS+9O+PhupbM5hbEtiaDgLowWAH7Ei6/X9xmFUHhnEi2oC9UC3gvR8NC4aPT8SIPYU1kkvQrUOKkipSvt7klwbOqwLYS7yeKPTf2ZW184MGj8LHco820kJyoYpGgUG36j4cFgiOkDeCJnRN3mIkdF5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FITWrUDr; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=SeTeoeWMD6hV4CIob9uwUSK89zuLIoZE1oDuloPtKCQ=;
-	b=FITWrUDr6rrlRAI8nb6S2WONTWuA3Su2v7og1znc0LTGo6Zaxq8Y8vsfFPMKtD0GSgfY3mkCM
-	MVoZgMobic1/WVso94DUNyXvGWJuE5ZK7sJ34Fj1NRsA0bQaY0iyDW5s0Z0tw+XfUc7zPv89n5+
-	jxpy7gzXVIo4opQYqhdwdu8=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dcFFh0j55z1prKB;
-	Thu, 25 Dec 2025 11:52:56 +0800 (CST)
-Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8265640538;
-	Thu, 25 Dec 2025 11:56:05 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
- (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Dec
- 2025 11:56:04 +0800
-Message-ID: <81f6409e-7909-44f7-9618-5f263b297ce9@huawei.com>
-Date: Thu, 25 Dec 2025 11:56:04 +0800
+	s=arc-20240116; t=1766645994; c=relaxed/simple;
+	bh=+WiEymJv/nr2X5pjWCtt6q+S4mNEdgmhNha83diODgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UXdREZGkZeSDWBf8Sv9ohG6TjTOt5Nbg1u3sQ2/BqnE7Xtg1wDIJHb9nyX+KhMG9zXG/Kojm7+II4KA6wKJctNTKY6bxRwxC85FzsZGpWllRbiVQAtw4pu2C2g01M9vH338HPY98yx8z/U8HB/FjZmwNb0qJTx18lheesEBbXPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G0stUJ6n; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766645993; x=1798181993;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+WiEymJv/nr2X5pjWCtt6q+S4mNEdgmhNha83diODgc=;
+  b=G0stUJ6nttAUB7l22Wl03ySbSlaIIJVOoEL8KKho3iegOF9Zw4ZrNjDw
+   Mh7yxqqFjta7P6d8voSqZaaXC5nZ8njD3AWBDX5pfc3H/xnVG+MaraSxE
+   CCuvMcKacb9fJxeoR0ueMXeVcrZJY0BGdZfbwHDxtEPGNRaTktIZMmfD/
+   wbVrgzaJRDYDEG5sT5S1ku+iYuw3yvc39aTv8DOku6T6quaO167SbxVKc
+   9NsqFt3gnFKFaQEvSRAuzpRiJ5OdsSuulcQOV8SLTceqodRqrvKqGTb1r
+   /lhqc73eSi4DPicaBWVguQlWZgMwI5HMs4EazEfQzVi6xFND0Fc95Fz13
+   Q==;
+X-CSE-ConnectionGUID: zvjfVQwvSKi8Hn5PrW3Cxg==
+X-CSE-MsgGUID: AIRdY5bAQfCueRsLc4hD6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="68440322"
+X-IronPort-AV: E=Sophos;i="6.21,175,1763452800"; 
+   d="scan'208";a="68440322"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2025 22:59:52 -0800
+X-CSE-ConnectionGUID: RwRzrLXQR3S4e/QAzpKyJw==
+X-CSE-MsgGUID: bgk551fhQNa8HKvE2FagTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,175,1763452800"; 
+   d="scan'208";a="231228707"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 24 Dec 2025 22:59:47 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vYfK5-000000003qx-1WVx;
+	Thu, 25 Dec 2025 06:59:45 +0000
+Date: Thu, 25 Dec 2025 14:58:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
+	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+	lenb@kernel.org, tony.luck@intel.com, bp@alien8.de,
+	yazen.ghannam@amd.com, misono.tomohiro@fujitsu.com
+Cc: oe-kbuild-all@lists.linux.dev, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
+Message-ID: <202512251419.gOeKyBqX-lkp@intel.com>
+References: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/11] ACPI: CPPC: Extend cppc_set_epp_perf() to
- support auto_sel and epp
-To: Sumit Gupta <sumitg@nvidia.com>, <rafael@kernel.org>,
-	<viresh.kumar@linaro.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<corbet@lwn.net>, <pierre.gondois@arm.com>, <rdunlap@infradead.org>,
-	<ray.huang@amd.com>, <gautham.shenoy@amd.com>, <mario.limonciello@amd.com>,
-	<perry.yuan@amd.com>, <ionela.voinescu@arm.com>, <zhanjie9@hisilicon.com>,
-	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-CC: <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
-	<jonathanh@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
-	<sanjayc@nvidia.com>, <nhartman@nvidia.com>, <bbasu@nvidia.com>
-References: <20251223121307.711773-1-sumitg@nvidia.com>
- <20251223121307.711773-5-sumitg@nvidia.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <20251223121307.711773-5-sumitg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemf200001.china.huawei.com (7.202.181.227)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
 
-On 2025/12/23 20:13, Sumit Gupta wrote:
-> Extend cppc_set_epp_perf() to write both auto_sel and energy_perf
-> registers when they are in FFH or SystemMemory address space.
-> 
-> This keeps the behavior consistent with PCC case where both registers
-> are already updated together, but was missing for FFH/SystemMemory.
-> 
-> Also update EPP constants for better clarity:
-> - Add CPPC_EPP_PERFORMANCE_PREF (0x00) for performance preference
-> - Add CPPC_EPP_ENERGY_EFFICIENCY_PREF (0xFF) for energy efficiency
-> 
-> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-> ---
->  drivers/acpi/cppc_acpi.c | 35 +++++++++++++++++++++++++++++------
->  include/acpi/cppc_acpi.h |  3 ++-
->  2 files changed, 31 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index a4e89fe6aab5..403ee988a8c6 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1556,6 +1556,8 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->  	struct cpc_register_resource *auto_sel_reg;
->  	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->  	struct cppc_pcc_data *pcc_ss_data = NULL;
-> +	bool autosel_ffh_sysmem;
-> +	bool epp_ffh_sysmem;
->  	int ret;
->  
->  	if (!cpc_desc) {
-> @@ -1566,6 +1568,11 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->  	auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
->  	epp_set_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
->  
-> +	epp_ffh_sysmem = CPC_SUPPORTED(epp_set_reg) &&
-> +		(CPC_IN_FFH(epp_set_reg) || CPC_IN_SYSTEM_MEMORY(epp_set_reg));
-> +	autosel_ffh_sysmem = CPC_SUPPORTED(auto_sel_reg) &&
-> +		(CPC_IN_FFH(auto_sel_reg) || CPC_IN_SYSTEM_MEMORY(auto_sel_reg));
-> +
->  	if (CPC_IN_PCC(epp_set_reg) || CPC_IN_PCC(auto_sel_reg)) {
->  		if (pcc_ss_id < 0) {
->  			pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
-> @@ -1590,14 +1597,30 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->  		/* after writing CPC, transfer the ownership of PCC to platform */
->  		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
->  		up_write(&pcc_ss_data->pcc_lock);
-> -	} else if (osc_cpc_flexible_adr_space_confirmed &&
-> -		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
-> -		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
-> +	} else if (osc_cpc_flexible_adr_space_confirmed) {
-> +		if (!epp_ffh_sysmem && !autosel_ffh_sysmem) {
-> +			ret = -EOPNOTSUPP;
-> +		} else {
+Hi Ruidong,
 
-I think this can do the same thing:
+kernel test robot noticed the following build errors:
 
-	} else if (osc_cpc_flexible_adr_space_confirmed &&
-		   (epp_ffh_sysmem || autosel_ffh_sysmem)) {
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.19-rc2 next-20251219]
+[cannot apply to arm64/for-next/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-and reduce the levels of indentation.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-AEST-Parse-the-AEST-table/20251222-215248
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20251222094351.38792-16-tianruidong%40linux.alibaba.com
+patch subject: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20251225/202512251419.gOeKyBqX-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251225/202512251419.gOeKyBqX-lkp@intel.com/reproduce)
 
-> +			if (autosel_ffh_sysmem) {
-> +				ret = cpc_write(cpu, auto_sel_reg, enable);
-> +				if (ret)
-> +					return ret;
-> +			}
-> +
-> +			if (epp_ffh_sysmem) {
-> +				ret = cpc_write(cpu, epp_set_reg,
-> +						perf_ctrls->energy_perf);
-> +				if (ret)
-> +					return ret;
-> +			}
-> +		}
->  	} else {
-> -		ret = -ENOTSUPP;
-> -		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
-> +		ret = -EOPNOTSUPP;
->  	}
->  
-> +	if (ret == -EOPNOTSUPP)
-> +		pr_debug("CPU%d: _CPC not in PCC/FFH/SystemMemory\n", cpu);
-> +
->  	return ret;
->  }
->  EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512251419.gOeKyBqX-lkp@intel.com/
 
-The code below is unrelated to the code above and should ideally be
-separated into a separate patch I think.
+All errors (new ones prefixed by >>):
 
-> @@ -1609,7 +1632,7 @@ EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
->   */
->  int cppc_set_epp(int cpu, u64 epp_val)
->  {
-> -	if (epp_val > CPPC_ENERGY_PERF_MAX)
-> +	if (epp_val > CPPC_EPP_ENERGY_EFFICIENCY_PREF)
->  		return -EINVAL;
->  
->  	return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
-> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 12a1dc31bf2a..2860a0252313 100644
-> --- a/include/acpi/cppc_acpi.h
-> +++ b/include/acpi/cppc_acpi.h
-> @@ -39,7 +39,8 @@
->  /* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
->  #define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
->  
-> -#define CPPC_ENERGY_PERF_MAX	(0xFF)
-> +#define CPPC_EPP_PERFORMANCE_PREF		0x00
-> +#define CPPC_EPP_ENERGY_EFFICIENCY_PREF		0xFF
->  
->  /* Each register has the folowing format. */
->  struct cpc_reg {
+   drivers/ras/amd/fmpm.c: In function 'save_spa':
+>> drivers/ras/amd/fmpm.c:336:15: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Wimplicit-function-declaration]
+     336 |         spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
+         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |               convert_umc_mca_addr_to_sys_addr
+--
+   drivers/ras/amd/atl/umc.c: In function '_retire_row_mi300':
+>> drivers/ras/amd/atl/umc.c:321:24: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Wimplicit-function-declaration]
+     321 |                 addr = amd_convert_umc_mca_addr_to_sys_addr(a_err);
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                        convert_umc_mca_addr_to_sys_addr
 
+
+vim +336 drivers/ras/amd/fmpm.c
+
+6f15e617cc9932 Yazen Ghannam 2024-02-13  298  
+838850c50884cd Yazen Ghannam 2024-03-01  299  static void save_spa(struct fru_rec *rec, unsigned int entry,
+838850c50884cd Yazen Ghannam 2024-03-01  300  		     u64 addr, u64 id, unsigned int cpu)
+838850c50884cd Yazen Ghannam 2024-03-01  301  {
+838850c50884cd Yazen Ghannam 2024-03-01  302  	unsigned int i, fru_idx, spa_entry;
+838850c50884cd Yazen Ghannam 2024-03-01  303  	struct atl_err a_err;
+838850c50884cd Yazen Ghannam 2024-03-01  304  	unsigned long spa;
+838850c50884cd Yazen Ghannam 2024-03-01  305  
+838850c50884cd Yazen Ghannam 2024-03-01  306  	if (entry >= max_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  307  		pr_warn_once("FRU descriptor entry %d out-of-bounds (max: %d)\n",
+838850c50884cd Yazen Ghannam 2024-03-01  308  			     entry, max_nr_entries);
+838850c50884cd Yazen Ghannam 2024-03-01  309  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  310  	}
+838850c50884cd Yazen Ghannam 2024-03-01  311  
+838850c50884cd Yazen Ghannam 2024-03-01  312  	/* spa_nr_entries is always multiple of max_nr_entries */
+838850c50884cd Yazen Ghannam 2024-03-01  313  	for (i = 0; i < spa_nr_entries; i += max_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  314  		fru_idx = i / max_nr_entries;
+838850c50884cd Yazen Ghannam 2024-03-01  315  		if (fru_records[fru_idx] == rec)
+838850c50884cd Yazen Ghannam 2024-03-01  316  			break;
+838850c50884cd Yazen Ghannam 2024-03-01  317  	}
+838850c50884cd Yazen Ghannam 2024-03-01  318  
+838850c50884cd Yazen Ghannam 2024-03-01  319  	if (i >= spa_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  320  		pr_warn_once("FRU record %d not found\n", i);
+838850c50884cd Yazen Ghannam 2024-03-01  321  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  322  	}
+838850c50884cd Yazen Ghannam 2024-03-01  323  
+838850c50884cd Yazen Ghannam 2024-03-01  324  	spa_entry = i + entry;
+838850c50884cd Yazen Ghannam 2024-03-01  325  	if (spa_entry >= spa_nr_entries) {
+838850c50884cd Yazen Ghannam 2024-03-01  326  		pr_warn_once("spa_entries[] index out-of-bounds\n");
+838850c50884cd Yazen Ghannam 2024-03-01  327  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  328  	}
+838850c50884cd Yazen Ghannam 2024-03-01  329  
+838850c50884cd Yazen Ghannam 2024-03-01  330  	memset(&a_err, 0, sizeof(struct atl_err));
+838850c50884cd Yazen Ghannam 2024-03-01  331  
+838850c50884cd Yazen Ghannam 2024-03-01  332  	a_err.addr = addr;
+838850c50884cd Yazen Ghannam 2024-03-01  333  	a_err.ipid = id;
+838850c50884cd Yazen Ghannam 2024-03-01  334  	a_err.cpu  = cpu;
+838850c50884cd Yazen Ghannam 2024-03-01  335  
+838850c50884cd Yazen Ghannam 2024-03-01 @336  	spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
+838850c50884cd Yazen Ghannam 2024-03-01  337  	if (IS_ERR_VALUE(spa)) {
+838850c50884cd Yazen Ghannam 2024-03-01  338  		pr_debug("Failed to get system address\n");
+838850c50884cd Yazen Ghannam 2024-03-01  339  		return;
+838850c50884cd Yazen Ghannam 2024-03-01  340  	}
+838850c50884cd Yazen Ghannam 2024-03-01  341  
+838850c50884cd Yazen Ghannam 2024-03-01  342  	spa_entries[spa_entry] = spa;
+838850c50884cd Yazen Ghannam 2024-03-01  343  	pr_debug("fru_idx: %u, entry: %u, spa_entry: %u, spa: 0x%016llx\n",
+838850c50884cd Yazen Ghannam 2024-03-01  344  		 fru_idx, entry, spa_entry, spa_entries[spa_entry]);
+838850c50884cd Yazen Ghannam 2024-03-01  345  }
+838850c50884cd Yazen Ghannam 2024-03-01  346  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
