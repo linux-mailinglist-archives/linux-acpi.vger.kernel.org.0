@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-19849-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19850-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F9CCDE029
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 18:57:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546F1CDE03E
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 19:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 929EF300661A
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 17:57:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3E3A30000B8
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 18:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A049253340;
-	Thu, 25 Dec 2025 17:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D045927FD71;
+	Thu, 25 Dec 2025 18:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Nbs+IDNr"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Yb83yk2h"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5AC3A1E94;
-	Thu, 25 Dec 2025 17:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0056C205E25;
+	Thu, 25 Dec 2025 18:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766685444; cv=none; b=LiX9ac7VbvQmfiYTcXv6YJaI1PN/CinYw4YSuIqMersRFvpLk8qH2wr9ToZKnrr4FynyarDE4vGa58MXqNGBRWfpPOYiI/0RIcgCYelANW1XD7ijNIGHzUJm9jBibaj8CsjSivt0++bl4lj4dTulohRbbhb9e+i9ZX5AbU9uBds=
+	t=1766685995; cv=none; b=Hw2CMeWmCYXvaQSBRs4l5TFLwKjKAys6bLHSR1+C6wx7xVJlMcwOYersLLARuyZMNlD+Pv9mF6SgedtgsdZmmSV0wSnJqbioh19Doobk9pUTiF89Wt6RE9GOmt53AWF+IEa3ZVuQbn52z3OEq9GGXEGwGpr83eErG8qQNJbjwck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766685444; c=relaxed/simple;
-	bh=SlTKS7S/P6wLUsnsBLPEZl39VLlpxmFf1Zt7tpFyAOY=;
+	s=arc-20240116; t=1766685995; c=relaxed/simple;
+	bh=afgxfFzCOjJ4KJ61mDePDnwZ6Jo5rRIHkAubotxaRXw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mSIqpKYfJL9GdKUZ639TFOiy+LdGTUxDb7alQ2w0ib8/He7i4bzzXF891dtBrsOxAF4ejMWiEDXZPxaOhlCXG/340nNjaiH6YFiH1XXAPP5cUVVxaFMXeYfVQGbVFIF29ZwFnBfPrwsJoWBYrK25dWAK/lpgA2zZPfuPXx1cQZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Nbs+IDNr; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=ey/No9Zp1lJsT2Lbk+6xHtgU4Q5PO5cKA53nXYzzAU57U6/Q8HGvWnWhSzWTd1yca7sqMtvv5pR4voiLrMmsLbvWr2LSmt1okz5neghMgTUBJmfjjEK03BaGyH6C0smkK/D+TGtdJxc+G5MCzLBSD/Ia2C7D8c+tpR2aRIDcjkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Yb83yk2h; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1766685420; x=1767290220; i=w_armin@gmx.de;
-	bh=SlTKS7S/P6wLUsnsBLPEZl39VLlpxmFf1Zt7tpFyAOY=;
+	s=s31663417; t=1766685968; x=1767290768; i=w_armin@gmx.de;
+	bh=LWkvmuks2iL4VNtGU/9f9PqZ0TyAw3XjQURptt0Izm0=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=Nbs+IDNryPr+2C5LkpnDOtCCHwzEf0TPG1m6+/1Bb+WykQWAYo3Tn92roiMc9h6P
-	 cJ+yXLh+mNKARfGa4+4r/u4dZgnBDiOb5SWd20g0h5L4UjlrQfNRwYEeO/Q7HAhPO
-	 1IemcqvuMuWLIV4e0zLx+xhUkuiWCgxjKhTrria5Lgx9fh76zly4NQvpzmZTKrrAw
-	 QI0xIh9DX9Vq75aUayzT5u5+fG6y8q+eFSR1sC4b8kfLD8Dae/sNV4l9+ag+6tWSs
-	 hnAASD8RnD8A9haZz++PZ42Yfo5pqnTdOeH36/goisLC+6Q6BVPRiWcDOGouhTaGP
-	 XJBcaY+NpOezgd70GQ==
+	b=Yb83yk2h1CPjjMePVNXhP4xg8N3wYbS/ahCyxrEvi1Qvrnaopc6qG2PNDaRBBPkl
+	 PD6o2biIfvZG5lYMGywcI8KNxP7SQv3nuedQEPpswdC7JYmzgUhOzyQFZj/atw5AL
+	 4N8cNJNQ+YW9Cc4E8nsoAwIaMANj5bvVHurdPaUhxazAQdwHyi+lP0i0p41CqpbZh
+	 SEDde36fWNq6g7kV5ga9KRpwtfocQwpaLo+1oiJoth6UBwtbL1LwBeNVoKMB49V/c
+	 5wAY0Ob2Aeac5etmLqeluxCetJ3l3GHJRropjTgLuZBaz6FY14n964xvzuHkFcCLS
+	 qYKI4eDdVUxhA+4R/g==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.35] ([5.61.142.23]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXGvG-1vRYQc1M0k-00StgT; Thu, 25
- Dec 2025 18:57:00 +0100
-Message-ID: <c7384f13-e286-45a4-95c6-24d389217185@gmx.de>
-Date: Thu, 25 Dec 2025 18:56:59 +0100
+Received: from [192.168.2.35] ([5.61.142.23]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N8XU1-1w3NDK2xKz-018K5B; Thu, 25
+ Dec 2025 19:06:08 +0100
+Message-ID: <854b4448-3ff1-4fb4-b58f-21136f5ec3e4@gmx.de>
+Date: Thu, 25 Dec 2025 19:06:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,147 +56,484 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] rust: WMI abstractions
-To: Gladyshev Ilya <foxido@foxido.dev>, Danilo Krummrich <dakr@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>,
+Subject: Re: [RFC PATCH 2/3] rust: introduce WMI abstractions
+To: Gladyshev Ilya <foxido@foxido.dev>,
+ "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
 References: <cover.1766331321.git.foxido@foxido.dev>
- <DF4Q36EVR4Y7.2MXOCNR87IPBF@kernel.org>
- <0983b1b3-f9b0-41b3-8cab-3d8ff2819e56@foxido.dev>
+ <cc4a2e7e9fd5f07f8a0831ca085e489f0ae87d1f.1766331321.git.foxido@foxido.dev>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <0983b1b3-f9b0-41b3-8cab-3d8ff2819e56@foxido.dev>
+In-Reply-To: <cc4a2e7e9fd5f07f8a0831ca085e489f0ae87d1f.1766331321.git.foxido@foxido.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IE1ITGGpeVvT3Tb9E5U3V5Vce28zl1WLw24gZx1g15AS8yBB1Ze
- FTw3T55CvCw4ODQGdFAOZzGwgo+piHVqdjKK1FxqpZWqVmQViosVV+8lgoUBV31rDtRd5Xe
- hdZAXpRFPk1CFS6VE7Y+GNxuUlTRLdfu+E9uEGQzJiCSCGnq0aG7r/8Z9EwE3nlJUWdYYWo
- lc6E21O9KpLfhtVCRqGXA==
+X-Provags-ID: V03:K1:WCi1f5Wt2fGhnA1a+8p+wlJl6JJB8MiOBMAOxNh4eJPrP1WKQdy
+ ItQ4MNHcuJ4xsIuJrGYjXhe1pHBRsaVMiQWC3poC7uqMWoIcWx9vIEwp6svvigOmc3vBJ7E
+ 2vo9l/p8wN3S69Nl0NdGdU7yATPtl1wquyRwaf+xCXVcwt/feAg/V/tuLVraq3NWTmbNXiZ
+ aE2gexxTTAhLTBGmrFxrA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:35nby5Tz0Ks=;LpqjQig9ZSKKm0Kwob0hDIGWoR1
- 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
- /u/zOg8eqHBmN2hPU=
+UI-OutboundReport: notjunk:1;M01:P0:WRCCqZVVn3s=;K1GDwaWO+bJ/41zFI+fnMZB7OeT
+ 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
 
-Am 22.12.25 um 22:30 schrieb Gladyshev Ilya:
+Am 21.12.25 um 19:22 schrieb Gladyshev Ilya:
 
-> On 12/22/25 14:52, Danilo Krummrich wrote:
->> On Sun Dec 21, 2025 at 7:22 PM CET, Gladyshev Ilya wrote:
->>> Overview
->>> =3D=3D=3D=3D=3D=3D=3D=3D
->>> This patchset was developed some time ago out of pure curiosity
->>> about the R4L project, but I believe it may still be useful, so
->>> I decided to resume and post this work.
->>> The goal of my curiosity is to develop a simple WMI driver in Rust
->>> for unsupported laptop (I have some laying around) or, as a last
->>> resort, submit a rewrite of redmi-wmi as a sample driver -- if that
->>> would be acceptable.
->>
->> It depends on the subsystem maintainer, please also see [1].
->>
->> [1] https://rust-for-linux.com/rust-reference-drivers
+> Implement the basic WMI subsystem abstractions required to write a
+> WMI device driver with or without the need for initial device data.
+> This includes the following data structures:
 >
-> Yes, I Cc'ed platform-drivers and WMI maintainer in a hope to gather=20
-> their opinions.
+> The `wmi::Driver` trait represents the interface to the driver.
 >
-I am OK with you using the redmi-wmi driver as a reference driver. TBH i a=
-m very interested in having rust
-abstractions for the WMI subsystem, however i currently have no clue about=
- the rust programing language itself :(
-I plan to complete a rust tutorial in the future, but till then i can give=
- you only limited feedback.
-
->>> Why RFC?
->>> =3D=3D=3D=3D=3D=3D=3D=3D
->>> 1. No real users for now
->>
->> Above it does sound like you are working on a new WMI driver as well?
-> Well, I am planning to, but I can't guarantee any success at this=20
-> point) So "no real users" is honest answer for now
+> The `wmi::Device` abstraction represents a `struct wmi_device`.
 >
-> But in a case if a) WMI subsystem is OK with reference drivers, and b)=
-=20
-> I fail to write a new driver, I will submit redmi-wmi-rs as a=20
-> reference driver (since I can test it on my hardware).
+> In order to provide the WMI specific parts to a generic
+> `driver::Registration` the `driver::RegistrationOps` trait is
+> implemented by `wmi::Adapter`.
+>
+> Everything from C side is supported, except shutdown action
+>
+> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
+> ---
+>   rust/bindings/bindings_helper.h |   1 +
+>   rust/kernel/lib.rs              |   2 +
+>   rust/kernel/wmi.rs              | 267 ++++++++++++++++++++++++++++++++
+>   3 files changed, 270 insertions(+)
+>   create mode 100644 rust/kernel/wmi.rs
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_he=
+lper.h
+> index a067038b4b42..f9671280c6b5 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -85,6 +85,7 @@
+>   #include <linux/usb.h>
+>   #include <linux/wait.h>
+>   #include <linux/workqueue.h>
+> +#include <linux/wmi.h>
+>   #include <linux/xarray.h>
+>   #include <trace/events/rust_sample.h>
+>  =20
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf120042..db3e649d26eb 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -151,6 +151,8 @@
+>   pub mod uaccess;
+>   #[cfg(CONFIG_USB =3D "y")]
+>   pub mod usb;
+> +#[cfg(CONFIG_ACPI_WMI)]
+> +pub mod wmi;
+>   pub mod workqueue;
+>   pub mod xarray;
+>  =20
+> diff --git a/rust/kernel/wmi.rs b/rust/kernel/wmi.rs
+> new file mode 100644
+> index 000000000000..018e88d01e8c
+> --- /dev/null
+> +++ b/rust/kernel/wmi.rs
+> @@ -0,0 +1,267 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the WMI devices.
+> +//!
+> +//! C header: [`include/linux/wmi.h`](srctree/include/linux/wmi.h)
+> +
+> +use crate::{
+> +    acpi::AcpiObject,
+> +    device,
+> +    device_id::{RawDeviceId, RawDeviceIdIndex},
+> +    driver,
+> +    error::{from_result, to_result, VTABLE_DEFAULT_ERROR},
+> +    prelude::*,
+> +    types::Opaque,
+> +};
+> +use core::{
+> +    marker::PhantomData,
+> +    mem::MaybeUninit,
+> +    ptr::{addr_of_mut, NonNull},
+> +};
+> +use macros::vtable;
+> +
+> +/// [`IdTable`](kernel::device_id::IdTable) type for WMI.
+> +pub type IdTable<T> =3D &'static dyn kernel::device_id::IdTable<DeviceI=
+d, T>;
+> +
+> +/// The WMI driver trait.
+> +#[vtable]
+> +pub trait Driver: Send {
+> +    /// The type holding information about each one of the device ids s=
+upported by the driver.
+> +    type IdInfo: 'static;
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const TABLE: IdTable<Self::IdInfo>;
+> +
+> +    /// WMI driver probe.
+> +    ///
+> +    /// Called when a new WMI device is bound to this driver.
+> +    /// Implementers should attempt to initialize the driver here.
+> +    fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> imp=
+l PinInit<Self, Error>;
+> +
+> +    /// WMI device notify.
+> +    ///
+> +    /// Called when new WMI event received from bounded device
+> +    fn notify(&self, _dev: &Device<device::Core>, _event: &AcpiObject) =
+{
+> +        build_error!(VTABLE_DEFAULT_ERROR);
+> +    }
+> +
+> +    /// WMI driver remove.
+> +    fn remove(self: Pin<KBox<Self>>, _dev: &Device<device::Core>) {
+> +        build_error!(VTABLE_DEFAULT_ERROR);
+> +    }
+> +}
+> +
+> +/// A WMI device.
+> +///
+> +/// This structure represents the Rust abstraction for a C [`struct wmi=
+_device`].
+> +/// The implementation abstracts the usage of a C [`struct wmi_device`]=
+ passed
+> +/// in from the C side.
+> +pub struct Device<Cxt: device::DeviceContext =3D device::Normal> {
+> +    inner: Opaque<bindings::wmi_device>,
+> +    _p: PhantomData<Cxt>,
+> +}
+> +
+> +impl<Cxt: device::DeviceContext> Device<Cxt> {
+> +    fn as_raw(&self) -> *mut bindings::wmi_device {
+> +        self.inner.get()
+> +    }
+> +}
+> +
+> +/// An adapter for the registration of WMI drivers.
+> +pub struct Adapter<T: Driver>(T);
+> +
+> +// SAFETY: A call to `unregister` for a given instance of `RegType` is =
+guaranteed to be valid if
+> +// a preceding call to `register` has been successful.
+> +unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T>=
+ {
+> +    type RegType =3D bindings::wmi_driver;
+> +
+> +    unsafe fn register(
+> +        wdrv: &Opaque<Self::RegType>,
+> +        name: &'static CStr,
+> +        module: &'static ThisModule,
+> +    ) -> Result {
+> +        macro_rules! map_callback {
+> +            ($flag:ident -> $callback:ident) =3D> {
+> +                if T::$flag {
+> +                    Some(Self::$callback)
+> +                } else {
+> +                    None
+> +                }
+> +            };
+> +        }
+> +
+> +        // SAFETY: It's safe to set the fields of `struct wmi_driver` o=
+n initialization.
+> +        unsafe {
+> +            (*wdrv.get()).driver.name =3D name.as_char_ptr();
+> +            (*wdrv.get()).driver.probe_type =3D bindings::probe_type_PR=
+OBE_PREFER_ASYNCHRONOUS;
+> +            (*wdrv.get()).id_table =3D T::TABLE.as_ptr();
+> +            (*wdrv.get()).probe =3D map_callback!(HAS_PROBE -> probe_ca=
+llback);
+> +            (*wdrv.get()).notify =3D map_callback!(HAS_NOTIFY -> notify=
+_callback);
 
-Fine with me.
+I think it should be possible to handle WMI drivers requiring .no_notify_d=
+ata to be set. Is there
+a way to declare the WMI event data passed to the notify() callback as opt=
+ional? If yes, then i suggest
+that we always set .no_notify_data and simply require the WMI drivers them=
+selves to verify that a given
+WMI event does contain additional event data.
+
+(Said no_notify_data flag only exists because most WMI drivers currently a=
+ssume that the event data
+passed to the .notify() callback is not NULL)
 
 Thanks,
 Armin Wolf
 
+> +            (*wdrv.get()).remove =3D map_callback!(HAS_REMOVE -> remove=
+_callback);
+> +            (*wdrv.get()).shutdown =3D None;
+> +            (*wdrv.get()).no_singleton =3D true;
+> +        }
+> +
+> +        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
+> +        to_result(unsafe { bindings::__wmi_driver_register(wdrv.get(), =
+module.0) })
+> +    }
+> +
+> +    unsafe fn unregister(wdrv: &Opaque<Self::RegType>) {
+> +        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
+> +        unsafe { bindings::wmi_driver_unregister(wdrv.get()) };
+> +    }
+> +}
+> +
+> +impl<T: Driver + 'static> Adapter<T> {
+> +    extern "C" fn probe_callback(
+> +        wdev: *mut bindings::wmi_device,
+> +        id: *const c_void,
+> +    ) -> kernel::ffi::c_int {
+> +        // SAFETY: The WMI core only ever calls the probe callback with=
+ a valid pointer to a
+> +        // `struct wmi_device`.
+> +        //
+> +        // INVARIANT: `wdev` is valid for the duration of `probe_callba=
+ck()`.
+> +        let wdev =3D unsafe { &*wdev.cast::<Device<device::CoreInternal=
+>>() };
+> +
+> +        let id =3D id as usize;
+> +        let info =3D T::TABLE.info(id);
+> +
+> +        from_result(|| {
+> +            let data =3D T::probe(wdev, info);
+> +
+> +            wdev.as_ref().set_drvdata(data)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    extern "C" fn notify_callback(
+> +        wdev: *mut bindings::wmi_device,
+> +        obj: *mut bindings::acpi_object,
+> +    ) {
+> +        // SAFETY: The WMI system only ever calls the notify callback w=
+ith a valid pointer to a
+> +        // `struct wmi_device`.
+> +        let wdev =3D unsafe { &*wdev.cast::<Device<device::CoreInternal=
+>>() };
+> +        // SAFETY: AcpiObject is repr(transparent) wrapper
+> +        let obj: &AcpiObject =3D unsafe { &*(obj as *const AcpiObject) =
+};
+> +
+> +        // SAFETY: `notify_callback` is only ever called after a succes=
+sful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_dr=
+vdata()` has been called
+> +        // and stored a `T`.
+> +        let this: &T =3D unsafe { &wdev.as_ref().drvdata_borrow::<T>() =
+};
+> +        this.notify(wdev, obj);
+> +    }
+> +
+> +    extern "C" fn remove_callback(wdev: *mut bindings::wmi_device) {
+> +        // SAFETY: The WMI system only ever calls the remove callback w=
+ith a valid pointer to a
+> +        // `struct wmi_device`.
+> +        let wdev =3D unsafe { &*wdev.cast::<Device<device::CoreInternal=
+>>() };
+> +
+> +        // SAFETY: `remove_callback` is only ever called after a succes=
+sful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_dr=
+vdata()` has been called
+> +        // and stored a `T`.
+> +        let this =3D unsafe { wdev.as_ref().drvdata_obtain::<T>() };
+> +        this.remove(wdev);
+> +    }
+> +}
+> +
+> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<=
+Ctx> {
+> +    fn as_ref(&self) -> &device::Device<Ctx> {
+> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is =
+a pointer to a valid
+> +        // `struct platform_device`.
+> +        let dev =3D unsafe { addr_of_mut!((*self.inner.get()).dev) };
+> +
+> +        // SAFETY: `dev` points to a valid `struct device`.
+> +        unsafe { device::Device::from_raw(dev) }
+> +    }
+> +}
+> +
+> +kernel::impl_device_context_deref!(unsafe { Device });
+> +kernel::impl_device_context_into_aref!(Device);
+> +
+> +// SAFETY: Instances of `Device` are always reference-counted.
+> +unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference guarantees that =
+the refcount is non-zero.
+> +        unsafe { bindings::get_device(self.as_ref().as_raw()) };
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount =
+is non-zero.
+> +        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw())=
+.dev) }
+> +    }
+> +}
+> +
+> +/// Abstraction for the WMI device ID structure, i.e. [`struct wmi_devi=
+ce_id`].
+> +#[repr(transparent)]
+> +pub struct DeviceId(bindings::wmi_device_id);
+> +
+> +impl DeviceId {
+> +    /// Constructs new DeviceId from GUID string
+> +    pub const fn new(guid: &[u8; bindings::UUID_STRING_LEN as usize]) -=
+> Self {
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut inner: bindings::wmi_device_id =3D unsafe { MaybeUninit=
+::zeroed().assume_init() };
+> +
+> +        build_assert!(inner.guid_string.len() =3D=3D bindings::UUID_STR=
+ING_LEN as usize + 1);
+> +
+> +        // SAFETY: It's safe to copy UUID_STRING_LEN, because we valida=
+ted lengths
+> +        // Also we leave last byte zeroed -> guid_string is valid C str=
+ing
+> +        unsafe {
+> +            ::core::ptr::copy_nonoverlapping(
+> +                guid.as_ptr(),
+> +                &raw mut inner.guid_string[0],
+> +                bindings::UUID_STRING_LEN as usize,
+> +            );
+> +        }
+> +
+> +        Self(inner)
+> +    }
+> +}
+> +
+> +// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `wmi_devic=
+e_id` and does not add
+> +// additional invariants, so it's safe to transmute to `RawType`.
+> +unsafe impl RawDeviceId for DeviceId {
+> +    type RawType =3D bindings::wmi_device_id;
+> +}
+> +
+> +// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `context` field.
+> +unsafe impl RawDeviceIdIndex for DeviceId {
+> +    const DRIVER_DATA_OFFSET: usize =3D core::mem::offset_of!(bindings:=
+:wmi_device_id, context);
+> +
+> +    fn index(&self) -> usize {
+> +        self.0.context as usize
+> +    }
+> +}
+> +
+> +/// Declares a kernel module that exposes a single WMI driver.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// module_wmi_driver! {
+> +///     type: MyDriver,
+> +///     name: "Module name",
+> +///     author: ["Author name"],
+> +///     description: "Description",
+> +///     license: "GPL v2",
+> +/// }
+> +/// ```
+> +#[macro_export]
+> +macro_rules! module_wmi_driver {
+> +    ($($f:tt)*) =3D> {
+> +        $crate::module_driver!(<T>, $crate::wmi::Adapter<T>, { $($f)* }=
+);
+> +    }
+> +}
+> +
+> +/// Create a WMI `IdTable` with its alias for modpost.
+> +#[macro_export]
+> +macro_rules! wmi_device_table {
+> +    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $t=
+able_data: expr) =3D> {
+> +        const $table_name: $crate::device_id::IdArray<
+> +            $crate::wmi::DeviceId,
+> +            $id_info_type,
+> +            { $table_data.len() },
+> +        > =3D $crate::device_id::IdArray::new($table_data);
+> +
+> +        $crate::module_device_table!("wmi", $module_table_name, $table_=
+name);
+> +    };
+> +}
 
