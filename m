@@ -1,180 +1,240 @@
-Return-Path: <linux-acpi+bounces-19843-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19844-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C9CCDD639
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 08:00:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0030CDD7DC
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 09:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1775300C165
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 07:00:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF7A0302BD21
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Dec 2025 08:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398D72D97BA;
-	Thu, 25 Dec 2025 06:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4D930AAC0;
+	Thu, 25 Dec 2025 08:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G0stUJ6n"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="E/xVngxb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAD62D780A;
-	Thu, 25 Dec 2025 06:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB503093C0;
+	Thu, 25 Dec 2025 08:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766645994; cv=none; b=cPUq49KurnmMyShvNazv/UfWNHyhxFLcQ6w1WSpoYsiMKEmJBHVjvxNn3sXgu2Sxxw3z82LyXSDBBtnQIopPp0S1GwHO3FlMlVnA8P3K0Ay6PBNQ2XCeasZeqFK5g1s6x19AE5EoHa0Ancsyd8rGIv+OfMQoU3XCKAtEDyrB5is=
+	t=1766650930; cv=none; b=lLjgPrDvlLbDGVRFCJLG+NFqS3oGocJZ6KTv/anvRNdSPUEnd9xkEAmbZwQSekstPVn6akGIr4yMMxezxtSkQqRS8AOe4RsvQAKaPFKAi/+JlJKr8ojBT0Pek7d5EqWkf05TArzZT9XbV8Glb734GWWBNLQplJnWu8sIKV1RkIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766645994; c=relaxed/simple;
-	bh=+WiEymJv/nr2X5pjWCtt6q+S4mNEdgmhNha83diODgc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UXdREZGkZeSDWBf8Sv9ohG6TjTOt5Nbg1u3sQ2/BqnE7Xtg1wDIJHb9nyX+KhMG9zXG/Kojm7+II4KA6wKJctNTKY6bxRwxC85FzsZGpWllRbiVQAtw4pu2C2g01M9vH338HPY98yx8z/U8HB/FjZmwNb0qJTx18lheesEBbXPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G0stUJ6n; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766645993; x=1798181993;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+WiEymJv/nr2X5pjWCtt6q+S4mNEdgmhNha83diODgc=;
-  b=G0stUJ6nttAUB7l22Wl03ySbSlaIIJVOoEL8KKho3iegOF9Zw4ZrNjDw
-   Mh7yxqqFjta7P6d8voSqZaaXC5nZ8njD3AWBDX5pfc3H/xnVG+MaraSxE
-   CCuvMcKacb9fJxeoR0ueMXeVcrZJY0BGdZfbwHDxtEPGNRaTktIZMmfD/
-   wbVrgzaJRDYDEG5sT5S1ku+iYuw3yvc39aTv8DOku6T6quaO167SbxVKc
-   9NsqFt3gnFKFaQEvSRAuzpRiJ5OdsSuulcQOV8SLTceqodRqrvKqGTb1r
-   /lhqc73eSi4DPicaBWVguQlWZgMwI5HMs4EazEfQzVi6xFND0Fc95Fz13
-   Q==;
-X-CSE-ConnectionGUID: zvjfVQwvSKi8Hn5PrW3Cxg==
-X-CSE-MsgGUID: AIRdY5bAQfCueRsLc4hD6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="68440322"
-X-IronPort-AV: E=Sophos;i="6.21,175,1763452800"; 
-   d="scan'208";a="68440322"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2025 22:59:52 -0800
-X-CSE-ConnectionGUID: RwRzrLXQR3S4e/QAzpKyJw==
-X-CSE-MsgGUID: bgk551fhQNa8HKvE2FagTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,175,1763452800"; 
-   d="scan'208";a="231228707"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 24 Dec 2025 22:59:47 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vYfK5-000000003qx-1WVx;
-	Thu, 25 Dec 2025 06:59:45 +0000
-Date: Thu, 25 Dec 2025 14:58:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
-	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
-	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	lenb@kernel.org, tony.luck@intel.com, bp@alien8.de,
-	yazen.ghannam@amd.com, misono.tomohiro@fujitsu.com
-Cc: oe-kbuild-all@lists.linux.dev, tianruidong@linux.alibaba.com
-Subject: Re: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
-Message-ID: <202512251419.gOeKyBqX-lkp@intel.com>
-References: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
+	s=arc-20240116; t=1766650930; c=relaxed/simple;
+	bh=X2l5lOuNHuPWUfjU6YQXnnSXDCwcmxn6xUyYrfTh9+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eyzFQRlLeEFkLDyTqplcbv+pzi+65cBi4/89w8e9CbllQf6EvcrkPCwFqc0vGb/VIivx9b80k71ENLtg/k8jHtfeOJIecunVjZL2J4z1St92Stpp+wcVATgv8SMxGqMWnIxxNMuXoSby/XGzEwqJxt5T7HbyTeiCl1B6f2BXKUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=E/xVngxb; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qV9c0cAuQBFG5vHxyodBDru6tAcw75rGhJjJFCuTdLg=;
+	b=E/xVngxbpq+/240pqexo6OzMXmiriq+qx/kVoVgF+DFLT5AoOdPr1148j/tgZploHfqaRprSx
+	ZWW8DtiBq9nHpt0LUifGwiaDHJf8MG8asx7hyzVlCxPYDXX5Ko97Ev3E7TjiERPzJsL5C2iPCwW
+	/Pi6UoBcc6xUjxJbx+KL3II=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dcM8R25spz12LJG;
+	Thu, 25 Dec 2025 16:18:47 +0800 (CST)
+Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1FC534056C;
+	Thu, 25 Dec 2025 16:21:59 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
+ (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Dec
+ 2025 16:21:58 +0800
+Message-ID: <e484ce68-1fb1-4732-8577-19a2b7141c40@huawei.com>
+Date: Thu, 25 Dec 2025 16:21:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222094351.38792-16-tianruidong@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 03/11] ACPI: CPPC: Add cppc_get_perf() API to read
+ performance controls
+To: Sumit Gupta <sumitg@nvidia.com>, <rafael@kernel.org>,
+	<viresh.kumar@linaro.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<corbet@lwn.net>, <pierre.gondois@arm.com>, <rdunlap@infradead.org>,
+	<ray.huang@amd.com>, <gautham.shenoy@amd.com>, <mario.limonciello@amd.com>,
+	<perry.yuan@amd.com>, <ionela.voinescu@arm.com>, <zhanjie9@hisilicon.com>,
+	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+CC: <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
+	<jonathanh@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
+	<sanjayc@nvidia.com>, <nhartman@nvidia.com>, <bbasu@nvidia.com>
+References: <20251223121307.711773-1-sumitg@nvidia.com>
+ <20251223121307.711773-4-sumitg@nvidia.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <20251223121307.711773-4-sumitg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf200001.china.huawei.com (7.202.181.227)
 
-Hi Ruidong,
+On 2025/12/23 20:12, Sumit Gupta wrote:
+> Add cppc_get_perf() function to read values of performance control
+> registers including desired_perf, min_perf, max_perf, energy_perf,
+> and auto_sel.
+> 
+> This provides a read interface to complement the existing
+> cppc_set_perf() write interface for performance control registers.
+> 
+> Note that auto_sel is read by cppc_get_perf() but not written by
+> cppc_set_perf() to avoid unintended mode changes during performance
+> updates. It can be updated with existing dedicated cppc_set_auto_sel()
+> API.
+> 
+> Also call cppc_get_perf() in cppc_cpufreq_get_cpu_data() to initialize
+> perf_ctrls with current hardware register values during cpufreq
+> initialization for each CPU policy.
+> 
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  drivers/acpi/cppc_acpi.c       | 79 ++++++++++++++++++++++++++++++++++
+>  drivers/cpufreq/cppc_cpufreq.c |  6 +++
+>  include/acpi/cppc_acpi.h       |  5 +++
+>  3 files changed, 90 insertions(+)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index e66e20d1f31b..a4e89fe6aab5 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1732,6 +1732,85 @@ int cppc_set_enable(int cpu, bool enable)
+>  	return cppc_set_reg_val(cpu, ENABLE, enable);
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_set_enable);
+> +/**
+> + * cppc_get_perf - Get a CPU's performance controls.
+> + * @cpu: CPU for which to get performance controls.
+> + * @perf_ctrls: ptr to cppc_perf_ctrls. See cppc_acpi.h
+> + *
+> + * Return: 0 for success with perf_ctrls, -ERRNO otherwise.
+> + */
+> +int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+> +{
+> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +	struct cpc_register_resource *desired_perf_reg,
+> +				     *min_perf_reg, *max_perf_reg,
+> +				     *energy_perf_reg, *auto_sel_reg;
+> +	u64 desired_perf = 0, min = 0, max = 0, energy_perf = 0, auto_sel = 0;
+> +	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+> +	struct cppc_pcc_data *pcc_ss_data = NULL;
+> +	int ret = 0, regs_in_pcc = 0;
+> +
+> +	if (!cpc_desc) {
+> +		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+> +		return -ENODEV;
+> +	}
+> +
+> +	if (!perf_ctrls) {
+> +		pr_debug("Invalid perf_ctrls pointer\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	desired_perf_reg = &cpc_desc->cpc_regs[DESIRED_PERF];
+> +	min_perf_reg = &cpc_desc->cpc_regs[MIN_PERF];
+> +	max_perf_reg = &cpc_desc->cpc_regs[MAX_PERF];
+> +	energy_perf_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
+> +	auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
+> +
+> +	/* Are any of the regs PCC ?*/
+> +	if (CPC_IN_PCC(desired_perf_reg) || CPC_IN_PCC(min_perf_reg) ||
+> +	    CPC_IN_PCC(max_perf_reg) || CPC_IN_PCC(energy_perf_reg) ||
+> +	    CPC_IN_PCC(auto_sel_reg)) {
+> +		if (pcc_ss_id < 0) {
+> +			pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
+> +			return -ENODEV;
+> +		}
+> +		pcc_ss_data = pcc_data[pcc_ss_id];
+> +		regs_in_pcc = 1;
+> +		down_write(&pcc_ss_data->pcc_lock);
+> +		/* Ring doorbell once to update PCC subspace */
+> +		if (send_pcc_cmd(pcc_ss_id, CMD_READ) < 0) {
+> +			ret = -EIO;
+> +			goto out_err;
+> +		}
+> +	}
+> +
+> +	/* Read optional elements if present */
+> +	if (CPC_SUPPORTED(max_perf_reg))
+> +		cpc_read(cpu, max_perf_reg, &max);
+> +	perf_ctrls->max_perf = max;
+> +
+> +	if (CPC_SUPPORTED(min_perf_reg))
+> +		cpc_read(cpu, min_perf_reg, &min);
+> +	perf_ctrls->min_perf = min;
+> +
+> +	if (CPC_SUPPORTED(desired_perf_reg))
+> +		cpc_read(cpu, desired_perf_reg, &desired_perf);
+> +	perf_ctrls->desired_perf = desired_perf;
+> +
+> +	if (CPC_SUPPORTED(energy_perf_reg))
+> +		cpc_read(cpu, energy_perf_reg, &energy_perf);
+> +	perf_ctrls->energy_perf = energy_perf;
+> +
+> +	if (CPC_SUPPORTED(auto_sel_reg))
+> +		cpc_read(cpu, auto_sel_reg, &auto_sel);
+> +	perf_ctrls->auto_sel = (bool)auto_sel;
+> +
+> +out_err:
+> +	if (regs_in_pcc)
+> +		up_write(&pcc_ss_data->pcc_lock);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_get_perf);
+>  
+>  /**
+>   * cppc_set_perf - Set a CPU's performance controls.
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 7c26ce554e29..a87e7bb2e2f1 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -562,6 +562,12 @@ static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
+>  		goto free_mask;
+>  	}
+>  
+> +	ret = cppc_get_perf(cpu, &cpu_data->perf_ctrls);
+> +	if (ret) {
+> +		pr_debug("Err reading CPU%d perf ctrls: ret:%d\n", cpu, ret);
+> +		goto free_mask;
+> +	}
+> +
 
-kernel test robot noticed the following build errors:
+If you really need energy_perf and auto_sel in cpu_data->perf_ctrls, they
+should be updated whenever they are set, i.e., in store_auto_select() and
+store_energy_performance_preference_val().
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.19-rc2 next-20251219]
-[cannot apply to arm64/for-next/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>  	return cpu_data;
+>  
+>  free_mask:
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index a090b010f5f1..12a1dc31bf2a 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -150,6 +150,7 @@ extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+>  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
+>  extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
+>  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+> +extern int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+>  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+> @@ -191,6 +192,10 @@ static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> +static inline int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>  static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+>  {
+>  	return -EOPNOTSUPP;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-AEST-Parse-the-AEST-table/20251222-215248
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20251222094351.38792-16-tianruidong%40linux.alibaba.com
-patch subject: [PATCH v4 14/17] ras: ATL: Unify ATL interface for ARM64 and AMD
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20251225/202512251419.gOeKyBqX-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251225/202512251419.gOeKyBqX-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512251419.gOeKyBqX-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/ras/amd/fmpm.c: In function 'save_spa':
->> drivers/ras/amd/fmpm.c:336:15: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Wimplicit-function-declaration]
-     336 |         spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
-         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |               convert_umc_mca_addr_to_sys_addr
---
-   drivers/ras/amd/atl/umc.c: In function '_retire_row_mi300':
->> drivers/ras/amd/atl/umc.c:321:24: error: implicit declaration of function 'amd_convert_umc_mca_addr_to_sys_addr'; did you mean 'convert_umc_mca_addr_to_sys_addr'? [-Wimplicit-function-declaration]
-     321 |                 addr = amd_convert_umc_mca_addr_to_sys_addr(a_err);
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                        convert_umc_mca_addr_to_sys_addr
-
-
-vim +336 drivers/ras/amd/fmpm.c
-
-6f15e617cc9932 Yazen Ghannam 2024-02-13  298  
-838850c50884cd Yazen Ghannam 2024-03-01  299  static void save_spa(struct fru_rec *rec, unsigned int entry,
-838850c50884cd Yazen Ghannam 2024-03-01  300  		     u64 addr, u64 id, unsigned int cpu)
-838850c50884cd Yazen Ghannam 2024-03-01  301  {
-838850c50884cd Yazen Ghannam 2024-03-01  302  	unsigned int i, fru_idx, spa_entry;
-838850c50884cd Yazen Ghannam 2024-03-01  303  	struct atl_err a_err;
-838850c50884cd Yazen Ghannam 2024-03-01  304  	unsigned long spa;
-838850c50884cd Yazen Ghannam 2024-03-01  305  
-838850c50884cd Yazen Ghannam 2024-03-01  306  	if (entry >= max_nr_entries) {
-838850c50884cd Yazen Ghannam 2024-03-01  307  		pr_warn_once("FRU descriptor entry %d out-of-bounds (max: %d)\n",
-838850c50884cd Yazen Ghannam 2024-03-01  308  			     entry, max_nr_entries);
-838850c50884cd Yazen Ghannam 2024-03-01  309  		return;
-838850c50884cd Yazen Ghannam 2024-03-01  310  	}
-838850c50884cd Yazen Ghannam 2024-03-01  311  
-838850c50884cd Yazen Ghannam 2024-03-01  312  	/* spa_nr_entries is always multiple of max_nr_entries */
-838850c50884cd Yazen Ghannam 2024-03-01  313  	for (i = 0; i < spa_nr_entries; i += max_nr_entries) {
-838850c50884cd Yazen Ghannam 2024-03-01  314  		fru_idx = i / max_nr_entries;
-838850c50884cd Yazen Ghannam 2024-03-01  315  		if (fru_records[fru_idx] == rec)
-838850c50884cd Yazen Ghannam 2024-03-01  316  			break;
-838850c50884cd Yazen Ghannam 2024-03-01  317  	}
-838850c50884cd Yazen Ghannam 2024-03-01  318  
-838850c50884cd Yazen Ghannam 2024-03-01  319  	if (i >= spa_nr_entries) {
-838850c50884cd Yazen Ghannam 2024-03-01  320  		pr_warn_once("FRU record %d not found\n", i);
-838850c50884cd Yazen Ghannam 2024-03-01  321  		return;
-838850c50884cd Yazen Ghannam 2024-03-01  322  	}
-838850c50884cd Yazen Ghannam 2024-03-01  323  
-838850c50884cd Yazen Ghannam 2024-03-01  324  	spa_entry = i + entry;
-838850c50884cd Yazen Ghannam 2024-03-01  325  	if (spa_entry >= spa_nr_entries) {
-838850c50884cd Yazen Ghannam 2024-03-01  326  		pr_warn_once("spa_entries[] index out-of-bounds\n");
-838850c50884cd Yazen Ghannam 2024-03-01  327  		return;
-838850c50884cd Yazen Ghannam 2024-03-01  328  	}
-838850c50884cd Yazen Ghannam 2024-03-01  329  
-838850c50884cd Yazen Ghannam 2024-03-01  330  	memset(&a_err, 0, sizeof(struct atl_err));
-838850c50884cd Yazen Ghannam 2024-03-01  331  
-838850c50884cd Yazen Ghannam 2024-03-01  332  	a_err.addr = addr;
-838850c50884cd Yazen Ghannam 2024-03-01  333  	a_err.ipid = id;
-838850c50884cd Yazen Ghannam 2024-03-01  334  	a_err.cpu  = cpu;
-838850c50884cd Yazen Ghannam 2024-03-01  335  
-838850c50884cd Yazen Ghannam 2024-03-01 @336  	spa = amd_convert_umc_mca_addr_to_sys_addr(&a_err);
-838850c50884cd Yazen Ghannam 2024-03-01  337  	if (IS_ERR_VALUE(spa)) {
-838850c50884cd Yazen Ghannam 2024-03-01  338  		pr_debug("Failed to get system address\n");
-838850c50884cd Yazen Ghannam 2024-03-01  339  		return;
-838850c50884cd Yazen Ghannam 2024-03-01  340  	}
-838850c50884cd Yazen Ghannam 2024-03-01  341  
-838850c50884cd Yazen Ghannam 2024-03-01  342  	spa_entries[spa_entry] = spa;
-838850c50884cd Yazen Ghannam 2024-03-01  343  	pr_debug("fru_idx: %u, entry: %u, spa_entry: %u, spa: 0x%016llx\n",
-838850c50884cd Yazen Ghannam 2024-03-01  344  		 fru_idx, entry, spa_entry, spa_entries[spa_entry]);
-838850c50884cd Yazen Ghannam 2024-03-01  345  }
-838850c50884cd Yazen Ghannam 2024-03-01  346  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
