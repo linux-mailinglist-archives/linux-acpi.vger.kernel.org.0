@@ -1,79 +1,77 @@
-Return-Path: <linux-acpi+bounces-19874-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19875-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0A2CE5632
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Dec 2025 20:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC0CCE5708
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Dec 2025 21:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A19A43016CF5
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Dec 2025 19:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21B94300B28B
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Dec 2025 20:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26D5256C61;
-	Sun, 28 Dec 2025 19:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E365F23B61E;
+	Sun, 28 Dec 2025 20:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K8OFqJqq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fiu4+dpf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2FB2475CE;
-	Sun, 28 Dec 2025 19:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A27083C;
+	Sun, 28 Dec 2025 20:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766949249; cv=none; b=f53hTLu90sBAF5/EuCR+9yCyGlR20ao0if7LJJUWtKMTbY0YzQ0r433Z6yDHzhA5XMEOnp+xZlo3t8UgeUxTjbNn0+gO+ZLP1JIEmru+BILZdG8oDuOeTyU5g98f3i8f9+aWVEqMP/ipfGIuTGnyKBmz5WPix8zkuAKjS8ivxuA=
+	t=1766952912; cv=none; b=HF57KXciVsmAm9jRhjwAGBd0wMfBTtIdJ6cKBmpFXIoaIjYoFg9cRDVr8sxMePkbpTDhALuU8ijVB7v7yUs4pAnkzaOlpWJtSCPYpJqK2cD7vNQLgrc8cwNvCFkTgTHsCFuGPcUWDg9vZfMRHGc2CHZFZ8MFXsmtQnPxOoQSndo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766949249; c=relaxed/simple;
-	bh=HzMwpb56qSvnqkpHGC/UD2h1wKNMQR/JCeNGnS6Irg8=;
+	s=arc-20240116; t=1766952912; c=relaxed/simple;
+	bh=+9l7RPUslIPHW/THX1/QNwzs4MImlyHOusYT9W1RtJQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GOQUKaaMV89XjOzgmUqPFIlW5+GSnVVS34ERh3VGFL/C/qb1fTAQI7SMfQGPRCJg51/Q1l+/cMJ1lzoBWracyg6+cLSfhPlXILw9ALPnxcBF1WjeAugwiyfbR7o0qvWsjBoRKG6Jq+BPhKwqo0U/G3RaAyGMu6fmKIpgAA6a6V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K8OFqJqq; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=M/l5GNZMHrjFAGTEwrFYDfJqqlN+TqonQ2LLDsvhg42KBAUZC/0rKFn/2VHz5nwPezeV/ozXEInFP8Kt8LNdyn1qe6kmcaFY3CAb+lByG+EcR9nt0Tx0iW4Ou7RL2GWKQh1LWwXrNt98H/N900KMvFQdDcrAfjz7IlRGB5KVLP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fiu4+dpf; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766949248; x=1798485248;
+  t=1766952911; x=1798488911;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HzMwpb56qSvnqkpHGC/UD2h1wKNMQR/JCeNGnS6Irg8=;
-  b=K8OFqJqquvwJw+e+vJmhpe80hA/U3DtheOaYRB64xou9gaXWXo/0R79/
-   DTh3FFNEQkJAKPfFKJjExCRM6kQXZXw7wbXoARpZh0I3JGgA76039ZHT1
-   DprLutwMag3Mm4W2BC+lATM7Zil1Tab0/c5aE5cLgA2+2kifz0RK2sFME
-   6l805cXMXRCoxU4F7PYYwBEGEQEbpsVfFOtkzlrK8222QFoLk6XslO2H9
-   i+ztnVJKVmlBRR1iMBih4/T5z4yLwR9YnMeuEsqG2YM8AaI5LgEATSebk
-   fzzfani3CuSSYytuuhoP8mjuVmtriI0ctrdWqtaJL2cQes5o4jzE7j9WI
+  bh=+9l7RPUslIPHW/THX1/QNwzs4MImlyHOusYT9W1RtJQ=;
+  b=fiu4+dpfxkdm5Ie8lGxziPnKDHKKoLKTx73+cD8U8n++oIisP8bbbQxr
+   AmT6PrNFxnCEA8JcnPaSp+0P0XSDN+K2GMeAo0OlODCwaob10GLCKe3Ne
+   YhWGKVff0pFz8g25jTpXyh46HKsxv20KBgK45LuevJFoZLEDPyY52gT/4
+   cqHOvYEQQnRppUxwRXdvyvHWsgZW6n/w74sH786ik0aQZMS+TnmTvaU6T
+   SRc0ZbAKhNRJVaCPLQkfv2qTJ82pbbbgMZGsi8yCfK9MC96aQb3J3v19D
+   EEEeedZdcuWulwTdeHQOwrIpd8iv/YO1HNppPkAQGS5T3tKevq7wTcF2c
    w==;
-X-CSE-ConnectionGUID: qTzGsfdkTxyvphqEeipMJQ==
-X-CSE-MsgGUID: HXhH1T4iSkCIPOLjckOzaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11655"; a="67786826"
+X-CSE-ConnectionGUID: kXK5UXhUTNyOthi4cv9ANA==
+X-CSE-MsgGUID: SBGWaZP3S5CeCVz6VWZTMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11655"; a="72207920"
 X-IronPort-AV: E=Sophos;i="6.21,184,1763452800"; 
-   d="scan'208";a="67786826"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 11:14:05 -0800
-X-CSE-ConnectionGUID: d7g1EE3DRKyOZ7YDJoRttQ==
-X-CSE-MsgGUID: trLKylj4QlybDA7F+8oCdA==
+   d="scan'208";a="72207920"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 12:15:11 -0800
+X-CSE-ConnectionGUID: epHtT5m7QhmfH4MW7GFt9A==
+X-CSE-MsgGUID: wlkIvAvsRGa32e6TnuU7wA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,184,1763452800"; 
-   d="scan'208";a="201226452"
+   d="scan'208";a="201693922"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.236])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 11:14:03 -0800
-Date: Sun, 28 Dec 2025 21:14:00 +0200
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2025 12:15:08 -0800
+Date: Sun, 28 Dec 2025 22:15:06 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linux PCI <linux-pci@vger.kernel.org>,
-	Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	AceLan Kao <acelan.kao@canonical.com>
-Subject: Re: [PATCH v1 3/4] platform/x86/intel/vbtn: Stop creating a platform
- device
-Message-ID: <aVGBeBT3TKxgn_lu@smile.fi.intel.com>
-References: <7888874.EvYhyI6sBW@rafael.j.wysocki>
- <8661724.NyiUUSuA9g@rafael.j.wysocki>
+To: Francesco Lauritano <francesco.lauritano1@protonmail.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Disable edge events on boot on ASUS ROG
+ Strix G16 G614PP
+Message-ID: <aVGPysQghxHGaJ2r@smile.fi.intel.com>
+References: <2kSCn4XaoXsXJ3EUR0syTdmip8Z1cBuUr0Br4sFVnwnsA8q4GlhiHOmsJkeBxvxYoLnetp4r44wIPXw42yTAFl-BtMROnIwR-NkckKgA5EY=@protonmail.com>
+ <6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com>
+ <20251217120146.51321-1-francesco.lauritano1@protonmail.com>
+ <20251217130822.GS2275908@black.igk.intel.com>
+ <X9fJuqzxIBzuhcbjDFYBPSScoKnUpKLe13znKYaJkJpgmjcbfF6_RN2_24ksQq0Hwyvy9pVrnL7_vHEarnQyUBC0zBLmhlvp75nNhgmq7OI=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -82,30 +80,65 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8661724.NyiUUSuA9g@rafael.j.wysocki>
+In-Reply-To: <X9fJuqzxIBzuhcbjDFYBPSScoKnUpKLe13znKYaJkJpgmjcbfF6_RN2_24ksQq0Hwyvy9pVrnL7_vHEarnQyUBC0zBLmhlvp75nNhgmq7OI=@protonmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Dec 15, 2025 at 02:35:44PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Dec 17, 2025 at 02:01:51PM +0000, Francesco Lauritano wrote:
 > 
-> Now that "system" devices are represented as platform devices, they
-> are not claimed by the PNP ACPI scan handler any more and the Intel
-> virtual button array platform devices should be created by the ACPI
-> core, so the driver does not need to attempt to create a platform
-> device by itself.
+> Thanks for looking into this. Happy to dig deeper.
 > 
-> Accordingly, make it stop doing so.
+> Here are the requested dumps (boot with initcall_debug, no workaround):
+
+(Usually we also use `ignore_loglevel`, but I think dmesg should have it anyway.)
+
+> dmesg: https://gist.github.com/kylan11/63ec3ec319cd6bcaa043fa0b1366965a
 > 
-> No intentional functional impact.
+> acpidump: https://gist.githubusercontent.com/kylan11/7956bbf75714265107f0886f6ed2a381/raw/1614845eb1dc6ab7e2effb6fe56b585a746abe4f/gistfile1.txt
 
-...
+> Some quick notes:
+> - The AMD GPIO controller probes successfully (LINE 2077)
+> 
+> - The hang occurs in the deferred IRQ handler (line 2960)
+> 
+> - There are some ACPI errors around 0.285373 to 0.289806, though they complete quickly
 
->  	.remove = intel_vbtn_remove,
->  };
->  
+This looks like related to USB4 (thubderbolt) dock? Mika, does it look familiar?
 
-Same comment about this blank line.
+> - After the 36-second hang, everything else initializes normally.
+> touchpad, audio, wifi, nvidia GPU all work fine.
+> 
+> The ACPI tables show there's a _AEI method under \_SB_GPIO. Not sure if those
+> unresolved GPP2/GPP7 references are related to what's blocking the deferred
+> IRQ handler, or if it's something else entirely.
+> 
+> Let me know if you need anything else or want me to test something specific.
+> 
+> On Wednesday, December 17th, 2025 at 2:08 PM, Mika Westerberg <mika.westerberg@linux.intel.com> wrote:
+> > On Wed, Dec 17, 2025 at 12:01:52PM +0000, francesco.lauritano1@protonmail.com wrote:
+> > 
+> > > On the ASUS ROG Strix G16 G614PP (2025), the kernel can stall for ~36
+> > > seconds during late init in acpi_gpio_handle_deferred_request_irqs().
+> > > 
+> > > Booting with gpiolib_acpi.run_edge_events_on_boot=0 avoids the stall and
+> > > restores normal boot times.
+> > 
+> > Okay but it might just accidentally "work" and hides the real issue. Doing
+> > things like this blindly might end up breaking something that relies on
+> > that _AEI.
+> > 
+> > Can you post full dmesg and acpipdump somewhere so we can try to figure out
+> > what is going on?
+
+> > > Link: https://lore.kernel.org/platform-driver-x86/6iFCwGH2vssb7NRUTWGpkubGMNbgIlBHSz40z8ZsezjxngXpoiiRiJaijviNvhiDAGIr43bfUmdxLmxYoHDjyft4DgwFc3Pnu5hzPguTa0s=@protonmail.com/
+
+Not sure what this means. Maybe better tag like Closes should be used?
+
+> > > Tested-by: Francesco Lauritano francesco.lauritano1@protonmail.com
+
+This is implied that the author of the patch tested it before sending.
+
+> > > Signed-off-by: Francesco Lauritano francesco.lauritano1@protonmail.com
 
 -- 
 With Best Regards,
