@@ -1,116 +1,130 @@
-Return-Path: <linux-acpi+bounces-19880-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19881-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251AFCE69CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 12:54:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C90ECE6D08
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 14:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAE1B3006F78
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 11:54:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CF783003078
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 13:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C762E2D97A2;
-	Mon, 29 Dec 2025 11:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51B27AC3A;
+	Mon, 29 Dec 2025 13:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS2zSaR3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F352C11CB;
-	Mon, 29 Dec 2025 11:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6EB1DE8BF
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767009290; cv=none; b=BuClhbgF0luEV5Ck7nxl9IcRVt7J6gzcpJj7fQfO2H3kDq3BKmG4harshPST8PsBpjSlELHt484R03cyD3/ZDSIyuirGpW7WqQ/NP9mAUsU/MpBvdXGXpxrytOyPzxSvT4dI8zUS77eU7OfkpeKucZVDnBcC1UVyshJ3fO5qqHo=
+	t=1767013547; cv=none; b=sY60mKX6da4C9Fc0oKGGLaBNjuwcSHIbTk78UmE1NOlyJWARxSPLXoPT3iII1oXqER6WZ/q/QgLvTK3LPpOl92JzNuSDnmk2zrIP78wZNYT2Y0Ss0lPU7J+ilXJ7n8miT7iG9liPBZ+1zA2gbpsBMibqIl0Jf6ar3FlyP3CqURY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767009290; c=relaxed/simple;
-	bh=rg8882HN0q5dZbaB2j0JJtAmaocpdTyq8yU2ZyxrdTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GX+5mUXjwCtkrArfWW5iiEas+XYzmqxoNSN7zadJiMg0EvPUzVwqM/rglXDPZFQmHpCYwkgDP+HCJuOIUnnl6Hal9lVv99OeiHT5o7vlB6kyDBJCEn+ZY9iEZ8WX2CieDUSqUmB5EBMcrNNnY3du6WBSHYQOxZhtrmRQfiWfjXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C9B3339;
-	Mon, 29 Dec 2025 03:54:38 -0800 (PST)
-Received: from e134710.manchester.arm.com (e134710.arm.com [10.33.10.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B2A1B3F63F;
-	Mon, 29 Dec 2025 03:54:43 -0800 (PST)
-From: Ahmed Tiba <ahmed.tiba@arm.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	tony.luck@intel.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	linux-doc@vger.kernel.org,
-	Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com,
-	Ahmed.Tiba@arm.com
-Subject: Re: [PATCH 00/12] ras: share firmware-first estatus handling
-Date: Mon, 29 Dec 2025 11:54:36 +0000
-Message-ID: <20251229115440.2734800-1-ahmed.tiba@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251221013534.GAaUdO5vWqMWAdbWbd@renoirsky.local>
-References: 
+	s=arc-20240116; t=1767013547; c=relaxed/simple;
+	bh=89gyhFWTzEdmAqbWfy4vLDBdLx/Z9WFqEd+t+a6VEGI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FvRfxWqB6TKvebZCLhCahNjB1r9At3NehrSXOtsRlClY9knPayywZu3SXS69xXObNsh6Xf+URyHNgmvgI20wmuKJxzVCacakRiPVE+b1WMVo52I+LbL4hB0k9UWqks+Y5G3RvhTYy0RslwF3IIposy6hEc8SBU78+FHhYMZyri0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS2zSaR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86089C4CEF7
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767013546;
+	bh=89gyhFWTzEdmAqbWfy4vLDBdLx/Z9WFqEd+t+a6VEGI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DS2zSaR39q1dYjpdnQobpADSJtU2DroZELlw4l1yq69wRXdhVT+awWc4XOD4W76bU
+	 OZOFxQNlYwLR/xD4yQDJYigF7TwHWabbxHOGEsM9OHZooeQILK3xROqrptXrBUpGZI
+	 JENfJj0xsxurxUu+1ltX8YLwP23iWua21m37seGKHfXzhjMG+DiMS1J1nBUXQp0T6z
+	 I5QXXYGcQ9jWsQKJdPjSV8LW89Scfv1V7HBHo4gT8EY57TFnij6oKvmAx2F1wddpOx
+	 VQYV974Rkh5jgkAiW5kz184Jnw8+PkHPYoOu8/NbAYn/2Arr9ktFohFigTqz2EOphN
+	 v0FnweBRxSzbg==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-3f551ad50d1so3181228fac.0
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 05:05:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVpaeAe9AGMayNqcuVuixrgSYmFdYI91tskiSvvNUbsZ/FhB5JMFha64gmFjhXShlytudU7BXHAYQXZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyELMxOSdAhIopU2KZX9osgPd12oaqfy1Q+oLyrtL5HkL8tfXjU
+	q3rekX/V6QUGM51hcjauZr6k5NsgvBU14SXS3wPlWEI4l8P7q7b7KcFC9lBssPikmw8FaGIgV3M
+	pRE8FbhrbEojGaabO8IqAXdRGjeT45Xk=
+X-Google-Smtp-Source: AGHT+IH8nTDEGxHe0rQDq5a19sm+MRy3/Emon1EuycnOmKC6W54hVpnw9ZJiW/aPiGi3E/t4RwZd8S1jTVnf1ykzUxs=
+X-Received: by 2002:a05:6820:80f:b0:659:9a49:8e53 with SMTP id
+ 006d021491bc7-65d0ea15d0amr13045627eaf.35.1767013545702; Mon, 29 Dec 2025
+ 05:05:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <2812426.mvXUDI8C0e@rafael.j.wysocki> <aVGQtNsm0hDgRR0m@smile.fi.intel.com>
+In-Reply-To: <aVGQtNsm0hDgRR0m@smile.fi.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 29 Dec 2025 14:05:33 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gzSwpwN5mzUUvATeww2Q5_s95_-T2Jd2fwgE1cXYFuVQ@mail.gmail.com>
+X-Gm-Features: AQt7F2oiqk2-XEtn8CnRY0dINSPlefddJJ7vndos5TZvrXWvIRIKYQRW86t8go8
+Message-ID: <CAJZ5v0gzSwpwN5mzUUvATeww2Q5_s95_-T2Jd2fwgE1cXYFuVQ@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: sysfs: Add device cid attribute for exposing
+ _CID lists
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On Sun, Dec 21, 2025 at 02:35:34 +0100, Borislav Petkov wrote:
-> On Wed, Dec 17, 2025 at 11:28:33AM +0000, Ahmed Tiba wrote:
->> Platforms that rely on firmware-first RAS today only get the full Linux
->> handling pipeline when the records arrive through ACPI/APEI GHES. This
->> series lifts the generic parts of GHES into a reusable estatus core, wires
+On Sun, Dec 28, 2025 at 9:19=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Why is this thing called "error status"?
-
-By “error status” I’m referring to the UEFI CPER Generic Error Status block,
-which is the standard firmware-produced error payload that Linux already
-consumes via GHES on ACPI systems. I’m not introducing a new error model
-here; the intent is to reuse the existing CPER decoding and handling once
-that payload exists.
-
-> Why is error status so significant so that you need to call it a thing,
-> much less a "core"?
-
-The reason this shows up as a separate “core” is that CPER parsing,
-logging, and vendor dispatch are provider-agnostic once a Generic Error
-Status block exists, independent of how it was discovered or notified.
-
-> It looks like you basically want to dump error records from a system
-> which doesn't support GHES into the common path so they get decoded?
+> On Fri, Dec 12, 2025 at 09:52:44PM +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Add a new sysfs attribute called "cid" under struct acpi_device for
+> > exposing the list of compatible device IDs returned by the device's
+> > _CID object, if present.
+> >
+> > The new attribute will be present only if the _CID object is present.
 >
-> I mean, I'm only guessing because I don't get any wiser from this text.
+> ...
 >
-> So how about you give the high-level, practical use spiel first? What's
-> the use case?
+> > +static ssize_t cid_show(struct device *dev, struct device_attribute *a=
+ttr,
+> > +                     char *buf)
+> > +{
+> > +     struct acpi_device *acpi_dev =3D to_acpi_device(dev);
+> > +     struct acpi_device_info *info =3D NULL;
+> > +     ssize_t len =3D 0;
+> > +
+> > +     acpi_get_object_info(acpi_dev->handle, &info);
+> > +     if (!info)
+> > +             return 0;
+> > +
+> > +     if (info->valid & ACPI_VALID_CID) {
+> > +             struct acpi_pnp_device_id_list *cid_list =3D &info->compa=
+tible_id_list;
+> > +             int i;
+> > +
+> > +             for (i =3D 0; i < cid_list->count - 1; i++)
+> > +                     len +=3D sysfs_emit(buf, "%s,", cid_list->ids[i].=
+string);
+> > +
+> > +             len +=3D sysfs_emit(buf, "%s\n", cid_list->ids[i].string)=
+;
+>
+> You definitely meant to use sysfs_emit_at().
 
-The practical use case is firmware-first RAS platforms that emit CPER
-records but do not use ACPI/APEI GHES for discovery or notification. Today,
-those platforms either have to duplicate CPER parsing logic or miss out on
-the common Linux RAS handling (standard logging, memory failure flow,
-vendor notification paths). As a result, the full firmware-first RAS
-pipeline effectively only works when CPER arrives through GHES.
+Right, thanks!
 
-GHES remains one transport for delivering CPER records, but this
-series separates the transport from the decoding so that other firmware-
-first providers can reuse the same handling without duplicating code or
-depending on ACPI/APEI internals.
+> > +     }
+> > +
+> > +     kfree(info);
+> > +
+> > +     return len;
+> > +}
+> > +static DEVICE_ATTR_RO(cid);
+>
+> Do wee have any ABI documentation for these sysfs attributes?
 
-As far as I can tell from the scope of https://uefi.org/specifications,
-the UEFI specifications don’t define a notification mechanism for
-DeviceTree systems—only the ACPI/APEI path is spelled out. Right now the DT
-transport is described solely by the binding in patch 9/12. If there’s a
-better place to document or name this, I’d appreciate guidance
-so it’s clear how firmware-first notification happens on DT outside ACPI.
+No, there's none I know of.
 
-Thanks,
-Ahmed
+> If so, it needs to be updated, otherwise perhaps create one?
+
+Well, feel free to do so.
 
