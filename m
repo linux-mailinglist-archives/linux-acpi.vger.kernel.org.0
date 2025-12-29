@@ -1,130 +1,149 @@
-Return-Path: <linux-acpi+bounces-19881-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19882-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C90ECE6D08
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 14:05:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96883CE6D30
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 14:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CF783003078
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 13:05:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C55B23000DFB
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 13:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51B27AC3A;
-	Mon, 29 Dec 2025 13:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB10E311C16;
+	Mon, 29 Dec 2025 13:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS2zSaR3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9QZFSCS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6EB1DE8BF
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A0B25291B
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767013547; cv=none; b=sY60mKX6da4C9Fc0oKGGLaBNjuwcSHIbTk78UmE1NOlyJWARxSPLXoPT3iII1oXqER6WZ/q/QgLvTK3LPpOl92JzNuSDnmk2zrIP78wZNYT2Y0Ss0lPU7J+ilXJ7n8miT7iG9liPBZ+1zA2gbpsBMibqIl0Jf6ar3FlyP3CqURY=
+	t=1767013656; cv=none; b=iYwLB3J4GWq8B3vjWpM+ksF/sVmwPrANSaJeAbWBvjqFmDHHqEqu11jaZSy9prRrTc2mqgGncX4mLoL/Z2tjBbMOmUrSAb21vGI6y4J9YO/dJ5ESIjak/RBrUDE2uwCzuFxx/0m5tx+/AgxoKoS+amJVXmRIl6PkL2oLvnqLAgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767013547; c=relaxed/simple;
-	bh=89gyhFWTzEdmAqbWfy4vLDBdLx/Z9WFqEd+t+a6VEGI=;
+	s=arc-20240116; t=1767013656; c=relaxed/simple;
+	bh=AMUQSRG1b3Bfy03EvZuA2MH+vEg2DbG2lHxiayfH+QM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FvRfxWqB6TKvebZCLhCahNjB1r9At3NehrSXOtsRlClY9knPayywZu3SXS69xXObNsh6Xf+URyHNgmvgI20wmuKJxzVCacakRiPVE+b1WMVo52I+LbL4hB0k9UWqks+Y5G3RvhTYy0RslwF3IIposy6hEc8SBU78+FHhYMZyri0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS2zSaR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86089C4CEF7
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:05:46 +0000 (UTC)
+	 To:Cc:Content-Type; b=GHWs3kzD9odIoznM8R0V5yb3Wq0WcHBP3rUfqnKdisydYnb4U52aRZ1NlZ6DuJ9lLfuHee4pNtdnXohEDN6U0ZJTilD4fPoK4TgpKsX9IaoMSvCQ54FbDivwNPKKee8ri8aXeQQcMTy+uGfyCU5OqfMigaAk8uODmz51fGuIVh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9QZFSCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801D9C4CEF7
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 13:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767013546;
-	bh=89gyhFWTzEdmAqbWfy4vLDBdLx/Z9WFqEd+t+a6VEGI=;
+	s=k20201202; t=1767013656;
+	bh=AMUQSRG1b3Bfy03EvZuA2MH+vEg2DbG2lHxiayfH+QM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DS2zSaR39q1dYjpdnQobpADSJtU2DroZELlw4l1yq69wRXdhVT+awWc4XOD4W76bU
-	 OZOFxQNlYwLR/xD4yQDJYigF7TwHWabbxHOGEsM9OHZooeQILK3xROqrptXrBUpGZI
-	 JENfJj0xsxurxUu+1ltX8YLwP23iWua21m37seGKHfXzhjMG+DiMS1J1nBUXQp0T6z
-	 I5QXXYGcQ9jWsQKJdPjSV8LW89Scfv1V7HBHo4gT8EY57TFnij6oKvmAx2F1wddpOx
-	 VQYV974Rkh5jgkAiW5kz184Jnw8+PkHPYoOu8/NbAYn/2Arr9ktFohFigTqz2EOphN
-	 v0FnweBRxSzbg==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-3f551ad50d1so3181228fac.0
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 05:05:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVpaeAe9AGMayNqcuVuixrgSYmFdYI91tskiSvvNUbsZ/FhB5JMFha64gmFjhXShlytudU7BXHAYQXZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyELMxOSdAhIopU2KZX9osgPd12oaqfy1Q+oLyrtL5HkL8tfXjU
-	q3rekX/V6QUGM51hcjauZr6k5NsgvBU14SXS3wPlWEI4l8P7q7b7KcFC9lBssPikmw8FaGIgV3M
-	pRE8FbhrbEojGaabO8IqAXdRGjeT45Xk=
-X-Google-Smtp-Source: AGHT+IH8nTDEGxHe0rQDq5a19sm+MRy3/Emon1EuycnOmKC6W54hVpnw9ZJiW/aPiGi3E/t4RwZd8S1jTVnf1ykzUxs=
-X-Received: by 2002:a05:6820:80f:b0:659:9a49:8e53 with SMTP id
- 006d021491bc7-65d0ea15d0amr13045627eaf.35.1767013545702; Mon, 29 Dec 2025
- 05:05:45 -0800 (PST)
+	b=A9QZFSCS3xPAwWqtCvPqrrX/p48huao8sdF4q7VJrNiDsDYyoTmKF02kun7BWCwv2
+	 LlsSgFHY15pRVXlu9EATZrgsqDgunJb6wRhpRqUZyRJInOYJkjuiI8VHip1Wz6xOVU
+	 2yQJ5yFOiuT2II442/1AqTt0rVIfoMRw68VLyP3xWQAWWxG14vYQv/u0d8TXQbpiT3
+	 2fTIV9seyM9cn6Qy1zvrY3KNmHr5+yn5s5+hYtmiwc0eKIW4K6xX3N3o1IdiG5oPCS
+	 8R/UYrqS5k4jhFz6XYIcBpiLgC/cF08TioNkA9W8Dtd0WdvxVJ2A2IV6JskQ0Wb7H9
+	 Djp6vlpQmH0tQ==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c6cc44ff62so6789656a34.3
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Dec 2025 05:07:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVfEnGXP6wWeSdzOSsoFi+QGViGuMs3R2NDC7QxOSiujfRO4QuE89eCJUEXUvdbtXyiwoBjCkN1t4c8@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+3oBkDQ61H2CJTnuYZQtS5o4Q3Ea7zOU5xRjBJnMTKOpnJKyv
+	jVu06wppWt6YmTQpt0xX4I5pDdjxYw58I3MnoBY/LKywwavdIevqyelnxK8x0nGiPBCevmGy8+E
+	hZIjdGGqqszHTSvy8D67edEqndXIhk68=
+X-Google-Smtp-Source: AGHT+IF44OvAT8xzPCw6GemK5RnjOaPJgRioAtH7qU3YkYnFcixJdFY9nD1Exc2RVpUjYDwkKnc/hWyfHiMYWmbrDgs=
+X-Received: by 2002:a05:6830:f94:b0:7c7:68d6:5925 with SMTP id
+ 46e09a7af769-7cc66a46941mr12797514a34.27.1767013655638; Mon, 29 Dec 2025
+ 05:07:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2812426.mvXUDI8C0e@rafael.j.wysocki> <aVGQtNsm0hDgRR0m@smile.fi.intel.com>
-In-Reply-To: <aVGQtNsm0hDgRR0m@smile.fi.intel.com>
+References: <7888874.EvYhyI6sBW@rafael.j.wysocki> <6115868.MhkbZ0Pkbq@rafael.j.wysocki>
+ <aVGBW4UcRAaxtbCX@smile.fi.intel.com>
+In-Reply-To: <aVGBW4UcRAaxtbCX@smile.fi.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Dec 2025 14:05:33 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gzSwpwN5mzUUvATeww2Q5_s95_-T2Jd2fwgE1cXYFuVQ@mail.gmail.com>
-X-Gm-Features: AQt7F2oiqk2-XEtn8CnRY0dINSPlefddJJ7vndos5TZvrXWvIRIKYQRW86t8go8
-Message-ID: <CAJZ5v0gzSwpwN5mzUUvATeww2Q5_s95_-T2Jd2fwgE1cXYFuVQ@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: sysfs: Add device cid attribute for exposing
- _CID lists
+Date: Mon, 29 Dec 2025 14:07:23 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gyhVFA65YCqrz7WiY=4H+dhKb6FYMo06sU-hF=4fLS4Q@mail.gmail.com>
+X-Gm-Features: AQt7F2qdw28JM-u46gZ2DuXmSUxLEhjvbWB_OEQLQYM-tkIUpJW9B6giu1Jrkj0
+Message-ID: <CAJZ5v0gyhVFA65YCqrz7WiY=4H+dhKb6FYMo06sU-hF=4fLS4Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] platform/x86/intel/hid: Stop creating a platform device
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>
+	LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	platform-driver-x86@vger.kernel.org, AceLan Kao <acelan.kao@canonical.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 28, 2025 at 9:19=E2=80=AFPM Andy Shevchenko
+On Sun, Dec 28, 2025 at 8:13=E2=80=AFPM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> On Fri, Dec 12, 2025 at 09:52:44PM +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Mon, Dec 15, 2025 at 02:35:05PM +0100, Rafael J. Wysocki wrote:
 > >
-> > Add a new sysfs attribute called "cid" under struct acpi_device for
-> > exposing the list of compatible device IDs returned by the device's
-> > _CID object, if present.
+> > Now that "system" devices are represented as platform devices, they
+> > are not claimed by the PNP ACPI scan handler any more and the Intel
+> > HID platform devices should be created by the ACPI core, so the
+> > driver does not need to attempt to create a platform device by
+> > itself.
 > >
-> > The new attribute will be present only if the _CID object is present.
+> > Accordingly, make it stop doing so.
+> >
+> > No intentional functional impact.
 >
 > ...
 >
-> > +static ssize_t cid_show(struct device *dev, struct device_attribute *a=
-ttr,
-> > +                     char *buf)
-> > +{
-> > +     struct acpi_device *acpi_dev =3D to_acpi_device(dev);
-> > +     struct acpi_device_info *info =3D NULL;
-> > +     ssize_t len =3D 0;
-> > +
-> > +     acpi_get_object_info(acpi_dev->handle, &info);
-> > +     if (!info)
-> > +             return 0;
-> > +
-> > +     if (info->valid & ACPI_VALID_CID) {
-> > +             struct acpi_pnp_device_id_list *cid_list =3D &info->compa=
-tible_id_list;
-> > +             int i;
-> > +
-> > +             for (i =3D 0; i < cid_list->count - 1; i++)
-> > +                     len +=3D sysfs_emit(buf, "%s,", cid_list->ids[i].=
-string);
-> > +
-> > +             len +=3D sysfs_emit(buf, "%s\n", cid_list->ids[i].string)=
-;
+> >       .remove =3D intel_hid_remove,
+> >  };
 >
-> You definitely meant to use sysfs_emit_at().
-
-Right, thanks!
-
-> > +     }
-> > +
-> > +     kfree(info);
-> > +
-> > +     return len;
-> > +}
-> > +static DEVICE_ATTR_RO(cid);
+> >
 >
-> Do wee have any ABI documentation for these sysfs attributes?
+> This blank line now can also be removed as the module_platform_driver() c=
+oupled
+> with the above structure initialiser.
+>
+> > -/*
+> > - * Unfortunately, some laptops provide a _HID=3D"INT33D5" device with
+> > - * _CID=3D"PNP0C02".  This causes the pnpacpi scan driver to claim the
+> > - * ACPI node, so no platform device will be created.  The pnpacpi
+> > - * driver rejects this device in subsequent processing, so no physical
+> > - * node is created at all.
+> > - *
+> > - * As a workaround until the ACPI core figures out how to handle
+> > - * this corner case, manually ask the ACPI platform device code to
+> > - * claim the ACPI node.
+> > - */
+> > -static acpi_status __init
+> > -check_acpi_dev(acpi_handle handle, u32 lvl, void *context, void **rv)
+> > -{
+> > -     const struct acpi_device_id *ids =3D context;
+> > -     struct acpi_device *dev =3D acpi_fetch_acpi_dev(handle);
+> > -
+> > -     if (dev && acpi_match_device_ids(dev, ids) =3D=3D 0)
+> > -             if (!IS_ERR_OR_NULL(acpi_create_platform_device(dev, NULL=
+)))
+> > -                     dev_info(&dev->dev,
+> > -                              "intel-hid: created platform device\n");
+> > -
+> > -     return AE_OK;
+> > -}
+> > -
+> > -static int __init intel_hid_init(void)
+> > -{
+> > -     acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
+> > -                         ACPI_UINT32_MAX, check_acpi_dev, NULL,
+> > -                         (void *)intel_hid_ids, NULL);
+> > -
+> > -     return platform_driver_register(&intel_hid_pl_driver);
+> > -}
+> > -module_init(intel_hid_init);
+> > -
+> > -static void __exit intel_hid_exit(void)
+> > -{
+> > -     platform_driver_unregister(&intel_hid_pl_driver);
+> > -}
+> > -module_exit(intel_hid_exit);
+> > +module_platform_driver(intel_hid_pl_driver);
 
-No, there's none I know of.
-
-> If so, it needs to be updated, otherwise perhaps create one?
-
-Well, feel free to do so.
+Feel free to send a patch to remove it then, perhaps along with the
+one in the other driver.
 
