@@ -1,54 +1,51 @@
-Return-Path: <linux-acpi+bounces-19884-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19885-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3208CE6E2C
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 14:28:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C3CCE6E32
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 14:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 861C3301E92E
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 13:27:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B7E5830072AF
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Dec 2025 13:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74483161AA;
-	Mon, 29 Dec 2025 13:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBCF3168E7;
+	Mon, 29 Dec 2025 13:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iqtl6w/O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/RrEvVg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813DD30F7FC;
-	Mon, 29 Dec 2025 13:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726403164B6;
+	Mon, 29 Dec 2025 13:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767014869; cv=none; b=iVlJop1d/gGIEFHUwWHER7kmxr/bsjzpeucoqSDpGHcHWxRYOKIlR2/uwRhGos0RjCVOJ0Lo1+NnXeetaHnEpzUPs8O9oePkg5XIcaYmAoZe5HPGdJYKQqpnraq7eY4+WZ8exQGJXeELp8uHFU2E/fleOMGjsPbiXi2hvkDL0AM=
+	t=1767015002; cv=none; b=ObVs6LATs8kDIbhhejCEpamnUt2eUfGDyBT39kAUxBP7Y6eLdbldb+R4Qw0HXAfRweNWskzIypVuCzraVAnQ1SOXqpN5KWWq6obPjY1pO+1fqqNMwiM/kFVTkqVnMZhU+Z+0mTom/9Ovumb+em3zGOYY8rvD5UkudOjM+p8IUJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767014869; c=relaxed/simple;
-	bh=3mA3+dxGsxL+XupXevRUeN1KqNXK3m3S1aMn6HhP0VY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gUN9WhUJ8afaD3z2VVXelDdqeY3Efw9Jz2pmqpzP7yGhWUaM+EuvAT1X0+7WOFH24lExeT4HHseD3U9im8ciPZ6OxKu6/GGYTK6rjhp979CD/1H7F5FsTcZF/iBr0r+wypGadj328Krvt/LRvEDP97F5+rEE/R0zGxmX0JlUYWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iqtl6w/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1608C4CEF7;
-	Mon, 29 Dec 2025 13:27:47 +0000 (UTC)
+	s=arc-20240116; t=1767015002; c=relaxed/simple;
+	bh=yFiRKLzO2PsdoX2p4G7xQ2A4ecAxxsCJbsLjlGCf8bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dg9cKDi1meT1GESFLLyL+jm1AzTS4RK9qMQIMBY1rfADdSaBTppgqXWULfmVeNlfNqtuUekFVe/paD6CQX5WdLhdZPYND3Feu7rLR8WW/jUVOZbhVBsrRQA4fOCmJYPiF9aWg8clpCcvl7ArPuLNCTxYMalQNdS4wBge0g4H7dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/RrEvVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CD9C4CEF7;
+	Mon, 29 Dec 2025 13:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767014869;
-	bh=3mA3+dxGsxL+XupXevRUeN1KqNXK3m3S1aMn6HhP0VY=;
+	s=k20201202; t=1767015002;
+	bh=yFiRKLzO2PsdoX2p4G7xQ2A4ecAxxsCJbsLjlGCf8bw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Iqtl6w/ODRJwiNXKILxgDTZleHqc5ACTDOyYsam4eybcNgKrGAdF/JHlySym8usv1
-	 6bY1XXLWOX+R+tMwWZEJS8tEwXCQHz7G60WFvGiAKbnr0n8K1KrS4j0A66afc1CkUZ
-	 rirLducJWRFU54PqkGI9TsKj32liz9HNFdj6KtaS4QBPekgT9RMtO2cR/C0Bo17BUl
-	 O0XkcHPEAnXgIYGNGxnHRE2udkE1pQ6mBadZECWwK9ziE8ErTZZwOrek5wVnZvEhAy
-	 iknXMVLBAwadURn5ztoVESkTzPIMAzUSqqSyV2kpC+H8qBHreas56yj+iVSeawKvU2
-	 +uejZuyGEJQaQ==
+	b=Y/RrEvVgXjcfXA3lKPwZ3FkSYHT/aCSC34h7zBwDincKLY7xGfafbr+y8g7uwMzmu
+	 iBxk5hVAbuWceq7t8RTOd0XqOeIAj17y0sbfHVU9ILyJrSe+MEO3GjKK9liDQEn4Fx
+	 Yb3YS/BdOXYyDUvoC68ZLTnq3x4fBZQQtAMmg5NnP5BGccAclTifCnalvB6oan9v77
+	 uw+0y1cgUCP0fMCBY/osBQKJyF+IGamC4dyXuCUOZY5R6Vkq1H0OoX31PHHs5rqPZx
+	 e7vm/dAWAxSeha1uLvUhvWC364hIm7JyygCQiE5eoLunvhcEqoNzSL6M+29V/Qrx5+
+	 wudsBeF8x7iuA==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Hans de Goede <hansg@kernel.org>,
- Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v1] ACPI: bus: Fix typo under sizeof() in acpi_run_osc()
-Date: Mon, 29 Dec 2025 14:27:46 +0100
-Message-ID: <2817106.mvXUDI8C0e@rafael.j.wysocki>
+Cc: LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject:
+ [PATCH v2] ACPI: sysfs: Add device cid attribute for exposing _CID lists
+Date: Mon, 29 Dec 2025 14:29:59 +0100
+Message-ID: <5957407.DvuYhMxLoT@rafael.j.wysocki>
 Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -60,31 +57,76 @@ Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: 
 
-The sizeof(32) in acpi_run_osc() should be sizeof(u32), so fix it.
+Add a new sysfs attribute called "cid" under struct acpi_device for
+exposing the list of compatible device IDs returned by the device's
+_CID object, if present.
 
-Fixes: e5322888e6bf ("ACPI: bus: Rework the handling of \_SB._OSC platform features")
+The new attribute will be present only if the _CID object is present.
+
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
-Commit e5322888e6bf is a linux-next one.
+v1 -> v2: Use sysfs_emit_at() instead of sysfs_emit() as appropriate (Andy).
 
 ---
- drivers/acpi/bus.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/device_sysfs.c |   31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -294,7 +294,7 @@ acpi_status acpi_run_osc(acpi_handle han
- 	int ret;
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -403,6 +403,33 @@ hid_show(struct device *dev, struct devi
+ }
+ static DEVICE_ATTR_RO(hid);
  
- 	if (!context || !context->cap.pointer ||
--	    context->cap.length < 2 * sizeof(32) ||
-+	    context->cap.length < 2 * sizeof(u32) ||
- 	    guid_parse(context->uuid_str, &guid))
- 		return AE_BAD_PARAMETER;
++static ssize_t cid_show(struct device *dev, struct device_attribute *attr,
++			char *buf)
++{
++	struct acpi_device *acpi_dev = to_acpi_device(dev);
++	struct acpi_device_info *info = NULL;
++	ssize_t len = 0;
++
++	acpi_get_object_info(acpi_dev->handle, &info);
++	if (!info)
++		return 0;
++
++	if (info->valid & ACPI_VALID_CID) {
++		struct acpi_pnp_device_id_list *cid_list = &info->compatible_id_list;
++		int i;
++
++		for (i = 0; i < cid_list->count - 1; i++)
++			len += sysfs_emit_at(buf, len, "%s,", cid_list->ids[i].string);
++
++		len += sysfs_emit_at(buf, len, "%s\n", cid_list->ids[i].string);
++	}
++
++	kfree(info);
++
++	return len;
++}
++static DEVICE_ATTR_RO(cid);
++
+ static ssize_t uid_show(struct device *dev,
+ 			struct device_attribute *attr, char *buf)
+ {
+@@ -520,6 +547,7 @@ static DEVICE_ATTR_RO(status);
+ static struct attribute *acpi_attrs[] = {
+ 	&dev_attr_path.attr,
+ 	&dev_attr_hid.attr,
++	&dev_attr_cid.attr,
+ 	&dev_attr_modalias.attr,
+ 	&dev_attr_description.attr,
+ 	&dev_attr_adr.attr,
+@@ -562,6 +590,9 @@ static bool acpi_show_attr(struct acpi_d
+ 	if (attr == &dev_attr_status)
+ 		return acpi_has_method(dev->handle, "_STA");
  
++	if (attr == &dev_attr_cid)
++		return acpi_has_method(dev->handle, "_CID");
++
+ 	/*
+ 	 * If device has _EJ0, 'eject' file is created that is used to trigger
+ 	 * hot-removal function from userland.
 
 
 
