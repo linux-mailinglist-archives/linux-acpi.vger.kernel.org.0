@@ -1,105 +1,144 @@
-Return-Path: <linux-acpi+bounces-19912-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19913-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A82CEA2BE
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 17:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0250DCEA9A5
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 21:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD7D23026AE5
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 16:27:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B43D23014BF1
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 20:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6B320CA9;
-	Tue, 30 Dec 2025 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211992E0418;
+	Tue, 30 Dec 2025 20:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5gUCBMw"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CZftLkiS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA823203B2
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Dec 2025 16:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EFB2773DE;
+	Tue, 30 Dec 2025 20:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767112042; cv=none; b=gn+SntevBS0MvbfCno6Dg1neKv0g10bSYIrGVWck4LdWtffhm9QGl1opziThQ1/aPdh8XFKtRSr8v+khIzEIpxWRW/ZZQgDKMU7LxssBUBfY8zSeZbfcQRzlCkzn56ggRrNb2K6918hnhetPJa4hER8ydmSVxRlI8MmgYHaOsO8=
+	t=1767126167; cv=none; b=IcnSsR5hI6zZH8u9L7U504y/piWLMj/RWLeBSPHIjTozfcwOG/oCi1+4LSf6l4ymNcG+/Tvuu+0xVKG1mWO25dX/Nxj1wO8wnB0jDmAuwEHiD7BbLKso6Tz7CGhj0TzoHcmqqPK5MvmWRwW/401c6kiwyh6YtfsmUdCzUwikFjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767112042; c=relaxed/simple;
-	bh=dWzgmS30+08etAJmaADuKq0gmF/cfIle0Dvj4mqcL6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DUYbuFog6jFRzOu6OGq3fUtK09ZJirKqw69fBG64pUkJDo8p9bO9kaceJz2ozW/PmodQHhNsfCr2aHLklrcYJalqNzLSNC+wP6yI/ILd4tkf5E3DvJvTe4Sq+S2+c7J3D+GIpakCRS+R9VFY2wL9gq2KFkFvi67UH1cmqix4W5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5gUCBMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C51C116D0
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Dec 2025 16:27:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767112042;
-	bh=dWzgmS30+08etAJmaADuKq0gmF/cfIle0Dvj4mqcL6s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u5gUCBMw8inOHcHnhaNml6D4XODtz1q0u9/ybtTdPW2d2F4avgFGWHA9vW6T876by
-	 vmHvEaA8z9oA0XIh1St2NMzWJE91IDXH9sVEvJA4VAW3JwA3n+QwpBBsdJv72LX42/
-	 9uQOEXubsndBDp5Jf8Wg2HRZslGygFJYgSWzhzelHIUYxbDXT7wQTDtGryHi8GDzeF
-	 Unmggu5yurkXv18iZOWHO0bcGxp5/7+2H6eJ8UHNcYNhTJhFgdd7PS6R73t/dFOKgx
-	 /T+Ggb56oVf9+V+G0sK6g0Lf2xgo8rSyxMk324QuoCPYGqNDPbZsSLU9Ba3H0vlQFw
-	 bwIJuUpe4UMOw==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7c7533dbd87so7507301a34.2
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Dec 2025 08:27:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW1UfTGa9fXgP3o4n8e4f0zr4P8Byztat0ND5RGB9/TQEmuGScYuXfFtH85o8jQPFxUV7ILvpQ56shk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0oEVqt/rDt17GeNXYo4nPvArXBzx5+N1FtAzWW/KwaaCRzpay
-	rCs+9a6WQ3lJSKFb3DhLKqvQFu//f899PTFoib6EmJAkZtA1RU15KAfa3ewxOAlbJv66LIeVJhZ
-	3ZtbdBB13KiGrcgxL9bstgd5ctnoP34A=
-X-Google-Smtp-Source: AGHT+IHv2/Ndaop9Z6uq1VD9/PZzp1tT54HyUh3hNpSyGFZGtVnfI1FCSYdidJQOrPR0xz/jdihvjuGmTmpR+JtKzK8=
-X-Received: by 2002:a05:6820:1628:b0:65d:ef:b937 with SMTP id
- 006d021491bc7-65d0ea99d06mr12939563eaf.33.1767112041157; Tue, 30 Dec 2025
- 08:27:21 -0800 (PST)
+	s=arc-20240116; t=1767126167; c=relaxed/simple;
+	bh=wOawhRMy6PqBJKMCTblvUizuauY9tZtanHyV3crtbYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FR5MVvIDUeLYPiFhTRxq7JEhojwRYBQkyF5SmtrX7DDt7jpSwBsvenhhgRwS68Ulcy7xH0eIT+znVqCoAU0mOMUW7K5QxcHVBaqRZxf6igRKe93jsij8hUZ52Q9nAdITtwU+PzTBffB5Czr+1f2xhcMqG47XVmSNbEdR7ig8X7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CZftLkiS; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8D7D140E0200;
+	Tue, 30 Dec 2025 20:22:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6019D1TzHUu6; Tue, 30 Dec 2025 20:22:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1767126154; bh=7VSjZH9YRcwoArFWQ3nrQhzF6SeGlXpAy9wzH4sePkU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CZftLkiSaYSuny9JPh+I4cMr86G5HGZynbGE4hsn0NvabteM/KIFQEcmu/mgFfNAF
+	 W0fPnfjlWbMn40x8ByvMddii07FftBkdzlm043PDJfB5gn8g09h5uE/8BW3uwqbQxk
+	 V7KSZzQbmQJSpLdtime8xn+e2LkbvVseaDdaDWbwcuq/y6Ky9KHLn6OQ1vzYxNfJgv
+	 vpIhzEVPQhjyBn5Qw18DpFm9sJl8mtntp6p8LFFhjU4hpDzod7pNu1diLwQYIIKwUD
+	 /mz/U/lh1yIepLjd/ROiwCXP5xOKWOWSpDXi9q5zhKkRYceNx6VTT3JyCD8M9eJkt7
+	 4lxfun7vIHgZRNA60bbHYm54gA8TfkB8WLR2vQ4PlvhYO2JJnc0GsVST/XTCnQ14WP
+	 Ac10ffwKginHPD1X3jCm5nnuXEs+qK4HQSlGFIgfVjaEeJYUSMAZ58UXxZMqzatTKq
+	 3ejWocyb2In7vzdfgOCro3hfc6zCOLQ8k8ik2rY6pRPuqQG/QRA9smEFMoTYBar3Ss
+	 A7ftcSCNrU34hZkNhbeafgpanayQ25kZ5u9wKlTWigAWfsFJPFsjmngoCmaOl4Kgwr
+	 9N5am9o9/se1jMAv0vtCq2k7exXFume5D168LibYKvOYkytYe8J01SSrNKmeV1fRRK
+	 c7VbaMk9SRHs/d1fF1EDJ0hg=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9F49D40E01A9;
+	Tue, 30 Dec 2025 20:22:18 +0000 (UTC)
+Date: Tue, 30 Dec 2025 21:22:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, lpieralisi@kernel.org,
+	guohanjun@huawei.com, sudeep.holla@arm.com,
+	xueshuai@linux.alibaba.com, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
+	yazen.ghannam@amd.com, misono.tomohiro@fujitsu.com,
+	fengwei_yin@linux.alibaba.com
+Subject: Re: [PATCH v5 00/17] ARM Error Source Table V2 Support
+Message-ID: <20251230202211.GAaVQ0cx8o-CqzGU2O@fat_crate.local>
+References: <20251230090945.43969-1-tianruidong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251230160644.100439-1-Julia.Lawall@inria.fr>
-In-Reply-To: <20251230160644.100439-1-Julia.Lawall@inria.fr>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 30 Dec 2025 17:27:08 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iyRKisGu6OWmA6i_9bcPXp6K-DNAoOAVm8+i57BsL3Ug@mail.gmail.com>
-X-Gm-Features: AQt7F2r3B5bH2lBVYpGlBPCWih6F6TCYGAt6-wkQrv1ntzhKmA8iZR7uLsfYp8E
-Message-ID: <CAJZ5v0iyRKisGu6OWmA6i_9bcPXp6K-DNAoOAVm8+i57BsL3Ug@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: scan: removed outdated comment
-To: Julia Lawall <Julia.Lawall@inria.fr>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, yunbolyu@smu.edu.sg, kexinsun@smail.nju.edu.cn, 
-	ratnadiraw@smu.edu.sg, xutong.ma@inria.fr, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251230090945.43969-1-tianruidong@linux.alibaba.com>
 
-On Tue, Dec 30, 2025 at 5:06=E2=80=AFPM Julia Lawall <Julia.Lawall@inria.fr=
-> wrote:
->
-> The function acpi_video_get_capabilities() was removed from
-> drivers/acpi/video_detect.c by commit 87521e16a7ab
-> ("acpi-video-detect: Rewrite backlight interface selection logic") in
-> 2015.  At the time, comments about this function were just removed,
-> and no replacement seemed to be proposed.  So drop the reference to
-> acpi_video_get_capabilities() here as well.
->
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
->
-> ---
->  drivers/acpi/scan.c |    2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 416d87f9bd10..9297461045a2 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1294,8 +1294,6 @@ acpi_backlight_cap_match(acpi_handle handle, u32 le=
-vel, void *context,
->   * The device will get a Linux specific CID added in scan.c to
->   * identify the device as an ACPI graphics device
->   * Be aware that the graphics device may not be physically present
-> - * Use acpi_video_get_capabilities() to detect general ACPI video
-> - * capabilities of present cards
->   */
->  long acpi_is_video_device(acpi_handle handle)
->  {
+Some high-level notes first:
 
-Applied as 6.20 material, thanks!
+On Tue, Dec 30, 2025 at 05:09:28PM +0800, Ruidong Tian wrote:
+> This series introduces support for the ARM Error Source Table (AEST), aligning
+> with version 2.0 of ACPI for Armv8 RAS Extensions [0].
+
+I'd like to hear from ARM folks what the strategy for this thing is...
+
+> AEST provides a critical mechanism for hardware to directly notify the
+> operating system kernel about RAS errors via interrupts, a concept known as
+> Kernel-first error handling. Compared to firmware-first error handling
+> (e.g., GHES), AEST offers a more lightweight approach. This efficiency allows
+> the OS to potentially report every Corrected Error (CE), enabling upper-layer
+> applications to leverage CE information for error prediction[1][2].
+> 
+> This series is based on Tyler Baicar's preliminary patches [3], which have not
+> yet been sent to the mailing list as v2.
+
+I guess I'll wait for those first.
+
+> AEST Driver Architecture
+> ========================
+> 
+> The AEST driver is structured into three primary components:
+>   - AEST device: Responsible for handling interrupts, managing the lifecycle
+>                  of AEST nodes, and processing error records.
+>   - AEST node: Corresponds directly to a RAS node in the hardware
+
+What is a "RAS node"?
+
+>   - AEST record: Represents a set of RAS registers associated with a specific
+>                  error source.
+
+...
+
+> Address Translation
+> ===================
+> 
+> As described in section 2.2 [0], error addresses reported by AEST records
+> may be "node-specific Logical Addresses" rather than the "System Physical
+> Addresses" (SPA) used by the kernel. Therefore, the driver needs to translate
+> these Logical Addresses (LA) to SPA. This translation mechanism is conceptually
+> similar to AMD's Address Translation Logic (ATL) [4], leading patch 0014 to
+> introduce a common translation function for both AMD and ARM architectures.
+
+Say what now? 
+
+The ATL is very AMD-specific. What does "conceptually similar" mean exactly?
+What happens if we have to change the ATL and break your use case in the
+process?
+
+What exact functionality from the ATL do you really need here?
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
