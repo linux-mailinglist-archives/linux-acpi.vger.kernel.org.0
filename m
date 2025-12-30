@@ -1,77 +1,76 @@
-Return-Path: <linux-acpi+bounces-19909-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19910-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525F3CE9886
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 12:28:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1598CCE9949
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 12:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A0BCD3003840
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 11:28:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3BC0301B815
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 11:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130052E5427;
-	Tue, 30 Dec 2025 11:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E632D5946;
+	Tue, 30 Dec 2025 11:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AbEL0XGr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kvD6ECWI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312C28135D;
-	Tue, 30 Dec 2025 11:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E22264C0;
+	Tue, 30 Dec 2025 11:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767094118; cv=none; b=azX1ApyBqDZUxlxzQBT2qQQKzQmE1mK8r7S+CypbyljlsOcVQwvFBZf+HYy/n3T/cD1YbnaeGCJed6GyNwCvGCJkEEn7teSpatifGfsXeSHyxSsf59vubIzACy5x0Nqw4EEyPWlBcu/GvZ6HRi4kYaD0cm2ph5yoDY3ycK54m6Q=
+	t=1767095648; cv=none; b=RjGUhbPqWSF/zqUwJbsomk+oqCCvp7dsF81XOXMPCbhPFDn8PO2GZUTF4llJX0aKCgHEY2Qb6Y0qX2kp7Lom7aBk7CJFhZKFhXh9+fhvoSMBT6sG+5TlC6sx1CkZeyAIf1PCnKF/IfFXsKpD0YYHDoUrAJHRakk/OJY1a4YUNs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767094118; c=relaxed/simple;
-	bh=K7lLyfcUHXbaLJYCSwQJizOkuqiu/G8kSEq3MzHqlb0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ujb/IPivHURQAy8M48UleXfRsAamRLs15EJ+LcwtRHpBa0MzJRSxOS60wsxnVDFO1u6wlvR4+G1GnjfIeVQF84jpGN5GkwBrfiNP0b+8jcaQLjIzm5dg7A9mndXjUvA3LAPf7vdVNNifiR1hY/fdlzfGLhAEcJ2H7Tt0H9FGynk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AbEL0XGr; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1767095648; c=relaxed/simple;
+	bh=spPr8TBiHbVgQkzYTHJ55ZXoc4bw8ADD5ffVTH2O2wg=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=lqCajx0QF+xOD+odEFOZrLIAS4EaqTGOqd4b7zHC685Uk0gR5obzIUoyWY8YXcfW00p3qkR6W9K7dARkRdJ0LeyQV8nehVRJ1tB0vazkcdl1wlG6MSWyBYnInrsS/jbV810SVrpsHuNTBTxJnbv5Vp5rdH9x79Lv9d+hTbQCcm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kvD6ECWI; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767094116; x=1798630116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K7lLyfcUHXbaLJYCSwQJizOkuqiu/G8kSEq3MzHqlb0=;
-  b=AbEL0XGruGIzVtRB2DPeCQBbMKOQu4kNq4GTDojdy6DZsn6dNpKEIQrl
-   q+F3+4AUfna9GQtuqIpGYYrL1ly3D9Hz4ASdA7RUoqNR69K8JTdyPuPwD
-   JtYjEijMcnWLC0s6ClHiKbNKw9d+QUw7JkU3frsGIvWITR2+V4/kBFD8q
-   zbrGCGuSXeRSmm3vIHs69jC3bV4/Fmpbfdh7WaOrsfBGseKAZm4tykV79
-   +KVHW8GcTgmaQYzq1yZrDLQgsRC4wlvFELGGDjZegwswbASzkIIMWDYOz
-   S99d87guI5YqFjec57VVRI3NJobrioT4wqwu2USKd6wik3NeRBKLFP4ih
+  t=1767095647; x=1798631647;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=spPr8TBiHbVgQkzYTHJ55ZXoc4bw8ADD5ffVTH2O2wg=;
+  b=kvD6ECWIFT0vzwaIuEp5RusnxymBxJOKl6E+A9LIdot+vkC0ncc9w4Qi
+   6H97eUWTxUEeOalip8z1qMCvz2uVFHFJC6JhNRvRbNrISJzeC2H4t0R2Q
+   QUE//kO3VTeW2j0eY74t6k5Q5WXqPCZTSJMM/8IKqvh2sS6rxkCZoDl2j
+   hIKDOYhLVmseSe7N/4K+S+IVtfO7XKIvswSvqdyklbOtsmVh5PNSJsJ1a
+   BobsyaLkwJEvdxPbBxsflLOTkmVi7qZESYc3GI/gztCb5pmJfyiml9G/i
+   dq1ihffPdAPc1rtJYwx8fnUWRNRWkb+27e9H7Ea1sx1SCGE0PczdNAHkt
    w==;
-X-CSE-ConnectionGUID: tHNyTwc+TJub8hEmzVS/0g==
-X-CSE-MsgGUID: S39f1f7MQ8y1/uLcwDSPqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="94150505"
+X-CSE-ConnectionGUID: tNJuxyPwSZ6E1AyAfnKJVw==
+X-CSE-MsgGUID: x24pF/jpTiq57zRJsZP1GA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="80135671"
 X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; 
-   d="scan'208";a="94150505"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:28:35 -0800
-X-CSE-ConnectionGUID: OrDRp9gQTr2RavtAMJnd2g==
-X-CSE-MsgGUID: 9J60oO6jSk+UuU79+l75Ew==
+   d="scan'208";a="80135671"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:54:06 -0800
+X-CSE-ConnectionGUID: FMJIFOZzTRGmupU6isp6WA==
+X-CSE-MsgGUID: vWIk7zn3QT67vm8gW7fs3A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; 
-   d="scan'208";a="206076938"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.103])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:28:32 -0800
-Date: Tue, 30 Dec 2025 13:28:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="206260072"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.114])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:54:01 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 30 Dec 2025 13:53:58 +0200 (EET)
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linux PCI <linux-pci@vger.kernel.org>,
-	Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	AceLan Kao <acelan.kao@canonical.com>
+cc: Linux ACPI <linux-acpi@vger.kernel.org>, 
+    LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
+    Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    Mika Westerberg <mika.westerberg@linux.intel.com>, 
+    Linux PCI <linux-pci@vger.kernel.org>, Alex Hung <alexhung@gmail.com>, 
+    Hans de Goede <hansg@kernel.org>, platform-driver-x86@vger.kernel.org, 
+    AceLan Kao <acelan.kao@canonical.com>
 Subject: Re: [PATCH v1] ACPI: scan: Use resource_type() for resource type
  checking
-Message-ID: <aVO3Xsl4MbBHrkEV@smile.fi.intel.com>
+In-Reply-To: <12814730.O9o76ZdvQC@rafael.j.wysocki>
+Message-ID: <e555049f-1170-9e7e-7564-1fe541c33dd8@linux.intel.com>
 References: <12814730.O9o76ZdvQC@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -79,26 +78,66 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12814730.O9o76ZdvQC@rafael.j.wysocki>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: multipart/mixed; boundary="8323328-565337332-1767095638=:985"
 
-On Tue, Dec 30, 2025 at 10:57:34AM +0100, Rafael J. Wysocki wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323328-565337332-1767095638=:985
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Tue, 30 Dec 2025, Rafael J. Wysocki wrote:
+
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
 > To follow a well-established existing pattern, use resource_type() for
 > resource type checking in acpi_scan_claim_resources().
-> 
+>=20
 > No intentional functional impact.
+>=20
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>=20
+> This is a follow-up to
+>=20
+> https://lore.kernel.org/linux-acpi/7888874.EvYhyI6sBW@rafael.j.wysocki/
+>=20
+> which is present in linux-next.
+>=20
+> ---
+>  drivers/acpi/scan.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -2624,7 +2624,7 @@ static void acpi_scan_claim_resources(st
+>  =09=09if ((res->flags & IORESOURCE_DISABLED) || res->end < res->start)
+>  =09=09=09continue;
+> =20
+> -=09=09if (res->flags & IORESOURCE_IO) {
+> +=09=09if (resource_type(res) =3D=3D IORESOURCE_IO) {
+>  =09=09=09/*
+>  =09=09=09 * Follow the PNP system driver and on x86 skip I/O
+>  =09=09=09 * resources that start below 0x100 (the "standard PC
+> @@ -2635,7 +2635,7 @@ static void acpi_scan_claim_resources(st
+>  =09=09=09=09continue;
+>  =09=09=09}
+>  =09=09=09r =3D request_region(res->start, resource_size(res), regionid);
+> -=09=09} else if (res->flags & IORESOURCE_MEM) {
+> +=09=09} else if (resource_type(res) =3D=3D IORESOURCE_MEM) {
+>  =09=09=09r =3D request_mem_region(res->start, resource_size(res), region=
+id);
+>  =09=09} else {
+>  =09=09=09continue;
+>=20
+>=20
+>=20
 
-Thanks for this!
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 
+--=20
+ i.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--8323328-565337332-1767095638=:985--
 
