@@ -1,143 +1,95 @@
-Return-Path: <linux-acpi+bounces-19910-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19911-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1598CCE9949
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 12:54:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E0ACEA21E
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 17:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3BC0301B815
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 11:54:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7EF8C3003B02
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 16:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E632D5946;
-	Tue, 30 Dec 2025 11:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D0E256C70;
+	Tue, 30 Dec 2025 16:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kvD6ECWI"
+	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="Pw5RNqgs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E22264C0;
-	Tue, 30 Dec 2025 11:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD93224891;
+	Tue, 30 Dec 2025 16:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767095648; cv=none; b=RjGUhbPqWSF/zqUwJbsomk+oqCCvp7dsF81XOXMPCbhPFDn8PO2GZUTF4llJX0aKCgHEY2Qb6Y0qX2kp7Lom7aBk7CJFhZKFhXh9+fhvoSMBT6sG+5TlC6sx1CkZeyAIf1PCnKF/IfFXsKpD0YYHDoUrAJHRakk/OJY1a4YUNs0=
+	t=1767110814; cv=none; b=fx2ZMYLA9AwKvnW6KKVCDdg79aJ+SJm1DQlilQu5JZR3gqFA7+d3bNZwP7a6YLOMamDFccuepexCad7EHVyylQDvbc8PIwM3fpJvYfQgzchVMT4vZEjT1werOnKfS2rjpy74H/lCuHnhlLptTO5GuJs0oCiNcnlR7wc0Pq/CqfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767095648; c=relaxed/simple;
-	bh=spPr8TBiHbVgQkzYTHJ55ZXoc4bw8ADD5ffVTH2O2wg=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=lqCajx0QF+xOD+odEFOZrLIAS4EaqTGOqd4b7zHC685Uk0gR5obzIUoyWY8YXcfW00p3qkR6W9K7dARkRdJ0LeyQV8nehVRJ1tB0vazkcdl1wlG6MSWyBYnInrsS/jbV810SVrpsHuNTBTxJnbv5Vp5rdH9x79Lv9d+hTbQCcm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kvD6ECWI; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767095647; x=1798631647;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=spPr8TBiHbVgQkzYTHJ55ZXoc4bw8ADD5ffVTH2O2wg=;
-  b=kvD6ECWIFT0vzwaIuEp5RusnxymBxJOKl6E+A9LIdot+vkC0ncc9w4Qi
-   6H97eUWTxUEeOalip8z1qMCvz2uVFHFJC6JhNRvRbNrISJzeC2H4t0R2Q
-   QUE//kO3VTeW2j0eY74t6k5Q5WXqPCZTSJMM/8IKqvh2sS6rxkCZoDl2j
-   hIKDOYhLVmseSe7N/4K+S+IVtfO7XKIvswSvqdyklbOtsmVh5PNSJsJ1a
-   BobsyaLkwJEvdxPbBxsflLOTkmVi7qZESYc3GI/gztCb5pmJfyiml9G/i
-   dq1ihffPdAPc1rtJYwx8fnUWRNRWkb+27e9H7Ea1sx1SCGE0PczdNAHkt
-   w==;
-X-CSE-ConnectionGUID: tNJuxyPwSZ6E1AyAfnKJVw==
-X-CSE-MsgGUID: x24pF/jpTiq57zRJsZP1GA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="80135671"
-X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; 
-   d="scan'208";a="80135671"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:54:06 -0800
-X-CSE-ConnectionGUID: FMJIFOZzTRGmupU6isp6WA==
-X-CSE-MsgGUID: vWIk7zn3QT67vm8gW7fs3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; 
-   d="scan'208";a="206260072"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.114])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 03:54:01 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 30 Dec 2025 13:53:58 +0200 (EET)
+	s=arc-20240116; t=1767110814; c=relaxed/simple;
+	bh=ta7J9pMCNOQH6SBNsaDltg+n9ViMmROGRYOw7qDx0fE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N2ftqpRCz72eO0bfPoIBtm8RqKvvPfh1+XjrU/0/EY89hE8b6uH4T5IJh5yer8SAZa+mqpwdlK7Z1lrPkZCibbow4p6yIxZuNOKiYl9msuvrn8ylJigrHCdxfjEEnOTmHPYcKi7S4r8tcpuWvfBY8JVi7W6sbsZAcFvchwNdhN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=Pw5RNqgs; arc=none smtp.client-ip=192.134.164.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ywIV/nsfnU5Yb4gQLa1tc7tVIOpnlOcOFH6qztARMdM=;
+  b=Pw5RNqgsPSDnyKlTzd+27lNlWFgaQjdsSfpzPwl39VpZ8XQL0B4FPKLk
+   V9DBEfjr4f3X9RPL8kwzMmIGdAGU35XG234EBcwJohkxmpCMrw2kbBvBf
+   gz6KEVfdLnKpCuF4re+qmIA5dVTyFUzufoEEqv+E/5GKvgAjuhQvkq7T9
+   w=;
+X-CSE-ConnectionGUID: voLQ11MMSIqtRSSx+mNV4Q==
+X-CSE-MsgGUID: /tJVTwibRHCuuK6qJOIQwA==
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.21,189,1763420400"; 
+   d="scan'208";a="134756530"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.102.196])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 17:06:50 +0100
+From: Julia Lawall <Julia.Lawall@inria.fr>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-cc: Linux ACPI <linux-acpi@vger.kernel.org>, 
-    LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
-    Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    Linux PCI <linux-pci@vger.kernel.org>, Alex Hung <alexhung@gmail.com>, 
-    Hans de Goede <hansg@kernel.org>, platform-driver-x86@vger.kernel.org, 
-    AceLan Kao <acelan.kao@canonical.com>
-Subject: Re: [PATCH v1] ACPI: scan: Use resource_type() for resource type
- checking
-In-Reply-To: <12814730.O9o76ZdvQC@rafael.j.wysocki>
-Message-ID: <e555049f-1170-9e7e-7564-1fe541c33dd8@linux.intel.com>
-References: <12814730.O9o76ZdvQC@rafael.j.wysocki>
+Cc: yunbolyu@smu.edu.sg,
+	kexinsun@smail.nju.edu.cn,
+	ratnadiraw@smu.edu.sg,
+	xutong.ma@inria.fr,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: scan: removed outdated comment
+Date: Tue, 30 Dec 2025 17:06:44 +0100
+Message-Id: <20251230160644.100439-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-565337332-1767095638=:985"
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The function acpi_video_get_capabilities() was removed from
+drivers/acpi/video_detect.c by commit 87521e16a7ab
+("acpi-video-detect: Rewrite backlight interface selection logic") in
+2015.  At the time, comments about this function were just removed,
+and no replacement seemed to be proposed.  So drop the reference to
+acpi_video_get_capabilities() here as well.
 
---8323328-565337332-1767095638=:985
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-On Tue, 30 Dec 2025, Rafael J. Wysocki wrote:
+---
+ drivers/acpi/scan.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> To follow a well-established existing pattern, use resource_type() for
-> resource type checking in acpi_scan_claim_resources().
->=20
-> No intentional functional impact.
->=20
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->=20
-> This is a follow-up to
->=20
-> https://lore.kernel.org/linux-acpi/7888874.EvYhyI6sBW@rafael.j.wysocki/
->=20
-> which is present in linux-next.
->=20
-> ---
->  drivers/acpi/scan.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -2624,7 +2624,7 @@ static void acpi_scan_claim_resources(st
->  =09=09if ((res->flags & IORESOURCE_DISABLED) || res->end < res->start)
->  =09=09=09continue;
-> =20
-> -=09=09if (res->flags & IORESOURCE_IO) {
-> +=09=09if (resource_type(res) =3D=3D IORESOURCE_IO) {
->  =09=09=09/*
->  =09=09=09 * Follow the PNP system driver and on x86 skip I/O
->  =09=09=09 * resources that start below 0x100 (the "standard PC
-> @@ -2635,7 +2635,7 @@ static void acpi_scan_claim_resources(st
->  =09=09=09=09continue;
->  =09=09=09}
->  =09=09=09r =3D request_region(res->start, resource_size(res), regionid);
-> -=09=09} else if (res->flags & IORESOURCE_MEM) {
-> +=09=09} else if (resource_type(res) =3D=3D IORESOURCE_MEM) {
->  =09=09=09r =3D request_mem_region(res->start, resource_size(res), region=
-id);
->  =09=09} else {
->  =09=09=09continue;
->=20
->=20
->=20
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 416d87f9bd10..9297461045a2 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1294,8 +1294,6 @@ acpi_backlight_cap_match(acpi_handle handle, u32 level, void *context,
+  * The device will get a Linux specific CID added in scan.c to
+  * identify the device as an ACPI graphics device
+  * Be aware that the graphics device may not be physically present
+- * Use acpi_video_get_capabilities() to detect general ACPI video
+- * capabilities of present cards
+  */
+ long acpi_is_video_device(acpi_handle handle)
+ {
 
-Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-
---=20
- i.
-
---8323328-565337332-1767095638=:985--
 
