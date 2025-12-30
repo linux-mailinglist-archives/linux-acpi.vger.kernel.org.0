@@ -1,207 +1,107 @@
-Return-Path: <linux-acpi+bounces-19907-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19908-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E95CE92EF
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 10:15:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF89CE94C6
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 11:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7AB0F302573D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 09:14:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D34953017F23
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Dec 2025 10:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34725285068;
-	Tue, 30 Dec 2025 09:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41AB2E7F08;
+	Tue, 30 Dec 2025 09:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="taaI2OpK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFvy0ze8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E725C27EC7C;
-	Tue, 30 Dec 2025 09:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB562E764D;
+	Tue, 30 Dec 2025 09:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767086043; cv=none; b=lGuB6RYOFYGzHIrd7IJACYTlplaH7zZ7+jOptnM6rP/PmAkj7FThwB9eNCGRMbY/3MSSZa5txr59IB9aeEozajZ9hxxz0K8gxtpJJxkETynGm+cRLaxurodn2vuD+amMJ9WLuW64pKgaoGSXZgm/udlVj7hYW+Jvz3Z0kJ9shDg=
+	t=1767088658; cv=none; b=TIDKwXAhcGPQ49kGFTW1DOudXgZq2F6vonny1TGA7oOjhh7TNx5oDW9fkzNrD/xmEpXvfSlcHG463OBSdQqqJGIwR4M7ed9YI6DgqXUPSoebAvP03Arbyw1v8trTAvTAhEg0nzhc6HQPsCEdNhR9nOlR5fdCwEwS77mZczKz9c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767086043; c=relaxed/simple;
-	bh=JonOw3VGLl703056/AxF+iojNf9Z4+6LQ5MG6EzxMHA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V/AaZLEV6Ml46/DNk7QocPR5A2A+jBizzFVzPDHsxNp44ukH+bxhjXi4K4/4G2IQTd/bHRKHvhJNFzpfzb7bjccmRev09F1XHJID7Z4yhynWyoDQPVGrzXTgafdcC0rRJMmBocdmVCgMikGbna29//v4BGV5a0lV0P2EWvO1BmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=taaI2OpK; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1767086037; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=GjegSgNOv/nDtEoAj2ftDZL3bA2AKQ1zkNE8Ep3evP0=;
-	b=taaI2OpKwUIsbJBZD4wXth+ZPEESiI+HCgn3X4a7iq3ZKs6Q+yiFa5N2pHQ/GzMJ8WP46IEfFSNOraLqMUxDlton54Fqh+KNnSlJN7r5LIF6tNfZWL2z0zhjKk++fc8YV3RNwv2T/wraI1DmXsREX5+BDPPBpq/fzkO0p4FyHWc=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WvzVBAD_1767086034 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 30 Dec 2025 17:13:56 +0800
-From: Ruidong Tian <tianruidong@linux.alibaba.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	lpieralisi@kernel.org,
-	guohanjun@huawei.com,
-	sudeep.holla@arm.com,
-	xueshuai@linux.alibaba.com,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	yazen.ghannam@amd.com,
-	misono.tomohiro@fujitsu.com,
-	fengwei_yin@linux.alibaba.com
-Cc: tianruidong@linux.alibaba.com
-Subject: [PATCH v5 17/17] trace, ras: add ARM RAS extension trace event
-Date: Tue, 30 Dec 2025 17:13:53 +0800
-Message-Id: <20251230091353.50626-1-tianruidong@linux.alibaba.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20251230090945.43969-1-tianruidong@linux.alibaba.com>
-References: <20251230090945.43969-1-tianruidong@linux.alibaba.com>
+	s=arc-20240116; t=1767088658; c=relaxed/simple;
+	bh=HGx1ic1t7aTiIFW+Y1/81F3eQnEoNSTUIq+92dzQeiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pb/ULNwlAc/lUqIXsPKvSpOlTNn5jTPR9z2Ok+ZYxVTW2xqWXhKjRxOF7dj7h18CBpl54+TKpiyCvBlAcxy9/u5su/RprKb9u+P/qjRsrvCVgmgEPBpxyM1tdpWtONlbc02M01kLjKRtTOYnASmDB37KePJQn9nGyWBnYVenoUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFvy0ze8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02537C4CEFB;
+	Tue, 30 Dec 2025 09:57:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767088658;
+	bh=HGx1ic1t7aTiIFW+Y1/81F3eQnEoNSTUIq+92dzQeiM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aFvy0ze8OCx9tudNxMpTaspzCWyiPazxYFu+Ba+mxVUL+I+5KUENDvs1w4geMal5s
+	 EVKhWor08kfcHi5XLU8SMWEJO2O671fGANBt23jHdW0a+9Lqb46zFn8xSawAyomknD
+	 myS3tf+bqT2JGtOaeHTDb6+BVi2oewOary6Ln4OzCDgknYC1TQW2g16L8eS5VvYUC8
+	 nty/nFOcWDAZOKoitVyi3OPOIxICLAbpeTL4OPoZC+SGst+rNgwoB3j1f3ruCTc3bP
+	 YJ+uNNCi0ZXT7SvB63hY0ns+6t2j/pwYps01KzyJWnSBcLr+ViMCBqcmEZWka0pROi
+	 /A0TIXNcxD43g==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Linux PCI <linux-pci@vger.kernel.org>, Alex Hung <alexhung@gmail.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ platform-driver-x86@vger.kernel.org, AceLan Kao <acelan.kao@canonical.com>
+Subject: [PATCH v1] ACPI: scan: Use resource_type() for resource type checking
+Date: Tue, 30 Dec 2025 10:57:34 +0100
+Message-ID: <12814730.O9o76ZdvQC@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-Add a trace event for hardware errors reported by the ARMv8
-RAS extension registers. userspace app can monitor this
-trace event and decode error information.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Link: https://lore.kernel.org/r/20251222094351.38792-19-tianruidong@linux.alibaba.com
-Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+To follow a well-established existing pattern, use resource_type() for
+resource type checking in acpi_scan_claim_resources().
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/ras/aest/aest-core.c |  6 +++
- drivers/ras/ras.c            |  3 ++
- include/ras/ras_event.h      | 71 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 80 insertions(+)
 
-diff --git a/drivers/ras/aest/aest-core.c b/drivers/ras/aest/aest-core.c
-index 33e1f32c5892..9f06ac0b7c16 100644
---- a/drivers/ras/aest/aest-core.c
-+++ b/drivers/ras/aest/aest-core.c
-@@ -13,6 +13,8 @@
- #include <linux/genalloc.h>
- #include <linux/ras.h>
+This is a follow-up to
+
+https://lore.kernel.org/linux-acpi/7888874.EvYhyI6sBW@rafael.j.wysocki/
+
+which is present in linux-next.
+
+---
+ drivers/acpi/scan.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2624,7 +2624,7 @@ static void acpi_scan_claim_resources(st
+ 		if ((res->flags & IORESOURCE_DISABLED) || res->end < res->start)
+ 			continue;
  
-+#include <ras/ras_event.h>
-+
- #include "aest.h"
- 
- DEFINE_PER_CPU(struct aest_device, percpu_adev);
-@@ -90,6 +92,10 @@ static void aest_print(struct aest_event *event)
- 		pr_err("%s  ERR%dMISC3: 0x%llx\n", pfx_seq, index,
- 		       regs->err_misc[3]);
- 	}
-+
-+	trace_arm_ras_ext_event(event->type, event->id0, event->id1,
-+				event->index, event->hid, &event->regs,
-+				event->vendor_data, event->vendor_data_size);
- }
- 
- static void aest_handle_memory_failure(u64 addr)
-diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
-index 050b49466a18..3c0ba6c02d27 100644
---- a/drivers/ras/ras.c
-+++ b/drivers/ras/ras.c
-@@ -109,6 +109,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(extlog_mem_event);
- EXPORT_TRACEPOINT_SYMBOL_GPL(mc_event);
- EXPORT_TRACEPOINT_SYMBOL_GPL(non_standard_event);
- EXPORT_TRACEPOINT_SYMBOL_GPL(arm_event);
-+#ifdef CONFIG_ARM64_RAS_EXTN
-+EXPORT_TRACEPOINT_SYMBOL_GPL(arm_ras_ext_event);
-+#endif
- 
- static int __init parse_ras_param(char *str)
- {
-diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-index eaecc3c5f772..3a4a0c0e4dbe 100644
---- a/include/ras/ras_event.h
-+++ b/include/ras/ras_event.h
-@@ -377,6 +377,77 @@ TRACE_EVENT(aer_event,
- 			"Not available")
- );
- #endif /* CONFIG_PCIEAER */
-+
-+/*
-+ * ARM RAS Extension Events Report
-+ *
-+ * This event is generated when an error reported by the ARM RAS extension
-+ * hardware is detected.
-+ */
-+
-+#ifdef CONFIG_ARM64_RAS_EXTN
-+#include <asm/ras.h>
-+TRACE_EVENT(arm_ras_ext_event,
-+
-+	TP_PROTO(const u8 type,
-+		 const u32 id0,
-+		 const u32 id1,
-+		 const u32 index,
-+		 char *hid,
-+		 struct ras_ext_regs *regs,
-+		 const u8 *data,
-+		 const u32 len),
-+
-+	TP_ARGS(type, id0, id1, index, hid, regs, data, len),
-+
-+	TP_STRUCT__entry(
-+		__field(u8,  type)
-+		__field(u32, id0)
-+		__field(u32, id1)
-+		__field(u32, index)
-+		__field(char *, hid)
-+		__field(u64, err_fr)
-+		__field(u64, err_ctlr)
-+		__field(u64, err_status)
-+		__field(u64, err_addr)
-+		__field(u64, err_misc0)
-+		__field(u64, err_misc1)
-+		__field(u64, err_misc2)
-+		__field(u64, err_misc3)
-+		__field(u32, len)
-+		__dynamic_array(u8, buf, len)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->type = type;
-+		__entry->id0 = id0;
-+		__entry->id1 = id1;
-+		__entry->index = index;
-+		__entry->hid = hid;
-+		__entry->err_fr = regs->err_fr;
-+		__entry->err_ctlr = regs->err_ctlr;
-+		__entry->err_status = regs->err_status;
-+		__entry->err_addr = regs->err_addr;
-+		__entry->err_misc0 = regs->err_misc[0];
-+		__entry->err_misc1 = regs->err_misc[1];
-+		__entry->err_misc2 = regs->err_misc[2];
-+		__entry->err_misc3 = regs->err_misc[3];
-+		__entry->len = len;
-+		memcpy(__get_dynamic_array(buf), data, len);
-+	),
-+
-+	TP_printk("type: %d; id0: %d; id1: %d; index: %d; hid: %s; "
-+		  "ERR_FR: %llx; ERR_CTLR: %llx; ERR_STATUS: %llx; "
-+		  "ERR_ADDR: %llx; ERR_MISC0: %llx; ERR_MISC1: %llx; "
-+		  "ERR_MISC2: %llx; ERR_MISC3: %llx; data len:%d; raw data:%s",
-+		  __entry->type, __entry->id0, __entry->id1, __entry->index,
-+		  __entry->hid, __entry->err_fr, __entry->err_ctlr,
-+		  __entry->err_status, __entry->err_addr, __entry->err_misc0,
-+		  __entry->err_misc1, __entry->err_misc2, __entry->err_misc3,
-+		  __entry->len,
-+		  __print_hex(__get_dynamic_array(buf), __entry->len))
-+);
-+#endif /* CONFIG_ARM64_RAS_EXTN */
- #endif /* _TRACE_HW_EVENT_MC_H */
- 
- /* This part must be outside protection */
--- 
-2.47.3
+-		if (res->flags & IORESOURCE_IO) {
++		if (resource_type(res) == IORESOURCE_IO) {
+ 			/*
+ 			 * Follow the PNP system driver and on x86 skip I/O
+ 			 * resources that start below 0x100 (the "standard PC
+@@ -2635,7 +2635,7 @@ static void acpi_scan_claim_resources(st
+ 				continue;
+ 			}
+ 			r = request_region(res->start, resource_size(res), regionid);
+-		} else if (res->flags & IORESOURCE_MEM) {
++		} else if (resource_type(res) == IORESOURCE_MEM) {
+ 			r = request_mem_region(res->start, resource_size(res), regionid);
+ 		} else {
+ 			continue;
+
+
 
 
