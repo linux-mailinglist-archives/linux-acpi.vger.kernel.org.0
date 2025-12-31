@@ -1,54 +1,56 @@
-Return-Path: <linux-acpi+bounces-19914-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19915-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F26BCEBAF5
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 10:26:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAADCEBCFD
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 11:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BDCC300B931
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 09:26:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26BF630281A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 10:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC383112DC;
-	Wed, 31 Dec 2025 09:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6925327C84B;
+	Wed, 31 Dec 2025 10:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2qoWycC"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WNAkSFxD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640C7207A0B;
-	Wed, 31 Dec 2025 09:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B96225417;
+	Wed, 31 Dec 2025 10:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767173179; cv=none; b=J2UzXPnYEOFDiU/zHv9uL++odoXgsSk3Q3ez0xnXUwYAzdjCMo8iXHe4oF+U+7YVPvdlgv1mZVv00mlZhqCPtt3FPyPb4sJNWPJ8D07gBVyUlLE4xMQxZM3yFG3ezXKjCw6zQw9WVps7kHaf8TpPh6bn/BS2XuVY9CBsxNI8XTw=
+	t=1767178162; cv=none; b=BdDQNJNQn8TB3+mJoI7rbV/bt92Y3GGzSy2GUu76IJ6U/d36+F+nAjDyvbESIbNAeaKzZ5k27RP+KemuOPttq9gQT9nakxvKeLm22g7l2/IhLaOM9mJXf5L/nhg1JWGYEbxIr8uP+5HAplUEJVk+sqJjMWjwRhbO9UEPvXKpxdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767173179; c=relaxed/simple;
-	bh=g1Co/HPqGgkfcaq62wPDtixMTJAutCdlb40s5TN3O/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VvSmgVPqp3METy8IXFoXW/0dd1uQPhWfGmeY9kfGUszBlMg1ITpBAbd6lRfjoTxpH3CN10Iqvl8RwlsBQRCnuHZ5rgJdGP9LnlVtMkwW2LNXhWJQ/Si2TmNrg94NnmQ/OAeNQuJYOoGRkpAinRIH80Zdqf6DHAufqhxvNL8mJbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2qoWycC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63975C113D0;
-	Wed, 31 Dec 2025 09:26:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767173178;
-	bh=g1Co/HPqGgkfcaq62wPDtixMTJAutCdlb40s5TN3O/I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Y2qoWycCNXhS8aZzgbHmgTZGgohfkq6PklJAiLJmYXdX8RWzTYsag5ydjnhhk7dzi
-	 KF7sZup3V3bN5aWvICAilrHekY/6I6NoYajusuEnFIqT26A/b0DtoUnCrRMD+ld1Jo
-	 hCdOm5KNkUM+0Ujh/ToerwH518hN8lhVdXIgjEJ8KdF0h3k//CfqrJSM/CWNEt8kyZ
-	 F74cr1SRV4kNFuv1qvUEWyM1YaespKL0Hy3ABc7OztBKgpWw3uBQZ99b+It0RZOggk
-	 l/QkzHTFdmAaUPIVcV4hyRwkFgwkjAgmjGWGMDMofdgKeJGA44kXB6wzIAHytTlYZi
-	 RLEoknSHF29DQ==
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
+	s=arc-20240116; t=1767178162; c=relaxed/simple;
+	bh=wesGWpaFZfLfc/qcrebn5WJGQNMib4kGF7+MrpA0JXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MftRFR5M8N8WkvAmXe4lP2E/14E6V+5TX8KHUFfw1GP72xororNVYDG07DQw0WEby/ZHZNR65TgGQX1slk4nclc9ZazTQW5+0Lh4x51jctOe3E0DfsOouEY+7zLP5aMw+3G5vbGx4HMoko8UonHZjcMabZlJied9FiYrETI3O7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WNAkSFxD; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767178150; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=Bb1n0ZhpW/PPrNYcQOofvr3GIFzDTWK4I+Gn+/f9wYo=;
+	b=WNAkSFxDFhf3yZ4UGHXzxPyWChoPC6k+pP8faRZTxGKDWPkgCZmJx0Jvx4kbEdvsrFIyjXbx4GsqU5v/VoO45lNjj9C7RVhbeYCHN+crifpNJ0kIjNKcnHOTKOgf+SFUj6dfGVBTHCpumxB87CqLA/idG41XSg7nunwFyo6ObbU=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Ww0smfC_1767178149 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 31 Dec 2025 18:49:10 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
 	Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH] ACPI: PCI: IRQ: Handle INTx GSIs as u32 values not int
-Date: Wed, 31 Dec 2025 10:26:15 +0100
-Message-ID: <20251231092615.3014761-1-lpieralisi@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	James Morse <james.morse@arm.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Feng Tang <feng.tang@linux.alibaba.com>
+Subject: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
+Date: Wed, 31 Dec 2025 18:49:09 +0800
+Message-Id: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,239 +59,147 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In ACPI Global System Interrupts (GSIs) are described using a 32-bit
-value.
+There was warning message about PPTT table:
 
-ACPI/PCI legacy interrupts (INTx) parsing code treats GSIs as 'int', which
-poses issues if the GSI interrupt value is a 32-bit value with the MSB set
-(as required in some interrupt configurations - eg ARM64 GICv5 systems).
+	"ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
 
-Fix ACPI/PCI legacy INTx parsing by converting variables representing
-GSIs from 'int' to 'u32' bringing the code in line with the ACPI
-specification.
+and it in turn caused scheduler warnings when building up the system.
+It took a while to root cause the problem be related a broken PPTT
+table which has wrong cache information.
 
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+To speedup debugging similar issues, dump the PPTT table, which makes
+the warning more noticeable and helps bug hunting.
+
+The dumped info format on a ARM server is like:
+
+    ACPI PPTT: Processors:
+    P[  0][0x0024]: parent=0x0000 acpi_proc_id=  0 num_res=1 flags=0x11(package)
+    P[  1][0x005a]: parent=0x0024 acpi_proc_id=  0 num_res=1 flags=0x12()
+    P[  2][0x008a]: parent=0x005a acpi_proc_id=  0 num_res=3 flags=0x1a(leaf)
+    P[  3][0x00f2]: parent=0x005a acpi_proc_id=  1 num_res=3 flags=0x1a(leaf)
+    P[  4][0x015a]: parent=0x005a acpi_proc_id=  2 num_res=3 flags=0x1a(leaf)
+    ...
+    ACPI PPTT: Caches:
+    C[   0][0x0072]: flags=0x7f next_level=0x0000 size=0x4000000  sets=65536  way=16 attribute=0xa  line_size=64
+    C[   1][0x00aa]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x4  line_size=64
+    C[   2][0x00c2]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x2  line_size=64
+    C[   3][0x00da]: flags=0x7f next_level=0x0000 size=0x100000   sets=2048   way=8  attribute=0xa  line_size=64
+    ...
+
+It provides a global and straightforward view of the hierarchy of the
+processor and caches info of the platform, and from the offset info
+(the 3rd column), the child-parent relation could be checked.
+
+With this, the root cause of the original issue was pretty obvious,
+that there were some caches items missing which caused the issue when
+building up scheduler domain.
+
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 ---
- drivers/acpi/pci_irq.c      | 19 ++++++++++--------
- drivers/acpi/pci_link.c     | 39 ++++++++++++++++++++++++-------------
- drivers/xen/acpi.c          | 13 +++++++------
- include/acpi/acpi_drivers.h |  2 +-
- 4 files changed, 44 insertions(+), 29 deletions(-)
+Changelog:
 
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index ad81aa03fe2f..c416942ff3e2 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -188,7 +188,7 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
- 	 * the IRQ value, which is hardwired to specific interrupt inputs on
- 	 * the interrupt controller.
- 	 */
--	pr_debug("%04x:%02x:%02x[%c] -> %s[%d]\n",
-+	pr_debug("%04x:%02x:%02x[%c] -> %s[%u]\n",
- 		 entry->id.segment, entry->id.bus, entry->id.device,
- 		 pin_name(entry->pin), prt->source, entry->index);
+  v2
+  * rebase againt 6.19 and refine the commit log
+
+ drivers/acpi/pptt.c | 75 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index de5f8c018333..e00abedcd786 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -529,6 +529,79 @@ static void acpi_pptt_warn_missing(void)
+ 	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
+ }
  
-@@ -384,7 +384,7 @@ static inline bool acpi_pci_irq_valid(struct pci_dev *dev, u8 pin)
- int acpi_pci_irq_enable(struct pci_dev *dev)
- {
- 	struct acpi_prt_entry *entry;
--	int gsi;
-+	u32 gsi;
- 	u8 pin;
- 	int triggering = ACPI_LEVEL_SENSITIVE;
- 	/*
-@@ -422,18 +422,21 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 			return 0;
- 	}
- 
-+	rc = -ENODEV;
++static void acpi_dump_pptt_table(struct acpi_table_header *table_hdr)
++{
++	struct acpi_subtable_header *entry, *entry_start;
++	unsigned long end;
++	struct acpi_pptt_processor *cpu;
++	struct acpi_pptt_cache *cache;
++	u32 entry_sz, i;
++	u8 len;
++	static bool dumped;
 +
- 	if (entry) {
- 		if (entry->link)
--			gsi = acpi_pci_link_allocate_irq(entry->link,
-+			rc = acpi_pci_link_allocate_irq(entry->link,
- 							 entry->index,
- 							 &triggering, &polarity,
--							 &link);
--		else
-+							 &link, &gsi);
-+		else {
- 			gsi = entry->index;
--	} else
--		gsi = -1;
-+			rc = 0;
++	/* PPTT table could be pretty big, no need to dump it twice */
++	if (dumped)
++		return;
++	dumped = true;
++
++	end = (unsigned long)table_hdr + table_hdr->length;
++	entry_start = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
++			     sizeof(struct acpi_table_pptt));
++
++	pr_info("Processors:\n");
++	entry_sz = sizeof(struct acpi_pptt_processor);
++	entry = entry_start;
++	i = 0;
++	while ((unsigned long)entry + entry_sz <= end) {
++		len = entry->length;
++		if (!len) {
++			pr_warn("Invalid zero length subtable\n");
++			return;
 +		}
-+	}
- 
--	if (gsi < 0) {
-+	if (rc < 0) {
- 		/*
- 		 * No IRQ known to the ACPI subsystem - maybe the BIOS /
- 		 * driver reported one, then use it. Exit in any case.
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index bed7dc85612e..b91b039a3d20 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -448,7 +448,7 @@ static int acpi_isa_irq_penalty[ACPI_MAX_ISA_IRQS] = {
- 	/* >IRQ15 */
- };
- 
--static int acpi_irq_pci_sharing_penalty(int irq)
-+static int acpi_irq_pci_sharing_penalty(u32 irq)
- {
- 	struct acpi_pci_link *link;
- 	int penalty = 0;
-@@ -474,7 +474,7 @@ static int acpi_irq_pci_sharing_penalty(int irq)
- 	return penalty;
- }
- 
--static int acpi_irq_get_penalty(int irq)
-+static int acpi_irq_get_penalty(u32 irq)
- {
- 	int penalty = 0;
- 
-@@ -528,7 +528,7 @@ static int acpi_irq_balance = -1;	/* 0: static, 1: balance */
- static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- {
- 	acpi_handle handle = link->device->handle;
--	int irq;
-+	u32 irq;
- 	int i;
- 
- 	if (link->irq.initialized) {
-@@ -598,44 +598,53 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
- 	return 0;
- }
- 
--/*
-- * acpi_pci_link_allocate_irq
-- * success: return IRQ >= 0
-- * failure: return -1
-+/**
-+ * acpi_pci_link_allocate_irq(): Retrieve a link device GSI
-+ *
-+ * @handle: Handle for the link device
-+ * @index: GSI index
-+ * @triggering: pointer to store the GSI trigger
-+ * @polarity: pointer to store GSI polarity
-+ * @name: pointer to store link device name
-+ * @gsi: pointer to store GSI number
-+ *
-+ * Returns:
-+ *	0 on success with @triggering, @polarity, @name, @gsi initialized.
-+ *	-ENODEV on failure
-  */
- int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
--			       int *polarity, char **name)
-+			       int *polarity, char **name, u32 *gsi)
- {
- 	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	struct acpi_pci_link *link;
- 
- 	if (!device) {
- 		acpi_handle_err(handle, "Invalid link device\n");
--		return -1;
-+		return -ENODEV;
- 	}
- 
- 	link = acpi_driver_data(device);
- 	if (!link) {
- 		acpi_handle_err(handle, "Invalid link context\n");
--		return -1;
-+		return -ENODEV;
- 	}
- 
- 	/* TBD: Support multiple index (IRQ) entries per Link Device */
- 	if (index) {
- 		acpi_handle_err(handle, "Invalid index %d\n", index);
--		return -1;
-+		return -ENODEV;
- 	}
- 
- 	mutex_lock(&acpi_link_lock);
- 	if (acpi_pci_link_allocate(link)) {
- 		mutex_unlock(&acpi_link_lock);
--		return -1;
-+		return -ENODEV;
- 	}
- 
- 	if (!link->irq.active) {
- 		mutex_unlock(&acpi_link_lock);
- 		acpi_handle_err(handle, "Link active IRQ is 0!\n");
--		return -1;
-+		return -ENODEV;
- 	}
- 	link->refcnt++;
- 	mutex_unlock(&acpi_link_lock);
-@@ -647,7 +656,9 @@ int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
- 	if (name)
- 		*name = acpi_device_bid(link->device);
- 	acpi_handle_debug(handle, "Link is referenced\n");
--	return link->irq.active;
-+	*gsi = link->irq.active;
 +
-+	return 0;
++		cpu = (struct acpi_pptt_processor *)entry;
++		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
++
++		if (cpu->header.type != ACPI_PPTT_TYPE_PROCESSOR)
++			continue;
++
++		printk(KERN_INFO "P[%3d][0x%04lx]: parent=0x%04x acpi_proc_id=%3d num_res=%d flags=0x%02x(%s%s%s)\n",
++			i++, (unsigned long)cpu - (unsigned long)table_hdr,
++			cpu->parent, cpu->acpi_processor_id,
++			cpu->number_of_priv_resources, cpu->flags,
++			cpu->flags & ACPI_PPTT_PHYSICAL_PACKAGE ? "package" : "",
++			cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE ? "leaf" : "",
++			cpu->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD ? ", thread" : ""
++			);
++
++	}
++
++	pr_info("Caches:\n");
++	entry_sz = sizeof(struct acpi_pptt_cache);
++	entry = entry_start;
++	i = 0;
++	while ((unsigned long)entry + entry_sz <= end) {
++		len = entry->length;
++		if (!len) {
++			pr_warn("Invalid zero length subtable\n");
++			return;
++		}
++
++		cache = (struct acpi_pptt_cache *)entry;
++		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
++
++		if (cache->header.type != ACPI_PPTT_TYPE_CACHE)
++			continue;
++
++		printk(KERN_INFO "C[%4d][0x%04lx]: flags=0x%02x next_level=0x%04x size=0x%-8x sets=%-6d way=%-2d attribute=0x%-2x line_size=%d\n",
++			i++, (unsigned long)cache - (unsigned long)table_hdr,
++			cache->flags, cache->next_level_of_cache, cache->size,
++			cache->number_of_sets, cache->associativity,
++			cache->attributes, cache->line_size
++			);
++	}
++}
++
+ /**
+  * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
+  * @table: Pointer to the head of the PPTT table
+@@ -565,6 +638,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
+ 	}
+ 	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
+ 		    cpu, acpi_cpu_id);
++
++	acpi_dump_pptt_table(table);
+ 	return -ENOENT;
  }
  
- /*
-diff --git a/drivers/xen/acpi.c b/drivers/xen/acpi.c
-index d2ee605c5ca1..eab28cfe9939 100644
---- a/drivers/xen/acpi.c
-+++ b/drivers/xen/acpi.c
-@@ -89,11 +89,11 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
- 						  int *trigger_out,
- 						  int *polarity_out)
- {
--	int gsi;
-+	u32 gsi;
- 	u8 pin;
- 	struct acpi_prt_entry *entry;
- 	int trigger = ACPI_LEVEL_SENSITIVE;
--	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
-+	int ret, polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
- 				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
- 
- 	if (!dev || !gsi_out || !trigger_out || !polarity_out)
-@@ -105,17 +105,18 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
- 
- 	entry = acpi_pci_irq_lookup(dev, pin);
- 	if (entry) {
-+		ret = 0;
- 		if (entry->link)
--			gsi = acpi_pci_link_allocate_irq(entry->link,
-+			ret = acpi_pci_link_allocate_irq(entry->link,
- 							 entry->index,
- 							 &trigger, &polarity,
--							 NULL);
-+							 NULL, &gsi);
- 		else
- 			gsi = entry->index;
- 	} else
--		gsi = -1;
-+		ret = -ENODEV;
- 
--	if (gsi < 0)
-+	if (ret < 0)
- 		return -EINVAL;
- 
- 	*gsi_out = gsi;
-diff --git a/include/acpi/acpi_drivers.h b/include/acpi/acpi_drivers.h
-index b14d165632e7..402b97d12138 100644
---- a/include/acpi/acpi_drivers.h
-+++ b/include/acpi/acpi_drivers.h
-@@ -51,7 +51,7 @@
- 
- int acpi_irq_penalty_init(void);
- int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
--			       int *polarity, char **name);
-+			       int *polarity, char **name, u32 *gsi);
- int acpi_pci_link_free_irq(acpi_handle handle);
- 
- /* ACPI PCI Device Binding */
+
+base-commit: c8ebd433459bcbf068682b09544e830acd7ed222
 -- 
-2.50.1
+2.39.5 (Apple Git-154)
 
 
