@@ -1,205 +1,330 @@
-Return-Path: <linux-acpi+bounces-19915-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19916-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAADCEBCFD
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 11:49:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D29CCEC04E
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 14:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26BF630281A0
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 10:49:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C4FE330092A1
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Dec 2025 13:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6925327C84B;
-	Wed, 31 Dec 2025 10:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DED1EEA55;
+	Wed, 31 Dec 2025 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WNAkSFxD"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FdAEpBzq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B96225417;
-	Wed, 31 Dec 2025 10:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966203A1E63;
+	Wed, 31 Dec 2025 13:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767178162; cv=none; b=BdDQNJNQn8TB3+mJoI7rbV/bt92Y3GGzSy2GUu76IJ6U/d36+F+nAjDyvbESIbNAeaKzZ5k27RP+KemuOPttq9gQT9nakxvKeLm22g7l2/IhLaOM9mJXf5L/nhg1JWGYEbxIr8uP+5HAplUEJVk+sqJjMWjwRhbO9UEPvXKpxdI=
+	t=1767186973; cv=none; b=rzlqBsL3ctj6PMfuxdsGFBSeP2vH0qrl4zJGoiVeIJSbSntb91xhibqlOHsxfdhBO5cok1RSL80/8cY2zDpSyv11Vkbq1Me579sYcU4huqtiC3kq4vS2+xINGyLARZwynGFvLOofIy18YzxXsGC5GJUEg8fkQFA1cKdOppIf0Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767178162; c=relaxed/simple;
-	bh=wesGWpaFZfLfc/qcrebn5WJGQNMib4kGF7+MrpA0JXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MftRFR5M8N8WkvAmXe4lP2E/14E6V+5TX8KHUFfw1GP72xororNVYDG07DQw0WEby/ZHZNR65TgGQX1slk4nclc9ZazTQW5+0Lh4x51jctOe3E0DfsOouEY+7zLP5aMw+3G5vbGx4HMoko8UonHZjcMabZlJied9FiYrETI3O7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WNAkSFxD; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1767178150; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=Bb1n0ZhpW/PPrNYcQOofvr3GIFzDTWK4I+Gn+/f9wYo=;
-	b=WNAkSFxDFhf3yZ4UGHXzxPyWChoPC6k+pP8faRZTxGKDWPkgCZmJx0Jvx4kbEdvsrFIyjXbx4GsqU5v/VoO45lNjj9C7RVhbeYCHN+crifpNJ0kIjNKcnHOTKOgf+SFUj6dfGVBTHCpumxB87CqLA/idG41XSg7nunwFyo6ObbU=
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Ww0smfC_1767178149 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 31 Dec 2025 18:49:10 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	James Morse <james.morse@arm.com>
-Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Feng Tang <feng.tang@linux.alibaba.com>
-Subject: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
-Date: Wed, 31 Dec 2025 18:49:09 +0800
-Message-Id: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1767186973; c=relaxed/simple;
+	bh=k1fRvVUAkh5UE0V1MpZkNCA/pRyeOKOo0AQ7lBU6Mlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i8i5dV2epxIMOr46m254ml+LaxavaN/E5A1YulS6obqNYmyGws0PTEhICvgUx1NrbuZ1bplEtklBVsP/Lv80Hu5wScWJhfgVfPYLmBfwcUfDPLid8qbT8a6bVRJCJyiJIXA3lYqQLWSKKCfhJg/5jPg+sStCfbZ4MkmQqfFT9ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FdAEpBzq; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0B67940E0173;
+	Wed, 31 Dec 2025 13:16:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LDoAWs3CqQvW; Wed, 31 Dec 2025 13:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1767186957; bh=ajz8Fd6mcoNmw+/d2cyXO5AEu5YjYnv2PPa+YT7Zvjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FdAEpBzqldA0FeXm7sNHVBuhVYJiTvPHL8qp3YgFIMdyNKrUM7E3jDKeP66qBGdiQ
+	 jAauXPQde7d9O7MyizDlzj+ko9TLoc6hHle7MfG+0ycz/cPN9PtrOqpCnjalh8vdoC
+	 VFRkDyxO0vbMBllQseNvc1I3BnqipkkG6k2h4g4VHE6CkXW2Al5mgu5sXPX0LSUXEN
+	 +01IR9nbFwYgR+2LWiYOQW3CPtwu6YbyubvSPl2NU6qazF9Jc20+R2Ww4L+xflXVwO
+	 4d4H8eK5DHGFMmX+UJMBP3VvgbePoIC4Wuo3RLDyNT81j3SZE2DMnM26NFtJDUGwKF
+	 6/lgoRUDLfr7z/FZ/dBRtja5JedYEhKUCiC9zJDAZDKN8sBwrzhukKffzSvWuD7Df8
+	 wzgnpHTQ6DyloW7kqRDoowGjtsfhQrJnwlOUjm73dsYvi5fyLlGPGfU9JUMQ8xyzLP
+	 RFsVC1jiRTk3ygwQYZ56qnOaW658K7DaCaa2CGvtfONexV0i7bZO44yT7Oi1ZOjwx3
+	 hg51W1GBPtafHotFEqNZ0TN/Co8lYGQYYUwjpYKFkd6twLzs5PZ9P7D9x9/71t0jH3
+	 DNEMa35/AcIzGoIJsLcmx+QOrSecqmsXtCatFmNVaICo0ujuxcQ3xpmFB2/UgnFJQ9
+	 0fkXBj7biGgyxIfe5fnivkXU=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 2077240E01A9;
+	Wed, 31 Dec 2025 13:15:21 +0000 (UTC)
+Date: Wed, 31 Dec 2025 14:15:12 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v13 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local>
+References: <20251121182825.237-1-shiju.jose@huawei.com>
+ <20251121182825.237-2-shiju.jose@huawei.com>
+ <20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local>
+ <fd4e4419b6d54c69bb4a1dde0273ee51@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <fd4e4419b6d54c69bb4a1dde0273ee51@huawei.com>
 
-There was warning message about PPTT table:
+On Tue, Nov 25, 2025 at 01:28:19PM +0000, Shiju Jose wrote:
+> I will change to depends. I followed the existing CONFIG ACPI_CPPC_LIB. 
 
-	"ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
+Read the "Note:" under 
 
-and it in turn caused scheduler warnings when building up the system.
-It took a while to root cause the problem be related a broken PPTT
-table which has wrong cache information.
+"- reverse dependencies: "select" <symbol> ["if" <expr>]"
 
-To speedup debugging similar issues, dump the PPTT table, which makes
-the warning more noticeable and helps bug hunting.
+here pls: Documentation/kbuild/kconfig-language.rst
 
-The dumped info format on a ARM server is like:
+Now, some of the Kconfig symbols:
 
-    ACPI PPTT: Processors:
-    P[  0][0x0024]: parent=0x0000 acpi_proc_id=  0 num_res=1 flags=0x11(package)
-    P[  1][0x005a]: parent=0x0024 acpi_proc_id=  0 num_res=1 flags=0x12()
-    P[  2][0x008a]: parent=0x005a acpi_proc_id=  0 num_res=3 flags=0x1a(leaf)
-    P[  3][0x00f2]: parent=0x005a acpi_proc_id=  1 num_res=3 flags=0x1a(leaf)
-    P[  4][0x015a]: parent=0x005a acpi_proc_id=  2 num_res=3 flags=0x1a(leaf)
-    ...
-    ACPI PPTT: Caches:
-    C[   0][0x0072]: flags=0x7f next_level=0x0000 size=0x4000000  sets=65536  way=16 attribute=0xa  line_size=64
-    C[   1][0x00aa]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x4  line_size=64
-    C[   2][0x00c2]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x2  line_size=64
-    C[   3][0x00da]: flags=0x7f next_level=0x0000 size=0x100000   sets=2048   way=8  attribute=0xa  line_size=64
-    ...
-
-It provides a global and straightforward view of the hierarchy of the
-processor and caches info of the platform, and from the offset info
-(the 3rd column), the child-parent relation could be checked.
-
-With this, the root cause of the original issue was pretty obvious,
-that there were some caches items missing which caused the issue when
-building up scheduler domain.
-
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
----
-Changelog:
-
-  v2
-  * rebase againt 6.19 and refine the commit log
-
- drivers/acpi/pptt.c | 75 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
-
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index de5f8c018333..e00abedcd786 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -529,6 +529,79 @@ static void acpi_pptt_warn_missing(void)
- 	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
- }
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 2322b0470d07..7f846c22fc30 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -295,7 +295,7 @@ config ACPI_CPPC_LIB
  
-+static void acpi_dump_pptt_table(struct acpi_table_header *table_hdr)
-+{
-+	struct acpi_subtable_header *entry, *entry_start;
-+	unsigned long end;
-+	struct acpi_pptt_processor *cpu;
-+	struct acpi_pptt_cache *cache;
-+	u32 entry_sz, i;
-+	u8 len;
-+	static bool dumped;
-+
-+	/* PPTT table could be pretty big, no need to dump it twice */
-+	if (dumped)
-+		return;
-+	dumped = true;
-+
-+	end = (unsigned long)table_hdr + table_hdr->length;
-+	entry_start = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-+			     sizeof(struct acpi_table_pptt));
-+
-+	pr_info("Processors:\n");
-+	entry_sz = sizeof(struct acpi_pptt_processor);
-+	entry = entry_start;
-+	i = 0;
-+	while ((unsigned long)entry + entry_sz <= end) {
-+		len = entry->length;
-+		if (!len) {
-+			pr_warn("Invalid zero length subtable\n");
-+			return;
-+		}
-+
-+		cpu = (struct acpi_pptt_processor *)entry;
-+		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-+
-+		if (cpu->header.type != ACPI_PPTT_TYPE_PROCESSOR)
-+			continue;
-+
-+		printk(KERN_INFO "P[%3d][0x%04lx]: parent=0x%04x acpi_proc_id=%3d num_res=%d flags=0x%02x(%s%s%s)\n",
-+			i++, (unsigned long)cpu - (unsigned long)table_hdr,
-+			cpu->parent, cpu->acpi_processor_id,
-+			cpu->number_of_priv_resources, cpu->flags,
-+			cpu->flags & ACPI_PPTT_PHYSICAL_PACKAGE ? "package" : "",
-+			cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE ? "leaf" : "",
-+			cpu->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD ? ", thread" : ""
-+			);
-+
-+	}
-+
-+	pr_info("Caches:\n");
-+	entry_sz = sizeof(struct acpi_pptt_cache);
-+	entry = entry_start;
-+	i = 0;
-+	while ((unsigned long)entry + entry_sz <= end) {
-+		len = entry->length;
-+		if (!len) {
-+			pr_warn("Invalid zero length subtable\n");
-+			return;
-+		}
-+
-+		cache = (struct acpi_pptt_cache *)entry;
-+		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-+
-+		if (cache->header.type != ACPI_PPTT_TYPE_CACHE)
-+			continue;
-+
-+		printk(KERN_INFO "C[%4d][0x%04lx]: flags=0x%02x next_level=0x%04x size=0x%-8x sets=%-6d way=%-2d attribute=0x%-2x line_size=%d\n",
-+			i++, (unsigned long)cache - (unsigned long)table_hdr,
-+			cache->flags, cache->next_level_of_cache, cache->size,
-+			cache->number_of_sets, cache->associativity,
-+			cache->attributes, cache->line_size
-+			);
-+	}
-+}
-+
- /**
-  * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
-  * @table: Pointer to the head of the PPTT table
-@@ -565,6 +638,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
- 	}
- 	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
- 		    cpu, acpi_cpu_id);
-+
-+	acpi_dump_pptt_table(table);
- 	return -ENOENT;
- }
- 
+ config ACPI_RAS2
+        bool "ACPI RAS2 driver"
+-       depends on AUXILIARY_BUS
++       select AUXILIARY_BUS
+        depends on MAILBOX
+        depends on PCC
+        help
+diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
+index dfc3a899280e..a1e6aed8bcc8 100644
+--- a/drivers/ras/Kconfig
++++ b/drivers/ras/Kconfig
+@@ -51,7 +51,7 @@ config MEM_ACPI_RAS2
+        depends on ACPI_RAS2
+        depends on EDAC
+        depends on EDAC_SCRUB
+-       depends on NUMA_KEEP_MEMINFO
++       select NUMA_KEEP_MEMINFO
+        help
+          The driver binds to the auxiliary device added by the ACPI RAS2
+          feature table parser. The driver uses a PCC channel subspace to
 
-base-commit: c8ebd433459bcbf068682b09544e830acd7ed222
+are made to be selectable only and so you should select them because they're
+non-visible. Just remember that blindly selecting things is evil.
+
+
+> >> +			sspcc->last_cmd, sspcc->pcc_id);
+> >> +		status &= ~PCC_STATUS_ERROR;
+> >> +		writew_relaxed(status, &gen_comm_base->status);
+> >> +		return -EIO;
+> >> +	}
+> >> +
+> >> +	cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
+> >
+> >Is that register read always successful or you need to handle errors here too?
+> 
+> Return value of 'set capability status'  is decoded and return error code on error case
+> in the below function call  'return decode_cap_error(cap_status)'
+
+Yah, this is not a common coding pattern. What you do is something like this:
+
+diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
+index 627895fee143..4caef7f2c4ea 100644
+--- a/drivers/acpi/ras2.c
++++ b/drivers/acpi/ras2.c
+@@ -85,7 +85,6 @@ static int decode_cap_error(u32 cap_status)
+ static int check_pcc_chan(struct ras2_sspcc *sspcc)
+ {
+        struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
+-       u32 cap_status;
+        u16 status;
+        int rc;
+ 
+@@ -114,9 +113,11 @@ static int check_pcc_chan(struct ras2_sspcc *sspcc)
+                return -EIO;
+        }
+ 
+-       cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
++       rc = decode_cap_error(readw_relaxed(&gen_comm_base->set_caps_status));
++
+        writew_relaxed(0x0, &gen_comm_base->set_caps_status);
+-       return decode_cap_error(cap_status);
++
++       return rc;
+ }
+
+
+> >> +	 */
+> >> +	if (cmd == PCC_CMD_EXEC_RAS2 || sspcc->pcc_mrtt) {
+> >> +		rc = check_pcc_chan(sspcc);
+> >> +		if (sspcc->pcc_mrtt)
+> >> +			sspcc->last_cmd_cmpl_time = ktime_get();
+> >> +	}
+> >> +
+> >> +	if (pcc_channel->mbox->txdone_irq)
+> >> +		mbox_chan_txdone(pcc_channel, rc);
+> >> +	else
+> >> +		mbox_client_txdone(pcc_channel, rc);
+> >> +
+> >> +	return rc < 0 ? rc : 0;
+> >
+> >So you mean simply
+> >
+> >	return rc;
+> >
+> >no? rc can be 0 too so what's the point of the ternary expression?
+> 
+> This was added to handle the case rc = check_pcc_chan(sspcc); is not called
+> and last rc is returned from mbox_send_message() call because mbox_send_message()
+> return non-negative value for success and negative value for failure as per the documentation.
+> https://elixir.bootlin.com/linux/v6.18-rc7/source/drivers/mailbox/mailbox.c#L241
+
+Why do you keep pointing to some indexing service? What's wrong with simply
+pasting the code snippet you mean so that I can find it myself too?
+
+Anyway, what's wrong with:
+
+        /* Ring doorbell */
+        rc = mbox_send_message(pcc_channel, &cmd);
+        if (rc < 0) {
+                dev_warn(ras2_ctx->dev,
+                         "Error sending PCC mbox message cmd: 0x%x, rc:%d\n", cmd, rc);
+                return rc;
+        }
+
+Also, cmds in hex please.
+
+> >And what's the logic here? You'd capture rc above from check_pcc_chan() and
+> >even if it is != 0, you'd pass it into the mbox* functions? I guess that weirdness
+> >deserves a comment...
+> 
+> Both mbox_chan_txdone() and  mbox_client_txdone() required the status of the
+> last transmission as second argument.
+
+Yah, comment please!
+
+s> >
+> >> +{
+> >> +	struct acpi_ras2_pcc_desc *pcc_desc_list;
+> >> +	struct ras2_mem_ctx *ras2_ctx;
+> >> +	u16 i, count;
+> >> +
+> >> +	if (ras2_tab->header.length < sizeof(*ras2_tab)) {
+> >> +		pr_warn(FW_WARN "ACPI RAS2 table present but broken (too
+> >short, size=%u)\n",
+> >> +			ras2_tab->header.length);
+> >> +		return;
+> >> +	}
+> >> +
+> >> +	if (!ras2_tab->num_pcc_descs) {
+> >> +		pr_warn(FW_WARN "No PCC descs in ACPI RAS2 table\n");
+> >> +		return;
+> >> +	}
+> >
+> >You need to sanity-check the number of descs so that the below allocation
+> >doesn't go nuts.
+> Sorry, can you give more information?
+> I am wondering the above check  'if (!ras2_tab->num_pcc_descs)' { } is not enough? 
+
+You've done what I wanted:
+
+        if (!ras2_tab->num_pcc_descs || ras2_tab->num_pcc_descs > RAS2_MAX_NUM_PCC_DESCS) {
+                pr_warn(FW_WARN "No/Invalid number of PCC descs(%d) in ACPI RAS2 table\n",
+                        ras2_tab->num_pcc_descs);
+                return -EINVAL;
+        }
+
+The RAS2_MAX_NUM_PCC_DESCS thing.
+
+> >Also, what's the point of that pctx_list array at all? So that you can do uninit on
+> >the ->adev in case you encounter a failure?
+> Local variable ras2_ctx  is updated when calling add_aux_device() in each iteration as
+> add_aux_device()  allocates memory for struct ras2_mem_ctx  for the corresponding PCC
+> descriptor in the RAS2 table. 
+> Thus storing pointer to each ras2_ctx  in pctx_list[] to uninit all the previously added auxiliary devices
+> using auxiliary_device_uninit(->adev); when encounter a failure in a later iteration.   
+
+Looks weird. Lemme look at your new submission and see whether I can make it
+better.
+
+
+> >> +		return;
+> >> +	}
+> >> +
+> >> +	acpi_ras2_parse(ras2_tab);
+> >
+> >This function does some table sanity checking and warns. What it should do is fail
+> >the driver load if the table is broken.
+> 
+> Sure. 
+> If acpi_ras2_parse() and thus acpi_ras2_init() return error, can you guide
+> how to handle this error in acpi_init(void) where  acpi_ras2_init() is called?  
+> Something similar to this below,
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c index b02ceb2837c6..8b4fc572a05b 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1475,7 +1475,12 @@ static int __init acpi_init(void)
+>         acpi_debugger_init();
+>         acpi_setup_sb_notify_handler();
+>         acpi_viot_init();
+> -       acpi_ras2_init();
+> +       result = acpi_ras2_init();
+> +       if (result) {
+> +               kobject_put(acpi_kobj);
+> +               disable_acpi();
+
+No, you certainly won't disable ACPI if that RAS2 thing parsing fails. What
+you should do is not allow the RAS2 memory driver to load.
+
+Lemme look at your new version.
+
+Thx.
+
 -- 
-2.39.5 (Apple Git-154)
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
