@@ -1,80 +1,53 @@
-Return-Path: <linux-acpi+bounces-19935-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19936-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1884CEF163
-	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 18:44:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17766CEF3BE
+	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 20:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA365300DC9D
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 17:44:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C4EF030049EF
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 19:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47F2ED853;
-	Fri,  2 Jan 2026 17:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CB0314B6C;
+	Fri,  2 Jan 2026 19:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tzs5kWZg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBjTkB1f"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9DC23ABA9;
-	Fri,  2 Jan 2026 17:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF3E22424C;
+	Fri,  2 Jan 2026 19:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767375857; cv=none; b=HUSkkeCjEODyebbeTtIPghLge9KM007CCWg/+BYOYNxqkbwlEmfd0/lVt4pfc9CB9G0Mko3cMAa/hOxbSpeoHHXBTsGk4Cfk42qQLEeDMdMClRkMSLz+S4eYRGOMKd2MKHIGYfWSM+rg91u9yVv0YYeOxjukInYrFARv7KegVjA=
+	t=1767382173; cv=none; b=u8cX9fykBZGW+pxUrTCn+meB1F3IWMEpiqs2SF4TaUy9TKeAMj7A4FarztF3Mz625fP+fVXo45yF9tixb9H7sRzvkq5H8TuD3E7C2TmxuSHun52Hr0dDV3xQsr0y3wfdKnMB1wwOvR2DR8rf3H27T9yhtczJp0zExo3XsE/O344=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767375857; c=relaxed/simple;
-	bh=KOZ5foOUSxYaKCChUnSfgSGAhjJZijduMAvs7fjhWnQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dQMGxUuCBcL260+USZMwuL9ktBPJOX1uvPx2SjWfHj3pWp34ecr2getZtzfRBjKMLN7jii2+M/N+djJ97CBGw4yumUH0JawAYHbbhkUFUBan/hAR8zDqx+k/UxAghYeBDTjBRSXwYVlb67xaRcwcjEUruhqg245Xx6f3qmIiKdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tzs5kWZg; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767375854; x=1798911854;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KOZ5foOUSxYaKCChUnSfgSGAhjJZijduMAvs7fjhWnQ=;
-  b=Tzs5kWZg/BxY37LwHLPVnqXBcbvLzUwFytCOi2bmQhy65EEP4x+e7EOU
-   n3Bk/Hht1vfgDXzMbx4Wb0qNMexJhmfLjYk9Sc5TVQ9Qvb+n9fYzqgePf
-   zsV2I8r9vz116RP8BGxoKL7XjNg45j8grCzRRBFefSgURgZMsNppsYcJ2
-   inx7zfWvMHTF+lTg77HZr2OYVEjXGptQJpWQwNWbcw/d8zNLMxTmL9neH
-   gSHxkLXhQKFcvMUABaSQq+aIEMB0i3Vq3XvSPT7mD+UVJST1q9is5CP6O
-   RDATmvyb7iMREmc+u+09/NVNWcoF8HvOKClncC2VQ9OzShz2QqSRvONfI
-   w==;
-X-CSE-ConnectionGUID: V5+u/LrAS0eQ01kfeppCQg==
-X-CSE-MsgGUID: EVFm7+uxRKmK+m/13KalDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68850815"
-X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
-   d="scan'208";a="68850815"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 09:44:13 -0800
-X-CSE-ConnectionGUID: bAvvsgMxSXaUZ4i9QLqufw==
-X-CSE-MsgGUID: lJ3tcmuLSl6pj5WjLyGVng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
-   d="scan'208";a="202818406"
-Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 02 Jan 2026 09:44:09 -0800
-Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vbjC3-000000002Nt-095Q;
-	Fri, 02 Jan 2026 17:44:07 +0000
-Date: Sat, 3 Jan 2026 01:43:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
-	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
-	sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	lenb@kernel.org, tony.luck@intel.com, bp@alien8.de,
-	yazen.ghannam@amd.com, misono.tomohiro@fujitsu.com,
-	fengwei_yin@linux.alibaba.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	tianruidong@linux.alibaba.com
-Subject: Re: [PATCH v5 16/17] ras: AEST: support vendor node CMN700
-Message-ID: <202601030129.ltAsW4vh-lkp@intel.com>
-References: <20251230091342.50404-1-tianruidong@linux.alibaba.com>
+	s=arc-20240116; t=1767382173; c=relaxed/simple;
+	bh=S6PvGgs4PUhcouFEgmqOVeKqW8pY/PDrsEj4d7RLy5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=YFmyPNCkt4NhpQdme3GpaDVfdo7Y0b/r5DlsxggSTCTDatD0pj8uL2JpmIYZXPHMwIFcc7mXKCa2wNmNY2wYT8R2A1lKvvol0UYBO41HrRZhbOVmpuMH/rPrZb4ETcDbYUn86mU4bF+v5BUEmdGHxkxrXF7eZpLNYGv+lQ/+tDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBjTkB1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E2C116B1;
+	Fri,  2 Jan 2026 19:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767382172;
+	bh=S6PvGgs4PUhcouFEgmqOVeKqW8pY/PDrsEj4d7RLy5o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=dBjTkB1fjOc0gA69IPqoIico352B4el8OPuRg5puHrIbogTiAEra/Ufm48MbtWqK/
+	 iPI8zlIw/S0sJ9hJi0sVRoMRwc7Ub2lZOe9knslCua6jwiI57at1TXE3STXKdpaH3k
+	 13sObqWNVmMEn2OeRo0Sl5pG+Qaej7Ncn/ec1TTf4i0XdxN2y+CbUnH43BkxB+G6Cx
+	 uI+nzUGrNHEi8fGwH2XhxpyXwcei6+A5DnHyCY0SsOySnb0Q/h4UQFqAIYSQvV/HE7
+	 KjM9eq2Si65J2Wse0kmqDGHFQhTo+142Yd3MgFd8XmDh+ZEZCqvS5ne6NvqLvVVUw6
+	 2tIIndxN/XpNA==
+Date: Fri, 2 Jan 2026 13:29:30 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH] ACPI: PCI: IRQ: Handle INTx GSIs as u32 values not int
+Message-ID: <20260102192930.GA226444@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,62 +56,39 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251230091342.50404-1-tianruidong@linux.alibaba.com>
+In-Reply-To: <aVerBwCsuoHadX9K@lpieralisi>
 
-Hi Ruidong,
+On Fri, Jan 02, 2026 at 12:24:55PM +0100, Lorenzo Pieralisi wrote:
+> On Wed, Dec 31, 2025 at 11:01:50AM -0600, Bjorn Helgaas wrote:
+> > On Wed, Dec 31, 2025 at 10:26:15AM +0100, Lorenzo Pieralisi wrote:
+> > > In ACPI Global System Interrupts (GSIs) are described using a 32-bit
+> > > value.
+> > > 
+> > > ACPI/PCI legacy interrupts (INTx) parsing code treats GSIs as 'int', which
+> > > poses issues if the GSI interrupt value is a 32-bit value with the MSB set
+> > > (as required in some interrupt configurations - eg ARM64 GICv5 systems).
+> > > 
+> > > Fix ACPI/PCI legacy INTx parsing by converting variables representing
+> > > GSIs from 'int' to 'u32' bringing the code in line with the ACPI
+> > > specification.
+> > 
+> > Looks good to me.  Is there any symptom of what the issue looks like
+> > that could be mentioned here?  Might also be useful in the subject,
+> > which currently describes the C code without really saying why we want
+> > to do this.
+> 
+> Thanks ! Happy New Year !
 
-kernel test robot noticed the following build errors:
+Happy New Year!
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge ras/edac-for-next linus/master v6.19-rc3 next-20251219]
-[cannot apply to arm64/for-next/core tip/smp/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> acpi_pci_link_allocate_irq() would return a GSI with MSB set, that the
+> logic in acpi_pci_irq_enable() would treat as a failure because that's
+> a negative value.
+> 
+> After fixing that - passing a 32-bit value with MSB set to
+> acpi_irq_get_penalty() causes an array acpi_isa_irq_penalty dereference
+> with an an index that is way beyond the array size.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-AEST-Parse-the-AEST-table/20251230-172000
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20251230091342.50404-1-tianruidong%40linux.alibaba.com
-patch subject: [PATCH v5 16/17] ras: AEST: support vendor node CMN700
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260103/202601030129.ltAsW4vh-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030129.ltAsW4vh-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601030129.ltAsW4vh-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/perf/arm-cmn.c:5:10: fatal error: 'asm/arm-cmn.h' file not found
-       5 | #include <asm/arm-cmn.h>
-         |          ^~~~~~~~~~~~~~~
-   1 error generated.
-
-
-vim +5 drivers/perf/arm-cmn.c
-
-     4	
-   > 5	#include <asm/arm-cmn.h>
-     6	#include <linux/acpi.h>
-     7	#include <linux/bitfield.h>
-     8	#include <linux/bitops.h>
-     9	#include <linux/debugfs.h>
-    10	#include <linux/interrupt.h>
-    11	#include <linux/io.h>
-    12	#include <linux/io-64-nonatomic-lo-hi.h>
-    13	#include <linux/kernel.h>
-    14	#include <linux/list.h>
-    15	#include <linux/module.h>
-    16	#include <linux/of.h>
-    17	#include <linux/perf_event.h>
-    18	#include <linux/platform_device.h>
-    19	#include <linux/slab.h>
-    20	#include <linux/sort.h>
-    21	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ouch, out-of-bounds reference.  Best case, maybe a data page fault or
+a "No IRQ available" message or just a suboptimal IRQ choice.
 
