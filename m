@@ -1,94 +1,107 @@
-Return-Path: <linux-acpi+bounces-19936-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19937-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17766CEF3BE
-	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 20:29:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DBFCEF709
+	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 23:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C4EF030049EF
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 19:29:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E205300EE79
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 22:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CB0314B6C;
-	Fri,  2 Jan 2026 19:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6723B2D837E;
+	Fri,  2 Jan 2026 22:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBjTkB1f"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Gop3DCjz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF3E22424C;
-	Fri,  2 Jan 2026 19:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524FE22F772;
+	Fri,  2 Jan 2026 22:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767382173; cv=none; b=u8cX9fykBZGW+pxUrTCn+meB1F3IWMEpiqs2SF4TaUy9TKeAMj7A4FarztF3Mz625fP+fVXo45yF9tixb9H7sRzvkq5H8TuD3E7C2TmxuSHun52Hr0dDV3xQsr0y3wfdKnMB1wwOvR2DR8rf3H27T9yhtczJp0zExo3XsE/O344=
+	t=1767393663; cv=none; b=YdLXPpchaTsSNjefefFxWiLLDNI7AZTqu/en601jWo1MR4xcXOPG/tQlQxSOAt+s0Ni7gWuo9qFUeFaWuQdLh9TFLeIjqWXvYZg3YaS1iJK7iWA9We61GMrhhRU+ChbrdxpMrT5ch+OJ2nLBpG/Z71Yt/lyxrV3gBfz4WWH8YAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767382173; c=relaxed/simple;
-	bh=S6PvGgs4PUhcouFEgmqOVeKqW8pY/PDrsEj4d7RLy5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=YFmyPNCkt4NhpQdme3GpaDVfdo7Y0b/r5DlsxggSTCTDatD0pj8uL2JpmIYZXPHMwIFcc7mXKCa2wNmNY2wYT8R2A1lKvvol0UYBO41HrRZhbOVmpuMH/rPrZb4ETcDbYUn86mU4bF+v5BUEmdGHxkxrXF7eZpLNYGv+lQ/+tDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBjTkB1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E2C116B1;
-	Fri,  2 Jan 2026 19:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767382172;
-	bh=S6PvGgs4PUhcouFEgmqOVeKqW8pY/PDrsEj4d7RLy5o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=dBjTkB1fjOc0gA69IPqoIico352B4el8OPuRg5puHrIbogTiAEra/Ufm48MbtWqK/
-	 iPI8zlIw/S0sJ9hJi0sVRoMRwc7Ub2lZOe9knslCua6jwiI57at1TXE3STXKdpaH3k
-	 13sObqWNVmMEn2OeRo0Sl5pG+Qaej7Ncn/ec1TTf4i0XdxN2y+CbUnH43BkxB+G6Cx
-	 uI+nzUGrNHEi8fGwH2XhxpyXwcei6+A5DnHyCY0SsOySnb0Q/h4UQFqAIYSQvV/HE7
-	 KjM9eq2Si65J2Wse0kmqDGHFQhTo+142Yd3MgFd8XmDh+ZEZCqvS5ne6NvqLvVVUw6
-	 2tIIndxN/XpNA==
-Date: Fri, 2 Jan 2026 13:29:30 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH] ACPI: PCI: IRQ: Handle INTx GSIs as u32 values not int
-Message-ID: <20260102192930.GA226444@bhelgaas>
+	s=arc-20240116; t=1767393663; c=relaxed/simple;
+	bh=SZ2FJKEbdJsCIL6jv9aNHAhPwnmQcsP0c2Q9qhVbvwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nNXtAmNZyfbSRY5LA59eyuQdu5MvlDCSuVWSCPos0xzkkhUv7Mr0STT4CYom0mgLa+oT7HnRMko0otdR2dp4bPXDYK9Cc2W0FU1HiHoPSbOqbqZkKMO4GZzI+qILyAUcw+8Xz0G7/hIj1lK3LFsqQmA7nWXs2sAsBskaPNSH7Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=Gop3DCjz; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id E5D101C01B5; Fri,  2 Jan 2026 23:40:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1767393656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=74FoWfHJsSpgcmzt7S2Iv6lmGbI+FLkCUy2agBMwDpU=;
+	b=Gop3DCjzMwq4H0VyNRTxo5wCxfyklRYzVezvTQEn0zayHaeWFjxK6VkmEUOjq/HekOvBYt
+	vMkth1CHmDpaepscmdpj2HoT/eB4Lbm7Omh1HB0XmeymjW6LhAKzv8bV3GLrXq8dTfQXWK
+	U4XilMX2dKNMadKrif1Wqh9TWx9Q43Q=
+Date: Fri, 2 Jan 2026 23:40:56 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-input@vger.kernel.org, kernel@collabora.com,
+	superm1@kernel.org
+Subject: Re: [PATCH 0/4] PM: Hibernate: Add hibernation cancellation support
+Message-ID: <aVhJeJ93EbF8BEp+@duo.ucw.cz>
+References: <20251107184438.1328717-1-usama.anjum@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DFRgtCiQLehrnEn0"
+Content-Disposition: inline
+In-Reply-To: <20251107184438.1328717-1-usama.anjum@collabora.com>
+
+
+--DFRgtCiQLehrnEn0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aVerBwCsuoHadX9K@lpieralisi>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 02, 2026 at 12:24:55PM +0100, Lorenzo Pieralisi wrote:
-> On Wed, Dec 31, 2025 at 11:01:50AM -0600, Bjorn Helgaas wrote:
-> > On Wed, Dec 31, 2025 at 10:26:15AM +0100, Lorenzo Pieralisi wrote:
-> > > In ACPI Global System Interrupts (GSIs) are described using a 32-bit
-> > > value.
-> > > 
-> > > ACPI/PCI legacy interrupts (INTx) parsing code treats GSIs as 'int', which
-> > > poses issues if the GSI interrupt value is a 32-bit value with the MSB set
-> > > (as required in some interrupt configurations - eg ARM64 GICv5 systems).
-> > > 
-> > > Fix ACPI/PCI legacy INTx parsing by converting variables representing
-> > > GSIs from 'int' to 'u32' bringing the code in line with the ACPI
-> > > specification.
-> > 
-> > Looks good to me.  Is there any symptom of what the issue looks like
-> > that could be mentioned here?  Might also be useful in the subject,
-> > which currently describes the C code without really saying why we want
-> > to do this.
-> 
-> Thanks ! Happy New Year !
+Hi!
 
-Happy New Year!
+> On a normal laptop/PC, the hibernation takes 15-20 seconds which is
+> considerable time. Once hibernation is triggered from command line or by
+> some GUI option, the hibernation cannot be cancelled until completed.
+> Its not a blocker, but poor user experience.
 
-> acpi_pci_link_allocate_irq() would return a GSI with MSB set, that the
-> logic in acpi_pci_irq_enable() would treat as a failure because that's
-> a negative value.
-> 
-> After fixing that - passing a 32-bit value with MSB set to
-> acpi_irq_get_penalty() causes an array acpi_isa_irq_penalty dereference
-> with an an index that is way beyond the array size.
+In-kernel hibernation is basic and simple. It is not great, and not
+designed to be great.
 
-Ouch, out-of-bounds reference.  Best case, maybe a data page fault or
-a "No IRQ available" message or just a suboptimal IRQ choice.
+You can do fancy progress bars, cancellations and probably better
+encryption in userspace.
+
+Documentation/power/swsusp.rst
+
+Best regards,
+								Pavel
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
+
+--DFRgtCiQLehrnEn0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaVhJeAAKCRAw5/Bqldv6
+8mqPAJ9RBaNB2vPr1ude6eyzLoxzx57bAgCfS6UiXMgA/bfJ7dnLgTY25VvAikQ=
+=V1KT
+-----END PGP SIGNATURE-----
+
+--DFRgtCiQLehrnEn0--
 
