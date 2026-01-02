@@ -1,82 +1,247 @@
-Return-Path: <linux-acpi+bounces-19932-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19933-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D02FCEE6FF
-	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 12:57:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2748ECEE73B
+	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 13:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E761F3014A3E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 11:57:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABB933011FBB
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 12:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A713730DEA6;
-	Fri,  2 Jan 2026 11:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4D530EF6B;
+	Fri,  2 Jan 2026 12:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuessNNV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E915B2EC09B;
-	Fri,  2 Jan 2026 11:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AF72F60A1
+	for <linux-acpi@vger.kernel.org>; Fri,  2 Jan 2026 12:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767355020; cv=none; b=L9MK4qBITBK34LD9I95mN93fqEIa+A7W314oAoDqwWwou0wywzM2Z8dOLwuKA4+VKKNL6zVeDYJ7j1xuXi+M32nzGcNFxwLHH/9XRn1yPso/5t2ZDnyQowwNpQ7NbhnCmt+ghR7tcFiwZS4sn21IEyHP+ijaVD7Xic5Qpw3iJac=
+	t=1767355622; cv=none; b=C7ZGAFZA1dyonWAqZe+ePWz9WPYK47EoQF/IzD0HVvQN6sbjvcyB/RezWpBC/EPgtRKgMT7xgbKVpd2U71N9ql4rH/kqDBiEaiVgcQMpsjaGd+MeCAW28nR6ZduMh94DYn0IPoSCWU2lKQBhbQ5HPnJBDYtQYKmtGMAnTzxcAqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767355020; c=relaxed/simple;
-	bh=W1MRgIFZb+sXlokt40e9WqCJbxhWIGkQEC8U7O9cie0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTAhDl6MPM/dfP+IYaixxOWtYWiMJ16gVkHuKFdR5MaIbz8hFenSI/o2Ou/45qWIPfKJXivQZYW7K1MEdSJHEurbji+Y8iEmu3xPOHY6XZinXsy1e1+X6dFZhDzMrT7Cd9VF3OZaqNb1EH4PRPdYaot+BzsX5JBlchMF8hKTOtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4djMbM4LfdzJ468k;
-	Fri,  2 Jan 2026 19:55:59 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 06D7840086;
-	Fri,  2 Jan 2026 19:56:55 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 2 Jan
- 2026 11:56:54 +0000
-Date: Fri, 2 Jan 2026 11:56:53 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
-	<linux-kernel@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, "Zhang
- Rui" <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Mika Westerberg
-	<mika.westerberg@linux.intel.com>, Linux PCI <linux-pci@vger.kernel.org>,
-	Alex Hung <alexhung@gmail.com>, Hans de Goede <hansg@kernel.org>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	<platform-driver-x86@vger.kernel.org>, AceLan Kao <acelan.kao@canonical.com>
-Subject: Re: [PATCH v1] ACPI: scan: Use resource_type() for resource type
- checking
-Message-ID: <20260102115653.000027f0@huawei.com>
-In-Reply-To: <12814730.O9o76ZdvQC@rafael.j.wysocki>
-References: <12814730.O9o76ZdvQC@rafael.j.wysocki>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1767355622; c=relaxed/simple;
+	bh=qXBIOm5KkAYKUGNiZ6O6ibZVGNVRF00e/pJ0nejqlx8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WJbj8kv6aPt8njpkmdY0HwGrUSk4VQ1SfLlYtFHmItAcUNzaMHt5eUz5k8bLol2VzBG23ex8vGTuhfSZS/18/MNHHAYfu7AijS47KEHelkq9XCAcp5W+YxnkuOvfHt1y+3dNPVnireqN8b8vNBwU+k0sE0C6uDBZ6f2mHD7wba0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuessNNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCD5C116B1
+	for <linux-acpi@vger.kernel.org>; Fri,  2 Jan 2026 12:07:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767355621;
+	bh=qXBIOm5KkAYKUGNiZ6O6ibZVGNVRF00e/pJ0nejqlx8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LuessNNVCSJZMAB5VUG9Vv8v8c99+QhIYzQslCfuc2Td1kmsumO/Ejty9a6hHvNAK
+	 bb/3O+ertgjmNxH066jO/mO05LJUHSjFyrElHf9zko4qWGTFCEWCH+m2wHObAqz6p5
+	 hZ1Yn9QKQ6wlh5frnjBpSOi8EtNRmJivd7PR7wFtbnvcPdqRJbPp6RnpeP11S8Ic8M
+	 ltI6gtsg3Tf2y+WAnpZTXjeJGic8k3Vk9VLR+LqpMgz+Ysh6fL42U2dCALyx3q4zVd
+	 N8SuZPpTgKW12Sv0g+q0gs1I+TTsQvhaPWZqWnLN1oxpioHGbZ/50gZreq0YbwbpCE
+	 HPQWCoDjlPhag==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c6da42fbd4so6668317a34.1
+        for <linux-acpi@vger.kernel.org>; Fri, 02 Jan 2026 04:07:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWa6i7O9unL9QqZHyz1e3F7ztrh90+Z/W4Jy/64mdre3YXvJigTngLTggMxHr3NlRPF8fW/QmUEvG/D@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnMmsuju+GrjuXIEkkOY9F7+WEcaZMpE6j8pznJFEbGE8upTz3
+	I47aUuAwHBRgM0l6KtdmiB+6HI8BIMmF2vGvn1OUwu9jsmpfkMuijSEKLORg8ekaHWRws/zh+nW
+	WY+rrxrVY630TYzs07SVw1r0QVTTyebc=
+X-Google-Smtp-Source: AGHT+IHFohW7YlEL0VMcsEtCVqwWLfIR3y2rU8je7NNk6ylHkEc2nbEHp6pL8g8A4hfDGaEH5jXTQyHMBX3bDiImVgU=
+X-Received: by 2002:a05:6820:f028:b0:65d:62d:b6a8 with SMTP id
+ 006d021491bc7-65d0e963dc2mr15073532eaf.17.1767355620881; Fri, 02 Jan 2026
+ 04:07:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+References: <12833187.O9o76ZdvQC@rafael.j.wysocki> <20260102115250.0000045c@huawei.com>
+In-Reply-To: <20260102115250.0000045c@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 2 Jan 2026 13:06:48 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jCyRLpEA0Fmbjx8cNuden3sgqWvVO6_wmvCTHXVwb1LA@mail.gmail.com>
+X-Gm-Features: AQt7F2p68BloL0iOguHBHO5v1Ds7X2xOEwvyzIry1zAV_g6N5KSH8Ymeeu1hLMQ
+Message-ID: <CAJZ5v0jCyRLpEA0Fmbjx8cNuden3sgqWvVO6_wmvCTHXVwb1LA@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: bus: Adjust acpi_osc_handshake() parameter list
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede <hansg@kernel.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Dec 2025 10:57:34 +0100
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+On Fri, Jan 2, 2026 at 12:53=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
+>
+> On Fri, 26 Dec 2025 14:48:45 +0100
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > For the sake of interface cleanliness, it is better to avoid using
+> > ACPICA data types in the parameter lists of helper functions that
+> > don't belong to ACPICA, so adjust the parameter list of recently
+> > introduced acpi_osc_handshake() to take a capabilities buffer pointer
+> > and the size of the buffer (in u32 size units) as parameters directly
+> > instead of a struct acpi_buffer pointer.
+> >
+> > This is also somewhat more straightforward on the caller side because
+> > they won't need to create struct acpi_buffer objects themselves to pass
+> > them to the helper function and it guarantees that the size of the
+> > buffer in bytes will always be a multiple of 4 (the size of u32).
+> >
+> > Moreover, it addresses a premature cap pointer dereference and
+> > eliminates a sizeof(32) that should have been sizeof(u32) [1].
+> >
+> > Fixes: e5322888e6bf ("ACPI: bus: Rework the handling of \_SB._OSC platf=
+orm features")
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/linux-acpi/202512242052.W4GhDauV-lkp@in=
+tel.com/
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> A couple of minor comments inline.  I see you have it queued up already,
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> To follow a well-established existing pattern, use resource_type() for
-> resource type checking in acpi_scan_claim_resources().
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Yeah, mostly to address build warnings in linux-next.
 
+> but FWIW nothing here major enough to warrant reverting that.
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>
+> > ---
+> >  drivers/acpi/bus.c |   30 ++++++++++++------------------
+> >  1 file changed, 12 insertions(+), 18 deletions(-)
+> >
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -326,31 +326,33 @@ out:
+> >  EXPORT_SYMBOL(acpi_run_osc);
+> >
+> >  static int acpi_osc_handshake(acpi_handle handle, const char *uuid_str=
+,
+> > -                           int rev, struct acpi_buffer *cap)
+> > +                           int rev, u32 *capbuf, size_t bufsize)
+>
+> Size parameters in number of u32s is to me a little confusing but
+> I guess this is only used locally so that's probably fine.
+> I'd have been tempted to call it dwords or something like that.
 
+Well, this technically is the number of elements in the capbuf[]
+array, so I guess it could be called capbuf_size or something like
+that.
+
+> >  {
+> >       union acpi_object in_params[4], *out_obj;
+> > -     size_t bufsize =3D cap->length / sizeof(u32);
+> >       struct acpi_object_list input;
+> > +     struct acpi_buffer cap =3D {
+> > +             .pointer =3D capbuf,
+> > +             .length =3D bufsize * sizeof(32),
+>
+> You fixed this up already but just for completeness.
+> sizeof(u32)
+
+Yup.
+
+> > +     };
+> >       struct acpi_buffer output;
+> > -     u32 *capbuf, *retbuf, test;
+> > +     u32 *retbuf, test;
+> >       guid_t guid;
+> >       int ret, i;
+> >
+> > -     if (!cap || cap->length < 2 * sizeof(32) || guid_parse(uuid_str, =
+&guid))
+> > +     if (!capbuf || bufsize < 2 || guid_parse(uuid_str, &guid))
+> >               return -EINVAL;
+> >
+> >       /* First evaluate _OSC with OSC_QUERY_ENABLE set. */
+> > -     capbuf =3D cap->pointer;
+> >       capbuf[OSC_QUERY_DWORD] =3D OSC_QUERY_ENABLE;
+> >
+> > -     ret =3D acpi_eval_osc(handle, &guid, rev, cap, in_params, &output=
+);
+> > +     ret =3D acpi_eval_osc(handle, &guid, rev, &cap, in_params, &outpu=
+t);
+> >       if (ret)
+> >               return ret;
+> >
+> >       out_obj =3D output.pointer;
+> >       retbuf =3D (u32 *)out_obj->buffer.pointer;
+> >
+> > -     if (acpi_osc_error_check(handle, &guid, rev, cap, retbuf)) {
+> > +     if (acpi_osc_error_check(handle, &guid, rev, &cap, retbuf)) {
+> >               ret =3D -ENODATA;
+> >               goto out;
+> >       }
+> > @@ -403,7 +405,7 @@ static int acpi_osc_handshake(acpi_handl
+> >                */
+> >               acpi_handle_err(handle, "_OSC: errors while processing co=
+ntrol request\n");
+> >               acpi_handle_err(handle, "_OSC: some features may be missi=
+ng\n");
+> > -             acpi_osc_error_check(handle, &guid, rev, cap, retbuf);
+> > +             acpi_osc_error_check(handle, &guid, rev, &cap, retbuf);
+> >       }
+> >
+> >  out:
+> > @@ -446,10 +448,6 @@ static void acpi_bus_osc_negotiate_platf
+> >  {
+> >       static const u8 sb_uuid_str[] =3D "0811B06E-4A27-44F9-8D60-3CBBC2=
+2E7B48";
+> >       u32 capbuf[2], feature_mask;
+> > -     struct acpi_buffer cap =3D {
+> > -             .pointer =3D capbuf,
+> > -             .length =3D sizeof(capbuf),
+> > -     };
+> >       acpi_handle handle;
+> >
+> >       feature_mask =3D OSC_SB_PR3_SUPPORT | OSC_SB_HOTPLUG_OST_SUPPORT =
+|
+> > @@ -497,7 +495,7 @@ static void acpi_bus_osc_negotiate_platf
+> >
+> >       acpi_handle_info(handle, "platform _OSC: OS support mask [%08x]\n=
+", feature_mask);
+> >
+> > -     if (acpi_osc_handshake(handle, sb_uuid_str, 1, &cap))
+> > +     if (acpi_osc_handshake(handle, sb_uuid_str, 1, capbuf, 2))
+>
+> As below. Maybe ARRAY_SIZE(capbuf) instead of that 2.
+
+That's a good idea, I'll change it in the patch.
+
+> >               return;
+> >
+> >       feature_mask =3D capbuf[OSC_SUPPORT_DWORD];
+> > @@ -532,10 +530,6 @@ static void acpi_bus_osc_negotiate_usb_c
+> >  {
+> >       static const u8 sb_usb_uuid_str[] =3D "23A0D13A-26AB-486C-9C5F-0F=
+FA525A575A";
+> >       u32 capbuf[3], control;
+> > -     struct acpi_buffer cap =3D {
+> > -             .pointer =3D capbuf,
+> > -             .length =3D sizeof(capbuf),
+> > -     };
+> >       acpi_handle handle;
+> >
+> >       if (!osc_sb_native_usb4_support_confirmed)
+> > @@ -550,7 +544,7 @@ static void acpi_bus_osc_negotiate_usb_c
+> >       capbuf[OSC_SUPPORT_DWORD] =3D 0;
+> >       capbuf[OSC_CONTROL_DWORD] =3D control;
+> >
+> > -     if (acpi_osc_handshake(handle, sb_usb_uuid_str, 1, &cap))
+> > +     if (acpi_osc_handshake(handle, sb_usb_uuid_str, 1, capbuf, 3))
+>
+> Maybe ARRAY_SIZE(capbuf) just to avoid any chance they get out of sync?
+>
+> >               return;
+> >
+> >       osc_sb_native_usb4_control =3D capbuf[OSC_CONTROL_DWORD];
+> >
+> >
+> >
+> >
+
+Thanks!
 
