@@ -1,325 +1,100 @@
-Return-Path: <linux-acpi+bounces-19925-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19926-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78997CEE544
-	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 12:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91F1CEE628
+	for <lists+linux-acpi@lfdr.de>; Fri, 02 Jan 2026 12:38:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40FCF3009ABA
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 11:25:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A2AB3008E80
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jan 2026 11:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE6F2ED87C;
-	Fri,  2 Jan 2026 11:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLkLjhNT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3D92D7D42;
+	Fri,  2 Jan 2026 11:37:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41DC279DB3;
-	Fri,  2 Jan 2026 11:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E0D2DC783;
+	Fri,  2 Jan 2026 11:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767353100; cv=none; b=Pt87YJQzsIYZPWtqZ4HLreCl8nr5S/KG1OEo2FJPrGeBBaXG88iLkMWFBC9xb0rGaPdTkmYS8fioeNocpe30ssQR+/q536Nz8jK5RYVDBHU0g0qvYumuUCHztTImK1/PCBDJmk33bqybGOaQ8fxKPp8Xeblk09pFXeIifjQEWcE=
+	t=1767353865; cv=none; b=mZruC/MIB65C+Iw/+TI2S3FsqnPfD9KmMe3y9QVTN/iAAVIva8HTNvdX59gf2vMxAXdfSLtTXW9m7DXzhHx/5n+U8YsFL3bJOQ1D5gY5ZApQ90Pkuz5P8aQ5RwRp2lrERy8A0U0+OkAN3YrQ5AARPlAmanl+Km1aWlBY/Na2GgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767353100; c=relaxed/simple;
-	bh=Zb0MgBa8cr94kWjNHJK36Jf6NFVPeYFrBuLuicUuidM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m9ZVjkMbgyQ/+OQRlukQcsfnqli0Hy8zni5RT6ck+OCfu8H7v668JNlLeK+c/1BioJMXrdZtp1AtrdwJiAukZDsZmWAu5hSZJGs2/Cin8wtVv/uQLyGSQobUDOj1icKv2JbnCsWUQNcbDeM9Z0zwg9ZNuS9uJsl+nrgTcIFZOrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLkLjhNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F336C116B1;
-	Fri,  2 Jan 2026 11:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767353100;
-	bh=Zb0MgBa8cr94kWjNHJK36Jf6NFVPeYFrBuLuicUuidM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QLkLjhNTFIuqKCdXKHZZGvhlizJs65rBiHENyuy3VZrAmjPZsWFojGPZmfIvTYsZd
-	 Eb1YH/YxCkTiEfBxzyiqMPlLQB/kA24UQXg5BhYJc5BQbQJ4oXgc21Pq3IVWOcytlp
-	 OhUOBfLNZfqJjC5Xy4fHy9rL24n7CJKBn7Ly8cFwn5OjT4WWcT4EgTjTmAw4w5AHyS
-	 77XplO8ywYk5uFozoK760IUwxwNX14Bgn2wW8NY3/t/mi97HU+/jrf5zj/RdEg3Q5W
-	 zMYHo+rBpF2I/Lwcox6/N23DQ92F29s6BR1s8qx/fUXYNrXj8qCxJAfDm9GwTixs+x
-	 noaBok+H4vomg==
-Date: Fri, 2 Jan 2026 12:24:55 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH] ACPI: PCI: IRQ: Handle INTx GSIs as u32 values not int
-Message-ID: <aVerBwCsuoHadX9K@lpieralisi>
-References: <20251231092615.3014761-1-lpieralisi@kernel.org>
- <20251231170150.GA160311@bhelgaas>
+	s=arc-20240116; t=1767353865; c=relaxed/simple;
+	bh=RTfHCfDMy4NtxmGDV1e22MEx8FDGgXV4jhn+xcPKGKo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KtTbqNU3aM1aT/2dXkQoM2ByQOP8HyhJAzvuYIVZOQZ1ZLu1Ywol1CJIAkmr0Mnu61RwulpIHJaZDehPKiTx0kmkt/iKT2euzg9NLtouOJl+8leW51l0QJ/UNX9VoNWcn6IEgnQnlwTvX0W2EqH/hAnFPQ4NGK9Zys0AsMzkWmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4djM921NNVzHnGj0;
+	Fri,  2 Jan 2026 19:36:38 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id BE8EB40539;
+	Fri,  2 Jan 2026 19:37:34 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 2 Jan
+ 2026 11:37:33 +0000
+Date: Fri, 2 Jan 2026 11:37:32 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Linux ACPI <linux-acpi@vger.kernel.org>, Dan Carpenter
+	<dan.carpenter@linaro.org>, LKML <linux-kernel@vger.kernel.org>, "Srinivas
+ Pandruvada" <srinivas.pandruvada@linux.intel.com>, Hans de Goede
+	<hansg@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v1] ACPI: bus: Fix typo under sizeof() in acpi_run_osc()
+Message-ID: <20260102113732.0000192c@huawei.com>
+In-Reply-To: <2817106.mvXUDI8C0e@rafael.j.wysocki>
+References: <2817106.mvXUDI8C0e@rafael.j.wysocki>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251231170150.GA160311@bhelgaas>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Wed, Dec 31, 2025 at 11:01:50AM -0600, Bjorn Helgaas wrote:
-> On Wed, Dec 31, 2025 at 10:26:15AM +0100, Lorenzo Pieralisi wrote:
-> > In ACPI Global System Interrupts (GSIs) are described using a 32-bit
-> > value.
-> > 
-> > ACPI/PCI legacy interrupts (INTx) parsing code treats GSIs as 'int', which
-> > poses issues if the GSI interrupt value is a 32-bit value with the MSB set
-> > (as required in some interrupt configurations - eg ARM64 GICv5 systems).
-> > 
-> > Fix ACPI/PCI legacy INTx parsing by converting variables representing
-> > GSIs from 'int' to 'u32' bringing the code in line with the ACPI
-> > specification.
+On Mon, 29 Dec 2025 14:27:46 +0100
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: 
 > 
-> Looks good to me.  Is there any symptom of what the issue looks like
-> that could be mentioned here?  Might also be useful in the subject,
-> which currently describes the C code without really saying why we want
-> to do this.
-
-Thanks ! Happy New Year !
-
-acpi_pci_link_allocate_irq() would return a GSI with MSB set, that the
-logic in acpi_pci_irq_enable() would treat as a failure because that's
-a negative value.
-
-After fixing that - passing a 32-bit value with MSB set to
-acpi_irq_get_penalty() causes an array acpi_isa_irq_penalty dereference
-with an an index that is way beyond the array size.
-
-This is not a fix per-se because GICv5 ACPI is not in the mainline, yet.
-
-I can try to summarize the issue in the commit log.
-
-Thanks,
-Lorenzo
-
+> The sizeof(32) in acpi_run_osc() should be sizeof(u32), so fix it.
 > 
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Fixes: e5322888e6bf ("ACPI: bus: Rework the handling of \_SB._OSC platform features")
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+> ---
 > 
-> > Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > ---
-> >  drivers/acpi/pci_irq.c      | 19 ++++++++++--------
-> >  drivers/acpi/pci_link.c     | 39 ++++++++++++++++++++++++-------------
-> >  drivers/xen/acpi.c          | 13 +++++++------
-> >  include/acpi/acpi_drivers.h |  2 +-
-> >  4 files changed, 44 insertions(+), 29 deletions(-)
-> > 
-> > diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-> > index ad81aa03fe2f..c416942ff3e2 100644
-> > --- a/drivers/acpi/pci_irq.c
-> > +++ b/drivers/acpi/pci_irq.c
-> > @@ -188,7 +188,7 @@ static int acpi_pci_irq_check_entry(acpi_handle handle, struct pci_dev *dev,
-> >  	 * the IRQ value, which is hardwired to specific interrupt inputs on
-> >  	 * the interrupt controller.
-> >  	 */
-> > -	pr_debug("%04x:%02x:%02x[%c] -> %s[%d]\n",
-> > +	pr_debug("%04x:%02x:%02x[%c] -> %s[%u]\n",
-> >  		 entry->id.segment, entry->id.bus, entry->id.device,
-> >  		 pin_name(entry->pin), prt->source, entry->index);
-> >  
-> > @@ -384,7 +384,7 @@ static inline bool acpi_pci_irq_valid(struct pci_dev *dev, u8 pin)
-> >  int acpi_pci_irq_enable(struct pci_dev *dev)
-> >  {
-> >  	struct acpi_prt_entry *entry;
-> > -	int gsi;
-> > +	u32 gsi;
-> >  	u8 pin;
-> >  	int triggering = ACPI_LEVEL_SENSITIVE;
-> >  	/*
-> > @@ -422,18 +422,21 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
-> >  			return 0;
-> >  	}
-> >  
-> > +	rc = -ENODEV;
-> > +
-> >  	if (entry) {
-> >  		if (entry->link)
-> > -			gsi = acpi_pci_link_allocate_irq(entry->link,
-> > +			rc = acpi_pci_link_allocate_irq(entry->link,
-> >  							 entry->index,
-> >  							 &triggering, &polarity,
-> > -							 &link);
-> > -		else
-> > +							 &link, &gsi);
-> > +		else {
-> >  			gsi = entry->index;
-> > -	} else
-> > -		gsi = -1;
-> > +			rc = 0;
-> > +		}
-> > +	}
-> >  
-> > -	if (gsi < 0) {
-> > +	if (rc < 0) {
-> >  		/*
-> >  		 * No IRQ known to the ACPI subsystem - maybe the BIOS /
-> >  		 * driver reported one, then use it. Exit in any case.
-> > diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-> > index bed7dc85612e..b91b039a3d20 100644
-> > --- a/drivers/acpi/pci_link.c
-> > +++ b/drivers/acpi/pci_link.c
-> > @@ -448,7 +448,7 @@ static int acpi_isa_irq_penalty[ACPI_MAX_ISA_IRQS] = {
-> >  	/* >IRQ15 */
-> >  };
-> >  
-> > -static int acpi_irq_pci_sharing_penalty(int irq)
-> > +static int acpi_irq_pci_sharing_penalty(u32 irq)
-> >  {
-> >  	struct acpi_pci_link *link;
-> >  	int penalty = 0;
-> > @@ -474,7 +474,7 @@ static int acpi_irq_pci_sharing_penalty(int irq)
-> >  	return penalty;
-> >  }
-> >  
-> > -static int acpi_irq_get_penalty(int irq)
-> > +static int acpi_irq_get_penalty(u32 irq)
-> >  {
-> >  	int penalty = 0;
-> >  
-> > @@ -528,7 +528,7 @@ static int acpi_irq_balance = -1;	/* 0: static, 1: balance */
-> >  static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-> >  {
-> >  	acpi_handle handle = link->device->handle;
-> > -	int irq;
-> > +	u32 irq;
-> >  	int i;
-> >  
-> >  	if (link->irq.initialized) {
-> > @@ -598,44 +598,53 @@ static int acpi_pci_link_allocate(struct acpi_pci_link *link)
-> >  	return 0;
-> >  }
-> >  
-> > -/*
-> > - * acpi_pci_link_allocate_irq
-> > - * success: return IRQ >= 0
-> > - * failure: return -1
-> > +/**
-> > + * acpi_pci_link_allocate_irq(): Retrieve a link device GSI
-> > + *
-> > + * @handle: Handle for the link device
-> > + * @index: GSI index
-> > + * @triggering: pointer to store the GSI trigger
-> > + * @polarity: pointer to store GSI polarity
-> > + * @name: pointer to store link device name
-> > + * @gsi: pointer to store GSI number
-> > + *
-> > + * Returns:
-> > + *	0 on success with @triggering, @polarity, @name, @gsi initialized.
-> > + *	-ENODEV on failure
-> >   */
-> >  int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
-> > -			       int *polarity, char **name)
-> > +			       int *polarity, char **name, u32 *gsi)
-> >  {
-> >  	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
-> >  	struct acpi_pci_link *link;
-> >  
-> >  	if (!device) {
-> >  		acpi_handle_err(handle, "Invalid link device\n");
-> > -		return -1;
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	link = acpi_driver_data(device);
-> >  	if (!link) {
-> >  		acpi_handle_err(handle, "Invalid link context\n");
-> > -		return -1;
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	/* TBD: Support multiple index (IRQ) entries per Link Device */
-> >  	if (index) {
-> >  		acpi_handle_err(handle, "Invalid index %d\n", index);
-> > -		return -1;
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	mutex_lock(&acpi_link_lock);
-> >  	if (acpi_pci_link_allocate(link)) {
-> >  		mutex_unlock(&acpi_link_lock);
-> > -		return -1;
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	if (!link->irq.active) {
-> >  		mutex_unlock(&acpi_link_lock);
-> >  		acpi_handle_err(handle, "Link active IRQ is 0!\n");
-> > -		return -1;
-> > +		return -ENODEV;
-> >  	}
-> >  	link->refcnt++;
-> >  	mutex_unlock(&acpi_link_lock);
-> > @@ -647,7 +656,9 @@ int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
-> >  	if (name)
-> >  		*name = acpi_device_bid(link->device);
-> >  	acpi_handle_debug(handle, "Link is referenced\n");
-> > -	return link->irq.active;
-> > +	*gsi = link->irq.active;
-> > +
-> > +	return 0;
-> >  }
-> >  
-> >  /*
-> > diff --git a/drivers/xen/acpi.c b/drivers/xen/acpi.c
-> > index d2ee605c5ca1..eab28cfe9939 100644
-> > --- a/drivers/xen/acpi.c
-> > +++ b/drivers/xen/acpi.c
-> > @@ -89,11 +89,11 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
-> >  						  int *trigger_out,
-> >  						  int *polarity_out)
-> >  {
-> > -	int gsi;
-> > +	u32 gsi;
-> >  	u8 pin;
-> >  	struct acpi_prt_entry *entry;
-> >  	int trigger = ACPI_LEVEL_SENSITIVE;
-> > -	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
-> > +	int ret, polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
-> >  				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
-> >  
-> >  	if (!dev || !gsi_out || !trigger_out || !polarity_out)
-> > @@ -105,17 +105,18 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
-> >  
-> >  	entry = acpi_pci_irq_lookup(dev, pin);
-> >  	if (entry) {
-> > +		ret = 0;
-> >  		if (entry->link)
-> > -			gsi = acpi_pci_link_allocate_irq(entry->link,
-> > +			ret = acpi_pci_link_allocate_irq(entry->link,
-> >  							 entry->index,
-> >  							 &trigger, &polarity,
-> > -							 NULL);
-> > +							 NULL, &gsi);
-> >  		else
-> >  			gsi = entry->index;
-> >  	} else
-> > -		gsi = -1;
-> > +		ret = -ENODEV;
-> >  
-> > -	if (gsi < 0)
-> > +	if (ret < 0)
-> >  		return -EINVAL;
-> >  
-> >  	*gsi_out = gsi;
-> > diff --git a/include/acpi/acpi_drivers.h b/include/acpi/acpi_drivers.h
-> > index b14d165632e7..402b97d12138 100644
-> > --- a/include/acpi/acpi_drivers.h
-> > +++ b/include/acpi/acpi_drivers.h
-> > @@ -51,7 +51,7 @@
-> >  
-> >  int acpi_irq_penalty_init(void);
-> >  int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
-> > -			       int *polarity, char **name);
-> > +			       int *polarity, char **name, u32 *gsi);
-> >  int acpi_pci_link_free_irq(acpi_handle handle);
-> >  
-> >  /* ACPI PCI Device Binding */
-> > -- 
-> > 2.50.1
-> > 
+> Commit e5322888e6bf is a linux-next one.
+> 
+> ---
+>  drivers/acpi/bus.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -294,7 +294,7 @@ acpi_status acpi_run_osc(acpi_handle han
+>  	int ret;
+>  
+>  	if (!context || !context->cap.pointer ||
+> -	    context->cap.length < 2 * sizeof(32) ||
+> +	    context->cap.length < 2 * sizeof(u32) ||
+>  	    guid_parse(context->uuid_str, &guid))
+>  		return AE_BAD_PARAMETER;
+>  
+> 
+> 
+> 
+> 
+
 
