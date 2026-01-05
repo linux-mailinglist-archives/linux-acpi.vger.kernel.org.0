@@ -1,173 +1,155 @@
-Return-Path: <linux-acpi+bounces-19953-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19952-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8B7CF4049
-	for <lists+linux-acpi@lfdr.de>; Mon, 05 Jan 2026 15:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FE3CF482D
+	for <lists+linux-acpi@lfdr.de>; Mon, 05 Jan 2026 16:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B02DF3045686
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jan 2026 13:55:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39F6F316358B
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jan 2026 15:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04422D24B7;
-	Mon,  5 Jan 2026 13:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDF02BD597;
+	Mon,  5 Jan 2026 13:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHVCKfKJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A774D23D7DD;
-	Mon,  5 Jan 2026 13:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB128135D;
+	Mon,  5 Jan 2026 13:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767621355; cv=none; b=jjGI8JDqI8XfQKA3GBOAPUfS+sS6bgO77fc4pMXafD9EUMTRIiJV3kmXm4zXW+lXfWO/llLMWVwnoH5qxN+udL3fBfK0A8Kyil4jSBqB5a0awZSXWzTBHVJJsHfELkm1rFIN5GcCPbrSIdysZ+dentIHObMCkFSmwxZZNiII4sI=
+	t=1767620854; cv=none; b=CNpW2fVKbfYRU1q1uExJRECGoRnQzTx1zkkGNW9PTSrt7X8ttzeOY2kB/5/h1zFU7E+J41Ip75CdBXLQ7CeKjFYsMq+CrPDdenHuU0u2wGJR85msB2LRMQDqAuncpYm7A4zOiDs/VhBeAl5CZgFsFb6iYaIz2th3LlB5FDxV5YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767621355; c=relaxed/simple;
-	bh=6Wi8ccELHgOxaAXh0BIHlKDmzpuP4ORk5/SyOh1Pmq0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YcENHQCm1V7WY6YJR2kc2gKCCb/Zt7mT703OpFmcFwunlmYpDTvLU5ysmmVnV9OAYlyHhqtBH6uLwceDVo11pQmejc4jbOup07IxqhwgyvBVvrDQt3hk7rsjRr6FVKgdQGe/f5c1yAIHsWnWGDHGVj7clPeGGeYzz1xgj2PpKUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlG6C3s37zHnGkW;
-	Mon,  5 Jan 2026 21:55:47 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id D2A4A40569;
-	Mon,  5 Jan 2026 21:55:49 +0800 (CST)
-Received: from localhost (10.48.147.217) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 5 Jan
- 2026 13:55:48 +0000
-Date: Mon, 5 Jan 2026 13:55:45 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, Marc
- Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	<linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 6/7] irqchip/gic-v5: Add ACPI ITS probing
-Message-ID: <20260105135545.00003a59@huawei.com>
-In-Reply-To: <20251218-gicv5-host-acpi-v2-6-eec76cd1d40b@kernel.org>
-References: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
-	<20251218-gicv5-host-acpi-v2-6-eec76cd1d40b@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1767620854; c=relaxed/simple;
+	bh=WSOCjjD2DBq0Cb2Rn+veRBCmNUrRwIQn/Krzmz9lGOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JfTM4/nmvH8XHwpIB46zPokBJxy5wmhq2pFqIJSCQq7xH++ulqF0W6Xi6LGAAnPgPFnULSjIR/KSJXUUQssi4khfxdipycaJ8mUQymlidoir7tZvQCysrAv+LY2aBcvgN18gGhRh5893cEERb5fAz9+sLdHHuUbjHTn+ZHGoaYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHVCKfKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20030C116D0;
+	Mon,  5 Jan 2026 13:47:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767620853;
+	bh=WSOCjjD2DBq0Cb2Rn+veRBCmNUrRwIQn/Krzmz9lGOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHVCKfKJkqg7z/wkGDQGvzk8D1rC5DzLMDhGMrJiwYcARXd49ljj9Rd7Z7EC85sdh
+	 xKwH6ZPVBiJ/CX0qr1SZwvlHFNpsqIIU6Ak0h7HxKzjFLoiGTmcXGrQp4fQnl8S0KY
+	 hjxaC1T6FUzmlGytELuBxWE5mxHdV2V885pKMCkg=
+Date: Mon, 5 Jan 2026 14:47:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>, Armin Wolf <w_armin@gmx.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH v1] ACPI: Documentation: driver-api: Disapprove of using
+ ACPI drivers
+Message-ID: <2026010553-capable-chip-88d7@gregkh>
+References: <5977355.DvuYhMxLoT@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5977355.DvuYhMxLoT@rafael.j.wysocki>
 
-On Thu, 18 Dec 2025 11:14:32 +0100
-Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
-
-> On ACPI ARM64 systems the GICv5 ITS configuration and translate frames
-> are described in the MADT table.
+On Mon, Jan 05, 2026 at 12:25:04PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Refactor the current GICv5 ITS driver code to share common functions
-> between ACPI and OF and implement ACPI probing in the GICv5 ITS driver.
+> Sadly, there is quite a bit of technical debt related to the
+> kernel's ACPI support subsystem and one of the most significant
+> pieces of it is the existence and use of ACPI drivers represented
+> by struct acpi_driver objects.
 > 
-> Add iort_msi_xlate() to map a device ID and retrieve an MSI controller
-> fwnode node for ACPI systems and update pci_msi_map_rid_ctlr_node() to
-> use it in its ACPI code path.
+> Those drivers are bound directly to struct acpi_device objects, also
+> referred to as "ACPI device nodes", representing device objects in the
+> ACPI namespace defined as:
 > 
-> Add the required functions to IORT code for deviceID retrieval and IRQ
-> domain registration and look-up so that the GICv5 ITS driver in an
-> ACPI based system can be successfully probed.
+>  A hierarchical tree structure in OS-controlled memory that contains
+>  named objects. These objects may be data objects, control method
+>  objects, bus/device package objects, and so on.
 > 
-> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-Hi Lorenzo,
-
-Diff was in a rather unfriendly mood on this one and smashing the xlate
-on top of the wrong function (wrt to what was being replaced).
-
-Ah well. Only one minor comment inline.  Not really my area of expertise
-beyond wanting this to move forwards quickly but none the less,
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
+> according to the ACPI specification [1].
+> 
+> The above definition implies, although rather indirectly, that the
+> objects in question don't really represent hardware.  They are just
+> "device package objects" containing some information on the devices
+> present in the given platform that is known to the platform firmware.
+> 
+> Although the platform firmware can be the only source of information on
+> some devices, the information provided by it alone may be insufficient
+> for device enumeration in general.  If that is the case, bindig a driver
+> directly to a given ACPI device node clearly doesn't make sense.  If
+> the device in question is enumerated through a hardware interface, it
+> will be represented by a device object matching that interface, like
+> a struct pci_dev, and the ACPI device node corresponding to it will be
+> treated as its "ACPI companions" whose role is to amend the "native"
+> enumeration mechanism.
+> 
+> For the sake of consistency and confusion avoidance, it is better to
+> treat ACPI device nodes in general as ACPI companions of other device
+> objects representing hardware.  In some cases though it appeared easier
+> to take a shortcut and use an ACPI driver binding directly to an ACPI
+> device node.  Moreover, there were corner cases in which that was the
+> only choice, but they all have been addressed now.
+> 
+> In all cases in which an ACPI driver might be used, the ACPI device
+> node it might bind to is an ACPI companion of another device object
+> representing a piece of hardware.  It is thus better to use a driver
+> binding to the latter than to use an ACPI driver and leave the other
+> device object alone, not just because doing so is more consistent and
+> less confusing, but also because using ACPI drivers may lead to
+> potential functional deficiencies, like possible ordering issues
+> related to power management.
+> 
+> Unfortunately, there are quite a few ACPI drivers in use and, as a rule,
+> they bind to ACPI device nodes that are ACPI companions of platform
+> devices, so in fact they play the role of platform drivers although in
+> a kind of convoluted way.  An effort has been under way to replace them
+> with platform drivers, which is relatively straightforward in the vast
+> majority of cases, but it has not been pursued very aggressively so far,
+> mostly due to the existence of the corner cases mentioned above.
+> However, since those corner cases are gone now, it makes sense to spend
+> more time on driver conversions with the ultimate goal to get rid of
+> struct acpi_driver and the related code from the kernel.
+> 
+> To that end, add a document explaining why using ACPI drivers is not
+> a good idea, so it need not be explained from scratch on every attempt
+> to convert an ACPI driver to a platform one.
+> 
+> Link: https://uefi.org/specs/ACPI/6.6/02_Definition_of_Terms.html#term-ACPI-Namespace [1]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  drivers/acpi/arm64/iort.c                |  95 +++++++++++++++++-----
->  drivers/irqchip/irq-gic-its-msi-parent.c |  39 ++++-----
->  drivers/irqchip/irq-gic-v5-irs.c         |   7 +-
->  drivers/irqchip/irq-gic-v5-its.c         | 132 ++++++++++++++++++++++++++++++-
->  drivers/pci/msi/irqdomain.c              |   2 +
->  include/linux/acpi_iort.h                |  10 ++-
->  include/linux/irqchip/arm-gic-v5.h       |   1 +
->  7 files changed, 241 insertions(+), 45 deletions(-)
 > 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 65f0f56ad753..17dbe66da804 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -595,45 +595,45 @@ u32 iort_msi_map_id(struct device *dev, u32 input_id)
->  }
->
-> +/**
-> + * iort_pmsi_get_msi_info() - Get the device id and translate frame PA for a device
-> + * @dev: The device for which the mapping is to be done.
-> + * @dev_id: The device ID found.
-> + * @pa: optional pointer to store translate frame address.
-> + *
-> + * Returns: 0 for successful devid and pa retrieval, -ENODEV on error
-> + */
-> +int iort_pmsi_get_msi_info(struct device *dev, u32 *dev_id, phys_addr_t *pa)
-> +{
-> +	struct acpi_iort_node *node, *parent = NULL;
-> +	struct acpi_iort_its_group *its;
-> +	int i, index;
-> +
-> +	node = iort_find_dev_node(dev);
-> +	if (!node)
-> +		return -ENODEV;
-> +
-> +	index = iort_get_id_mapping_index(node);
-> +	/* if there is a valid index, go get the dev_id directly */
-> +	if (index >= 0) {
-> +		parent = iort_node_get_id(node, dev_id, index);
-> +	} else {
-> +		for (i = 0; i < node->mapping_count; i++) {
-> +			parent = iort_node_map_platform_id(node, dev_id,
-> +						      IORT_MSI_TYPE, i);
-> +			if (parent)
-> +				break;
-> +		}
-> +	}
-> +
-Another borderline comment on what I think is a small readabilty
-improvement.
+> Although this patch can be applied independently, it actually depends on
+> some ACPI changes in linux-next and on
+> 
+> https://lore.kernel.org/linux-acpi/12824456.O9o76ZdvQC@rafael.j.wysocki/
+> 
+> so it is better to handle it along with that material.
+> 
+> ---
+>  Documentation/driver-api/acpi/acpi-drivers.rst |   80 +++++++++++++++++++++++++
+>  Documentation/driver-api/acpi/index.rst        |    1 
+>  2 files changed, 81 insertions(+)
 
-I'd handle the only error case that would otherwise use the ternary below
-here
-	if (!parent)
-		return -ENODEV;
+Documenting this is fine, but really, just moving all of the existing
+drivers to not use this and deleting the api entirely might be simplest.
+Looks like the only "new" acpi drivers that show up are in the
+platform/x86/ subsystem, so just tell the maintainers there not to take
+any new ones?
 
-	if (pa) {
-		...
-	}
-	return 0;
+thanks,
 
-> +	if (parent && pa) {
-> +		int ret;
-> +
-> +		its = (struct acpi_iort_its_group *)node->node_data;
-> +		ret = iort_find_its_base(its->identifiers[0], pa);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return parent ? 0 : -ENODEV;
-> +}
-
-
+greg k-h
 
