@@ -1,152 +1,271 @@
-Return-Path: <linux-acpi+bounces-19942-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19944-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E85CF0E0F
-	for <lists+linux-acpi@lfdr.de>; Sun, 04 Jan 2026 13:04:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FBCCF1D95
+	for <lists+linux-acpi@lfdr.de>; Mon, 05 Jan 2026 06:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A9643020C43
-	for <lists+linux-acpi@lfdr.de>; Sun,  4 Jan 2026 12:04:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 680413000913
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jan 2026 05:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709552980C2;
-	Sun,  4 Jan 2026 12:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4787C32548B;
+	Mon,  5 Jan 2026 05:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TxAkOMTd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dnm3+zyN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBA28CF5F;
-	Sun,  4 Jan 2026 12:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5865B31B100
+	for <linux-acpi@vger.kernel.org>; Mon,  5 Jan 2026 05:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767528262; cv=none; b=q48BjxbfepQikx+nxytszNdGOrv1G5HV2zR4Q3AbZ8C+L8G64vd3aEFdvF6HZtHeDLtDy9gp6AuU2okzVLjZe6Tvhvor2Ob5VBXxRs7w7QIrtCrBn5bJctnVjXW+08yh0PWdurNAE34An/14OWr5w1obkOPUsEGRRSUVAKHsBT0=
+	t=1767589937; cv=none; b=U2FVTU8toeGAoOWmN26hvrvUZpgg3VZqVRN9vId/qZdE8iDbxUSNEG7F5exZNDXimnInc1Xmb3egRzuFZKB2NSHU+58gjEZIPshlHYlpmo1rDjiCkRC/iBM1Sas8AtTkfaj6u5E0yPle6+jq7BP/LG7fyQVPv8WVZ96sUU4jF9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767528262; c=relaxed/simple;
-	bh=in0mvJHIM9/eic/0l2QwtjyPIFoH9qjDq0fUhHc9bJI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hhG8vwIjyygygif8GmOqRsoxdfEvXqK0tyTtDElyc06M5MGCWHgKM1SOImVIsZx/TB2VJKNLBEJc2NEXwA7AE7MuZYQxJu4m657EtoHIVjhQj59DdPJrXIRHS1T9uxuMuVCNWkTNZcv7p5m3JDImf94jVyaugSATcByDtpO0Vgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TxAkOMTd; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1767528252; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=u5obvNzNcLvGjs8qb6pMUxs8aoyCDyMM1pDJbd4Q3W8=;
-	b=TxAkOMTdgcRbdO9qcdT0TBsU50NcHayTpKKgpetb4gxszQB1QeHn92KDB8rV/294OKLZMyOiEOXQIhO8xReLRZQUby2+PI9+7NZCc+H0CrxORADxQJ8QEQd4rSJD9knYhwtJZ+YDWmamyuzfP1za72GmRiAm/78wO/lsSgUU3tQ=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WwEgE4g_1767528250 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 04 Jan 2026 20:04:11 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: tony.luck@intel.com,
-	guohanjun@huawei.com,
-	mchehab@kernel.org,
-	yazen.ghannam@amd.com
-Cc: dave.jiang@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	leitao@debian.org,
-	pengdonglin@xiaomi.com,
-	xueshuai@linux.alibaba.com,
-	baolin.wang@linux.alibaba.com,
-	benjamin.cheatham@amd.com,
-	bp@alien8.de,
-	dan.j.williams@intel.com,
-	james.morse@arm.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rafael@kernel.org,
-	zhuo.song@linux.alibaba.com
-Subject: [PATCH v2 3/3] ACPI: APEI: GHES: Improve ghes_notify_sea() status check
-Date: Sun,  4 Jan 2026 20:04:05 +0800
-Message-Id: <20260104120405.51555-4-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260104120405.51555-1-xueshuai@linux.alibaba.com>
-References: <20260104120405.51555-1-xueshuai@linux.alibaba.com>
+	s=arc-20240116; t=1767589937; c=relaxed/simple;
+	bh=b1XYOKoe6FdPiivr9BeR/pLBi3nNEFeJH4uCGr2/+MU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dqJlieiGyCGtxK5cz5VfzFH+4cC99dmsY9CmPxUh3FijifvQBoko/dB1Bsa/o1fdY9AutqR8TkiVFWue7aYY16IfexCWwhbiwP77HC6lIml/04a4rKht3o2seob5sIlmnqHj54z8ws/Haoxd60kwdBrIGetH+q5lzGnImAUMZgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dnm3+zyN; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7277324204so1966801466b.0
+        for <linux-acpi@vger.kernel.org>; Sun, 04 Jan 2026 21:12:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767589934; x=1768194734; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wKlIxjUKVBjzIbRR+kt3GqxsEQVSOw8kgLFjzSzVRQM=;
+        b=Dnm3+zyNc1I9CPnihG2BpOFP2+4VXoIngjL9y2V2mHAhz3JDXQc/Cd/F1JgqFoaZiZ
+         LE5rQC5+DC1AAIz+zJLEhCTO6QgzOqlrSa3KCGVyBciafgwsGI2OFCckyTASP02ure+d
+         +oDs06mFcDMFYoZcM0IP0TgHSfzYZoNXFdUMwHzDlTke3vRvp+pi0qm45ekPaR7olbtu
+         qRv3Ct0kolxjafoFBD/vMfXNc/Adw2G6RHSgJvlH/a/wGwVjsaNE7OZab3sDVD4ABwoP
+         Gi9+cbDeYCN/0x5CpZvwvz8JpQ3sWteAD2ZrOr6YvbbT8gpHF3ENoCoKjuz4Bm7uB7I+
+         IFjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767589934; x=1768194734;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wKlIxjUKVBjzIbRR+kt3GqxsEQVSOw8kgLFjzSzVRQM=;
+        b=a5U5iI3cTyZ3YXEpBpPRetOogp1MNcwf25+8jn68QcYuIHb/P+LS63PUiIe3AaM+eE
+         //DlzcBKjUvNgVeCkMyzL+Ea6QE0UwI7wFX+8wibwUEsAW9in7ePXmDYXwaiStCBrhLb
+         YWl+aKTNsZuCgssb3hiLDeYVEARiHKbhSr0B7uOUiDlnH/rZWr3/rYIp5Rp53IzaVdzw
+         ZDMp+/6xkZpJTwaAOJQ86yBpu1NH3BRosjokFPbxEhp743rNBmOPj4gbTmRwuMlL0vFn
+         yw3d6vbI3+/sG0+S9qZA9p42t6tI1f3FIgWuihafQzz9QGR2Emcwqs4hhP9uYuiDhzha
+         OaKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWpcpLx1uZXWh402pdEOMxo1itPh2SHZ6uAZeVWJv2PTJZKQO5U9ac79udaDFDR+lHZrUubsafYuk5Z@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaNcGeRKQzPrPlC6IIZCCAaTZGJAzjpEZIBL8O7sCvLduqWmhk
+	V+4+Ag4KA+7gF9B9/8I7/SobbBOE9zzq4SMACsY7eZY810r2SzPod1J668tfqZNIclUYVSrRe1q
+	qpi8cgq+tOy5ObOpIc9UjnMgf52jav+8=
+X-Gm-Gg: AY/fxX7h0RB/lLnWO+opjASb0v1qjSNmHwHPp3dIatp5biPMQEJuIAxj9K54rLvklCS
+	t37QHF/oL10tPlPhOJCUEu4cHa83gYUiwGYYKnD8UGJEfw4bjJSGcOAwmH6btMArnWAJMN46RAJ
+	7aqRuIgCLIe9VxzDbxTzOojXi2TVOvk5zGdiBgOGC/79h+BC2shui1MXVpMwm8lHBGL0RuE608l
+	2DdmkNCoCl2EqgyY4zBtlk1nyqQ2o0bdYMHrYF9CQq4AJJPy1qWkdUh1YP7tI5xkgeiCC0g
+X-Google-Smtp-Source: AGHT+IGB4d/jWdDUapgkYpYYhKPPJkcZEL4rgCwoWKuIF7DFQAYZz95Lgha44r5qxoZEoVPs8gUEeAAIf2GLongEolg=
+X-Received: by 2002:a17:906:dc90:b0:b73:21af:99d4 with SMTP id
+ a640c23a62f3a-b8036f96725mr4610529266b.24.1767589933376; Sun, 04 Jan 2026
+ 21:12:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260104120405.51555-1-xueshuai@linux.alibaba.com> <20260104120405.51555-3-xueshuai@linux.alibaba.com>
+In-Reply-To: <20260104120405.51555-3-xueshuai@linux.alibaba.com>
+From: Donglin Peng <dolinux.peng@gmail.com>
+Date: Mon, 5 Jan 2026 13:12:01 +0800
+X-Gm-Features: AQt7F2pe0mjRLFTmRBz2CJZnfV8XA7A9ejtEdpZcTvSEpCrHLPNlc_fwRrERjPA
+Message-ID: <CAErzpmvQqv6S-XkTf46bzTRQuv3h1LGXFixX-D_bCho-bD+upg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] ACPI: APEI: GHES: Extract helper functions for
+ error status handling
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: tony.luck@intel.com, guohanjun@huawei.com, mchehab@kernel.org, 
+	yazen.ghannam@amd.com, dave.jiang@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, leitao@debian.org, 
+	pengdonglin@xiaomi.com, baolin.wang@linux.alibaba.com, 
+	benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com, 
+	james.morse@arm.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rafael@kernel.org, zhuo.song@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Performance testing on ARMv8 systems shows significant overhead in error
-status handling in SEA error handling.
+On Sun, Jan 4, 2026 at 8:05=E2=80=AFPM Shuai Xue <xueshuai@linux.alibaba.co=
+m> wrote:
+>
+> Refactors the GHES driver by extracting common functionality into
+> reusable helper functions:
+>
+> 1. ghes_has_active_errors() - Checks if any error sources in a given list
+>    have active errors
+> 2. ghes_map_error_status() - Maps error status address to virtual address
+> 3. ghes_unmap_error_status() - Unmaps error status virtual address
+>
+> These helpers eliminate code duplication in the NMI path and prepare for
+> similar usage in the SEA path in a subsequent patch.
+>
+> No functional change intended.
+>
+> Tested-by: Tony Luck <tony.luck@intel.com>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> ---
+>  drivers/acpi/apei/ghes.c | 93 +++++++++++++++++++++++++++++++---------
+>  1 file changed, 72 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 0e97d50b0240..7600063fe263 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1406,6 +1406,75 @@ static int ghes_in_nmi_spool_from_list(struct list=
+_head *rcu_list,
+>         return ret;
+>  }
+>
+> +/**
+> + * ghes_has_active_errors - Check if there are active errors in error so=
+urces
+> + * @ghes_list: List of GHES entries to check for active errors
+> + *
+> + * This function iterates through all GHES entries in the given list and
+> + * checks if any of them has active error status by reading the error
+> + * status register.
+> + *
+> + * Return: true if at least one source has active error, false otherwise=
+.
+> + */
+> +static bool __maybe_unused ghes_has_active_errors(struct list_head *ghes=
+_list)
+> +{
+> +       bool active_error =3D false;
+> +       struct ghes *ghes;
+> +
+> +       rcu_read_lock();
 
-- ghes_peek_estatus(): 8,138.3 ns (21,160 cycles).
-- ghes_clear_estatus(): 2,038.3 ns (5,300 cycles).
+Nit: Use `guard(rcu)()` instead of explicit
+`rcu_read_lock()`/`rcu_read_unlock()`.
 
-Apply the same optimization used in ghes_notify_nmi() to
-ghes_notify_sea() by checking for active errors before processing,
+Thanks,
+Donglin
 
-Tested-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 7600063fe263..54a6461d277a 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1487,6 +1487,9 @@ int ghes_notify_sea(void)
- 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_sea);
- 	int rv;
- 
-+	if (!ghes_has_active_errors(&ghes_sea))
-+		return -ENOENT;
-+
- 	raw_spin_lock(&ghes_notify_lock_sea);
- 	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA);
- 	raw_spin_unlock(&ghes_notify_lock_sea);
-@@ -1494,11 +1497,19 @@ int ghes_notify_sea(void)
- 	return rv;
- }
- 
--static void ghes_sea_add(struct ghes *ghes)
-+static int ghes_sea_add(struct ghes *ghes)
- {
-+	int rc;
-+
-+	rc = ghes_map_error_status(ghes);
-+	if (rc)
-+		return rc;
-+
- 	mutex_lock(&ghes_list_mutex);
- 	list_add_rcu(&ghes->list, &ghes_sea);
- 	mutex_unlock(&ghes_list_mutex);
-+
-+	return 0;
- }
- 
- static void ghes_sea_remove(struct ghes *ghes)
-@@ -1506,10 +1517,11 @@ static void ghes_sea_remove(struct ghes *ghes)
- 	mutex_lock(&ghes_list_mutex);
- 	list_del_rcu(&ghes->list);
- 	mutex_unlock(&ghes_list_mutex);
-+	ghes_unmap_error_status(ghes);
- 	synchronize_rcu();
- }
- #else /* CONFIG_ACPI_APEI_SEA */
--static inline void ghes_sea_add(struct ghes *ghes) { }
-+static inline int ghes_sea_add(struct ghes *ghes) { return -EINVAL; }
- static inline void ghes_sea_remove(struct ghes *ghes) { }
- #endif /* CONFIG_ACPI_APEI_SEA */
- 
-@@ -1741,7 +1753,9 @@ static int ghes_probe(struct platform_device *ghes_dev)
- 		break;
- 
- 	case ACPI_HEST_NOTIFY_SEA:
--		ghes_sea_add(ghes);
-+		rc = ghes_sea_add(ghes);
-+		if (rc)
-+			goto err;
- 		break;
- 	case ACPI_HEST_NOTIFY_NMI:
- 		rc = ghes_nmi_add(ghes);
--- 
-2.39.3
-
+> +       list_for_each_entry_rcu(ghes, ghes_list, list) {
+> +               if (ghes->error_status_vaddr &&
+> +                   readl(ghes->error_status_vaddr)) {
+> +                       active_error =3D true;
+> +                       break;
+> +               }
+> +       }
+> +       rcu_read_unlock();
+> +
+> +       return active_error;
+> +}
+> +
+> +/**
+> + * ghes_map_error_status - Map error status address to virtual address
+> + * @ghes: pointer to GHES structure
+> + *
+> + * Reads the error status address from ACPI HEST table and maps it to a =
+virtual
+> + * address that can be accessed by the kernel.
+> + *
+> + * Return: 0 on success, error code on failure.
+> + */
+> +static int __maybe_unused ghes_map_error_status(struct ghes *ghes)
+> +{
+> +       struct acpi_hest_generic *g =3D ghes->generic;
+> +       u64 paddr;
+> +       int rc;
+> +
+> +       rc =3D apei_read(&paddr, &g->error_status_address);
+> +       if (rc)
+> +               return rc;
+> +
+> +       ghes->error_status_vaddr =3D
+> +               acpi_os_ioremap(paddr, sizeof(ghes->estatus->block_status=
+));
+> +       if (!ghes->error_status_vaddr)
+> +               return -EINVAL;
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * ghes_unmap_error_status - Unmap error status virtual address
+> + * @ghes: pointer to GHES structure
+> + *
+> + * Unmaps the error status address if it was previously mapped.
+> + */
+> +static void __maybe_unused ghes_unmap_error_status(struct ghes *ghes)
+> +{
+> +       if (ghes->error_status_vaddr) {
+> +               iounmap(ghes->error_status_vaddr);
+> +               ghes->error_status_vaddr =3D NULL;
+> +       }
+> +}
+> +
+>  #ifdef CONFIG_ACPI_APEI_SEA
+>  static LIST_HEAD(ghes_sea);
+>
+> @@ -1456,20 +1525,9 @@ static LIST_HEAD(ghes_nmi);
+>  static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
+>  {
+>         static DEFINE_RAW_SPINLOCK(ghes_notify_lock_nmi);
+> -       bool active_error =3D false;
+>         int ret =3D NMI_DONE;
+> -       struct ghes *ghes;
+> -
+> -       rcu_read_lock();
+> -       list_for_each_entry_rcu(ghes, &ghes_nmi, list) {
+> -               if (ghes->error_status_vaddr && readl(ghes->error_status_=
+vaddr)) {
+> -                       active_error =3D true;
+> -                       break;
+> -               }
+> -       }
+> -       rcu_read_unlock();
+>
+> -       if (!active_error)
+> +       if (!ghes_has_active_errors(&ghes_nmi))
+>                 return ret;
+>
+>         if (!atomic_add_unless(&ghes_in_nmi, 1, 1))
+> @@ -1486,18 +1544,12 @@ static int ghes_notify_nmi(unsigned int cmd, stru=
+ct pt_regs *regs)
+>
+>  static int ghes_nmi_add(struct ghes *ghes)
+>  {
+> -       struct acpi_hest_generic *g =3D ghes->generic;
+> -       u64 paddr;
+>         int rc;
+>
+> -       rc =3D apei_read(&paddr, &g->error_status_address);
+> +       rc =3D ghes_map_error_status(ghes);
+>         if (rc)
+>                 return rc;
+>
+> -       ghes->error_status_vaddr =3D acpi_os_ioremap(paddr, sizeof(ghes->=
+estatus->block_status));
+> -       if (!ghes->error_status_vaddr)
+> -               return -EINVAL;
+> -
+>         mutex_lock(&ghes_list_mutex);
+>         if (list_empty(&ghes_nmi))
+>                 register_nmi_handler(NMI_LOCAL, ghes_notify_nmi, 0, "ghes=
+");
+> @@ -1515,8 +1567,7 @@ static void ghes_nmi_remove(struct ghes *ghes)
+>                 unregister_nmi_handler(NMI_LOCAL, "ghes");
+>         mutex_unlock(&ghes_list_mutex);
+>
+> -       if (ghes->error_status_vaddr)
+> -               iounmap(ghes->error_status_vaddr);
+> +       ghes_unmap_error_status(ghes);
+>
+>         /*
+>          * To synchronize with NMI handler, ghes can only be
+> --
+> 2.39.3
+>
+>
 
