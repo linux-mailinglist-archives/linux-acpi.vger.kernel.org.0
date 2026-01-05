@@ -1,155 +1,202 @@
-Return-Path: <linux-acpi+bounces-19952-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19954-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FE3CF482D
-	for <lists+linux-acpi@lfdr.de>; Mon, 05 Jan 2026 16:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F530CF47FD
+	for <lists+linux-acpi@lfdr.de>; Mon, 05 Jan 2026 16:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39F6F316358B
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jan 2026 15:44:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 667BC310CA5F
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jan 2026 15:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDF02BD597;
-	Mon,  5 Jan 2026 13:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHVCKfKJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C56334C34;
+	Mon,  5 Jan 2026 15:35:30 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB128135D;
-	Mon,  5 Jan 2026 13:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7EF334C1F;
+	Mon,  5 Jan 2026 15:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767620854; cv=none; b=CNpW2fVKbfYRU1q1uExJRECGoRnQzTx1zkkGNW9PTSrt7X8ttzeOY2kB/5/h1zFU7E+J41Ip75CdBXLQ7CeKjFYsMq+CrPDdenHuU0u2wGJR85msB2LRMQDqAuncpYm7A4zOiDs/VhBeAl5CZgFsFb6iYaIz2th3LlB5FDxV5YM=
+	t=1767627330; cv=none; b=YjYECEU5cdy0rOd6ovM7oGiPV1YwJk+1uREjyCkMx4L08BcZtE6RTkf1bIynDNOwXdsblar/qH1Z5hQK/RMRgi8J7venNORp1JUozhB/oNQde+EYURLPI4xLhxmU/11kqyfD0DCAHWhQlnShYPsTYCjARR6Ax8k4cX0fCZOJvCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767620854; c=relaxed/simple;
-	bh=WSOCjjD2DBq0Cb2Rn+veRBCmNUrRwIQn/Krzmz9lGOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JfTM4/nmvH8XHwpIB46zPokBJxy5wmhq2pFqIJSCQq7xH++ulqF0W6Xi6LGAAnPgPFnULSjIR/KSJXUUQssi4khfxdipycaJ8mUQymlidoir7tZvQCysrAv+LY2aBcvgN18gGhRh5893cEERb5fAz9+sLdHHuUbjHTn+ZHGoaYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHVCKfKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20030C116D0;
-	Mon,  5 Jan 2026 13:47:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767620853;
-	bh=WSOCjjD2DBq0Cb2Rn+veRBCmNUrRwIQn/Krzmz9lGOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UHVCKfKJkqg7z/wkGDQGvzk8D1rC5DzLMDhGMrJiwYcARXd49ljj9Rd7Z7EC85sdh
-	 xKwH6ZPVBiJ/CX0qr1SZwvlHFNpsqIIU6Ak0h7HxKzjFLoiGTmcXGrQp4fQnl8S0KY
-	 hjxaC1T6FUzmlGytELuBxWE5mxHdV2V885pKMCkg=
-Date: Mon, 5 Jan 2026 14:47:30 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Zhang Rui <rui.zhang@intel.com>, Armin Wolf <w_armin@gmx.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH v1] ACPI: Documentation: driver-api: Disapprove of using
- ACPI drivers
-Message-ID: <2026010553-capable-chip-88d7@gregkh>
-References: <5977355.DvuYhMxLoT@rafael.j.wysocki>
+	s=arc-20240116; t=1767627330; c=relaxed/simple;
+	bh=fWqEL1fSDMOi6b55smNYwKDSz8sNbgwB2f+osIIeNeg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hnJcvxFRmXbG+5muTibhNjDeRgjsDxHmBpv7K9lSRxRF7ABmbtaA4oUv/8I2r7mE6hcVETIQsFU4fVTPFhT7tOTw6nHKn/strI/keIQ9tTNS56ggZkckNhFVaBNW/R/ljlNj1MZcwwAh3hIhHtS8zA4pH5JwAJUiSDv0brucUyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlJK53RhWzHnH6S;
+	Mon,  5 Jan 2026 23:35:21 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id E523F40570;
+	Mon,  5 Jan 2026 23:35:23 +0800 (CST)
+Received: from localhost (10.48.147.217) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 5 Jan
+ 2026 15:35:22 +0000
+Date: Mon, 5 Jan 2026 15:35:21 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, Marc
+ Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	<linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v2 7/7] irqchip/gic-v5: Add ACPI IWB probing
+Message-ID: <20260105153521.00007e46@huawei.com>
+In-Reply-To: <20251218-gicv5-host-acpi-v2-7-eec76cd1d40b@kernel.org>
+References: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
+	<20251218-gicv5-host-acpi-v2-7-eec76cd1d40b@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5977355.DvuYhMxLoT@rafael.j.wysocki>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, Jan 05, 2026 at 12:25:04PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, 18 Dec 2025 11:14:33 +0100
+Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
+
+> To probe an IWB in an ACPI based system it is required:
 > 
-> Sadly, there is quite a bit of technical debt related to the
-> kernel's ACPI support subsystem and one of the most significant
-> pieces of it is the existence and use of ACPI drivers represented
-> by struct acpi_driver objects.
+> - to implement the IORT functions handling the IWB IORT node and create
+>   functions to retrieve IWB firmware information
+> - to augment the driver to match the DSDT ACPI "ARMH0003" device and
+>   retrieve the IWB wire and trigger mask from the GSI interrupt descriptor
+>   in the IWB msi_domain_ops.msi_translate() function
 > 
-> Those drivers are bound directly to struct acpi_device objects, also
-> referred to as "ACPI device nodes", representing device objects in the
-> ACPI namespace defined as:
+> Make the required driver changes to enable IWB probing in ACPI systems.
 > 
->  A hierarchical tree structure in OS-controlled memory that contains
->  named objects. These objects may be data objects, control method
->  objects, bus/device package objects, and so on.
+> The GICv5 GSI format requires special handling for IWB routed IRQs.
 > 
-> according to the ACPI specification [1].
+> Add IWB GSI detection to the top level driver gic_v5_get_gsi_domain_id()
+> function so that the correct IRQ domain for a GSI can be detected by
+> parsing the GSI and check whether it is an IWB-backed IRQ or not.
 > 
-> The above definition implies, although rather indirectly, that the
-> objects in question don't really represent hardware.  They are just
-> "device package objects" containing some information on the devices
-> present in the given platform that is known to the platform firmware.
-> 
-> Although the platform firmware can be the only source of information on
-> some devices, the information provided by it alone may be insufficient
-> for device enumeration in general.  If that is the case, bindig a driver
-> directly to a given ACPI device node clearly doesn't make sense.  If
-> the device in question is enumerated through a hardware interface, it
-> will be represented by a device object matching that interface, like
-> a struct pci_dev, and the ACPI device node corresponding to it will be
-> treated as its "ACPI companions" whose role is to amend the "native"
-> enumeration mechanism.
-> 
-> For the sake of consistency and confusion avoidance, it is better to
-> treat ACPI device nodes in general as ACPI companions of other device
-> objects representing hardware.  In some cases though it appeared easier
-> to take a shortcut and use an ACPI driver binding directly to an ACPI
-> device node.  Moreover, there were corner cases in which that was the
-> only choice, but they all have been addressed now.
-> 
-> In all cases in which an ACPI driver might be used, the ACPI device
-> node it might bind to is an ACPI companion of another device object
-> representing a piece of hardware.  It is thus better to use a driver
-> binding to the latter than to use an ACPI driver and leave the other
-> device object alone, not just because doing so is more consistent and
-> less confusing, but also because using ACPI drivers may lead to
-> potential functional deficiencies, like possible ordering issues
-> related to power management.
-> 
-> Unfortunately, there are quite a few ACPI drivers in use and, as a rule,
-> they bind to ACPI device nodes that are ACPI companions of platform
-> devices, so in fact they play the role of platform drivers although in
-> a kind of convoluted way.  An effort has been under way to replace them
-> with platform drivers, which is relatively straightforward in the vast
-> majority of cases, but it has not been pursued very aggressively so far,
-> mostly due to the existence of the corner cases mentioned above.
-> However, since those corner cases are gone now, it makes sense to spend
-> more time on driver conversions with the ultimate goal to get rid of
-> struct acpi_driver and the related code from the kernel.
-> 
-> To that end, add a document explaining why using ACPI drivers is not
-> a good idea, so it need not be explained from scratch on every attempt
-> to convert an ACPI driver to a platform one.
-> 
-> Link: https://uefi.org/specs/ACPI/6.6/02_Definition_of_Terms.html#term-ACPI-Namespace [1]
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+A couple of trivial comments inline. Overall this series looks in a good
+state to me.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
 > ---
+>  drivers/acpi/arm64/iort.c          | 95 ++++++++++++++++++++++++++++++++------
+>  drivers/irqchip/irq-gic-v5-iwb.c   | 42 +++++++++++++----
+>  drivers/irqchip/irq-gic-v5.c       |  4 ++
+>  include/linux/acpi_iort.h          |  1 +
+>  include/linux/irqchip/arm-gic-v5.h |  6 +++
+>  5 files changed, 123 insertions(+), 25 deletions(-)
 > 
-> Although this patch can be applied independently, it actually depends on
-> some ACPI changes in linux-next and on
-> 
-> https://lore.kernel.org/linux-acpi/12824456.O9o76ZdvQC@rafael.j.wysocki/
-> 
-> so it is better to handle it along with that material.
-> 
-> ---
->  Documentation/driver-api/acpi/acpi-drivers.rst |   80 +++++++++++++++++++++++++
->  Documentation/driver-api/acpi/index.rst        |    1 
->  2 files changed, 81 insertions(+)
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 17dbe66da804..4b0b753db738 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
 
-Documenting this is fine, but really, just moving all of the existing
-drivers to not use this and deleting the api entirely might be simplest.
-Looks like the only "new" acpi drivers that show up are in the
-platform/x86/ subsystem, so just tell the maintainers there not to take
-any new ones?
+> @@ -317,12 +325,28 @@ static acpi_status iort_match_node_callback(struct acpi_iort_node *node,
+>  	return status;
+>  }
+>  
+> +static acpi_status iort_match_iwb_callback(struct acpi_iort_node *node, void *context)
+> +{
+> +	acpi_status status = AE_NOT_FOUND;
+> +	u32 *id = context;
+> +
+> +	if (node->type == ACPI_IORT_NODE_IWB) {
+> +		struct acpi_iort_iwb *iwb;
+> +
+> +		iwb = (struct acpi_iort_iwb *)node->node_data;
+> +		status = iwb->iwb_index == *id ? AE_OK : AE_NOT_FOUND;
+> +	}
+> +
+> +	return status;
+Simpler flow with a quick exclusion of wrong nodes.
+	if (node->type != ACPI_IORT_NODE_IWB)
+		return AE_NOT_FOUND;
+	....
+	iwb = ...
+	
+Also not sure I'd use a ternary here given it's only slightly more code
+as more readable.
+	if (iwb->iwb_index != *id)
+		return AE_NOT_FOUND;
 
-thanks,
+	return AE_OK;
 
-greg k-h
+> +}
+
+
+> diff --git a/drivers/irqchip/irq-gic-v5-iwb.c b/drivers/irqchip/irq-gic-v5-iwb.c
+> index ad9fdc14d1c6..c7d5fd34d053 100644
+> --- a/drivers/irqchip/irq-gic-v5-iwb.c
+> +++ b/drivers/irqchip/irq-gic-v5-iwb.c
+> @@ -4,6 +4,7 @@
+>   */
+>  #define pr_fmt(fmt)	"GICv5 IWB: " fmt
+>  
+> +#include <linux/acpi.h>
+>  #include <linux/init.h>
+>  #include <linux/kernel.h>
+>  #include <linux/msi.h>
+> @@ -136,18 +137,31 @@ static int gicv5_iwb_irq_domain_translate(struct irq_domain *d, struct irq_fwspe
+>  					  irq_hw_number_t *hwirq,
+>  					  unsigned int *type)
+>  {
+> -	if (!is_of_node(fwspec->fwnode))
+> -		return -EINVAL;
+> +	if (is_of_node(fwspec->fwnode)) {
+>  
+> -	if (fwspec->param_count < 2)
+> -		return -EINVAL;
+> +		if (fwspec->param_count < 2)
+> +			return -EINVAL;
+>  
+> -	/*
+> -	 * param[0] is be the wire
+> -	 * param[1] is the interrupt type
+> -	 */
+> -	*hwirq = fwspec->param[0];
+> -	*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+> +		/*
+> +		 * param[0] is be the wire
+> +		 * param[1] is the interrupt type
+> +		 */
+> +		*hwirq = fwspec->param[0];
+> +		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+
+As below, FIELD_GET() would improve reviewability a little.
+
+
+> +	}
+> +
+> +	if (is_acpi_device_node(fwspec->fwnode)) {
+> +
+> +		if (fwspec->param_count < 2)
+> +			return -EINVAL;
+> +
+> +		/*
+> +		 * Extract the wire from param[0]
+> +		 * param[1] is the interrupt type
+> +		 */
+> +		*hwirq = FIELD_GET(GICV5_GSI_IWB_WIRE, fwspec->param[0]);
+> +		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
+
+I'd prefer this FIELD_GET() for this as well so there is no need to
+go sanity check that it is the lowest bits.
+
+> +	}
+>  
+>  	return 0;
 
