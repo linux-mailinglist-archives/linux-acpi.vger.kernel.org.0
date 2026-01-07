@@ -1,153 +1,272 @@
-Return-Path: <linux-acpi+bounces-20023-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20024-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0152BD001D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 22:14:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41B7D003A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 22:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F9033032A81
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 21:12:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBAD93023D43
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 21:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C65F299944;
-	Wed,  7 Jan 2026 21:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4A82FD7BE;
+	Wed,  7 Jan 2026 21:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S/fSelmj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCr2l0hG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AFC22097;
-	Wed,  7 Jan 2026 21:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0C32F261C;
+	Wed,  7 Jan 2026 21:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767820325; cv=none; b=EIYx3hCvPdbzdDWnnI+jBDBmxFJVdj9qzb8Xe/Y62CsdOjsztx+SX8Ll10ywedP4lNziS3KDXDjhZD5W7HB6/QOHPZBjpZ/fumbHqY4NtWJi4sFZzbNStU7SQ+KXIR4UIyuEbkIydNHrKTxDSdF6uUkvBhf9rPDCFYDUGxHARI4=
+	t=1767822363; cv=none; b=ezcVwiQb+cM1KUT6oO8w5f3AEtCEpcF/d5ZUQ7S9fpJagrg3owTVnW2Jh2BLwYeCdTYXpn5uoafWMGy1E2oIKcF36FZ3YF1nrXGSOuQxOnZ7XF6e8wEG4VAHvg5UQ4g/ofgCa5Sk8cRy3mf5rX3NTcOwDPLgBkg1GsLZBtdPCrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767820325; c=relaxed/simple;
-	bh=vU/Y2pefRyJ+jQDO9QdGjxnQJ/MzStethzjBgPfzTLY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RpaKFBPwozYa0T6DmDOP+0KPq4dEyaw/MELcxCJy+5RKqCPvmSqRggpQ/b9pWxlTpd0qLymAdwLtGBR35FioEPQjDV5QEi2br83woarflvgiPjRwqLMxx+AeLgeykpg+p3XML2fDwE/RtDzHsaS/W1eUvOzLiKADdd3PP/HOuns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S/fSelmj; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1767822363; c=relaxed/simple;
+	bh=4W+oGcQ2gg0LEHLUvZck8IORIv8h8lQawEf9gAgqPKc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S7J9qULDpfgHCbxoyqDKvZ6M4r038aamttRguu9hVgDvRC3Z9tXqsRamFHnro4Wq5AOw4jqWV4NLnNKopwVAhxJQ4EVZeWDb8y9PZp3GEOXaE4hl/8h3JGcUKdJ4xzr8s6qA2TpiTFuBRFU/RajVGAiwEmXzbWZ1T53+3Kdlf5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCr2l0hG; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767820324; x=1799356324;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vU/Y2pefRyJ+jQDO9QdGjxnQJ/MzStethzjBgPfzTLY=;
-  b=S/fSelmjzvfubHDAwNXauSJWFeQjFCOaLD+Mr+N6Wi/WJGWlHrexgm51
-   Lp2qQA6wVlWPsA1V6xAbW7auTJ0hXl9TTgqb5ZBwXA4iB43R42pBb++3e
-   n2VHjYHY++zOWi3hvsoILBPkZLC0bYHynhfK0qUGDKMfXxetXlcAc8mmi
-   Vb0CLIGNN52PugDxYXSbqkp0PnXVBsD+GMeAWciKsPmhuVQI4zCrE2ntb
-   w1BZzFh38CJT90p5+PsA3p4FTADg4OwNOnWVSoQPq2e8RzIwWsHuJ4OFO
-   H3kBu+ewyFW9Brgl8dRN6Ik8BCuj0sSa47CCQYjIWGvEZX+qpiiwdKTCR
-   w==;
-X-CSE-ConnectionGUID: Elzr7yWlTrOZ95s8SjkKDg==
-X-CSE-MsgGUID: l0oPOvtmSd6BhIPzUV2EYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="80558861"
+  t=1767822361; x=1799358361;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=4W+oGcQ2gg0LEHLUvZck8IORIv8h8lQawEf9gAgqPKc=;
+  b=OCr2l0hGgRpej3XoTuLBtbdglS6Jn8NziW9+klFyj/el38O804oMk7Rk
+   k0UwHhT7bJfCpqBFEdxqgzBqahN7DHsR3ziRiwJruWMw61OkAjn6l8w1P
+   uYWZ+jTlLYB/rlGPmb4wGFS0aFe923UrD/TD+R5a2Mm16bBHCzIwIQ68O
+   qidFBw1768/QymakkxtpiKMBIG0NrCUA2WSuzrgYQCt30AJAOkroUcLpg
+   S/O7QknQg2J38mHAnHOFxZMXzVepn2G3RbUWC0cXXPv2Q87IFAYLr04x3
+   LUsUIPQahEi6PhF9Wci+N5A3gbR2FKeQfYj1GHN6u/ai9MlfVBsbhtyFs
+   Q==;
+X-CSE-ConnectionGUID: js7cixPiSCOOx9O3vxO2mw==
+X-CSE-MsgGUID: tMsNT6oJRTm0HLbmkBn59g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69359262"
 X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="80558861"
+   d="scan'208";a="69359262"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:12:03 -0800
-X-CSE-ConnectionGUID: hiV6ib5fRMOPr5wSLxDCzg==
-X-CSE-MsgGUID: eC/gqlvTQ5Gj56Y++knxlA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:46:01 -0800
+X-CSE-ConnectionGUID: UTk0Bl7ER0i5RDQIER8ApA==
+X-CSE-MsgGUID: o7K0ddWYTle9BHaOPvsDUA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="207503017"
-Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 07 Jan 2026 13:12:01 -0800
-Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vdaow-000000001cS-340E;
-	Wed, 07 Jan 2026 21:11:58 +0000
-Date: Wed, 7 Jan 2026 22:11:01 +0100
-From: kernel test robot <lkp@intel.com>
-To: Kartik Rajput <kkartik@nvidia.com>, lenb@kernel.org,
-	sakari.ailus@linux.intel.com, mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
-	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
-Message-ID: <202601072231.MPkHMWgN-lkp@intel.com>
-References: <20260107062453.10893-1-kkartik@nvidia.com>
+   d="scan'208";a="207510889"
+Received: from unknown (HELO [172.25.112.21]) ([172.25.112.21])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:46:01 -0800
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v8 00/10] x86/hyperv/hv_vtl: Use a wakeup mailbox to boot
+ secondary CPUs
+Date: Wed, 07 Jan 2026 13:44:36 -0800
+Message-Id: <20260107-rneri-wakeup-mailbox-v8-0-2f5b6785f2f5@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107062453.10893-1-kkartik@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMTTXmkC/3XPwW6EIBQF0F+ZsC4GHiI6q/5H0wXgo5IqTNCxN
+ hP/vWjSTpMZl3fxzr3vRkZMHkdyPt1IwtmPPoYc6pcTsZ0OH0h9mzMBBpJVDGgK+YB+6U+8Xui
+ gfW/iQgXU6FBBzYQj+fSS0PllZ9/ec3YpDnTqEuo7JpngDZdcFlCyklNOk7c6tbHYG6zuW0wxv
+ PY+XJfChwn7wsZh4zs/TjF976Pnciv53See75tLymgrhQAFRoGAB3VbOct/FKgDSm6Uk6UyvOV
+ Nhc+p6o/ijFcHVJWp/LuQzjSCyQNK3SnOj1apjdK1qUEbZcE+Uuu6/gD8cEzp7gEAAA==
+To: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>, 
+ Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+ linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ricardo Neri <ricardo.neri@intel.com>, kernel test robot <lkp@intel.com>, 
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, 
+ "Rafael J. Wysocki (Intel)" <rafael.j.wysocki@intel.com>, 
+ Yunhong Jiang <yunhong.jiang@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767822314; l=8466;
+ i=ricardo.neri-calderon@linux.intel.com; s=20250602;
+ h=from:subject:message-id; bh=4W+oGcQ2gg0LEHLUvZck8IORIv8h8lQawEf9gAgqPKc=;
+ b=OpHUtMoecmXbMPpdL3CTIRoMz3wEZcOtx7RgMZ2acuJRhdSSLVWaTtZ+FdY1t2rb/ixqop9BW
+ LiVBvyeMKogC3MA+H5SyRDRa2UGARgG10hL5LVg8yFUryffYJV7Q2VM
+X-Developer-Key: i=ricardo.neri-calderon@linux.intel.com; a=ed25519;
+ pk=NfZw5SyQ2lxVfmNMaMR6KUj3+0OhcwDPyRzFDH9gY2w=
 
-Hi Kartik,
+Hi,
 
-kernel test robot noticed the following build errors:
+Happy New Year! I have a new version of this patchset to start the year.
+I incorporated a patch that I had posted separately to fix a build break
+that I found while working on this series [1]. I also added the Acked-by
+tags from Rafael. No other changes.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge westeri-thunderbolt/next linus/master v6.16-rc1 next-20260107]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I include the cover letter from the previous version for convenience.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kartik-Rajput/ACPI-bus-Use-OF-match-data-for-PRP0001-matched-devices/20260107-142543
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20260107062453.10893-1-kkartik%40nvidia.com
-patch subject: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260107/202601072231.MPkHMWgN-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601072231.MPkHMWgN-lkp@intel.com/reproduce)
+Thanks a lot to all those who have reviewed the series!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601072231.MPkHMWgN-lkp@intel.com/
+...
 
-All errors (new ones prefixed by >>):
+This patchset adds functionality to use the ACPI wakeup mailbox to boot
+secondary CPUs in Hyper-V VTL level 2 TDX guests with DeviceTree-based
+virtual firmware. Although this is the target use case, the use of the
+mailbox depends solely on it being enumerated in the DeviceTree graph.
 
->> drivers/acpi/bus.c:1034:21: error: expected identifier or '('
-    1034 |         struct acpi_device = ACPI_COMPANION(dev);
-         |                            ^
->> drivers/acpi/bus.c:1036:53: error: use of undeclared identifier 'adev'; did you mean 'dev'?
-    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
-         |                                                            ^~~~
-         |                                                            dev
-   drivers/acpi/bus.c:1030:61: note: 'dev' declared here
-    1030 | const void *acpi_device_get_match_data(const struct device *dev)
-         |                                                             ^
->> drivers/acpi/bus.c:1037:3: error: expected ')'
-    1037 |                 return acpi_of_device_get_match_data(dev);
-         |                 ^
-   drivers/acpi/bus.c:1036:5: note: to match this '('
-    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
-         |            ^
-   3 errors generated.
+On x86 platforms, secondary CPUs are typically booted using INIT assert,
+de-assert followed by Start-Up IPI messages. Virtual machines can also use
+hypercalls to bring up secondary CPUs to a desired execution state. These
+two mechanisms require support from the hypervisor. Confidential computing
+VMs in a TDX environment cannot use this mechanism because the hypervisor
+is considered an untrusted entity.
 
+Linux already supports the ACPI Multiprocessor Wakeup Structure in which
+the guest platform firmware boots the secondary CPUs and transfers control
+to the kernel using a mailbox. This mechanism does not need involvement
+of the VMM. It can be used in a Hyper-V VTL level 2 TDX guest.
 
-vim +1034 drivers/acpi/bus.c
+Currently, this mechanism can only be used on x86 platforms with firmware
+that supports ACPI. There are platforms that use DeviceTree (e.g., OpenHCL
+[2]) instead of ACPI to describe the hardware.
 
-  1029	
-  1030	const void *acpi_device_get_match_data(const struct device *dev)
-  1031	{
-  1032		const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
-  1033		const struct acpi_device_id *match;
-> 1034		struct acpi_device = ACPI_COMPANION(dev);
-  1035	
-> 1036		if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
-> 1037			return acpi_of_device_get_match_data(dev);
-  1038	
-  1039		match = acpi_match_device(acpi_ids, dev);
-  1040		if (!match)
-  1041			return NULL;
-  1042	
-  1043		return (const void *)match->driver_data;
-  1044	}
-  1045	EXPORT_SYMBOL_GPL(acpi_device_get_match_data);
-  1046	
+Provided that the wakeup mailbox enumerated in a DeviceTree-based platform
+firmware is implemented as described in the ACPI specification, the kernel
+can use the existing ACPI code for both DeviceTree and ACPI systems. The
+DeviceTree firmware does not need to use any ACPI table to enumerate the
+mailbox.
 
+This patchset is structured as follows:
+
+   * Add missing dependencies to arch/x86/include/asm/topology.h. (patch 1)
+   * Expose functions to reuse the code handling the ACPI Multiprocessor
+     Wakeup Structure outside of ACPI code. (patch 2)
+   * Define DeviceTree bindings to enumerate a mailbox as described in
+     the ACPI specification. (patch 3)
+   * Find and set up the wakeup mailbox if enumerated in the DeviceTree
+     graph. (patch 4)
+   * Prepare Hyper-V VTL2 TDX guests to use the Wakeup Mailbox to boot
+     secondary CPUs when available. (patches 5-10)
+
+I have tested this patchset on a Hyper-V host with VTL2 OpenHCL, QEMU, and
+physical hardware.
+
+Changes in v8:
+- Fixed a build break. Same patch as [1].
+- Added two Acked-by tags from Rafael. Thanks!
+- Link to v7: https://lore.kernel.org/r/20251117-rneri-wakeup-mailbox-v7-0-4a8b82ab7c2c@linux.intel.com
+
+Changes in v7:
+- Dropped the patch that relocated the ACPI wakeup mailbox to an generic
+  location. (Boris)
+- Instead, added function declarations to use the wakeup mailbox from
+  outside ACPI code. Also added stubs for !CONFIG_ACPI.
+- Link to v6: https://lore.kernel.org/r/20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com
+
+Changes in v6:
+- Fixed a build error with !CONFIG_X86_MAILBOX_WAKEUP and
+  CONFIG_HYPER_VTL_MODE.
+- Added Acked-by tags from Rafael. Thanks!
+- Added Reviewed-by tags from Dexuan and Rob. Thanks!
+- Corrected typos and function names in the changelog.
+- Link to v5: https://lore.kernel.org/r/20250627-rneri-wakeup-mailbox-v5-0-df547b1d196e@linux.intel.com
+
+Changes in v5:
+- Referred in the DeviceTree binding documentation the section and
+  section of the ACPI specification that defines the wakeup mailbox.
+- Moved the dependency on CONFIG_OF to patch 4, where the flattened
+  DeviceTree is parsed for the mailbox.
+- Fixed a warning from yamllint regarding line lengths.
+- Link to v4: https://lore.kernel.org/r/20250603-rneri-wakeup-mailbox-v4-0-d533272b7232@linux.intel.com
+
+Changes in v4:
+- Added Reviewed-by: tags from Michael Kelley. Thanks!
+- Relocated the common wakeup code from acpi/madt_wakeup.c to a new
+  smpwakeup.c to be used in DeviceTree- and ACPI-based systems.
+- Dropped the x86 CPU bindings as they are not a good fit to document
+  firmware features.
+- Dropped the code that parsed and validated of the `enable-method`
+  property for cpu@N nodes in x86. Instead, unconditionally parse and use
+  the wakeup mailbox when found.
+- Updated the wakeup mailbox schema to avoid redefing the structure and
+  operation of the mailbox. Instead, refer to the ACPI specification.
+  Also clarified that the enumeration of the mailbox is done separately.
+- Prefixed helper functions of wakeup code with acpi_.
+- Link to v3: https://lore.kernel.org/r/20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com
+
+Changes in v3:
+- Only move out of the acpi directory acpi_wakeup_cpu() and its
+  accessory variables. Use helper functions to access the mailbox as
+  needed. This also fixed the warnings about unused code with CONFIG_
+  ACPI=n that Michael reported.
+- Major rework of the DeviceTree bindings and schema. Now there is a
+  reserved-memory binding for the mailbox as well as a new x86 CPU
+  bindings. Both have `compatible` properties.
+- Rework of the code parsing the DeviceTree bindings for the mailbox.
+  Now configuring the mailbox depends solely on its enumeration in the
+  DeviceTree and not on Hyper-V VTL2 TDX guest.
+- Do not make reserving the first 1MB of memory optional. It is not
+  needed and may introduce bugs.
+- Prepare Hyper-V VTL2 guests to unconditionally use the mailbox in TDX
+  environments. If the mailbox is not available, booting secondary CPUs
+  will fail gracefully.
+- Link to v2: https://lore.kernel.org/r/20240823232327.2408869-1-yunhong.jiang@linux.intel.com
+
+Changes in v2:
+- Fix the cover letter's summary phrase.
+- Fix the DT binding document to pass validation.
+- Change the DT binding document to be ACPI independent.
+- Move ACPI-only functions into the #ifdef CONFIG_ACPI.
+- Change dtb_parse_mp_wake() to return mailbox physical address.
+- Rework the hv_is_private_mmio_tdx().
+- Remove unrelated real mode change from the patch that marks mailbox
+  page private.
+- Check hv_isolation_type_tdx() instead of wakeup_mailbox_addr in
+  hv_vtl_init_platform() because wakeup_mailbox_addr is not parsed yet.
+- Add memory range support to reserve_real_mode.
+- Remove realmode_reserve callback and use the memory range.
+- Move setting the real_mode_header to hv_vtl_init_platform.
+- Update comments and commit messages.
+- Minor style changes.
+- Link to v1: https://lore.kernel.org/r/20240806221237.1634126-1-yunhong.jiang@linux.intel.com
+
+[1]. https://lore.kernel.org/all/20251117-rneri-topology-cpuinfo-bug-v1-1-a905bb5f91e2@linux.intel.com/
+[2]. https://openvmm.dev/guide/user_guide/openhcl.html
+--
+2.43.0
+
+---
+Ricardo Neri (6):
+      x86/topology: Add missing struct declaration and attribute dependency
+      x86/acpi: Add functions to setup and access the wakeup mailbox
+      dt-bindings: reserved-memory: Wakeup Mailbox for Intel processors
+      x86/dt: Parse the Wakeup Mailbox for Intel processors
+      x86/acpi: Add a helper get the address of the wakeup mailbox
+      x86/hyperv/vtl: Use the wakeup mailbox to boot secondary CPUs
+
+Yunhong Jiang (4):
+      x86/hyperv/vtl: Set real_mode_header in hv_vtl_init_platform()
+      x86/realmode: Make the location of the trampoline configurable
+      x86/hyperv/vtl: Setup the 64-bit trampoline for TDX guests
+      x86/hyperv/vtl: Mark the wakeup mailbox page as private
+
+ .../reserved-memory/intel,wakeup-mailbox.yaml      | 50 ++++++++++++++++++++++
+ arch/x86/hyperv/hv_vtl.c                           | 38 ++++++++++++++--
+ arch/x86/include/asm/acpi.h                        | 16 +++++++
+ arch/x86/include/asm/topology.h                    |  3 ++
+ arch/x86/include/asm/x86_init.h                    |  3 ++
+ arch/x86/kernel/acpi/madt_wakeup.c                 | 16 +++++++
+ arch/x86/kernel/devicetree.c                       | 47 ++++++++++++++++++++
+ arch/x86/kernel/x86_init.c                         |  3 ++
+ arch/x86/realmode/init.c                           |  7 ++-
+ 9 files changed, 175 insertions(+), 8 deletions(-)
+---
+base-commit: 39127143100254ceb5f31469ac9a10a2a5b71285
+change-id: 20250602-rneri-wakeup-mailbox-328efe72803f
+
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+
 
