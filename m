@@ -1,182 +1,171 @@
-Return-Path: <linux-acpi+bounces-19989-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19990-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C02CFCDBC
-	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 10:29:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E68ACFD17C
+	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 11:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CBCE3005B97
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 09:23:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2FD5D3004281
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 10:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8501E2FE579;
-	Wed,  7 Jan 2026 09:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/MtHX9x"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1542A301717;
+	Wed,  7 Jan 2026 10:05:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EFA2356A4;
-	Wed,  7 Jan 2026 09:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB9B35975;
+	Wed,  7 Jan 2026 10:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767777838; cv=none; b=ClnmyVfrwBMHYwLljhFQREWLUlwMGqA0F9xbiB7zfVKiTig6dytF0paTIcIeXbYkxRoKzRJ+CFvS5pv+Pw5DIA8oJ+daekSitonplaQH4OC2azN0AZUhyI6hV7J2m9pFQ99KUV9Hiy5+GlcXz3ivAmx0DczgNxsCnfr5/2oDlY8=
+	t=1767780307; cv=none; b=rE9eFKY98W8uFPSbTCOXgZMip6u9fSTQBX+eDX+pUOZBB6h9MqL6DNnhdTzpukyF7Tf8SkGO4DwBZ5auOX7cWDRUUxysrFqTHmBQhSdQK7OJ1i8/sY5dRACziKCZ3uAsXvvEo545I782dxYwPW4QLFCRCTGZeWjnhkqPcf7aYJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767777838; c=relaxed/simple;
-	bh=+6pwW5uwAPs1Ujhdl8iggTkeR5DIz6CdXvrHytl9AcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z2b0kJ85MUPs1kT8YcX/izHqZKM0Nzb1/aCGFhYnwnQSX7yGdGZxkMFOfDaS8xjYAb1Sd9vYwojhoCfVzuzdxfCqExXrEZVWxdodxiJQUWWWXR8pB5mQU6dyJR3LEu6jqEHc+9a9bc3QjkjLUYqPZIak1kLJtjDgh4/f97Ldiis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/MtHX9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B21C4CEF7;
-	Wed,  7 Jan 2026 09:23:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767777837;
-	bh=+6pwW5uwAPs1Ujhdl8iggTkeR5DIz6CdXvrHytl9AcI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o/MtHX9xtq+8mIeuQ2a+CEV/EtEvcjehkZNy0F+6BDhCO2qi5rHoyAGTnniOgESHE
-	 IilnvhlTtAzQVB2y8T3ZBijAcuBqaJB2AwJjtk5/DWot25uwJ+9YcnT4QuZEGzzOSe
-	 py+97jd19AM7or0s1Rx0yj9R92DDWFXOXPdyEB0cPuVaow2Rsug9g+6fvxvHuF0gwG
-	 ZGiuOYLbq9oQVOT2/PPR+A1x3zHTUvpqmHPE9nvlbzSIxCf0vh0IqhioksNFRRjOZ2
-	 ElCudii24ZjPfc75AGA5lW+xLQjYfq2Zt6HG87JzpC123whWvhKq6aoHdC24ZXlkwv
-	 nNmiJHzkFSybw==
-Date: Wed, 7 Jan 2026 10:23:52 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 4/7] PCI/MSI: Make the pci_msi_map_rid_ctlr_node()
- interface firmware agnostic
-Message-ID: <aV4mKBRjeyp9eWVy@lpieralisi>
+	s=arc-20240116; t=1767780307; c=relaxed/simple;
+	bh=lWWZJRAbEF6l2cm/20EgNwcIJKjs/oxEPtr5POOy7Pk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TEDJmI3wg3/lGqrOEJMO+z8QAiyPcsEiOcD7DlHg8vlj1abB/7tp2yf/Tn7T0JQOeILgHtmMFSdKXdIJKgh6r7AAbwbRsVvGf0iEH4rKPZx3pJqtIjpiKHyUZV67FWvBbTpR+Z30VUHIxZYE3UQ3XeW2MfJ7EQJIXAGb+gg3J9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dmNtr3skPzJ46DQ;
+	Wed,  7 Jan 2026 18:04:52 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8D57B40565;
+	Wed,  7 Jan 2026 18:04:55 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 7 Jan
+ 2026 10:04:54 +0000
+Date: Wed, 7 Jan 2026 10:04:52 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, Marc
+ Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	<linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v2 3/7] irqdomain: Add parent field to struct
+ irqchip_fwid
+Message-ID: <20260107100452.00004b6f@huawei.com>
+In-Reply-To: <aV4gH/yHaOmOtK0J@lpieralisi>
 References: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
- <20251218-gicv5-host-acpi-v2-4-eec76cd1d40b@kernel.org>
- <20260105122114.000035e8@huawei.com>
+	<20251218-gicv5-host-acpi-v2-3-eec76cd1d40b@kernel.org>
+	<20260105120108.00002016@huawei.com>
+	<aV4gH/yHaOmOtK0J@lpieralisi>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105122114.000035e8@huawei.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, Jan 05, 2026 at 12:21:14PM +0000, Jonathan Cameron wrote:
-> On Thu, 18 Dec 2025 11:14:30 +0100
-> Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
-> 
-> > To support booting with OF and ACPI seamlessly, GIC ITS parent code
-> > requires the PCI/MSI irqdomain layer to implement a function to retrieve
-> > an MSI controller fwnode and map an RID in a firmware agnostic way
-> > (ie pci_msi_map_rid_ctlr_node()).
+On Wed, 7 Jan 2026 09:58:07 +0100
+Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
+
+> On Mon, Jan 05, 2026 at 12:01:08PM +0000, Jonathan Cameron wrote:
+> > On Thu, 18 Dec 2025 11:14:29 +0100
+> > Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
+> >   
+> > > The GICv5 driver IRQ domain hierarchy requires adding a parent field to
+> > > struct irqchip_fwid so that core code can reference a fwnode_handle parent
+> > > for a given fwnode.
+> > > 
+> > > Add a parent field to struct irqchip_fwid and update the related kernel API
+> > > functions to initialize and handle it.
+> > > 
+> > > Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > > Cc: Marc Zyngier <maz@kernel.org>  
+> > Hi Lorenzo,
 > > 
-> > Convert pci_msi_map_rid_ctlr_node() to an OF agnostic interface
-> > (fwnode_handle based) and update the GIC ITS MSI parent code to reflect
-> > the pci_msi_map_rid_ctlr_node() change.
+> > Happy new year.  
+> 
+> Happy New Year !
+> 
+> > > ---
+> > >  include/linux/irqdomain.h | 30 ++++++++++++++++++++++++++----
+> > >  kernel/irq/irqdomain.c    | 14 +++++++++++++-
+> > >  2 files changed, 39 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+> > > index 62f81bbeb490..b9df84b447a1 100644
+> > > --- a/include/linux/irqdomain.h
+> > > +++ b/include/linux/irqdomain.h
+> > > @@ -257,7 +257,8 @@ static inline void irq_domain_set_pm_device(struct irq_domain *d, struct device
+> > >  
+> > >  #ifdef CONFIG_IRQ_DOMAIN
+> > >  struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned int type, int id,
+> > > -						const char *name, phys_addr_t *pa);
+> > > +						const char *name, phys_addr_t *pa,
+> > > +						struct fwnode_handle *parent);
+> > >  
+> > >  enum {
+> > >  	IRQCHIP_FWNODE_REAL,
+> > > @@ -267,18 +268,39 @@ enum {
+> > >  
+> > >  static inline struct fwnode_handle *irq_domain_alloc_named_fwnode(const char *name)
+> > >  {
+> > > -	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL);
+> > > +	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL, NULL);
+> > > +}
+> > > +
+> > > +static inline
+> > > +struct fwnode_handle *irq_domain_alloc_named_fwnode_parent(const char *name,
+> > > +							   struct fwnode_handle *parent)  
 > > 
-> > Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> Hi Lorenzo,
-> 
-> A few minor comments inline.  All in the 'up to you' category.
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> 
-> > ---
-> 
-> > diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-> > index a329060287b5..3136341e802c 100644
-> > --- a/drivers/pci/msi/irqdomain.c
-> > +++ b/drivers/pci/msi/irqdomain.c
-> > @@ -376,23 +376,35 @@ u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev)
-> >  }
-> >  
-> >  /**
-> > - * pci_msi_map_rid_ctlr_node - Get the MSI controller node and MSI requester id (RID)
-> > + * pci_msi_map_rid_ctlr_node - Get the MSI controller fwnode_handle and MSI requester id (RID)
-> > + * @domain:	The interrupt domain
-> >   * @pdev:	The PCI device
-> > - * @node:	Pointer to store the MSI controller device node
-> > + * @node:	Pointer to store the MSI controller fwnode_handle
-> >   *
-> > - * Use the firmware data to find the MSI controller node for @pdev.
-> > + * Use the firmware data to find the MSI controller fwnode_handle for @pdev.
-> >   * If found map the RID and initialize @node with it. @node value must
-> >   * be set to NULL on entry.
-> >   *
-> >   * Returns: The RID.
-> >   */
-> > -u32 pci_msi_map_rid_ctlr_node(struct pci_dev *pdev, struct device_node **node)
-> > +u32 pci_msi_map_rid_ctlr_node(struct irq_domain *domain, struct pci_dev *pdev,
-> > +			      struct fwnode_handle **node)
-> >  {
-> > +	struct device_node *of_node;
-> >  	u32 rid = pci_dev_id(pdev);
-> >  
-> >  	pci_for_each_dma_alias(pdev, get_msi_id_cb, &rid);
-> >  
-> > -	return of_msi_xlate(&pdev->dev, node, rid);
-> > +	of_node = irq_domain_get_of_node(domain);
-> > +	if (of_node) {
-> 
-> I haven't read on but my assumption is of_node is never used for anything else.
-> I'd make that explicit by not having the local variable.
-> 	if (irq_domain_get_of_node(domain))
-> 
-> Might even be worth a comment to say this is just checking of is in use for the
-> domain in general?
-
-Yes, I thought an explicit variable would make it clearer, don't know,
-not a big deal either way I believe.
-
-> > +		struct device_node *msi_ctlr_node = NULL;
-> > +
-> > +		rid = of_msi_xlate(&pdev->dev, &msi_ctlr_node, rid);
-> > +		if (msi_ctlr_node)
-> 
-> Do you need the protection? Ultimately that depends on whether
-> setting *node = NULL on failure to match is a problem.
-> It's a bit subtle, but if your new code matches behavior of old code
-> then *node was always NULL at entry to this function so setting it
-> to NULL again (which is what happens if ms_ctrl_node == NULL) should
-> be fine.
-> 
-> Maybe it's all a bit subtle though so perhaps the check is worth having.
-
-As above, I thought that to help understand what the function does
-assigning only if !NULL would help, you are right though.
-
-Thanks,
-Lorenzo
-
-> > +			*node = of_fwnode_handle(msi_ctlr_node);
-> > +	}
-> > +
-> > +	return rid;
-> >  }
-> >  
-> >  /**
-> > diff --git a/include/linux/msi.h b/include/linux/msi.h
-> > index 8003e3218c46..8ddb05d5c96a 100644
-> > --- a/include/linux/msi.h
-> > +++ b/include/linux/msi.h
-> > @@ -702,7 +702,8 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
-> >  void pci_msi_mask_irq(struct irq_data *data);
-> >  void pci_msi_unmask_irq(struct irq_data *data);
-> >  u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev);
-> > -u32 pci_msi_map_rid_ctlr_node(struct pci_dev *pdev, struct device_node **node);
-> > +u32 pci_msi_map_rid_ctlr_node(struct irq_domain *domain, struct pci_dev *pdev,
-> > +			      struct fwnode_handle **node);
-> >  struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev);
-> >  void pci_msix_prepare_desc(struct irq_domain *domain, msi_alloc_info_t *arg,
-> >  			   struct msi_desc *desc);
+> > The name of this makes me think it's allocating the named fwnode parent, rather that
+> > the named fwnode + setting it's parent.
 > > 
+> > There aren't all that many calls to irq_domain_named_fwnode(), maybe to avoid challenge
+> > of a new name, just add the parameter to all of them? (25ish)  Mind you the current
+> > pattern for similar cases is a helper, so maybe not.  
 > 
+> Similar cases ? Have you got anything specific I can look into ?
+
+I meant all the different irq_domain_alloc_xxxxx variants that call
+__irq_domain_alloc_fwnode() with a subset of parameters set to NULL.
+
+That seems to say there is a precedence for making the presence of the parameter
+part of the name rather than requiring callers to set the ones they don't want to
+NULL.  So it argues for a helper like this one just for consistency.
+
+> 
+> > Or go with something similar to named and have
+> > 
+> > irq_domain_alloc_named_parented_fwnode()?  
+> 
+> Or I can add a set_parent() helper (though that's a bit of churn IMO) ?
+> 
+> If Thomas has a preference I will follow that, all of the above is doable
+> for me.
+
+Agreed. Let's see what Thomas prefers (i.e. make the decision his problem ;)
+
+Jonathan
+
+> 
+> > I'm not that bothered though if you think the current naming is the best we can do.  
+> 
+> I think you have a point - as per my comment above.
+> 
+> Thanks,
+> Lorenzo
+> 
+> > Jonathan
+> >   
+> > > +{
+> > > +	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL, parent);
+> > >  }  
+> > 
+> >   
+> 
+
 
