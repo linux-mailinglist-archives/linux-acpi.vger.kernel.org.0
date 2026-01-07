@@ -1,109 +1,116 @@
-Return-Path: <linux-acpi+bounces-20014-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20015-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A935CFFECE
-	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 21:08:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A081ACFFCF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 20:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90C4D31A3468
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 19:50:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 187293016AC7
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 19:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA96342510;
-	Wed,  7 Jan 2026 19:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFD033E376;
+	Wed,  7 Jan 2026 19:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StBIBeHy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dn7wwrz6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264B826E6E8
-	for <linux-acpi@vger.kernel.org>; Wed,  7 Jan 2026 19:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB51342C80;
+	Wed,  7 Jan 2026 19:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767814794; cv=none; b=vEakQX2O65QnqHcWFgGiK8tQ+k4A15xf8z1n55uHMC1XMND20DmdjkmNd4KDU+xN/do5FRPUVqguxT4IlnOWel4FThcP9k5mXUsLIGHWl0laV3aJNtW/PUNvqomZnsE0mW/NACMCyO6OQVEof7Zhq5tmxXwwULjtGsz8UBI6Jc0=
+	t=1767815054; cv=none; b=B/XTC/Cz9R3i3Ectf+XUdih+BlCrMDVHHXwIfPAkT9/OQLdB016oDNuFSpLmGfMcfyQOUdcZOxRJJU+IeYDTqegILK+ZSHZ9Dm8wiMDxSmHDU5cPTp2/NgSrYT0I64iLWBwBn88j3N3gnBYfoB8z8fEU7BOr0oZL7YMBR9DTZZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767814794; c=relaxed/simple;
-	bh=C9HFQFC4PPZiW+RYDt7+yFgPqwT7sflfxDvc8rrfEO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m/SS3rGNLXjDOd4ZoLncY+LehoPtGxolhOnBy1X+3vV36/uBg100DCDattDHUfMVLqwDys0Tnkr40Yh4N2dt4AcikHZChZrrpvSGQ36jv57NfGcVHL++GksJcRqgpUSTlQ5zV5vmL4AWHjI0WfmtsNovWZlHLYFG1Cm4Vz6XEOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StBIBeHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34706C19423
-	for <linux-acpi@vger.kernel.org>; Wed,  7 Jan 2026 19:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767814791;
-	bh=C9HFQFC4PPZiW+RYDt7+yFgPqwT7sflfxDvc8rrfEO0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=StBIBeHysHiyag+mS0RQ+35/gHXBl0SBfp2oQjqw6Eucto0iKW70RcZUsUyBiMy5y
-	 VHeZ7BRWlUhQRVVYHEb+UhbKzMMXCvmAfh6t+AcCYcsMVbRc8AOVsCrTn4jgljaCa0
-	 s0b/zSgH4D2iXhXENj9yE8CHEPWXZEdyaQf0pp5v8u+9e0OFkClR4uUBkW9wI90FGq
-	 /R65JM5FxM3fS0396Pqb1N7H8m0hoE5r4gDmvEjwKqtXgzzXA6fcYE2wepSic5Wyln
-	 Q/pgQSc0c+UO7d4u/i8NyF1Bpw+jL3yGhx+PaMhGkeSyGUF91gNOutht9DTvwOQI8o
-	 jj9OBaP5+ip0g==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65ec86c5e70so1412941eaf.3
-        for <linux-acpi@vger.kernel.org>; Wed, 07 Jan 2026 11:39:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVCA0AfptyZNWEFELQUV89jDcAcmRl+pwfT1eeSThH9F31wngduLRo3xCnbVU9ZsWMjsdWtBsC1RZmq@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7fBZeFmCi/G0OM+/dHtywH9xGyR5anctPxURcRPQFtnnzViCw
-	gKddiA58twDMiJ8uhaIs5ZBOui3+VQ8VXJL31fcHBPI0xCr5EmR72HBA3KNs5kj+VNw9/ilfl7I
-	ZbXzVlbo03b7ELDNVl9nGbRCGGBZOrF4=
-X-Google-Smtp-Source: AGHT+IGeGlYVjMyEnbSSu+1/+moevZu/gztGPmbycRE0hhgXmeau2riH5uStIVYQlK6VezsA0RxePiV5P1YZ7gRGf0Q=
-X-Received: by 2002:a05:6820:438e:b0:65c:ff20:a3b5 with SMTP id
- 006d021491bc7-65f5509337cmr975804eaf.77.1767814790211; Wed, 07 Jan 2026
- 11:39:50 -0800 (PST)
+	s=arc-20240116; t=1767815054; c=relaxed/simple;
+	bh=ecrjmWwMeICqv836gN3xD2ueXnPOAfbSEgKZWBJF9nY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lsHKjIxEYUFtImcSusEIC9GKml5h/dGTox88fKIoA5g3wwLLzLlSoYobz7+556Gs/sS9MEUNSH64v4N0FABHD7YjPmnw/UPuNuHvfPT3NtgL3kL3BBLK+60azi26WdD8Sh8+/6DPQg/rX8+wsJY7kVjCCVXm373omoMCtb9hC4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dn7wwrz6; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767815048; x=1799351048;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ecrjmWwMeICqv836gN3xD2ueXnPOAfbSEgKZWBJF9nY=;
+  b=Dn7wwrz6OCwURAMJ2N0zyCnGP0ljXTqCrvHvE8pfpLJIhg0gvFD9mdMv
+   u8bNVVid+q0GVsEtRkXY1JK0z2a2vXxaRYO0N+LD18R0oCrvvcALOKy1n
+   onVm7zWNwpzfCul6KSnpMiAWdi8nOMhSZEaykuLa/X0ODTNNmmhXX7z0h
+   E6hlRRQbR27y/ruOSshMNY2MOeyOo4oBxsbzNQzdBE045nAdjsrvIUP2k
+   RhYPZhOCHzrXBrhlDrP+tPDUr3mIjRfpVB/8Pr7zEHxhP4Hb7wslkSmvn
+   CNXia7+dx/S6mnl6F7Xo/JW3CJZSyJXPHNqueWWjIoVh5mZBaq5ekm639
+   g==;
+X-CSE-ConnectionGUID: Bs4t+vA9RwSO639BgCnzdw==
+X-CSE-MsgGUID: w5jFnrOURy207V06rMtBRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="94659889"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="94659889"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 11:44:02 -0800
+X-CSE-ConnectionGUID: C6mZjKYjREyoVPPmOgjp6Q==
+X-CSE-MsgGUID: H2h6R2iiRPer3D3VzttYvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="207153122"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by orviesa003.jf.intel.com with ESMTP; 07 Jan 2026 11:44:00 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vdZRm-000000001c0-1Ka5;
+	Wed, 07 Jan 2026 19:43:58 +0000
+Date: Wed, 7 Jan 2026 20:43:21 +0100
+From: kernel test robot <lkp@intel.com>
+To: Riwen Lu <luriwen@kylinos.cn>, rafael@kernel.org, lenb@kernel.org
+Cc: Paul Gazzillo <paul@pgazz.com>,
+	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, Riwen Lu <luriwen@kylinos.cn>
+Subject: Re: [PATCH v1] ACPI: PM: Introduce CONFIG_ACPI_S2IDLE for
+ platform-independent S2Idle support
+Message-ID: <202601072006.dGGykCqj-lkp@intel.com>
+References: <20260107015907.1421272-1-luriwen@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251209072757.3110467-1-pengcan@kylinos.cn>
-In-Reply-To: <20251209072757.3110467-1-pengcan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 Jan 2026 20:39:38 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g1dnFcgj45760QaREiX5DH-JyYeCug0LwYdb0RZF+sLA@mail.gmail.com>
-X-Gm-Features: AQt7F2p_UKKSU8VHngTqPGji5wM8O4xbKfNqgbClA03MBrpYm4bAYHPazQp1iAE
-Message-ID: <CAJZ5v0g1dnFcgj45760QaREiX5DH-JyYeCug0LwYdb0RZF+sLA@mail.gmail.com>
-Subject: Re: [PATCH] acpi: use LIST_HEAD for stack-allocated list in acpi_watchdog_init
-To: Can Peng <pengcan@kylinos.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107015907.1421272-1-luriwen@kylinos.cn>
 
-On Tue, Dec 9, 2025 at 8:29=E2=80=AFAM Can Peng <pengcan@kylinos.cn> wrote:
->
-> Replace the separate declaration of 'resource_list' and subsequent
-> INIT_LIST_HEAD() call with LIST_HEAD(), which declares and initializes
-> the list head in one idiomatic step. This reduces code verbosity and
-> aligns with common kernel coding patterns, without functional change.
->
-> Signed-off-by: Can Peng <pengcan@kylinos.cn>
-> ---
->  drivers/acpi/acpi_watchdog.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-> index 14b24157799c..709993c535d1 100644
-> --- a/drivers/acpi/acpi_watchdog.c
-> +++ b/drivers/acpi/acpi_watchdog.c
-> @@ -103,7 +103,7 @@ void __init acpi_watchdog_init(void)
->  {
->         const struct acpi_wdat_entry *entries;
->         const struct acpi_table_wdat *wdat;
-> -       struct list_head resource_list;
-> +       LIST_HEAD(resource_list);
->         struct resource_entry *rentry;
->         struct platform_device *pdev;
->         struct resource *resources;
-> @@ -125,8 +125,6 @@ void __init acpi_watchdog_init(void)
->             wdat->pci_device !=3D 0xff || wdat->pci_function !=3D 0xff)
->                 goto fail_put_wdat;
->
-> -       INIT_LIST_HEAD(&resource_list);
-> -
->         entries =3D (struct acpi_wdat_entry *)(wdat + 1);
->         for (i =3D 0; i < wdat->entries; i++) {
->                 const struct acpi_generic_address *gas;
-> --
+Hi Riwen,
 
-Applied as 6.20 material, thanks!
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.19-rc4 next-20260107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Riwen-Lu/ACPI-PM-Introduce-CONFIG_ACPI_S2IDLE-for-platform-independent-S2Idle-support/20260107-101450
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20260107015907.1421272-1-luriwen%40kylinos.cn
+patch subject: [PATCH v1] ACPI: PM: Introduce CONFIG_ACPI_S2IDLE for platform-independent S2Idle support
+config: loongarch-kismet-CONFIG_ACPI_S2IDLE-CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT-0-0 (https://download.01.org/0day-ci/archive/20260107/202601072006.dGGykCqj-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20260107/202601072006.dGGykCqj-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601072006.dGGykCqj-lkp@intel.com/
+
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for ACPI_S2IDLE when selected by ACPI_SYSTEM_POWER_STATES_SUPPORT
+   WARNING: unmet direct dependencies detected for ACPI_S2IDLE
+     Depends on [n]: ACPI [=y] && SUSPEND [=n]
+     Selected by [y]:
+     - ACPI_SYSTEM_POWER_STATES_SUPPORT [=y] && ACPI [=y]
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
