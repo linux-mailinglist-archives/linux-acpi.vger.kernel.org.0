@@ -1,449 +1,153 @@
-Return-Path: <linux-acpi+bounces-20022-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20023-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C33D00128
-	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 21:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0152BD001D4
+	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 22:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E83333040647
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 20:54:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F9033032A81
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 21:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0C0338F5B;
-	Wed,  7 Jan 2026 20:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C65F299944;
+	Wed,  7 Jan 2026 21:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mail.selcloud.ru header.i=@mail.selcloud.ru header.b="UcfMCxJa";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="wFKkpf5l";
-	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="odLQckj4";
-	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="nSe0+eEL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S/fSelmj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender5.mail.selcloud.ru (sender5.mail.selcloud.ru [5.8.75.168])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26932ABFF;
-	Wed,  7 Jan 2026 20:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.8.75.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AFC22097;
+	Wed,  7 Jan 2026 21:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767819259; cv=none; b=VcGX3DhYTzHQ5ja/BrQU5hV5LsOCgHGEkWkAm7AxL6YlDP/4EAOo6P109rYGeYO9TD5gB2/j95rGIfIcz7JB3YS27FP/MVlgJ6AnYEjTfiBz9WklBpyQONPjtODfltVKQYLnwG8RabRI1LPy7NcUL/+VgWdJIAm9zCSKQ5VpdAo=
+	t=1767820325; cv=none; b=EIYx3hCvPdbzdDWnnI+jBDBmxFJVdj9qzb8Xe/Y62CsdOjsztx+SX8Ll10ywedP4lNziS3KDXDjhZD5W7HB6/QOHPZBjpZ/fumbHqY4NtWJi4sFZzbNStU7SQ+KXIR4UIyuEbkIydNHrKTxDSdF6uUkvBhf9rPDCFYDUGxHARI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767819259; c=relaxed/simple;
-	bh=NBQ9TY3kF5fw/EoSTz/33J3iAwOL5DU0ElmmRDR60Tw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWCxKMV1ILJD32UvVh33Fs7qrgfWuiBQ30+CWOmfqlq66SHIR3bm8DvhHmCwRamBzJ575wJiRmKL0tNw4pwL8krE6x+Lfn+myHZeq3QiK3qTxoA+5K27z9SlvqzKR0Az7hagjw82JrTCgdo1jJnY6LDjhJNNMvb8c6rsOfFqSOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=mail.selcloud.ru; dkim=pass (1024-bit key) header.d=mail.selcloud.ru header.i=@mail.selcloud.ru header.b=UcfMCxJa; dkim=pass (1024-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=wFKkpf5l; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=odLQckj4; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=nSe0+eEL; arc=none smtp.client-ip=5.8.75.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.selcloud.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=mail.selcloud.ru; s=selcloud; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:List-id:
-	List-Unsubscribe:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Help:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TjQ4wYNafNpSTegf9S2wuJejqmu04xdA+i2KKIYcbIs=; t=1767819255; x=1767992055;
-	 b=UcfMCxJaL4JQUwbeak0qOxZHBacDgNILyGGFQvmRhTTyZIFpco8xZvvWy3mdi2Df/XN45C/7KD
-	q3Qut6krFBlIhFY6svu79CbInIsckftqngIdz3RK+Hm4CobCUM3kWRS5b8vS952i4LMYNJcLh7fR8
-	b4p6pOTyygGDCWkeLjTo=;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=foxido.dev;
-	 s=selcloud; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:List-id:List-Unsubscribe:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Help:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=TjQ4wYNafNpSTegf9S2wuJejqmu04xdA+i2KKIYcbIs=; t=1767819255; x=1767992055;
-	 b=wFKkpf5lPLBMfHtWQClle0XB8W36+LZ1+izC1x7gVSZrU2rEZB1zmt9TzFhNSl11QppFMiHbhj
-	o34nEljSMOBOfqXS11RJaQ3GFKXprHKyA5GDNaVpUUuSV7X2qNr7vAE7bDPh20rzmr7Gf5HUkoZrB
-	RutjRo3qauyvK1Jpl3Dg=;
-Precedence: bulk
-X-Issuen: 1539712
-X-User: 335779833
-X-Postmaster-Msgtype: 3849
-Feedback-ID: 1539712:15965:3849:samotpravil
-X-From: foxido.dev
-X-from-id: 15965
-X-MSG-TYPE: bulk
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-X-blist-id: 3849
-X-Gungo: 20251225.193711
-X-SMTPUID: mlgnr59
-DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1767818172; bh=TjQ4wYNafNpSTegf9S2wuJe
-	jqmu04xdA+i2KKIYcbIs=; b=odLQckj4ln9aeeX97359WlXyUG28rAxphOIrhkudIp9G/dZU7/
-	mcrrkSwbG9FL/TdZ7hYbK1ZeVGsQywboY6MIaxJtROvmMDSqBo/2TDjZ8mHkGQU1FOqjwMgGK9E
-	cpt76zL5cx7WpLTTbXR+ftm3Xni8yXuv4X+HnlFXgLVZx9zYg//krXeGXQf5PMoVH4BaTJaiDFD
-	9yuVtU1ArYl1E1ARRY4y8Uy71btKbqbHLMnNcw211YSLoXfn4j9EJzi2fnYdVSQyorPVL90dOXq
-	Ii18qRyVDFzDI45GHeaR/FyMmqOISMVi62gBkiw/Bk11EwdIjmC13XsTB/sdRyU9Ofg==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1767818172; bh=TjQ4wYNafNpSTegf9S2wuJe
-	jqmu04xdA+i2KKIYcbIs=; b=nSe0+eELZAvN+dBtuiuucjIjP5RaguJKHmetisl2CodO0a9EuG
-	T3+r8fAmpWNjfqxrCkPGE++SYz1JGKfj2LBQ==;
-From: Gladyshev Ilya <foxido@foxido.dev>
-To: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Gladyshev Ilya <foxido@foxido.dev>
-Subject: [PATCH 3/3] rust: add WMI abstractions
-Date: Wed,  7 Jan 2026 23:35:33 +0300
-Message-ID: <a119094f2e248587c541daf7c5b65bf4398b281b.1767818037.git.foxido@foxido.dev>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1767818037.git.foxido@foxido.dev>
-References: <cover.1767818037.git.foxido@foxido.dev>
+	s=arc-20240116; t=1767820325; c=relaxed/simple;
+	bh=vU/Y2pefRyJ+jQDO9QdGjxnQJ/MzStethzjBgPfzTLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RpaKFBPwozYa0T6DmDOP+0KPq4dEyaw/MELcxCJy+5RKqCPvmSqRggpQ/b9pWxlTpd0qLymAdwLtGBR35FioEPQjDV5QEi2br83woarflvgiPjRwqLMxx+AeLgeykpg+p3XML2fDwE/RtDzHsaS/W1eUvOzLiKADdd3PP/HOuns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S/fSelmj; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767820324; x=1799356324;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vU/Y2pefRyJ+jQDO9QdGjxnQJ/MzStethzjBgPfzTLY=;
+  b=S/fSelmjzvfubHDAwNXauSJWFeQjFCOaLD+Mr+N6Wi/WJGWlHrexgm51
+   Lp2qQA6wVlWPsA1V6xAbW7auTJ0hXl9TTgqb5ZBwXA4iB43R42pBb++3e
+   n2VHjYHY++zOWi3hvsoILBPkZLC0bYHynhfK0qUGDKMfXxetXlcAc8mmi
+   Vb0CLIGNN52PugDxYXSbqkp0PnXVBsD+GMeAWciKsPmhuVQI4zCrE2ntb
+   w1BZzFh38CJT90p5+PsA3p4FTADg4OwNOnWVSoQPq2e8RzIwWsHuJ4OFO
+   H3kBu+ewyFW9Brgl8dRN6Ik8BCuj0sSa47CCQYjIWGvEZX+qpiiwdKTCR
+   w==;
+X-CSE-ConnectionGUID: Elzr7yWlTrOZ95s8SjkKDg==
+X-CSE-MsgGUID: l0oPOvtmSd6BhIPzUV2EYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="80558861"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="80558861"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:12:03 -0800
+X-CSE-ConnectionGUID: hiV6ib5fRMOPr5wSLxDCzg==
+X-CSE-MsgGUID: eC/gqlvTQ5Gj56Y++knxlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="207503017"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by fmviesa005.fm.intel.com with ESMTP; 07 Jan 2026 13:12:01 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vdaow-000000001cS-340E;
+	Wed, 07 Jan 2026 21:11:58 +0000
+Date: Wed, 7 Jan 2026 22:11:01 +0100
+From: kernel test robot <lkp@intel.com>
+To: Kartik Rajput <kkartik@nvidia.com>, lenb@kernel.org,
+	sakari.ailus@linux.intel.com, mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Kartik Rajput <kkartik@nvidia.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
+Message-ID: <202601072231.MPkHMWgN-lkp@intel.com>
+References: <20260107062453.10893-1-kkartik@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107062453.10893-1-kkartik@nvidia.com>
 
-This introduces Rust abstraction for WMI subsystem via wmi::Driver trait
-and module_wmi_driver/wmi_device_table macros. Driver can be probed,
-notified on events and removed -- almost everything C-side can do.
+Hi Kartik,
 
-This abstraction will be used by subsequent redmi_wmi_rs reference
-driver.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
----
- MAINTAINERS                     |   1 +
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/wmi.rs              | 277 ++++++++++++++++++++++++++++++++
- 4 files changed, 281 insertions(+)
- create mode 100644 rust/kernel/wmi.rs
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge westeri-thunderbolt/next linus/master v6.16-rc1 next-20260107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 765ad2daa218..4909ae8be6e3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -404,6 +404,7 @@ F:	Documentation/driver-api/wmi.rst
- F:	Documentation/wmi/
- F:	drivers/platform/wmi/
- F:	include/uapi/linux/wmi.h
-+F:	rust/kernel/wmi.rs
- 
- ACRN HYPERVISOR SERVICE MODULE
- M:	Fei Li <fei1.li@intel.com>
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b42..f9671280c6b5 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -85,6 +85,7 @@
- #include <linux/usb.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
-+#include <linux/wmi.h>
- #include <linux/xarray.h>
- #include <trace/events/rust_sample.h>
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index a6eccdba50b5..29bc2b87a103 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -152,6 +152,8 @@
- pub mod uaccess;
- #[cfg(CONFIG_USB = "y")]
- pub mod usb;
-+#[cfg(CONFIG_ACPI_WMI)]
-+pub mod wmi;
- pub mod workqueue;
- pub mod xarray;
- 
-diff --git a/rust/kernel/wmi.rs b/rust/kernel/wmi.rs
-new file mode 100644
-index 000000000000..a15258365a2e
---- /dev/null
-+++ b/rust/kernel/wmi.rs
-@@ -0,0 +1,277 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Abstractions for the WMI devices.
-+//!
-+//! C header: [`include/linux/wmi.h`](srctree/include/linux/wmi.h).
-+
-+use crate::{
-+    acpi::AcpiObject,
-+    device,
-+    device_id::{
-+        RawDeviceId,
-+        RawDeviceIdIndex, //
-+    },
-+    driver,
-+    error::{
-+        from_result,
-+        to_result,
-+        VTABLE_DEFAULT_ERROR, //
-+    },
-+    prelude::*,
-+    types::Opaque, //
-+};
-+use core::{marker::PhantomData, mem::MaybeUninit, ptr::NonNull};
-+use macros::vtable;
-+
-+/// [`IdTable`](kernel::device_id::IdTable) type for WMI.
-+pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
-+
-+/// The WMI driver trait.
-+#[vtable]
-+pub trait Driver: Send {
-+    /// The type holding information about each one of the device ids supported by the driver.
-+    type IdInfo: 'static;
-+
-+    /// The table of device ids supported by the driver.
-+    const TABLE: IdTable<Self::IdInfo>;
-+
-+    /// WMI driver probe.
-+    ///
-+    /// Called when a new WMI device is bound to this driver.
-+    /// Implementers should attempt to initialize the driver here.
-+    fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> impl PinInit<Self, Error>;
-+
-+    /// WMI device notify.
-+    ///
-+    /// Called when new WMI event received from bounded device.
-+    fn notify(self: Pin<&Self>, _dev: &Device<device::Core>, _event: Option<&AcpiObject>) {
-+        build_error!(VTABLE_DEFAULT_ERROR);
-+    }
-+
-+    /// WMI driver remove.
-+    fn unbind(self: Pin<&Self>, _dev: &Device<device::Core>) {
-+        build_error!(VTABLE_DEFAULT_ERROR);
-+    }
-+}
-+
-+/// A WMI device.
-+///
-+/// This structure represents the Rust abstraction for a C [`struct wmi_device`].
-+/// The implementation abstracts the usage of a C [`struct wmi_device`] passed
-+/// in from the C side.
-+pub struct Device<Cxt: device::DeviceContext = device::Normal> {
-+    inner: Opaque<bindings::wmi_device>,
-+    _p: PhantomData<Cxt>,
-+}
-+
-+impl<Cxt: device::DeviceContext> Device<Cxt> {
-+    fn as_raw(&self) -> *mut bindings::wmi_device {
-+        self.inner.get()
-+    }
-+}
-+
-+/// An adapter for the registration of WMI drivers.
-+pub struct Adapter<T: Driver>(T);
-+
-+// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
-+// a preceding call to `register` has been successful.
-+unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
-+    type RegType = bindings::wmi_driver;
-+
-+    unsafe fn register(
-+        wdrv: &Opaque<Self::RegType>,
-+        name: &'static CStr,
-+        module: &'static ThisModule,
-+    ) -> Result {
-+        macro_rules! map_callback {
-+            ($flag:ident -> $callback:ident) => {
-+                if T::$flag {
-+                    Some(Self::$callback)
-+                } else {
-+                    None
-+                }
-+            };
-+        }
-+
-+        // SAFETY: It's safe to set the fields of `struct wmi_driver` on initialization.
-+        unsafe {
-+            (*wdrv.get()).driver.name = name.as_char_ptr();
-+            (*wdrv.get()).driver.probe_type = bindings::probe_type_PROBE_PREFER_ASYNCHRONOUS;
-+            (*wdrv.get()).id_table = T::TABLE.as_ptr();
-+            (*wdrv.get()).probe = map_callback!(HAS_PROBE -> probe_callback);
-+            (*wdrv.get()).notify = map_callback!(HAS_NOTIFY -> notify_callback);
-+            (*wdrv.get()).remove = map_callback!(HAS_UNBIND -> remove_callback);
-+            (*wdrv.get()).shutdown = None;
-+            (*wdrv.get()).no_singleton = true;
-+            (*wdrv.get()).no_notify_data = true;
-+        }
-+
-+        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
-+        to_result(unsafe { bindings::__wmi_driver_register(wdrv.get(), module.0) })
-+    }
-+
-+    unsafe fn unregister(wdrv: &Opaque<Self::RegType>) {
-+        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
-+        unsafe { bindings::wmi_driver_unregister(wdrv.get()) };
-+    }
-+}
-+
-+impl<T: Driver + 'static> Adapter<T> {
-+    extern "C" fn probe_callback(
-+        wdev: *mut bindings::wmi_device,
-+        id: *const c_void,
-+    ) -> kernel::ffi::c_int {
-+        // SAFETY: The WMI core only ever calls the probe callback with a valid pointer to a
-+        // `struct wmi_device`.
-+        //
-+        // INVARIANT: `wdev` is valid for the duration of `probe_callback()`.
-+        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-+
-+        let id = id as usize;
-+        let info = T::TABLE.info(id);
-+
-+        from_result(|| {
-+            let data = T::probe(wdev, info);
-+
-+            wdev.as_ref().set_drvdata(data)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    extern "C" fn notify_callback(
-+        wdev: *mut bindings::wmi_device,
-+        obj: *mut bindings::acpi_object,
-+    ) {
-+        // SAFETY: The WMI system only ever calls the notify callback with a valid pointer to a
-+        // `struct wmi_device`.
-+        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-+        // SAFETY:
-+        // - AcpiObject is repr(transparent) wrapper around FFI object, so it's safe to cast
-+        //    raw pointer to reference (in terms of alignment and etc),
-+        // - Option<&ref> is guaranteed to have same layout as raw pointer (with NULL representing
-+        //    None) by Rust's "nullable pointer optimization".
-+        let obj: Option<&AcpiObject> = unsafe { core::mem::transmute(obj as *const AcpiObject) };
-+
-+        // SAFETY: `notify_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-+        // and stored a `T`.
-+        let this = unsafe { wdev.as_ref().drvdata_borrow::<T>() };
-+        this.notify(wdev, obj);
-+    }
-+
-+    extern "C" fn remove_callback(wdev: *mut bindings::wmi_device) {
-+        // SAFETY: The WMI system only ever calls the remove callback with a valid pointer to a
-+        // `struct wmi_device`.
-+        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-+
-+        // SAFETY: `remove_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-+        // and stored a `T`.
-+        let this = unsafe { wdev.as_ref().drvdata_borrow::<T>() };
-+        this.unbind(wdev);
-+    }
-+}
-+
-+impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
-+    fn as_ref(&self) -> &device::Device<Ctx> {
-+        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-+        // `struct platform_device`.
-+        let dev = unsafe { &raw mut (*self.inner.get()).dev };
-+
-+        // SAFETY: `dev` points to a valid `struct device`.
-+        unsafe { device::Device::from_raw(dev) }
-+    }
-+}
-+
-+kernel::impl_device_context_deref!(unsafe { Device });
-+kernel::impl_device_context_into_aref!(Device);
-+
-+// SAFETY: Instances of `Device` are always reference-counted.
-+unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw()).dev) }
-+    }
-+}
-+
-+/// Abstraction for the WMI device ID structure, i.e. [`struct wmi_device_id`].
-+///
-+/// [`struct wmi_device_id`]: https://docs.kernel.org/driver-api/basics.html#c.wmi_device_id
-+#[repr(transparent)]
-+pub struct DeviceId(bindings::wmi_device_id);
-+
-+impl DeviceId {
-+    /// Constructs new DeviceId from GUID string.
-+    pub const fn new(guid: &[u8; bindings::UUID_STRING_LEN as usize]) -> Self {
-+        // SAFETY: FFI type is valid to be zero-initialized.
-+        let mut inner: bindings::wmi_device_id = unsafe { MaybeUninit::zeroed().assume_init() };
-+
-+        build_assert!(inner.guid_string.len() == bindings::UUID_STRING_LEN as usize + 1);
-+
-+        // SAFETY: It's safe to copy UUID_STRING_LEN, because we validated lengths.
-+        // Also we leave last byte zeroed, so guid_string is valid C string.
-+        unsafe {
-+            ::core::ptr::copy_nonoverlapping(
-+                guid.as_ptr(),
-+                &raw mut inner.guid_string[0],
-+                bindings::UUID_STRING_LEN as usize,
-+            );
-+        }
-+
-+        Self(inner)
-+    }
-+}
-+
-+// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `wmi_device_id` and does not add
-+// additional invariants, so it's safe to transmute to `RawType`.
-+unsafe impl RawDeviceId for DeviceId {
-+    type RawType = bindings::wmi_device_id;
-+}
-+
-+// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `context` field.
-+unsafe impl RawDeviceIdIndex for DeviceId {
-+    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::wmi_device_id, context);
-+
-+    fn index(&self) -> usize {
-+        self.0.context as usize
-+    }
-+}
-+
-+/// Declares a kernel module that exposes a single WMI driver.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// module_wmi_driver! {
-+///     type: MyDriver,
-+///     name: "Module name",
-+///     author: ["Author name"],
-+///     description: "Description",
-+///     license: "GPL v2",
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! module_wmi_driver {
-+    ($($f:tt)*) => {
-+        $crate::module_driver!(<T>, $crate::wmi::Adapter<T>, { $($f)* });
-+    }
-+}
-+
-+/// Create a WMI `IdTable` with its alias for modpost.
-+#[macro_export]
-+macro_rules! wmi_device_table {
-+    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
-+        const $table_name: $crate::device_id::IdArray<
-+            $crate::wmi::DeviceId,
-+            $id_info_type,
-+            { $table_data.len() },
-+        > = $crate::device_id::IdArray::new($table_data);
-+
-+        $crate::module_device_table!("wmi", $module_table_name, $table_name);
-+    };
-+}
+url:    https://github.com/intel-lab-lkp/linux/commits/Kartik-Rajput/ACPI-bus-Use-OF-match-data-for-PRP0001-matched-devices/20260107-142543
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20260107062453.10893-1-kkartik%40nvidia.com
+patch subject: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260107/202601072231.MPkHMWgN-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601072231.MPkHMWgN-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601072231.MPkHMWgN-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/acpi/bus.c:1034:21: error: expected identifier or '('
+    1034 |         struct acpi_device = ACPI_COMPANION(dev);
+         |                            ^
+>> drivers/acpi/bus.c:1036:53: error: use of undeclared identifier 'adev'; did you mean 'dev'?
+    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+         |                                                            ^~~~
+         |                                                            dev
+   drivers/acpi/bus.c:1030:61: note: 'dev' declared here
+    1030 | const void *acpi_device_get_match_data(const struct device *dev)
+         |                                                             ^
+>> drivers/acpi/bus.c:1037:3: error: expected ')'
+    1037 |                 return acpi_of_device_get_match_data(dev);
+         |                 ^
+   drivers/acpi/bus.c:1036:5: note: to match this '('
+    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+         |            ^
+   3 errors generated.
+
+
+vim +1034 drivers/acpi/bus.c
+
+  1029	
+  1030	const void *acpi_device_get_match_data(const struct device *dev)
+  1031	{
+  1032		const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+  1033		const struct acpi_device_id *match;
+> 1034		struct acpi_device = ACPI_COMPANION(dev);
+  1035	
+> 1036		if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+> 1037			return acpi_of_device_get_match_data(dev);
+  1038	
+  1039		match = acpi_match_device(acpi_ids, dev);
+  1040		if (!match)
+  1041			return NULL;
+  1042	
+  1043		return (const void *)match->driver_data;
+  1044	}
+  1045	EXPORT_SYMBOL_GPL(acpi_device_get_match_data);
+  1046	
+
 -- 
-2.52.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
