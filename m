@@ -1,158 +1,136 @@
-Return-Path: <linux-acpi+bounces-19997-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-19998-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60717CFDAFD
-	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 13:33:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D17CFDB6C
+	for <lists+linux-acpi@lfdr.de>; Wed, 07 Jan 2026 13:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1C7230409E2
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 12:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA1EB300A1FA
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 12:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974E131B825;
-	Wed,  7 Jan 2026 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E032032ABF7;
+	Wed,  7 Jan 2026 12:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjKSOqKs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TmYh8Nxx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720FF3168F5
-	for <linux-acpi@vger.kernel.org>; Wed,  7 Jan 2026 12:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4BB30F53A;
+	Wed,  7 Jan 2026 12:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788581; cv=none; b=otX8DTP/dhg82j6ty7uYJ1ZTwwAxYmjNKZ9xAfbg0dTQrfTOqXGOkI3vJFhHiS1V8DUjkHGUkzH31oy5PKS2CNLmwBOPPcyOVY3HprvvCsqLKGKNDP5k9+uivwPUF+q4W07rAYZySuhGCH4W+1sJzW78iIciihR1mdzzDy/6yCM=
+	t=1767789523; cv=none; b=ikUW4qQiAmGKX054Mq2oo4ysAVMbzpzl2lSmKy9/0WeKkVPX6W0QprBBpEhMtLXb4J1mplUBnoQTFT5vpQOLHpqdlvrHxYMoO+TdglVYs7uPxMUaoR+yPw5syFuLOk3wJOctMpXEkdOiSNBopwK2eDc1vqbI0J5lmgrqQpq9lO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788581; c=relaxed/simple;
-	bh=YpQB8yKTPURU5YhIohBO9IAkqVY3GcDGFk7I5E/eYTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uRGW/ODmshV3KLZ57c3pDTRiC80Q2RqhJdkDdZ0r1cfWtx80iAL8VqmQJm6zBl+Cj4V1647Kqq6ex1UQ26uxpUf23nzVeWMr+9oMz+surQAhUWygwBTHF0G7XRiZ8fgV5thi8Vrp1Rc7k5qOngFcgPKErApiq25zdB3xeG65PCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjKSOqKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C55DC2BCB0
-	for <linux-acpi@vger.kernel.org>; Wed,  7 Jan 2026 12:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767788581;
-	bh=YpQB8yKTPURU5YhIohBO9IAkqVY3GcDGFk7I5E/eYTM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kjKSOqKs0k5t9qF4rHx9j6PjbRdiSQThfAMiN/D7Fyjssipb0h57m8GkFlV0kv9q7
-	 3yF4VdYhqVMqsWntvt/UtI5+lfTtUAONZdigG2D241edN4iA81Es4e1A/Ex8zXlkUB
-	 pANL1OeOjXVogZpvCuRJPrxnLUDg/F4zrGfoeGWzpeo/pjEjBni1+thKFmLpkHMact
-	 zbFogIst1gb0oGngAFi2wjxSOxjEYCeigxqIaMCmCuWWpGAX4AJellV1zIT94JYcDd
-	 dbWMehFqkAmnoDtgrVxLc4lJQk7boCtimJqjWl2AemYN1ElO26JzDi9aXMqTkv7eDa
-	 YHqOIMG7vImSw==
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7ce229972d9so1116425a34.0
-        for <linux-acpi@vger.kernel.org>; Wed, 07 Jan 2026 04:23:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX47cDax1RspJO7Wv5VUgM2wDuWU45hXbKkJrYErz+Py0J1EwZegtciYh21pwk5I7ZV0kWL+kmnbeZS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1ML+KQq0qdxUhJMZG12Fj63pvADsld8ai3WZ6rYsLGhpy1MtQ
-	Yrxs7Av8eb67KHUP3EXxXr+DHEOLi7x6i0RP6se9L/VQ7kh0uSpCkcwH/pTW8HKTSsBi+2k2Wbq
-	8NL0hoz+g3mBSFNRKF8k9yLmAIR1I6bM=
-X-Google-Smtp-Source: AGHT+IFUwEObKoTW/cIOE4voT00iKEZTi9m5mdH+tsbeREadEq4geRZZgSq5wfvRgo8eYWQjSHXfMmSqwC4JSHt62LM=
-X-Received: by 2002:a05:6820:2910:b0:659:9a49:8ec8 with SMTP id
- 006d021491bc7-65f5508f8b2mr933270eaf.76.1767788580133; Wed, 07 Jan 2026
- 04:23:00 -0800 (PST)
+	s=arc-20240116; t=1767789523; c=relaxed/simple;
+	bh=INGoSJqW3QVZMj1hKdooxNdiy9NWmTEZr0eyf+jlfec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iM3RA1iK5Ylicqg1uAch5QkQBnCoS+GznX3+pGgGDLNchmln8Chbny6ey9uLMpr9wPWcqtuj/g6GOPMnNMMx+U0X+y3MPf3RGu0tHe7hhXXA6yXGAMI6DzLZuDoEfk02iLD2CKCEgC4pOtWjK30As6UWOhj2d6lMaynBJYY4yUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TmYh8Nxx; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767789521; x=1799325521;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=INGoSJqW3QVZMj1hKdooxNdiy9NWmTEZr0eyf+jlfec=;
+  b=TmYh8NxxDRyF6f7fnlhGIW42KzFmX/mhTIfR+f2lOQkFwofiPgS61xN7
+   EMDwbZKCoipTftuV0oFcOXnxh4o9mtoSPrC5jtD+Jl49SzC8utMBcc47w
+   3w2EkO7A+u0LMks8UlJbJ3t2CH8dM/fs0jddc4nes+JEs9hm1Su5yBqev
+   ewhKfisi/ko16xa5j+Nii0sUNS29GxY5OQacXxHZUg7VH/Bp+DdEYZK3V
+   rCsYnA4ququJ2pD6mCaZcuon/QTY1GsntKTBQx8wZUgXbaMlNgp+b+4Ks
+   rChF6Va9kyq9XKgRTbxRskzHgju3ilXres0JDLsLN8DGqOX/Xo0wgtYJM
+   Q==;
+X-CSE-ConnectionGUID: ASXNqI3jSSmiq3FAvpOAyg==
+X-CSE-MsgGUID: JsPYsYqAT3+HFq1tWFBMxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="56718273"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="56718273"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:38:41 -0800
+X-CSE-ConnectionGUID: tRfhYJeDQqm4fYMClX3h4A==
+X-CSE-MsgGUID: G37sNdg7R4e2tg4oR/nUeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="207780386"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.143])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:38:39 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id ED1A8121D80;
+	Wed, 07 Jan 2026 14:38:52 +0200 (EET)
+Date: Wed, 7 Jan 2026 14:38:52 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Kartik Rajput <kkartik@nvidia.com>
+Cc: lenb@kernel.org, mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: bus: Use OF match data for PRP0001 matched
+ devices
+Message-ID: <aV5T3Lh4TxvpOZi4@kekkonen.localdomain>
+References: <20260107120318.13130-1-kkartik@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2396510.ElGaqSPkdT@rafael.j.wysocki> <65c7a296-7dc7-4368-9b2d-6fadd0dbf9c6@kernel.org>
-In-Reply-To: <65c7a296-7dc7-4368-9b2d-6fadd0dbf9c6@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 Jan 2026 13:22:47 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0ihuu_9G7N5UkHAGwRq=BN1spkXmdOuUTxRFwn3acdfbw@mail.gmail.com>
-X-Gm-Features: AQt7F2rzfAea--kXwysJAUxQBxw2p5HJq4PYgiVyT8sW4xpYraMogD_OEeEV0as
-Message-ID: <CAJZ5v0ihuu_9G7N5UkHAGwRq=BN1spkXmdOuUTxRFwn3acdfbw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Documentation: driver-api: Disapprove of using
- ACPI drivers
-To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede <hansg@kernel.org>, 
-	Linux Documentation <linux-doc@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Armin Wolf <w_armin@gmx.de>, Danilo Krummrich <dakr@kernel.org>, 
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107120318.13130-1-kkartik@nvidia.com>
 
-On Tue, Jan 6, 2026 at 4:47=E2=80=AFPM Mario Limonciello (AMD) (kernel.org)
-<superm1@kernel.org> wrote:
->
->
->
-> On 1/6/2026 6:27 AM, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Sadly, there is quite a bit of technical debt related to the
-> > kernel's ACPI support subsystem and one of the most significant
-> > pieces of it is the existence and use of ACPI drivers represented
-> > by struct acpi_driver objects.
-> >
-> > Those drivers are bound directly to struct acpi_device objects, also
-> > referred to as "ACPI device nodes", representing device objects in the
-> > ACPI namespace defined as:
-> >
-> >   A hierarchical tree structure in OS-controlled memory that contains
-> >   named objects. These objects may be data objects, control method
-> >   objects, bus/device package objects, and so on.
-> >
-> > according to the ACPI specification [1].
-> >
-> > The above definition implies, although rather indirectly, that the
-> > objects in question don't really represent hardware.  They are just
-> > "device package objects" containing some information on the devices
-> > present in the given platform that is known to the platform firmware.
-> >
-> > Although the platform firmware can be the only source of information on
-> > some devices, the information provided by it alone may be insufficient
-> > for device enumeration in general.  If that is the case, binding a
-> > driver directly to a given ACPI device node clearly doesn't make sense.
-> > If the device in question is enumerated through a hardware interface, i=
-t
-> > will be represented by a device object matching that interface, like
-> > a struct pci_dev, and the ACPI device node corresponding to it will be
-> > treated as its "ACPI companions" whose role is to amend the "native"
-> > enumeratiom mechanism.
-> >
-> > For the sake of consistency and confusion avoidance, it is better to
-> > treat ACPI device nodes in general as ACPI companions of other device
-> > objects representing hardware.  In some cases though it appeared easier
-> > to take a shortcut and use an ACPI driver binding directly to an ACPI
-> > device node.  Moreover, there were corner cases in which that was the
-> > only choice, but they all have been addressed now.
-> >
-> > In all cases in which an ACPI driver might be used, the ACPI device
-> > node it might bind to is an ACPI companion of another device object
-> > representing a piece of hardware.  It is thus better to use a driver
-> > binding to the latter than to use an ACPI driver and leave the other
-> > device object alone, not just because doing so is more consistent and
-> > less confusing, but also because using ACPI drivers may lead to
-> > potential functional deficiencies, like possible ordering issues
-> > related to power management.
-> >
-> > Unfortunately, there are quite a few ACPI drivers in use and, as a rule=
-,
-> > they bind to ACPI device nodes that are ACPI companions of platform
-> > devices, so in fact they play the role of platform drivers although in
-> > a kind of convoluted way.  An effort has been under way to replace them
-> > with platform drivers, which is relatively straightforward in the vast
-> > majority of cases, but it has not been pursued very aggressively so far=
-,
-> > mostly due to the existence of the corner cases mentioned above.
->
-> This is the same as Danilo's comment; but could you leave a few examples
-> of conversions that have been done successfully?  Commit hashes that can
-> demonstrate what it actually takes to convert an acpi driver to a
-> platform driver and might make it easier for people to reference when
-> this comes up.
+Hi Kartik,
 
-The purpose of this posting and the new document is to grow awareness
-rather than to tell people how to convert drivers.
+On Wed, Jan 07, 2026 at 05:33:18PM +0530, Kartik Rajput wrote:
+> When a device is matched via PRP0001, the driver's OF (DT) match table
+> must be used to obtain the device match data. If a driver provides both
+> an acpi_match_table and an of_match_table, the current
+> acpi_device_get_match_data() path consults the driver's acpi_match_table
+> and returns NULL (no ACPI ID matches).
+> 
+> Explicitly detect PRP0001 and fetch match data from the driver's
+> of_match_table via acpi_of_device_get_match_data().
+> 
+> Fixes: 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+> ---
+> Changes in v2:
+> 	* Fix build errors.
 
-I'll start posting driver conversion patches at one point and the
-motivation for all of them is basically the same, so I thought it
-would be better to document it in on place and then refer to it
-instead of repeating the same information every time a conversion
-patch is posted.
+Thanks for the update.
+
+> ---
+>  drivers/acpi/bus.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 5e110badac7b..6658c4339656 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1031,8 +1031,9 @@ const void *acpi_device_get_match_data(const struct device *dev)
+>  {
+>  	const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+>  	const struct acpi_device_id *match;
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+>  
+> -	if (!acpi_ids)
+> +	if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev)))
+
+I'd swap the arguments to have the static one on the right, i.e.
+
+	if (!strcmp(acpi_device_hid(adev), ACPI_DT_NAMESPACE_HID))
+
+The patch looks good apart from that IMO.
+
+>  		return acpi_of_device_get_match_data(dev);
+>  
+>  	match = acpi_match_device(acpi_ids, dev);
+
+-- 
+Kind regards,
+
+Sakari Ailus
 
