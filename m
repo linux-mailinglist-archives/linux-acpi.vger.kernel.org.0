@@ -1,193 +1,134 @@
-Return-Path: <linux-acpi+bounces-20080-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20081-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728CAD053EF
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 18:56:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDCED05568
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 19:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04B88307BF9F
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 17:54:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7B3BE30158C4
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 18:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1AC2FF160;
-	Thu,  8 Jan 2026 17:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B6E2EC571;
+	Thu,  8 Jan 2026 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKGdMEYc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RjZx2wDW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5557C2EB856;
-	Thu,  8 Jan 2026 17:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883912512FF;
+	Thu,  8 Jan 2026 18:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767894827; cv=none; b=mpC7+62XcpXwhZgDj/VSfSeX9FBFyzJ02x7W44rZLQZQahCdl5sD4P+kWnnw8tjpnogYX5AE8US111EuMeb7TTiZYckOV+6r9fstkwJfYGAFpWeZy75uIHPCO7Byq2oaez6FA2PMxNNmNfA/X+rpcUD4WjhtjWa1SRpCiG160lo=
+	t=1767895536; cv=none; b=PUoSDci5NJuLSznS+MV+Aa0PmKRAbOfhn9EN6jqy4nRrTKZtHxEjaK2feynRFrvSk3WSqVxt9AFidW5U2/2KJPmc2UK5HCQcQ7XIzH6b8dy53CNjACjQFKDFbL/NbBuMVDlYmSJSK81DCecycTeBvXHR2X8D8zVBwqfQEbvANrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767894827; c=relaxed/simple;
-	bh=s2ZdUB5oryfE7VLo5tR+5bVac6B1XTyyIoz66Nvjyy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rQoZlfzVR1Y57JCaqde6QunW+13WhkCRu7skgy9K2rY70CUUK6PDxCQQ2wcK32L0f1MJKjzjzBvyVhkqF+VaB0xhXRK8JVMSph51fdMhmSOg+K/wK9VYjA+8THKGmclA9QzDHYA7BYs2ExFZd3ocaUvieLZB6DSRsRejQ+f7fHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKGdMEYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAC7C19423;
-	Thu,  8 Jan 2026 17:53:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767894827;
-	bh=s2ZdUB5oryfE7VLo5tR+5bVac6B1XTyyIoz66Nvjyy8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=NKGdMEYcSlpq17WaHZ9aU/5qsFvizVQYSiJhw6dSpdeZb8yw3Rt1GDxfozcHkw+sk
-	 sQIze3OXIwEzNB4oH0sIohM12Z9CcgLlU/iPrwmELe1yNdePJRhUVXrrwiJzsf5N5j
-	 PqSmokrhVXdoQPvijvlXIIGrVCaoxPVjIqd8LfcGgaic/7qnNojDiJ5m3U4LACDZaX
-	 12qOUiLZ79TZnOGKwGRoNVVH2xT0fiO7Ze2OnFoLVrsNd4B5vvBQ4cQckXYiQdPEyG
-	 bEVQjs1/sIXcslc7faVTNPrCHrXWcoGQZ9BqmHTqqR4FcgKe9RAfLXhMyXZtSO4zDF
-	 GNO/qaBpN+ghA==
-Date: Thu, 8 Jan 2026 11:53:45 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: =?utf-8?B?SMOla29u?= Bugge <haakon.bugge@oracle.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sinan Kaya <okaya@codeaurora.org>,
-	Casey Leedom <leedom@chelsio.com>, Ashok Raj <ashok.raj@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	dingtianhong <dingtianhong@huawei.com>,
-	Alexander Duyck <alexander.h.duyck@intel.com>,
-	Alexander Duyck <alexanderduyck@fb.com>, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI/ACPI: Do not fiddle with ExtTag and RO in
- program_hpx_type2
-Message-ID: <20260108175345.GA490809@bhelgaas>
+	s=arc-20240116; t=1767895536; c=relaxed/simple;
+	bh=R4XFNhTmxo0LGWqC/1K+ZQHaJb5xfOwPTbu9fCckLx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=chAEQdbYDSnPoZd3twp/Mzk7hQqQcEMWJ/QeQPCvOSv4Zafd4DEiuna/7kR8dtMLwS897IimKWSiDbA5VPRFEc2Lys9pd6YzBjn8R5xKiGt/cRrwI9b1lVoPF5M498T8nlgUCxxwGf6ukQfMgCWMY9MLYd4bIuQ/PGELC3oRUBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RjZx2wDW; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767895535; x=1799431535;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=R4XFNhTmxo0LGWqC/1K+ZQHaJb5xfOwPTbu9fCckLx0=;
+  b=RjZx2wDWokhlmQtn2FQb0SQ7Rs3hGtA4q0T07g3hMZuea80p/S4rgzNW
+   qU+lXzSAgvH8o6QGqvB92WYd3abahNEPetrXGa5BZEFfyBhmgrMxPxQLy
+   c/hq1TFddWfq+Lrq+VonyijHLW1C4JxZMiLRslYQR8T51Imy68q7FH6om
+   a+Le4JAFylRXh+jWfUTAvVIALlwWGoyNmnzzHyfoaY0ArCVLANblsOOb0
+   5fH9CRMh5CAZoJQrlBii4dE7ShmrjXY37vBxP1vnGgC7ULI4pChIt8oYm
+   g9CNul2VaT93SC19HhjgMXOYjuRd14QnoHBMNpSN2vkA7S+0AJ9EoMo5t
+   g==;
+X-CSE-ConnectionGUID: QJ36UViQSYOmXdOHm2JIqQ==
+X-CSE-MsgGUID: aVWy5cFZQ0mVs3om2HmUDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69182238"
+X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
+   d="scan'208";a="69182238"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 10:05:35 -0800
+X-CSE-ConnectionGUID: DrBQNgtpRumax1R077eKow==
+X-CSE-MsgGUID: YaXOM4UISCiTPQdlL/pU2w==
+X-ExtLoop1: 1
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.60])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 10:05:32 -0800
+Date: Thu, 8 Jan 2026 20:05:30 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kartik Rajput <kkartik@nvidia.com>
+Cc: lenb@kernel.org, sakari.ailus@linux.intel.com,
+	mika.westerberg@linux.intel.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: bus: Use OF match data for PRP0001 matched
+ devices
+Message-ID: <aV_x6nlu0Rlqn2ZQ@smile.fi.intel.com>
+References: <20260107120318.13130-1-kkartik@nvidia.com>
+ <aV6ALdPCjaAYHM7-@smile.fi.intel.com>
+ <abfdb44d-108a-49d5-98ad-949d184f4f98@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260107232205.GA447140@bhelgaas>
+In-Reply-To: <abfdb44d-108a-49d5-98ad-949d184f4f98@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jan 07, 2026 at 05:22:05PM -0600, Bjorn Helgaas wrote:
-> On Fri, Dec 05, 2025 at 03:28:29PM +0100, Håkon Bugge wrote:
-> > After commit 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if
-> > supported"), the kernel controls enablement of extended tags
-> > (ExtTag). Similar, after commit a99b646afa8a ("PCI: Disable PCIe
-> > Relaxed Ordering if unsupported"), the kernel controls the relaxed
-> > ordering bit (RO), in the sense that the kernel keeps the bit set (if
-> > already set) unless the RC does not support it.
-> > 
-> > On some platforms, when program_hpx_type2() is called and the _HPX
-> > object's Type2 records are, let's say, dubious, we may end up
-> > resetting ExtTag and RO, although they were explicit set or kept set
-> > by the OSPM [1].
-> 
-> This text about Type 2 records in ACPI r6.6, sec 6.2.10.3, seems a
-> little ambiguous to me:
-> 
->   A PCI Express-aware OS that has assumed ownership of native hot plug
->   (via _OSC) but does not support or does not have ownership of the
->   AER register set must use the data values returned by the _HPX
->   object’s Type 2 record to program the AER registers of a hot-added
->   PCI Express device. However, since the Type 2 record also includes
->   register bits that have functions other than AER, OSPM must ignore
->   values contained within this setting record that are not applicable.
-> 
-> If I squint, I can read that as meaning that Type 2 is really there
-> just for AER, and the OS:
-> 
->   - should only use a Type 2 record when it owns PCIe native hotplug
->     (native_pcie_hotplug) but does not own AER (!native_aer),
-> 
->   - should only program AER registers, and
-> 
->   - should *ignore* bits unrelated to AER.
-> 
-> Most of the registers in Type 2 are in the AER Capability.  Device
-> Control is in the PCIe Capability, but if _OSC has granted AER
-> ownership to the OS, that includes the Error Reporting Enable bits in
-> Device Control (there's a PCI Firmware spec ECN to this effect:
-> https://members.pcisig.com/wg/Firmware/document/20514).
-> 
-> Type 2 does include Link Control, which is in the PCIe Capability and
-> doesn't seem related to AER, so maybe I'm on the wrong track.  But if
-> Type 2 was intended to handle things *other* than AER, I would think
-> the PCIe Capability Slot Control and Root Control would have been
-> included.
-> 
-> So *maybe* program_hpx_type2() should mask out everything from
-> pci_exp_devctl_or except PCI_EXP_DEVCTL_CERE, PCI_EXP_DEVCTL_NFERE,
-> PCI_EXP_DEVCTL_FERE, and PCI_EXP_DEVCTL_URRE?  I have no idea what we
-> would do with Link Control though.
-> 
-> I wish I knew the history of this, but I don't.
+On Thu, Jan 08, 2026 at 05:57:35PM +0530, Kartik Rajput wrote:
+> On 07/01/26 21:17, Andy Shevchenko wrote:
+> > On Wed, Jan 07, 2026 at 05:33:18PM +0530, Kartik Rajput wrote:
 
-I poked around in the old specs and found that _HPX was added in ACPI
-r3.0, where the Type 2 record only contained AER registers
-(Uncorrectable Error Mask, Uncorrectable Error Severity, and
-Correctable Error Mask), and the description said this:
+> > > When a device is matched via PRP0001, the driver's OF (DT) match table
+> > > must be used to obtain the device match data. If a driver provides both
+> > > an acpi_match_table and an of_match_table, the current
+> > > acpi_device_get_match_data() path consults the driver's acpi_match_table
+> > > and returns NULL (no ACPI ID matches).
+> > 
+> > Since we have both tables, why the actual ACPI HID of the device in question
+> > (actually which one?) can't be used?
+> > 
+> > > Explicitly detect PRP0001 and fetch match data from the driver's
+> > > of_match_table via acpi_of_device_get_match_data().
+> > 
+> > In principle we can go this way, but can you tell a bit more of a story?
+> > Why the device in question can't use existed or a newly allocated ACPI HID for
+> > that?
+> 
+> While testing PRP0001-based matching with the Tegra fuse driver on an SoC that does
+> not yet have an allocated ACPI HID,
 
-  OSPM will only evaluate _HPX with Setting Record – Type 2 if OSPM is
-  not controlling the PCI Express Advanced Error Reporting capability.
+Which means in the production you do not need this patch. Allocate ID and go with it.
 
-ACPI r4.0 changed _HPX to the current r6.6 description and added all
-the registers included in r6.6 (without changing the record revision).
+> device_get_match_data() returned NULL because
+> the driver also provides an acpi_match_table.
+> 
+> Commit 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
+> was intended to address this by honoring PRP0001 when retrieving match data. However,
+> when a driver provides an ACPI match table, acpi_device_get_match_data() currently
+> consults only that table, resulting in NULL match data despite a successful
+> PRP0001 match.
 
-So I think we should do what I proposed above (only do
-program_hpx_type2() if the OS owns PCIe hotplug but not AER, and only
-update the CERE/NFERE/FERE/URRE bits in Device Control).  I would
-probably log the Link Control values if they're set, but otherwise
-ignore them.
+Which is expected behaviour. So there are two cases I can see that might make
+this patch valid:
 
-> > The Advanced Configuration and Power Interface (ACPI) Specification
-> > version 6.6 has a provision that gives the OSPM the ability to
-> > control these bits any way. In a note in section 6.2.9, it is stated:
-> > 
-> > "OSPM may override the settings provided by the _HPX object's Type2
-> > record (PCI Express Settings) or Type3 record (PCI Express Descriptor
-> > Settings) when OSPM has assumed native control of the corresponding
-> > feature."
-> > 
-> > So, in order to preserve the increased performance of ExtTag and RO on
-> > platforms that support any of these, we make sure program_hpx_type2()
-> > doesn't reset them.
-> > 
-> > [1] Operating System-directed configuration and Power Management
-> > 
-> > Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
-> > Fixes: a99b646afa8a ("PCI: Disable PCIe Relaxed Ordering if unsupported")
-> > Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-> > ---
-> >  drivers/pci/pci-acpi.c | 15 +++++++++------
-> >  1 file changed, 9 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index 9369377725fa0..6a2ae1b821732 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -324,15 +324,18 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
-> >  		return;
-> >  	}
-> >  
-> > -	/*
-> > -	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
-> > -	 * those to make sure they're consistent with the rest of the
-> > -	 * platform.
-> > +	/* Don't allow _HPX to change MPS, MRRS, ExtTag, or RO
-> > +	 * settings.  We manage those to make sure they're consistent
-> > +	 * with the rest of the platform.
-> >  	 */
-> >  	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
-> > -				    PCI_EXP_DEVCTL_READRQ;
-> > +				   PCI_EXP_DEVCTL_READRQ  |
-> > +				   PCI_EXP_DEVCTL_EXT_TAG |
-> > +				   PCI_EXP_DEVCTL_RELAX_EN;
-> >  	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
-> > -				    PCI_EXP_DEVCTL_READRQ);
-> > +				    PCI_EXP_DEVCTL_READRQ  |
-> > +				    PCI_EXP_DEVCTL_EXT_TAG |
-> > +				    PCI_EXP_DEVCTL_RELAX_EN);
-> >  
-> >  	/* Initialize Device Control Register */
-> >  	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
-> > -- 
-> > 2.43.5
-> > 
+1) the preproduction development when the driver has both tables and formal
+ACPI HID is not allocated yet (this what has to be the main "why" point
+in the commit message);
+
+2) a driver that got ACPI HID from somebody else and breaks the PRP0001 setups
+for others (no evidences so far, but I admit there is a potential to have a
+such).
+
+That said, having the Fixes tag is unrequired.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
