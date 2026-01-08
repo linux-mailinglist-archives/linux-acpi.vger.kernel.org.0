@@ -1,187 +1,294 @@
-Return-Path: <linux-acpi+bounces-20043-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20044-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BB7D00F3D
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 05:07:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B8DD01C94
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 10:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF9E3300C6D9
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 04:07:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B79932A2761
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 08:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BD52264A7;
-	Thu,  8 Jan 2026 04:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAEC350A35;
+	Thu,  8 Jan 2026 07:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C9St3MjR"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="b+8+hc6y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22026BA21;
-	Thu,  8 Jan 2026 04:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824EF33D505;
+	Thu,  8 Jan 2026 07:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767845228; cv=none; b=HbmxEL+p5ikH8U1DunIhGxU6AkWvkKDnSXZulVi3XtspAqxaksHfNaiKj1aQh2PViOE1ZpXWmc6xes7qx+AuDED8xuk/GEwe8PMlaAZv0chnmkxjc72GC0bItA6mN2EruUhCUscoqvfnrHZ0Nr4DwLu98fRt1jl67deH+m+W48M=
+	t=1767859106; cv=none; b=gRqdJDznGBv2JTcRXrBVKavsJPK1G89lNevc8AkPMlKUqyw9xgcLRt+yUGkme6KOyN93Oh33pdo6Yf9PlYGe7UP/InuojZKIUohEWKpTuc2hHljpn4DzO30DYPEwO4YQ4b8Sk5i8ov8UPnlmicw8wn6VByO95ezFf2/p7MyXtSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767845228; c=relaxed/simple;
-	bh=9SMcQcVKDqK4arLsjjtZ9E8UQHUt37+fKvIrTdc9Ijw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nU4ZnF+zI7uzSu/c2qUA4BZegdRzdGal8yy8CNHNkrsEhGAUlcQKd/L93sjYd2J3MEojJg/LN9SPSBYn0jW/2/3pHnRIoWBOBdcy0eTXts4rF0cemfJK5nWVlsKKaSE+yWdxRiTBXrQ2kWbyB12GZ/WN7Dpxmci1HJxQXGrJjTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C9St3MjR; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767845226; x=1799381226;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9SMcQcVKDqK4arLsjjtZ9E8UQHUt37+fKvIrTdc9Ijw=;
-  b=C9St3MjRuw81VT0GAIBtTM2JjjXFC46gmMdFEJCbpp4DEpZ4PkP99jPK
-   i8ZR8XBKvb5SLGOi0Qh5eVRmSWEnhBKCaDVI1ZSEzmp3sTF2W/63vC8S4
-   aOHqxqIFqk00xf7d3UYgTZdihgIk758VT5Ytf8fw2DRqCPt38qF4dT1nQ
-   j2dRDaQq9DBtX1G9nXLs4W5qaa3+zLnTzvnjb65PaV7cMM29Vvfoust37
-   bFHGh1AXD9Xv1b+4+o8Zum7esrWZWTbh6GDBKvBsBAXjU7CCO+z+66Vh/
-   d3UcODpqaUF2o3+UVNeenGUAJPTeql0aTXuI+xxOKeu/4vqoC5P2mbkfV
-   A==;
-X-CSE-ConnectionGUID: z0ANQf6bRHaXV/HFwwqVNg==
-X-CSE-MsgGUID: EptWV4pqQymViviztQ127Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="80672305"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="80672305"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 20:07:05 -0800
-X-CSE-ConnectionGUID: isuqpZW6Rfad1A8Ia+gdhQ==
-X-CSE-MsgGUID: dQ1ygzaJQqO7IIojS0WvQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="207577195"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 20:07:05 -0800
-Date: Wed, 7 Jan 2026 20:13:32 -0800
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-acpi@vger.kernel.org, Chris Oo <cho@microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Ricardo Neri <ricardo.neri@intel.com>, Wei Liu <wei.liu@kernel.org>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Yunhong Jiang <yunhong.jiang@linux.intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
+	s=arc-20240116; t=1767859106; c=relaxed/simple;
+	bh=ovcDdgCVYALwvAeRQ7zUXP7s4USCtO9YrLvO6pVaPDE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=AuWKpnhvp5abAZVXj1SgolvUB42F/bK5gyEzm4H1EFz22WW878pqCGUMurUketob373esp0fR1bzdW8sZdvac5WTgxDVcITCwsg46U8PNjqdLw7lfRSzK2vgSIGTTUx1PmumTMrDGaymErDQ4DYhmUvvfYd5HzayU1VzlD4IspI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com; spf=pass smtp.mailfrom=aa.jp.fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=b+8+hc6y; arc=none smtp.client-ip=139.138.36.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aa.jp.fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1767859093; x=1799395093;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ovcDdgCVYALwvAeRQ7zUXP7s4USCtO9YrLvO6pVaPDE=;
+  b=b+8+hc6y3574mptxmijRsL9muu4y+GNp0wxZ0de08x6ONLGdDMQZ31Wq
+   AcLHls/hjEtXrnSvFZ5njQLksWwfEGWkDqzjjbht3nRkL43EQDFSSvgnI
+   p6vRZMh614YDLLaLcDygDuRPZyX/uF4GjdseTEkp7PBp7fRh0S47G3JVw
+   l6XJJaLccPkvHjY+VCXnIN6youQpCifSSDltM3vXzK6yw/9zR2N82afb3
+   hXokfGy8J/6XIsKhS6U4EuvOnHrDzlP6pF8+i6j7BLl9N4kXFP15qgd/5
+   oWkgpSLUlvskrmEL8O+C7c6RoTVWXuu7DY+4cV1IBrU193d3kjfpnCKSq
+   Q==;
+X-CSE-ConnectionGUID: V5xG/llmRjW87TBwmufBDg==
+X-CSE-MsgGUID: GPohQyPCRwyGpzShd3lyzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="213779327"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763391600"; 
+   d="scan'208";a="213779327"
+Received: from unknown (HELO az2nlsmgr1.o.css.fujitsu.com) ([20.61.8.234])
+  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 16:56:59 +0900
+Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgr1.o.css.fujitsu.com (Postfix) with ESMTPS id 90CC41C00092;
+	Thu,  8 Jan 2026 07:56:59 +0000 (UTC)
+Received: from az2uksmom1.o.css.fujitsu.com (az2uksmom1.o.css.fujitsu.com [10.151.22.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 3BCF51C17281;
+	Thu,  8 Jan 2026 07:56:59 +0000 (UTC)
+Received: from sm-arm-grace07.ssoft.mng.com (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
+	by az2uksmom1.o.css.fujitsu.com (Postfix) with ESMTP id 417EE180536A;
+	Thu,  8 Jan 2026 07:56:54 +0000 (UTC)
+From: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael.j.wysocki@intel.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-hyperv@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 03/10] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20260108041332.GA3378@ranerica-svr.sc.intel.com>
-References: <20260107-rneri-wakeup-mailbox-v8-0-2f5b6785f2f5@linux.intel.com>
- <20260107-rneri-wakeup-mailbox-v8-3-2f5b6785f2f5@linux.intel.com>
- <176782823140.2300431.3081932954431387872.robh@kernel.org>
+	Len Brown <lenb@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>,
+	Koichi Okuno <fj2767dz@aa.jp.fujitsu.com>
+Subject: [PATCH v6] ACPI: AGDI: Add interrupt signaling mode support
+Date: Thu,  8 Jan 2026 16:56:09 +0900
+Message-ID: <20260108075636.524722-1-fj1078ii@aa.jp.fujitsu.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <176782823140.2300431.3081932954431387872.robh@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 07, 2026 at 05:23:51PM -0600, Rob Herring (Arm) wrote:
-> 
-> On Wed, 07 Jan 2026 13:44:39 -0800, Ricardo Neri wrote:
-> > Add DeviceTree bindings to enumerate the wakeup mailbox used in platform
-> > firmware for Intel processors.
-> > 
-> > x86 platforms commonly boot secondary CPUs using an INIT assert, de-assert
-> > followed by Start-Up IPI messages. The wakeup mailbox can be used when this
-> > mechanism is unavailable.
-> > 
-> > The wakeup mailbox offers more control to the operating system to boot
-> > secondary CPUs than a spin-table. It allows the reuse of the same wakeup
-> > vector for all CPUs while maintaining control over which CPUs to boot and
-> > when. While it is possible to achieve the same level of control using a
-> > spin-table, it would require specifying a separate `cpu-release-addr` for
-> > each secondary CPU.
-> > 
-> > The operation and structure of the mailbox are described in the
-> > Multiprocessor Wakeup Structure defined in the ACPI specification. Note
-> > that this structure does not specify how to publish the mailbox to the
-> > operating system (ACPI-based platform firmware uses a separate table). No
-> > ACPI table is needed in DeviceTree-based firmware to enumerate the mailbox.
-> > 
-> > Nodes that want to refer to the reserved memory usually define
-> > a `memory-region` property. /cpus/cpu* nodes would want to refer to the
-> > mailbox, but they do not have such property defined in the DeviceTree
-> > specification. Moreover, it would imply that there is a memory region per
-> > CPU. Instead, add a `compatible` property that the operating system can use
-> > to discover the mailbox.
-> > 
-> > Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> > Acked-by: Rafael J. Wysocki (Intel) <rafael.j.wysocki@intel.com>
-> > Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> > ---
-> > Changes in v8:
-> >  - None
-> > 
-> > Changes in v7:
-> >  - Fixed Acked-by tag from Rafael to include the "(Intel)" suffix.
-> > 
-> > Changes in v6:
-> >  - Reworded the changelog for clarity.
-> >  - Added Acked-by tag from Rafael. Thanks!
-> >  - Added Reviewed-by tag from Rob. Thanks!
-> >  - Added Reviewed-by tag from Dexuan. Thanks!
-> > 
-> > Changes in v5:
-> >  - Specified the version and section of the ACPI spec in which the
-> >    wakeup mailbox is defined. (Rafael)
-> >  - Fixed a warning from yamllint about line lengths of URLs.
-> > 
-> > Changes in v4:
-> >  - Removed redefinitions of the mailbox and instead referred to ACPI
-> >    specification as per discussion on LKML.
-> >  - Clarified that DeviceTree-based firmware do not require the use of
-> >    ACPI tables to enumerate the mailbox. (Rob)
-> >  - Described the need of using a `compatible` property.
-> >  - Dropped the `alignment` property. (Krzysztof, Rafael)
-> >  - Used a real address for the mailbox node. (Krzysztof)
-> > 
-> > Changes in v3:
-> >  - Implemented the mailbox as a reserved-memory node. Add to it a
-> >    `compatible` property. (Krzysztof)
-> >  - Explained the relationship between the mailbox and the `enable-mehod`
-> >    property of the CPU nodes.
-> >  - Expanded the documentation of the binding.
-> > 
-> > Changes in v2:
-> >  - Added more details to the description of the binding.
-> >  - Added requirement a new requirement for cpu@N nodes to add an
-> >    `enable-method`.
-> > ---
-> >  .../reserved-memory/intel,wakeup-mailbox.yaml      | 50 ++++++++++++++++++++++
-> >  1 file changed, 50 insertions(+)
-> > 
-> 
-> My bot found errors running 'make dt_binding_check' on your patch:
-> 
-> yamllint warnings/errors:
-> ./Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml:23:1: [warning] too many blank lines (2 > 1) (empty-lines)
+AGDI has two types of signaling modes: SDEI and interrupt.
+Currently, the AGDI driver only supports SDEI.
+Therefore, add support for interrupt signaling mode.
+The interrupt vector is retrieved from the AGDI table, and call panic
+function when an interrupt occurs.
 
-This got triggered by an empty line in an patch already reviewed by the DT
-binding maintainers. Previous versions did not trigger this warning since
-the check to allow at most 1 empty line is rather recent.
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
 
-Would it be possible for the review proceed? I am happy to post a new version
-fixing this after the rest of the patches have been reviewed.
+---
+This patch (v6) has been rebased to align with the 6.19-rc4 release.
+There are no functional changes since v4.
+It has been tested and confirmed to work without issues.
+Please let us know if you have any questions or concerns.
+Thank you, Will, for taking care of the mistake in v5.
 
-Thanks and BR,
-Ricardo
+v5->v6
+ - Rebase to 6.19-rc4.
+ - Correct the mistake in v5.
+
+v5(withdrawn due to mistake): https://lore.kernel.org/all/20251222065359.27330-1-fj1078ii@aa.jp.fujitsu.com/
+v4->v5
+ - Rebase to 6.19-rc1.
+ - Add acked-by from Hanjun Guo.
+
+v4: https://lore.kernel.org/all/20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com/
+v3->v4
+ - Add a comment to the flags member.
+ - Fix agdi_interrupt_probe.
+ - Fix agdi_interrupt_remove.
+ - Add space in struct initializsation.
+ - Delete curly braces.
+
+v3: https://lore.kernel.org/all/20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com/
+v2->v3
+ - Fix bug in the return value of agdi_probe function.
+ - Remove unnecessary curly braces in the agdi_remove function.
+
+v2: https://lore.kernel.org/all/20250829101154.2377800-1-fj1078ii@aa.jp.fujitsu.com/
+v1->v2
+ - Remove acpica update since there is no need to update define value
+   for this patch.
+---
+ drivers/acpi/arm64/agdi.c | 101 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 92 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index e0df3daa4abf..feb4b2cb4618 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -16,7 +16,11 @@
+ #include "init.h"
+ 
+ struct agdi_data {
++	unsigned char flags; /* AGDI Signaling Mode */
+ 	int sdei_event;
++	unsigned int gsiv;
++	bool use_nmi;
++	int irq;
+ };
+ 
+ static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
+@@ -48,6 +52,57 @@ static int agdi_sdei_probe(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
++static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
++{
++	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
++{
++	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
++	return IRQ_HANDLED;
++}
++
++static int agdi_interrupt_probe(struct platform_device *pdev,
++				struct agdi_data *adata)
++{
++	unsigned long irq_flags;
++	int ret;
++	int irq;
++
++	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
++		return irq;
++	}
++
++	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
++		    IRQF_NO_THREAD;
++	/* try NMI first */
++	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
++			  "agdi_interrupt_nmi", NULL);
++	if (!ret) {
++		enable_nmi(irq);
++		adata->irq = irq;
++		adata->use_nmi = true;
++		return 0;
++	}
++
++	/* Then try normal interrupt */
++	ret = request_irq(irq, &agdi_interrupt_handler_irq,
++			  irq_flags, "agdi_interrupt_irq", NULL);
++	if (ret) {
++		dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
++		acpi_unregister_gsi(adata->gsiv);
++		return ret;
++	}
++	enable_irq(irq);
++	adata->irq = irq;
++
++	return 0;
++}
++
+ static int agdi_probe(struct platform_device *pdev)
+ {
+ 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
+@@ -55,12 +110,15 @@ static int agdi_probe(struct platform_device *pdev)
+ 	if (!adata)
+ 		return -EINVAL;
+ 
+-	return agdi_sdei_probe(pdev, adata);
++	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
++		return agdi_interrupt_probe(pdev, adata);
++	else
++		return agdi_sdei_probe(pdev, adata);
+ }
+ 
+-static void agdi_remove(struct platform_device *pdev)
++static void agdi_sdei_remove(struct platform_device *pdev,
++			     struct agdi_data *adata)
+ {
+-	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
+ 	int err, i;
+ 
+ 	err = sdei_event_disable(adata->sdei_event);
+@@ -83,6 +141,30 @@ static void agdi_remove(struct platform_device *pdev)
+ 			adata->sdei_event, ERR_PTR(err));
+ }
+ 
++static void agdi_interrupt_remove(struct platform_device *pdev,
++				  struct agdi_data *adata)
++{
++	if (adata->irq == -1)
++		return;
++
++	if (adata->use_nmi)
++		free_nmi(adata->irq, NULL);
++	else
++		free_irq(adata->irq, NULL);
++
++	acpi_unregister_gsi(adata->gsiv);
++}
++
++static void agdi_remove(struct platform_device *pdev)
++{
++	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
++
++	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
++		agdi_interrupt_remove(pdev, adata);
++	else
++		agdi_sdei_remove(pdev, adata);
++}
++
+ static struct platform_driver agdi_driver = {
+ 	.driver = {
+ 		.name = "agdi",
+@@ -94,7 +176,7 @@ static struct platform_driver agdi_driver = {
+ void __init acpi_agdi_init(void)
+ {
+ 	struct acpi_table_agdi *agdi_table;
+-	struct agdi_data pdata;
++	struct agdi_data pdata = { 0 };
+ 	struct platform_device *pdev;
+ 	acpi_status status;
+ 
+@@ -103,12 +185,13 @@ void __init acpi_agdi_init(void)
+ 	if (ACPI_FAILURE(status))
+ 		return;
+ 
+-	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
+-		pr_warn("Interrupt signaling is not supported");
+-		goto err_put_table;
+-	}
++	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE)
++		pdata.gsiv = agdi_table->gsiv;
++	else
++		pdata.sdei_event = agdi_table->sdei_event;
+ 
+-	pdata.sdei_event = agdi_table->sdei_event;
++	pdata.irq = -1;
++	pdata.flags = agdi_table->flags;
+ 
+ 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
+ 	if (IS_ERR(pdev))
+-- 
+2.43.0
+
 
