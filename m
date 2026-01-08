@@ -1,134 +1,175 @@
-Return-Path: <linux-acpi+bounces-20081-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20082-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDCED05568
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 19:05:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22DED05B2D
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 19:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7B3BE30158C4
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 18:05:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9A3D302AFDC
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 18:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B6E2EC571;
-	Thu,  8 Jan 2026 18:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A32B32571F;
+	Thu,  8 Jan 2026 18:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RjZx2wDW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4IuGTHh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883912512FF;
-	Thu,  8 Jan 2026 18:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767895536; cv=none; b=PUoSDci5NJuLSznS+MV+Aa0PmKRAbOfhn9EN6jqy4nRrTKZtHxEjaK2feynRFrvSk3WSqVxt9AFidW5U2/2KJPmc2UK5HCQcQ7XIzH6b8dy53CNjACjQFKDFbL/NbBuMVDlYmSJSK81DCecycTeBvXHR2X8D8zVBwqfQEbvANrE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767895536; c=relaxed/simple;
-	bh=R4XFNhTmxo0LGWqC/1K+ZQHaJb5xfOwPTbu9fCckLx0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=chAEQdbYDSnPoZd3twp/Mzk7hQqQcEMWJ/QeQPCvOSv4Zafd4DEiuna/7kR8dtMLwS897IimKWSiDbA5VPRFEc2Lys9pd6YzBjn8R5xKiGt/cRrwI9b1lVoPF5M498T8nlgUCxxwGf6ukQfMgCWMY9MLYd4bIuQ/PGELC3oRUBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RjZx2wDW; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767895535; x=1799431535;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=R4XFNhTmxo0LGWqC/1K+ZQHaJb5xfOwPTbu9fCckLx0=;
-  b=RjZx2wDWokhlmQtn2FQb0SQ7Rs3hGtA4q0T07g3hMZuea80p/S4rgzNW
-   qU+lXzSAgvH8o6QGqvB92WYd3abahNEPetrXGa5BZEFfyBhmgrMxPxQLy
-   c/hq1TFddWfq+Lrq+VonyijHLW1C4JxZMiLRslYQR8T51Imy68q7FH6om
-   a+Le4JAFylRXh+jWfUTAvVIALlwWGoyNmnzzHyfoaY0ArCVLANblsOOb0
-   5fH9CRMh5CAZoJQrlBii4dE7ShmrjXY37vBxP1vnGgC7ULI4pChIt8oYm
-   g9CNul2VaT93SC19HhjgMXOYjuRd14QnoHBMNpSN2vkA7S+0AJ9EoMo5t
-   g==;
-X-CSE-ConnectionGUID: QJ36UViQSYOmXdOHm2JIqQ==
-X-CSE-MsgGUID: aVWy5cFZQ0mVs3om2HmUDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69182238"
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="69182238"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 10:05:35 -0800
-X-CSE-ConnectionGUID: DrBQNgtpRumax1R077eKow==
-X-CSE-MsgGUID: YaXOM4UISCiTPQdlL/pU2w==
-X-ExtLoop1: 1
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.60])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 10:05:32 -0800
-Date: Thu, 8 Jan 2026 20:05:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Kartik Rajput <kkartik@nvidia.com>
-Cc: lenb@kernel.org, sakari.ailus@linux.intel.com,
-	mika.westerberg@linux.intel.com, thierry.reding@gmail.com,
-	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ACPI: bus: Use OF match data for PRP0001 matched
- devices
-Message-ID: <aV_x6nlu0Rlqn2ZQ@smile.fi.intel.com>
-References: <20260107120318.13130-1-kkartik@nvidia.com>
- <aV6ALdPCjaAYHM7-@smile.fi.intel.com>
- <abfdb44d-108a-49d5-98ad-949d184f4f98@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F1F296BBD
+	for <linux-acpi@vger.kernel.org>; Thu,  8 Jan 2026 18:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767898022; cv=pass; b=DxpdFnrWu4QuG7kQVcT7wC/alzlhaIaUtVDXq3FRnZFh5g7mvug6ePfVi/w9vyY6PdVqQ7/a5ayf7qxgnB2jPkxmwnpZJ23XZHAnjD9Nu51b3ZjgnKuf+V2IM4UQR8+/dcMsPJc/Y4pyZ6A02FXFXtsVvl7VoF9MmOoWkjNpY1w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767898022; c=relaxed/simple;
+	bh=9dsp03vsh+jcxxLZ27Fffy/Yxt8RGmG/mTJwiKpUiiM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AhQ/nN0eM3uaYvfQPMsznB0Vco1fVmSQvel1012PPrDqWUlPWYviBlRmaAqkmEmeWmYDJEL3cL0WjjT+TvuO2ANKEwSlQcdQV+7bloah2n7C1P9iAwkzbQW9+qZ0gef8esJ+an1G/cGvpDmXzXysg/CECIkvAxshHqDOIn8Xk+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4IuGTHh; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ae9f7fd413so65231eec.3
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Jan 2026 10:46:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767898018; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VRSKvJTbVvcwgkkkVSZwFNhU/2C6YDxsMdZCuw9R3DuerfMQrgRxPx2MfNt8suXU/v
+         tjhGbtVUhjBu7/oailELRPOT4MifEvzH9iWGDqFVQ8+kZax4a6QlaUFwY+jXxlHPr0W0
+         5AEQd8DwK9VNRFlpGuacZbrFRWOTSvN5utvv5bGRw4oWctUoQNOLpg6zQg39bpKy6Z2d
+         OShY2h3F+gE1kUzBSBIlTaCeNw9lprYPxC9YtcWqZlf3P2Wt2uJs8PLR5Kur/tmbU1VH
+         jB0FA/UCZeXpIE1OVXmxBap5A5ITD43z358frizQ2f0w23ioV063SgDE4/1A2smQ4Nd/
+         7GSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CovL4D9IWtlZK4zyQedETxH8Q9w0iNTyULXmwn7D6wQ=;
+        fh=koOAQjv1wFHKNX97SvEdar7Pz0EtrFKJQMogJ8EIOOs=;
+        b=LZRAC4EA1eVSUqZ2lK1rsy6tqdnmQVVafUpi5LkTROKFFRaUx6Ck+7eilGwgm8VKz0
+         VhJwKRszS776U6N2xds+JbDHSGtR5TlTl5aIiVNrAoE0TxCXZYlulGtWz2qCgJ1HwL0k
+         o9GvbJT9220bCH5VSoDK16c03ncdaRLO53PvFhmSsoOnQZTt3jKDbV3AqlSPCAjyVeOU
+         ivjBkw7VpspfPMM4p2noqRZyOZUzItflwp7OiBAPrpRhIPppctqxNQVBHEfIl1IN5BtW
+         lTtWQ2rCiRMESCH58mjb9vss6BXdDLe7zs2Tb+sFcBWpSoy+3VToDZwhI7Dagz4SjlYf
+         w+VA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767898018; x=1768502818; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CovL4D9IWtlZK4zyQedETxH8Q9w0iNTyULXmwn7D6wQ=;
+        b=P4IuGTHhbFZGxKiShnqfG1k4RbNk2Ncq3UTHJEXdI5H3mg2fFuwp0JNXkLdOVVg/k/
+         Axx89kspInQzcJIinfqji2bWPWJ5HPboZ/BOH84e1MrjmkJPyKnl4IZXjfFkKK8vIUXK
+         xB7wPFCQRNFLQVmX7sczzRY8+BM1RIVN57YWMG1DQuR0FDKq+bCwLCcUvYBernz3lOOQ
+         mPgCz7NROIK8lu9znGHIFLJN0uxN001n4vqYA+Tc0dpw6A39OihQQuqaTu2znqFDNCvP
+         iajpnhotOMXjEQxXnN/8OajuKY1zUzWo4FIWaHSPF3BkfxVBzbOCzvtdYm8hnGkEqkjK
+         /GgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767898018; x=1768502818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CovL4D9IWtlZK4zyQedETxH8Q9w0iNTyULXmwn7D6wQ=;
+        b=lyC1HM4a+4pmQ7WRqwGpZOutFoTjFDYVQQOKpySNdp8srE5DrxOoOLWGTuQj8RPOkP
+         I8r0/IvbiCUd8heVtyRFevGyivnDFo+OUiwYmd4TCmfh4OH6QLxUClsMCnB4wDU2cR7P
+         zN/ZndiNDB2JN/oLTZguFWj8+RfPfPDM1cGMe4E7CZlbkpr2aE6uxTt2QXrIrY4t86zF
+         lg/DVYIMc7gsWHY08bKi3UxwsCFuRF19h3DO6d+KYHanXr3q08PS5fHYjqiprt3gGqWg
+         ajI+D/CZuK+7zss2TrznI3NvZV2llwR9B8Jc/tLnD4+o+RVU01drEasveNTe6zG6BoDT
+         +7ow==
+X-Forwarded-Encrypted: i=1; AJvYcCX8jqjtUI/NnW9z3t74behgcL50QAjX9cXDaK4D1h8kACkaB013aO+KHPo7y5W9e0reXSKtViEsnZ3F@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKPzoqMYChL3VWVfOM+M8qftYASQiPaJ4OlckVGrMVAnuyG7WN
+	G3aPKsSoY7w1ZQdKq9KHesniSX0Qd4CDq3DEGjiz+lfKJVudewJuHEli/VoFOnPqWQr1/J+8QBj
+	a6+HteGuW+ORbkGhnl6U3NGaanyLARc8=
+X-Gm-Gg: AY/fxX5Llku5Xz0StVHWKoO4fRfNbW3phT980HVn4ZIU29ECfYd24KAhn36l7Sa+/f4
+	T+1OMY8l+1Y+3z3PSq2V8cuF6lx18JkytigqlZJKQOumdReTWHRlXjYWaprvtj2KE+OwH/3ruCT
+	FKv0jOWwZ9Y7oZPCDtcNpCgf+xn8+gMB5WhsAwpQUENyISCni0kMgpfjcvsRbM3Cvogsx2/hQ8T
+	97twSxv9t6u/qlBsMdERx2IMA43Ea1VzfC98/vA6Y6rGBTwhyTs8HRUxgxinpGvhgU+dEX+pG/q
+	25NdRV2EJM2txROrAvOXU1OIrUheneY/5+p8jnzK+o60q3lyjzQzmW2kEzudJ1BfbFqk/r4GEjY
+	lLE8wJaap5g==
+X-Google-Smtp-Source: AGHT+IGu9T2XibzVKy8btuxcDZZhMyLH36+M8tNqwT0uSTo7qZFAQAMpI7ByxDxoDczkqic0/esmI4Vvqc2uRrIB7lA=
+X-Received: by 2002:a05:7300:1483:b0:2ae:5245:d50e with SMTP id
+ 5a478bee46e88-2b17d2fd32bmr3273953eec.8.1767898018039; Thu, 08 Jan 2026
+ 10:46:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abfdb44d-108a-49d5-98ad-949d184f4f98@nvidia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <cover.1767818037.git.foxido@foxido.dev> <05261e88ac8503e2af59d703389d94cc15f4450d.1767818037.git.foxido@foxido.dev>
+ <20260108132141.6cce4827.gary@garyguo.net> <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+In-Reply-To: <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 8 Jan 2026 19:46:45 +0100
+X-Gm-Features: AQt7F2o5ZZFBECo7tHTbw4EaUh07Wub13m9AN2oeE3UmPHevRhqMf_DCW1K3HAo
+Message-ID: <CANiq72=TAXwjjxFiKiiwh9m_rRK_yUVS4b+2st=QJWErz5qTpQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: implement wrapper for acpi_object
+To: Gladyshev Ilya <foxido@foxido.dev>
+Cc: Gary Guo <gary@garyguo.net>, 
+	"foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Armin Wolf <W_Armin@gmx.de>, platform-driver-x86@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 08, 2026 at 05:57:35PM +0530, Kartik Rajput wrote:
-> On 07/01/26 21:17, Andy Shevchenko wrote:
-> > On Wed, Jan 07, 2026 at 05:33:18PM +0530, Kartik Rajput wrote:
+On Thu, Jan 8, 2026 at 6:11=E2=80=AFPM Gladyshev Ilya <foxido@foxido.dev> w=
+rote:
+>
+> Hm, I looked through ACPI_FREE() call sites and acpi_evaluate_object()
+> implementation, and it seems to me that the acpi_object's lifetime is
+> the same as its internal buffer. Overall, it is indeed managed
+> externally, but acpi_object and acpi_object::buffer->pointer live
+> together. I=E2=80=99m not an ACPI expert, though, so maybe I=E2=80=99m mi=
+ssing something.
+>
+> Anyway, the current Rust setup seems fine for now:
+> 0. AcpiObject validity is guaranteed by whoever constructed/passed it (C
+> side for WMI abstractions, for example)
+> 1. You can only convert &AcpiObject to &AcpiSubType (reference to
+> reference), so AcpiSubType can't outlive AcpiObject
+> 2. You can't steal the data pointer from &AcpiSubType either, because
+> the Deref impl is "logically safe" and only gives you a reference to the
+> inner data, which can't outlive AcpiSubType's reference -> can't outlive
+> AcpiObject.
+>
+> So for now until AcpiObject lives _less_ than it's inner data,
+> everything is OK.
 
-> > > When a device is matched via PRP0001, the driver's OF (DT) match table
-> > > must be used to obtain the device match data. If a driver provides both
-> > > an acpi_match_table and an of_match_table, the current
-> > > acpi_device_get_match_data() path consults the driver's acpi_match_table
-> > > and returns NULL (no ACPI ID matches).
-> > 
-> > Since we have both tables, why the actual ACPI HID of the device in question
-> > (actually which one?) can't be used?
-> > 
-> > > Explicitly detect PRP0001 and fetch match data from the driver's
-> > > of_match_table via acpi_of_device_get_match_data().
-> > 
-> > In principle we can go this way, but can you tell a bit more of a story?
-> > Why the device in question can't use existed or a newly allocated ACPI HID for
-> > that?
-> 
-> While testing PRP0001-based matching with the Tegra fuse driver on an SoC that does
-> not yet have an allocated ACPI HID,
+Assuming this is correct, this sort of analysis is typically nice to
+keep documented as as an implementation comment (`//`) somewhere
+(instead of just in the mailing list or the commit message) -- would
+that make sense?
 
-Which means in the production you do not need this patch. Allocate ID and go with it.
+> Using an enum would require keeping Rust's enum synced with the C side,
+> as well as implementing some simple but non-trivial checks that the
+> `type_` field is a valid enum value (and the valid range isn't
+> continuous). I think that keeping it as an integer is simpler and better
+> matches C side.
 
-> device_get_match_data() returned NULL because
-> the driver also provides an acpi_match_table.
-> 
-> Commit 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
-> was intended to address this by honoring PRP0001 when retrieving match data. However,
-> when a driver provides an ACPI match table, acpi_device_get_match_data() currently
-> consults only that table, resulting in NULL match data despite a successful
-> PRP0001 match.
+If this refers to the `ACPI_TYPE_*` constants, there seems to be a
+comment in the C docs that requires it to be kept in sync already with
+elsewhere, so perhaps it could be reasonable to add one more place to
+sync? (Though I don't see the mentioned arrays from a quick grep?)
 
-Which is expected behaviour. So there are two cases I can see that might make
-this patch valid:
+     * NOTE: Types must be kept in sync with the global acpi_ns_properties
+     * and acpi_ns_type_names arrays.
 
-1) the preproduction development when the driver has both tables and formal
-ACPI HID is not allocated yet (this what has to be the main "why" point
-in the commit message);
+Ideally, these would be actual `enum`s on the C side and then
+eventually we should be able to have `bindgen` generate the new kind
+of `enum` that keeps this in sync and generates those checks for us,
+see my suggestion at:
 
-2) a driver that got ACPI HID from somebody else and breaks the PRP0001 setups
-for others (no evidences so far, but I admit there is a potential to have a
-such).
+    Support a new "enum variant" kind, similar to `rustified_enum`, that
+    provides a safe method to transform a C `enum` to Rust.
+    https://github.com/Rust-for-Linux/linux/issues/353
 
-That said, having the Fixes tag is unrequired.
+(But we can't do it just know, and even if it lands in `bindgen` we
+will probably need to wait to bump the minimum etc.)
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+Miguel
 
