@@ -1,250 +1,193 @@
-Return-Path: <linux-acpi+bounces-20079-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20080-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF7CD04C2F
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 18:13:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728CAD053EF
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 18:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FF0A3009F52
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 17:11:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04B88307BF9F
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 17:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B6B29AAF7;
-	Thu,  8 Jan 2026 17:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1AC2FF160;
+	Thu,  8 Jan 2026 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="mU80jD2T";
-	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="3bak54Om"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKGdMEYc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3901F243956;
-	Thu,  8 Jan 2026 17:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5557C2EB856;
+	Thu,  8 Jan 2026 17:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767892286; cv=none; b=Umt7B+tKwRdcb/Uz/d2RcgPGGKSomNGMcmIjLCO56ov6q0mUbUk+X4Wjbbq2EUWTa5xGxCmHXQrsp78HkIcHQWBlbcr1KAHqQ9W7Qky1Zi6vL9mxd9IBUAPXZAETkLhttkZZM9UCNMRaq1AxS6LiQSVyjUP8iO6jsNrTVmylk48=
+	t=1767894827; cv=none; b=mpC7+62XcpXwhZgDj/VSfSeX9FBFyzJ02x7W44rZLQZQahCdl5sD4P+kWnnw8tjpnogYX5AE8US111EuMeb7TTiZYckOV+6r9fstkwJfYGAFpWeZy75uIHPCO7Byq2oaez6FA2PMxNNmNfA/X+rpcUD4WjhtjWa1SRpCiG160lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767892286; c=relaxed/simple;
-	bh=Akv787Em/pe7IzE4s1CATqBmfi6oKnAkOOTNlpLWtBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gsAIny1Ko2dAaXU/C7QaaOscytkiWTguvsi7gW87Gd/ENH0V/2w/4hgMwyF5zS89WE2kXoCLIijBlQbpQX8fO4P/Gq0ffTyAQeIHZPGSbCsUxDRJ23yjQNQjVUyD4TtznbP91Gccq3L//8Uw2kVf2z0cga6bl5uvo5fZ3JguH+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=mU80jD2T; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=3bak54Om; arc=none smtp.client-ip=81.177.217.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
-DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1767892279; bh=SE5cRd2n+bVSUXioZiMtPFw
-	s1O8pgkqLqca0frq41Rg=; b=mU80jD2TaESazqllqPokk4Q9ZPJq4Nf1SOk3f6fz7g4x1Y+YXH
-	y7A6GLexyvVA5dWhmUiDB54HfcKwr45HccnLFL2S4hkMG51WGUggFbfQXbFLvgwijcntzdJA+23
-	OqHOiijf2bUjbg2GFUwtNRnroPbloxJ51v5mGZ/3Tc90wteqQOhYXUury2YteepGHZ2iFTVtmC/
-	Z7xW706YxSIx5iEOYnnH2XpTI7GTsmW+F2xso+VL4T7dM23w/qems8++zYefPeg+yR9xHAOHsv1
-	89Vx+D454omfLHEGARIwUW6goinQ/nj4BeDeUp17HIPK/mDqjHx6zx+62oUdyD0Toxw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1767892279; bh=SE5cRd2n+bVSUXioZiMtPFw
-	s1O8pgkqLqca0frq41Rg=; b=3bak54Om7VR6bKckKc4iHCWxCKtgKQOSoxHixRQEtealMl0ipS
-	djYMZOrKLsrVlzMY7V9EqfrPWr78uyBReoAg==;
-Message-ID: <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
-Date: Thu, 8 Jan 2026 20:11:19 +0300
+	s=arc-20240116; t=1767894827; c=relaxed/simple;
+	bh=s2ZdUB5oryfE7VLo5tR+5bVac6B1XTyyIoz66Nvjyy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rQoZlfzVR1Y57JCaqde6QunW+13WhkCRu7skgy9K2rY70CUUK6PDxCQQ2wcK32L0f1MJKjzjzBvyVhkqF+VaB0xhXRK8JVMSph51fdMhmSOg+K/wK9VYjA+8THKGmclA9QzDHYA7BYs2ExFZd3ocaUvieLZB6DSRsRejQ+f7fHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKGdMEYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAC7C19423;
+	Thu,  8 Jan 2026 17:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767894827;
+	bh=s2ZdUB5oryfE7VLo5tR+5bVac6B1XTyyIoz66Nvjyy8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=NKGdMEYcSlpq17WaHZ9aU/5qsFvizVQYSiJhw6dSpdeZb8yw3Rt1GDxfozcHkw+sk
+	 sQIze3OXIwEzNB4oH0sIohM12Z9CcgLlU/iPrwmELe1yNdePJRhUVXrrwiJzsf5N5j
+	 PqSmokrhVXdoQPvijvlXIIGrVCaoxPVjIqd8LfcGgaic/7qnNojDiJ5m3U4LACDZaX
+	 12qOUiLZ79TZnOGKwGRoNVVH2xT0fiO7Ze2OnFoLVrsNd4B5vvBQ4cQckXYiQdPEyG
+	 bEVQjs1/sIXcslc7faVTNPrCHrXWcoGQZ9BqmHTqqR4FcgKe9RAfLXhMyXZtSO4zDF
+	 GNO/qaBpN+ghA==
+Date: Thu, 8 Jan 2026 11:53:45 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: =?utf-8?B?SMOla29u?= Bugge <haakon.bugge@oracle.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sinan Kaya <okaya@codeaurora.org>,
+	Casey Leedom <leedom@chelsio.com>, Ashok Raj <ashok.raj@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	dingtianhong <dingtianhong@huawei.com>,
+	Alexander Duyck <alexander.h.duyck@intel.com>,
+	Alexander Duyck <alexanderduyck@fb.com>, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI/ACPI: Do not fiddle with ExtTag and RO in
+ program_hpx_type2
+Message-ID: <20260108175345.GA490809@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] rust: implement wrapper for acpi_object
-To: Gary Guo <gary@garyguo.net>
-Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>,
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <cover.1767818037.git.foxido@foxido.dev>
- <05261e88ac8503e2af59d703389d94cc15f4450d.1767818037.git.foxido@foxido.dev>
- <20260108132141.6cce4827.gary@garyguo.net>
-Content-Language: en-US
-From: Gladyshev Ilya <foxido@foxido.dev>
-In-Reply-To: <20260108132141.6cce4827.gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260107232205.GA447140@bhelgaas>
 
-On 1/8/26 16:21, Gary Guo wrote:
-> On Wed,  7 Jan 2026 23:35:32 +0300
-> Gladyshev Ilya <foxido@foxido.dev> wrote:
+On Wed, Jan 07, 2026 at 05:22:05PM -0600, Bjorn Helgaas wrote:
+> On Fri, Dec 05, 2025 at 03:28:29PM +0100, Håkon Bugge wrote:
+> > After commit 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if
+> > supported"), the kernel controls enablement of extended tags
+> > (ExtTag). Similar, after commit a99b646afa8a ("PCI: Disable PCIe
+> > Relaxed Ordering if unsupported"), the kernel controls the relaxed
+> > ordering bit (RO), in the sense that the kernel keeps the bit set (if
+> > already set) unless the RC does not support it.
+> > 
+> > On some platforms, when program_hpx_type2() is called and the _HPX
+> > object's Type2 records are, let's say, dubious, we may end up
+> > resetting ExtTag and RO, although they were explicit set or kept set
+> > by the OSPM [1].
 > 
->> ACPI Object is represented via union on C-side. On Rust side, this union
->> is transparently wrapped for each ACPI Type, with individual methods and
->> Defer implementation to represented type (integer, string, buffer, etc).
->>
->> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
+> This text about Type 2 records in ACPI r6.6, sec 6.2.10.3, seems a
+> little ambiguous to me:
 > 
+>   A PCI Express-aware OS that has assumed ownership of native hot plug
+>   (via _OSC) but does not support or does not have ownership of the
+>   AER register set must use the data values returned by the _HPX
+>   object’s Type 2 record to program the AER registers of a hot-added
+>   PCI Express device. However, since the Type 2 record also includes
+>   register bits that have functions other than AER, OSPM must ignore
+>   values contained within this setting record that are not applicable.
 > 
-> Hi Gladyshev,
+> If I squint, I can read that as meaning that Type 2 is really there
+> just for AER, and the OS:
 > 
-> I've checked the `acpi_object` implementation on the C side and it appears
-> that the buffer is not owned by the object (however managed externally,
-> could either be resting in ACPI tables directly or be allocated).
-Hm, I looked through ACPI_FREE() call sites and acpi_evaluate_object() 
-implementation, and it seems to me that the acpi_object's lifetime is 
-the same as its internal buffer. Overall, it is indeed managed 
-externally, but acpi_object and acpi_object::buffer->pointer live 
-together. I’m not an ACPI expert, though, so maybe I’m missing something.
-
-Anyway, the current Rust setup seems fine for now:
-0. AcpiObject validity is guaranteed by whoever constructed/passed it (C 
-side for WMI abstractions, for example)
-1. You can only convert &AcpiObject to &AcpiSubType (reference to 
-reference), so AcpiSubType can't outlive AcpiObject
-2. You can't steal the data pointer from &AcpiSubType either, because 
-the Deref impl is "logically safe" and only gives you a reference to the 
-inner data, which can't outlive AcpiSubType's reference -> can't outlive 
-AcpiObject.
-
-So for now until AcpiObject lives _less_ than it's inner data, 
-everything is OK.
-
-> Therefore, you might want to carry a lifetime to represent the lifetime of
-> underlying buffers?
->> ---
->>   rust/kernel/acpi.rs | 91 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 91 insertions(+)
->>
->> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
->> index 9b8efa623130..ac1a9f305f6c 100644
->> --- a/rust/kernel/acpi.rs
->> +++ b/rust/kernel/acpi.rs
->> @@ -2,6 +2,8 @@
->>   
->>   //! Advanced Configuration and Power Interface abstractions.
->>   
->> +use core::ops::Deref;
->> +
->>   use crate::{
->>       bindings,
->>       device_id::{RawDeviceId, RawDeviceIdIndex},
->> @@ -63,3 +65,92 @@ macro_rules! acpi_device_table {
->>           $crate::module_device_table!("acpi", $module_table_name, $table_name);
->>       };
->>   }
->> +
->> +/// An ACPI object.
->> +///
->> +/// This structure represents the Rust abstraction for a C [`struct acpi_object`].
->> +/// You probably want to convert it into actual object type (e.g [`AcpiBuffer`]).
->> +///
->> +/// # Example
->> +/// ```
->> +/// # use kernel::prelude::*;
->> +/// use kernel::acpi::{AcpiObject, AcpiBuffer};
->> +///
->> +/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
->> +///     let buf: &AcpiBuffer = obj.try_into()?;
->> +///
->> +///     Ok(buf[0])
->> +/// }
->> +/// ```
->> +///
->> +/// [`struct acpi_object`]: srctree/include/acpi/actypes.h
->> +#[repr(transparent)]
->> +pub struct AcpiObject(bindings::acpi_object);
->> +
->> +impl AcpiObject {
->> +    /// Returns object type id (see [`actypes.h`](srctree/include/acpi/actypes.h)).
->> +    pub fn type_id(&self) -> u32 {
->> +        // SAFETY: `type` field is valid in all union variants.
->> +        unsafe { self.0.type_ }
->> +    }
+>   - should only use a Type 2 record when it owns PCIe native hotplug
+>     (native_pcie_hotplug) but does not own AER (!native_aer),
 > 
-> This should probably be an enum instead of just integer.
-
-Using an enum would require keeping Rust's enum synced with the C side, 
-as well as implementing some simple but non-trivial checks that the 
-`type_` field is a valid enum value (and the valid range isn't 
-continuous). I think that keeping it as an integer is simpler and better 
-matches C side.
-
->> +}
->> +
->> +/// Generate wrapper type for AcpiObject subtype.
->> +///
->> +/// For given subtype implements
->> +/// - `#[repr(transparent)]` type wrapper,
->> +/// - `TryFrom<&AcpiObject> for &SubType` trait,
->> +/// - unsafe from_unchecked() for 'trusted' conversion.
->> +macro_rules! acpi_object_subtype {
->> +    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union_type:ty)) => {
->> +        /// Wraps `acpi_object` subtype.
->> +        #[repr(transparent)]
->> +        pub struct $subtype_name($union_type);
+>   - should only program AER registers, and
 > 
-> Instead of wrapping the bindgen-generated subtypes, I would rather this to
-> be a transparent wrapper of `acpi_object`, with an invariant that the
-> specific union field is active.
+>   - should *ignore* bits unrelated to AER.
 > 
-> This way you do not have to name the bindgen-generated names.
-
-Sounds reasonable, thanks!
-
->> +
->> +        impl<'a> TryFrom<&'a AcpiObject> for &'a $subtype_name {
->> +            type Error = Error;
->> +
->> +            fn try_from(value: &'a AcpiObject) -> core::result::Result<Self, Self::Error> {
->> +                if (value.type_id() != $subtype_name::ACPI_TYPE) {
->> +                    return Err(EINVAL);
->> +                }
->> +
->> +                // SAFETY: Requested cast is valid because we validated type_id
->> +                Ok(unsafe { $subtype_name::from_unchecked(&value) })
->> +            }
->> +        }
+> Most of the registers in Type 2 are in the AER Capability.  Device
+> Control is in the PCIe Capability, but if _OSC has granted AER
+> ownership to the OS, that includes the Error Reporting Enable bits in
+> Device Control (there's a PCI Firmware spec ECN to this effect:
+> https://members.pcisig.com/wg/Firmware/document/20514).
 > 
-> It feels like this can be better implemented by having a sealed trait for
-> all possible ACPI object types?
-
-I don’t see any particular benefit except moving the `impl TryFrom` out 
-of macro-generated code, but you’re probably right -- I’ll try 
-implementing it this way.
-
-(will rustdoc show TryFrom on the AcpiSubType's page if it's implemented 
-via sealed trait?)
-
->> +
->> +        impl $subtype_name {
->> +            /// Int value, representing this ACPI type (see [`acpitypes.h`]).
->> +            ///
->> +            /// [`acpitypes.h`]: srctree/include/linux/acpitypes.h
->> +            pub const ACPI_TYPE: u32 = bindings::$acpi_type;
->> +
->> +            /// Converts opaque AcpiObject reference into exact ACPI type reference.
->> +            ///
->> +            /// # Safety
->> +            ///
->> +            /// - Requested cast should be valid (value.type_id() is `Self::ACPI_TYPE`).
->> +            pub unsafe fn from_unchecked(value: &AcpiObject) -> &Self {
->> +                // SAFETY:
->> +                // - $field_name is currently active union's field due to external safety contract,
->> +                // - Transmuting to `repr(transparent)` wrapper is safe.
->> +                unsafe {
->> +                    ::core::mem::transmute::<&$union_type, &$subtype_name>(&value.0.$field_name)
->> +                }
->> +            }
->> +        }
->> +    };
->> +}
->> +
->> +acpi_object_subtype!(AcpiBuffer
->> +    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
->> +
->> +impl Deref for AcpiBuffer {
->> +    type Target = [u8];
->> +
->> +    fn deref(&self) -> &Self::Target {
->> +        // SAFETY: (pointer, length) indeed represents byte slice.
->> +        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.length as usize) }
->> +    }
->> +}
+> Type 2 does include Link Control, which is in the PCIe Capability and
+> doesn't seem related to AER, so maybe I'm on the wrong track.  But if
+> Type 2 was intended to handle things *other* than AER, I would think
+> the PCIe Capability Slot Control and Root Control would have been
+> included.
 > 
+> So *maybe* program_hpx_type2() should mask out everything from
+> pci_exp_devctl_or except PCI_EXP_DEVCTL_CERE, PCI_EXP_DEVCTL_NFERE,
+> PCI_EXP_DEVCTL_FERE, and PCI_EXP_DEVCTL_URRE?  I have no idea what we
+> would do with Link Control though.
+> 
+> I wish I knew the history of this, but I don't.
 
+I poked around in the old specs and found that _HPX was added in ACPI
+r3.0, where the Type 2 record only contained AER registers
+(Uncorrectable Error Mask, Uncorrectable Error Severity, and
+Correctable Error Mask), and the description said this:
+
+  OSPM will only evaluate _HPX with Setting Record – Type 2 if OSPM is
+  not controlling the PCI Express Advanced Error Reporting capability.
+
+ACPI r4.0 changed _HPX to the current r6.6 description and added all
+the registers included in r6.6 (without changing the record revision).
+
+So I think we should do what I proposed above (only do
+program_hpx_type2() if the OS owns PCIe hotplug but not AER, and only
+update the CERE/NFERE/FERE/URRE bits in Device Control).  I would
+probably log the Link Control values if they're set, but otherwise
+ignore them.
+
+> > The Advanced Configuration and Power Interface (ACPI) Specification
+> > version 6.6 has a provision that gives the OSPM the ability to
+> > control these bits any way. In a note in section 6.2.9, it is stated:
+> > 
+> > "OSPM may override the settings provided by the _HPX object's Type2
+> > record (PCI Express Settings) or Type3 record (PCI Express Descriptor
+> > Settings) when OSPM has assumed native control of the corresponding
+> > feature."
+> > 
+> > So, in order to preserve the increased performance of ExtTag and RO on
+> > platforms that support any of these, we make sure program_hpx_type2()
+> > doesn't reset them.
+> > 
+> > [1] Operating System-directed configuration and Power Management
+> > 
+> > Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
+> > Fixes: a99b646afa8a ("PCI: Disable PCIe Relaxed Ordering if unsupported")
+> > Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+> > ---
+> >  drivers/pci/pci-acpi.c | 15 +++++++++------
+> >  1 file changed, 9 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index 9369377725fa0..6a2ae1b821732 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -324,15 +324,18 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+> >  		return;
+> >  	}
+> >  
+> > -	/*
+> > -	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
+> > -	 * those to make sure they're consistent with the rest of the
+> > -	 * platform.
+> > +	/* Don't allow _HPX to change MPS, MRRS, ExtTag, or RO
+> > +	 * settings.  We manage those to make sure they're consistent
+> > +	 * with the rest of the platform.
+> >  	 */
+> >  	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
+> > -				    PCI_EXP_DEVCTL_READRQ;
+> > +				   PCI_EXP_DEVCTL_READRQ  |
+> > +				   PCI_EXP_DEVCTL_EXT_TAG |
+> > +				   PCI_EXP_DEVCTL_RELAX_EN;
+> >  	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
+> > -				    PCI_EXP_DEVCTL_READRQ);
+> > +				    PCI_EXP_DEVCTL_READRQ  |
+> > +				    PCI_EXP_DEVCTL_EXT_TAG |
+> > +				    PCI_EXP_DEVCTL_RELAX_EN);
+> >  
+> >  	/* Initialize Device Control Register */
+> >  	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
+> > -- 
+> > 2.43.5
+> > 
 
