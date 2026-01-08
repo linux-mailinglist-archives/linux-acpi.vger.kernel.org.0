@@ -1,482 +1,261 @@
-Return-Path: <linux-acpi+bounces-20083-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20084-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EDAD05F17
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 20:57:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E3AD05FBE
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 21:07:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5261304868F
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 19:55:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42D65300ACCB
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 20:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5A631B815;
-	Thu,  8 Jan 2026 19:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16EA32A3FB;
+	Thu,  8 Jan 2026 20:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cf+3BZbG"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="fSbyOtGi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020085.outbound.protection.outlook.com [52.101.196.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A232E9729
-	for <linux-acpi@vger.kernel.org>; Thu,  8 Jan 2026 19:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767902118; cv=none; b=LHTC+EuLh3bIwH6oitH4J1h5/z2+r+97e7IPhjshQ8FvdbT0H52e+A4V1USKTsdNQWLqvOncnefCRG+BnIZao56Tsr1sr1WfDJiFA9TBm3YEdzRfMAm0PZKG6UinVstRLas7+88bnL80T6VRpE52fwz/xsykoedMANW2ocst+Uo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767902118; c=relaxed/simple;
-	bh=Rv22B45ECl7K4GgRzlTULCM5XRcWxKi2sI4Hk2eZ0ZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jzy9qTy8M4o/pEI3hRsjoH5XchoYTNIAtLu/FTphiAaPEIvPcNNeUVqRyGKhWdnqmDCVuZuHKRBSKM2mmPgv2dLNgBXC8Q/mY0vU9OSBsibef10V72QBixu9u7CEHoXBFD9wRWGN5GkwztzJaNAei1nE0Pws2XpY3WGKI6KzSnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cf+3BZbG; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-55b219b2242so1341081e0c.0
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Jan 2026 11:55:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767902115; x=1768506915; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JXd+uiaj7Yzl0wRzGWDip8TkXzK9MhZ9eZ0oBIaW4y0=;
-        b=cf+3BZbGm1HA5xb5sCeznH1IODrGAwsg+C/ZUoKQWyR+cKi38kO3iE0uljhhWYUrfe
-         Z33s0b/Ojl2+/KFgDqWyAIHaITnBsMbnBcG08l7OPaOWN1GQ9L2k2lK5GP6zVZONTDqB
-         jYcrOwEU4ZtR3/9fGKZfaFkQJYT9X2uGtkn1Er6Sxn1h2oD6E8F7ithyic3QA2ZY1jIO
-         lw0IviVoJxmNrtW38CH050GE8C/akhCBjPN4xP0zWM9k1lLlJtNg80MVQDnCRk1NazG8
-         Yi4qPFRYwtBWWRWn5sf2SgOmOdtkNipOFn35ph/uQWG4ECq6dwJieoCm3aI9Nw84seOQ
-         8CJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767902115; x=1768506915;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JXd+uiaj7Yzl0wRzGWDip8TkXzK9MhZ9eZ0oBIaW4y0=;
-        b=mkX9lntDM6+4dDqXdtCs19WUvbBnz1n2dtuooCOSR7zSgWOqARTV61oxSKqM7RPBBd
-         laY+S7WCvoLVP/OdBEJcUOE/a0nuM50plYsIWRS03W4wgSqSHiVS5KsJxkHPxONhhTPu
-         jIJGDt+j+D2HuIFzxUcken231+g2WW1AcMSgO56uyVh3oJWdjuKrSyunim8EYazTvajH
-         Qzog+2lCcXXpXW37sgrsaYqWe7zuju0gGve3CNOLuiTMm+z1KOiLPyExrXEbL64U7kXd
-         e/3WIe11SHCr+0FomzyUeqdH7Cyo0UkkgYwIS8xXXeNFO6DRzSSnyeJCt0ndcEccI9VY
-         fgdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaeIlqaJxdBUh6JYe4/2gyI18HTgnWoJjvZPFnNqlQPs6TQUx//RNmJbRTOejGoV8VTy6SDJtB+X7U@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGf1imLgX7PoaJ95yKMTlLYL3SDRsTPEZUP5NpwlakWQ9Y7nyl
-	lfnJ5juFt9JgaKuDqpoGXDXuKg7hui9MXQlk83VuecBHgzehqmtjWaSddmltjvhK
-X-Gm-Gg: AY/fxX5OkaFJcPWtsAusuYBcHAed3V8PzvdWJv+6L2hgyOwd1EbcxPrbTqmbgUmhU2n
-	6ZGLWQ5ycExDBJxPdlBQuvu4KO3CHOvtLb7SJDwh2+xWedtn/dxRwBQFR/Ux81GeKmUEK9Czqap
-	IxPvXuTaSpJ13IbopMTxKdf1XMD5tmYJOGmvRDnVZ4MgwgUzoU6mlmKDbNixhTtKam4bC4QRahK
-	XqKC/gPHTUNhgQpNR0XYmv+B8fpI0K0Y7+HgLhYMB9la2eoeSFTNAGz4w6nickAKvw2TNRUXMuK
-	ji+AqZ7x4WRZqzDhhHDLhM6P37Qg70W/Gv4gmcs1ax5671frS4tcHiUQ4iCXcEO/7bLqHYC/Xxu
-	AQNfftnVXvHPoIE9n3LGZ6LdfM1eBtHg0beF58PFfhc9ijzYMDDGEOHxSbwSRdzM13Lh/K287pv
-	987vrcEd+yijm91Nav9Z0cLrkXuzZkxpQPExneSyA//R5Ql+SxmVkbiWDybOys
-X-Google-Smtp-Source: AGHT+IE6FUfhWg5eFZbxtm0G4dCC6k5o0IpQETHjCxVZHvbYWukhZ7RuyYoBn0hVEPQH3mXR4WN3eA==
-X-Received: by 2002:a05:6122:d13:b0:559:6788:7b55 with SMTP id 71dfb90a1353d-563460d9032mr2790716e0c.3.1767902113294;
-        Thu, 08 Jan 2026 11:55:13 -0800 (PST)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5634ca16da7sm5425519e0c.17.2026.01.08.11.55.12
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 11:55:12 -0800 (PST)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-55b219b2242so1341037e0c.0
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Jan 2026 11:55:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV3RMbRLVwr9P+jAt2qWEYOl8iTcF+810jeKAtFc3OH57ZhDjuHaEFuz0OyUm/L9gz78425Esx9kqZy@vger.kernel.org
-X-Received: by 2002:a05:6870:3355:b0:3f6:1e6:d0dc with SMTP id
- 586e51a60fabf-3ffa24c14c7mr6020642fac.16.1767901750102; Thu, 08 Jan 2026
- 11:49:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98BB328B43;
+	Thu,  8 Jan 2026 20:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767902779; cv=fail; b=rtzTQUZ3YQwupRH43RKhZrR9aLWFjnCy7Uqdzia2Q9KhmUx9aMGvePv7bIxI9H+K+jM+uiMSIIe0+qSnmi8fKRBE8GCVU42VWzaj3zn7hYh1M4bm1GQG60Qx4dvCQR71hz4rdqgcCAJbNTNVAh0SjKdMu3gyrM1yLdwSfhUcWK4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767902779; c=relaxed/simple;
+	bh=s+2UN9UYiOCOFk9sEthkmdUrvbZEjkrH+yI0mvm1kGM=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=FaBiOLf507F1i8MSzG3v19mAyYZ78NwxW1f4V47CC+ED9V2p0G2boGkdHmf7bE4slMI0STutpyI0LPB8BBDQ9m7woprdnXJwB9hyiI3ZbModHHBPTmO/yloy5P1yNBB4AXK9MpfT5tykE+x249l0DjqLtnDUYC6M5CpYRa7kk9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=fSbyOtGi; arc=fail smtp.client-ip=52.101.196.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T/KFtPKVbXyOeLu4sTX3r1OguD3dl3WZwMTqskNrevhX0CU2GambLa/bsOCLNoYc2RKtTIFjan0aDHJKzVEDof1bqWcVaP4Qn4Xrc7Rr5CTSiyo1mDy3lLJ0bab7J8XD7Elt+N+ExuP76KBEwOd3/FQg5z8fxevKLdo1hq+QnR9cUp0bnH8K/jS6aYS+i9ofMrDvof3lyphJq04FAyi6FLSDWnnFGwWyGQKKwC3KJNdsvcXyNxGskI9ZWWq6MRaELxDjaemV2BI5aYq85Dx7UVZjkrZlj0K/J1rgH2NmiajwUZTFs71QzLvHOSu3MnCqGuURHi4QCE1Vmsiy2b1dtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mLfnFupHE3z1MShcAxamOZjNN7/24QDHpiJFYlEoNWk=;
+ b=xr3DsauTtHSi7nV9wRTrQqakXPwrIwePE2R+9eZq7XzsHtKt5zxtDVgY6hgQ1v7D5ANVyMGAFT24WuyiCLwufy5DoTvAIgEw6BfptxMraP3rXbEMg3+UJZlw4eWbopeqXfAGrtoooOZ2ewhDDuo7ZNzEDhBCeIhZMxpnCX6tNsTvgLEt7zvJBWBF4UPJlJH6tcKzN+S75Xwt1d35436HYxumovsuay1rKGWYvpRmy4wRB+zHOdvYkhiWjRF/HHBiyGtomlJE4Dgb+s5oRkDm8Q2JUzDPGsZbCrk1vdqQ6eJwLoIDMmNVAALkrE1EYh5T5F0hhEKlNELXTtpzH+paHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mLfnFupHE3z1MShcAxamOZjNN7/24QDHpiJFYlEoNWk=;
+ b=fSbyOtGi/CwCl9O+eZuh6TCc4C9wm4/K9+2qhFKq8ubwS8XRucm+MxV8BREirp7COEc/PreGJK/NcvUHhDjfsbR+yKYqehQE0zBmAt/BsN7S+qw5LFpiVIkwTVMWvbsia+k9SUBP26i17Yx2oEBPBtgeDM7a2U19Y7VIeO2RoNE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB8454.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:26e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
+ 2026 20:06:13 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
+ 20:06:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 08 Jan 2026 20:06:12 +0000
+Message-Id: <DFJH89UGFFHB.318N5A8X42JOB@garyguo.net>
+Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Tamir Duberstein" <tamird@gmail.com>, "Armin Wolf" <W_Armin@gmx.de>,
+ <platform-driver-x86@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 2/3] rust: implement wrapper for acpi_object
+From: "Gary Guo" <gary@garyguo.net>
+To: "Gladyshev Ilya" <foxido@foxido.dev>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <cover.1767818037.git.foxido@foxido.dev>
+ <05261e88ac8503e2af59d703389d94cc15f4450d.1767818037.git.foxido@foxido.dev>
+ <20260108132141.6cce4827.gary@garyguo.net>
+ <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+In-Reply-To: <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+X-ClientProxiedBy: LO3P123CA0032.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:388::8) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1767818037.git.foxido@foxido.dev> <a119094f2e248587c541daf7c5b65bf4398b281b.1767818037.git.foxido@foxido.dev>
-In-Reply-To: <a119094f2e248587c541daf7c5b65bf4398b281b.1767818037.git.foxido@foxido.dev>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Thu, 8 Jan 2026 21:48:58 +0200
-X-Gmail-Original-Message-ID: <CAKBF=psGUwgr7e+EM1d2OAv8H1A6zKfhQaSPS56vVcnc=Ez_KA@mail.gmail.com>
-X-Gm-Features: AQt7F2qS-4Xdo8QSiijGqc44FrAK202VttrXKCL_GLage0GrD20RodnCOw4u54M
-Message-ID: <CAKBF=psGUwgr7e+EM1d2OAv8H1A6zKfhQaSPS56vVcnc=Ez_KA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add WMI abstractions
-To: Gladyshev Ilya <foxido@foxido.dev>
-Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>, 
-	platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB8454:EE_
+X-MS-Office365-Filtering-Correlation-Id: 125c05e2-8d91-4a21-89af-08de4ef15feb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cDRpU0lTMDR0QUdXZmlmdmFhditlMjlsb0RDR3lkeXMwbm9yVjZzTjRXeEdt?=
+ =?utf-8?B?V0N1cVBkQ0toZlhtcXlsdkZTUCtYcER1d2RJdnRvZHBDb2xPcjZIOXNHSmE5?=
+ =?utf-8?B?UGV0TzdmbzhERUlUWUdzYlBrRTNQZ2RwKzNsUFY1UTJ5T2FlbjZRV3BXQlBx?=
+ =?utf-8?B?dWVRWVdicGtWenBPamRqNXhOVHR3UkZhRUNlalRveEdYZGtSSVdrV0FqVDVh?=
+ =?utf-8?B?ZGhjWElLUzdWTENYOTk2QWlUZ2pZSWRVbUFGUXBvaXAydUtHTzh1T09ObnBL?=
+ =?utf-8?B?WVA4WnUxem1VeEU1YmYwUDZ4TDNoQkpIdnZQUzdqUGxEZ3ZzcVFsUjB6UndE?=
+ =?utf-8?B?d05QcmhmbjIyODNpcVpIeFhyT3NoOGRvR0lUQi9WNlR1OHU4SkxqU0VJeC9j?=
+ =?utf-8?B?dkxTRy9rMjg0b0FpTUxHK01MZS82Q0dudVNHc0o1YnBuOEp1T2JhaWRtNG9w?=
+ =?utf-8?B?VzUvcTYyZU9ZdE8vWG1wQTNYSjAzS3I3N1Z3MDBVLzY4OWRRdHQwNHZ2bXNN?=
+ =?utf-8?B?R0QxOWZKUnNJR0xnVnNnQXY1VkIzak1xRVFaYzlwemR6OHNBMGljN28xbm1n?=
+ =?utf-8?B?d0ZmVGliU2FzZDJ0MldUUzd1WWJXL0dKUTltWWtrUzVSOVQzemJUeWlMRktP?=
+ =?utf-8?B?cVFhZ296QkNPdUJER3IzbnVJYWJ6NkZycmQ0TEgrRjA1TDVuWHBPYzd5elo2?=
+ =?utf-8?B?S05RTXJXVEtOQzIxVXJsbnk3L0VUdEw5dlA1dGxiVkkvUzRTdC9Xd3U3VWVO?=
+ =?utf-8?B?bHM4WWpaWmw4SFEwQmQ5ek14aVdJT05mN2xLcVpVS3A4dlNjTExtOFJ1V1gx?=
+ =?utf-8?B?dlg3NjV6L2lnb3ZMeFRXNnNTaUI5T3dtUDY0WW9EQUFpNmFRZHdVR3JtUUYx?=
+ =?utf-8?B?bW5iLzRMRVJPZ1UxQzBJbSthT3c1QVhiRHNkbW9pRE91YmFleklaaGc3Nzly?=
+ =?utf-8?B?bHJkZ0ltYWwzUUtvVHFTbnBNcWZWRVY4L0lETnZKY09KMEg5c2phR0s5NnpX?=
+ =?utf-8?B?VktqQmNOa0JIWGo2WUpOWXFTK1lVNGxaQnVLaktTL3lZb2VYU2szS3JvVTJR?=
+ =?utf-8?B?R2hubmhBQjNqS1duMU0xZ2dNZ1kzZVEyVzBBLzI1aEkrMUVxWmJDMzFOWnpH?=
+ =?utf-8?B?UUhqcy85QWNsV0JlUWRrVVFPaWJVVmxKMkM2aXdaeTA4clh6SE1Xa3Avckh2?=
+ =?utf-8?B?MTEvTnE2QlFVNW5vK2RkZDlRS3BDV2MzcUI5NnczYlZBV2dvZ3Jhait2SmFT?=
+ =?utf-8?B?RXUvOXJBSy83YmtBWDd6aEw5YVcwTDdZcVR6TDJtVnloc0F1bXJ0cW9kc3kv?=
+ =?utf-8?B?bC9ZazlqMjluVlUyV0FZMlc3ekthNFMxdmlDYjNMc2s4TmNmd2FFSkVhMTRJ?=
+ =?utf-8?B?ZTQxYkRlbGp1MGNJcjhxMzVNUlJrc1M1Q05EUFB3MDN0RUxFYlFzeHJKWkJL?=
+ =?utf-8?B?YzgyM216dFdVQytXM1UwK2dKU2g4d0lVbmFndUJjOUdMVEcxWUt3UUtLcURH?=
+ =?utf-8?B?aVlDVVpQa2o4Q3ZGY3duaU96ckx5NFNTMDBkYlB3NE1NUWZjTW5nMVArc3lz?=
+ =?utf-8?B?YTByZDljOVRwSUVDVFlQS25HREhKOUxhNENxUEZRYjNqTm9aWDRWVmVOVDJM?=
+ =?utf-8?B?UGRqMHZwQmRFQ2tkTGp2bjhRbmJCU0dsMUJ5M25tN01xQkJUSU1qQlpzK1dp?=
+ =?utf-8?B?eWx2b0NFQlNzZWgwcitRMjg0c0Jrd1ptdDJhWS82OWhKRFcya0JyS0FmZ250?=
+ =?utf-8?B?UFBLSExmVW9ReTRyYzJYa1pDUDkzMVhPR0t6NjlxU3hxL0pvelFFa3BlMlVu?=
+ =?utf-8?B?RXZPaEtNcEIrUndCNkRMdW9UNm9XQXVDZHJMR2s0WU9vZmROSzhFYXhmeWlo?=
+ =?utf-8?B?QUxVQ0RWOGEyM0swdlV4RkNWVE5DbDdKRS85NmFQQ1hIUDlrTmtYT2Jia01L?=
+ =?utf-8?Q?mjLSRtVq0qaa1s564Pj+BJDJtNCaCOZE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V1dTamJNZ3dja2t4TGswK2VwRWRPUktKUUxsZW9NTUFURnp1Wk9rL0RhSUND?=
+ =?utf-8?B?bjI5b2N2SHVNaE05a1ZER0cvNDh6eHBpTEhsNTJyeWFuZ092VGY5Sy9KSGhu?=
+ =?utf-8?B?TWlMN3ZNbXQ4OGh0Q2M1Mm13VEZQeVhRelRHeTVINGpMS2NHZGRaNDE0ZU5p?=
+ =?utf-8?B?UlBjdEF5OVJVQUpQS3NyV0ZpTmlYblhNNytmVTdHYWcyVlp4M1F3bjgzTWlo?=
+ =?utf-8?B?ZWtvbjFiTVFNMlFBNlRXbzJlRGxQVTAzRVpyNzJmVDV4SXVwNkZJMmZ4cVdn?=
+ =?utf-8?B?ZUR1SWIwTlJqemJ4TGZqSUo3T0txcjcrYzRNZlU0MUptd0NUWUZmNXB0RWQx?=
+ =?utf-8?B?R3dRM255aHpmY3F1cWZvNTRXNzRQWjQ0dzV1VG56R0htUWN6Y3pOUkJhbTY3?=
+ =?utf-8?B?NGl5R0plTXo4TEhDbyt2V0djaFgyZmZXZk1DaWNWRkt4MU9LWWZJaEhydC9N?=
+ =?utf-8?B?NFUzZFR0YldRSUFYK0tud1ZwOGUwOVg1NnhOYmp5UjhoTEFRbk4rNVN1WGRx?=
+ =?utf-8?B?bnRPM3laUHNBci96M1piS3NvL3UrNTJBZ1VQZElRNHVIbmpiMXVYcHVaM2Nw?=
+ =?utf-8?B?d2NTOWR0d2NvZ2lLN2dFMnJEN0JGUWdKamFYMnpGTFhNSzc0UVlteWhqNVJ6?=
+ =?utf-8?B?VlhlL2cyaGVGT2p6a0hLS2MrcjgzSm9DWTY0bVZ3THBGeVFxNDM5M1VQaVA3?=
+ =?utf-8?B?OHNVMWczdXZaVUJ4LzZZRWZmMFZoMFRmVjJNbFJ6SHoraEVDbmNlZXBUd3lO?=
+ =?utf-8?B?cHluNGVFY2NFL243WitoMzZpMGFHVzFWMmo0dEVGYVQzaE5tRFo4NUd5dElp?=
+ =?utf-8?B?RjdvN1Zqdjd1eGt1d2xEVW1pc250OEM0QS8zNDFUUU4xYW5QYzQxYVpUM0xa?=
+ =?utf-8?B?dW9tekZmVmRMSUk3blAzSmtRNys5ai9Fdm5LVVZsZGRRTXpWaWZMQlVNYzRF?=
+ =?utf-8?B?VFlnajZvdEdJYVhSa1RRSUJBQk4xVHMxTnE4c1QxNXFSdHdNd1N4UWxpS2tX?=
+ =?utf-8?B?bGZlM1hqMlhmOUFWVGp0SzVZZThheEgvdDIxLzQyWjFOa0JzMnMxYURWZENE?=
+ =?utf-8?B?TS8rcGlIRTQvc2V1UTJjZEwxMmZXWnArS1Vodkl6eWJuREdlSWVJbGErVC9K?=
+ =?utf-8?B?bzVMQlZrcHdFNWhTN09rZHFDeVRBUkV3bFhaMFV2Z0lxUWtEZ05zWkp0Y0Rq?=
+ =?utf-8?B?VzNpQzBab0lFclQ5RWtlNDM4L2tCQ0IwQjQvQnFRWlpFcHVETzdrTTBjK0xY?=
+ =?utf-8?B?ZFdIT0MycUZsMm9yRUNoakJvcmFZRzVTSExhWldtcU5FMVYvVUtyZldsZVVu?=
+ =?utf-8?B?cVhkUW04aUtYd3FxTGlwY1UrcE9uTXVPT2Yzdnd2My84L3dSSXJnVnBKaS9s?=
+ =?utf-8?B?UHBzdUNPbllMc3ZmZXZrWk50eXJJUU8yZEdMYUorbm1SWkllenluSnJldG1W?=
+ =?utf-8?B?TVBWWWZMUXROYmp4WFpsUUxmK29naDk5ZnBMcFhzTnlqNFArV0Z3M0U1T3U3?=
+ =?utf-8?B?TWp5bWpFUFFQdGw5OGZRQ0drMFVIMlZ5MVhCODBXVXYwZnpLT0tiQ3NkWEE5?=
+ =?utf-8?B?aENQQWxvc3ZsWmdUWEdwMStZbklLaHI4VVkyYzNrVzI2cXlYdTZxUTU3RHRi?=
+ =?utf-8?B?VG9Nb1hUbUNGVmdzYUpEdWdzT2ZmVGRmZ3Zsdmxka2tSZFB0dm1GL1JOVjZP?=
+ =?utf-8?B?M1U5UyswcWxHYWNpMlVZMm4zMmNTYThPc1dzaFJNOC9xdmdEb2ttd0NQamVs?=
+ =?utf-8?B?a0dRUDB0ellxUkNGQm5zZFZOZVhSc0dDN0t5ZU5vbWZ4OVRrVXpLa01QNFJ4?=
+ =?utf-8?B?WVlCUENhN0tRU3RYYjJYeVhyb1JncGRadlFoOXlhSEVPYjdVeDVOYmRQWHor?=
+ =?utf-8?B?TW9KbzU0ekxwWU55UmhKVlYwWGJoTFdRVlovcUp2Q2t6S1FEWmNZY21OSmtp?=
+ =?utf-8?B?eVMrUEVMNHovbnVKRjliOXRuZWJlSUxwM1FOaW1MNG1GaWs3YlJwZ2U5YXhW?=
+ =?utf-8?B?aHl5QVM5NjE0MG92THQ2ZExEcmxNVVgvMXVseWJaWExiVEVnbFRnRjZrUzNw?=
+ =?utf-8?B?d2M3UDVQTHdORDVkQzltVDlnS0haVDFVWUNKc0R5aWlUeXRUK05DMElLUEI5?=
+ =?utf-8?B?S2FGVGN2ZzBNZ3ZYeHliRksrTHpzL3p0VjU5VTRYUWFmSlVZblA2dXA0bytv?=
+ =?utf-8?B?cUNWc1pETUVNNGZNY2lBbUFlV09ucStIRUtyMXdjTnFGOU1NWEE5RDJEZXky?=
+ =?utf-8?B?YnhTdXhmRGUyVElPVi9xOVB3NXhlWDdTVWtBMndBT2tXeHAxNDcyT0tXbHhE?=
+ =?utf-8?B?RFp2T2RTcUt5a05zL2x3b0NDTEFFYjl2K0M0NUJuaWpWUkJXcnpBUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 125c05e2-8d91-4a21-89af-08de4ef15feb
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 20:06:13.7292
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jGXT1yNsNr1ZFZW6LHTp47dVHobGuldXv+6C9CixxDYKlsr7YNeV/DuagUVDpmm7JcB+t4BfnbivXIuuy+kRdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8454
 
-On Wed, 7 Jan 2026 at 22:56, Gladyshev Ilya <foxido@foxido.dev> wrote:
+On Thu Jan 8, 2026 at 5:11 PM GMT, Gladyshev Ilya wrote:
+> On 1/8/26 16:21, Gary Guo wrote:
+>> On Wed,  7 Jan 2026 23:35:32 +0300
+>> Gladyshev Ilya <foxido@foxido.dev> wrote:
+>>=20
+>>> ACPI Object is represented via union on C-side. On Rust side, this unio=
+n
+>>> is transparently wrapped for each ACPI Type, with individual methods an=
+d
+>>> Defer implementation to represented type (integer, string, buffer, etc)=
+.
+>>>
+>>> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
+>>=20
+>>=20
+>> Hi Gladyshev,
+>>=20
+>> I've checked the `acpi_object` implementation on the C side and it appea=
+rs
+>> that the buffer is not owned by the object (however managed externally,
+>> could either be resting in ACPI tables directly or be allocated).
+> Hm, I looked through ACPI_FREE() call sites and acpi_evaluate_object()=20
+> implementation, and it seems to me that the acpi_object's lifetime is=20
+> the same as its internal buffer.
+
+No, it's not the same. acpi_object's lifetime needs to be shorter than
+the internal buffer.
+
+In Rust this is a typical case where you'd put lifetime on the struct
+where you write
+
+struct AcpiObject<'a> { ... }
+
+> Overall, it is indeed managed=20
+> externally, but acpi_object and acpi_object::buffer->pointer live=20
+> together. I=E2=80=99m not an ACPI expert, though, so maybe I=E2=80=99m mi=
+ssing something.
 >
-> This introduces Rust abstraction for WMI subsystem via wmi::Driver trait
-> and module_wmi_driver/wmi_device_table macros. Driver can be probed,
-> notified on events and removed -- almost everything C-side can do.
+> Anyway, the current Rust setup seems fine for now:
+> 0. AcpiObject validity is guaranteed by whoever constructed/passed it (C=
+=20
+> side for WMI abstractions, for example)
+
+When you construct a `AcpiObject`; it becomes incorrect: the constructed
+`AcpiObject` now can outlive the internal buffer, which is broken.
+
+Your code indeed works fine today, but the reason is that nobody can
+construct a `AcpiObject`. They can only ever receive a reference, which
+makes the issue disappear, as the lifetime gets "absorbed" by the
+lifetime on the reference. In essense, whenever `&'a AcpiObject` appears
+in your code, it's actually meant to be `&'a AcpiObject<'a>`.
+
+If someone were to add a Rust-side constructor for `AcpiObject`, then
+the lifetime becomes broken.
+
+So it works today, but I think it gives the wrong impression to the user
+that the buffer is managed by `AcpiObject`.
+
+Best,
+Gary
+
+> 1. You can only convert &AcpiObject to &AcpiSubType (reference to=20
+> reference), so AcpiSubType can't outlive AcpiObject
+> 2. You can't steal the data pointer from &AcpiSubType either, because=20
+> the Deref impl is "logically safe" and only gives you a reference to the=
+=20
+> inner data, which can't outlive AcpiSubType's reference -> can't outlive=
+=20
+> AcpiObject.
 >
-> This abstraction will be used by subsequent redmi_wmi_rs reference
-> driver.
+> So for now until AcpiObject lives _less_ than it's inner data,=20
+> everything is OK.
 >
-> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
-> ---
->  MAINTAINERS                     |   1 +
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/lib.rs              |   2 +
->  rust/kernel/wmi.rs              | 277 ++++++++++++++++++++++++++++++++
->  4 files changed, 281 insertions(+)
->  create mode 100644 rust/kernel/wmi.rs
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 765ad2daa218..4909ae8be6e3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -404,6 +404,7 @@ F:  Documentation/driver-api/wmi.rst
->  F:     Documentation/wmi/
->  F:     drivers/platform/wmi/
->  F:     include/uapi/linux/wmi.h
-> +F:     rust/kernel/wmi.rs
->
->  ACRN HYPERVISOR SERVICE MODULE
->  M:     Fei Li <fei1.li@intel.com>
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index a067038b4b42..f9671280c6b5 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -85,6 +85,7 @@
->  #include <linux/usb.h>
->  #include <linux/wait.h>
->  #include <linux/workqueue.h>
-> +#include <linux/wmi.h>
->  #include <linux/xarray.h>
->  #include <trace/events/rust_sample.h>
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index a6eccdba50b5..29bc2b87a103 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -152,6 +152,8 @@
->  pub mod uaccess;
->  #[cfg(CONFIG_USB = "y")]
->  pub mod usb;
-> +#[cfg(CONFIG_ACPI_WMI)]
-> +pub mod wmi;
->  pub mod workqueue;
->  pub mod xarray;
->
-> diff --git a/rust/kernel/wmi.rs b/rust/kernel/wmi.rs
-> new file mode 100644
-> index 000000000000..a15258365a2e
-> --- /dev/null
-> +++ b/rust/kernel/wmi.rs
-> @@ -0,0 +1,277 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Abstractions for the WMI devices.
-> +//!
-> +//! C header: [`include/linux/wmi.h`](srctree/include/linux/wmi.h).
-> +
-> +use crate::{
-> +    acpi::AcpiObject,
-> +    device,
-> +    device_id::{
-> +        RawDeviceId,
-> +        RawDeviceIdIndex, //
-> +    },
-> +    driver,
-> +    error::{
-> +        from_result,
-> +        to_result,
-> +        VTABLE_DEFAULT_ERROR, //
-> +    },
-> +    prelude::*,
-> +    types::Opaque, //
-> +};
-> +use core::{marker::PhantomData, mem::MaybeUninit, ptr::NonNull};
+>> Therefore, you might want to carry a lifetime to represent the lifetime =
+of
+>> underlying buffers?
 
-Also for these use vertical style.
-
-> +use macros::vtable;
-> +
-> +/// [`IdTable`](kernel::device_id::IdTable) type for WMI.
-> +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
-> +
-> +/// The WMI driver trait.
-> +#[vtable]
-> +pub trait Driver: Send {
-> +    /// The type holding information about each one of the device ids supported by the driver.
-> +    type IdInfo: 'static;
-> +
-> +    /// The table of device ids supported by the driver.
-> +    const TABLE: IdTable<Self::IdInfo>;
-> +
-> +    /// WMI driver probe.
-> +    ///
-> +    /// Called when a new WMI device is bound to this driver.
-> +    /// Implementers should attempt to initialize the driver here.
-> +    fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> impl PinInit<Self, Error>;
-> +
-> +    /// WMI device notify.
-> +    ///
-> +    /// Called when new WMI event received from bounded device.
-> +    fn notify(self: Pin<&Self>, _dev: &Device<device::Core>, _event: Option<&AcpiObject>) {
-
-This should be device::Bound
-
-Also probably _ marks are not needed. I think compiler does give
-unused build warnings.
-
-I do not know reason but usually other drivers use this over self. And
-device first so this
-would be:
-
-    fn notify(dev: &Device<device::Bound>, this: Pin<&Self>, event:
-Option<&AcpiObject>) {
-
-Same also in unbind. But like I said I'm not completely sure about this.
-
-> +        build_error!(VTABLE_DEFAULT_ERROR);
-> +    }
-> +
-> +    /// WMI driver remove.
-> +    fn unbind(self: Pin<&Self>, _dev: &Device<device::Core>) {
-> +        build_error!(VTABLE_DEFAULT_ERROR);
-> +    }
-
-unbind should not be mandatory so here just do
-
-    let _ = (self, dev);
-
-Also comment can say little more.
-
-> +}
-> +
-> +/// A WMI device.
-> +///
-> +/// This structure represents the Rust abstraction for a C [`struct wmi_device`].
-> +/// The implementation abstracts the usage of a C [`struct wmi_device`] passed
-> +/// in from the C side.
-> +pub struct Device<Cxt: device::DeviceContext = device::Normal> {
-> +    inner: Opaque<bindings::wmi_device>,
-> +    _p: PhantomData<Cxt>,
-> +}
-> +
-> +impl<Cxt: device::DeviceContext> Device<Cxt> {
-> +    fn as_raw(&self) -> *mut bindings::wmi_device {
-> +        self.inner.get()
-> +    }
-> +}
-> +
-> +/// An adapter for the registration of WMI drivers.
-> +pub struct Adapter<T: Driver>(T);
-> +
-> +// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
-> +// a preceding call to `register` has been successful.
-> +unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
-> +    type RegType = bindings::wmi_driver;
-> +
-> +    unsafe fn register(
-> +        wdrv: &Opaque<Self::RegType>,
-> +        name: &'static CStr,
-> +        module: &'static ThisModule,
-> +    ) -> Result {
-> +        macro_rules! map_callback {
-> +            ($flag:ident -> $callback:ident) => {
-> +                if T::$flag {
-> +                    Some(Self::$callback)
-> +                } else {
-> +                    None
-> +                }
-> +            };
-> +        }
-> +
-> +        // SAFETY: It's safe to set the fields of `struct wmi_driver` on initialization.
-> +        unsafe {
-> +            (*wdrv.get()).driver.name = name.as_char_ptr();
-> +            (*wdrv.get()).driver.probe_type = bindings::probe_type_PROBE_PREFER_ASYNCHRONOUS;
-> +            (*wdrv.get()).id_table = T::TABLE.as_ptr();
-> +            (*wdrv.get()).probe = map_callback!(HAS_PROBE -> probe_callback);
-> +            (*wdrv.get()).notify = map_callback!(HAS_NOTIFY -> notify_callback);
-> +            (*wdrv.get()).remove = map_callback!(HAS_UNBIND -> remove_callback);
-> +            (*wdrv.get()).shutdown = None;
-> +            (*wdrv.get()).no_singleton = true;
-> +            (*wdrv.get()).no_notify_data = true;
-> +        }
-> +
-> +        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
-> +        to_result(unsafe { bindings::__wmi_driver_register(wdrv.get(), module.0) })
-
-Many drivers use .0 but there is ongoing work that .0 is not used. So
-can you use
-.as_ptr() here.
-
-> +    }
-> +
-> +    unsafe fn unregister(wdrv: &Opaque<Self::RegType>) {
-> +        // SAFETY: `wdrv` is guaranteed to be a valid `RegType`.
-> +        unsafe { bindings::wmi_driver_unregister(wdrv.get()) };
-> +    }
-> +}
-> +
-> +impl<T: Driver + 'static> Adapter<T> {
-> +    extern "C" fn probe_callback(
-> +        wdev: *mut bindings::wmi_device,
-> +        id: *const c_void,
-> +    ) -> kernel::ffi::c_int {
-> +        // SAFETY: The WMI core only ever calls the probe callback with a valid pointer to a
-> +        // `struct wmi_device`.
-> +        //
-> +        // INVARIANT: `wdev` is valid for the duration of `probe_callback()`.
-> +        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-> +
-> +        let id = id as usize;
-> +        let info = T::TABLE.info(id);
-> +
-> +        from_result(|| {
-> +            let data = T::probe(wdev, info);
-> +
-> +            wdev.as_ref().set_drvdata(data)?;
-> +            Ok(0)
-> +        })
-> +    }
-> +
-> +    extern "C" fn notify_callback(
-> +        wdev: *mut bindings::wmi_device,
-> +        obj: *mut bindings::acpi_object,
-> +    ) {
-> +        // SAFETY: The WMI system only ever calls the notify callback with a valid pointer to a
-> +        // `struct wmi_device`.
-> +        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-> +        // SAFETY:
-> +        // - AcpiObject is repr(transparent) wrapper around FFI object, so it's safe to cast
-> +        //    raw pointer to reference (in terms of alignment and etc),
-> +        // - Option<&ref> is guaranteed to have same layout as raw pointer (with NULL representing
-> +        //    None) by Rust's "nullable pointer optimization".
-> +        let obj: Option<&AcpiObject> = unsafe { core::mem::transmute(obj as *const AcpiObject) };
-> +
-> +        // SAFETY: `notify_callback` is only ever called after a successful call to
-> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-> +        // and stored a `T`.
-> +        let this = unsafe { wdev.as_ref().drvdata_borrow::<T>() };
-> +        this.notify(wdev, obj);
-> +    }
-> +
-> +    extern "C" fn remove_callback(wdev: *mut bindings::wmi_device) {
-> +        // SAFETY: The WMI system only ever calls the remove callback with a valid pointer to a
-> +        // `struct wmi_device`.
-> +        let wdev = unsafe { &*wdev.cast::<Device<device::CoreInternal>>() };
-> +
-> +        // SAFETY: `remove_callback` is only ever called after a successful call to
-> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-> +        // and stored a `T`.
-> +        let this = unsafe { wdev.as_ref().drvdata_borrow::<T>() };
-> +        this.unbind(wdev);
-> +    }
-> +}
-> +
-> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
-> +    fn as_ref(&self) -> &device::Device<Ctx> {
-> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-> +        // `struct platform_device`.
-> +        let dev = unsafe { &raw mut (*self.inner.get()).dev };
-> +
-> +        // SAFETY: `dev` points to a valid `struct device`.
-> +        unsafe { device::Device::from_raw(dev) }
-> +    }
-> +}
-> +
-> +kernel::impl_device_context_deref!(unsafe { Device });
-
-Missing safety comment.
-
-> +kernel::impl_device_context_into_aref!(Device);
-> +
-> +// SAFETY: Instances of `Device` are always reference-counted.
-> +unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-> +        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: NonNull<Self>) {
-> +        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-> +        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw()).dev) }
-> +    }
-> +}
-> +
-> +/// Abstraction for the WMI device ID structure, i.e. [`struct wmi_device_id`].
-> +///
-> +/// [`struct wmi_device_id`]: https://docs.kernel.org/driver-api/basics.html#c.wmi_device_id
-> +#[repr(transparent)]
-> +pub struct DeviceId(bindings::wmi_device_id);
-> +
-> +impl DeviceId {
-> +    /// Constructs new DeviceId from GUID string.
-> +    pub const fn new(guid: &[u8; bindings::UUID_STRING_LEN as usize]) -> Self {
-> +        // SAFETY: FFI type is valid to be zero-initialized.
-> +        let mut inner: bindings::wmi_device_id = unsafe { MaybeUninit::zeroed().assume_init() };
-
-Use pin_init::zeroed() so no unsafe needed.
-
-> +        build_assert!(inner.guid_string.len() == bindings::UUID_STRING_LEN as usize + 1);
-> +
-> +        // SAFETY: It's safe to copy UUID_STRING_LEN, because we validated lengths.
-> +        // Also we leave last byte zeroed, so guid_string is valid C string.
-> +        unsafe {
-> +            ::core::ptr::copy_nonoverlapping(
-> +                guid.as_ptr(),
-> +                &raw mut inner.guid_string[0],
-> +                bindings::UUID_STRING_LEN as usize,
-> +            );
-> +        }
-> +
-> +        Self(inner)
-> +    }
-> +}
-> +
-> +// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `wmi_device_id` and does not add
-> +// additional invariants, so it's safe to transmute to `RawType`.
-> +unsafe impl RawDeviceId for DeviceId {
-> +    type RawType = bindings::wmi_device_id;
-> +}
-> +
-> +// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `context` field.
-> +unsafe impl RawDeviceIdIndex for DeviceId {
-> +    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::wmi_device_id, context);
-> +
-> +    fn index(&self) -> usize {
-> +        self.0.context as usize
-> +    }
-> +}
-> +
-> +/// Declares a kernel module that exposes a single WMI driver.
-> +///
-> +/// # Examples
-> +///
-> +/// ```ignore
-> +/// module_wmi_driver! {
-> +///     type: MyDriver,
-> +///     name: "Module name",
-> +///     author: ["Author name"],
-> +///     description: "Description",
-> +///     license: "GPL v2",
-> +/// }
-> +/// ```
-> +#[macro_export]
-> +macro_rules! module_wmi_driver {
-> +    ($($f:tt)*) => {
-> +        $crate::module_driver!(<T>, $crate::wmi::Adapter<T>, { $($f)* });
-> +    }
-> +}
-> +
-> +/// Create a WMI `IdTable` with its alias for modpost.
-> +#[macro_export]
-> +macro_rules! wmi_device_table {
-> +    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
-> +        const $table_name: $crate::device_id::IdArray<
-> +            $crate::wmi::DeviceId,
-> +            $id_info_type,
-> +            { $table_data.len() },
-> +        > = $crate::device_id::IdArray::new($table_data);
-> +
-> +        $crate::module_device_table!("wmi", $module_table_name, $table_name);
-> +    };
-> +}
-> --
-> 2.52.0
->
->
 
