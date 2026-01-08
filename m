@@ -1,175 +1,541 @@
-Return-Path: <linux-acpi+bounces-20039-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20040-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748CED00635
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 00:23:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6FAD009A0
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 03:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F043A3025F99
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jan 2026 23:23:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1374D3047955
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 02:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3682F28EF;
-	Wed,  7 Jan 2026 23:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frEZaBmQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8D42309AB;
+	Thu,  8 Jan 2026 02:05:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1FF2E7F11;
-	Wed,  7 Jan 2026 23:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F4B42A80;
+	Thu,  8 Jan 2026 02:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767828233; cv=none; b=Z9D4ZaRPncGhmSMyWfGqs/btlAvdhg1PfG63I8CjlVyXXWRgX6nixU1Oude/aN/CB8ZVGXmInkBn4caAR7hWXUn1xhsnzIWaZWuWfyO5eIhoyoc3KdraLhnMWKSkjpezaEolPC1BBUVvipLNe4yZnR0FPQFCi4BFXF1aS4ZyxyQ=
+	t=1767837947; cv=none; b=XS2szPJChDllt8EVVujqf5q2lmiVqxmqxV0W1ekSWG7j+kCrJmHoZrBM4qTPAUHdNXSMpI7uYP81nfxY5C4oPTD2AKwKBsPhB5MGfsyHa/BaSuQVtj+VnGjDvqNnsfz6ra7iuv57J28ffs1yJNFBgQQpXZJg+dq7iWViuQ5Fq2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767828233; c=relaxed/simple;
-	bh=e+qQukv/lAvUpGwmiJMqXp++Wy0mRudPO4bMP1qNW88=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=I/gB8OPNj5I9gdE1rlkI/tofSyOsbUL+UMuMImZvOnAh7LHWmSZoxCTbyTOEs5hZ84WQ/ZwRObvNTpAH/G+Np00lk5zl3hwBNQlmaGlxY4R9BHRzLZ+V6GzPpdC8QgRLmFCNOK2j+gdKlletUtdRhs1jfitEnXXug1UANjn6y1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frEZaBmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A03C4CEF1;
-	Wed,  7 Jan 2026 23:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767828232;
-	bh=e+qQukv/lAvUpGwmiJMqXp++Wy0mRudPO4bMP1qNW88=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=frEZaBmQWGuwQ7NS+fZqDpBDfYmu20axZpIOnogQGbZnJ6lGMWj7n4KrWQqy5q3bm
-	 //tIghs/jyeTVJC8ra8iZEBlbdWxPK8446YqkI51b9vBpzTo2kOjZpcoLpoMG+a/w8
-	 uT1Q9zdgnqvjShmXqvxOD+AUGUF1FpzLCnYnCZHR1/MsdXQLHa5Cx9hYAPtVBOiwJA
-	 eTPvvDjCvzhiRma1VM7AunUhn1hB9x7tCaXVzamrD1RD8ZmTbo0w4s74GsSX6C8/lc
-	 mtG5NBn/4iDeRSMW8GRVW2uK6Pu7yr5Ld5np1Z4iLvLN04jFYwYu4lFPSO40R2iGIo
-	 mC4Kv5aJi+5aA==
-Date: Wed, 07 Jan 2026 17:23:51 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1767837947; c=relaxed/simple;
+	bh=YnDP2A5vUHlgvYVCEqiP7Kv75OegZFSfP81Lobz/y28=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RxSFtXNmYE/pofhTMuCvbNfgZWd0nVrol0y1M0d+G6QF/lWnSJhPMp8Hs9Rg0OG0KNb/zCl5SQhAA1xlnVysEP/pKB0fnhjH5YIjQL5b0v/tpNnB/yFQopOBAlFCxcXmcnW3jO7hUxbakoiYJn+yf3T+wWx/0+7hLEVIK3h+KwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6c033bccec3611f0a38c85956e01ac42-20260108
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:2ef978c1-027f-44fb-a43a-17e286c65884,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:a9d874c,CLOUDID:23f69c6df079db428332bd1f9220f5e2,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:-
+	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
+	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 6c033bccec3611f0a38c85956e01ac42-20260108
+X-User: luriwen@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <luriwen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1871255437; Thu, 08 Jan 2026 10:04:53 +0800
+From: Riwen Lu <luriwen@kylinos.cn>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Riwen Lu <luriwen@kylinos.cn>
+Subject: [PATCH v3] ACPI: PM: Introduce CONFIG_ACPI_S2IDLE for platform-independent S2Idle support
+Date: Thu,  8 Jan 2026 10:04:48 +0800
+Message-Id: <20260108020448.3112347-1-luriwen@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-acpi@vger.kernel.org, Chris Oo <cho@microsoft.com>, 
- Dexuan Cui <decui@microsoft.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
- Ricardo Neri <ricardo.neri@intel.com>, Wei Liu <wei.liu@kernel.org>, 
- "Kirill A. Shutemov" <kas@kernel.org>, 
- Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Yunhong Jiang <yunhong.jiang@linux.intel.com>, 
- Michael Kelley <mhklinux@outlook.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- "Rafael J. Wysocki (Intel)" <rafael.j.wysocki@intel.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-hyperv@vger.kernel.org, 
- x86@kernel.org, linux-kernel@vger.kernel.org
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-In-Reply-To: <20260107-rneri-wakeup-mailbox-v8-3-2f5b6785f2f5@linux.intel.com>
-References: <20260107-rneri-wakeup-mailbox-v8-0-2f5b6785f2f5@linux.intel.com>
- <20260107-rneri-wakeup-mailbox-v8-3-2f5b6785f2f5@linux.intel.com>
-Message-Id: <176782823140.2300431.3081932954431387872.robh@kernel.org>
-Subject: Re: [PATCH v8 03/10] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
+Content-Transfer-Encoding: 8bit
 
+The ACPI S2Idle (suspend-to-idle) code is currently located in sleep.c
+and guarded by CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT. This config is
+historically tied to x86/ia64 sleep states (S3/S4), which prevents
+ACPI-based platforms like ARM64 from using the OS-centric s2idle
+framework and its associated wakeup event handling (e.g., from ACPI
+buttons or the lid).
 
-On Wed, 07 Jan 2026 13:44:39 -0800, Ricardo Neri wrote:
-> Add DeviceTree bindings to enumerate the wakeup mailbox used in platform
-> firmware for Intel processors.
-> 
-> x86 platforms commonly boot secondary CPUs using an INIT assert, de-assert
-> followed by Start-Up IPI messages. The wakeup mailbox can be used when this
-> mechanism is unavailable.
-> 
-> The wakeup mailbox offers more control to the operating system to boot
-> secondary CPUs than a spin-table. It allows the reuse of the same wakeup
-> vector for all CPUs while maintaining control over which CPUs to boot and
-> when. While it is possible to achieve the same level of control using a
-> spin-table, it would require specifying a separate `cpu-release-addr` for
-> each secondary CPU.
-> 
-> The operation and structure of the mailbox are described in the
-> Multiprocessor Wakeup Structure defined in the ACPI specification. Note
-> that this structure does not specify how to publish the mailbox to the
-> operating system (ACPI-based platform firmware uses a separate table). No
-> ACPI table is needed in DeviceTree-based firmware to enumerate the mailbox.
-> 
-> Nodes that want to refer to the reserved memory usually define
-> a `memory-region` property. /cpus/cpu* nodes would want to refer to the
-> mailbox, but they do not have such property defined in the DeviceTree
-> specification. Moreover, it would imply that there is a memory region per
-> CPU. Instead, add a `compatible` property that the operating system can use
-> to discover the mailbox.
-> 
-> Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Acked-by: Rafael J. Wysocki (Intel) <rafael.j.wysocki@intel.com>
-> Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> ---
-> Changes in v8:
->  - None
-> 
-> Changes in v7:
->  - Fixed Acked-by tag from Rafael to include the "(Intel)" suffix.
-> 
-> Changes in v6:
->  - Reworded the changelog for clarity.
->  - Added Acked-by tag from Rafael. Thanks!
->  - Added Reviewed-by tag from Rob. Thanks!
->  - Added Reviewed-by tag from Dexuan. Thanks!
-> 
-> Changes in v5:
->  - Specified the version and section of the ACPI spec in which the
->    wakeup mailbox is defined. (Rafael)
->  - Fixed a warning from yamllint about line lengths of URLs.
-> 
-> Changes in v4:
->  - Removed redefinitions of the mailbox and instead referred to ACPI
->    specification as per discussion on LKML.
->  - Clarified that DeviceTree-based firmware do not require the use of
->    ACPI tables to enumerate the mailbox. (Rob)
->  - Described the need of using a `compatible` property.
->  - Dropped the `alignment` property. (Krzysztof, Rafael)
->  - Used a real address for the mailbox node. (Krzysztof)
-> 
-> Changes in v3:
->  - Implemented the mailbox as a reserved-memory node. Add to it a
->    `compatible` property. (Krzysztof)
->  - Explained the relationship between the mailbox and the `enable-mehod`
->    property of the CPU nodes.
->  - Expanded the documentation of the binding.
-> 
-> Changes in v2:
->  - Added more details to the description of the binding.
->  - Added requirement a new requirement for cpu@N nodes to add an
->    `enable-method`.
-> ---
->  .../reserved-memory/intel,wakeup-mailbox.yaml      | 50 ++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
-> 
+Since S2Idle is a software-driven low-power state that does not rely on
+firmware sleep states (S3/S4), it should be available to all
+ACPI-enabled platforms.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+To achieve this, introduce a new, independent Kconfig option,
+CONFIG_ACPI_S2IDLE. It is selected by ACPI_SYSTEM_POWER_STATES_SUPPORT
+for backward compatibility, but can now also be enabled separately by
+other platforms.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml:23:1: [warning] too many blank lines (2 > 1) (empty-lines)
+Move all s2idle-specific code into a dedicated file,
+drivers/acpi/s2idle.c. This creates a clear and independent ACPI s2idle
+framework, centered around a default acpi_s2idle_ops and a weakly
+defined acpi_s2idle_setup() hook.
 
-dtschema/dtc warnings/errors:
+The change allows all ACPI platforms to use this common s2idle
+infrastructure. Platforms with unique requirements can override the
+defaults via the weak function, while others (like ARM64) can now simply
+enable the config to obtain functional s2idle support with standard ACPI
+wakeup handling.
 
-doc reference errors (make refcheckdocs):
+Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
 
-See https://patchwork.kernel.org/project/devicetree/patch/20260107-rneri-wakeup-mailbox-v8-3-2f5b6785f2f5@linux.intel.com
+---
+v1 -> v2:
+ - Fix acpi_s2idle_setup() declaration error when SUSPEND disabled in x86.
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+v2 -> v3:
+ - Select ACPI_S2IDLE if SUSPEND enabled for ACPI_SYSTEM_POWER_STATES_SUPPORT.
+---
+ drivers/acpi/Kconfig    |  14 ++++
+ drivers/acpi/Makefile   |   2 +
+ drivers/acpi/bus.c      |   3 +
+ drivers/acpi/internal.h |  10 ++-
+ drivers/acpi/s2idle.c   | 167 ++++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/sleep.c    | 145 ----------------------------------
+ 6 files changed, 194 insertions(+), 147 deletions(-)
+ create mode 100644 drivers/acpi/s2idle.c
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ca00a5dbcf75..fa982b784c57 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -54,6 +54,7 @@ config ACPI_GENERIC_GSI
+ 
+ config ACPI_SYSTEM_POWER_STATES_SUPPORT
+ 	bool
++	select ACPI_S2IDLE if SUSPEND
+ 
+ config ACPI_CCA_REQUIRED
+ 	bool
+@@ -112,6 +113,19 @@ config ACPI_SLEEP
+ 	depends on ACPI_SYSTEM_POWER_STATES_SUPPORT
+ 	default y
+ 
++config ACPI_S2IDLE
++	bool "ACPI suspend-to-idle support"
++	depends on SUSPEND
++	help
++	  This option enables the core ACPI framework for the suspend-to-idle
++	  (S2Idle) power state. This state is software-driven and does not
++	  require platform firmware sleep states (S3/S4).
++
++	  It is automatically selected by platforms with
++	  CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT (like x86), but can also
++	  be enabled independently by other ACPI platforms (e.g., ARM64) to
++	  gain support for low-power idle and ACPI wakeup events.
++
+ config ACPI_REV_OVERRIDE_POSSIBLE
+ 	bool "Allow supported ACPI revision to be overridden"
+ 	depends on X86
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index d1b0affb844f..821afc165197 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -35,6 +35,8 @@ acpi-$(CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT) += sleep.o
+ acpi-y				+= device_sysfs.o device_pm.o
+ acpi-$(CONFIG_ACPI_SLEEP)	+= proc.o
+ 
++acpi-$(CONFIG_ACPI_S2IDLE)	+= s2idle.o
++
+ 
+ #
+ # ACPI Bus and Device Drivers
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index a984ccd4a2a0..f355fc3c201b 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1398,6 +1398,9 @@ static int __init acpi_bus_init(void)
+ 	/* Initialize sleep structures */
+ 	acpi_sleep_init();
+ 
++	/* Initialize default acpi s2idle ops */
++	acpi_s2idle_init();
++
+ 	/*
+ 	 * Get the system interrupt model and evaluate \_PIC.
+ 	 */
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index 40f875b265a9..7f314acd7148 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -267,13 +267,19 @@ static inline bool acpi_ec_dispatch_gpe(void)
+                                   Suspend/Resume
+   -------------------------------------------------------------------------- */
+ #ifdef CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT
+-extern bool acpi_s2idle_wakeup(void);
+ extern int acpi_sleep_init(void);
+ #else
+-static inline bool acpi_s2idle_wakeup(void) { return false; }
+ static inline int acpi_sleep_init(void) { return -ENXIO; }
+ #endif
+ 
++#ifdef CONFIG_ACPI_S2IDLE
++extern bool acpi_s2idle_wakeup(void);
++extern int acpi_s2idle_init(void);
++#else
++static inline bool acpi_s2idle_wakeup(void) { return false; }
++static inline int acpi_s2idle_init(void) { return -ENXIO; }
++#endif
++
+ #ifdef CONFIG_ACPI_SLEEP
+ void acpi_sleep_proc_init(void);
+ int suspend_nvs_alloc(void);
+diff --git a/drivers/acpi/s2idle.c b/drivers/acpi/s2idle.c
+new file mode 100644
+index 000000000000..0c783b0e1a9b
+--- /dev/null
++++ b/drivers/acpi/s2idle.c
+@@ -0,0 +1,167 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * s2idle.c - ACPI suspend-to-idle support.
++ *
++ */
++
++#include <linux/acpi.h>
++#include <linux/device.h>
++#include <linux/suspend.h>
++#include <linux/irq.h>
++
++#include "internal.h"
++#include "sleep.h"
++
++#ifdef CONFIG_SUSPEND
++static bool s2idle_wakeup;
++
++int acpi_s2idle_begin(void)
++{
++	acpi_scan_lock_acquire();
++	return 0;
++}
++
++int acpi_s2idle_prepare(void)
++{
++	if (acpi_sci_irq_valid()) {
++		int error;
++
++		error = enable_irq_wake(acpi_sci_irq);
++		if (error)
++			pr_warn("Warning: Failed to enable wakeup from IRQ %d: %d\n",
++				acpi_sci_irq, error);
++
++		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
++	}
++
++	acpi_enable_wakeup_devices(ACPI_STATE_S0);
++
++	/* Change the configuration of GPEs to avoid spurious wakeup. */
++	acpi_enable_all_wakeup_gpes();
++	acpi_os_wait_events_complete();
++
++	s2idle_wakeup = true;
++	return 0;
++}
++
++bool acpi_s2idle_wake(void)
++{
++	if (!acpi_sci_irq_valid())
++		return pm_wakeup_pending();
++
++	while (pm_wakeup_pending()) {
++		/*
++		 * If IRQD_WAKEUP_ARMED is set for the SCI at this point, the
++		 * SCI has not triggered while suspended, so bail out (the
++		 * wakeup is pending anyway and the SCI is not the source of
++		 * it).
++		 */
++		if (irqd_is_wakeup_armed(irq_get_irq_data(acpi_sci_irq))) {
++			pm_pr_dbg("Wakeup unrelated to ACPI SCI\n");
++			return true;
++		}
++
++		/*
++		 * If the status bit of any enabled fixed event is set, the
++		 * wakeup is regarded as valid.
++		 */
++		if (acpi_any_fixed_event_status_set()) {
++			pm_pr_dbg("ACPI fixed event wakeup\n");
++			return true;
++		}
++
++		/* Check wakeups from drivers sharing the SCI. */
++		if (acpi_check_wakeup_handlers()) {
++			pm_pr_dbg("ACPI custom handler wakeup\n");
++			return true;
++		}
++
++		/*
++		 * Check non-EC GPE wakeups and if there are none, cancel the
++		 * SCI-related wakeup and dispatch the EC GPE.
++		 */
++		if (acpi_ec_dispatch_gpe()) {
++			pm_pr_dbg("ACPI non-EC GPE wakeup\n");
++			return true;
++		}
++
++		acpi_os_wait_events_complete();
++
++		/*
++		 * The SCI is in the "suspended" state now and it cannot produce
++		 * new wakeup events till the rearming below, so if any of them
++		 * are pending here, they must be resulting from the processing
++		 * of EC events above or coming from somewhere else.
++		 */
++		if (pm_wakeup_pending()) {
++			pm_pr_dbg("Wakeup after ACPI Notify sync\n");
++			return true;
++		}
++
++		pm_pr_dbg("Rearming ACPI SCI for wakeup\n");
++
++		pm_wakeup_clear(acpi_sci_irq);
++		rearm_wake_irq(acpi_sci_irq);
++	}
++
++	return false;
++}
++
++void acpi_s2idle_restore(void)
++{
++	/*
++	 * Drain pending events before restoring the working-state configuration
++	 * of GPEs.
++	 */
++	acpi_os_wait_events_complete(); /* synchronize GPE processing */
++	acpi_ec_flush_work(); /* flush the EC driver's workqueues */
++	acpi_os_wait_events_complete(); /* synchronize Notify handling */
++
++	s2idle_wakeup = false;
++
++	acpi_enable_all_runtime_gpes();
++
++	acpi_disable_wakeup_devices(ACPI_STATE_S0);
++
++	if (acpi_sci_irq_valid()) {
++		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
++		disable_irq_wake(acpi_sci_irq);
++	}
++}
++
++void acpi_s2idle_end(void)
++{
++	acpi_scan_lock_release();
++}
++
++static const struct platform_s2idle_ops acpi_s2idle_ops = {
++	.begin = acpi_s2idle_begin,
++	.prepare = acpi_s2idle_prepare,
++	.wake = acpi_s2idle_wake,
++	.restore = acpi_s2idle_restore,
++	.end = acpi_s2idle_end,
++};
++
++void __weak acpi_s2idle_setup(void)
++{
++	if (acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0)
++		pr_info("Efficient low-power S0 idle declared\n");
++
++	s2idle_set_ops(&acpi_s2idle_ops);
++}
++
++#else /* !CONFIG_SUSPEND */
++#define s2idle_wakeup		(false)
++void acpi_s2idle_setup(void) {}
++#endif /* !CONFIG_SUSPEND */
++
++bool acpi_s2idle_wakeup(void)
++{
++	return s2idle_wakeup;
++}
++
++int __init acpi_s2idle_init(void)
++{
++	acpi_s2idle_setup();
++	return 0;
++}
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 66ec81e306d4..3dd8eebd7efd 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -716,143 +716,6 @@ static const struct platform_suspend_ops acpi_suspend_ops_old = {
+ 	.recover = acpi_pm_finish,
+ };
+ 
+-static bool s2idle_wakeup;
+-
+-int acpi_s2idle_begin(void)
+-{
+-	acpi_scan_lock_acquire();
+-	return 0;
+-}
+-
+-int acpi_s2idle_prepare(void)
+-{
+-	if (acpi_sci_irq_valid()) {
+-		int error;
+-
+-		error = enable_irq_wake(acpi_sci_irq);
+-		if (error)
+-			pr_warn("Warning: Failed to enable wakeup from IRQ %d: %d\n",
+-				acpi_sci_irq, error);
+-
+-		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
+-	}
+-
+-	acpi_enable_wakeup_devices(ACPI_STATE_S0);
+-
+-	/* Change the configuration of GPEs to avoid spurious wakeup. */
+-	acpi_enable_all_wakeup_gpes();
+-	acpi_os_wait_events_complete();
+-
+-	s2idle_wakeup = true;
+-	return 0;
+-}
+-
+-bool acpi_s2idle_wake(void)
+-{
+-	if (!acpi_sci_irq_valid())
+-		return pm_wakeup_pending();
+-
+-	while (pm_wakeup_pending()) {
+-		/*
+-		 * If IRQD_WAKEUP_ARMED is set for the SCI at this point, the
+-		 * SCI has not triggered while suspended, so bail out (the
+-		 * wakeup is pending anyway and the SCI is not the source of
+-		 * it).
+-		 */
+-		if (irqd_is_wakeup_armed(irq_get_irq_data(acpi_sci_irq))) {
+-			pm_pr_dbg("Wakeup unrelated to ACPI SCI\n");
+-			return true;
+-		}
+-
+-		/*
+-		 * If the status bit of any enabled fixed event is set, the
+-		 * wakeup is regarded as valid.
+-		 */
+-		if (acpi_any_fixed_event_status_set()) {
+-			pm_pr_dbg("ACPI fixed event wakeup\n");
+-			return true;
+-		}
+-
+-		/* Check wakeups from drivers sharing the SCI. */
+-		if (acpi_check_wakeup_handlers()) {
+-			pm_pr_dbg("ACPI custom handler wakeup\n");
+-			return true;
+-		}
+-
+-		/*
+-		 * Check non-EC GPE wakeups and if there are none, cancel the
+-		 * SCI-related wakeup and dispatch the EC GPE.
+-		 */
+-		if (acpi_ec_dispatch_gpe()) {
+-			pm_pr_dbg("ACPI non-EC GPE wakeup\n");
+-			return true;
+-		}
+-
+-		acpi_os_wait_events_complete();
+-
+-		/*
+-		 * The SCI is in the "suspended" state now and it cannot produce
+-		 * new wakeup events till the rearming below, so if any of them
+-		 * are pending here, they must be resulting from the processing
+-		 * of EC events above or coming from somewhere else.
+-		 */
+-		if (pm_wakeup_pending()) {
+-			pm_pr_dbg("Wakeup after ACPI Notify sync\n");
+-			return true;
+-		}
+-
+-		pm_pr_dbg("Rearming ACPI SCI for wakeup\n");
+-
+-		pm_wakeup_clear(acpi_sci_irq);
+-		rearm_wake_irq(acpi_sci_irq);
+-	}
+-
+-	return false;
+-}
+-
+-void acpi_s2idle_restore(void)
+-{
+-	/*
+-	 * Drain pending events before restoring the working-state configuration
+-	 * of GPEs.
+-	 */
+-	acpi_os_wait_events_complete(); /* synchronize GPE processing */
+-	acpi_ec_flush_work(); /* flush the EC driver's workqueues */
+-	acpi_os_wait_events_complete(); /* synchronize Notify handling */
+-
+-	s2idle_wakeup = false;
+-
+-	acpi_enable_all_runtime_gpes();
+-
+-	acpi_disable_wakeup_devices(ACPI_STATE_S0);
+-
+-	if (acpi_sci_irq_valid()) {
+-		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
+-		disable_irq_wake(acpi_sci_irq);
+-	}
+-}
+-
+-void acpi_s2idle_end(void)
+-{
+-	acpi_scan_lock_release();
+-}
+-
+-static const struct platform_s2idle_ops acpi_s2idle_ops = {
+-	.begin = acpi_s2idle_begin,
+-	.prepare = acpi_s2idle_prepare,
+-	.wake = acpi_s2idle_wake,
+-	.restore = acpi_s2idle_restore,
+-	.end = acpi_s2idle_end,
+-};
+-
+-void __weak acpi_s2idle_setup(void)
+-{
+-	if (acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0)
+-		pr_info("Efficient low-power S0 idle declared\n");
+-
+-	s2idle_set_ops(&acpi_s2idle_ops);
+-}
+-
+ static void __init acpi_sleep_suspend_setup(void)
+ {
+ 	bool suspend_ops_needed = false;
+@@ -867,20 +730,12 @@ static void __init acpi_sleep_suspend_setup(void)
+ 	if (suspend_ops_needed)
+ 		suspend_set_ops(old_suspend_ordering ?
+ 				&acpi_suspend_ops_old : &acpi_suspend_ops);
+-
+-	acpi_s2idle_setup();
+ }
+ 
+ #else /* !CONFIG_SUSPEND */
+-#define s2idle_wakeup		(false)
+ static inline void acpi_sleep_suspend_setup(void) {}
+ #endif /* !CONFIG_SUSPEND */
+ 
+-bool acpi_s2idle_wakeup(void)
+-{
+-	return s2idle_wakeup;
+-}
+-
+ #ifdef CONFIG_PM_SLEEP
+ static u32 saved_bm_rld;
+ 
+-- 
+2.25.1
 
 
