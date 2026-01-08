@@ -1,83 +1,136 @@
-Return-Path: <linux-acpi+bounces-20067-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20068-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F28D0343D
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 15:17:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82982D03A53
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 16:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD7533059AB6
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 14:15:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14EE73034A17
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 14:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625BE4D4F9E;
-	Thu,  8 Jan 2026 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCBC4ECFD5;
+	Thu,  8 Jan 2026 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eznq3CaH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urm0cF0A"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347C94D4F99;
-	Thu,  8 Jan 2026 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68A94ECFCF
+	for <linux-acpi@vger.kernel.org>; Thu,  8 Jan 2026 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767880898; cv=none; b=TyngCLNgO+spFMh8FZiMx3+xHBPNnRvIOXdLYJYAA0mEHFci1Pj082BDIqNvwx/v25vtuaiNEbuTI0km05XDehBjtBl9NYcjLjN2p+AbTgg5ZSxj6TC6jsOEAauB27oS4Ps3llTkZB7jGUYetMukWh2F0CNaiRddm8zHn4qQYW8=
+	t=1767881071; cv=none; b=lQY6MrxpxPPsjdAbowmRzNdZGxYF0ZEvEepaYVUNFN9TRBJu/ushCwxzDmkkdLszS0sAb8a3Pb0aiP3a/QBOAPjA6R6GiJ1kJdzJPcFAeFPZ1fCAMgoZkYMDpb9/v4pjLDU+ZOL8dueHFDjNjV3rKiJGaOEQs5Vk+POnf2K09eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767880898; c=relaxed/simple;
-	bh=y0Hy0NxNVX+fY/q63DAVPV47enA8J/C97cniqCF6ZI4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tI6dXoBr4go4nuRRYCVseTjI0Y/4R7PZLEjSbxv5dzemdvm/nwROgRMJ6abErm4tx9zmQitQK+Mw5tZ9SWcUJJEFF4R6980CujoOHxtUf6vmWFNDJ6OnObAit6C6N7ad1V04uuq0OnLr4ukRRdqY6KAG1TkeFQHaIFmJbEpDurg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eznq3CaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004E4C116C6;
-	Thu,  8 Jan 2026 14:01:33 +0000 (UTC)
+	s=arc-20240116; t=1767881071; c=relaxed/simple;
+	bh=MyGpvQo9fFdosijPmJBtZZIVi4n0wD1urmO8q8xX9w4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SlQS3+QPS+AHdaGRoVL73JHNcbVazvMoMl9io0zOGucuEViMC/NSlw/HiiAhq4fwxFI5bsglVzrW4jm/Ut0tiflwpjIpy6zDAgD9M1eatlEoLixT9NaKtCdgGXkWYx9DiUwQdQYExx3fyRpWIuC8JLJ4vwB6a57iCEe9ej7EziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urm0cF0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56927C2BC86
+	for <linux-acpi@vger.kernel.org>; Thu,  8 Jan 2026 14:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767880897;
-	bh=y0Hy0NxNVX+fY/q63DAVPV47enA8J/C97cniqCF6ZI4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eznq3CaHzYDG5jpotRGliKw6ghBxyc3cFLnLH4KhvIrDTY4bH5No0sJ/MfiEbNCd/
-	 DIlxdARCtqbk3Ww7zeoxZV0Kqci3UaifZzx6pjUF4KRIGF5ZS+r8ti04N4zkXDYuqP
-	 KdPlwD5uqUvi7HzVnv5h8ns+cuC8r0FHxRaC+9vymRXMIS4VV738MQk5bfSPDTSv+6
-	 999gU/XfzH+xfyeGSMeVf980x9oc8k0IyE4qKHYcO8Q9X/35DH9dF8u+jtmY2pg0lT
-	 LQpzbk6+2SnAiEHxrORmUaCjJRIjjFfz8Blum0eCfd8EaqZAaxIkIQbH1Q/G0UGxMh
-	 vPfZ742eiXn3Q==
-Message-ID: <bd3b7165-27ed-4f7d-abb5-4a60063260d8@kernel.org>
-Date: Thu, 8 Jan 2026 15:01:32 +0100
+	s=k20201202; t=1767881071;
+	bh=MyGpvQo9fFdosijPmJBtZZIVi4n0wD1urmO8q8xX9w4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=urm0cF0AwirqTesDirCKfbYPR0ddR8IlmYemYm1MmQtuAA3l1LBRul3qt7jO2CPJn
+	 40t864xKWnFzuJpZ/2s9fLLGzMSAPhPA6/l/fA7cw2/1luth3Y5ghiw2bPT9/M89Ri
+	 v5T3eLe7WYSB5YQD5XyG5bX+jWIFS3w1xuF8Bg6/aOnkcJxG1jICDYLBOvnqKvS3RN
+	 Ibv06GQ/PWev23Rw88tiMRU2RBMe7jJErwJI7O55Ltcg5j5Tr5zNbjcsjSpf9PMsWk
+	 MHIRDJ+ooLH3lmMA/5NBZM1OgHzadXdTGG8if/jaupFn6rQbvhWqkfDX9aor/kT3cf
+	 Sip5USg9lbvBQ==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-3e0f19a38d0so2260069fac.0
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Jan 2026 06:04:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUYCLb/Ul4UI15E0pda9EYKpwBCpuTYsWjTzGps0RrPO4SmrBxnyJBxVw8Y8EGIZySpDjvyIsUAt/FO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws34OEnGya0lymcNa4cP6XLSxhIhMGvOowTKR55pMGvpP4Qiu+
+	01tE69m0bAUbOMsVX7ut2xim7XFtFA0j+8dOZKaM70clBx2jnmR2NSS7tWSRr1HIfQdv/ed2Q6K
+	ciwBWoJKl4+TLxqY+Q1SVRRI7gyaAbwY=
+X-Google-Smtp-Source: AGHT+IEWmSNDkm7cd1N9j1jItnPBAEYpQLsT2JoqKt6RYJxFlAcINFiVdcun40m36PUjL/ippFjH+VlBrMu3vJaVTlI=
+X-Received: by 2002:a05:6820:16a8:b0:659:9a49:8f2d with SMTP id
+ 006d021491bc7-65f550a373emr2609013eaf.62.1767881070426; Thu, 08 Jan 2026
+ 06:04:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: acpi: replace manual zero-initialization with
- `pin_init::zeroed()`
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Atharv Dubey <atharvd440@gmail.com>, Len Brown <lenb@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251201155210.22710-1-atharvd440@gmail.com>
- <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251203140716.3065-1-huyuye812@163.com>
+In-Reply-To: <20251203140716.3065-1-huyuye812@163.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 8 Jan 2026 15:04:19 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iv8q_Yq9sttsNm2GHTemYVqmnxaQ3xy-cw9wwJFOAeVA@mail.gmail.com>
+X-Gm-Features: AQt7F2rxYUivRcLsquM_9m6oqb-2ltv6AOagF_iyo2_Ts3pWNuRXzoUaGVppb-s
+Message-ID: <CAJZ5v0iv8q_Yq9sttsNm2GHTemYVqmnxaQ3xy-cw9wwJFOAeVA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: pci_root: Clear the acpi dependencies after PCI
+ root bridge initialization on RISC-V
+To: huyuye <huyuye812@163.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dai.hualiang@zte.com.cn, 
+	deng.weixian@zte.com.cn, guo.chang2@zte.com.cn, liu.qingtao2@zte.com.cn, 
+	wu.jiabao@zte.com.cn, lin.yongchun@zte.com.cn, hu.yuye@zte.com.cn, 
+	zhang.longxiang@zte.com.cn, zuo.jiang@zte.com.cn, li.kunpeng@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/8/26 3:00 PM, Rafael J. Wysocki wrote:
-> On Mon, Dec 1, 2025 at 4:52 PM Atharv Dubey <atharvd440@gmail.com> wrote:
->>
->> Use `pin_init::zeroed()` instead of `core::mem::zeroed()` for initializing
->> `acpi_device_id`. This removes an explicit unsafe block and aligns ACPI
->> initialization with the pin-init conversion used across the Rust tree.
->>
->> Link: https://github.com/Rust-for-Linux/linux/issues/1189
->> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
-> 
-> A Rust-side ACK or equivalent would be welcome.
+On Wed, Dec 3, 2025 at 3:07=E2=80=AFPM huyuye <huyuye812@163.com> wrote:
+>
+> On RISC-V platforms with multiple PCI root bridges, the enumeration
+> order varies randomly across reboots due to APLIC driver initialization
+> occurring after ACPI device scanning. This defers PCI probing to a
+> unbound workqueue, resulting in non-deterministic device discovery
+> sequences.
+>
+> Such random enumeration leads to changes in device naming across each
+> boot, which disrupts storage configurations, network settings, and
+> severely impacts the stability of server maintenance.
+>
+> By adding the acpi_dev_clear_dependencies() call in acpi_pci_root_add(),
+> this patch enables the firmware to actively control the enumeration order
+> of multiple PCI root bridges through the ACPI _DEP method, providing the
+> firmware with the opportunity to initialize devices in the intended order=
+,
+> thereby ensuring consistent enumeration results across multiple boots.
+>
+> Signed-off-by: huyuye <huyuye812@163.com>
+> ---
+>  drivers/acpi/pci_root.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 74ade4160314..f5b5aa7d5f93 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -760,6 +760,20 @@ static int acpi_pci_root_add(struct acpi_device *dev=
+ice,
+>         pci_lock_rescan_remove();
+>         pci_bus_add_devices(root->bus);
+>         pci_unlock_rescan_remove();
+> +#ifdef CONFIG_RISCV
+> +    /*
+> +     * Clear dependencies to allow dependent devices to be enumerated.
+> +     * This is particularly important for RISC-V platforms where multipl=
+e
+> +     * PCIe host bridges may have initialization order dependencies defi=
+ned
+> +     * via ACPI _DEP method in DSDT. If a host bridge B depends on host
+> +     * bridge A (via _DEP), this call allows bridge B to proceed with
+> +     * enumeration after bridge A is fully initialized.
+> +     */
+> +#ifdef CONFIG_ACPI
+> +       if (!acpi_disabled)
+> +               acpi_dev_clear_dependencies(device);
+> +#endif
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+All of this code depends on CONFIG_ACPI, so why is the #ifdef needed?
+Also, is it actually reachable when acpi_disabled is set?
+
+Moreover, could this be done in RISC-V specific code rather than here?
+
+> +#endif
+>         return 1;
+>
+>  remove_dmar:
+> --
 
