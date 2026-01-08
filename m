@@ -1,111 +1,184 @@
-Return-Path: <linux-acpi+bounces-20048-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20053-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2971D02C1F
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 13:54:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC97D0294D
+	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 13:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99870303E0DB
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 12:03:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E57103012EB5
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 12:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B9A4AACD2;
-	Thu,  8 Jan 2026 11:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552DD364051;
+	Thu,  8 Jan 2026 11:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3xSQKI6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YEzPHWO0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F779495529;
-	Thu,  8 Jan 2026 11:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1A82E7BD2;
+	Thu,  8 Jan 2026 11:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767872137; cv=none; b=g/lvxJQZ0BGXnuhSjO2XdbclyETcXL4Y3LLXAVatBhL6yBF3OgqxT9PutoymRQVrn95uwIM8ou9Bj5F/SGfxV8VoiWN4NDJ20s4Zm9wKFg+0hLcjJUZ8LhyQGqjVEpU40KjC9sxe514WnNzSEPQa6X2s6iLH5vtist9HV1Vk3vU=
+	t=1767873112; cv=none; b=cVBZZsA8yufv2fxJZ5lj/vTJj4C+xf9WcUQFm69/oaeNJTX4aqIhE5rFOSctnzLarDT2vUm9d6AbYrEBP2ZSTMyGxYZE4+hw9Jw4rs+ynEOu0qdOqiYJNcG3k6l/3XuK0IZFkbGhAWsw0rJj9pB1qKFOLATNtQdDKqrTzQZ2Uts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767872137; c=relaxed/simple;
-	bh=7ClOr2/SXZvL7/2ZcJPhfqf9+Zeyoc7xjpGBwuIaGtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e5Xd3CSEq63EAVZHujxCtJ6kbZx4QdBpyLao4gFatn2i+AccSyXGrrRvmg6crJDxmqweo43saE3GPvF96xoG4P+vgPu/NVZ8hluyF/QL/fwxs8Mglr/uici61zu9nnumduCPYgAkG0C7OaTfCOYdQ+53U2jd1VKnuq9/erhBrQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3xSQKI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E93DC19421;
-	Thu,  8 Jan 2026 11:35:36 +0000 (UTC)
+	s=arc-20240116; t=1767873112; c=relaxed/simple;
+	bh=kuYScPihUDFM/UOL8pjeMfHuMVNK+MkGnF6BLyrx/gA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sOA8XSjCRwTMheEl6qyqzVsAcWYmsCUN/TgzObX2MsUwPA2XJyzOIiHNLzaP7+uf6ubIv9U3GcsTQW6ZU6AZ8DlCz9zP3F6CGxTHCOutPEWaRTMLBzO2HNj5E5DS/JEIzBcDGXbCL0oW1IkQLo15h7i0fabzJo08mL9fvS1P5lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEzPHWO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55964C19421;
+	Thu,  8 Jan 2026 11:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767872136;
-	bh=7ClOr2/SXZvL7/2ZcJPhfqf9+Zeyoc7xjpGBwuIaGtc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3xSQKI6e8ONZTUffaDWdBa9taK+4xZA1ufJmKzvcNUEqrzOQaXb5uEM5t6Tvp21j
-	 Aq7c38CL2HsuJOTaCF0ZwnsxHm9yO8nJn7SoZWy5l6HwDVL9rK42gbhmqpoA2fcCnj
-	 o8y3O0SX9RVpLIdEn51RkhxbJvcF+v1QvmqFd8lgUyz36aL2C2f6nAr2sEJ5fQqwfQ
-	 6k3CqTc6o+1Lr2LvkMjgy6SchZqhoiR4tAedDRJhZNLS09baRdKLyO6/UsmoOGez7W
-	 jlYZ2cBWqLsvMgk2d45ShitMo5kVU+toIQVJrzzuxyRo+VC1+3EAceWpg4Ius6rBfd
-	 Blq6nMhfLMq1A==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vdoIg-000000033yK-0JFk;
-	Thu, 08 Jan 2026 12:35:34 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	acpica-devel@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-edac@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v6 4/4] efi/cper: don't dump the entire memory region
-Date: Thu,  8 Jan 2026 12:35:06 +0100
-Message-ID: <1752b5ba63a3e2f148ddee813b36c996cc617e86.1767871950.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1767871950.git.mchehab+huawei@kernel.org>
-References: <cover.1767871950.git.mchehab+huawei@kernel.org>
+	s=k20201202; t=1767873111;
+	bh=kuYScPihUDFM/UOL8pjeMfHuMVNK+MkGnF6BLyrx/gA=;
+	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YEzPHWO0qTh7ZvRYX4XE7aHjwhgpfFbdLzMdhywbWCXKqPhFTVZrm+wUcxRcVdUdy
+	 SIVjZxAyssYvMJt7IwJ3EBA4ODQpbZcrgimLX8H7NL3/9q5zbBDbOY8qgp7qn4irEx
+	 mDhQrgqGaeL/K2ZaodiTqqgtxWbx5uZ4D8b60U/SkWXZP3D04kpuwWmjsx9QYgGlxB
+	 5Kpom0F0eHCg8gBZukQuS8esTTAltJ0grLDM+YmEDOCB4sXBNTlArLT937SaUAQ7eN
+	 nNrPo9T2htzQNz8Q4yuTYL7DXvqCACv68erlMInLS0rxiJeuuFOEhHOagYKT3m4h6N
+	 OU76hRICnEJGw==
+Message-ID: <320328d3-6714-4c28-a19c-c9113b25c2af@kernel.org>
+Date: Thu, 8 Jan 2026 12:51:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+User-Agent: Mozilla Thunderbird
+Reply-To: Daniel Gomez <da.gomez@kernel.org>
+Subject: Re: [PATCH] software node: replace -EEXIST with -EBUSY
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Lucas De Marchi <demarchi@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Gomez <da.gomez@samsung.com>
+References: <20251220-dev-module-init-eexists-linux-acpi-v1-1-af59b1a0e217@samsung.com>
+ <2025122203-purely-huntsman-7987@gregkh>
+ <7ff92075-df6a-45d8-9014-647ae45797ff@kernel.org>
+ <2025122212-fiction-setback-ede5@gregkh>
+Content-Language: en-US
+From: Daniel Gomez <da.gomez@kernel.org>
+Organization: kernel.org
+In-Reply-To: <2025122212-fiction-setback-ede5@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The current logic at cper_print_fw_err() doesn't check if the
-error record length is big enough to handle offset. On a bad firmware,
-if the ofset is above the actual record, length -= offset will
-underflow, making it dump the entire memory.
 
-The end result can be:
 
-- the logic taking a lot of time dumping large regions of memory;
-- data disclosure due to the memory dumps;
-- an OOPS, if it tries to dump an unmapped memory region.
+On 22/12/2025 12.56, Greg Kroah-Hartman wrote:
+> On Mon, Dec 22, 2025 at 09:48:54AM +0100, Daniel Gomez wrote:
+>> On 22/12/2025 09.19, Greg Kroah-Hartman wrote:
+>>> On Sat, Dec 20, 2025 at 04:55:00AM +0100, Daniel Gomez wrote:
+>>>> From: Daniel Gomez <da.gomez@samsung.com>
+>>>>
+>>>> The -EEXIST error code is reserved by the module loading infrastructure
+>>>> to indicate that a module is already loaded. When a module's init
+>>>> function returns -EEXIST, userspace tools like kmod interpret this as
+>>>> "module already loaded" and treat the operation as successful, returning
+>>>> 0 to the user even though the module initialization actually failed.
+>>>>
+>>>> This follows the precedent set by commit 54416fd76770 ("netfilter:
+>>>> conntrack: helper: Replace -EEXIST by -EBUSY") which fixed the same
+>>>> issue in nf_conntrack_helper_register().
+>>>>
+>>>> Affected modules:
+>>>>   * meraki_mx100 pcengines_apuv2
+>>>>
+>>>> Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+>>>> ---
+>>>> The error code -EEXIST is reserved by the kernel module loader to
+>>>> indicate that a module with the same name is already loaded. When a
+>>>> module's init function returns -EEXIST, kmod interprets this as "module
+>>>> already loaded" and reports success instead of failure [1].
+>>>>
+>>>> The kernel module loader will include a safety net that provides -EEXIST
+>>>> to -EBUSY with a warning [2], and a documentation patch has been sent to
+>>>> prevent future occurrences [3].
+>>>>
+>>>> These affected code paths were identified using a static analysis tool
+>>>> [4] that traces -EEXIST returns to module_init(). The tool was developed
+>>>> with AI assistance and all findings were manually validated.
+>>>>
+>>>> Link: https://lore.kernel.org/all/aKEVQhJpRdiZSliu@orbyte.nwl.cc/ [1]
+>>>> Link: https://lore.kernel.org/all/20251013-module-warn-ret-v1-0-ab65b41af01f@intel.com/ [2]
+>>>> Link: https://lore.kernel.org/all/20251218-dev-module-init-eexists-modules-docs-v1-0-361569aa782a@samsung.com/ [3]
+>>>> Link: https://gitlab.com/-/snippets/4913469 [4]
+>>>> ---
+>>>>  drivers/base/swnode.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+>>>> index 16a8301c25d6..083593d99a18 100644
+>>>> --- a/drivers/base/swnode.c
+>>>> +++ b/drivers/base/swnode.c
+>>>> @@ -919,7 +919,7 @@ int software_node_register(const struct software_node *node)
+>>>>  	struct swnode *parent = software_node_to_swnode(node->parent);
+>>>>  
+>>>>  	if (software_node_to_swnode(node))
+>>>> -		return -EEXIST;
+>>>> +		return -EBUSY;
+>>>
+>>> While I understand the want for the module loader to be returning
+>>> -EBUSY, that doesn't really make sense down here in this layer of the
+>>> kernel.
+>>>
+>>> So why doesn't the module loader turn -EEXIST return values into -EBUSY
+>>> if it wishes to pass that value on to userspace?  Otherwise you are
+>>
+>> Indeed, we are planning to do that as well with "[PATCH 0/2] module: Tweak
+>> return and warning":
+>>
+>> https://lore.kernel.org/all/20251013-module-warn-ret-v1-0-ab65b41af01f@intel.com/#t
+>>
+>> However, we don't consider that as the right fix.
+>>
+>>> going to be constantly playing "whack-a-mole" here and have really
+>>> set things up so that NO api can ever return EEXIST as an error value in
+>>> the future.
+>>
+>> 100%.
+>>
+>> For that reason, on top of the series from Lucas, we are documenting this to
+>> make it clear:
+>>
+>> https://lore.kernel.org/linux-modules/20251218-dev-module-init-eexists-modules-docs-v1-0-361569aa782a@samsung.com/T/#m2ed6fbffb3f78b9bff53840f6492a198c389cb50
+> 
+> Wait, no, that's not what I mean at all :)
+> 
+>> And sending patches where we see modules need fixing. I have already sent 6 out
+>> of 20-ish series (that include a total of 40+ fixes):
+>>
+>> https://lore.kernel.org/all/20251220-dev-module-init-eexists-linux-scsi-v1-0-5379db749d54@samsung.com
+>> https://lore.kernel.org/all/20251219-dev-module-init-eexists-netfilter-v1-1-efd3f62412dc@samsung.com
+>> https://lore.kernel.org/all/20251220-dev-module-init-eexists-bpf-v1-1-7f186663dbe7@samsung.com
+>> https://lore.kernel.org/all/20251220-dev-module-init-eexists-keyring-v1-1-a2f23248c300@samsung.com
+>> https://lore.kernel.org/all/20251220-dev-module-init-eexists-dm-devel-v1-1-90ed00444ea0@samsung.com
+> 
+> Please no, let us keep using -EEXIST in the kernel source, and if your
 
-Fix it by checking if the section length is too small before doing
-a hex dump.
+This is not just random places in the kernel. It's only errors in the module
+initialization path.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
----
- drivers/firmware/efi/cper.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> usage is going to map this to userspace somehow, do the translation
+> there, in the module code, as your original patch above said.
+> > Otherwise, again, this is never going to work, let the subsystems use
+> this error code how ever they feel they need to.
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 88fc0293f876..0e938fc5ccb1 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -560,6 +560,11 @@ static void cper_print_fw_err(const char *pfx,
- 	} else {
- 		offset = sizeof(*fw_err);
- 	}
-+	if (offset > length) {
-+		printk("%s""error section length is too small: offset=%d, length=%d\n",
-+		       pfx, offset, length);
-+		return;
-+	}
- 
- 	buf += offset;
- 	length -= offset;
--- 
-2.52.0
+I considered module_init() (somehow) to be part of the module code, and
+replacing the error at the module loading layer felt like a hack to me. My
+concern is that a module_init() user expecting -EEXIST to propagate to userspace
+won't get it as it will be silently replaced. But without a concrete use case
+where that matters, I'll go with the consensus. Note that I'm hinting at we
+should remove the warning from Lucas' original patch [1] before merging it.
 
+Link: https://lore.kernel.org/all/20251013-module-warn-ret-v1-1-ab65b41af01f@intel.com/ [1]
 
