@@ -1,94 +1,81 @@
-Return-Path: <linux-acpi+bounces-20086-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20087-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3804CD066D9
-	for <lists+linux-acpi@lfdr.de>; Thu, 08 Jan 2026 23:30:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2BFD0699F
+	for <lists+linux-acpi@lfdr.de>; Fri, 09 Jan 2026 01:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D669930021CC
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jan 2026 22:29:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 038A1300983F
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jan 2026 00:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B2832570B;
-	Thu,  8 Jan 2026 22:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kbj/mTtb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A170157487;
+	Fri,  9 Jan 2026 00:16:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C8C1B4223;
-	Thu,  8 Jan 2026 22:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19BD22301;
+	Fri,  9 Jan 2026 00:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767911395; cv=none; b=Ut6PRxDHbfSusad906Xeh0iZ74mrFSUTRnN654fRTl4pVj4uwynI/wyTRzZSILyV3dKTRNGyRPePlU9GfANDEVnbbp9y1VfEEr+Gw6S2u33YuznhOLMrhSgKNkwU6ONcwZMSy26KjYvTztP+4iUaknSUBFSs+QGV2kXrUyIZMI4=
+	t=1767917813; cv=none; b=TiHorwv06oD7zDTKjiSJbv3dWmWwTSCVpDKbfFIx9gcYDITX7cW8hB8vKvZReBPlKzLpSeasu4UlxhSSOv8QF9aWyN+s05vNLXOXpNB5FYrsJua82/PUcfn9ZN8UfO6ZiQvpQP9sKmY/063d+P+ysD1ku7r/c6NcfuLWwiTdgVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767911395; c=relaxed/simple;
-	bh=Rw/mLLceo9+Wq7pVKPpVKEevuaEDSUDBh0SspUIhv58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fVOrKdQ7680/Mde5YBkcIiltvTw+ELDjUmvj4gY43Ui6NpE0BZPkCb+07w8sbd0kZ1jSyzuMPMQf61VjkaqBM0un46w5LjVC+JcUCSdPH+G/VsjFKcJG2julcxzOWXvawRFrDZzr7lF/BPv4HrvmNwxBDdOsRcVqUOAZrhIHlIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kbj/mTtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A512EC116C6;
-	Thu,  8 Jan 2026 22:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767911395;
-	bh=Rw/mLLceo9+Wq7pVKPpVKEevuaEDSUDBh0SspUIhv58=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbj/mTtbvEbZrElAKU0dA4NUc8mFm1sVo7ByUaDNI+e16sSTs1wpWKWK55gR5rXxn
-	 ZCMVCjybD4YWrAYRsW3YDFELC8B+ClZOT7SIgwhaH9g6bqtZ0+UlLP1FQXIx/Pl+4z
-	 s57c2iYl3CvsB9eE/02/MHsoBLgg2Mp8HdRPFhmr57u2UK6+PyeaKqDM8QwL9UzEqZ
-	 4hluHPJDuiEPkAQjDMEDpnxngU9w62XdHYEM3iYi42SqaJOPca3PkhzrC4yqggBoIi
-	 ro3naBoQqxLtJt+hS0ghUski6vG6uHC3/+ASUjbzmmNvVg6McyhSLYDOsJOxAJ4GSc
-	 c3+wEPmVpqidA==
-From: Will Deacon <will@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Koichi Okuno <fj2767dz@aa.jp.fujitsu.com>,
-	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v6] ACPI: AGDI: Add interrupt signaling mode support
-Date: Thu,  8 Jan 2026 22:29:45 +0000
-Message-ID: <176790957965.1541183.5588102547570547773.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260108075636.524722-1-fj1078ii@aa.jp.fujitsu.com>
-References: <20260108075636.524722-1-fj1078ii@aa.jp.fujitsu.com>
+	s=arc-20240116; t=1767917813; c=relaxed/simple;
+	bh=IH0q0n/GvKNVxnbDXyp6n3ltVCU4JHOotW9FtVPmzdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=jxuGbYAAb2wsIK0UWYDB3nZGK1dRY5s4fW8EHsRtwqEVhVXmn1rQxfPjTFCneTCF/p9/rIyxH+bbZXUOyqxEpNa17RxksUBgynq4ywV+dFbK6d1sijyGDt/gtQLrjWSk7UOw121trKK5CNMgFayKuExqY9IURGvsnwpESkNYG0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b68b20.dsl.pool.telekom.hu [::ffff:81.182.139.32])
+  (AUTH: PLAIN soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 000000000008031E.00000000696048F1.00398F03; Fri, 09 Jan 2026 01:16:49 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+  Len Brown <lenb@kernel.org>,
+  "Mario Limonciello (AMD)" <superm1@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+  Gergo Koteles <soyer@irl.hu>
+Subject: [PATCH] ACPI: x86: s2idle: Remove dead code in lps0_device_attach()
+Date: Fri,  9 Jan 2026 01:16:19 +0100
+Message-ID: <20260109001619.37532-1-soyer@irl.hu>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-On Thu, 08 Jan 2026 16:56:09 +0900, Kazuhiro Abe wrote:
-> AGDI has two types of signaling modes: SDEI and interrupt.
-> Currently, the AGDI driver only supports SDEI.
-> Therefore, add support for interrupt signaling mode.
-> The interrupt vector is retrieved from the AGDI table, and call panic
-> function when an interrupt occurs.
-> 
-> 
-> [...]
+The rev_id is always 0 for AMD since commit
+e32d546483a2 ("ACPI: x86: Drop quirk for HP Elitebook"),
+so this condition will never be true.
 
-Applied to arm64 (for-next/acpi), thanks!
+Remove the dead code.
 
-[1/1] ACPI: AGDI: Add interrupt signaling mode support
-      https://git.kernel.org/arm64/c/f7d5e9e70302
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+---
+ drivers/acpi/x86/s2idle.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Cheers,
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index 6d4d06236f61..a095b6f4401b 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -459,9 +459,6 @@ static int lps0_device_attach(struct acpi_device *adev,
+ 			lps0_dsm_func_mask = (lps0_dsm_func_mask << 1) | 0x1;
+ 			acpi_handle_debug(adev->handle, "_DSM UUID %s: Adjusted function mask: 0x%x\n",
+ 					  ACPI_LPS0_DSM_UUID_AMD, lps0_dsm_func_mask);
+-		} else if (lps0_dsm_func_mask_microsoft > 0 && rev_id) {
+-			lps0_dsm_func_mask_microsoft = -EINVAL;
+-			acpi_handle_debug(adev->handle, "_DSM Using AMD method\n");
+ 		}
+ 	} else {
+ 		rev_id = 1;
 -- 
-Will
+2.52.0
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
 
