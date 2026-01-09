@@ -1,149 +1,187 @@
-Return-Path: <linux-acpi+bounces-20121-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20122-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854E6D0C43E
-	for <lists+linux-acpi@lfdr.de>; Fri, 09 Jan 2026 22:11:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D7CD0C487
+	for <lists+linux-acpi@lfdr.de>; Fri, 09 Jan 2026 22:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9C5F300DCA8
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jan 2026 21:11:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 54E7A300D40D
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Jan 2026 21:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1655531D399;
-	Fri,  9 Jan 2026 21:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E7233C519;
+	Fri,  9 Jan 2026 21:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ie5rITgC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ll9aBESq"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E705D28C874
-	for <linux-acpi@vger.kernel.org>; Fri,  9 Jan 2026 21:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D72D94BF
+	for <linux-acpi@vger.kernel.org>; Fri,  9 Jan 2026 21:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767993101; cv=none; b=B6uzQq4DvGn1cWGsl0f+Fe+RD3uVM78A6litXWUZkMsCXdFgUe4OcyHPpX9pHXFDXlxi/p07xQtkjtMKgx4ayNCWlozezSH8CU6ipCsd4hXKEs3PwOxq1VJSuZfzmYWAEkDVlaehxg5pwhz8MS4yxrngPz2P0a8Jw/Rpx5HgMvc=
+	t=1767993562; cv=none; b=mWaRVGfd7TLuW+/Ifoz6yJIHcoLGWY4vNfVozoa/Q7Cl1P77msp3yyxfK54lGp7hcqto7+jpphM4EBC+ouWIBl7f2X/InuZHOpm9qFLL4TZhMiMgRASkyBGp/Hes2XvZw3TWTqA7P5Pq8MOG0SKOVZAGcm7w3XSIZs46kdhJR+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767993101; c=relaxed/simple;
-	bh=i2e4BgmPCtMxCitIw9sJXKT1haE9ND24uoYLDY6d2H8=;
+	s=arc-20240116; t=1767993562; c=relaxed/simple;
+	bh=/0ULzneR7T9EOzoq4WfrWNnQxFP+dbvVZCBUkkZ2tv8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lpKp+s7jnP9VHl98pIFdfjNmr5kauyYcovxHENsUCv0C65Y/8It/L6Txr3l6G8oh2hmdF/WQhzQdrsxiGk8iIGkVnwpNRPAV5rc+5xsCcbkEjKYMRWujgqVpIwjtChtISaaITLDcvq0zNrLgQOOXMJTJsf5DxFkXaIFIksFSyGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ie5rITgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866CFC16AAE
-	for <linux-acpi@vger.kernel.org>; Fri,  9 Jan 2026 21:11:40 +0000 (UTC)
+	 To:Cc:Content-Type; b=NoQbsbdpIDKUt1+rt9mnU2Q8qYQ4WhsCdjQU+nhkIQQIRpcXRnF+cdNgi0+3aaN+2d21IPpLO3wJb0zdJmak0EI0+2LKWn7v9F2v9Vf3mYWfP5QsuS569z+xKpTqzHw/7ruNkozIg+Du4B4JFqNWj0u99nJPbrGY4stxVxdNuiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ll9aBESq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00CCC19424
+	for <linux-acpi@vger.kernel.org>; Fri,  9 Jan 2026 21:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767993100;
-	bh=i2e4BgmPCtMxCitIw9sJXKT1haE9ND24uoYLDY6d2H8=;
+	s=k20201202; t=1767993562;
+	bh=/0ULzneR7T9EOzoq4WfrWNnQxFP+dbvVZCBUkkZ2tv8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ie5rITgCO7OEWUdG45IhB8rB4DU2xNlX+wg5sy82xbnDkd/vrE0OdZskU7jKbUT1e
-	 92Xtjro97mkiInzjW9KH/c2u43gMfHQKoSAHkV9ovkBeJpyX5hPNXeEb1czjzHrur4
-	 cl5GzPdPFpQbSAVdGiD0Y1o8Mc7SBqgmhaM81hdNMXJw+/wPW5qzYACpwWhBzYndFG
-	 mlKll1wS+oVv5Unur2Rj/1+pnQ0mkVgoZLJFKz+/S89yGHIuyK1XxAQfZQGP8Zr5xv
-	 x6L9dbtdx8762q14dY7L1pqWQBAwFbtTTNJgzN5ZJsmsyTX/qtPg6HfVeNau+rYMWM
-	 cfKUtBBIAPa7Q==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-3f0c93ecf42so2294415fac.0
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Jan 2026 13:11:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU6Od3gsm7NEcu8ak9bvzZR/G5yT/m+8W/Yc50PzrZMpZCzCuOUIKQXlyouzZj61o35kMq7LNFtF0th@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHNwxRM4A6407KeEvSD5fn/TYqNJvUDl84rTQNgRJrB5RRQ7ZG
-	GHZZKc86Jm1oqZusS4TqNEM+Bk0+w2HWh+kjB9PTuOuUfKc7jczuAL1+A6txyyioJEI/Gg0h1Jc
-	b098sEy+rsa5fq9/ttqVdEu//5GYeNO0=
-X-Google-Smtp-Source: AGHT+IHP3Iszz7zad/0sWM0OL4kZbKwvjl9/FdP38PT0tAITiMRYxq89hygja6GZJQxvHFNtqTk0EC0mOJA/Hc/eLio=
-X-Received: by 2002:a05:6870:93c3:b0:3ec:42e9:e7b3 with SMTP id
- 586e51a60fabf-3ffa24c4ae2mr8489323fac.13.1767993099662; Fri, 09 Jan 2026
- 13:11:39 -0800 (PST)
+	b=ll9aBESqLbk+zm21PDf2V7duFrEwHhv+bwTp1rjVzcR4dx+36j9uOUYsGgCCdCdx9
+	 uMjvmz8uNSRjQihrWDFWXJKHBexUg5a+zzIsgEs1JQXwHeVU8RkF2m3uOKuyR8jEft
+	 nhO5RxKkqJQUC7joq+WCgGu8L0Ym8lJBSn+GzgGMuXtdqMj0UVeOrAv+Hr6VT0azPC
+	 2K9tun33elJeFY9YmHKBWVZcNLO6JQsnhmjRQ1f+/KE/nEwWE4TSO07HjOIkbstAwy
+	 FqsM5wRSDifUOHPqZGPge2JXARyyojrewTglEzsYXym2I0kOnjj7qaOUE1bdAuV6dC
+	 IVrP9xuHRex2A==
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-45a3145faddso1561886b6e.2
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Jan 2026 13:19:21 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXrSFRtiC3xKINK5C0UGUD3LwOKewlq8wC+IXq0gPh8gJY+tjjWTMdaw5ec+vZx2FVVYYolRxLmaLUH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws5hpVvN887ePuYTvHVdDUwzVOkTK7S/TBsGUjEt0SiulbM3h0
+	N/Q9pUHu+scfm+PeAsVBb4tl5cbgPO8FlHypHStkAiIXiTIn5zb2KBGfk8QX9fDVaMXoO/P3xrg
+	O2bbzj90eJKxLjMFcG6NOLxMnYDNBZAQ=
+X-Google-Smtp-Source: AGHT+IFxY+bXNcAjA0AIsRQvKjlqWfd/LT6KhyS0BfJ2Dt1hsrZ0egO0EkOQA666SmU0Xn9Ky6+t682Bgs7v8WGnOxc=
+X-Received: by 2002:a05:6808:191d:b0:459:b40c:8a3d with SMTP id
+ 5614622812f47-45a6be4136bmr5629611b6e.32.1767993561087; Fri, 09 Jan 2026
+ 13:19:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109095358.24265-1-kkartik@nvidia.com> <20260109101302.GW2275908@black.igk.intel.com>
- <aWDhEBjy9b9_uzoR@smile.fi.intel.com> <aWDmt3CA5h_i9Hij@kekkonen.localdomain> <aWE0uuZjB1iMGF2B@smile.fi.intel.com>
-In-Reply-To: <aWE0uuZjB1iMGF2B@smile.fi.intel.com>
+References: <20260109033859.187086-1-islituo@gmail.com>
+In-Reply-To: <20260109033859.187086-1-islituo@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 9 Jan 2026 22:11:26 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0ijTQC2cFTt+hW-ofJwMqdEeES8d5MMbbq8_Bqg+_9E3g@mail.gmail.com>
-X-Gm-Features: AQt7F2petwX6C127Qyv2TLEv6Ia5cxyHLQRN7zhZNH7Q_lsKS2ItECKOK7qDeNs
-Message-ID: <CAJZ5v0ijTQC2cFTt+hW-ofJwMqdEeES8d5MMbbq8_Bqg+_9E3g@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: bus: Use OF match data for PRP0001 matched devices
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Kartik Rajput <kkartik@nvidia.com>, lenb@kernel.org, 
-	thierry.reding@gmail.com, jonathanh@nvidia.com, linux-acpi@vger.kernel.org, 
+Date: Fri, 9 Jan 2026 22:19:09 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
+X-Gm-Features: AQt7F2ptzSTNXLaHjR9YdlmhZC6XSD0LnAZU-qZfCUKqEl6OeUYuk4cFyggW7wg
+Message-ID: <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: processor: Fix a possible null-pointer
+ dereference in acpi_processor_errata_piix4() when debug messages are enabled
+To: Tuo Li <islituo@gmail.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 9, 2026 at 6:02=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Fri, Jan 9, 2026 at 4:39=E2=80=AFAM Tuo Li <islituo@gmail.com> wrote:
 >
-> On Fri, Jan 09, 2026 at 01:29:59PM +0200, Sakari Ailus wrote:
-> > On Fri, Jan 09, 2026 at 01:05:52PM +0200, Andy Shevchenko wrote:
-> > > On Fri, Jan 09, 2026 at 11:13:02AM +0100, Mika Westerberg wrote:
-> > > > On Fri, Jan 09, 2026 at 03:23:58PM +0530, Kartik Rajput wrote:
-> > > > > During pre-production development, drivers may provide both ACPI =
-and OF
-> > > > > match tables while a formal ACPI HID for the device is not yet
-> > > > > allocated. Such devices are enumerated via PRP0001. In this case,
-> > > > > acpi_device_get_match_data() consults only the driver=E2=80=99s A=
-CPI match table
-> > > > > and returns NULL, even though the device was successfully matched=
- via
-> > > > > PRP0001.
-> > > > >
-> > > > > This behavior also risks breaking existing PRP0001 setups if a dr=
-iver
-> > > > > later gains an ACPI HID, as the presence of an ACPI match table c=
-hanges
-> > > > > the match-data lookup path.
-> > > > >
-> > > > > Explicitly detect PRP0001 and fetch match data from the driver's
-> > > > > OF match table via acpi_of_device_get_match_data().
+> In acpi_processor_errata_piix4(), the pointer dev is first assigned an ID=
+E
+> device and then reassigned an ISA device:
 >
-> ...
+>   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
+>   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
 >
-> > > > >         const struct acpi_device_id *acpi_ids =3D dev->driver->ac=
-pi_match_table;
-> > > > > +       struct acpi_device *adev =3D ACPI_COMPANION(dev);
-> > > > >         const struct acpi_device_id *match;
-> > > > >
-> > > > > -       if (!acpi_ids)
-> > > > > +       if (!adev)
-> > > > > +               return NULL;
-> > > > > +
-> > > > > +       if (!strcmp(acpi_device_hid(adev), ACPI_DT_NAMESPACE_HID)=
-)
-> > > > >                 return acpi_of_device_get_match_data(dev);
-> > >
-> > > On top of what Mika asked, shouldn't we check CID as well? Theoretica=
-lly it's
-> > > possible that some device may have HID "blablabla" and CID PRP0001, I=
- don't
-> > > remember what documentation says about this case, though.
-> >
-> > According to Documentation/firmware-guide/acpi/enumeration.rst PRP0001 =
-is
-> > also valid for _CID. So yes, I think this should be checked as well -- =
-I'd
-> > loop over the &device->pnp.ids list.
+> If the first lookup succeeds but the second fails, dev becomes NULL. This
+> leads to a potential null-pointer dereference when dev_dbg() is called:
 >
-> Yeah, but if we have a device with
+>   if (errata.piix4.bmisx)
+>     dev_dbg(&dev->dev, ...);
 >
-> HID "blablabla"
-> CID "PRP0001"
+> To prevent this, use two temporary pointers and retrieve each device
+> independently, avoiding overwriting dev with a possible NULL value.
 >
-> and at the same time the driver has ACPI ID listed, we should probably us=
-e that
-> one as HID should have higher weight for matching. Logic here is not just=
- as simple
-> as looping over pnp.ids how I see it.
+>
+> Signed-off-by: Tuo Li <islituo@gmail.com>
+> ---
+> v2:
+> * Add checks for ide_dev and isa_dev before dev_dbg()
+>   Thanks Rafael J. Wysocki for helpful advice.
+> ---
+>  drivers/acpi/acpi_processor.c | 27 ++++++++++++++-------------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
+c
+> index 7ec1dc04fd11..e43978b0d83c 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *=
+dev)
+>  {
+>         u8 value1 =3D 0;
+>         u8 value2 =3D 0;
+> +       struct pci_dev *ide_dev, *isa_dev;
+>
+>
+>         if (!dev)
+> @@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci_d=
+ev *dev)
+>                  * each IDE controller's DMA status to make sure we catch=
+ all
+>                  * DMA activity.
+>                  */
+> -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> +               ide_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+>                                      PCI_DEVICE_ID_INTEL_82371AB,
+>                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
+> -               if (dev) {
+> -                       errata.piix4.bmisx =3D pci_resource_start(dev, 4)=
+;
+> -                       pci_dev_put(dev);
+> +               if (ide_dev) {
+> +                       errata.piix4.bmisx =3D pci_resource_start(ide_dev=
+, 4);
+> +                       pci_dev_put(ide_dev);
+>                 }
+>
+>                 /*
+> @@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci_d=
+ev *dev)
+>                  * disable C3 support if this is enabled, as some legacy
+>                  * devices won't operate well if fast DMA is disabled.
+>                  */
+> -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> +               isa_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+>                                      PCI_DEVICE_ID_INTEL_82371AB_0,
+>                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
+> -               if (dev) {
+> -                       pci_read_config_byte(dev, 0x76, &value1);
+> -                       pci_read_config_byte(dev, 0x77, &value2);
+> +               if (isa_dev) {
+> +                       pci_read_config_byte(isa_dev, 0x76, &value1);
+> +                       pci_read_config_byte(isa_dev, 0x77, &value2);
+>                         if ((value1 & 0x80) || (value2 & 0x80))
+>                                 errata.piix4.fdma =3D 1;
+> -                       pci_dev_put(dev);
+> +                       pci_dev_put(isa_dev);
+>                 }
+>
+>                 break;
+>         }
+>
+> -       if (errata.piix4.bmisx)
+> -               dev_dbg(&dev->dev, "Bus master activity detection (BM-IDE=
+) erratum enabled\n");
+> -       if (errata.piix4.fdma)
+> -               dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 disab=
+led)\n");
+> +       if (errata.piix4.bmisx && ide_dev)
 
-Right.
+Why does errata.piix4.bmisx need to be checked in addition to ide_dev?
+ If the latter is not NULL, the former is set, isn't it?
 
-What about:
+> +               dev_dbg(&ide_dev->dev, "Bus master activity detection (BM=
+-IDE) erratum enabled\n");
+> +       if (errata.piix4.fdma && isa_dev)
 
-if (acpi_ids) {
-       match =3D acpi_match_device(acpi_ids, dev);
-       if (match)
-               return (const void *)match->driver_data;
-}
-return acpi_of_device_get_match_data(dev);
+And analogously here.
+
+> +               dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 d=
+isabled)\n");
+>
+>         return 0;
+>  }
+> --
+
+And you need to change the "break;" statement at the end of the first
+"switch ()" block to "return 0;" if you don't want to initialize the
+new variables to NULL.
 
