@@ -1,225 +1,245 @@
-Return-Path: <linux-acpi+bounces-20148-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20149-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA735D0D69F
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 14:46:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD66D0D7E2
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 16:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA0603008D4D
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 13:46:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7699A301FF9B
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 15:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E711DFD8B;
-	Sat, 10 Jan 2026 13:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEBE2F1FD2;
+	Sat, 10 Jan 2026 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZUJ9+17"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qLy248qy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4151B4F1F
-	for <linux-acpi@vger.kernel.org>; Sat, 10 Jan 2026 13:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122062222A1;
+	Sat, 10 Jan 2026 15:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768052806; cv=none; b=c8HCvSxG2w0MsfK+T1IDGbv4pGyvl9o0ThGdsqddpxN0dYSlPMEBPF9qcCrgXr13B9zFbRPnpflxrX187QwJiQu3UfRpsgzFicn1iEPVSM2G4O+a/Usx63x90XPBxUzkNKmowJy1p0Kym19yRsPWxi10+vXL1/Qjm/ZhaeCbn6Q=
+	t=1768057492; cv=none; b=ZPRGIODnIzU6sH6G+GJ4U+3Wy1cdL09x7rMO+YzVr5InNothtqtb/5yddzWHCeiXY8yXOzQIOBOxG0KC9gJ3gnijQD4eu4qTlnEy0Kwz6k77NuWLIYoTmV3W0LLhm3xi1zEiUHem0bvn/48mj1KpUClUcARtiWT8gsxulmbe7Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768052806; c=relaxed/simple;
-	bh=q8mT9StIiIn4yIgBQfTjUeq3j3eVjuquWYvPqKNl3x0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HBp9foJsgEZaLys9cvBiHDFJJjyAKdH6g2xtbdh2YwdcEjoVYvDcJY5ZK3lRqegzuL/Qh6lP34kDPbGVkzmeTkNf42kF4ALIuJmRAfiofVP/7ak3Gre1+ebhQLJiHhegGxHgGvJZvipsRuzdLgd8CUNY32MtTz3bEaB0m51bKyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZUJ9+17; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-11df4458a85so4487835c88.1
-        for <linux-acpi@vger.kernel.org>; Sat, 10 Jan 2026 05:46:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768052804; x=1768657604; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FPm1mH2E9PkjFiRRoRqFuaVOVWmSs32ti0r4GJyt90g=;
-        b=JZUJ9+173Y1QFP4K7AVtmrSPP99Yri9X6W5Ra0BzSu0CDJU/3XAn0ZffhqbtVU7y0p
-         xRG/LMx5f4Repx8UfaHh56JSE5aPNTdArRvrc6oDvtiLR+dUwgu1hokEDWCSciiLAFBd
-         mRIxHvl5PonzeUw5nD+C1ut3pilqon+NOXDVZ6VyEdDtZNhmYgst6+l5+Mu2KuzmXO/Z
-         NVFT+NXJzSV2OGO2XW9fBskrv1XLFseOA/FWwSWH0oTLu64U9B50EmoQrj6cwfhlUkfB
-         +mpVq+iiIXlNdNN0QIIbgxsQY+HPJkhrcfGvjonpj5U1rcBAIcEs2Cr6gp70fFa6YOyI
-         7YXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768052804; x=1768657604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FPm1mH2E9PkjFiRRoRqFuaVOVWmSs32ti0r4GJyt90g=;
-        b=NNK90EcAbJtp2CxKGK07FcqVr/ZA/X0SWGU4U8oTJInwriU86elDlSxVeO9clU4YYM
-         zF3ALO7mIY2pUq+skAxC9CVVlv0xGbyATK9qcPW9uCg2Z6050lWM89hRQ4wPQwLZsjiF
-         PYk3VypwFv+FsCIPtSjDCFvNKhkXlgNjjjcowmmyqreHAp8INxytrJY0eSHXLi5JDIj2
-         mXCD18riMjYgtzOBo+Pcc+Dcyi4sitAXEt38SkqZ/8P0QJHIZNkcdsEHn4qTF7AjZ8MO
-         JrLnD6mtIasZF44bKoWkAHKyPaCjnscmhWhumi+fugAtErg+VIHBgtLNrLevJ9IK+3Zj
-         n+MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkGCaPMIW2fErkVTRgTI5zsbOzrNodI/OFoEpEZjmkwBp1V4boIFsQNo1AqvagE7/X685OMN/GF6a5@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjv4JeDMO/P3sAajQMu5WwlhUCeRtchnkRsFbaeOJtx7uwAjy7
-	ZPHbxO3X2upgNghT0KAeLIKiPAvCQg4A7D84PY2JuqtpKxCmyP2g/HOJFubp0UhhLNUgnXdF4gt
-	pyCjzry6Rf5cWhiyVKA38SqynrZIjAuA=
-X-Gm-Gg: AY/fxX5xpzNMYUAs0nqCGsb7SeIzrcW88o85ODtrYDZO7SGDa330nmsg1M7ICQiHPxf
-	peqwX5TLCfi8tUZAoaCfoXeeg+hhlzyP+IuGA3JBvxWkQosPR2zCnZrE3y6zh6xkl1RkI7v1x7f
-	5T/zidGNdamfGLpNfLW3vlxpWl4PUv0g/q/Mzy0MyhFRYVmaPG71UqcjsVe8BgfZkWpOhPZM5NF
-	Ydi3heyZESaQ/IR9gEXBNPqXLoe0ArvTDs7QtnGKu12InfzljTmRDOM5byY19TEFpLlOf4=
-X-Google-Smtp-Source: AGHT+IGl1dm4CpeMJKL96mAAKQUjvoDZs+VmtRoozMRbubWDV+LgRSlm6BAbFcguSRVV0kQfbsnSeFrUnno7hBPip2U=
-X-Received: by 2002:a05:7022:23a8:b0:119:e569:fb96 with SMTP id
- a92af1059eb24-121f8ab693cmr14307648c88.5.1768052804144; Sat, 10 Jan 2026
- 05:46:44 -0800 (PST)
+	s=arc-20240116; t=1768057492; c=relaxed/simple;
+	bh=Cg3dgvnwe6Sw2xAkBFyw7/b5S+/7Ve42HZriXkS8pJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r8a03+slPjirKEfK2RsN1vcSZY/POh7jaXMkyVzT4lHvAGpsvcYuvPGwux4rYPvCGn4Xx604Hf1H3wjvMgQnpbVIjpV9bSZ05yuzL565jWTpBIp+2eJljNg+GiL6zqYjSQd88BwQe+RXv+0X5NXTKsIkFGunSY9vb2e2+W5xuZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qLy248qy; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768057481; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=7h52ii2peL3Gr2WplyoUJnkpYTBA9Kvd7a2TmhKZvU0=;
+	b=qLy248qywQn7hqzz4KomkHdGiIy5iaCPdWdHKUyrjkDtwLtWqEB454bU2er1RBLwsEOOjDw1kQ8u2X6RweI49WW9s1Zjrb9NSbT/0hNu0wmQKRsnZqJSfHQ40IKBvxPvG+rEz+N4Ge4tulATiRGe0cmPTpwzI6NB5bl+1FZT6PU=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Wwk9lTz_1768057479 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 10 Jan 2026 23:04:40 +0800
+Date: Sat, 10 Jan 2026 23:04:38 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Hanjun Guo <guohanjun@huawei.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
+Message-ID: <aWJqhuhuQUAKMDpF@U-2FWC9VHC-2323.local>
+References: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
+ <8358233d-cfcd-451f-319a-f7b27743faa1@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109033859.187086-1-islituo@gmail.com> <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
-From: Tuo Li <islituo@gmail.com>
-Date: Sat, 10 Jan 2026 21:46:35 +0800
-X-Gm-Features: AQt7F2raG0n2DYQZw4jfmVEZhXvuZAeTjF0Q5rASgpAawTwzc0R6fZys3qpbjqM
-Message-ID: <CADm8TeniUDHajFA0sb10R=m4xK-ocyFmajkf_4BzPeea72Mrow@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: processor: Fix a possible null-pointer
- dereference in acpi_processor_errata_piix4() when debug messages are enabled
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8358233d-cfcd-451f-319a-f7b27743faa1@huawei.com>
 
-Hi Rafael,
+Hi Hanjun,
 
-Thank you for the careful review.
+Thanks for the review!
 
-On Sat, Jan 10, 2026 at 5:19=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Fri, Jan 9, 2026 at 4:39=E2=80=AFAM Tuo Li <islituo@gmail.com> wrote:
-> >
-> > In acpi_processor_errata_piix4(), the pointer dev is first assigned an =
-IDE
-> > device and then reassigned an ISA device:
-> >
-> >   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
-> >   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
-> >
-> > If the first lookup succeeds but the second fails, dev becomes NULL. Th=
-is
-> > leads to a potential null-pointer dereference when dev_dbg() is called:
-> >
-> >   if (errata.piix4.bmisx)
-> >     dev_dbg(&dev->dev, ...);
-> >
-> > To prevent this, use two temporary pointers and retrieve each device
-> > independently, avoiding overwriting dev with a possible NULL value.
-> >
-> >
-> > Signed-off-by: Tuo Li <islituo@gmail.com>
+On Sat, Jan 10, 2026 at 12:29:43PM +0800, Hanjun Guo wrote:
+> Hi Feng Tang,
+> 
+> On 2025/12/31 18:49, Feng Tang wrote:
+> > There was warning message about PPTT table:
+> > 
+> > 	"ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
+> > 
+> > and it in turn caused scheduler warnings when building up the system.
+> > It took a while to root cause the problem be related a broken PPTT
+> > table which has wrong cache information.
+> > 
+> > To speedup debugging similar issues, dump the PPTT table, which makes
+> > the warning more noticeable and helps bug hunting.
+> 
+> Agreed, I think it was useful for debugging.
+> 
+> > 
+> > The dumped info format on a ARM server is like:
+> > 
+> >      ACPI PPTT: Processors:
+> >      P[  0][0x0024]: parent=0x0000 acpi_proc_id=  0 num_res=1 flags=0x11(package)
+> >      P[  1][0x005a]: parent=0x0024 acpi_proc_id=  0 num_res=1 flags=0x12()
+> >      P[  2][0x008a]: parent=0x005a acpi_proc_id=  0 num_res=3 flags=0x1a(leaf)
+> >      P[  3][0x00f2]: parent=0x005a acpi_proc_id=  1 num_res=3 flags=0x1a(leaf)
+> >      P[  4][0x015a]: parent=0x005a acpi_proc_id=  2 num_res=3 flags=0x1a(leaf)
+> >      ...
+> >      ACPI PPTT: Caches:
+> >      C[   0][0x0072]: flags=0x7f next_level=0x0000 size=0x4000000  sets=65536  way=16 attribute=0xa  line_size=64
+> >      C[   1][0x00aa]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x4  line_size=64
+> >      C[   2][0x00c2]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x2  line_size=64
+> >      C[   3][0x00da]: flags=0x7f next_level=0x0000 size=0x100000   sets=2048   way=8  attribute=0xa  line_size=64
+> >      ...
+> > 
+> > It provides a global and straightforward view of the hierarchy of the
+> > processor and caches info of the platform, and from the offset info
+> > (the 3rd column), the child-parent relation could be checked.
+> > 
+> > With this, the root cause of the original issue was pretty obvious,
+> > that there were some caches items missing which caused the issue when
+> > building up scheduler domain.
+> 
+> Just a discussion, can we just dump the raw PPTT table via acpidump
+> in user space when we meet the problem? With the raw PPTT table, we
+> can go though the content to see if we have problems.
+
+Good point! We can use iasl to decode the PPTT table. And this dump
+is still useful as:
+* when enabling new silicon or new firmware (APCI tables), sometimes it
+  can't make to boot to user space when the issue happens.
+* This dump shows the processor and cache items separately and cleanly,
+  while the P[]/C[] index imply the numbers. In an 128 core product ARM
+  sever, the print with this patch is about 500 line, while the acpidump
+  is about 10,000 lines and harder to parse.
+
+> 
+> > 
+> > Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 > > ---
-> > v2:
-> > * Add checks for ide_dev and isa_dev before dev_dbg()
-> >   Thanks Rafael J. Wysocki for helpful advice.
-> > ---
-> >  drivers/acpi/acpi_processor.c | 27 ++++++++++++++-------------
-> >  1 file changed, 14 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
-r.c
-> > index 7ec1dc04fd11..e43978b0d83c 100644
-> > --- a/drivers/acpi/acpi_processor.c
-> > +++ b/drivers/acpi/acpi_processor.c
-> > @@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev=
- *dev)
-> >  {
-> >         u8 value1 =3D 0;
-> >         u8 value2 =3D 0;
-> > +       struct pci_dev *ide_dev, *isa_dev;
-> >
-> >
-> >         if (!dev)
-> > @@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci=
-_dev *dev)
-> >                  * each IDE controller's DMA status to make sure we cat=
-ch all
-> >                  * DMA activity.
-> >                  */
-> > -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> > +               ide_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> >                                      PCI_DEVICE_ID_INTEL_82371AB,
-> >                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
-> > -               if (dev) {
-> > -                       errata.piix4.bmisx =3D pci_resource_start(dev, =
-4);
-> > -                       pci_dev_put(dev);
-> > +               if (ide_dev) {
-> > +                       errata.piix4.bmisx =3D pci_resource_start(ide_d=
-ev, 4);
-> > +                       pci_dev_put(ide_dev);
-> >                 }
-> >
-> >                 /*
-> > @@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci=
-_dev *dev)
-> >                  * disable C3 support if this is enabled, as some legac=
-y
-> >                  * devices won't operate well if fast DMA is disabled.
-> >                  */
-> > -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> > +               isa_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> >                                      PCI_DEVICE_ID_INTEL_82371AB_0,
-> >                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
-> > -               if (dev) {
-> > -                       pci_read_config_byte(dev, 0x76, &value1);
-> > -                       pci_read_config_byte(dev, 0x77, &value2);
-> > +               if (isa_dev) {
-> > +                       pci_read_config_byte(isa_dev, 0x76, &value1);
-> > +                       pci_read_config_byte(isa_dev, 0x77, &value2);
-> >                         if ((value1 & 0x80) || (value2 & 0x80))
-> >                                 errata.piix4.fdma =3D 1;
-> > -                       pci_dev_put(dev);
-> > +                       pci_dev_put(isa_dev);
-> >                 }
-> >
-> >                 break;
-> >         }
-> >
-> > -       if (errata.piix4.bmisx)
-> > -               dev_dbg(&dev->dev, "Bus master activity detection (BM-I=
-DE) erratum enabled\n");
-> > -       if (errata.piix4.fdma)
-> > -               dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 dis=
-abled)\n");
-> > +       if (errata.piix4.bmisx && ide_dev)
->
-> Why does errata.piix4.bmisx need to be checked in addition to ide_dev?
->  If the latter is not NULL, the former is set, isn't it?
->
-> > +               dev_dbg(&ide_dev->dev, "Bus master activity detection (=
-BM-IDE) erratum enabled\n");
-> > +       if (errata.piix4.fdma && isa_dev)
->
-> And analogously here.
+> > Changelog:
+> > 
+> >    v2
+> >    * rebase againt 6.19 and refine the commit log
+> > 
+> >   drivers/acpi/pptt.c | 75 +++++++++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 75 insertions(+)
+> > 
+> > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> > index de5f8c018333..e00abedcd786 100644
+> > --- a/drivers/acpi/pptt.c
+> > +++ b/drivers/acpi/pptt.c
+> > @@ -529,6 +529,79 @@ static void acpi_pptt_warn_missing(void)
+> >   	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
+> >   }
+> > +static void acpi_dump_pptt_table(struct acpi_table_header *table_hdr)
+> > +{
+> > +	struct acpi_subtable_header *entry, *entry_start;
+> > +	unsigned long end;
+> > +	struct acpi_pptt_processor *cpu;
+> > +	struct acpi_pptt_cache *cache;
+> > +	u32 entry_sz, i;
+> > +	u8 len;
+> > +	static bool dumped;
+> > +
+> > +	/* PPTT table could be pretty big, no need to dump it twice */
+> > +	if (dumped)
+> > +		return;
+> > +	dumped = true;
+> > +
+> > +	end = (unsigned long)table_hdr + table_hdr->length;
+> > +	entry_start = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+> > +			     sizeof(struct acpi_table_pptt));
+> > +
+> > +	pr_info("Processors:\n");
+> > +	entry_sz = sizeof(struct acpi_pptt_processor);
+> > +	entry = entry_start;
+> > +	i = 0;
+> > +	while ((unsigned long)entry + entry_sz <= end) {
+> > +		len = entry->length;
+> > +		if (!len) {
+> > +			pr_warn("Invalid zero length subtable\n");
+> > +			return;
+> > +		}
+> > +
+> > +		cpu = (struct acpi_pptt_processor *)entry;
+> > +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
+> > +
+> > +		if (cpu->header.type != ACPI_PPTT_TYPE_PROCESSOR)
+> > +			continue;
+> > +
+> > +		printk(KERN_INFO "P[%3d][0x%04lx]: parent=0x%04x acpi_proc_id=%3d num_res=%d flags=0x%02x(%s%s%s)\n",
+> 
+> pr_info() please.
 
-Checking errata.piix4.bmisx (or fdma) in addition to ide_dev / isa_dev is
-indeed redundant, and I will simplify the conditions accordingly.
->
-> > +               dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3=
- disabled)\n");
-> >
-> >         return 0;
-> >  }
-> > --
->
-> And you need to change the "break;" statement at the end of the first
-> "switch ()" block to "return 0;" if you don't want to initialize the
-> new variables to NULL.
+Will change.
+ 
+> > +			i++, (unsigned long)cpu - (unsigned long)table_hdr,
+> > +			cpu->parent, cpu->acpi_processor_id,
+> > +			cpu->number_of_priv_resources, cpu->flags,
+> > +			cpu->flags & ACPI_PPTT_PHYSICAL_PACKAGE ? "package" : "",
+> > +			cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE ? "leaf" : "",
+> > +			cpu->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD ? ", thread" : ""
+> > +			);
+> > +
+> > +	}
+> > +
+> > +	pr_info("Caches:\n");
+> > +	entry_sz = sizeof(struct acpi_pptt_cache);
+> > +	entry = entry_start;
+> > +	i = 0;
+> > +	while ((unsigned long)entry + entry_sz <= end) {
+> > +		len = entry->length;
+> > +		if (!len) {
+> > +			pr_warn("Invalid zero length subtable\n");
+> > +			return;
+> > +		}
+> > +
+> > +		cache = (struct acpi_pptt_cache *)entry;
+> > +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
+> > +
+> > +		if (cache->header.type != ACPI_PPTT_TYPE_CACHE)
+> > +			continue;
+> > +
+> > +		printk(KERN_INFO "C[%4d][0x%04lx]: flags=0x%02x next_level=0x%04x size=0x%-8x sets=%-6d way=%-2d attribute=0x%-2x line_size=%d\n",
+> 
+> Same here.
 
-Good catch! To avoid any risk of using uninitialized pointers, I think it
-is better to initialize ide_dev and isa_dev to NULL at declaration.
+Yes.
 
-I will address both points in v3.
+> > +			i++, (unsigned long)cache - (unsigned long)table_hdr,
+> > +			cache->flags, cache->next_level_of_cache, cache->size,
+> > +			cache->number_of_sets, cache->associativity,
+> > +			cache->attributes, cache->line_size
+> > +			);
+> > +	}
+> > +}
+> > +
+> >   /**
+> >    * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
+> >    * @table: Pointer to the head of the PPTT table
+> > @@ -565,6 +638,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
+> >   	}
+> >   	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
+> >   		    cpu, acpi_cpu_id);
+> > +
+> > +	acpi_dump_pptt_table(table);
+> 
+> I think it would be good to dump it as needed, as a debug feature.
 
-Thanks again for the helpful feedback.
+Makes sense to me. Should I add a kernel config option or a module
+parameter for it, or just change the pr_info to pr_debug (it's in
+a unlikely error path)?
 
-Best regards,
-Tuo
+Thanks,
+Feng
+
+> Thanks
+> Hanjun
 
