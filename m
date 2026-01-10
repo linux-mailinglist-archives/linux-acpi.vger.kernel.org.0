@@ -1,118 +1,225 @@
-Return-Path: <linux-acpi+bounces-20147-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20148-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAA1D0D66F
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 14:26:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA735D0D69F
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 14:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF78630060EA
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 13:25:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA0603008D4D
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 13:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B7A33E34C;
-	Sat, 10 Jan 2026 13:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E711DFD8B;
+	Sat, 10 Jan 2026 13:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifVluebY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZUJ9+17"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C2D205E26;
-	Sat, 10 Jan 2026 13:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4151B4F1F
+	for <linux-acpi@vger.kernel.org>; Sat, 10 Jan 2026 13:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768051556; cv=none; b=DvoHS9rErXlM+LwdHKFk+zOJA1ruumeMXXbqdSnyraQhJBxg2mgaEzjG4ELB+Q0htK6wbC018qauHVZ9uAbLN4LDVy7h4vObMLBaIPAJiVCjO1ZjmZtp6DB2Lz6a9wM35mlzuBFhpQZtNR0/mrVrk/yko/IcAMAcJegim18n5xc=
+	t=1768052806; cv=none; b=c8HCvSxG2w0MsfK+T1IDGbv4pGyvl9o0ThGdsqddpxN0dYSlPMEBPF9qcCrgXr13B9zFbRPnpflxrX187QwJiQu3UfRpsgzFicn1iEPVSM2G4O+a/Usx63x90XPBxUzkNKmowJy1p0Kym19yRsPWxi10+vXL1/Qjm/ZhaeCbn6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768051556; c=relaxed/simple;
-	bh=JNYkBdK1i7Nkf6ZCZmZ0xBSVN53rPojmSksPG4wHzYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BG4NIPzO1Frpcm984RuLvUmIobPDfSw5exIicuJoLAFOJrZGMncqxBIavXpIKdtzJkGEZd51EtcTb/KD+YoJeq10vvJKZO2mg6MDzIfkDXnl8+cOEImy85u/1hyGjwuHTDuABKsFjG7LY6GD7zSU+k9Q/HcYuFEoNh/ZKjFIBoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifVluebY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4FDC4CEF1;
-	Sat, 10 Jan 2026 13:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768051556;
-	bh=JNYkBdK1i7Nkf6ZCZmZ0xBSVN53rPojmSksPG4wHzYw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ifVluebYgjDvO04rt8luqDg+2jv4Uj246tkuMFtZf98bj7Karb+1/YytX3i+U66Ca
-	 9pi3YPaIEWBuq3wbQ+VamS9QdSLPKIzVyKS5P78y4RvIdBDG++Y7/4Go2J+eMnyTYi
-	 EieMtXfQmuEQi/lCu98LT3UYb6YePzPsHHSZk03XmuZ/3KNj4KULx4HQFFUOualIwJ
-	 xJ8NChV9VaMZZLATyugh/e1drsbt22rXrAdcYwhrFgOGrddkUt9+Xb06AMZmXGb08M
-	 JmI6Qi8Ae0ln7QC6aYCHBqR9gm65SHnkKnOhlyWVV62IlBmeD/7NFxlx1pM8CgyGrq
-	 Kw5E+dfjo8V9w==
-Message-ID: <1aadd874-6400-4652-9a42-d1113db19184@kernel.org>
-Date: Sat, 10 Jan 2026 07:25:55 -0600
+	s=arc-20240116; t=1768052806; c=relaxed/simple;
+	bh=q8mT9StIiIn4yIgBQfTjUeq3j3eVjuquWYvPqKNl3x0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HBp9foJsgEZaLys9cvBiHDFJJjyAKdH6g2xtbdh2YwdcEjoVYvDcJY5ZK3lRqegzuL/Qh6lP34kDPbGVkzmeTkNf42kF4ALIuJmRAfiofVP/7ak3Gre1+ebhQLJiHhegGxHgGvJZvipsRuzdLgd8CUNY32MtTz3bEaB0m51bKyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZUJ9+17; arc=none smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-11df4458a85so4487835c88.1
+        for <linux-acpi@vger.kernel.org>; Sat, 10 Jan 2026 05:46:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768052804; x=1768657604; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FPm1mH2E9PkjFiRRoRqFuaVOVWmSs32ti0r4GJyt90g=;
+        b=JZUJ9+173Y1QFP4K7AVtmrSPP99Yri9X6W5Ra0BzSu0CDJU/3XAn0ZffhqbtVU7y0p
+         xRG/LMx5f4Repx8UfaHh56JSE5aPNTdArRvrc6oDvtiLR+dUwgu1hokEDWCSciiLAFBd
+         mRIxHvl5PonzeUw5nD+C1ut3pilqon+NOXDVZ6VyEdDtZNhmYgst6+l5+Mu2KuzmXO/Z
+         NVFT+NXJzSV2OGO2XW9fBskrv1XLFseOA/FWwSWH0oTLu64U9B50EmoQrj6cwfhlUkfB
+         +mpVq+iiIXlNdNN0QIIbgxsQY+HPJkhrcfGvjonpj5U1rcBAIcEs2Cr6gp70fFa6YOyI
+         7YXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768052804; x=1768657604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FPm1mH2E9PkjFiRRoRqFuaVOVWmSs32ti0r4GJyt90g=;
+        b=NNK90EcAbJtp2CxKGK07FcqVr/ZA/X0SWGU4U8oTJInwriU86elDlSxVeO9clU4YYM
+         zF3ALO7mIY2pUq+skAxC9CVVlv0xGbyATK9qcPW9uCg2Z6050lWM89hRQ4wPQwLZsjiF
+         PYk3VypwFv+FsCIPtSjDCFvNKhkXlgNjjjcowmmyqreHAp8INxytrJY0eSHXLi5JDIj2
+         mXCD18riMjYgtzOBo+Pcc+Dcyi4sitAXEt38SkqZ/8P0QJHIZNkcdsEHn4qTF7AjZ8MO
+         JrLnD6mtIasZF44bKoWkAHKyPaCjnscmhWhumi+fugAtErg+VIHBgtLNrLevJ9IK+3Zj
+         n+MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUkGCaPMIW2fErkVTRgTI5zsbOzrNodI/OFoEpEZjmkwBp1V4boIFsQNo1AqvagE7/X685OMN/GF6a5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzjv4JeDMO/P3sAajQMu5WwlhUCeRtchnkRsFbaeOJtx7uwAjy7
+	ZPHbxO3X2upgNghT0KAeLIKiPAvCQg4A7D84PY2JuqtpKxCmyP2g/HOJFubp0UhhLNUgnXdF4gt
+	pyCjzry6Rf5cWhiyVKA38SqynrZIjAuA=
+X-Gm-Gg: AY/fxX5xpzNMYUAs0nqCGsb7SeIzrcW88o85ODtrYDZO7SGDa330nmsg1M7ICQiHPxf
+	peqwX5TLCfi8tUZAoaCfoXeeg+hhlzyP+IuGA3JBvxWkQosPR2zCnZrE3y6zh6xkl1RkI7v1x7f
+	5T/zidGNdamfGLpNfLW3vlxpWl4PUv0g/q/Mzy0MyhFRYVmaPG71UqcjsVe8BgfZkWpOhPZM5NF
+	Ydi3heyZESaQ/IR9gEXBNPqXLoe0ArvTDs7QtnGKu12InfzljTmRDOM5byY19TEFpLlOf4=
+X-Google-Smtp-Source: AGHT+IGl1dm4CpeMJKL96mAAKQUjvoDZs+VmtRoozMRbubWDV+LgRSlm6BAbFcguSRVV0kQfbsnSeFrUnno7hBPip2U=
+X-Received: by 2002:a05:7022:23a8:b0:119:e569:fb96 with SMTP id
+ a92af1059eb24-121f8ab693cmr14307648c88.5.1768052804144; Sat, 10 Jan 2026
+ 05:46:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: scan: Clean up after recent changes
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <12825056.O9o76ZdvQC@rafael.j.wysocki>
-Content-Language: en-US
-From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-In-Reply-To: <12825056.O9o76ZdvQC@rafael.j.wysocki>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260109033859.187086-1-islituo@gmail.com> <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hEPum5414FzNC-i-oF07YSXOXavQjtUyRs6q21mCzrbQ@mail.gmail.com>
+From: Tuo Li <islituo@gmail.com>
+Date: Sat, 10 Jan 2026 21:46:35 +0800
+X-Gm-Features: AQt7F2raG0n2DYQZw4jfmVEZhXvuZAeTjF0Q5rASgpAawTwzc0R6fZys3qpbjqM
+Message-ID: <CADm8TeniUDHajFA0sb10R=m4xK-ocyFmajkf_4BzPeea72Mrow@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: processor: Fix a possible null-pointer
+ dereference in acpi_processor_errata_piix4() when debug messages are enabled
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Rafael,
 
+Thank you for the careful review.
 
-On 1/10/2026 5:50 AM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Use LIST_HEAD() for initializing an on-stack list head in two places and
-> remove an empty code line added by mistake.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> ---
-> 
-> This is based on ACPI changes in linux-next.
-> 
-> ---
->   drivers/acpi/acpi_platform.c |    2 +-
->   drivers/acpi/scan.c          |    3 +--
->   2 files changed, 2 insertions(+), 3 deletions(-)
-> 
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -136,7 +136,7 @@ struct platform_device *acpi_create_plat
->   	}
->   
->   	if (adev->device_type == ACPI_BUS_TYPE_DEVICE && !adev->pnp.type.backlight) {
-> -		struct list_head resource_list = LIST_HEAD_INIT(resource_list);
-> +		LIST_HEAD(resource_list);
->   
->   		count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
->   		if (count < 0)
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -2602,8 +2602,8 @@ static void acpi_scan_postponed(void)
->   
->   static void acpi_scan_claim_resources(struct acpi_device *adev)
->   {
-> -	struct list_head resource_list = LIST_HEAD_INIT(resource_list);
->   	struct resource_entry *rentry;
-> +	LIST_HEAD(resource_list);
->   	unsigned int count = 0;
->   	const char *regionid;
->   
-> @@ -2660,7 +2660,6 @@ exit:
->   	acpi_dev_free_resource_list(&resource_list);
->   }
->   
-> -
->   static int __init acpi_reserve_motherboard_resources(void)
->   {
->   	struct acpi_scan_system_dev *sd, *tmp;
-> 
-> 
-> 
+On Sat, Jan 10, 2026 at 5:19=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
+>
+> On Fri, Jan 9, 2026 at 4:39=E2=80=AFAM Tuo Li <islituo@gmail.com> wrote:
+> >
+> > In acpi_processor_errata_piix4(), the pointer dev is first assigned an =
+IDE
+> > device and then reassigned an ISA device:
+> >
+> >   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
+> >   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
+> >
+> > If the first lookup succeeds but the second fails, dev becomes NULL. Th=
+is
+> > leads to a potential null-pointer dereference when dev_dbg() is called:
+> >
+> >   if (errata.piix4.bmisx)
+> >     dev_dbg(&dev->dev, ...);
+> >
+> > To prevent this, use two temporary pointers and retrieve each device
+> > independently, avoiding overwriting dev with a possible NULL value.
+> >
+> >
+> > Signed-off-by: Tuo Li <islituo@gmail.com>
+> > ---
+> > v2:
+> > * Add checks for ide_dev and isa_dev before dev_dbg()
+> >   Thanks Rafael J. Wysocki for helpful advice.
+> > ---
+> >  drivers/acpi/acpi_processor.c | 27 ++++++++++++++-------------
+> >  1 file changed, 14 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
+r.c
+> > index 7ec1dc04fd11..e43978b0d83c 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev=
+ *dev)
+> >  {
+> >         u8 value1 =3D 0;
+> >         u8 value2 =3D 0;
+> > +       struct pci_dev *ide_dev, *isa_dev;
+> >
+> >
+> >         if (!dev)
+> > @@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci=
+_dev *dev)
+> >                  * each IDE controller's DMA status to make sure we cat=
+ch all
+> >                  * DMA activity.
+> >                  */
+> > -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> > +               ide_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> >                                      PCI_DEVICE_ID_INTEL_82371AB,
+> >                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
+> > -               if (dev) {
+> > -                       errata.piix4.bmisx =3D pci_resource_start(dev, =
+4);
+> > -                       pci_dev_put(dev);
+> > +               if (ide_dev) {
+> > +                       errata.piix4.bmisx =3D pci_resource_start(ide_d=
+ev, 4);
+> > +                       pci_dev_put(ide_dev);
+> >                 }
+> >
+> >                 /*
+> > @@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci=
+_dev *dev)
+> >                  * disable C3 support if this is enabled, as some legac=
+y
+> >                  * devices won't operate well if fast DMA is disabled.
+> >                  */
+> > -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> > +               isa_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
+> >                                      PCI_DEVICE_ID_INTEL_82371AB_0,
+> >                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
+> > -               if (dev) {
+> > -                       pci_read_config_byte(dev, 0x76, &value1);
+> > -                       pci_read_config_byte(dev, 0x77, &value2);
+> > +               if (isa_dev) {
+> > +                       pci_read_config_byte(isa_dev, 0x76, &value1);
+> > +                       pci_read_config_byte(isa_dev, 0x77, &value2);
+> >                         if ((value1 & 0x80) || (value2 & 0x80))
+> >                                 errata.piix4.fdma =3D 1;
+> > -                       pci_dev_put(dev);
+> > +                       pci_dev_put(isa_dev);
+> >                 }
+> >
+> >                 break;
+> >         }
+> >
+> > -       if (errata.piix4.bmisx)
+> > -               dev_dbg(&dev->dev, "Bus master activity detection (BM-I=
+DE) erratum enabled\n");
+> > -       if (errata.piix4.fdma)
+> > -               dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 dis=
+abled)\n");
+> > +       if (errata.piix4.bmisx && ide_dev)
+>
+> Why does errata.piix4.bmisx need to be checked in addition to ide_dev?
+>  If the latter is not NULL, the former is set, isn't it?
+>
+> > +               dev_dbg(&ide_dev->dev, "Bus master activity detection (=
+BM-IDE) erratum enabled\n");
+> > +       if (errata.piix4.fdma && isa_dev)
+>
+> And analogously here.
 
+Checking errata.piix4.bmisx (or fdma) in addition to ide_dev / isa_dev is
+indeed redundant, and I will simplify the conditions accordingly.
+>
+> > +               dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3=
+ disabled)\n");
+> >
+> >         return 0;
+> >  }
+> > --
+>
+> And you need to change the "break;" statement at the end of the first
+> "switch ()" block to "return 0;" if you don't want to initialize the
+> new variables to NULL.
+
+Good catch! To avoid any risk of using uninitialized pointers, I think it
+is better to initialize ide_dev and isa_dev to NULL at declaration.
+
+I will address both points in v3.
+
+Thanks again for the helpful feedback.
+
+Best regards,
+Tuo
 
