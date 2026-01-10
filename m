@@ -1,77 +1,109 @@
-Return-Path: <linux-acpi+bounces-20142-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20143-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8B8D0D3ED
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 10:27:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDB6D0D5A5
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 12:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A56230198AC
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 09:27:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC9B3008186
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 11:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D7C2853EE;
-	Sat, 10 Jan 2026 09:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B3333F8B4;
+	Sat, 10 Jan 2026 11:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="jDwehzmi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pebd8ydp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812E035965;
-	Sat, 10 Jan 2026 09:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768037232; cv=none; b=fGdhaCAaReRxZeG5MWsIiw06O5RDm4CV2t3DHxGVjiNWmHpFNkBJDW8pJd1Bzf6ETDQcUIFDD9h/Pjf/D1Em52UTxPctajrLbwn9IOVs2UzBrG67GPPYvDML21Y3oHFrYaoNsw3X8pZPJK/J2VWw3zT0uMs9wMS6kiYHcorKnzo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768037232; c=relaxed/simple;
-	bh=wYmoWm7BTojrEnJyTKvvqvGn/JiK9wET35aEG/KxfoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EI32AcvO5ypv14dyVQGuAM7suCFZw6H/6fIANMpdArdvWp41IoBgbaoJq7geLuQrGeYpup59DaSRB20666G7zK1YDdwm5oIhHdoa2Y29PdEpdH7aG45Oh2qe/xTqsLBdi1hEls/Zd9aRCb1seYdNCzZ5kWQeI847gslH99AGijA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=jDwehzmi; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p200300f6af1d9600dfc71246d978d903.dip0.t-ipconnect.de [IPv6:2003:f6:af1d:9600:dfc7:1246:d978:d903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 2914F5DC43;
-	Sat, 10 Jan 2026 10:27:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1768037223;
-	bh=wYmoWm7BTojrEnJyTKvvqvGn/JiK9wET35aEG/KxfoU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jDwehzmiUPaneVy8leWWUS+FSM8CwhlYOagzG/QPx5OpdR79dWq0gFnxMh7QsvWxb
-	 esqVGiliwYW5JR7ntfQEg8m4Nz1nqf1jK8Sza68vMW1/3DtQ0/PMa0hY/Pxws08qUE
-	 u+JAL7GlwKnfAMny1kdVdijEeO1L9J8ZI2cZQbH4qxCzEutwIoVL5eZzb/ymVckkpJ
-	 NdIbPtRkMXOpSP86W7EnXN5Ve3GtkMVyB4BF3ZC5xV/h98OE8vho/EhkB1ZZjMZ6Ac
-	 tuHhUpugpklqEkxDpIrdJRMancXyp+uCALimyIhATb1m6zyhdfYm5HNKvr69zJzRnC
-	 L4VFHPVYrrJRQ==
-Date: Sat, 10 Jan 2026 10:27:01 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: will@kernel.org, robin.murphy@arm.com, afael@kernel.org, 
-	lenb@kernel.org, bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, 
-	kevin.tian@intel.com, baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev, 
-	pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org, etzhao1900@gmail.com
-Subject: Re: [PATCH v8 0/5] Disable ATS via iommu during PCI resets
-Message-ID: <u3763xmcq6tr5nnuye7jj7c74nxbboneylbgywvydjtuhlmxcu@ho7sf4z4u55l>
-References: <cover.1765834788.git.nicolinc@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE7733F8B3;
+	Sat, 10 Jan 2026 11:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768045857; cv=none; b=rszw8E+OcXMv+8JRk4pzJgVDszo+NOh1ZJYGivj3xG8ytvDfh2f8O4bMT/WKDw4bXP322IBoziQwENN7/V6gQd8UZccuEMUJ0JsQn8AYtJjvVY06PtMDePlLwOmD71UQvdZs3LIhb4l3QZkEjXpI1LsP3FvQSxB0LB+2998sWZA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768045857; c=relaxed/simple;
+	bh=O/vl07S9TMZbDYPKIT0hvCWn2P+kaBWOULhD1PnN3lA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DbCet73+pIq7BbfZsdiE+Os3d3mlFu9HzYRr7rlNdxvyRPqg7yUPRboN8DiNImQk+YSqXVjdxezyiP1MFV0uqcVxhc8e1P4SS6j98B79ziBc/SJKXWVDjjOPr4ipHUz6ad7yAU1vcfzuOWAwnlJd7HwKs8EUe4Rph4/NCHNFLjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pebd8ydp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1D8C4CEF1;
+	Sat, 10 Jan 2026 11:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768045857;
+	bh=O/vl07S9TMZbDYPKIT0hvCWn2P+kaBWOULhD1PnN3lA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pebd8ydpWkG0QiXaotDwDwImnnfAHDxORNji53DpPuuzfqfeDuMPClIMVBoYeFdie
+	 nSfqMvlOLWpBOwcWBN+BXBmBACLYDyXvM/tudInHxh0Ia5WwFTkUoPOY6mAStskaFB
+	 SgIkOhm9VeLqpY9ULl2inQQeVTiyryhAIuJiZUTzh29jBmqz1IdVEDN3JZFjwdqLqp
+	 w4O9C3qRISO8oQpEaxZivzMizgZ0mLSAdyylPc1aeBmax3yjZPqnBJ8cP0LcaCi2TS
+	 4QKU+a5rGqBPqylBp6Tjwfk/e0dXAelbvetGEarRIx9bFEku6dW6VXEqLjGfzS8hKy
+	 4Picmi1/vMhnw==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v1] ACPI: scan: Clean up after recent changes
+Date: Sat, 10 Jan 2026 12:50:54 +0100
+Message-ID: <12825056.O9o76ZdvQC@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1765834788.git.nicolinc@nvidia.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Dec 15, 2025 at 01:42:15PM -0800, Nicolin Chen wrote:
-> Nicolin Chen (5):
->   iommu: Lock group->mutex in iommu_deferred_attach()
->   iommu: Tidy domain for iommu_setup_dma_ops()
->   iommu: Add iommu_driver_get_domain_for_dev() helper
->   iommu: Introduce pci_dev_reset_iommu_prepare/done()
->   PCI: Suspend iommu function prior to resetting a device
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Applied, thanks.
+Use LIST_HEAD() for initializing an on-stack list head in two places and
+remove an empty code line added by mistake.
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+This is based on ACPI changes in linux-next.
+
+---
+ drivers/acpi/acpi_platform.c |    2 +-
+ drivers/acpi/scan.c          |    3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -136,7 +136,7 @@ struct platform_device *acpi_create_plat
+ 	}
+ 
+ 	if (adev->device_type == ACPI_BUS_TYPE_DEVICE && !adev->pnp.type.backlight) {
+-		struct list_head resource_list = LIST_HEAD_INIT(resource_list);
++		LIST_HEAD(resource_list);
+ 
+ 		count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+ 		if (count < 0)
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2602,8 +2602,8 @@ static void acpi_scan_postponed(void)
+ 
+ static void acpi_scan_claim_resources(struct acpi_device *adev)
+ {
+-	struct list_head resource_list = LIST_HEAD_INIT(resource_list);
+ 	struct resource_entry *rentry;
++	LIST_HEAD(resource_list);
+ 	unsigned int count = 0;
+ 	const char *regionid;
+ 
+@@ -2660,7 +2660,6 @@ exit:
+ 	acpi_dev_free_resource_list(&resource_list);
+ }
+ 
+-
+ static int __init acpi_reserve_motherboard_resources(void)
+ {
+ 	struct acpi_scan_system_dev *sd, *tmp;
+
+
+
 
