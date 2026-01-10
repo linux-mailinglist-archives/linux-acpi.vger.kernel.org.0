@@ -1,232 +1,264 @@
-Return-Path: <linux-acpi+bounces-20126-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20128-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2472D0CF21
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 05:30:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA5DD0D0FA
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 07:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C72C130155AC
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 04:29:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 919A73031A11
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Jan 2026 06:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D968231AF3B;
-	Sat, 10 Jan 2026 04:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA5C345CB0;
+	Sat, 10 Jan 2026 06:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="QOyYQ+G4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKisoEgG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B7A17B505;
-	Sat, 10 Jan 2026 04:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53EA3126B6;
+	Sat, 10 Jan 2026 06:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768019390; cv=none; b=uAvl/wauUGHhrLFjOBYME4LodmI8Dtue6sl9f9TaX8mncXi+m/sqe/xx6+BjWX/lYFTjvSB10n0omCIH8ZcZCNddnkWNWr21tJUKhP20auvcMxjFIx0mxSglry/hENs2mzhAsDHjubjEvtNVREYLyJKz11FmX5kUycCyCZUZy2s=
+	t=1768028226; cv=none; b=tfectDwtglI55m0uczqz6QOkOgISXTskHIEwX4v0/2xtz4TA1ZdrcwS6pa+isFE0HndUYBjrx611W+zeTr/S6erD3r/lM+Dx19NzjB1lw+raqntxz5OWh6l7yAyDGJKw9V6lATlzGad+dzWulQkLPU1SXVpn4yc6dMa/R0XVqgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768019390; c=relaxed/simple;
-	bh=2cCHJcWGBWHtYjIGJjGRsknOtqERh0tEXCLdd4NYe38=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kRD83iWATSbvYS2iKkcfNPQpTdltPoFg1SvAgc3x1ybsa3f/IJz9dwN2475rNj4uv1HpNZrGKzQfh7JUaN8pBCMRSmvbJCugpzlz2dmYibVRnlKB2O/l9Ba5xXzjwZQV6cPee3hzcIhlIEd2IFZLBc0Lma09WDk0I2TOWGJ9OAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=QOyYQ+G4; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=zbZ4OHfuwSEuF2x5uGchz90sNBEHgmMVonxAZmVeTig=;
-	b=QOyYQ+G4zj/JaSKSnxcaRd0dqSLSd9PJ4JB1gdHTZJNYQ+ba0kBHOG4kR7+EwWBCkwgFpSp8b
-	MveSjUV/NtpyyOyF9myz3hSKquUiL9FcTdTtS+cZEjMfojzSWdAnAVxYo0zs7Paw7MSBEMz1jyf
-	3ZcS2LM/w6nWZ29bZJ1MkIs=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dp5Dp3z3YzpStX;
-	Sat, 10 Jan 2026 12:26:18 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id AFCEE40538;
-	Sat, 10 Jan 2026 12:29:44 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 10 Jan 2026 12:29:43 +0800
-Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
-To: Feng Tang <feng.tang@linux.alibaba.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Jeremy Linton
-	<jeremy.linton@arm.com>, James Morse <james.morse@arm.com>
-CC: Joanthan Cameron <Jonathan.Cameron@huawei.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <8358233d-cfcd-451f-319a-f7b27743faa1@huawei.com>
-Date: Sat, 10 Jan 2026 12:29:43 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1768028226; c=relaxed/simple;
+	bh=/lmr5R1V4hK43zv0BnO4dkyfmN+kPBiDyJMM/7lu7/A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZTyJShxkrHtdZLKv5x78tsNyNZXzO+YmBxAa1hISelSr4jhe81UzwIN9wPB/Hxbo2srdZ8EQpbDiWqsN/d6jOz+01KTe4KeRE/zpOWPchbdbX+8+UAg6Y+xlstHl+uhe8ZyZl57hfV1xwgMpbKd6dZRzZare/VFRQ5qa39U46q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKisoEgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 60FC9C4CEF1;
+	Sat, 10 Jan 2026 06:57:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768028225;
+	bh=/lmr5R1V4hK43zv0BnO4dkyfmN+kPBiDyJMM/7lu7/A=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=uKisoEgGZr/3dnP17aPbaV1hkKQn2COhxnxX4706deUOcDzjNfEKIF5SsEgAVtS5d
+	 WpsT+M/iqtnvS2A8UaTky4jTd/8fe7OanYVCaYcZqKjHZVzlqZ8UPCpg6ChxSx+WQ4
+	 3oA1q7ewaJH2zsEkWd4bkRhvaCxEly/xNc7AjVmuNm8nUnz25PO1QE3QY6DDDf2M2a
+	 xHV51vs94Cuy+XpfuXFJbrt5IN628yikvKKTCCOIRKQWHyeOgNBxQ2LEJ2jyrNEh9f
+	 6GPYwB6fFy2MW6jVATg0pyjHHq7KvQ9C/zwUWASzzCR7sbHdJkWKq6JUsiUEMoLTVD
+	 3MscD5+w0dRRw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 481C1D277C2;
+	Sat, 10 Jan 2026 06:57:05 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v3 00/14] Add support for handling PCIe M.2 Key E
+ connectors in devicetree
+Date: Sat, 10 Jan 2026 12:26:18 +0530
+Message-Id: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+X-B4-Tracking: v=1; b=H4sIABL4YWkC/22PzY7CMAyEX6XKGVeNm6Q/J94DcQipWSJRCnGJd
+ oV493XLBe1ysTSW5/PMQzGlSKz64qES5chxuoioN4UKJ3/5IoiDaIUVWq01wjVEGBEIOuM660M
+ 3ONsoOb8mOsbvFbXbiz5Fnqf0s5KzXrYfIFlDBV1jdD24w7FFs52Yy9vdn8M0jqUMtbAyvvnRv
+ vlR/DW26AaqmhDsB//zFS7R7S715ldCNRKzX+v1xV9uroUaLLaVQU/eNP+pwjx4JlgWce6L7Er
+ dQgpa/j1/ATUWXx5WAQAA
+X-Change-ID: 20251112-pci-m2-e-94695ac9d657
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ linux-acpi@vger.kernel.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Sui Jingfeng <sui.jingfeng@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7267;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=/lmr5R1V4hK43zv0BnO4dkyfmN+kPBiDyJMM/7lu7/A=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpYfg3x6ypVlkBQJwmswe2FXMz7G7MGJ1fDpFln
+ 1pFCH7X1TiJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaWH4NwAKCRBVnxHm/pHO
+ 9VtWB/4naD0ChYSkykbh0J0iwlyz5udE3fk8jhSBChLmrtWJLfi2jntQOHRi08EqMhbLvTqMzpK
+ GZiH2UeTTs3vUPilgQewA7LdK4uJjupNGeGx5LI8gHj63Zxdu46vl/Vi8M+nrTsQQ9gVVzKrsxL
+ NZIVGd1NblOCf7qa0p8xiHJ02fVWISndBgUoEKABCZZ3Ifqw+skTjEvnDNt+d5hM8rQI0ffeaZT
+ xarDVP5JWAd2lcnzo1k5bMZkjIt7ZB2mVVyQbPG8zyIiDbS3vnH/opbGo2m9EOohLQshlR7CiJ5
+ nVT1ILMw5/wPBTf7ocB+WrgoZKbn8PngWEGplUdTj7df/liT
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-Hi Feng Tang,
+Hi,
 
-On 2025/12/31 18:49, Feng Tang wrote:
-> There was warning message about PPTT table:
-> 
-> 	"ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
-> 
-> and it in turn caused scheduler warnings when building up the system.
-> It took a while to root cause the problem be related a broken PPTT
-> table which has wrong cache information.
-> 
-> To speedup debugging similar issues, dump the PPTT table, which makes
-> the warning more noticeable and helps bug hunting.
+This series is the continuation of the series [1] that added the initial support
+for the PCIe M.2 connectors. This series extends it by adding support for Key E
+connectors. These connectors are used to connect the Wireless Connectivity
+devices such as WiFi, BT, NFC and GNSS devices to the host machine over
+interfaces such as PCIe/SDIO, USB/UART and NFC. This series adds support for
+connectors that expose PCIe interface for WiFi and UART interface for BT. Other
+interfaces are left for future improvements.
 
-Agreed, I think it was useful for debugging.
+Serdev device support for BT
+============================
 
-> 
-> The dumped info format on a ARM server is like:
-> 
->      ACPI PPTT: Processors:
->      P[  0][0x0024]: parent=0x0000 acpi_proc_id=  0 num_res=1 flags=0x11(package)
->      P[  1][0x005a]: parent=0x0024 acpi_proc_id=  0 num_res=1 flags=0x12()
->      P[  2][0x008a]: parent=0x005a acpi_proc_id=  0 num_res=3 flags=0x1a(leaf)
->      P[  3][0x00f2]: parent=0x005a acpi_proc_id=  1 num_res=3 flags=0x1a(leaf)
->      P[  4][0x015a]: parent=0x005a acpi_proc_id=  2 num_res=3 flags=0x1a(leaf)
->      ...
->      ACPI PPTT: Caches:
->      C[   0][0x0072]: flags=0x7f next_level=0x0000 size=0x4000000  sets=65536  way=16 attribute=0xa  line_size=64
->      C[   1][0x00aa]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x4  line_size=64
->      C[   2][0x00c2]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x2  line_size=64
->      C[   3][0x00da]: flags=0x7f next_level=0x0000 size=0x100000   sets=2048   way=8  attribute=0xa  line_size=64
->      ...
-> 
-> It provides a global and straightforward view of the hierarchy of the
-> processor and caches info of the platform, and from the offset info
-> (the 3rd column), the child-parent relation could be checked.
-> 
-> With this, the root cause of the original issue was pretty obvious,
-> that there were some caches items missing which caused the issue when
-> building up scheduler domain.
+Adding support for the PCIe interface was mostly straightforward and a lot
+similar to the previous Key M connector. But adding UART interface has proved to
+be tricky. This is mostly because of the fact UART is a non-discoverable bus,
+unlike PCIe which is discoverable. So this series relied on the PCI notifier to
+create the serdev device for UART/BT. This means the PCIe interface will be
+brought up first and after the PCIe device enumeration, the serdev device will
+be created by the pwrseq driver. This logic is necessary since the connector
+driver and DT node don't describe the device, but just the connector. So to make
+the connector interface Plug and Play, the connector driver uses the PCIe device
+ID to identify the card and creates the serdev device. This logic could be
+extended in the future to support more M.2 cards. Even if the M.2 card uses SDIO
+interface for connecting WLAN, a SDIO notifier could be added to create the
+serdev device.
 
-Just a discussion, can we just dump the raw PPTT table via acpidump
-in user space when we meet the problem? With the raw PPTT table, we
-can go though the content to see if we have problems.
+Open questions
+==============
 
-> 
-> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-> ---
-> Changelog:
-> 
->    v2
->    * rebase againt 6.19 and refine the commit log
-> 
->   drivers/acpi/pptt.c | 75 +++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 75 insertions(+)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index de5f8c018333..e00abedcd786 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -529,6 +529,79 @@ static void acpi_pptt_warn_missing(void)
->   	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
->   }
->   
-> +static void acpi_dump_pptt_table(struct acpi_table_header *table_hdr)
-> +{
-> +	struct acpi_subtable_header *entry, *entry_start;
-> +	unsigned long end;
-> +	struct acpi_pptt_processor *cpu;
-> +	struct acpi_pptt_cache *cache;
-> +	u32 entry_sz, i;
-> +	u8 len;
-> +	static bool dumped;
-> +
-> +	/* PPTT table could be pretty big, no need to dump it twice */
-> +	if (dumped)
-> +		return;
-> +	dumped = true;
-> +
-> +	end = (unsigned long)table_hdr + table_hdr->length;
-> +	entry_start = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-> +			     sizeof(struct acpi_table_pptt));
-> +
-> +	pr_info("Processors:\n");
-> +	entry_sz = sizeof(struct acpi_pptt_processor);
-> +	entry = entry_start;
-> +	i = 0;
-> +	while ((unsigned long)entry + entry_sz <= end) {
-> +		len = entry->length;
-> +		if (!len) {
-> +			pr_warn("Invalid zero length subtable\n");
-> +			return;
-> +		}
-> +
-> +		cpu = (struct acpi_pptt_processor *)entry;
-> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-> +
-> +		if (cpu->header.type != ACPI_PPTT_TYPE_PROCESSOR)
-> +			continue;
-> +
-> +		printk(KERN_INFO "P[%3d][0x%04lx]: parent=0x%04x acpi_proc_id=%3d num_res=%d flags=0x%02x(%s%s%s)\n",
+Though this series adds the relevant functionality for handling the M.2 Key M
+connectors, there are still a few open questions exists on the design. 
 
-pr_info() please.
+1. I've used the DT compatible for the serdev swnode to match the existing OF
+device_id of the bluetooth driver. This avoids implementing custom serdev id
+matching as implemented till v2.
 
-> +			i++, (unsigned long)cpu - (unsigned long)table_hdr,
-> +			cpu->parent, cpu->acpi_processor_id,
-> +			cpu->number_of_priv_resources, cpu->flags,
-> +			cpu->flags & ACPI_PPTT_PHYSICAL_PACKAGE ? "package" : "",
-> +			cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE ? "leaf" : "",
-> +			cpu->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD ? ", thread" : ""
-> +			);
-> +
-> +	}
-> +
-> +	pr_info("Caches:\n");
-> +	entry_sz = sizeof(struct acpi_pptt_cache);
-> +	entry = entry_start;
-> +	i = 0;
-> +	while ((unsigned long)entry + entry_sz <= end) {
-> +		len = entry->length;
-> +		if (!len) {
-> +			pr_warn("Invalid zero length subtable\n");
-> +			return;
-> +		}
-> +
-> +		cache = (struct acpi_pptt_cache *)entry;
-> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-> +
-> +		if (cache->header.type != ACPI_PPTT_TYPE_CACHE)
-> +			continue;
-> +
-> +		printk(KERN_INFO "C[%4d][0x%04lx]: flags=0x%02x next_level=0x%04x size=0x%-8x sets=%-6d way=%-2d attribute=0x%-2x line_size=%d\n",
+2. PCIe client drivers of some M.2 WLAN cards like the Qcom QCA6390, rely on
+the PCIe device DT node to extract properties such as
+'qcom,calibration-variant', 'firmware-name', etc... For those drivers, should we
+add the PCIe DT node in the Root Port in conjunction with the Port node as
+below?
 
-Same here.
+pcie@0 {
+	wifi@0 {
+		compatible = "pci17cb,1103";
+		...
+		qcom,calibration-variant = "LE_X13S";
+	};
 
-> +			i++, (unsigned long)cache - (unsigned long)table_hdr,
-> +			cache->flags, cache->next_level_of_cache, cache->size,
-> +			cache->number_of_sets, cache->associativity,
-> +			cache->attributes, cache->line_size
-> +			);
-> +	}
-> +}
-> +
->   /**
->    * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
->    * @table: Pointer to the head of the PPTT table
-> @@ -565,6 +638,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
->   	}
->   	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
->   		    cpu, acpi_cpu_id);
-> +
-> +	acpi_dump_pptt_table(table);
+	port {
+		pcie4_port0_ep: endpoint {
+			remote-endpoint = <&m2_e_pcie_ep>;
+		};
+	};
+};
 
-I think it would be good to dump it as needed, as a debug feature.
+This will also require marking the PMU supplies optional in the relevant ath
+bindings for M.2 cards.
 
-Thanks
-Hanjun
+3. Some M.2 cards require specific power up sequence like delays between
+regulator/GPIO and such. For instance, the WCN7850 card supported in this series
+requires 50ms delay between powering up an interface and driving it. I've just
+hardcoded the delay in the driver, but it is a pure hack. Since the pwrseq
+driver doesn't know anything about the device it is dealing with before powering
+it ON, how should it handle the device specific power requirements? Should we
+hardcode the device specific property in the connector node? But then, it will
+no longer become a generic M.2 connector and sort of defeats the purpose of the
+connector binding.
+
+I hope to address these questions with the help of the relevant subsystem
+maintainers and the community. 
+
+Testing
+=======
+
+This series, together with the devicetree changes [2] was tested on the
+Qualcomm X1e based Lenovo Thinkpad T14s Laptop which has the WCN7850 WLAN/BT
+1620 LGA card connected over PCIe and UART.
+
+Dependency
+==========
+
+This series is dependent on the M.2 Key M series [1] on top of v6.19-rc1.
+
+[1] https://lore.kernel.org/linux-pci/20260107-pci-m2-v5-0-8173d8a72641@oss.qualcomm.com
+[2] https://github.com/Mani-Sadhasivam/linux/commit/753033861360171f2af1fdd56e8985ff916e1ac2
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Changes in v3:
+- Switched to swnode for the serdev device and dropped the custom
+  serdev_device_id related patches
+- Added new swnode APIs to match the swnode with existing of_device_id
+- Incorporated comments in the bindings patch
+- Dropped the UIM interface from binding since it is not clear how it should get
+  wired
+- Incorporated comments in the pwrseq driver patch
+- Splitted the pwrseq patch into two
+- Added the 1620 LGA compatible with Key E fallback based on Stephan's finding
+- Link to v2: https://lore.kernel.org/r/20251125-pci-m2-e-v2-0-32826de07cc5@oss.qualcomm.com
+
+Changes in v2:
+- Used '-' for GPIO names in the binding and removed led*-gpios properties
+- Described the endpoint nodes for port@0 and port@1 nodes
+- Added the OF graph port to the serial binding
+- Fixed the hci_qca driver to return err if devm_pwrseq_get() fails
+- Incorporated various review comments in pwrseq driver
+- Collected Ack
+- Link to v1: https://lore.kernel.org/r/20251112-pci-m2-e-v1-0-97413d6bf824@oss.qualcomm.com
+
+---
+Manivannan Sadhasivam (13):
+      serdev: Convert to_serdev_*() helpers to macros and use container_of_const()
+      serdev: Add an API to find the serdev controller associated with the devicetree node
+      software node: Add software_node_match_device() API
+      software node: Add software_node_device_uevent() API
+      software node: Add software_node_device_modalias() API
+      serdev: Do not return -ENODEV from of_serdev_register_devices() if external connector is used
+      serdev: Add support for swnode based driver matching and uevent/modalias
+      dt-bindings: serial: Document the graph port
+      dt-bindings: connector: Add PCIe M.2 Mechanical Key E connector
+      dt-bindings: connector: m2: Add M.2 1620 LGA soldered down connector
+      Bluetooth: hci_qca: Add M.2 Bluetooth device support using pwrseq
+      power: sequencing: pcie-m2: Add support for PCIe M.2 Key E connectors
+      power: sequencing: pcie-m2: Create serdev device for WCN7850 bluetooth
+
+Sui Jingfeng (1):
+      software node: Implement device_get_match_data fwnode callback
+
+ .../bindings/connector/pcie-m2-e-connector.yaml    | 161 ++++++++++++++
+ .../devicetree/bindings/serial/serial.yaml         |   3 +
+ MAINTAINERS                                        |   1 +
+ drivers/base/swnode.c                              |  71 +++++++
+ drivers/bluetooth/hci_qca.c                        |   9 +
+ drivers/power/sequencing/Kconfig                   |   1 +
+ drivers/power/sequencing/pwrseq-pcie-m2.c          | 234 ++++++++++++++++++++-
+ drivers/tty/serdev/core.c                          |  45 +++-
+ include/linux/property.h                           |   5 +
+ include/linux/serdev.h                             |  24 +--
+ 10 files changed, 528 insertions(+), 26 deletions(-)
+---
+base-commit: cb6649f6217c0331b885cf787f1d175963e2a1d2
+change-id: 20251112-pci-m2-e-94695ac9d657
+prerequisite-message-id: 20251125-pci-m2-v3-0-c528042aea47@oss.qualcomm.com
+prerequisite-patch-id: 58778d8eb97ab86008cd48fb5d28ed6cc0bbbc1b
+prerequisite-patch-id: 2dd7d793a67f59ef6e6b5137e69436896198b965
+prerequisite-patch-id: 8ccaa5fdd95e64e69cd942f93c26e89b827d0453
+prerequisite-patch-id: 3d3e1bb7959ab1e140c5024acdd8655e7a7e99ef
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+
 
