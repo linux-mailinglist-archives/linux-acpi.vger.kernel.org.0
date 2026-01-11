@@ -1,45 +1,46 @@
-Return-Path: <linux-acpi+bounces-20156-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20155-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763A7D0F938
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jan 2026 19:32:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2879D0F92F
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jan 2026 19:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19C31301E208
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jan 2026 18:32:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F17304A9B8
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jan 2026 18:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4E3350281;
-	Sun, 11 Jan 2026 18:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B4534F48A;
+	Sun, 11 Jan 2026 18:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="Q4pQC5dO";
-	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="VyBeX9Ng"
+	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="TLqQOnHP";
+	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="Ws2sGOfg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6494A3491E8;
-	Sun, 11 Jan 2026 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528B34F486;
+	Sun, 11 Jan 2026 18:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768156326; cv=none; b=CXGSd2iJ6XZNt141by1+kei8zFUkjTgPeW9ohYchSBiK12u+Ewx2KmY5Am4JsFQNmHuubQQOr43w2G9Oml67vm60zNAmxK6XVDwrGios5UinLhKuTizb/N2SrlXMe50OxcZ5e9cNwNgnsxBKuBadDnnlXP+EpHMkLWUzG4Hi6mg=
+	t=1768156322; cv=none; b=igZMy/j224SLYZuZYAdQLVfXyMgkmpz1StKsuGtZbrPGEN1ea1NwVJRbiHNBVhHqk9B9FWQW836u/yZdvuUc4Kxi2TotElVOrJdAJF8QY92oJCIKwC55tdG96C/Utq0GmUmXyyT8rn22VfeLutIjtfihU2XAxQ1dTdYTKWgpfPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768156326; c=relaxed/simple;
-	bh=mGKfS8RVtSig7BhkvMsSWhuP4/P9aMyp9SBdwy4NVeg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qEryApt4wkAQ8Ve1D54mLJUe8C+JDrSIPQVmNyYvk6A+B+NRgqoupaoQdW+wDpV2Wbl3PeuZJP4hleKbxjZp8gdAMFJMj0m781n3eWOEhkaUC1kAzpwUWAA27vqvSHyilHdoFPabz6zTi397o0tNlN7YH6sZ7ZxxFJOlXlP0/Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=Q4pQC5dO; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=VyBeX9Ng; arc=none smtp.client-ip=81.177.217.87
+	s=arc-20240116; t=1768156322; c=relaxed/simple;
+	bh=bV4EWz/BTK+Xq0GJsnKA8hk4RPz8zyxpx91FWog7v0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WBqwkLjdN3Ghta+P57F47cJ4GMVF8kFkRU8elU4er3qA13KNLVfdnet7dfF7+ED++bw9EaVS3BRuACPLa+DxGz1tOIUH0aZc5ZU5sN6JkDAlOxJ7rR+uDKb65qEflT2qyKEbyWSEuKH1vsNwIc6qtKZ03R+nAOAfDsPWmRmNkl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=TLqQOnHP; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=Ws2sGOfg; arc=none smtp.client-ip=81.177.217.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
 DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1768156306; bh=ZYnE0ZP81q42WS37VMVO9lq
-	ZG3qDAnUFH+JIxSEFMf8=; b=Q4pQC5dOnXVUq3XeNWoHYOjSyzwekdUSWz5NkcrrQS/6McG2xG
-	iummasr/0hC+ki+SOmrtihxDW60XFVjlgxA/mpvbebatX88X8iYukwUJmm15PE/vrtyKL696vYZ
-	8PP0HH919swKhOi5RVC3PJu+eR9uyiDOD3twkPf+Jv2+IMV6COVJu3quJTRiDxC6+gTmLQfG+1Z
-	VzwgT8xqahs87ZPlBTvS5m6HfHxqx+flQ/PPyGoFFrtzzbxlwxJym6cN6w2vEsIkQ/Zr8DHcIj1
-	ajvO0LN2G2FCkbw8g/qV+NwfuHm+HkcdH4EaSCmT6SuN2mbCHwmTx81C+NCbLJYlodg==;
+	h=Message-ID:Date:Subject:To:From; t=1768156306; bh=Xf4l59yTGNgTpiVOoO0eqv6
+	lrW07UkUBCfzLt473RJc=; b=TLqQOnHPpgfksRyq6fV8azxq+Oy9ChJMM6u8nbBjgkZagorXmb
+	uCvmBdWLNPfOaRPgsAu9ZwjuI8e7XMFFH+AkFwU5sFGWw/06q/ArXGvfKtAHfJpspaozYzuYL1G
+	2a+sQnhZYKzw7fceP9dtykVi5gtXW7DfpSMr3Hbaux3QA7xh+RGgZ0u3skzUq+KF5CpjT0hgx09
+	HR/xQttrul6toSNbkGT0J51dNsynS5R8Z3RK7pUU/KVcfLC6vfnBhRptCy642XdueMn1kHmtGBK
+	h5mPfNCTkgm/3xp3TrVJXD3kmRslPtrL+tRM7Qmf9kTorsDqjAVcihhH5DKX2FvjnCA==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1768156306; bh=ZYnE0ZP81q42WS37VMVO9lq
-	ZG3qDAnUFH+JIxSEFMf8=; b=VyBeX9NgAjnbQlTX1ytqhGC3goi8ob1HydPB5myHhxUFqLj/gS
-	eHYDOGFgcGNGQAUEJPOMmRb756hP32JQj2Ag==;
+	h=Message-ID:Date:Subject:To:From; t=1768156306; bh=Xf4l59yTGNgTpiVOoO0eqv6
+	lrW07UkUBCfzLt473RJc=; b=Ws2sGOfgJNNoSD2DwsIKX2saC+h+mXtm8t5lgE1vOKIp+i52jz
+	UNLBRTQs3ZLBKculqX4XX/j3Lpic1emjjxCQ==;
 From: Gladyshev Ilya <foxido@foxido.dev>
 To: foxido@foxido.dev
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -58,10 +59,12 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH v2 0/2] rust: WMI abstractions
-Date: Sun, 11 Jan 2026 21:31:24 +0300
-Message-ID: <cover.1768153572.git.foxido@foxido.dev>
+Subject: [PATCH v2 1/2] rust: implement wrapper for acpi_object
+Date: Sun, 11 Jan 2026 21:31:25 +0300
+Message-ID: <a4bf01ed94406605e12df6b6d1676ea0bd6cd17e.1768153572.git.foxido@foxido.dev>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1768153572.git.foxido@foxido.dev>
+References: <cover.1768153572.git.foxido@foxido.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,63 +73,127 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Overview
-========
-This patchset implements WMI abstractions for Rust drivers. It is the successor
-of the previous RFC posting [0]. These abstractions allow most WMI drivers to be
-implemented in Rust (provided other dependencies are abstracted as well).
+ACPI Object is represented via union on C-side. On Rust side, this union
+is transparently wrapped for each ACPI Type, with individual methods and
+Defer implementation to represented type (integer, string, buffer, etc).
 
-Currently, the only driver in existance is a reference driver (rewrite of redmi-wmi,
-Armin is OK with that [1]). While being fully functional, it depends on sparse-keyboard
-abstractions, which I am still polishing. You can view WIP abstractions & driver at [2].
-
-Notes
-=====
-I do not know how these abstractions should be handled in MAINTAINERS, so for now I have
-simply added them to the original WMI entry. I would be happy to be added as a reviewer
-to keep the Rust version 'synced'/valid though.
-
-[0]: https://lore.kernel.org/rust-for-linux/cover.1766331321.git.foxido@foxido.dev/
-[1]: https://lore.kernel.org/rust-for-linux/c7384f13-e286-45a4-95c6-24d389217185@gmx.de/
-[2]: https://git.foxido.dev/foxido/linux/-/commits/rust_wmi?ref_type=heads
-
+Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
 ---
-Changes since v1:
-- Add lifetime to AcpiObject
-- Add forgotten `Sync` requirement to the WMI driver trait
-- Drop unsafe in DeviceId::new() (so no need for the const_intrinsic_copy feature)
-- Device<Core> -> Device<Bound> in notify
-- Small fixes (styling, missing safety comment)
-- Add link to the WIP reference driver
+ rust/kernel/acpi.rs | 97 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 97 insertions(+)
 
-I didn't touch AcpiObject::type_id() in v2 because it does its job for now. It's currently
-small (only one subtype, whereas both enum options would introduce a larger integration
-surface), and it would be an easy change if someone needs a more powerful solution.
-
-I've also played around with some other suggestions, but:
-- Suggested wrapping acpi_object instead of bindgen union subtypes will only introduce
-    unneeded unsafety in each subtype's operation. I decided it's better to expose the bindgen
-    type once than to validate a safety invariant each time.
-- Suggested implementation via a sealed trait didn't really provide any benefits; it just
-    raised code complexity a bit. Maybe I did it wrong, though...
-
-Link to v1: https://lore.kernel.org/rust-for-linux/cover.1767818037.git.foxido@foxido.dev/
----
-
-Gladyshev Ilya (2):
-  rust: implement wrapper for acpi_object
-  rust: add WMI abstractions
-
- MAINTAINERS                     |   1 +
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/acpi.rs             |  97 +++++++++++
- rust/kernel/lib.rs              |   2 +
- rust/kernel/wmi.rs              | 286 ++++++++++++++++++++++++++++++++
- 5 files changed, 387 insertions(+)
- create mode 100644 rust/kernel/wmi.rs
-
-
-base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+index 9b8efa623130..c730c12d3979 100644
+--- a/rust/kernel/acpi.rs
++++ b/rust/kernel/acpi.rs
+@@ -2,6 +2,11 @@
+ 
+ //! Advanced Configuration and Power Interface abstractions.
+ 
++use core::{
++    marker::PhantomData,
++    ops::Deref, //
++};
++
+ use crate::{
+     bindings,
+     device_id::{RawDeviceId, RawDeviceIdIndex},
+@@ -63,3 +68,95 @@ macro_rules! acpi_device_table {
+         $crate::module_device_table!("acpi", $module_table_name, $table_name);
+     };
+ }
++
++/// An ACPI object.
++///
++/// This structure represents the Rust abstraction for a C [`struct acpi_object`].
++/// You probably want to convert it into actual object type (e.g [`AcpiBuffer`]).
++///
++/// # Example
++/// ```
++/// # use kernel::prelude::*;
++/// use kernel::acpi::{AcpiObject, AcpiBuffer};
++///
++/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
++///     let buf: &AcpiBuffer = obj.try_into()?;
++///
++///     Ok(buf[0])
++/// }
++/// ```
++///
++/// [`struct acpi_object`]: srctree/include/acpi/actypes.h
++#[repr(transparent)]
++pub struct AcpiObject<'a> {
++    inner: bindings::acpi_object,
++    _p: PhantomData<&'a bindings::acpi_object>,
++}
++
++impl AcpiObject<'_> {
++    /// Returns object type id (see [`actypes.h`](srctree/include/acpi/actypes.h)).
++    pub fn type_id(&self) -> u32 {
++        // SAFETY: `type` field is valid in all union variants.
++        unsafe { self.inner.type_ }
++    }
++}
++
++/// Generate wrapper type for AcpiObject subtype.
++///
++/// For given subtype implements
++/// - `#[repr(transparent)]` type wrapper,
++/// - `TryFrom<&AcpiObject> for &SubType` trait,
++/// - unsafe from_unchecked() for 'trusted' conversion.
++macro_rules! acpi_object_subtype {
++    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union_type:ty)) => {
++        /// Wraps `acpi_object` subtype.
++        #[repr(transparent)]
++        pub struct $subtype_name($union_type);
++
++        impl<'a> TryFrom<&'a AcpiObject<'a>> for &'a $subtype_name {
++            type Error = Error;
++
++            fn try_from(value: &'a AcpiObject<'a>) -> core::result::Result<Self, Self::Error> {
++                if (value.type_id() != $subtype_name::ACPI_TYPE) {
++                    return Err(EINVAL);
++                }
++
++                // SAFETY: Requested cast is valid because we validated type_id
++                Ok(unsafe { $subtype_name::from_unchecked(&value) })
++            }
++        }
++
++        impl $subtype_name {
++            /// Int value, representing this ACPI type (see [`acpitypes.h`]).
++            ///
++            /// [`acpitypes.h`]: srctree/include/linux/acpitypes.h
++            pub const ACPI_TYPE: u32 = bindings::$acpi_type;
++
++            /// Converts opaque AcpiObject reference into exact ACPI type reference.
++            ///
++            /// # Safety
++            ///
++            /// - Requested cast should be valid (value.type_id() is `Self::ACPI_TYPE`).
++            pub unsafe fn from_unchecked<'a>(value: &'a AcpiObject<'a>) -> &'a Self {
++                // SAFETY:
++                // - $field_name is currently active union's field due to external safety contract,
++                // - Transmuting to `repr(transparent)` wrapper is safe.
++                unsafe {
++                    ::core::mem::transmute::<&$union_type, &$subtype_name>(&value.inner.$field_name)
++                }
++            }
++        }
++    };
++}
++
++acpi_object_subtype!(AcpiBuffer
++    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
++
++impl Deref for AcpiBuffer {
++    type Target = [u8];
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: (pointer, length) indeed represents byte slice.
++        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.length as usize) }
++    }
++}
 -- 
 2.52.0
 
