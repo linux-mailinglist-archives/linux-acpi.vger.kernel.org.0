@@ -1,85 +1,77 @@
-Return-Path: <linux-acpi+bounces-20181-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20182-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB81CD116B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 10:11:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E56D11895
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 10:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD07430019DA
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 09:11:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0A68300A1F3
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 09:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4930634678B;
-	Mon, 12 Jan 2026 09:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iM613WTZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274D1342CAE;
+	Mon, 12 Jan 2026 09:40:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F1A30BF60;
-	Mon, 12 Jan 2026 09:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CB1330B3E
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 09:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768209074; cv=none; b=O9yU6Ov8m+ksUOL0KIbb8+I2w3Qu3aAUhzFkhLs9W1ubyS8LUDUsr3ZF7Hd605yTHci0r1bkHqRl49J580VsXYa078/IXNEaiNXGKUcT3M3oUQGnrnaLDJAVOGWbqhI+Ma4DkusOSJpLUY11/JB5lDW09o489/Mcf13rvcRusXI=
+	t=1768210801; cv=none; b=r1Z+lLzTGU54IwxsXc3HgTpAWFa0xocwivjTKyits8F2hwxGYeQUoCecNuofNvsirqr3cOqj8zbl27W3acxukvSzkYlNswI1LFAWeGbqYcCrlQ/DkYN73UY9+2tC7Mamcg6ssnAzK7BgjPEL/0trMQD3dcUQDNF7TrQpD2HwWwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768209074; c=relaxed/simple;
-	bh=XOzr0aBgdBI0lDPpqRNOlY9Q+HV8jpnpQIfio1I3xuI=;
+	s=arc-20240116; t=1768210801; c=relaxed/simple;
+	bh=e3qcK8+KKebtKO05qss+ntAP3vO1dLnBJMTKHLrT5qo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fDLzSDDYVvc68c30bF5INtbIKm8TL9QTFotADwLS5R6vD7A6l1uDSXV3q1Cfe4ns2E6FjvJnTqx6zFYA/zzfLiJMBLajeYL9dqDerJXQ/gcpxI4HXpkL7eBlXgLlkE9w7SYT7wFxt7YI/R24F+DpfgPF/FThKRoheNlXaOEyEj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iM613WTZ; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768209073; x=1799745073;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XOzr0aBgdBI0lDPpqRNOlY9Q+HV8jpnpQIfio1I3xuI=;
-  b=iM613WTZPZ/xMAaBmxNfjwUFeKvpE0q/bhePx9auV7kd7pyCdcP39QgF
-   1Jw1E9VIaV7ZaBEJg3bCFToE+kZIOnn9IFlv5u01NdFlYwUiGBomibUpr
-   Koqp0P7N4HCcKu1sz/087z40iuAMb2+MbyaUHqMJXkQhTbxDCgNX+1SI3
-   WVDcdH4nr2G+/+SFEy8jlQSg4872PeHZ5gp1osCYID5JD9nPxoLyzTg8i
-   Kw8jIGUQQqlABjaljULQ+WbkdFbrshIfYkC87IzrOrLHb7NFQbYmQkBgh
-   QFA+BisOOyJorEQc+rVTtePqfgskAUB5z0LGgrrIXK7+AuKJffaQYJ46m
-   g==;
-X-CSE-ConnectionGUID: 4hcTgkatSoy4CWYXS2TgkA==
-X-CSE-MsgGUID: BKoIaHENQhuxbcjCM6ifqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="72056982"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="72056982"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 01:11:12 -0800
-X-CSE-ConnectionGUID: 0Hr4iWLjSyeS8xuOgtJUrQ==
-X-CSE-MsgGUID: 30OrFxf9RkSB9BISX2Eh7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="208874828"
-Received: from zzombora-mobl1 (HELO kekkonen.fi.intel.com) ([10.245.245.52])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 01:11:10 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id D844D121DC3;
-	Mon, 12 Jan 2026 11:11:07 +0200 (EET)
-Date: Mon, 12 Jan 2026 11:11:07 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kartik Rajput <kkartik@nvidia.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>, lenb@kernel.org,
-	thierry.reding@gmail.com, jonathanh@nvidia.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI: bus: Use OF match data for PRP0001 matched
- devices
-Message-ID: <aWS6q3tBlppsWXXl@kekkonen.localdomain>
-References: <20260109095358.24265-1-kkartik@nvidia.com>
- <20260109101302.GW2275908@black.igk.intel.com>
- <aWDhEBjy9b9_uzoR@smile.fi.intel.com>
- <aWDmt3CA5h_i9Hij@kekkonen.localdomain>
- <aWE0uuZjB1iMGF2B@smile.fi.intel.com>
- <CAJZ5v0ijTQC2cFTt+hW-ofJwMqdEeES8d5MMbbq8_Bqg+_9E3g@mail.gmail.com>
- <aWQdz37vK-SXVQBv@kekkonen.localdomain>
- <377fbbc3-5f79-424a-b986-4617048e5e3c@nvidia.com>
- <aWS3HRIlZQqI1hP5@smile.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NuaTZkA3aoUiGTCaE7gAqS97OQkZ3Yy3qaPRSXSWIZW5rmIkc/Cz00w8wBd1AZpfqhO6PqhSROhqGtjiOoHI+W5+cpAXiIj1dBLPmUDVT5cvHcrDWBwT7j8/nN0O7bfYsEdSH7ECISa1j4lbwfc8E5bq5FFQaljU+p5zb/FnWbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7c6dbdaced8so5171520a34.1
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 01:39:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768210799; x=1768815599;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8uz8Xl07/+Wj9gpiihBV+atTuU9+PiQ13eQaQwbHumM=;
+        b=oh2Zs06TZpETBJGO+3J4g8NzVMgXhI72U1Fii11nnyAs3QskF8LW7oKaGwvGDh9IDF
+         kuUn+2DEWoAJceRLdA4/+Pv85DD7dL6UoJ5fbH6HJCQ7IhbeHTt0tYgcgyiBfxqskSQy
+         6ByvsK5C/qjgyunEbRqJQ7lq9Yka7xK8N84BdLxdsTt4q1qVUPZqcPJqDre4+vr+uRdJ
+         KCae3woP2gVctlhcCaEmPBUbbngI6DG5Invw27Zpkay94rS8q8GYAF6T9wCo2TDHqgHJ
+         fJMi5flS3OR58Szgj3wdzAbPCd3VSRjOVmWvj2+K2x59zwcg1KSRDe8Y0eo1gnzOOiMl
+         537Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Ag4mRTL+c/vWFHSfM648nv4BxR74oH565kdA4spyUEzx4FvEnQNmF7E+bpuYnD6mPwWRxjaPSEKE@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUBtZ9MRTBvndbpeP0Clcz1zthgP8nn26tL6DIxAl8thvIc9Fq
+	9GB4R3cGtLjM5D4LgELDIDnacuNURydTVmb12KLGqKv4fkbPAuEXsiUO
+X-Gm-Gg: AY/fxX4EDwcgWwd1lrYk6zK6q0e+InT+B+UnqwjkmxcC3nPl52ySdyFmZ7G4iAjF7mh
+	0oDy1y+9BH14Kp0ijCfZk8NrH1R8lQy1uRSMxUaX7nHt09ahV23/EJIrJ5KaPNNn8xDRUtaF9D0
+	jalWlGaAWfeo2RnKYRwmgSnWC118juF1QFP3l/kp+SEkDtI1j+qocaucVqQtHTT4eUcLJxypUcq
+	qTsYHqgdE5YD4geO1U270/EfYb1e6HQFTBCmVn8ikI/vlvAjbroRivbJDYlWFhXD16aQ8phyhe1
+	WLtVU1N9IomTUVuX7wgdAEdZOoE8YXhsaw3bDoKv3GSkZxOSQo30aukcUp96lBsLAHuaB6eO8e6
+	9+7u54z240nN81fZaYtlPXCyhNVI5sVMl5UJAmoRjst0lphNbGFFuzPjawGZporh4BRMdx+Oo4y
+	NMGQ==
+X-Google-Smtp-Source: AGHT+IHpYFvZuFRgkmQPxoEG91apjtI2xbke/iWdx8z+w6RLHRH/SmQgh8nYbaWNlS47LkFyTjqwCg==
+X-Received: by 2002:a05:6830:45a3:b0:741:a5f0:bc82 with SMTP id 46e09a7af769-7ce50a2a811mr7762438a34.17.1768210798727;
+        Mon, 12 Jan 2026 01:39:58 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:74::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce47832780sm12662190a34.12.2026.01.12.01.39.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 01:39:58 -0800 (PST)
+Date: Mon, 12 Jan 2026 01:39:56 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: tony.luck@intel.com, guohanjun@huawei.com, mchehab@kernel.org, 
+	dolinux.peng@gmail.com, yazen.ghannam@amd.com, rafael@kernel.org, dave.jiang@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, pengdonglin@xiaomi.com, baolin.wang@linux.alibaba.com, 
+	benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com, james.morse@arm.com, 
+	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v3 2/3] ACPI: APEI: GHES: Extract helper functions for
+ error status handling
+Message-ID: <7yvemd3p7vxqxey5fcd45gth5dnplkgyoupkfji5pt5p4dfuvi@ult7tm6sys36>
+References: <20260112032239.30023-1-xueshuai@linux.alibaba.com>
+ <20260112032239.30023-3-xueshuai@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -88,28 +80,26 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aWS3HRIlZQqI1hP5@smile.fi.intel.com>
+In-Reply-To: <20260112032239.30023-3-xueshuai@linux.alibaba.com>
 
-Hi Kartik, Andy,
-
-On Mon, Jan 12, 2026 at 10:55:57AM +0200, Andy Shevchenko wrote:
-> > 	if (!__acpi_match_device(adev, acpi_ids, of_ids, &acpi_id, &of_id))
-> > 		return NULL;
-> > 
-> > 	if (acpi_id)
-> > 		return (const void *)acpi_id->driver_data;
-> > 
-> > 	if (of_id)
-> > 		return of_id->data;
-> > 
-> > 	return NULL;
-> > 
-> > Then, we can also remove acpi_of_device_get_match_data()?
+On Mon, Jan 12, 2026 at 11:22:38AM +0800, Shuai Xue wrote:
+> Refactors the GHES driver by extracting common functionality into
+> reusable helper functions:
 > 
-> At brief look it's indeed seems to be a good optimisation as well.
+> 1. ghes_has_active_errors() - Checks if any error sources in a given list
+>    have active errors
+> 2. ghes_map_error_status() - Maps error status address to virtual address
+> 3. ghes_unmap_error_status() - Unmaps error status virtual address
+> 4. Use `guard(rcu)()` instead of explicit `rcu_read_lock()`/`rcu_read_unlock()`.
+> 
+> These helpers eliminate code duplication in the NMI path and prepare for
+> similar usage in the SEA path in a subsequent patch.
+> 
+> No functional change intended.
+> 
+> Tested-by: Tony Luck <tony.luck@intel.com>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-Looks good to me, too!
-
--- 
-Sakari Ailus
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
