@@ -1,77 +1,106 @@
-Return-Path: <linux-acpi+bounces-20182-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20183-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E56D11895
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 10:40:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0EDD11BBE
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 11:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0A68300A1F3
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 09:40:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98D6A3043D43
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 10:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274D1342CAE;
-	Mon, 12 Jan 2026 09:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67D7296BA9;
+	Mon, 12 Jan 2026 10:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRanc8tu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DVO+Uwz3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CB1330B3E
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 09:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA3728CF49
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 10:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768210801; cv=none; b=r1Z+lLzTGU54IwxsXc3HgTpAWFa0xocwivjTKyits8F2hwxGYeQUoCecNuofNvsirqr3cOqj8zbl27W3acxukvSzkYlNswI1LFAWeGbqYcCrlQ/DkYN73UY9+2tC7Mamcg6ssnAzK7BgjPEL/0trMQD3dcUQDNF7TrQpD2HwWwQ=
+	t=1768212608; cv=none; b=D9yVyqmc57w/V0EvS8C00Npf9mlF21mN/6031W0RxtL4YdfNnBYUWJ8mP2/XSupHG+9UyNVnY44+vSp5OuLZixwdpcCBc6OSGymCtNFkbKZVTEgDV5MbbJ790WgF5mGQjJu6DRoBfqC+W0ikYxA09XdxBxUeslhfPID5+OPc5aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768210801; c=relaxed/simple;
-	bh=e3qcK8+KKebtKO05qss+ntAP3vO1dLnBJMTKHLrT5qo=;
+	s=arc-20240116; t=1768212608; c=relaxed/simple;
+	bh=iDFXfwWSoRhROG/Vq0Ji69eB6IojPN4EMOINzPWp4nE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NuaTZkA3aoUiGTCaE7gAqS97OQkZ3Yy3qaPRSXSWIZW5rmIkc/Cz00w8wBd1AZpfqhO6PqhSROhqGtjiOoHI+W5+cpAXiIj1dBLPmUDVT5cvHcrDWBwT7j8/nN0O7bfYsEdSH7ECISa1j4lbwfc8E5bq5FFQaljU+p5zb/FnWbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7c6dbdaced8so5171520a34.1
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 01:39:59 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IzYe6aMa6orQoZ6TNLpQmHG9Zoaf1u+A4wp7X2BLhbygUm/UjUgEV+S1gqm8AiqvOqO7uQwOHCuSldgQS5z8YjIRH93Cb5odvaYHvmwwLvQcp7l03utLQ2eB5yTAVVbxQ73vNCOO8I3ijGcXXzi8kZesMgVYk6nfcFXQj8fWbcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZRanc8tu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DVO+Uwz3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768212606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nT/4BhiqLs8P+whMDHfwq+DdiboEiYpjxDoAfVQFdkw=;
+	b=ZRanc8tuDBUSAZkvZjkf8D9ZvqxL3jJLQhtfzULfDVhn7GUUR4Lo2VdVWK+aYD59Lg+aMb
+	arsphN80FsJldLDsZ6WpStUfPh9pumxZfGkW/7R83riVAU2vGz7OSYN9SXNBWIsSeA5DqE
+	jU8tP/QyWguos9dm+vQ2KycCbUTgcH4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-184-LORvHfhcPqifiz0TyQ_hzQ-1; Mon, 12 Jan 2026 05:10:04 -0500
+X-MC-Unique: LORvHfhcPqifiz0TyQ_hzQ-1
+X-Mimecast-MFC-AGG-ID: LORvHfhcPqifiz0TyQ_hzQ_1768212603
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4775d110fabso61684815e9.1
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 02:10:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1768212603; x=1768817403; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nT/4BhiqLs8P+whMDHfwq+DdiboEiYpjxDoAfVQFdkw=;
+        b=DVO+Uwz3KQoGJMRrvhMReupkOeciWpQhBLtfQSbbK7anl1+oZMq2g7J6emo/51H1X9
+         9DeI9eNjGYUC/3GpIPup7MKzKwq1mgmKkBmgfEdyG0ei2f2ZtQXq+oOfxQtN70Eu4NQv
+         MCkwBTe4iPWV/BMt7yguYZU7oAuxYCy0seQ6oQwqMG/80vhqtmIuch/xpDPDKRmbWYzr
+         CEQgk3pEh+6fNAfMutG5EOQm3UUvNk4W1DGlr7Tgy1eRvUcjMqwU/W6Vo3CMjRcY8A3I
+         8bptRGqubjZQFN+uDFnRPaa0tMyQJ2D6rAaZqZLM0J2CdUJqbVQrVKvKmeUdLxYNw+N6
+         I5fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768210799; x=1768815599;
+        d=1e100.net; s=20230601; t=1768212603; x=1768817403;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8uz8Xl07/+Wj9gpiihBV+atTuU9+PiQ13eQaQwbHumM=;
-        b=oh2Zs06TZpETBJGO+3J4g8NzVMgXhI72U1Fii11nnyAs3QskF8LW7oKaGwvGDh9IDF
-         kuUn+2DEWoAJceRLdA4/+Pv85DD7dL6UoJ5fbH6HJCQ7IhbeHTt0tYgcgyiBfxqskSQy
-         6ByvsK5C/qjgyunEbRqJQ7lq9Yka7xK8N84BdLxdsTt4q1qVUPZqcPJqDre4+vr+uRdJ
-         KCae3woP2gVctlhcCaEmPBUbbngI6DG5Invw27Zpkay94rS8q8GYAF6T9wCo2TDHqgHJ
-         fJMi5flS3OR58Szgj3wdzAbPCd3VSRjOVmWvj2+K2x59zwcg1KSRDe8Y0eo1gnzOOiMl
-         537Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW4Ag4mRTL+c/vWFHSfM648nv4BxR74oH565kdA4spyUEzx4FvEnQNmF7E+bpuYnD6mPwWRxjaPSEKE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUBtZ9MRTBvndbpeP0Clcz1zthgP8nn26tL6DIxAl8thvIc9Fq
-	9GB4R3cGtLjM5D4LgELDIDnacuNURydTVmb12KLGqKv4fkbPAuEXsiUO
-X-Gm-Gg: AY/fxX4EDwcgWwd1lrYk6zK6q0e+InT+B+UnqwjkmxcC3nPl52ySdyFmZ7G4iAjF7mh
-	0oDy1y+9BH14Kp0ijCfZk8NrH1R8lQy1uRSMxUaX7nHt09ahV23/EJIrJ5KaPNNn8xDRUtaF9D0
-	jalWlGaAWfeo2RnKYRwmgSnWC118juF1QFP3l/kp+SEkDtI1j+qocaucVqQtHTT4eUcLJxypUcq
-	qTsYHqgdE5YD4geO1U270/EfYb1e6HQFTBCmVn8ikI/vlvAjbroRivbJDYlWFhXD16aQ8phyhe1
-	WLtVU1N9IomTUVuX7wgdAEdZOoE8YXhsaw3bDoKv3GSkZxOSQo30aukcUp96lBsLAHuaB6eO8e6
-	9+7u54z240nN81fZaYtlPXCyhNVI5sVMl5UJAmoRjst0lphNbGFFuzPjawGZporh4BRMdx+Oo4y
-	NMGQ==
-X-Google-Smtp-Source: AGHT+IHpYFvZuFRgkmQPxoEG91apjtI2xbke/iWdx8z+w6RLHRH/SmQgh8nYbaWNlS47LkFyTjqwCg==
-X-Received: by 2002:a05:6830:45a3:b0:741:a5f0:bc82 with SMTP id 46e09a7af769-7ce50a2a811mr7762438a34.17.1768210798727;
-        Mon, 12 Jan 2026 01:39:58 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:74::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce47832780sm12662190a34.12.2026.01.12.01.39.57
+        bh=nT/4BhiqLs8P+whMDHfwq+DdiboEiYpjxDoAfVQFdkw=;
+        b=odugT9YS3g/WddhA1U1NssmtfOKj9Y2cyZ5F4ub/OGR89QB2tjAnUk/IELxpcqsUd+
+         48y5hmhGKeeYaA+Xz8XtKQiDyYQYcgJi7L9w6QuMOk3g6fV4P2QYkMVGTtOGFOphUdkn
+         TNPvRZ/54j3c4HUWuEld/AIMxDt7XpYyV//ntb6M208e34dnbzNDuRAq+kCPa3kcK0TA
+         jI3ighVuvxOyEqZGfnmMbEyCiPs2pvrPi35T4LLWI6FH1HueW+0DYA8UmIWBXqvSG7/I
+         eLPI7RLoybQZ2057QBIkFCgqp5+QXZE3785AZByvVKgp/bO5TWcgg/FPYedElfyMqc/u
+         ZucQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBA6BpFehoJLJqbRl8ylNr4o/TU8dVXrnR6bzB3CM/JzMTIZbaZ5jQNIjCzwdiLcy1SnFLNWEC9uYP@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmXI2iOG2BsRqsoZxREggoLGaQ6+zHX6/zvxFfDkPyiTAaLqVK
+	4YlMzNn+IwK56jvz44a+0A1pwD2f0L864gjlSQ6lmLM+acafb+KUTjsckPz55qWeYjXXXA9e5v+
+	LLWmVH8pHob/tFJhanFAQEP93zR+IHoWhLwGpsP1Ohk4BM+KN/5CcScVk65vZzpw=
+X-Gm-Gg: AY/fxX6OaQchevF6OXjhYzmtowNeo2r9NZC+yrqWbWWS4MMizs6nP1IUAQNYbXrk7jb
+	J7BvnWF++PNRh3DlBGBFAYkKUqXzsgEJ6ME7czJD7u5udnxpjoDke0/fM0WxPu/rT5Sq1CQP/LE
+	HExB2J39Hlvj5SkyhEaozrCWN2s6C7Aa7bK74WLY+9N6z+nVaWX0Bc1hkX+DscHwNaeNV1Unucx
+	Vla4F1AuXKb4Zlxx9JOJ5CNszHtjstop2P2qWJvxsfTJsdDF9PkNsrqZJwZ5mRXfiOwe7Js2+eM
+	JH4q9srCotT4XmGxiuNaKl5GRA2feO15oLB9Yi71wj4mkLQj/ResMc/defJTFv5/lXJQ/Eo1s5s
+	fdpcdeKka6DDIKOzm2c7xisCRgtricLNfAl/p2n/C
+X-Received: by 2002:a05:600c:c4a8:b0:477:54cd:2030 with SMTP id 5b1f17b1804b1-47d84b32788mr193390555e9.21.1768212603456;
+        Mon, 12 Jan 2026 02:10:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHHxXn/UA4trykZ5T+SQc9F6yA7v1dNyRS4eMXq4oY/fXdGhX4AlgW2jGMNsGOSw5qPOxfWew==
+X-Received: by 2002:a05:600c:c4a8:b0:477:54cd:2030 with SMTP id 5b1f17b1804b1-47d84b32788mr193390185e9.21.1768212603022;
+        Mon, 12 Jan 2026 02:10:03 -0800 (PST)
+Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.129.40])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432dd78f5a8sm17906870f8f.27.2026.01.12.02.10.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 01:39:58 -0800 (PST)
-Date: Mon, 12 Jan 2026 01:39:56 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: tony.luck@intel.com, guohanjun@huawei.com, mchehab@kernel.org, 
-	dolinux.peng@gmail.com, yazen.ghannam@amd.com, rafael@kernel.org, dave.jiang@intel.com, 
-	Smita.KoralahalliChannabasappa@amd.com, pengdonglin@xiaomi.com, baolin.wang@linux.alibaba.com, 
-	benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com, james.morse@arm.com, 
-	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v3 2/3] ACPI: APEI: GHES: Extract helper functions for
- error status handling
-Message-ID: <7yvemd3p7vxqxey5fcd45gth5dnplkgyoupkfji5pt5p4dfuvi@ult7tm6sys36>
-References: <20260112032239.30023-1-xueshuai@linux.alibaba.com>
- <20260112032239.30023-3-xueshuai@linux.alibaba.com>
+        Mon, 12 Jan 2026 02:10:02 -0800 (PST)
+Date: Mon, 12 Jan 2026 11:10:00 +0100
+From: Juri Lelli <juri.lelli@redhat.com>
+To: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-rt-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Tommaso Cucinotta <tommaso.cucinotta@santannapisa.it>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
+Subject: Re: [ANNOUNCE][CFP] Power Management and Scheduling in the Linux
+ Kernel VIII edition (OSPM-summit 2026)
+Message-ID: <aWTIeLbQXalZtOGc@jlelli-thinkpadt14gen4.remote.csb>
+References: <aULDwbALUj0V7cVk@jlelli-thinkpadt14gen4.remote.csb>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -80,26 +109,65 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260112032239.30023-3-xueshuai@linux.alibaba.com>
+In-Reply-To: <aULDwbALUj0V7cVk@jlelli-thinkpadt14gen4.remote.csb>
 
-On Mon, Jan 12, 2026 at 11:22:38AM +0800, Shuai Xue wrote:
-> Refactors the GHES driver by extracting common functionality into
-> reusable helper functions:
-> 
-> 1. ghes_has_active_errors() - Checks if any error sources in a given list
->    have active errors
-> 2. ghes_map_error_status() - Maps error status address to virtual address
-> 3. ghes_unmap_error_status() - Unmaps error status virtual address
-> 4. Use `guard(rcu)()` instead of explicit `rcu_read_lock()`/`rcu_read_unlock()`.
-> 
-> These helpers eliminate code duplication in the NMI path and prepare for
-> similar usage in the SEA path in a subsequent patch.
-> 
-> No functional change intended.
-> 
-> Tested-by: Tony Luck <tony.luck@intel.com>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Hi All!
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Happy new year. :-)
+
+On 17/12/25 15:52, Juri Lelli wrote:
+> Power Management and Scheduling in the Linux Kernel (OSPM-summit) VIII
+> edition
+> 
+> April 14-16, 2026 - Arm, Cambridge (UK)
+> 
+> .:: FOCUS
+> 
+> The VIII edition of the Power Management and Scheduling in the Linux
+> Kernel (OSPM) summit aims at fostering discussions on power management
+> and (real-time) scheduling techniques. The summit will be held at Arm in
+> Cambridge (UK) on April 14-16, 2026.
+> 
+> We welcome anybody interested in having discussions on the broad scope
+> of scheduler techniques for reducing energy consumption while meeting
+> performance and latency requirements, real-time systems, real-time and
+> non-real-time scheduling, tooling, debugging and tracing.
+> 
+
+...
+
+> Presentations (50 min) can cover recently developed technologies,
+> ongoing work and new ideas. Please understand that this workshop is not
+> intended for presenting sales and marketing pitches.
+> 
+> .:: SUBMIT A TOPIC/PRESENTATION
+> 
+> To submit a topic/presentation use the form available at
+> https://forms.gle/dR5FuzQRFNXZEQBb8.
+> 
+> Or, if you prefer, simply reply (only to me, please :) to this email
+> specifying:
+> 
+> - name/surname
+> - affiliation
+> - short bio
+> - email address
+> - title
+> - abstract
+> 
+> The deadline for submitting topics/presentations is January 30, 2026.
+> Notifications for accepted topics/presentations will be sent out
+> February 6, 2026.
+
+Quick reminder that the deadline for submitting topics is approaching!
+
+Also, I'd like to mention that the proper event website address is
+
+https://retis.santannapisa.it/ospm-summit/
+
+Don't hesitate to reach out if you need any help.
+
+Best,
+Juri
+
 
