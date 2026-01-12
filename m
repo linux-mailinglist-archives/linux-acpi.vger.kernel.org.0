@@ -1,149 +1,128 @@
-Return-Path: <linux-acpi+bounces-20188-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20189-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B109D123B5
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 12:19:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6536FD123B2
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 12:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE7AB3028DA3
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 11:15:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA95C3018340
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 11:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17C93563CA;
-	Mon, 12 Jan 2026 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D225B3563E0;
+	Mon, 12 Jan 2026 11:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YOkrzxTX"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="OhLvrOHc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEF43559EC;
-	Mon, 12 Jan 2026 11:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B335502B;
+	Mon, 12 Jan 2026 11:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768216524; cv=none; b=c8rMDLtPueqGW9wI9mGOKj4ZuksOlW9PfxXp1RubRj/bDeB0pRnYmx5IP8uuBDUv37CZsHmzZ7DJ+VotuH0PFDmR8hEOkwUlC8fL6EUd8OhQMy9VO33Gu2QXuM5eHOSVG5es+kMn0ATM8HHHmgIFlwGPe2cYbxyQST6dZ3v8/7A=
+	t=1768216753; cv=none; b=U0ZzgtFCmDxPZKDWAOrv8HEauMvWNQFRjG56NduKAqeLggo53iJqElEMopUpMml/QeOj4ItIldeNbhXmPNMzJ82WclxRwNL/jsoEPl3zQZYP0FJjoJkn6erG54EAtbYSy5PxNtgg1ZkhMa1MiXBljRlURSmXxEYgp2KSZJYGEik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768216524; c=relaxed/simple;
-	bh=zUSCP1wlBfzuXE8NqisF5E9uyqPXe+GBaVIHFJQsuQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jmvvzTjjddG82PALPYM4KCK16MtIuQ55s0P1qFHhQK/Q0L3sMe2uayMSo335YHg98M8Uofj1OyzrVJ6ihrjfpykrfkHdr9mrDA9ptecarGkxiiA+0dDsCKR7XjtdG4EWyVn4ii/LPGCr6sXZMCNOdjBli4Au8tAHuHVq/HQH18U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YOkrzxTX; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768216523; x=1799752523;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zUSCP1wlBfzuXE8NqisF5E9uyqPXe+GBaVIHFJQsuQc=;
-  b=YOkrzxTXzeOUMoQWA6cTprZC+zpGF4q2qS7RvU4ksZ0BaY7xo/OsgtpF
-   jSI74vpQZYGnBYathDznmX344Rg5BIOKRTYb1NA/LfWslfgoWqM51VTYJ
-   sR96ncLH5ygzLWfavGmV/x1RLIXuCMMZiZZSuGlBQZ9fIFgzGyeO/hxsH
-   wObdUl6QsMr6lB8smFJDt9fdRNOFLaqgv847xfXsE4SIDfmjvrEdfqeZa
-   nUTJkpzdPN7OD/fQQ0OnYs3uBf6KmvkDc+Csrvv4vBasNGlvaDx6mHdMc
-   xgsqBN/3bQZbQQWc/l9Iu8qoiHq9yVKvkgvyWCgTd4U9+bA5+18F7pwZJ
-   w==;
-X-CSE-ConnectionGUID: 6WVsrkR+TdCu6VvYTahNDQ==
-X-CSE-MsgGUID: AD7rNmHrQHiNetTiLDouwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80209602"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="80209602"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 03:15:22 -0800
-X-CSE-ConnectionGUID: kUR6ig1/RUKJYBcy/p3hfQ==
-X-CSE-MsgGUID: OAg+gLOMQVGuS3+zfM3y2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203977233"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.37])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 03:15:16 -0800
-Date: Mon, 12 Jan 2026 13:15:13 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Rob Herring <robh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	linux-acpi@vger.kernel.org, manivannan.sadhasivam@oss.qualcomm.com
-Subject: Re: [PATCH v3 04/14] software node: Add software_node_match_device()
- API
-Message-ID: <aWTXwSaNEVZsNxip@smile.fi.intel.com>
-References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
- <20260110-pci-m2-e-v3-4-4faee7d0d5ae@oss.qualcomm.com>
- <aWSxcJTLzBFbMGad@smile.fi.intel.com>
- <CAMRc=Md6+hhLMOmmDejKW+_jbWu3_XB4qNobyi27pezfXsVLFw@mail.gmail.com>
+	s=arc-20240116; t=1768216753; c=relaxed/simple;
+	bh=WxyNRiGuG01AOiq2H4pBiKTl9CaYpO4P89RF2V4ZbnY=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=byllFCWfyrHw2sjMAxDkvNimeFPlPt208a//pFVG4OdfLb3BlY4qpXODPbHKT7XRg7YvmVZ6bKC5QA6dXkYZmiLI3TW+GVebFGEIRe7MIpUz0GaamKEM/hlgo+QdoAtUb9yHLTrwY3O2YsgTxlMbjMWcWVEAoEB4nar6kfG8H6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=OhLvrOHc; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=NdZJLToY2Ej4OvZBaUkPm/IoNabzNjVOg9KJ0nKt4xc=;
+	b=OhLvrOHcODqkHK5yEVvd9ipUetPEw1hlno/DfSxW4j+OHCtv3znUX8KZkXwtB3D8A2Of2e0S7
+	/+XqGjTKfcZcwZqnTVVCYNP2C/tYEP3BtHJl1Z696VkoH3HgRIIgJ9Wf/mOYcXdB32tcHY7nOyt
+	QfMz3UJC1xfJzhSc2kH+Fbc=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dqVD00b0gzcZyc;
+	Mon, 12 Jan 2026 19:15:28 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2DD794056E;
+	Mon, 12 Jan 2026 19:19:09 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 12 Jan 2026 19:19:08 +0800
+Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
+To: Feng Tang <feng.tang@linux.alibaba.com>
+CC: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>, James Morse <james.morse@arm.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
+ <8358233d-cfcd-451f-319a-f7b27743faa1@huawei.com>
+ <aWJqhuhuQUAKMDpF@U-2FWC9VHC-2323.local>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <152465d1-08cc-898e-8ed7-9b603faaabc5@huawei.com>
+Date: Mon, 12 Jan 2026 19:19:07 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=Md6+hhLMOmmDejKW+_jbWu3_XB4qNobyi27pezfXsVLFw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aWJqhuhuQUAKMDpF@U-2FWC9VHC-2323.local>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Mon, Jan 12, 2026 at 06:03:34AM -0500, Bartosz Golaszewski wrote:
-> On Mon, 12 Jan 2026 09:31:44 +0100, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> said:
-> > On Sat, Jan 10, 2026 at 12:26:22PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> >
-> >> Add software_node_match_device() API to match the swnode device with the
-> >> swnode driver. The matching is based on the compatible property in the
-> >> device and the driver's of_match_table.
-> >
-> > NAK. swnodes != real firmware nodes.
+On 2026/1/10 23:04, Feng Tang wrote:
+> Hi Hanjun,
 > 
-> While I'm not arguing that this is *the* solution, I think it warrants
-> a discussion on proper matching of devices that are only backed by a software
-> node - for instance a serdev device on the auxiliary bus. I understand what
-> software nodes were historically but perhaps it's time to extend their role as
-> a full-blown firmware node allowing matching with drivers.
+[...]
+>>>
+>>> It provides a global and straightforward view of the hierarchy of the
+>>> processor and caches info of the platform, and from the offset info
+>>> (the 3rd column), the child-parent relation could be checked.
+>>>
+>>> With this, the root cause of the original issue was pretty obvious,
+>>> that there were some caches items missing which caused the issue when
+>>> building up scheduler domain.
+>>
+>> Just a discussion, can we just dump the raw PPTT table via acpidump
+>> in user space when we meet the problem? With the raw PPTT table, we
+>> can go though the content to see if we have problems.
 > 
-> Reusing existing OF IDs is just one way, we could potentially think about a
-> high-level fwnode-based device to driver matching?
+> Good point! We can use iasl to decode the PPTT table. And this dump
+> is still useful as:
+> * when enabling new silicon or new firmware (APCI tables), sometimes it
+>    can't make to boot to user space when the issue happens.
+> * This dump shows the processor and cache items separately and cleanly,
+>    while the P[]/C[] index imply the numbers. In an 128 core product ARM
+>    sever, the print with this patch is about 500 line, while the acpidump
+>    is about 10,000 lines and harder to parse.
 
-There is already proposed and agree way to do that via DT overlays.
-If one needs to describe the (PnP or hotpluggable) hardware, it's
-the way to go as the HW maybe much complex than the just one small UART
-appendix.
+Thanks for the user case, it makes sense to me.
 
-As per auxdevice, this should not be enumerable by compatible. The auxdevice
-usually are created by other devices (from real ones) that _know_ the topology.
-I don't see why we need to open the can of worms with the software nodes
-to enumerate them as real ones.
+> 
+[...]
+>>>    /**
+>>>     * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
+>>>     * @table: Pointer to the head of the PPTT table
+>>> @@ -565,6 +638,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
+>>>    	}
+>>>    	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
+>>>    		    cpu, acpi_cpu_id);
+>>> +
+>>> +	acpi_dump_pptt_table(table);
+>>
+>> I think it would be good to dump it as needed, as a debug feature.
+> 
+> Makes sense to me. Should I add a kernel config option or a module
+> parameter for it, or just change the pr_info to pr_debug (it's in
+> a unlikely error path)?
 
-P.S. Collect others' opinions (esp. device property reviewers and maintainers)
-and we will see. But I do not see any even looking good justification for that.
-It might be that I didn't get fully the use case and the other means can not
-be used. But taking into account history of the rejection of the matching against
-OF compatible string in swnodes suggests that this will stay the way it's now.
+PPTT driver can not be compiled as a module, I would like to add a
+kernel config for it.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks
+Hanjun
 
