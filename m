@@ -1,80 +1,72 @@
-Return-Path: <linux-acpi+bounces-20179-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20180-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC92D11597
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 09:56:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49169D1160C
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 10:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFA2B30102A7
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 08:56:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E22B300D826
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 09:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3ED346797;
-	Mon, 12 Jan 2026 08:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289EC346AE3;
+	Mon, 12 Jan 2026 09:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NP0JQfO6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8cHfpOX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA8C3451A3;
-	Mon, 12 Jan 2026 08:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F288A30FC1D;
+	Mon, 12 Jan 2026 09:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768208165; cv=none; b=oNlrcZNkowLeXXl97f7amTkOWHT6m0uB5OJIlQ8dqEw15FH7M/cQciDSCJRMZm+miqzi5fE4IpDQEriJCKAN80P66ySbyn7vPsjYjPOvpeCKsuFmbOT9LsIOBkLZuuBNxIFZZ6sBJO6M+0DuueOvrdfmQvrVD+e1klxoPC5XjY0=
+	t=1768208542; cv=none; b=KAKKeIjeUb24ZIyE0T33P6KR8C356XThswaPOwwi1x6xLpw1uEfTKXVhVjWEjEjLtfbC4VOT2LUmJzfWJMXAbYKPWMjnXxU5zxQ7DO7fwdhCZwzwzXYC0YoNrbiVwYZSybrbIb0Z9IEaZw24810bfRz7jWa4zhE+4Rnp0ENtVHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768208165; c=relaxed/simple;
-	bh=SBExc/hApIz/IWUpu+VL4ScZY/oR+cuuRYGWapjolgw=;
+	s=arc-20240116; t=1768208542; c=relaxed/simple;
+	bh=qj7f8OVKymqpaGteRJaSiKYCtCRP7TJCNDokvj7EXck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OXAvsSFpBnEEJmtwYlaqOSnJ0QEV4E+cisI7NdDw8R1orm9GUuwpUE5iIALdvPOx0im4PLxLEfd2vb277/HYEmfohlcgeb+sVAs6StdZCrRgGYmudjTXPcnWy7dMOAtCpXaJWJnehcANGQkxBUUbiF1v2QFO0ogg0Un6DWcSm0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NP0JQfO6; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768208163; x=1799744163;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=SBExc/hApIz/IWUpu+VL4ScZY/oR+cuuRYGWapjolgw=;
-  b=NP0JQfO6AhsqSLfPPt8BRd3hywXGTdCkTfP+ggNXVHk/quMRcGQ3zIn8
-   Bt3/6n7n71QZ7D+6xneQWqElkDnIwJEK+Mrm6ebN9bYLBTSz1kWI4kpGl
-   mNib28h70q+QFFF8IIoxF9B/oWjTudg7JmmFPdmmxM7hM269Koj9NF6c/
-   YmZ8GJPDAOHQoYiQJuMzeBRsBNlI5FPVIrT7qEFA4jFoJC5HJSUTSFs5f
-   wTWQEhGLCcXs3Z3Hm9Z+ZGMNuA4YjrKVMiKw48eFEmI8IOZbyaXIJuoH/
-   CpSZNCRFY+iLW7VQtdcDOo/+f3ctayxhLtVAXD6achdGqe8mx97zWyhjQ
-   A==;
-X-CSE-ConnectionGUID: 4I7dZXVCQYmIOiYbfB74Hw==
-X-CSE-MsgGUID: vqbnKi33TsOQQ5tDXMMq4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="57029084"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="57029084"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 00:56:02 -0800
-X-CSE-ConnectionGUID: xK0ipO4EQb+uaQSgiB2cwQ==
-X-CSE-MsgGUID: wUbHV2w/TbarN33/tmlfhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="204111892"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.37])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 00:56:00 -0800
-Date: Mon, 12 Jan 2026 10:55:57 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Kartik Rajput <kkartik@nvidia.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>, lenb@kernel.org,
-	thierry.reding@gmail.com, jonathanh@nvidia.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI: bus: Use OF match data for PRP0001 matched
- devices
-Message-ID: <aWS3HRIlZQqI1hP5@smile.fi.intel.com>
-References: <20260109095358.24265-1-kkartik@nvidia.com>
- <20260109101302.GW2275908@black.igk.intel.com>
- <aWDhEBjy9b9_uzoR@smile.fi.intel.com>
- <aWDmt3CA5h_i9Hij@kekkonen.localdomain>
- <aWE0uuZjB1iMGF2B@smile.fi.intel.com>
- <CAJZ5v0ijTQC2cFTt+hW-ofJwMqdEeES8d5MMbbq8_Bqg+_9E3g@mail.gmail.com>
- <aWQdz37vK-SXVQBv@kekkonen.localdomain>
- <377fbbc3-5f79-424a-b986-4617048e5e3c@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uk/mnp15k438goDtCgKskbr+iIpGD83Hk21wld6twmzgzvfNC4oNpQLfX88I/xLBpCUHkqQiEXtF8S0gvMe8UhWJnxgHZXbz5Q8Tg977fpzmDLnjnGzSUnzm/qONhXUp1eCC97KG2Vkf8QoiUimo2OYAywk8OJZKICRusclF/2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8cHfpOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD38C116D0;
+	Mon, 12 Jan 2026 09:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768208541;
+	bh=qj7f8OVKymqpaGteRJaSiKYCtCRP7TJCNDokvj7EXck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a8cHfpOXYmjDpTJf0FP9hfGwW608GKXGMUaKLc4npoU5hNjgSuhe0YHISlZspwBPs
+	 apiAizX4PipAxtigEkm9mt+lq7HwnJTSlZAX6vxTS3bCjXA1iqf/FWPzRxyzJD1nIh
+	 lL+M+8Je+EJR9SLQjburw2C10PmrohWL7p/P1VPZJY5mbDUc6+sOeiiRmiV/Ya2ZSj
+	 c4zHxaOlQAeyi4eKS85vOTXZGFf/Ma/CO24IoDLSb0cHkIGdcz+mgsbPSTPpiL1V+I
+	 v6C17+HdnDkpgMwQhViQtYkW1VgGpzhkLFiKacPrJ0AhcIk1GxbQcPcJr5Tk/tflei
+	 OnAmF//T6Cafg==
+Date: Mon, 12 Jan 2026 14:32:04 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org, 
+	Sui Jingfeng <sui.jingfeng@linux.dev>
+Subject: Re: [PATCH v3 03/14] software node: Implement device_get_match_data
+ fwnode callback
+Message-ID: <6peb6afhpm4l7opxbdt3b5sx32longevwds5c3dlqji2hr5dlh@kxuvj55jkqgi>
+References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
+ <20260110-pci-m2-e-v3-3-4faee7d0d5ae@oss.qualcomm.com>
+ <aWSpFk9z0zpyKjr6@smile.fi.intel.com>
+ <6l3rs5pv6xnrbygpvqrdxqoqtybjyefsltk5bl4336q56rfoza@ejo3sxuufghe>
+ <aWSwgRiEkT9unYw9@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -84,77 +76,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <377fbbc3-5f79-424a-b986-4617048e5e3c@nvidia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aWSwgRiEkT9unYw9@smile.fi.intel.com>
 
-On Mon, Jan 12, 2026 at 02:12:49PM +0530, Kartik Rajput wrote:
-> On 12/01/26 03:31, Sakari Ailus wrote:
-> > On Fri, Jan 09, 2026 at 10:11:26PM +0100, Rafael J. Wysocki wrote:
-> > > On Fri, Jan 9, 2026 at 6:02 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Fri, Jan 09, 2026 at 01:29:59PM +0200, Sakari Ailus wrote:
-> > > > > On Fri, Jan 09, 2026 at 01:05:52PM +0200, Andy Shevchenko wrote:
-> > > > > > On Fri, Jan 09, 2026 at 11:13:02AM +0100, Mika Westerberg wrote:
-> > > > > > > On Fri, Jan 09, 2026 at 03:23:58PM +0530, Kartik Rajput wrote:
-
-...
-
-> > > > > > On top of what Mika asked, shouldn't we check CID as well? Theoretically it's
-> > > > > > possible that some device may have HID "blablabla" and CID PRP0001, I don't
-> > > > > > remember what documentation says about this case, though.
-> > > > > 
-> > > > > According to Documentation/firmware-guide/acpi/enumeration.rst PRP0001 is
-> > > > > also valid for _CID. So yes, I think this should be checked as well -- I'd
-> > > > > loop over the &device->pnp.ids list.
-> > > > 
-> > > > Yeah, but if we have a device with
-> > > > 
-> > > > HID "blablabla"
-> > > > CID "PRP0001"
-> > > > 
-> > > > and at the same time the driver has ACPI ID listed, we should probably use that
-> > > > one as HID should have higher weight for matching. Logic here is not just as simple
-> > > > as looping over pnp.ids how I see it.
-> > > 
-> > > Right.
-> > > 
-> > > What about:
-> > > 
-> > > if (acpi_ids) {
-> > >         match = acpi_match_device(acpi_ids, dev);
-> > >         if (match)
-> > >                 return (const void *)match->driver_data;
-> > > }
-> > > return acpi_of_device_get_match_data(dev);
+On Mon, Jan 12, 2026 at 10:27:45AM +0200, Andy Shevchenko wrote:
+> On Mon, Jan 12, 2026 at 01:49:54PM +0530, Manivannan Sadhasivam wrote:
+> > + Dmitry Torokhov (who was against this patch previously)
 > > 
-> > That would mean that any ACPI (or PNP) ID has priority over compatible
-> > matching, wouldn't it? AFAIU the documentation says effectively that
-> > _HID/_CID priority is upheld, whether matching with PRP0001 or without.
+> > On Mon, Jan 12, 2026 at 09:56:06AM +0200, Andy Shevchenko wrote:
+> > > On Sat, Jan 10, 2026 at 12:26:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > 
+> > > > Because the software node backend of the fwnode API framework lacks an
+> > > > implementation for the .device_get_match_data function callback.
+> > > 
+> > > Maybe this is done on purpose. Have you thought about this aspect?
+> > 
+> > IMO, software nodes were introduced to add sub-properties to the existing
+> > firmware nodes, but it has usecase/potential to go beyond that. More below.
 > 
-> Since we seem to be using __acpi_match_device() match the device.
-> What if we directly utilise __acpi_match_device() here?
+> Potential doesn't mean the necessity.
 > 
-> Something like:
+> > > > This makes it difficult to use(and/or test) a few drivers that originates
+> > > > from DT world on the non-DT platform.
+> > > 
+> > > How difficult? DSA implementation went to the way of taking DT overlay
+> > > approach. Why that one can't be applied here?
+> > 
+> > Sometimes you do not have any DT node at all.
 > 
-> 	if (!__acpi_match_device(adev, acpi_ids, of_ids, &acpi_id, &of_id))
-> 		return NULL;
+> Yes, that is exactly the case I have referred to. The PCI core (in Linux)
+> is able to create DT subtree on non-OF based platforms.
 > 
-> 	if (acpi_id)
-> 		return (const void *)acpi_id->driver_data;
-> 
-> 	if (of_id)
-> 		return of_id->data;
-> 
-> 	return NULL;
-> 
-> Then, we can also remove acpi_of_device_get_match_data()?
 
-At brief look it's indeed seems to be a good optimisation as well.
+Maybe I should look into creating dynamic DT node for the device and insert it
+to the uart node. Theoretically it should work.
+
+> > For example, in this series, the
+> > M.2 pwrseq driver creates the serdev software device for the M.2 BT card to
+> > match it with the existing OF based BT driver (for non-M2 device). From the
+> > driver's point of view, a BT device attached to the M.2 slot and over custom
+> > connectors are both the same. Only difference is that, in the case of custom
+> > connectors, the bluetooth DT node will have the BT device described and in the
+> > case of M.2, the device won't get described, but just the connector [1].
+> 
+> So, what's the problem to add such a description? (Assuming you want a customisation
+> it can be done at run-time, correct?)
+> 
+> > But for the driver to identify the device (since it cannot enumerate it),
+> > either it has to rely on DT/ACPI or some other means.
+> 
+> Yes.
+> 
+> > In the previous version of this series [2], I used the serdev ID based on the
+> > product name for creating the serdev device and added a new id_table for serdev
+> > driver to match with the device [3]. This almost duplicated the existing OF
+> > match logic.
+> 
+> That's how we do when we want to add a board file, but thing is that we do not
+> want board files (only in the cases when other ways are impossible or make less
+> sense).
+> 
+> > Then Bartosz suggested to use swnode approach [4], to get rid of
+> > the custom serdev ID based matching. When I prototyped, it mostly worked well,
+> 
+> I know that Bart is fan of swnodes, but it should not be used as a silver
+> bullet, really.
+> 
+> > except that swnode needed to have its own .device_get_match_data(), match() and
+> > uevent/modalias functions. And if the swnode reused the existing DT compatible
+> > string, it can work with the existing BT driver without modifications. And this
+> > approach can also be extended to devices instantiated from the board specific
+> > drivers.
+> 
+> DT overlay should work without even modifications done to swnode code, right?
+> 
+
+Not from the overlay binaries (.dtbo), but adding dynamic BT node for the device
+based on the enumerated PCI device should work.
+
+- Mani
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+மணிவண்ணன் சதாசிவம்
 
