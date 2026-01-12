@@ -1,92 +1,174 @@
-Return-Path: <linux-acpi+bounces-20192-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20193-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755B5D12DAD
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 14:37:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0B3D13115
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 15:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E481301B2D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 13:37:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20C0C30049CE
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 14:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B3835970E;
-	Mon, 12 Jan 2026 13:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E07A259C80;
+	Mon, 12 Jan 2026 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYy0IXRw"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EHiK19qo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057F92DBF78;
-	Mon, 12 Jan 2026 13:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378B72561AA;
+	Mon, 12 Jan 2026 14:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768225024; cv=none; b=QaDdO4i3s/eM26SCuwlDlK683Qu7HXgF20O8aPtPOPyr4Rx9KqcbVr7cRiEQUc43cahFqjuLTG399lvFFQr+o6zxpKZ6IjN3ev02ytckBeT1QvgjvqgljhI3Vw/zSh/Efx2+LLciNxT2oUVdkd9iWzem5tjB1O+P2Jvurb32bbM=
+	t=1768227501; cv=none; b=PbWWXr+IXWWmCiLTTPb/PAr1O0+D5mI8twWEJwDP/RwHRdb89mrYCF70wfftcSg5hxRE+DTtLIHxx9yer0L7ONluh0viIWCs/de7t6H2QDdOJhNbk+NLAPnmQfI20H4qLHcQF2IpQs0BcgKJY4XToej6reK6UGGy9BAy2vwBYnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768225024; c=relaxed/simple;
-	bh=bzYUe9Krw1KHbB/obzxKLRvZYPhkA90KZUSBQi3hf2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lW1sus33ynA3Ie+o7qBBo9rUVvZufwZIr7tblnVFD81LTDZ89JZQEKsxGS6suTQCuzKn9I9smlM+jRmr2AXfcGXGXfolDQPIb5zwn2EWsqabniyhOsAT1GLfaBnSSVOkItXbn5KAUjUapdgp0QJo49hjB2ERyLEkO/HAdYJiK28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYy0IXRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6079BC16AAE;
-	Mon, 12 Jan 2026 13:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768225023;
-	bh=bzYUe9Krw1KHbB/obzxKLRvZYPhkA90KZUSBQi3hf2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GYy0IXRwxYRa6+Eb+mt0hD4IbxIA8k971nzVORZJz0zmrD/N8l/oqWJpUakCf6wyk
-	 4cDPflH+DuT8pXO12YmlZzAw/osbsYT5dykv2XNR3OTbA6ujOqz4XfvvS39ltm0Gz8
-	 LXG+ptmkdPUMV/1tppmmnwZXLEAlxkNvWXT1rWf8=
-Date: Mon, 12 Jan 2026 08:37:02 -0500
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, manivannan.sadhasivam@oss.qualcomm.com, 
-	Rob Herring <robh@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	"Derek J. Clark" <derekjohn.clark@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Stephan Gerhold <stephan.gerhold@linaro.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	linux-acpi@vger.kernel.org, Sui Jingfeng <sui.jingfeng@linux.dev>
-Subject: Re: [PATCH v3 03/14] software node: Implement device_get_match_data
- fwnode callback
-Message-ID: <20260112-miniature-quiet-gorilla-263fed@lemur>
-References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
- <20260110-pci-m2-e-v3-3-4faee7d0d5ae@oss.qualcomm.com>
- <aWSpFk9z0zpyKjr6@smile.fi.intel.com>
- <6l3rs5pv6xnrbygpvqrdxqoqtybjyefsltk5bl4336q56rfoza@ejo3sxuufghe>
+	s=arc-20240116; t=1768227501; c=relaxed/simple;
+	bh=wlT3FBAPC9NaPUwN7a+iupmJcxj6yFmsVyOWpBHDwrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FhHXIq9Qlj11nXSVy/JIOcucaOU1Ybnjwwio1PDJkAg3azPHH5BDG8I4fDyUd55LkWwzLlqPoy872eoEAy/PhCrc6dociRZ+wGa2w65FuE4lCF3ltSFaKXfcHrlG63o2o1ow/VGl3f36pHRU6MFCsF8My3XFBSdI4mfl9e5qjUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EHiK19qo; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=D6
+	ibI2l2qeTk6D8zz4v4Fuljr3FpUb+m+bLiWQ2pp4o=; b=EHiK19qo5qPALSScCf
+	DTm8yB6e7/6L1nNcj+DXj4Ibynkp4qkGPdNffWEpeCkEy76QForW3up/DfXcMLYi
+	QbfdE/Tl6IMsOMzxCl8VFxGo8P2dV62IkR67wgNZrueeVO5R8hjuTxA/7jffoyxa
+	CyzeA4re24dq+KbO3LAC73HkY=
+Received: from emily-VMware-Virtual-Platform.. (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3X3dKAmVp1HqUGQ--.29256S2;
+	Mon, 12 Jan 2026 22:16:45 +0800 (CST)
+From: huyuye <huyuye812@163.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Robert Moore <robert.moore@intel.com>,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	dai.hualiang@zte.com.cn,
+	deng.weixian@zte.com.cn,
+	guo.chang2@zte.com.cn,
+	liu.qingtao2@zte.com.cn,
+	wu.jiabao@zte.com.cn,
+	lin.yongchun@zte.com.cn,
+	hu.yuye@zte.com.cn,
+	zhang.longxiang@zte.com.cn,
+	zuo.jiang@zte.com.cn,
+	li.kunpeng@zte.com.cn,
+	huyuye <huyuye812@163.com>
+Subject: [PATCH v2] ACPI: pci_root: Clear the acpi dependencies after PCI root bridge initialization on RISC-V
+Date: Mon, 12 Jan 2026 22:16:29 +0800
+Message-ID: <20260112141630.2869-1-huyuye812@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251203140716.3065-1-huyuye812@163.com>
+References: <20251203140716.3065-1-huyuye812@163.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6l3rs5pv6xnrbygpvqrdxqoqtybjyefsltk5bl4336q56rfoza@ejo3sxuufghe>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3X3dKAmVp1HqUGQ--.29256S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZF4DXF13KFykZryDAF47Arb_yoW5Zw4rpF
+	Wj9w1fArZ7Jw47KwnrZw15XFy5Jw4F9342grZru34Dua18uryYvF92yFyUta4UuFWDGa1x
+	ZF9rtF15CF1jvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zic18DUUUUU=
+X-CM-SenderInfo: 5kx135bhyrjqqrwthudrp/xtbC4w1HT2llAk3SSwAA38
 
-On Mon, Jan 12, 2026 at 01:49:54PM +0530, Manivannan Sadhasivam wrote:
-> > I really do not want to see this patch without very good justification
-> > (note, there were at least two attempts in the past to add this stuff
-> >  and no-one was merged, have you studied those cases?).
-> > 
-> 
-> Yes I did. I didn't put the above justification in the cover letter, as it was
-> already overwhelmed with too much information regarding the connector node.
-> Maybe I should've added it in the comments section of this patch. But I didn't
-> know how to do that with b4.
+Hi Rafael,
+Thank you for your thorough review and valuable comments on v1.
+I've updated the patch as follows:
+1. Removed the redundant #ifdef CONFIG_ACPI and if (!acpi_disabled) 
+guard as you pointed out. The entire code block indeed already depends
+on CONFIG_ACPI at a higher level, making the inner guard unnecessary.
+2. Moved acpi_dev_clear_dependencies to RISC-V specific architecture 
+code (driver/acpi/riscv/acpi_pci.c). This ensures that ACPI dependency
+clearing is handled within the appropriate architectural context.
 
-You can just amend the commit directly and put comments under "---". They
-will be preserved when email is sent, but won't be applied when the maintainer
-pulls the series.
+Best regards
+Signed-off-by: huyuye <huyuye812@163.com> 
+---
+ drivers/acpi/pci_root.c       |  6 ++++++
+ drivers/acpi/riscv/Makefile   |  2 +-
+ drivers/acpi/riscv/acpi_pci.c | 11 +++++++++++
+ include/acpi/acpi_bus.h       |  1 +
+ 4 files changed, 19 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/riscv/acpi_pci.c
 
--K
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 9d7f85dadc48..a16eb9097cdc 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -30,6 +30,11 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 			     const struct acpi_device_id *not_used);
+ static void acpi_pci_root_remove(struct acpi_device *device);
+ 
++
++void __weak arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
++{
++}
++
+ static int acpi_pci_root_scan_dependent(struct acpi_device *adev)
+ {
+ 	acpiphp_check_host_bridge(adev);
+@@ -760,6 +765,7 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 	pci_lock_rescan_remove();
+ 	pci_bus_add_devices(root->bus);
+ 	pci_unlock_rescan_remove();
++	arch_acpi_pci_root_add_clear_dep(device);
+ 	return 1;
+ 
+ remove_dmar:
+diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
+index 1284a076fa88..5b1bd0298fb9 100644
+--- a/drivers/acpi/riscv/Makefile
++++ b/drivers/acpi/riscv/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y					+= rhct.o init.o irq.o
++obj-y					+= rhct.o init.o irq.o acpi_pci.o
+ obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
+ obj-$(CONFIG_ACPI_RIMT)			+= rimt.o
+diff --git a/drivers/acpi/riscv/acpi_pci.c b/drivers/acpi/riscv/acpi_pci.c
+new file mode 100644
+index 000000000000..368ff113e5c6
+--- /dev/null
++++ b/drivers/acpi/riscv/acpi_pci.c
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2026, ZTE Corporation
++ *  Author: Yu Ye Hu <hu.yuye@zte.com.cn>
++ */
++#include <linux/acpi.h>
++
++void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
++{
++	acpi_dev_clear_dependencies(device);
++}
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index aad1a95e6863..c00b523a6ebd 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -996,6 +996,7 @@ int acpi_wait_for_acpi_ipmi(void);
+ 
+ int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices);
+ u32 arch_acpi_add_auto_dep(acpi_handle handle);
++void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device);
+ #else	/* CONFIG_ACPI */
+ 
+ static inline int register_acpi_bus_type(void *bus) { return 0; }
+-- 
+2.43.0
+
 
