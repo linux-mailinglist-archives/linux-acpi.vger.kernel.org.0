@@ -1,137 +1,255 @@
-Return-Path: <linux-acpi+bounces-20195-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20198-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98738D1378F
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 16:08:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB822D14084
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 17:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5C17301D177
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 15:06:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5818F30AC77B
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 16:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4011A2DEA73;
-	Mon, 12 Jan 2026 15:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4028366DA3;
+	Mon, 12 Jan 2026 16:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NedIBfr5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQufjzlZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C1620010C;
-	Mon, 12 Jan 2026 15:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D25365A09;
+	Mon, 12 Jan 2026 16:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768230405; cv=none; b=hp8oAlYUhjmunWXUfbGGiNwv9OPv8KQqP4iRI1K40RqLdVqt8FiQQ/qrSwkA7BXC+0fdjP9Q0eeLFs74+NIJX0ldSt2WlMgAr/KPVRgkTX50gTU07LFRFZ99H9FR+G/9jV1RsZVOKxaKYiYpVRSgW0WhyJcwGqbcZeCczJGdd+E=
+	t=1768235313; cv=none; b=sOfW6MpPJgjzD766lBjmWZGfyTDXy3KoIOqaQaCRfJd0gRK1tpCqBl3TKwWW6GwLWR0Xko4BE6EX2gwJx8lPFIO693ghpuByjdTUKNgkAO+fqeewkCmulbCxx/p/qsxntSFk82d8IGJTzQJ/gRH0eoneDYySCmTtG/vFfh6F/OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768230405; c=relaxed/simple;
-	bh=6ikETmnXVhfDfBU5WDpUDeodKoDandB1zGwKZAPM5/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C/nMCNqFqAmjiJaKTyYvKKJW++6FkNVqnOKvWuDQRuVUKqf9W/h3B7sKAeCgqKBJqPrjhk3KlFGSmdnIcDWP+p7+BHV6QtoSaLRAEOdCuTQihZHOS5FBeKprC9Q0nGowF+++teFXZnGjIhYug58eunM1knlPQHDIPl0qhxxd3eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NedIBfr5; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4357840E01BB;
-	Mon, 12 Jan 2026 15:06:40 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id yTa45AN18amQ; Mon, 12 Jan 2026 15:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768230395; bh=YaxxTxdQgjkNPEauwlTyuzVixI2qIhO1JHV0bjc5j1Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NedIBfr5xF/e/gTC09SP7G4e+R/fuASPskksbdhVSkWH9heL3VoDABQGgFyLfp19F
-	 wuCmqy2pL8yzxhKATai16K/86vJ1+LwmWz7FDyDZ3bW9B/w27BMmNvmbMj0D6Vm7cD
-	 ppKQLwTAX5aNROUqSxce9hwQPvlxbd8u+Z+IxkPOU4G3Xxg0pByMBR0j8eInXYl+aA
-	 pkNs97VwDtV65e+V1dgXpP96oxGgy5fZXDr+MemLkg0vRaPPXKGmUu2JpR1DENCxsc
-	 dSSoEenJuTqHVhJ608iZYsNqy24PxP2lpX1J55Z4AJOiN7SlLssPxYPVci36W8DscK
-	 9dEgevp8r8cXA51vgWNs/x2gETRmiL0SSNZUXt9LtLpvt382doyWGD+dcR3QL8Tgtk
-	 YVBBROcEyBWE+FkJH7rvz24B2MoQF6FcenuUClpwWLrAZ4GZnb94yUn5GGRMfH5CMr
-	 MYOr7DKnsQbsHBEEhn1YbH1a/Q/TNVbYWzC9KLcAbYGoCsfUbCuJjIvwbJkKMos5Ct
-	 xVighy+lOCy13YSoRERVOUBegzr7VXEQ3GEBcB3UKfjaz+dl7Qvr9Yaj/WkpO/xm8w
-	 8w5D0qdBsGwlRGesnnamyrp3RFV8pWcA/KM0coj4yKaGxMlXgkxmuKT/og/AKVUhaC
-	 bLERDi05T9nRIuVUc7zx7LEQ=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 16ED240E00DE;
-	Mon, 12 Jan 2026 15:05:59 +0000 (UTC)
-Date: Mon, 12 Jan 2026 16:05:52 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	jonathan.cameron@huawei.com, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v14 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20260112150552.GGaWUN0Ex8KgfqEEi5@fat_crate.local>
-References: <20251209145742.297-1-shiju.jose@huawei.com>
- <20251209145742.297-2-shiju.jose@huawei.com>
+	s=arc-20240116; t=1768235313; c=relaxed/simple;
+	bh=9S9KztO8/ZYkPDYvEOYZP3UT7oEj1fzgnUHdhGGOUPY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PKvviIxhvV1LKMth2aYpAn6kasMxz9OqhwjMOHrrNk7it+8Qi1YCz4lZ4gUxWoPxzlvv5ynyoSeXU309ACluBA1LNlbR4KA/7oS5CMFSauHczP3cZWzH2Vu+thAq0naaeJjDI+fkkz5JB17EdrdNp3xasn2gwD/8aEZKp1mDFkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQufjzlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DFBCBC116D0;
+	Mon, 12 Jan 2026 16:28:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768235313;
+	bh=9S9KztO8/ZYkPDYvEOYZP3UT7oEj1fzgnUHdhGGOUPY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=cQufjzlZ2QA792AyEfJV6UOyuuAG93SMg3NeKSMHWjtWf2QwDp33o7XHbSjfsC0cH
+	 RBRZ4mvvd7KdCRg6lQIlIX/gskUjlbfX+jtVWu8yOE2p8Mi24pKRZrtBkjNq5M+BBv
+	 Nwjilu5z9QnRgHQ2NphMFy+JDouQ7xerqzmkWbkjLC0Y6lPAGxgWVIKPO9FcR4cYe9
+	 g0Fy97SdQSxGon0gr7tqlr5XiivnEXHrSw7KeuoGM5I4Tc/rIWardPEt9axmp3vUpr
+	 5QjYjT7SISj73wTym5M25hv2bcABQ7q4CF2dRYMzohY0OF0HqrYFNrVPrEEG3iWIf8
+	 SZFNQbdja0PEA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3A1CC9EC7A;
+	Mon, 12 Jan 2026 16:28:32 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v4 0/9] Add support for handling PCIe M.2 Key E connectors
+ in devicetree
+Date: Mon, 12 Jan 2026 21:55:59 +0530
+Message-Id: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251209145742.297-2-shiju.jose@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJcgZWkC/3WQ3WrDMAxGXyX4eg624p8kV32PsQvXVlbD0rR2a
+ lpK331KyiBs3Y3gEz5Hlu4sY4qYWV/dWcISc5yOFNRbxfzBHT+Rx0CZgQAtpQR+8pGPwJF3ynT
+ a+S4YbRk9PyUc4nVVvX9QPsQ8T+m2motcui8kRXLBO6tkE8x+aEHtppzr88V9+WkcaypscRXY8
+ KA3PBDfQAsmoLDe63/45oc3Qkqx4Rvi1eAQbRBBO3zBP57LJTxf6Dzzc0M2Ys5uPU9f/f7XavU
+ aWqHAoVP2r5Wce5eRL40491UxtWx58pLmPb4BaKXlIpYBAAA=
+X-Change-ID: 20251112-pci-m2-e-94695ac9d657
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ linux-acpi@vger.kernel.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7020;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=9S9KztO8/ZYkPDYvEOYZP3UT7oEj1fzgnUHdhGGOUPY=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpZSEtGGfSh/B1nXp79dZ8tN42YNlOmlhU2XEVl
+ IfM9hdzOWaJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaWUhLQAKCRBVnxHm/pHO
+ 9eATB/9I4PeXTjoeXCEcZ8gzOFHC+k+q1MX2Q0KbtUm5/UeLw3/wtmHj8kFe+mC3UfGbn6hud5V
+ Ehx1diBiHlWBykDmTFJQTEkFhMdu/1Xq1h7j1osWieFndkoob+y4ThvytUW1Q1ua5awlGWooixA
+ 0yIABdgB/RikR5nLcyUZqUOvD9SuGQRn7Cihks4FXyC32sTULnvNoOvBhhMLLMwTN6ab7YWxe8u
+ k9Rzjl533ObbpeGrV14Hlvdv9d+uONSWQDHHeIVrMpMwtDVseM+fCxGwxSyP8NRsp9GvbSDF6Gq
+ dHFOzGmcl0AOu8aOTi43GLennHP5oa4w2XPj+dl6A2Pwvd2u
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-On Tue, Dec 09, 2025 at 02:57:40PM +0000, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
-> Driver adds support for RAS2 feature table, which provides interfaces for
-> platform RAS features, e.g., for HW-based memory scrubbing, and logical to
-> PA translation service. RAS2 uses PCC channel subspace for communicating
-> with the ACPI compliant HW platform.
-> 
-> Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
-> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/acpi/Kconfig  |  10 ++
->  drivers/acpi/Makefile |   1 +
->  drivers/acpi/bus.c    |   3 +
->  drivers/acpi/ras2.c   | 409 ++++++++++++++++++++++++++++++++++++++++++
->  include/acpi/ras2.h   |  57 ++++++
->  5 files changed, 480 insertions(+)
->  create mode 100644 drivers/acpi/ras2.c
->  create mode 100644 include/acpi/ras2.h
+Hi,
 
-Please go over all my review comments from here:
+This series is the continuation of the series [1] that added the initial support
+for the PCIe M.2 connectors. This series extends it by adding support for Key E
+connectors. These connectors are used to connect the Wireless Connectivity
+devices such as WiFi, BT, NFC and GNSS devices to the host machine over
+interfaces such as PCIe/SDIO, USB/UART and NFC. This series adds support for
+connectors that expose PCIe interface for WiFi and UART interface for BT. Other
+interfaces are left for future improvements.
 
-https://lore.kernel.org/r/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local
+Serdev device support for BT
+============================
 
-and either incorporate them or say why you don't agree.
+Adding support for the PCIe interface was mostly straightforward and a lot
+similar to the previous Key M connector. But adding UART interface has proved to
+be tricky. This is mostly because of the fact UART is a non-discoverable bus,
+unlike PCIe which is discoverable. So this series relied on the PCI notifier to
+create the serdev device for UART/BT. This means the PCIe interface will be
+brought up first and after the PCIe device enumeration, the serdev device will
+be created by the pwrseq driver. This logic is necessary since the connector
+driver and DT node don't describe the device, but just the connector. So to make
+the connector interface Plug and Play, the connector driver uses the PCIe device
+ID to identify the card and creates the serdev device. This logic could be
+extended in the future to support more M.2 cards. Even if the M.2 card uses SDIO
+interface for connecting WLAN, a SDIO notifier could be added to create the
+serdev device.
 
-Ignoring them is NOT something you should do because this goes both ways.
+Open questions
+==============
 
-Ignoring this submission now.
+Though this series adds the relevant functionality for handling the M.2 Key M
+connectors, there are still a few open questions exists on the design. 
 
-Thx.
+1. Created a dynamic 'bluetooth' node with the compatible property matching the
+WCN7850 device and attached it to the serdev device. This allowed reusing the
+existing OF based BT driver without much modifications.
 
+2. PCIe client drivers of some M.2 WLAN cards like the Qcom QCA6390, rely on
+the PCIe device DT node to extract properties such as
+'qcom,calibration-variant', 'firmware-name', etc... For those drivers, should we
+add the PCIe DT node in the Root Port in conjunction with the Port node as
+below?
+
+pcie@0 {
+	wifi@0 {
+		compatible = "pci17cb,1103";
+		...
+		qcom,calibration-variant = "LE_X13S";
+	};
+
+	port {
+		pcie4_port0_ep: endpoint {
+			remote-endpoint = <&m2_e_pcie_ep>;
+		};
+	};
+};
+
+This will also require marking the PMU supplies optional in the relevant ath
+bindings for M.2 cards.
+
+3. Some M.2 cards require specific power up sequence like delays between
+regulator/GPIO and such. For instance, the WCN7850 card supported in this series
+requires 50ms delay between powering up an interface and driving it. I've just
+hardcoded the delay in the driver, but it is a pure hack. Since the pwrseq
+driver doesn't know anything about the device it is dealing with before powering
+it ON, how should it handle the device specific power requirements? Should we
+hardcode the device specific property in the connector node? But then, it will
+no longer become a generic M.2 connector and sort of defeats the purpose of the
+connector binding.
+
+I hope to address these questions with the help of the relevant subsystem
+maintainers and the community. 
+
+Testing
+=======
+
+This series, together with the devicetree changes [2] was tested on the
+Qualcomm X1e based Lenovo Thinkpad T14s Laptop which has the WCN7850 WLAN/BT
+1620 LGA card connected over PCIe and UART.
+
+Dependency
+==========
+
+This series is dependent on the M.2 Key M series [1] on top of v6.19-rc1.
+
+[1] https://lore.kernel.org/linux-pci/20260107-pci-m2-v5-0-8173d8a72641@oss.qualcomm.com
+[2] https://github.com/Mani-Sadhasivam/linux/commit/753033861360171f2af1fdd56e8985ff916e1ac2
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Changes in v4:
+- Switched to dynamic OF node for serdev instead of swnode and dropped all
+  swnode related patches
+- Link to v3: https://lore.kernel.org/r/20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com
+
+Changes in v3:
+- Switched to swnode for the serdev device and dropped the custom
+  serdev_device_id related patches
+- Added new swnode APIs to match the swnode with existing of_device_id
+- Incorporated comments in the bindings patch
+- Dropped the UIM interface from binding since it is not clear how it should get
+  wired
+- Incorporated comments in the pwrseq driver patch
+- Splitted the pwrseq patch into two
+- Added the 1620 LGA compatible with Key E fallback based on Stephan's finding
+- Link to v2: https://lore.kernel.org/r/20251125-pci-m2-e-v2-0-32826de07cc5@oss.qualcomm.com
+
+Changes in v2:
+- Used '-' for GPIO names in the binding and removed led*-gpios properties
+- Described the endpoint nodes for port@0 and port@1 nodes
+- Added the OF graph port to the serial binding
+- Fixed the hci_qca driver to return err if devm_pwrseq_get() fails
+- Incorporated various review comments in pwrseq driver
+- Collected Ack
+- Link to v1: https://lore.kernel.org/r/20251112-pci-m2-e-v1-0-97413d6bf824@oss.qualcomm.com
+
+---
+Manivannan Sadhasivam (9):
+      serdev: Convert to_serdev_*() helpers to macros and use container_of_const()
+      serdev: Add an API to find the serdev controller associated with the devicetree node
+      serdev: Do not return -ENODEV from of_serdev_register_devices() if external connector is used
+      dt-bindings: serial: Document the graph port
+      dt-bindings: connector: Add PCIe M.2 Mechanical Key E connector
+      dt-bindings: connector: m2: Add M.2 1620 LGA soldered down connector
+      Bluetooth: hci_qca: Add M.2 Bluetooth device support using pwrseq
+      power: sequencing: pcie-m2: Add support for PCIe M.2 Key E connectors
+      power: sequencing: pcie-m2: Create serdev device for WCN7850 bluetooth
+
+ .../bindings/connector/pcie-m2-e-connector.yaml    | 161 ++++++++++++
+ .../devicetree/bindings/serial/serial.yaml         |   3 +
+ MAINTAINERS                                        |   1 +
+ drivers/bluetooth/hci_qca.c                        |   9 +
+ drivers/power/sequencing/Kconfig                   |   1 +
+ drivers/power/sequencing/pwrseq-pcie-m2.c          | 278 ++++++++++++++++++++-
+ drivers/tty/serdev/core.c                          |  25 +-
+ include/linux/serdev.h                             |  24 +-
+ 8 files changed, 482 insertions(+), 20 deletions(-)
+---
+base-commit: cb6649f6217c0331b885cf787f1d175963e2a1d2
+change-id: 20251112-pci-m2-e-94695ac9d657
+prerequisite-message-id: 20251125-pci-m2-v3-0-c528042aea47@oss.qualcomm.com
+prerequisite-patch-id: 58778d8eb97ab86008cd48fb5d28ed6cc0bbbc1b
+prerequisite-patch-id: 2dd7d793a67f59ef6e6b5137e69436896198b965
+prerequisite-patch-id: 8ccaa5fdd95e64e69cd942f93c26e89b827d0453
+prerequisite-patch-id: 3d3e1bb7959ab1e140c5024acdd8655e7a7e99ef
+
+Best regards,
 -- 
-Regards/Gruss,
-    Boris.
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
