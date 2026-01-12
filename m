@@ -1,119 +1,93 @@
-Return-Path: <linux-acpi+bounces-20167-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20168-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D296D10F6B
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 08:50:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741ECD10FD3
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 08:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BBBB730082DA
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 07:50:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63D933011B39
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 07:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F032337B95;
-	Mon, 12 Jan 2026 07:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD85B339872;
+	Mon, 12 Jan 2026 07:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQQIFhJm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urpafOyH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F863382C7;
-	Mon, 12 Jan 2026 07:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEAE3382E8;
+	Mon, 12 Jan 2026 07:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768204245; cv=none; b=WQ564TbDtIdfXbwbnddQ2TP6GrcNwbqngfODXOKAX3pYHsDLDmi2nVLTGAwjbvAz3UxeL5rXfO1TCht2K5y0eHd2cPokvl+x0JJ26UPYj+Cw7kr+AeOgxtQXlzd+JJiUYCmYanTez0/509UQrM+IGL8Tw8MjCDITR2sbPKjb+iI=
+	t=1768204535; cv=none; b=Q9Enqa4567qnfN2QH91DlMFHHiFm89YR4RDH6VweDbavb1iHcCnTtwTWCdHDOPOk5BBB9GNhDZw0wMEblWxz0RsUIP7XJzUGA2I5lnqDgdxV3F8c3q9dkpsVTsmA2cNWyYF4BRi1U2A814qcHBKkmjtEVq464NdPiRHpb1wUrEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768204245; c=relaxed/simple;
-	bh=53DML+O9wLCsLD9KygC2k2RcGp7erugQrQ/jauBngGo=;
+	s=arc-20240116; t=1768204535; c=relaxed/simple;
+	bh=4CSOdo9eYhE5PJT7HC+kQNABtdEv9KppJNeo2lA16Ek=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1mRDuzJ7yrOPbuzzBa9U+qKSyimgoglYMLCOuV5Woi98KIPr5PldoqvzkRQIQztWRRF3pvcmBRLTKH10XOxdUXpwTExl2TKPp+gXDlBBQ8TvPTYH3D2ellbxqWn6XA+WDNi/pcNfUgTTFFb9XaGGW8twP+GfdRzsYc3+W9xOUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQQIFhJm; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768204244; x=1799740244;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=53DML+O9wLCsLD9KygC2k2RcGp7erugQrQ/jauBngGo=;
-  b=FQQIFhJm/N7TTId6kSQflx7ayspKlTQyKrZaXWGF1C4KaxSMK7zQ3jkx
-   buTX/HE/7klxWeeeKSDOjk2ywNlRsO7bzxT/kMYv2CN0Hn+4fMxzYRtkQ
-   hLOl/ElEf3HgGCHjG3dGazoLa6zsnMUpp5SYzlO/F/FZNEXmQpLFb1zEi
-   IfSPTTYGVxc3/mz7PvKd2xBvGKVa+bnpnuIWCMMKcasIOV1ZYK20nwQ+Y
-   j/rNn9iK7g0FtKmmRbfzCC6cnejkvBGwVnd2LU9GmL9zsnGjR5sOXHArj
-   CPtrjKTEem1YhUk2MgtBEMGVgZKw6pU+k4XsCgVQ23BUsQ/2U5yE2nONF
-   Q==;
-X-CSE-ConnectionGUID: Bb+65xQWQga0msTWag1U0g==
-X-CSE-MsgGUID: SedXBILnR2u18LHRpya5og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="73106859"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="73106859"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 23:50:43 -0800
-X-CSE-ConnectionGUID: oOt9DnTJRGeA/gjnS4jsyg==
-X-CSE-MsgGUID: x01Uom+QSTSGrpav6bnpFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203826903"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.37])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 23:50:35 -0800
-Date: Mon, 12 Jan 2026 09:50:33 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Rob Herring <robh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	linux-acpi@vger.kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=WCq/UP9lAYpEB8oQat7qGCBI2uPOjYHCYYZUMkycF+8mzEAcZf5Si6iayhhhHETiYxLUxcVyAsRzfgj1dCUVczNbJg1jXniSIV3HoL8rP4gDgf6k/ytRue8/THAS79P+DEO+cmsIYynTUu+5JONhFhCm2jYARX0NBLPjcjgoE3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urpafOyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED628C116D0;
+	Mon, 12 Jan 2026 07:55:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768204535;
+	bh=4CSOdo9eYhE5PJT7HC+kQNABtdEv9KppJNeo2lA16Ek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=urpafOyHO/le+6imDzmzeWwPRk7lXh4ZaIv/v56i00WXjTJ45kPKUUBkZQm7+YZU/
+	 Ygfjjd7byCEFtH+VlheKanHxyQrywGkMJysK3CD/EvnVISIiFYUWh/nZyoGtUin0T+
+	 ID4+9KpJlgaph+jeX+gYZALDAzd7Cnt/+/+fUTzg0F9pHto/gLevLlgyKzVFsvxJIN
+	 HvO9OYm69hDZgBAViHyNubURSwAF5gHEiUbJTpMKHQUV5tl+Xn4fDs+D4ppA3+irmy
+	 aFjpNqtJUlyWoLvOHlUeRMrYFN0LGLkvYNGqNdLUq2jP9/Dx5d59QAgpdWFVp3MAY8
+	 1uE0VZR74ydJQ==
+Date: Mon, 12 Jan 2026 13:25:21 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
 Subject: Re: [PATCH v3 02/14] serdev: Add an API to find the serdev
  controller associated with the devicetree node
-Message-ID: <aWSnyc8Eiq56ckXB@smile.fi.intel.com>
+Message-ID: <xbzcmhuebjlhsn7zumudeel7dbcmrslxcrxde23rgxrmvoy73h@aj6yxcpuzh46>
 References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
  <20260110-pci-m2-e-v3-2-4faee7d0d5ae@oss.qualcomm.com>
+ <aWSnyc8Eiq56ckXB@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260110-pci-m2-e-v3-2-4faee7d0d5ae@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aWSnyc8Eiq56ckXB@smile.fi.intel.com>
 
-On Sat, Jan 10, 2026 at 12:26:20PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+On Mon, Jan 12, 2026 at 09:50:33AM +0200, Andy Shevchenko wrote:
+> On Sat, Jan 10, 2026 at 12:26:20PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> 
+> > Add of_find_serdev_controller_by_node() API to find the serdev controller
+> > device associated with the devicetree node.
+> 
+> Why OF-centric code? No, please do it fwnode-based.
+> 
 
-> Add of_find_serdev_controller_by_node() API to find the serdev controller
-> device associated with the devicetree node.
+No issues for me. But the existing APIs in serdev are OF based. If uniformity is
+not needed, I can change it to a fwnode based API.
 
-Why OF-centric code? No, please do it fwnode-based.
+- Mani
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+மணிவண்ணன் சதாசிவம்
 
