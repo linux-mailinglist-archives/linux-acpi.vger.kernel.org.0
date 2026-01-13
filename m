@@ -1,141 +1,251 @@
-Return-Path: <linux-acpi+bounces-20239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20253-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D06D1A305
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 17:21:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1491BD1A54E
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 17:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49312300287A
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 16:21:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D78530C9E42
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 16:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2322ECD1D;
-	Tue, 13 Jan 2026 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E2B30CD82;
+	Tue, 13 Jan 2026 16:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD/GBQRa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBQIpbWj"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFE72EA147
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2BA280A5A;
+	Tue, 13 Jan 2026 16:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768321279; cv=none; b=qipow8bE4nd+hnghUQraQUwer4zCwTaSCdp4rNdaxNjkRbosPZyr3KuRGRqtM8sP8V/agL8/FEsWqnuvx9t+gfI4xIkih4poZQwQH0qtn+1/Dh7U64zMBjsXJ3XTTMeeS9gyN36BJieaJ71JNSExpg6m6oJK5ZWzOGiDZBnOwvQ=
+	t=1768322088; cv=none; b=No1UYvaSuvS7z6kedw/9nm1pRuc8jxMIk9PlpMRsd//6RbIGpRxPOfDDD2KmFPwx+h5KISzlAEezi3lsUnIwPtcAYzsxbASbAgU67PepFuk6ckrxtzXGeNPFvafcXZC3qmEVqmh7aEYgjyXl6kx8AbUxUfYxZLdFCQXCVnvbhXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768321279; c=relaxed/simple;
-	bh=D8Og+TnqxWTARrxXIhMaCnl8G/jCeh7dT5FUokkKgKw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f21HUo8lLLdGxVfODtG3mwF6acMG08ac22QzZ8sQmx1g1Y7+SMMTO9knPx19cXkhUzbOnK1aS1Ia5BWRonmFzMmmjnxMRcQcSx3T9tjfB9JoFVpA64d5cJgXSW7MU0GczuuA9ILkNG9+ObrIlnrcLXJt0WtItWnrvdgiG9Epwak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD/GBQRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C78AC2BC86
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 16:21:19 +0000 (UTC)
+	s=arc-20240116; t=1768322088; c=relaxed/simple;
+	bh=h0gckYf/2eQitVs/qpheSug3BpiAFpijfck5eDwbWGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gM/Mo1dGO4rID6nsKrYO4+WeLGLIbMI66OS3Ul6PT/vbLU2KyVGH2EVLiEDDIaEAYkzggZc1Ydu9bGDBi0Gik4kzi1QyWbuui5EGYD6oZjZQc7BMYxxJn975ByHpz0GB+eeGQueCsJ7BJyGjIUGfr/ZQ/ZY0chhzgatoefMdSlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBQIpbWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8B0C116C6;
+	Tue, 13 Jan 2026 16:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768321279;
-	bh=D8Og+TnqxWTARrxXIhMaCnl8G/jCeh7dT5FUokkKgKw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KD/GBQRafnqR67qiez37Yk2q4I8b9ruD6D8bhkGgjNB9oKEiqskh6v5fMDtlS5SIZ
-	 +lYGhZ+CpYfq/JviG/IcT2nkKv3R+1TDtRMrDqyOZfeonrRPAtNEbQrb5yj96R1ooQ
-	 ty52s2CmTiHBRFI6QGSZSWGXIjAsA71QEuBYvGsDOcMN5swxmh8NPInxSgpI+N9JWn
-	 rWEBlN2eJZxblg+4nqceW6MechuIvd/86ApODS5pY0rpjayPhgkfP0eF+Ipx0Yb51y
-	 +lvY6NAvmdKb6ol4AK10OSkgugc6yVbmQ2IYqZK7F/8fRqbEoxcYEAHmIybvK/DDUr
-	 zASBP2b2SNnig==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c76d855ddbso2537880a34.3
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 08:21:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjSYrq9fGOAcMQxCiDruZlbIw94bdZqpRCpH4e4Bbrg12VMXCaEgdxRTZsHMt8ULO7nD4kVp7/Wg52@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGvyICkh0PwhPODfy58EnhncgmOEK87wb0zTTZDJaJ8PQfc4Gd
-	BafhEpiPYBNG0Mlua7AE4LgsVV32Ud0ccIMXWI247xIZFb6ypKppzLUoesmFn0KPWPk2fyV4V6M
-	39GBCKDIEcbO9PzqJIQFMvaQ1vOv7Fsw=
-X-Google-Smtp-Source: AGHT+IFRWKJGnCA715gcajWCIlYonkszNpc3ayEtzV2C4Lt3AILnB1bTvuzzQK82HN6KvKBOt9hXOx1Z3mj9VkHRE7g=
-X-Received: by 2002:a4a:dc47:0:b0:65f:2baf:4ad with SMTP id
- 006d021491bc7-65f54ef5eebmr7236592eaf.30.1768321278346; Tue, 13 Jan 2026
- 08:21:18 -0800 (PST)
+	s=k20201202; t=1768322088;
+	bh=h0gckYf/2eQitVs/qpheSug3BpiAFpijfck5eDwbWGg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FBQIpbWjH24K4Z06fK0wcuB9dT0G7ItXDQ7rKdptW7iiuM/mixJ1Z3/mDBMRMu4W2
+	 cZYo/UGeP92toiDT+ZADi1aDiKQdDNsGIx/09uENsNkcdDfllDgrIurJ2qPcix+LUq
+	 FhLxuv+gcvmnjabCS2sFd1CmdIiAWVSERAGXfBVOv9cP9C7HKCplH61YFkM7gkpQCX
+	 A1sHICLXghk5m6+bUyHsgE4LUehprgZwsn5DlnVHliC/BSPqMnHGNByl5mmsCWJG6M
+	 wwIDlTSBsb3jrTdnMgZq6ai1y3+vE65FObQAiypLy4k1ZMe7UNouaKmWIQkIideAqC
+	 wSPzt8FE5AddQ==
+Date: Tue, 13 Jan 2026 22:04:35 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 8/9] power: sequencing: pcie-m2: Add support for PCIe
+ M.2 Key E connectors
+Message-ID: <rxfnx6cq6dqifongrmhanpltacjqdkcn2yor7d7qsrrskmhueo@m3se3iyd4pfy>
+References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
+ <20260112-pci-m2-e-v4-8-eff84d2c6d26@oss.qualcomm.com>
+ <2432dafc-4101-4b23-90b2-85ea5459435c@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231104909.80362-1-feng.tang@linux.alibaba.com> <aWUpQ04uNcXtp0wR@bogus>
-In-Reply-To: <aWUpQ04uNcXtp0wR@bogus>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 13 Jan 2026 17:21:07 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gXMAFRCH8sn7OSb8Dc8XCf0wgi-CGre8i76KXAZ8tc-Q@mail.gmail.com>
-X-Gm-Features: AZwV_Qj3DG4eR3nH1g7Lggz9AsecgA1MyKWTqyQIRjdIUzS2Ijreo5GhIKB2-PI
-Message-ID: <CAJZ5v0gXMAFRCH8sn7OSb8Dc8XCf0wgi-CGre8i76KXAZ8tc-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Feng Tang <feng.tang@linux.alibaba.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, 
-	Hanjun Guo <guohanjun@huawei.com>, James Morse <james.morse@arm.com>, 
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2432dafc-4101-4b23-90b2-85ea5459435c@linux.dev>
 
-On Mon, Jan 12, 2026 at 6:03=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com>=
- wrote:
->
-> On Wed, Dec 31, 2025 at 06:49:09PM +0800, Feng Tang wrote:
-> > There was warning message about PPTT table:
-> >
-> >       "ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
-> >
-> > and it in turn caused scheduler warnings when building up the system.
-> > It took a while to root cause the problem be related a broken PPTT
-> > table which has wrong cache information.
-> >
-> > To speedup debugging similar issues, dump the PPTT table, which makes
-> > the warning more noticeable and helps bug hunting.
-> >
-> > The dumped info format on a ARM server is like:
-> >
-> >     ACPI PPTT: Processors:
-> >     P[  0][0x0024]: parent=3D0x0000 acpi_proc_id=3D  0 num_res=3D1 flag=
-s=3D0x11(package)
-> >     P[  1][0x005a]: parent=3D0x0024 acpi_proc_id=3D  0 num_res=3D1 flag=
-s=3D0x12()
-> >     P[  2][0x008a]: parent=3D0x005a acpi_proc_id=3D  0 num_res=3D3 flag=
-s=3D0x1a(leaf)
-> >     P[  3][0x00f2]: parent=3D0x005a acpi_proc_id=3D  1 num_res=3D3 flag=
-s=3D0x1a(leaf)
-> >     P[  4][0x015a]: parent=3D0x005a acpi_proc_id=3D  2 num_res=3D3 flag=
-s=3D0x1a(leaf)
-> >     ...
-> >     ACPI PPTT: Caches:
-> >     C[   0][0x0072]: flags=3D0x7f next_level=3D0x0000 size=3D0x4000000 =
- sets=3D65536  way=3D16 attribute=3D0xa  line_size=3D64
-> >     C[   1][0x00aa]: flags=3D0x7f next_level=3D0x00da size=3D0x10000   =
- sets=3D256    way=3D4  attribute=3D0x4  line_size=3D64
-> >     C[   2][0x00c2]: flags=3D0x7f next_level=3D0x00da size=3D0x10000   =
- sets=3D256    way=3D4  attribute=3D0x2  line_size=3D64
-> >     C[   3][0x00da]: flags=3D0x7f next_level=3D0x0000 size=3D0x100000  =
- sets=3D2048   way=3D8  attribute=3D0xa  line_size=3D64
-> >     ...
-> >
-> > It provides a global and straightforward view of the hierarchy of the
-> > processor and caches info of the platform, and from the offset info
-> > (the 3rd column), the child-parent relation could be checked.
-> >
-> > With this, the root cause of the original issue was pretty obvious,
-> > that there were some caches items missing which caused the issue when
-> > building up scheduler domain.
-> >
->
-> While this may sound like a good idea, it deviates from how errors in oth=
-er
-> table-parsing code are handled. Instead of dumping the entire table, it w=
-ould
-> be preferable to report the specific issue encountered during parsing.
->
-> I do not have a strong objection if Rafael is comfortable with this appro=
-ach;
+On Tue, Jan 13, 2026 at 10:26:04AM -0500, Sean Anderson wrote:
+> On 1/12/26 11:26, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > 
+> > Add support for handling the power sequence of the PCIe M.2 Key E
+> > connectors. These connectors are used to attach the Wireless Connectivity
+> > devices to the host machine including combinations of WiFi, BT, NFC using
+> > interfaces such as PCIe/SDIO for WiFi, USB/UART for BT and I2C for NFC.
+> > 
+> > Currently, this driver supports only the PCIe interface for WiFi and UART
+> > interface for BT. The driver also only supports driving the 3.3v/1.8v power
+> > supplies and W_DISABLE{1/2}# GPIOs. The optional signals of the Key E
+> > connectors are not currently supported.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > ---
+> >  drivers/power/sequencing/Kconfig          |   1 +
+> >  drivers/power/sequencing/pwrseq-pcie-m2.c | 110 ++++++++++++++++++++++++++++--
+> >  2 files changed, 104 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/power/sequencing/Kconfig b/drivers/power/sequencing/Kconfig
+> > index f5fff84566ba..29bd204319cc 100644
+> > --- a/drivers/power/sequencing/Kconfig
+> > +++ b/drivers/power/sequencing/Kconfig
+> > @@ -38,6 +38,7 @@ config POWER_SEQUENCING_TH1520_GPU
+> >  config POWER_SEQUENCING_PCIE_M2
+> >  	tristate "PCIe M.2 connector power sequencing driver"
+> >  	depends on OF || COMPILE_TEST
+> > +	depends on PCI
+> >  	help
+> >  	  Say Y here to enable the power sequencing driver for PCIe M.2
+> >  	  connectors. This driver handles the power sequencing for the M.2
+> > diff --git a/drivers/power/sequencing/pwrseq-pcie-m2.c b/drivers/power/sequencing/pwrseq-pcie-m2.c
+> > index e01e19123415..4b85a40d7692 100644
+> > --- a/drivers/power/sequencing/pwrseq-pcie-m2.c
+> > +++ b/drivers/power/sequencing/pwrseq-pcie-m2.c
+> > @@ -4,12 +4,16 @@
+> >   * Author: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> >   */
+> >  
+> > +#include <linux/err.h>
+> >  #include <linux/device.h>
+> > +#include <linux/delay.h>
+> > +#include <linux/gpio/consumer.h>
+> >  #include <linux/mod_devicetable.h>
+> >  #include <linux/module.h>
+> >  #include <linux/of.h>
+> >  #include <linux/of_graph.h>
+> >  #include <linux/of_platform.h>
+> > +#include <linux/pci.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/pwrseq/provider.h>
+> >  #include <linux/regulator/consumer.h>
+> > @@ -25,17 +29,19 @@ struct pwrseq_pcie_m2_ctx {
+> >  	const struct pwrseq_pcie_m2_pdata *pdata;
+> >  	struct regulator_bulk_data *regs;
+> >  	size_t num_vregs;
+> > -	struct notifier_block nb;
+> > +	struct gpio_desc *w_disable1_gpio;
+> > +	struct gpio_desc *w_disable2_gpio;
+> > +	struct device *dev;
+> >  };
+> >  
+> > -static int pwrseq_pcie_m2_m_vregs_enable(struct pwrseq_device *pwrseq)
+> > +static int pwrseq_pcie_m2_vregs_enable(struct pwrseq_device *pwrseq)
+> >  {
+> >  	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> >  
+> >  	return regulator_bulk_enable(ctx->num_vregs, ctx->regs);
+> >  }
+> >  
+> > -static int pwrseq_pcie_m2_m_vregs_disable(struct pwrseq_device *pwrseq)
+> > +static int pwrseq_pcie_m2_vregs_disable(struct pwrseq_device *pwrseq)
+> >  {
+> >  	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> >  
+> > @@ -44,18 +50,84 @@ static int pwrseq_pcie_m2_m_vregs_disable(struct pwrseq_device *pwrseq)
+> >  
+> >  static const struct pwrseq_unit_data pwrseq_pcie_m2_vregs_unit_data = {
+> >  	.name = "regulators-enable",
+> > -	.enable = pwrseq_pcie_m2_m_vregs_enable,
+> > -	.disable = pwrseq_pcie_m2_m_vregs_disable,
+> > +	.enable = pwrseq_pcie_m2_vregs_enable,
+> > +	.disable = pwrseq_pcie_m2_vregs_disable,
+> >  };
+> >  
+> > -static const struct pwrseq_unit_data *pwrseq_pcie_m2_m_unit_deps[] = {
+> > +static const struct pwrseq_unit_data *pwrseq_pcie_m2_unit_deps[] = {
+> >  	&pwrseq_pcie_m2_vregs_unit_data,
+> >  	NULL
+> >  };
+> >  
+> > +static int pwrseq_pci_m2_e_uart_enable(struct pwrseq_device *pwrseq)
+> > +{
+> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> > +
+> > +	return gpiod_set_value_cansleep(ctx->w_disable2_gpio, 0);
+> > +}
+> > +
+> > +static int pwrseq_pci_m2_e_uart_disable(struct pwrseq_device *pwrseq)
+> > +{
+> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> > +
+> > +	return gpiod_set_value_cansleep(ctx->w_disable2_gpio, 1);
+> > +}
+> > +
+> > +static const struct pwrseq_unit_data pwrseq_pcie_m2_e_uart_unit_data = {
+> > +	.name = "uart-enable",
+> > +	.deps = pwrseq_pcie_m2_unit_deps,
+> > +	.enable = pwrseq_pci_m2_e_uart_enable,
+> > +	.disable = pwrseq_pci_m2_e_uart_disable,
+> > +};
+> > +
+> > +static int pwrseq_pci_m2_e_pcie_enable(struct pwrseq_device *pwrseq)
+> > +{
+> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> > +
+> > +	return gpiod_set_value_cansleep(ctx->w_disable1_gpio, 0);
+> > +}
+> > +
+> > +static int pwrseq_pci_m2_e_pcie_disable(struct pwrseq_device *pwrseq)
+> > +{
+> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
+> > +
+> > +	return gpiod_set_value_cansleep(ctx->w_disable1_gpio, 1);
+> > +}
+> > +
+> > +static const struct pwrseq_unit_data pwrseq_pcie_m2_e_pcie_unit_data = {
+> > +	.name = "pcie-enable",
+> > +	.deps = pwrseq_pcie_m2_unit_deps,
+> > +	.enable = pwrseq_pci_m2_e_pcie_enable,
+> > +	.disable = pwrseq_pci_m2_e_pcie_disable,
+> > +};
+> > +
+> >  static const struct pwrseq_unit_data pwrseq_pcie_m2_m_pcie_unit_data = {
+> >  	.name = "pcie-enable",
+> > -	.deps = pwrseq_pcie_m2_m_unit_deps,
+> > +	.deps = pwrseq_pcie_m2_unit_deps,
+> > +};
+> > +
+> > +static int pwrseq_pcie_m2_e_pwup_delay(struct pwrseq_device *pwrseq)
+> > +{
+> > +	/*
+> > +	 * FIXME: This delay is only required for some Qcom WLAN/BT cards like
+> > +	 * WCN7850 and not for all devices. But currently, there is no way to
+> > +	 * identify the device model before enumeration.
+> > +	 */
+> > +	msleep(50);
+> 
+> Section 3.1.4 of the M.2 spec says that "Power Valid to PERST# input
+> inactive" (T_PVPGL) is "Implementation specific recommended 50 ms." So I
+> think we should delay for at least 50 ms for all M.2 cards.
 
-I'm not a big fan of it TBH.
+Yes, this pretty much looks like T_PVPGL, but this delay is already accounted
+for in pcie-qcom.c as a part of PERST# deassertion (I believe WCN7850 was tested
+with Qcom host). I will check it and get back.
 
-> however, it does differ from the established pattern used by similar code=
-.
-> Dumping the entire table in a custom manner is not the standard way of
-> handling parsing errors. Just my opinion.
+> Additionally, the PCIe CEM specifies that "Power stable to PERST#
+> inactive" (T_PVPERL) must be at least 100 ms. So I think we should just
+> delay for 100 ms regardless of the slot, perhaps making this
+> configurable in the devicetree if e.g. the system integrator knows the
+> soldered-down M.2 requires less initialization time. This is exactly
+> what I proposed in [1].
+> 
 
-I agree.
+I'd love to do it in the pwrctrl/pwrseq driver, but most of the controller
+drivers are already handling this delay as a part of their PERST# deassertion.
+This was the only reason I didn't add the T_PVPERL delay here. Also, those
+controller drivers handle non-pwrctrl design as well (for backwards
+compatibility), so they need the delay anyway and it will make them messy if the
+delay is only handled in non-pwrctrl case.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
