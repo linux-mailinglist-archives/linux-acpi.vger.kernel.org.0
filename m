@@ -1,251 +1,145 @@
-Return-Path: <linux-acpi+bounces-20253-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1491BD1A54E
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 17:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C08D1A4E7
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 17:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D78530C9E42
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 16:34:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0FD23063800
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E2B30CD82;
-	Tue, 13 Jan 2026 16:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E028221F13;
+	Tue, 13 Jan 2026 16:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBQIpbWj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hT2yjFUY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2BA280A5A;
-	Tue, 13 Jan 2026 16:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020452EC084;
+	Tue, 13 Jan 2026 16:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768322088; cv=none; b=No1UYvaSuvS7z6kedw/9nm1pRuc8jxMIk9PlpMRsd//6RbIGpRxPOfDDD2KmFPwx+h5KISzlAEezi3lsUnIwPtcAYzsxbASbAgU67PepFuk6ckrxtzXGeNPFvafcXZC3qmEVqmh7aEYgjyXl6kx8AbUxUfYxZLdFCQXCVnvbhXo=
+	t=1768321921; cv=none; b=rVjStsItXaNDH4mLDzYIcdrlRMVVDdtgKbehI0R+XsoTeEnnpzo/QPkCBFY8Ctvfce/vTvAmyy9seJiHiNnKVqB7To+ezKMEPAJ49PCrOSbORnTGWJN/TX1eShZZKJ5B6fe5dSGbM+s8SH/umoLs46HvSXrYDIpukIRr63WkbcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768322088; c=relaxed/simple;
-	bh=h0gckYf/2eQitVs/qpheSug3BpiAFpijfck5eDwbWGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gM/Mo1dGO4rID6nsKrYO4+WeLGLIbMI66OS3Ul6PT/vbLU2KyVGH2EVLiEDDIaEAYkzggZc1Ydu9bGDBi0Gik4kzi1QyWbuui5EGYD6oZjZQc7BMYxxJn975ByHpz0GB+eeGQueCsJ7BJyGjIUGfr/ZQ/ZY0chhzgatoefMdSlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBQIpbWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8B0C116C6;
-	Tue, 13 Jan 2026 16:34:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768322088;
-	bh=h0gckYf/2eQitVs/qpheSug3BpiAFpijfck5eDwbWGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FBQIpbWjH24K4Z06fK0wcuB9dT0G7ItXDQ7rKdptW7iiuM/mixJ1Z3/mDBMRMu4W2
-	 cZYo/UGeP92toiDT+ZADi1aDiKQdDNsGIx/09uENsNkcdDfllDgrIurJ2qPcix+LUq
-	 FhLxuv+gcvmnjabCS2sFd1CmdIiAWVSERAGXfBVOv9cP9C7HKCplH61YFkM7gkpQCX
-	 A1sHICLXghk5m6+bUyHsgE4LUehprgZwsn5DlnVHliC/BSPqMnHGNByl5mmsCWJG6M
-	 wwIDlTSBsb3jrTdnMgZq6ai1y3+vE65FObQAiypLy4k1ZMe7UNouaKmWIQkIideAqC
-	 wSPzt8FE5AddQ==
-Date: Tue, 13 Jan 2026 22:04:35 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 8/9] power: sequencing: pcie-m2: Add support for PCIe
- M.2 Key E connectors
-Message-ID: <rxfnx6cq6dqifongrmhanpltacjqdkcn2yor7d7qsrrskmhueo@m3se3iyd4pfy>
-References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
- <20260112-pci-m2-e-v4-8-eff84d2c6d26@oss.qualcomm.com>
- <2432dafc-4101-4b23-90b2-85ea5459435c@linux.dev>
+	s=arc-20240116; t=1768321921; c=relaxed/simple;
+	bh=elOL5vf13bvux5sGmCgBwMWCcvFXHP/z36pbMRr677I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eKfRiVmiErhbe5QxQj/f2U6leN6dhcHsWm1JBah1lnCcJotWkUXBljSsNWIq9XmI+gqT+XARk6ruQKkZPlFHFD3Yqsz48jGDKDWiYKD/U4vQVkpyaEFzjyS0fFlJ6ufAyXE+70OJzKlhhgATBkFpMnc0suGGHW0kUz3zihDjMW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hT2yjFUY; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768321919; x=1799857919;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=elOL5vf13bvux5sGmCgBwMWCcvFXHP/z36pbMRr677I=;
+  b=hT2yjFUY1uRwZUvvXmyAZlq34aqjdjP20FqOirVFBR3Q9J7IOJTuEbR6
+   lCvsMbkQtfzav9IOXeEQbZrMs6MtzCJ887IdjNw1SHwIRZq/JbVowYfcr
+   8p55Mr+cfmtGKds4UQhsND7THJ1fxqeWt7dZ+MFbOppF/eZbydWbMCI7d
+   F8VEvZBexdLi+RYeBC7MLMCV/qo11R8gYGlIlRkUQd+kRWVrMztr/pPaX
+   wogWseka67sWn+6+bkk0Gz/zmI4TBFmnw+4SDnb8tWH4go1mavKdRlo8U
+   FsOO6/TJlPB5auUVzPD9Z++sovU+OYMWIX+Pn+LzEViAjAHSm9Mh9E9lo
+   w==;
+X-CSE-ConnectionGUID: L4R73Q4TSR6PgZzExic4RQ==
+X-CSE-MsgGUID: JzYd0QlwSn2fuh/m2OkV+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69520981"
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="69520981"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 08:31:58 -0800
+X-CSE-ConnectionGUID: DAOd7/YiRayTyK8TA8RxQg==
+X-CSE-MsgGUID: ci9wyHnURjSS6rWQ0y12ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="204060102"
+Received: from bnilawar-desk2.iind.intel.com ([10.190.239.41])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 08:31:54 -0800
+From: Badal Nilawar <badal.nilawar@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Cc: anshuman.gupta@intel.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	varun.gupta@intel.com,
+	ville.syrjala@linux.intel.com,
+	uma.shankar@intel.com,
+	karthik.poosa@intel.com,
+	matthew.auld@intel.com,
+	sk.anirban@intel.com,
+	raag.jadav@intel.com
+Subject: [PATCH v6 00/12] VRAM Self Refresh 
+Date: Tue, 13 Jan 2026 22:12:01 +0530
+Message-ID: <20260113164200.1151788-14-badal.nilawar@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2432dafc-4101-4b23-90b2-85ea5459435c@linux.dev>
 
-On Tue, Jan 13, 2026 at 10:26:04AM -0500, Sean Anderson wrote:
-> On 1/12/26 11:26, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > 
-> > Add support for handling the power sequence of the PCIe M.2 Key E
-> > connectors. These connectors are used to attach the Wireless Connectivity
-> > devices to the host machine including combinations of WiFi, BT, NFC using
-> > interfaces such as PCIe/SDIO for WiFi, USB/UART for BT and I2C for NFC.
-> > 
-> > Currently, this driver supports only the PCIe interface for WiFi and UART
-> > interface for BT. The driver also only supports driving the 3.3v/1.8v power
-> > supplies and W_DISABLE{1/2}# GPIOs. The optional signals of the Key E
-> > connectors are not currently supported.
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  drivers/power/sequencing/Kconfig          |   1 +
-> >  drivers/power/sequencing/pwrseq-pcie-m2.c | 110 ++++++++++++++++++++++++++++--
-> >  2 files changed, 104 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/power/sequencing/Kconfig b/drivers/power/sequencing/Kconfig
-> > index f5fff84566ba..29bd204319cc 100644
-> > --- a/drivers/power/sequencing/Kconfig
-> > +++ b/drivers/power/sequencing/Kconfig
-> > @@ -38,6 +38,7 @@ config POWER_SEQUENCING_TH1520_GPU
-> >  config POWER_SEQUENCING_PCIE_M2
-> >  	tristate "PCIe M.2 connector power sequencing driver"
-> >  	depends on OF || COMPILE_TEST
-> > +	depends on PCI
-> >  	help
-> >  	  Say Y here to enable the power sequencing driver for PCIe M.2
-> >  	  connectors. This driver handles the power sequencing for the M.2
-> > diff --git a/drivers/power/sequencing/pwrseq-pcie-m2.c b/drivers/power/sequencing/pwrseq-pcie-m2.c
-> > index e01e19123415..4b85a40d7692 100644
-> > --- a/drivers/power/sequencing/pwrseq-pcie-m2.c
-> > +++ b/drivers/power/sequencing/pwrseq-pcie-m2.c
-> > @@ -4,12 +4,16 @@
-> >   * Author: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> >   */
-> >  
-> > +#include <linux/err.h>
-> >  #include <linux/device.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/gpio/consumer.h>
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/module.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_graph.h>
-> >  #include <linux/of_platform.h>
-> > +#include <linux/pci.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/pwrseq/provider.h>
-> >  #include <linux/regulator/consumer.h>
-> > @@ -25,17 +29,19 @@ struct pwrseq_pcie_m2_ctx {
-> >  	const struct pwrseq_pcie_m2_pdata *pdata;
-> >  	struct regulator_bulk_data *regs;
-> >  	size_t num_vregs;
-> > -	struct notifier_block nb;
-> > +	struct gpio_desc *w_disable1_gpio;
-> > +	struct gpio_desc *w_disable2_gpio;
-> > +	struct device *dev;
-> >  };
-> >  
-> > -static int pwrseq_pcie_m2_m_vregs_enable(struct pwrseq_device *pwrseq)
-> > +static int pwrseq_pcie_m2_vregs_enable(struct pwrseq_device *pwrseq)
-> >  {
-> >  	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> >  
-> >  	return regulator_bulk_enable(ctx->num_vregs, ctx->regs);
-> >  }
-> >  
-> > -static int pwrseq_pcie_m2_m_vregs_disable(struct pwrseq_device *pwrseq)
-> > +static int pwrseq_pcie_m2_vregs_disable(struct pwrseq_device *pwrseq)
-> >  {
-> >  	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> >  
-> > @@ -44,18 +50,84 @@ static int pwrseq_pcie_m2_m_vregs_disable(struct pwrseq_device *pwrseq)
-> >  
-> >  static const struct pwrseq_unit_data pwrseq_pcie_m2_vregs_unit_data = {
-> >  	.name = "regulators-enable",
-> > -	.enable = pwrseq_pcie_m2_m_vregs_enable,
-> > -	.disable = pwrseq_pcie_m2_m_vregs_disable,
-> > +	.enable = pwrseq_pcie_m2_vregs_enable,
-> > +	.disable = pwrseq_pcie_m2_vregs_disable,
-> >  };
-> >  
-> > -static const struct pwrseq_unit_data *pwrseq_pcie_m2_m_unit_deps[] = {
-> > +static const struct pwrseq_unit_data *pwrseq_pcie_m2_unit_deps[] = {
-> >  	&pwrseq_pcie_m2_vregs_unit_data,
-> >  	NULL
-> >  };
-> >  
-> > +static int pwrseq_pci_m2_e_uart_enable(struct pwrseq_device *pwrseq)
-> > +{
-> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> > +
-> > +	return gpiod_set_value_cansleep(ctx->w_disable2_gpio, 0);
-> > +}
-> > +
-> > +static int pwrseq_pci_m2_e_uart_disable(struct pwrseq_device *pwrseq)
-> > +{
-> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> > +
-> > +	return gpiod_set_value_cansleep(ctx->w_disable2_gpio, 1);
-> > +}
-> > +
-> > +static const struct pwrseq_unit_data pwrseq_pcie_m2_e_uart_unit_data = {
-> > +	.name = "uart-enable",
-> > +	.deps = pwrseq_pcie_m2_unit_deps,
-> > +	.enable = pwrseq_pci_m2_e_uart_enable,
-> > +	.disable = pwrseq_pci_m2_e_uart_disable,
-> > +};
-> > +
-> > +static int pwrseq_pci_m2_e_pcie_enable(struct pwrseq_device *pwrseq)
-> > +{
-> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> > +
-> > +	return gpiod_set_value_cansleep(ctx->w_disable1_gpio, 0);
-> > +}
-> > +
-> > +static int pwrseq_pci_m2_e_pcie_disable(struct pwrseq_device *pwrseq)
-> > +{
-> > +	struct pwrseq_pcie_m2_ctx *ctx = pwrseq_device_get_drvdata(pwrseq);
-> > +
-> > +	return gpiod_set_value_cansleep(ctx->w_disable1_gpio, 1);
-> > +}
-> > +
-> > +static const struct pwrseq_unit_data pwrseq_pcie_m2_e_pcie_unit_data = {
-> > +	.name = "pcie-enable",
-> > +	.deps = pwrseq_pcie_m2_unit_deps,
-> > +	.enable = pwrseq_pci_m2_e_pcie_enable,
-> > +	.disable = pwrseq_pci_m2_e_pcie_disable,
-> > +};
-> > +
-> >  static const struct pwrseq_unit_data pwrseq_pcie_m2_m_pcie_unit_data = {
-> >  	.name = "pcie-enable",
-> > -	.deps = pwrseq_pcie_m2_m_unit_deps,
-> > +	.deps = pwrseq_pcie_m2_unit_deps,
-> > +};
-> > +
-> > +static int pwrseq_pcie_m2_e_pwup_delay(struct pwrseq_device *pwrseq)
-> > +{
-> > +	/*
-> > +	 * FIXME: This delay is only required for some Qcom WLAN/BT cards like
-> > +	 * WCN7850 and not for all devices. But currently, there is no way to
-> > +	 * identify the device model before enumeration.
-> > +	 */
-> > +	msleep(50);
-> 
-> Section 3.1.4 of the M.2 spec says that "Power Valid to PERST# input
-> inactive" (T_PVPGL) is "Implementation specific recommended 50 ms." So I
-> think we should delay for at least 50 ms for all M.2 cards.
+Changes in v6:
+  - Addressed review comments from Rafael J. Wysocki.
+  - Added now patch to refactor PM Sleep Ops
 
-Yes, this pretty much looks like T_PVPGL, but this delay is already accounted
-for in pcie-qcom.c as a part of PERST# deassertion (I believe WCN7850 was tested
-with Qcom host). I will check it and get back.
+Changes in v5:
+  - Added Co-developed by, whereever necessary
+  - Addressed review comments 
+  - Added new patch to handle vrsr in s2idle
+    drm/xe/pm/s2idle: Don't evict user BOs for D3hot and D3cold-VRSR state  
 
-> Additionally, the PCIe CEM specifies that "Power stable to PERST#
-> inactive" (T_PVPERL) must be at least 100 ms. So I think we should just
-> delay for 100 ms regardless of the slot, perhaps making this
-> configurable in the devicetree if e.g. the system integrator knows the
-> soldered-down M.2 requires less initialization time. This is exactly
-> what I proposed in [1].
-> 
+Changes in v4:
+  - Resolved build warnings
 
-I'd love to do it in the pwrctrl/pwrseq driver, but most of the controller
-drivers are already handling this delay as a part of their PERST# deassertion.
-This was the only reason I didn't add the T_PVPERL delay here. Also, those
-controller drivers handle non-pwrctrl design as well (for backwards
-compatibility), so they need the delay anyway and it will make them messy if the
-delay is only handled in non-pwrctrl case.
+Changes in v3:
+ PCIe ACPI Patches:
+  - dropped the notifier block code and added patch to allow only one Aux
+    power limit request per root port (Rafael J. Wysocki)
+  - Addressed Review comments (Rafael J. Wysocki, Bjorn Helgaas)
 
-- Mani
+ Xe Pacthes:
+  - Addressed Review comments (Bjorn Helgaas)
+
+Anshuman Gupta (6):
+  PCI/ACPI: Add D3cold Aux Power Limit_DSM method
+  PCI/ACPI: Add PERST# Assertion Delay _DSM method
+  drm/xe/vrsr: Detect VRSR Capability
+  drm/xe/vrsr: Refactor d3cold.allowed to a enum
+  drm/xe/pm: D3cold target state
+  drm/xe/vrsr: Enable VRSR
+
+Badal Nilawar (6):
+  drm/xe/vrsr: Introduce flag has_vrsr
+  drm/xe/vrsr: Initialize VRSR feature
+  drm/xe/vrsr: Enable VRSR on default VGA boot device
+  drm/xe/pm: Refactor PM Sleep Ops
+  drm/xe/pm/s2idle: Don't evict user BOs D3cold-VRSR state
+  drm/xe/vrsr: Introduce a debugfs node named vrsr_capable
+
+ drivers/gpu/drm/i915/display/intel_display.c |  22 ++
+ drivers/gpu/drm/i915/display/intel_display.h |   1 +
+ drivers/gpu/drm/xe/display/xe_display.c      |  11 +-
+ drivers/gpu/drm/xe/display/xe_display.h      |   2 +
+ drivers/gpu/drm/xe/regs/xe_regs.h            |   3 +
+ drivers/gpu/drm/xe/xe_debugfs.c              |   2 +
+ drivers/gpu/drm/xe/xe_device_types.h         |  12 +-
+ drivers/gpu/drm/xe/xe_pci.c                  |  76 +++++-
+ drivers/gpu/drm/xe/xe_pci_types.h            |   1 +
+ drivers/gpu/drm/xe/xe_pcode_api.h            |   7 +
+ drivers/gpu/drm/xe/xe_pm.c                   | 244 ++++++++++++++++---
+ drivers/gpu/drm/xe/xe_pm.h                   |  14 +-
+ drivers/pci/pci-acpi.c                       | 196 +++++++++++++++
+ include/linux/pci-acpi.h                     |  18 +-
+ 14 files changed, 564 insertions(+), 45 deletions(-)
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.52.0
+
 
