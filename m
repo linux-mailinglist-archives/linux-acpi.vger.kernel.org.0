@@ -1,127 +1,154 @@
-Return-Path: <linux-acpi+bounces-20217-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20218-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65471D153C3
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 21:33:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88ADBD165BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 03:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D2573015116
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jan 2026 20:33:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 225B03021E6B
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 02:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FBE33C50A;
-	Mon, 12 Jan 2026 20:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9231E252292;
+	Tue, 13 Jan 2026 02:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="n7cVtAXY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H81LghPx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay10.grserver.gr (relay10.grserver.gr [37.27.248.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6DD33C1A5
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 20:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.27.248.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325817B50F;
+	Tue, 13 Jan 2026 02:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768250010; cv=none; b=r+JlzgfA/Yas84XX1N7q8nrEpeYUKsnwImlNJwzG8njkFEsU1wJKCOhxLYh0tuOsAkorruZ5zukhFjjqufZQW5zTaTF2EZF2Io7tZKzMq2adS3SHS6x5zl8jGkUY3LyC6XxG2pgVoD13x7ejJ9YDvePPY08j1qhfZimehtj5Om8=
+	t=1768272671; cv=none; b=HpLcbNTSEY4S0sU8mxwH3H/HDC+eSgvPDppJFx0kTWzdN0FlUZgEo0B5rhf6XFWo8uyswL1WN0sdXzBigHcpXdPq3RZlLkJQeM4HnCLeYx6ot/iznIfwlLDttiu8xSgigt25tmiOXH4IvtD1lnYKMVDWL44CyT6dZP9dPI0Jt+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768250010; c=relaxed/simple;
-	bh=D53CavMbAKBuP8HtgM8AHosgNw/493IlAvWgsA9X9Xg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j80fYe58oWSEl0yyCz96Ey8sVASL3YeK2AjJjvMp9yi6WlRw9YV0e2WQYaatfW+k/PkYkUCmptVxczgQXNa9g8WfHm+vap59VogZttCvwE1pWpxYIcvIhP1UMYsZSRc5mB7xOKdTj9OAic3FTtC5ePINRNm4ry3zTARkSWUUTHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=n7cVtAXY; arc=none smtp.client-ip=37.27.248.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay10 (localhost.localdomain [127.0.0.1])
-	by relay10.grserver.gr (Proxmox) with ESMTP id B0EE745B74
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 22:33:20 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay10.grserver.gr (Proxmox) with ESMTPS id 403C645B6A
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 22:33:20 +0200 (EET)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id 314B42023D0
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 22:33:19 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1768249999;
-	bh=D53CavMbAKBuP8HtgM8AHosgNw/493IlAvWgsA9X9Xg=;
-	h=Received:From:Subject:To;
-	b=n7cVtAXYPtqBENB5E3l9iPgs8q15sJPV5ieCuhi/TPCCL6PsgdER+bMHP+INIe7wJ
-	 eXK3DrhfcftMm4FCQGJd1FO7IPkWwKGUFsx60yc2Q/+YFOYYUbukFzQBmCNmlU32rE
-	 y+kbVG5hwqUtOzl/Tsb24tB2PWTyS8jlHeUnlfA5Qk6Z3OzUWyLT9cbhnAeBnq3gze
-	 in1Vz67CojM3Xhjs9k08Wlo1NXJtFd7Qs6OTF3di0LRG9cO2O7aOMiAmNEd41ltM3D
-	 pLYzReujQriT/AbUiT6pyIUdRoB0rP8nzbK2KCXKVtF916C7308t7DLOQsLZRE3icj
-	 B1ScWcPKXMoqQ==
-Authentication-Results: linux3247.grserver.gr;
-        spf=pass (sender IP is 209.85.208.182) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f182.google.com
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f182.google.com with SMTP id
- 38308e7fff4ca-382fceabddfso47681351fa.1
-        for <linux-acpi@vger.kernel.org>;
- Mon, 12 Jan 2026 12:33:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUnkc9D0Mlr0dKGCxUQDL6ZO4bDrvY4sTXEMMHLYeZXxN350PhHDzAb2mA2Ec6L2kH59LdPO0C9ci9e@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/vm5w15N7N4mrQ6nNTKMGFj8vShnRYweJepFjHKh8y3bjVhCK
-	jvIiFHWXedmq1xNybWriS2iz2JN92y9zOUPXWaFmr00KJc1/xhoT4ov3n5lTTn9FukckCH5hWPm
-	yAg2OCfBEx5Rm22gukkX/dcgZZwYgi60=
-X-Google-Smtp-Source: 
- AGHT+IHmnpzAjSY4F/y+o1CoN1AKtFybv+5Ydswwk61OG3azU/cY49c7LCe34F8bVKqTpvM1EzkQyG/ZwUaxCHXn1Mc=
-X-Received: by 2002:a05:651c:1507:b0:383:2537:f111 with SMTP id
- 38308e7fff4ca-3832537f372mr35065871fa.30.1768249998576; Mon, 12 Jan 2026
- 12:33:18 -0800 (PST)
+	s=arc-20240116; t=1768272671; c=relaxed/simple;
+	bh=/mJQlAeaTIst1Gk/xi6OOUvkwLzHDp2UUSLNiVabZsM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P0PSevPY40n21Jn1oN8ejIuc7PDZmxUwjmhAz+XS5LmApVcHKknTGylAYJWwHJVHDTmOSn1XG0hABXFg2NFNLzYYfg6KXdU5CNT9A2oNfDpDXpugl1YGffgRFO2e5mXjk9YIkKo9egxqqjG3xJYqSZ5ouBxAQMcVdqIiJbFWQ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H81LghPx; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768272670; x=1799808670;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/mJQlAeaTIst1Gk/xi6OOUvkwLzHDp2UUSLNiVabZsM=;
+  b=H81LghPxWBUHWuNr5fln7NOURHcZWUR8PdkN4ebG4AISBuJqx6uJ1sv1
+   kKAesBCevJ6CoKzrzyd9/NF1ygxwpQdVrWOHj31phsw6UeMRTP6iu6HqW
+   pTdmAqYqR3NbIJZ1kWxE520wmWZADCX3kfmNF9WqVj1Xlt7AHtj4OnOpv
+   YqmpA/vT6Mxp13ERxiMQtFWhlJgY0b3sBGC+Gk8E7NgO/MjDyRDLjjosc
+   FeNho/N+zjjTAPpMFHvqqJFjHig2nUMJ0gDkg/qa8HCua4nWSkl8Z8EWG
+   aZnrlKUeKhlhHXI9flN+ouRcAcBenFxPBite+2iKlrX6PSLk4J+qLn2ue
+   g==;
+X-CSE-ConnectionGUID: JkB7TRffRsWah9einsyOIQ==
+X-CSE-MsgGUID: 2VdVIziGQv2hp1gaustLjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69465130"
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="69465130"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 18:51:10 -0800
+X-CSE-ConnectionGUID: jerMGdq1Rh2E+ahNfMtRbg==
+X-CSE-MsgGUID: Ng1BtrctTu285bBXajFp2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="204163180"
+Received: from xpardee-mobl.amr.corp.intel.com (HELO [10.124.129.8]) ([10.124.129.8])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 18:51:09 -0800
+Message-ID: <468babfa-bc4c-4ca9-8649-207576ef7df4@linux.intel.com>
+Date: Mon, 12 Jan 2026 18:51:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251226102656.6296-1-lkml@antheas.dev>
-In-Reply-To: <20251226102656.6296-1-lkml@antheas.dev>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Mon, 12 Jan 2026 22:33:06 +0200
-X-Gmail-Original-Message-ID: 
- <CAGwozwF5wsb8pYmHj5G0uTfr+3vx+HhrfOR9t-pEGPw-jjvbHg@mail.gmail.com>
-X-Gm-Features: AZwV_QiSJS4k4LjB8D5bJeXarreCNyXdhNZRY_SerkNgwB-TxkH6MpqT7UBBgvU
-Message-ID: 
- <CAGwozwF5wsb8pYmHj5G0uTfr+3vx+HhrfOR9t-pEGPw-jjvbHg@mail.gmail.com>
-Subject: Re: [RFC v1 0/8] acpi/x86: s2idle: Introduce and implement runtime
- standby ABI for ACPI s0ix platforms
-To: dmitry.osipenko@collabora.com
-Cc: bob.beckett@collabora.com, bookeldor@gmail.com, hadess@hadess.net,
-	jaap@haitsma.org, kernel@collabora.com, lennart@poettering.net,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, mccann@jhu.edu,
-	rafael@kernel.org, richard@hughsie.com, sebastian.reichel@collabora.com,
-	superm1@kernel.org, systemd-devel@lists.freedesktop.org, xaver.hugl@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <176824999949.2473147.9192810424981006065@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] ACPI: scan: Use acpi_setup_gpe_for_wake() for
+ buttons
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ Todd Brandt <todd.e.brandt@linux.intel.com>
+References: <4715380.LvFx2qVVIh@rafael.j.wysocki>
+ <2259694.irdbgypaU6@rafael.j.wysocki>
+Content-Language: en-US
+From: Xi Pardee <xi.pardee@linux.intel.com>
+In-Reply-To: <2259694.irdbgypaU6@rafael.j.wysocki>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Dec 2025 at 12:27, Antheas Kapenekakis <lkml@antheas.dev> wrote:
+This patch fixes the suspend failing regression caused by a recent ACPI 
+changes
+in intelnext kernel. I tested this patch on Panther Lake platform and it 
+can suspend
+and resume successfully with this patch.
+
+Tested-by: Xi Pardee <xi.pardee@linux.intel.com>
+
+On 1/10/2026 3:58 AM, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> This series introduces a new runtime standby ABI to allow firing Modern
-> Standby firmware notifications that modify hardware appearance from userspace
-> without suspending the kernel. This allows userspace to set the inactivity
-> state of the device so that it looks like it is asleep (e.g., flashing the
-> power button) while still being able to perform basic computations.
+> After starting to use platform devices for representing buttons
+> enumerated via ACPI, acpi_mark_gpe_for_wake() is insufficient for
+> preparing their GPEs to wake up the system from sleep because it
+> does not change the "dispatch type" of the given GPE to
+> ACPI_GPE_DISPATCH_NOTIFY.  Subsequently, this causes acpi_enable_gpe()
+> in __acpi_device_wakeup_enable() to fail and system suspend transitions
+> to be aborted.
 >
-> snip
+> Address this by updating acpi_wakeup_gpe_init() to use
+> acpi_setup_gpe_for_wake() for buttons like for any other devices.
 >
-> base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-> --
-> 2.52.0
+> This allows acpi_setup_gpe_for_wake() to be simplified further because
+> buttons are not a special case in it any more, so do that as well.
 >
-
-Happy new year everyone
-
-Small bump on this as all of us are starting to get back from holidays
-
-I still have to bump an asus series before I get back to this. I would
-appreciate some feedback in the interim.
-
-I think targeting 6.20/7.0? is unrealistic so there is no rush from my side
-
-Antheas
-
+> Fixes: 52d864019636 ("ACPI: button: Convert the driver to a platform one")
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>   drivers/acpi/scan.c |   18 ++++--------------
+>   1 file changed, 4 insertions(+), 14 deletions(-)
+>
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -999,15 +999,11 @@ static int acpi_bus_extract_wakeup_devic
+>   	return err;
+>   }
+>   
+> -/* Do not use a button for S5 wakeup */
+> -#define ACPI_AVOID_WAKE_FROM_S5		BIT(0)
+> -
+>   static bool acpi_wakeup_gpe_init(struct acpi_device *device)
+>   {
+>   	static const struct acpi_device_id button_device_ids[] = {
+> -		{"PNP0C0C", 0},				/* Power button */
+> -		{"PNP0C0D", ACPI_AVOID_WAKE_FROM_S5},	/* Lid */
+> -		{"PNP0C0E", ACPI_AVOID_WAKE_FROM_S5},	/* Sleep button */
+> +		{"PNP0C0D", 0},	/* Lid */
+> +		{"PNP0C0E", 0},	/* Sleep button */
+>   		{"", 0},
+>   	};
+>   	struct acpi_device_wakeup *wakeup = &device->wakeup;
+> @@ -1016,15 +1012,9 @@ static bool acpi_wakeup_gpe_init(struct
+>   
+>   	wakeup->flags.notifier_present = 0;
+>   
+> -	/* Power button, Lid switch always enable wakeup */
+>   	match = acpi_match_acpi_device(button_device_ids, device);
+> -	if (match) {
+> -		if ((match->driver_data & ACPI_AVOID_WAKE_FROM_S5) &&
+> -		    wakeup->sleep_state == ACPI_STATE_S5)
+> -			wakeup->sleep_state = ACPI_STATE_S4;
+> -		acpi_mark_gpe_for_wake(wakeup->gpe_device, wakeup->gpe_number);
+> -		return true;
+> -	}
+> +	if (match && wakeup->sleep_state == ACPI_STATE_S5)
+> +		wakeup->sleep_state = ACPI_STATE_S4;
+>   
+>   	status = acpi_setup_gpe_for_wake(device->handle, wakeup->gpe_device,
+>   					 wakeup->gpe_number);
+>
+>
+>
 
