@@ -1,134 +1,124 @@
-Return-Path: <linux-acpi+bounces-20228-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20229-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D670BD1862F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 12:14:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8310D191E6
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 14:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0885F30A9F05
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 11:05:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 784773014BD6
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 13:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E666A38A729;
-	Tue, 13 Jan 2026 11:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA503904EC;
+	Tue, 13 Jan 2026 13:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZmfJJdZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcAZXn31"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5265389DF0;
-	Tue, 13 Jan 2026 11:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D11838FF0B;
+	Tue, 13 Jan 2026 13:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768302303; cv=none; b=EGfq87qAnyzrkI6c0p+Z/FhHqpHaz5lyQJohHO2OXqY4SaEjfwBbx/pqrahGcIPLtXpAqQt6ZDDpKFHpyiXQJ39lRWma0uWHMu89sj9BhyK45ry7P0n/e+ZL/452SHDp4+6FkqZUyn3e+DGkj6N8DQCxuDukCjHLb0wTaJz5/bI=
+	t=1768311417; cv=none; b=R8lMCdOcBHMu69A6f2ohCJxlkCFxGrLMYwXlRaKuyksQ86tD127D3GIVgcB7oXUo4ZtmhDH7hrj7XosqNrXxg1UOGoXeSfi8Go3h96IDWKcAO4e5LCR3FXxVsjniPgxn9sAoD/vA77KuSxgKN5A3+F1ZOx7quXguHlXfb7BpyLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768302303; c=relaxed/simple;
-	bh=qg86Xa1BLPdLqzTfJA9tqL801nqutncRfii4YJPEuuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f46Xl3fEWR+KLHs1gamuF9Bcx6p9RwMQd5wL3zwdM3p34qv62BrddW1yMFlBsM10B6BRKYmdf3Hkmcv9EKZvdHhR6m3ygQ07L0HRe7nssah7Ur3VGySTZZ/FHTZXSTAwMrH0+FFP6i0ORd7IhnpPO524x5uCo849SDPxfucLKR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZmfJJdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B359CC16AAE;
-	Tue, 13 Jan 2026 11:04:59 +0000 (UTC)
+	s=arc-20240116; t=1768311417; c=relaxed/simple;
+	bh=IXvx5aXrBcUXshtJXld2okFqAwlbZa5hJRy3jy9dF+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nQmWoob8AmnFk05TThc3yXkP3wzN+occyiRhK6HL+TLDuEQMFtLExpDni7EvcdysZkaB54dKIbeOXZM2revn20bIcCTu36P4VdPiBmBpm/0VnKMooLUmHJ0mKAGjgXiqB1S6HVcEF3KEdlLjeMCNyfrnfYaFhxuWJhmXLdOo2w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcAZXn31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CCCC16AAE;
+	Tue, 13 Jan 2026 13:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768302303;
-	bh=qg86Xa1BLPdLqzTfJA9tqL801nqutncRfii4YJPEuuc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jZmfJJdZF3SDe6dB4zuSGHvr3idM7pNiaM0Yf3tA0tz//+ULA9M+2rq3ES3aN9jPv
-	 DcrQ7w4O3nQcEhUG4dg/9+Z5uwRo0a2dlM5HQRcbyKKGWB6L39HIOYdXFHaYPl6tWF
-	 PGN2b+vhbVsz+5NbNgXHKd1kDeyGshgCrtDMQm5/9YEimzAz4O7Hpnm6ufTRbRZhMf
-	 AA36UqMNCo7RsjFG37oC5Sz1b07qteosje7epoYgcgSW3rRoIGwkH9rJyjprKq7Oq+
-	 yf9qfMvKVOh74QaKMR2Jkyti4LLdmHCZXdauGr+Q4b4MKj5jOJFDrx5mqd5Ko3nZlP
-	 md6e1ml1t719A==
-Date: Tue, 13 Jan 2026 12:04:57 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 3/7] irqdomain: Add parent field to struct irqchip_fwid
-Message-ID: <aWYm2Y8yzns7n8fM@lpieralisi>
-References: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
- <20251218-gicv5-host-acpi-v2-3-eec76cd1d40b@kernel.org>
- <20260105120108.00002016@huawei.com>
- <aV4gH/yHaOmOtK0J@lpieralisi>
- <20260107100452.00004b6f@huawei.com>
+	s=k20201202; t=1768311417;
+	bh=IXvx5aXrBcUXshtJXld2okFqAwlbZa5hJRy3jy9dF+w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tcAZXn31bkLBlcigInta1oir746tMWc6W1LBfKVnR3Y6CrzCBk72qV4vbD+6J62Ek
+	 uhn3E2kveTtrVeQFNB2Dmnhtp4RBdtFXv2uECqGilwEig4Zs7yY3vMS98KYQMx7h95
+	 DY150KkW33ZyWW9zEei24+RBcW4rzB6fRh7wyFigROeDjYcBS+FQvw2oZlG1vPddvt
+	 78Bf6owUYSQxgqJlA8wUtq8f10mgxqQgVaMcbTeG0CpnB/yHwRmu5jWGEb2LQFtTC9
+	 9Nou0d6TpmnDdC8lHdElzX+qdfwB88InhfZoqtCW+zt4DUkybmDjqrYsHnGlORInpP
+	 K4qkExKffiJpA==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject:
+ [PATCH v1] ACPI: PM: s2idle: Add module parameter for LPS0 constraints
+ checking
+Date: Tue, 13 Jan 2026 14:36:54 +0100
+Message-ID: <2827214.mvXUDI8C0e@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107100452.00004b6f@huawei.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jan 07, 2026 at 10:04:52AM +0000, Jonathan Cameron wrote:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[...]
+Commit 32ece31db4df ("ACPI: PM: s2idle: Only retrieve constraints when
+needed") attempted to avoid useless evaluation of LPS0 _DSM Function 1
+in lps0_device_attach() because pm_debug_messages_on might never be set
+(and that is the case on production systems most of the time), but it
+turns out that LPS0 _DSM Function 1 is generally problematic on some
+platforms and causes suspend issues to occur when pm_debug_messages_on
+is set now.
 
-> > > > +static inline
-> > > > +struct fwnode_handle *irq_domain_alloc_named_fwnode_parent(const char *name,
-> > > > +							   struct fwnode_handle *parent)  
-> > > 
-> > > The name of this makes me think it's allocating the named fwnode parent, rather that
-> > > the named fwnode + setting it's parent.
-> > > 
-> > > There aren't all that many calls to irq_domain_named_fwnode(), maybe to avoid challenge
-> > > of a new name, just add the parameter to all of them? (25ish)  Mind you the current
-> > > pattern for similar cases is a helper, so maybe not.  
-> > 
-> > Similar cases ? Have you got anything specific I can look into ?
-> 
-> I meant all the different irq_domain_alloc_xxxxx variants that call
-> __irq_domain_alloc_fwnode() with a subset of parameters set to NULL.
-> 
-> That seems to say there is a precedence for making the presence of the parameter
-> part of the name rather than requiring callers to set the ones they don't want to
-> NULL.  So it argues for a helper like this one just for consistency.
-> 
-> > 
-> > > Or go with something similar to named and have
-> > > 
-> > > irq_domain_alloc_named_parented_fwnode()?  
+In Linux, LPS0 _DSM Function 1 is only useful for diagnostics and only
+in the cases when the system does not reach the deepest platform idle
+state during suspend-to-idle for some reason.  If such diagnostics is
+not necessary, evaluating it is a loss of time, so using it along with
+the other pm_debug_messages_on diagnostics is questionable because the
+latter is expected to be suitable for collecting debug information even
+during production use of system suspend.
 
-Right, given that Thomas is fine with it, I will go with this suggestion then
-albeit it is getting a bit cumbersome (_named_id_parented_fwnode..), it should
-be fine and I can rework the code to add a parent field to the existing interface
-later if we feel it is nicer.
+For this reason, add a module parameter called check_lps0_constraints
+to control whether or not the list of LPS0 constraints will be checked
+in acpi_s2idle_prepare_late_lps0() and so whether or not to evaluate
+LPS0 _DSM Function 1 (once) in acpi_s2idle_begin_lps0().
 
-Thanks,
-Lorenzo
+Fixes: 32ece31db4df ("ACPI: PM: s2idle: Only retrieve constraints when needed")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/x86/s2idle.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-> > 
-> > Or I can add a set_parent() helper (though that's a bit of churn IMO) ?
-> > 
-> > If Thomas has a preference I will follow that, all of the above is doable
-> > for me.
-> 
-> Agreed. Let's see what Thomas prefers (i.e. make the decision his problem ;)
-> 
-> Jonathan
-> 
-> > 
-> > > I'm not that bothered though if you think the current naming is the best we can do.  
-> > 
-> > I think you have a point - as per my comment above.
-> > 
-> > Thanks,
-> > Lorenzo
-> > 
-> > > Jonathan
-> > >   
-> > > > +{
-> > > > +	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL, parent);
-> > > >  }  
-> > > 
-> > >   
-> > 
-> 
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -28,6 +28,10 @@ static bool sleep_no_lps0 __read_mostly;
+ module_param(sleep_no_lps0, bool, 0644);
+ MODULE_PARM_DESC(sleep_no_lps0, "Do not use the special LPS0 device interface");
+ 
++static bool check_lps0_constraints __read_mostly;
++module_param(check_lps0_constraints, bool, 0644);
++MODULE_PARM_DESC(check_lps0_constraints, "Check LPS0 device constraints");
++
+ static const struct acpi_device_id lps0_device_ids[] = {
+ 	{"PNP0D80", },
+ 	{"", },
+@@ -515,7 +519,7 @@ static struct acpi_scan_handler lps0_han
+ 
+ static int acpi_s2idle_begin_lps0(void)
+ {
+-	if (lps0_device_handle && !sleep_no_lps0 && pm_debug_messages_on &&
++	if (lps0_device_handle && !sleep_no_lps0 && check_lps0_constraints &&
+ 	    !lpi_constraints_table) {
+ 		if (acpi_s2idle_vendor_amd())
+ 			lpi_device_get_constraints_amd();
+@@ -540,7 +544,7 @@ static int acpi_s2idle_prepare_late_lps0
+ 	if (!lps0_device_handle || sleep_no_lps0)
+ 		return 0;
+ 
+-	if (pm_debug_messages_on)
++	if (check_lps0_constraints)
+ 		lpi_check_constraints();
+ 
+ 	/* Screen off */
+
+
+
 
