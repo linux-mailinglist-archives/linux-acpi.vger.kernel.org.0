@@ -1,149 +1,160 @@
-Return-Path: <linux-acpi+bounces-20265-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20266-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612EAD1B7EB
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 22:57:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD70D1B7FD
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 22:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61976302F2F4
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 21:57:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1BEF730060E7
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 21:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3176C34FF46;
-	Tue, 13 Jan 2026 21:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FEB3502A4;
+	Tue, 13 Jan 2026 21:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjipl7iL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEq/PnhO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB2331B808
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 21:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA78274B37;
+	Tue, 13 Jan 2026 21:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768341466; cv=none; b=Wb1hK3quOTCNHqZzgjwbSzHpuU0wtkk4eRWemOklG3KAs1ARoRaNDFVkGyb3OOMo/bkYIZ+T5oGEHOSw9vOKlLAmciJFfEJWkM7TQxk+xmtWSt9Mv4BlhhvU0Z+3kS3lvr2dtXXSkGjg+SrG9C1+PycoIajYw6SlDHMsJ41HXIg=
+	t=1768341514; cv=none; b=IbGMLIojIM1p0mjtb8uT9jLvljBrKcip7+la1/JcTJD6wbMcI3OP4kaq7ibNVYqxLmViXZcjiHAy7Xs3CyIH1gmag1OMGCfXAMQsvyp+Wepm0GkzkNBWLR3+p/8eYb74PJeKDFRRDJrLWwr0UnpGo7QHhRvWGuaHcdNS+n3NxMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768341466; c=relaxed/simple;
-	bh=NlgZFPJHPp1obehSkBau+Ti6CjKCYkP0mAuZcu9Tr5Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GLI4j5QeWCgdAnP4EKfQvo2tQJplaOMriO4KIrHWwi/RXu46hbbi94oAHUhaFiYOVBDHO4cJnsFzyUMXkWb/9OvDMf3nWVM8Kz4BjAjyQArrBHn2N1XGmeEqoD0OVywOGJprj3AI6JUDQoe8vhzwJC0W8Sgy6Blet+jRFqIlns8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjipl7iL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DF8C19423
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 21:57:45 +0000 (UTC)
+	s=arc-20240116; t=1768341514; c=relaxed/simple;
+	bh=EhNf0DB6H+D52wFq+xxqhoJVJAJcADLsXCmy5OCFbdw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g/lT3Fdxk7YjHc1+sokuYjd+OmWeJHdPOcl2Q/CsDDMuFhuncoXgjJxl1D2BdbvYHXEqBzIf/KmJjm1UH1pAFue7+6E29fhrtoUD+r4KpN1O1SNGSi5W6uP4LK+j47+YpzNyIuUz7naAZXEgdXvmUHw7eV/3FJ46mRJOZBzceWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEq/PnhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A54C116C6;
+	Tue, 13 Jan 2026 21:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768341465;
-	bh=NlgZFPJHPp1obehSkBau+Ti6CjKCYkP0mAuZcu9Tr5Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bjipl7iLR07YnKMz7OOUwpwo9pqfVbC8BVaxEw+EDBD90psIFyTfcAxIcmT/Mn2Py
-	 7ieRJCsQkUPkSyH+12p6f+SeXtVZMPJhAW0MfqfgfsQ7dzxn+wGWFaV/SsNsgCtENX
-	 uX9ZGcz1QMxbcL0nld9zxnY7ud5thjFH2LnN05wz/Jvh161KUbFOEKhjV2mosMUC9G
-	 QO12UEwV3T+onzwTX/1zz31CJlYIY8zoiRec/HBDkVRfexSoFEfO05Hip0RuFEWijb
-	 R4/eMwlRssJfdwKV+h1bCWq1WrlLlMF9OSv1jcvAlc/FvCUa/YSIKkb9df5JWmEMc4
-	 8nJ/cRzilJ2dA==
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7c6d1ebb0c4so6152277a34.1
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 13:57:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWn/Q+lm7MPcZAkYU/w44YBL963DxHjWSzRttGVjYY8RcK/9c21lJP2+Ss/nBBzhgr5RGocOPF9ZaiU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7cQSFQxT2ioMQi3PmCN46wkpGYVZL1oEzalJ/0HJCBd9Z7k4U
-	i/mcY//o+Egue3ftAikFKbPlwX/0Zyfv/lGAvdIOA19HkGBYqXSEBVfQqC+39vATb0fEV2pdhg3
-	nVlk+6YZbg2D7mSmjF7I2yqr6rYhfKQk=
-X-Received: by 2002:a05:6808:238c:b0:459:993f:b841 with SMTP id
- 5614622812f47-45c715f8678mr215813b6e.63.1768341465020; Tue, 13 Jan 2026
- 13:57:45 -0800 (PST)
+	s=k20201202; t=1768341513;
+	bh=EhNf0DB6H+D52wFq+xxqhoJVJAJcADLsXCmy5OCFbdw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jEq/PnhOQk0cKOidyojdOU1SLO7t36aR8NukvcVkV68EGokKYxD16lcntgpqeFSz6
+	 AlLyq4UIu8v3DzsEEJttS79EYC1naCAkxjkb7//Hx2SdRUAspIm0rLGF9M45Bwjw0Q
+	 CHePUK89t44fXhB6Krm9yIAP5muucGeZqK2cgsDXKURI8PPEpHxozFa0sbhSjHDy0f
+	 LFXhsOrjZrZFeTMWlFwQOPu5WHPKVdAWGa4KcfJde4wYc7dk6tj6sBcy9sWIOc84uf
+	 G7QtKgFEiTV9Zc11cMTwds6lU8VUYY1ssMShI71jmHrzUqRXpAgFflW5+ggKKIcGYj
+	 pXpCF7cFMGVjw==
+Message-ID: <cfe29b78-93c1-423f-930d-10e4fcda6987@kernel.org>
+Date: Tue, 13 Jan 2026 15:58:30 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2827214.mvXUDI8C0e@rafael.j.wysocki> <757e7800-c45f-4d65-a7f5-9b158660277a@amd.com>
-In-Reply-To: <757e7800-c45f-4d65-a7f5-9b158660277a@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 13 Jan 2026 22:57:34 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gwAXU1MdiffgHz8bYJotrJEujwc14D9Dh1rAX0pE9Q_A@mail.gmail.com>
-X-Gm-Features: AZwV_Qg3ryptHB7Oe65KTF16fcg7k6DDsRyTZ3pWp4golTBvKBKKk93NfNAyJbw
-Message-ID: <CAJZ5v0gwAXU1MdiffgHz8bYJotrJEujwc14D9Dh1rAX0pE9Q_A@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: PM: s2idle: Add module parameter for LPS0
- constraints checking
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: Documentation: driver-api: Disapprove of using
+ ACPI drivers
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Bjorn Helgaas <helgaas@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hans de Goede <hansg@kernel.org>,
+ Linux Documentation <linux-doc@vger.kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Armin Wolf <w_armin@gmx.de>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+ Randy Dunlap <rdunlap@infradead.org>
+References: <2396510.ElGaqSPkdT@rafael.j.wysocki>
+ <65c7a296-7dc7-4368-9b2d-6fadd0dbf9c6@kernel.org>
+ <CAJZ5v0ihuu_9G7N5UkHAGwRq=BN1spkXmdOuUTxRFwn3acdfbw@mail.gmail.com>
+Content-Language: en-US
+From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+In-Reply-To: <CAJZ5v0ihuu_9G7N5UkHAGwRq=BN1spkXmdOuUTxRFwn3acdfbw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 13, 2026 at 10:48=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
-> On 1/13/2026 7:36 AM, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Commit 32ece31db4df ("ACPI: PM: s2idle: Only retrieve constraints when
-> > needed") attempted to avoid useless evaluation of LPS0 _DSM Function 1
-> > in lps0_device_attach() because pm_debug_messages_on might never be set
-> > (and that is the case on production systems most of the time), but it
-> > turns out that LPS0 _DSM Function 1 is generally problematic on some
-> > platforms and causes suspend issues to occur when pm_debug_messages_on
-> > is set now.
->
-> Any ideas why it's causing problems?  AML doing something it shouldn't?
 
-It's not a clear AML bug AFAICS.  Rather, it seems to have
-dependencies on something that is not ready when it is evaluated, so
-an ordering issue or similar.
 
-> >
-> > In Linux, LPS0 _DSM Function 1 is only useful for diagnostics and only
-> > in the cases when the system does not reach the deepest platform idle
-> > state during suspend-to-idle for some reason.  If such diagnostics is
-> > not necessary, evaluating it is a loss of time, so using it along with
-> > the other pm_debug_messages_on diagnostics is questionable because the
-> > latter is expected to be suitable for collecting debug information even
-> > during production use of system suspend.
-> >
-> > For this reason, add a module parameter called check_lps0_constraints
-> > to control whether or not the list of LPS0 constraints will be checked
-> > in acpi_s2idle_prepare_late_lps0() and so whether or not to evaluate
-> > LPS0 _DSM Function 1 (once) in acpi_s2idle_begin_lps0().
-> >
-> > Fixes: 32ece31db4df ("ACPI: PM: s2idle: Only retrieve constraints when =
-needed")
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >   drivers/acpi/x86/s2idle.c |    8 ++++++--
-> >   1 file changed, 6 insertions(+), 2 deletions(-)
-> >
-> > --- a/drivers/acpi/x86/s2idle.c
-> > +++ b/drivers/acpi/x86/s2idle.c
-> > @@ -28,6 +28,10 @@ static bool sleep_no_lps0 __read_mostly;
-> >   module_param(sleep_no_lps0, bool, 0644);
-> >   MODULE_PARM_DESC(sleep_no_lps0, "Do not use the special LPS0 device i=
-nterface");
-> >
-> > +static bool check_lps0_constraints __read_mostly;
-> > +module_param(check_lps0_constraints, bool, 0644);
-> > +MODULE_PARM_DESC(check_lps0_constraints, "Check LPS0 device constraint=
-s");
->
-> I'm personally not really a fan of another module parameter for
-> debugging.  I know some other subsystem maintainers are very anti-module
-> parameters too.
->
-> I did like having /sys/power/pm_debug_messages able to be a one stop
-> shop for debugging messages at runtime.
+On 1/7/2026 6:22 AM, Rafael J. Wysocki wrote:
+> On Tue, Jan 6, 2026 at 4:47 PM Mario Limonciello (AMD) (kernel.org)
+> <superm1@kernel.org> wrote:
+>>
+>>
+>>
+>> On 1/6/2026 6:27 AM, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> Sadly, there is quite a bit of technical debt related to the
+>>> kernel's ACPI support subsystem and one of the most significant
+>>> pieces of it is the existence and use of ACPI drivers represented
+>>> by struct acpi_driver objects.
+>>>
+>>> Those drivers are bound directly to struct acpi_device objects, also
+>>> referred to as "ACPI device nodes", representing device objects in the
+>>> ACPI namespace defined as:
+>>>
+>>>    A hierarchical tree structure in OS-controlled memory that contains
+>>>    named objects. These objects may be data objects, control method
+>>>    objects, bus/device package objects, and so on.
+>>>
+>>> according to the ACPI specification [1].
+>>>
+>>> The above definition implies, although rather indirectly, that the
+>>> objects in question don't really represent hardware.  They are just
+>>> "device package objects" containing some information on the devices
+>>> present in the given platform that is known to the platform firmware.
+>>>
+>>> Although the platform firmware can be the only source of information on
+>>> some devices, the information provided by it alone may be insufficient
+>>> for device enumeration in general.  If that is the case, binding a
+>>> driver directly to a given ACPI device node clearly doesn't make sense.
+>>> If the device in question is enumerated through a hardware interface, it
+>>> will be represented by a device object matching that interface, like
+>>> a struct pci_dev, and the ACPI device node corresponding to it will be
+>>> treated as its "ACPI companions" whose role is to amend the "native"
+>>> enumeratiom mechanism.
+>>>
+>>> For the sake of consistency and confusion avoidance, it is better to
+>>> treat ACPI device nodes in general as ACPI companions of other device
+>>> objects representing hardware.  In some cases though it appeared easier
+>>> to take a shortcut and use an ACPI driver binding directly to an ACPI
+>>> device node.  Moreover, there were corner cases in which that was the
+>>> only choice, but they all have been addressed now.
+>>>
+>>> In all cases in which an ACPI driver might be used, the ACPI device
+>>> node it might bind to is an ACPI companion of another device object
+>>> representing a piece of hardware.  It is thus better to use a driver
+>>> binding to the latter than to use an ACPI driver and leave the other
+>>> device object alone, not just because doing so is more consistent and
+>>> less confusing, but also because using ACPI drivers may lead to
+>>> potential functional deficiencies, like possible ordering issues
+>>> related to power management.
+>>>
+>>> Unfortunately, there are quite a few ACPI drivers in use and, as a rule,
+>>> they bind to ACPI device nodes that are ACPI companions of platform
+>>> devices, so in fact they play the role of platform drivers although in
+>>> a kind of convoluted way.  An effort has been under way to replace them
+>>> with platform drivers, which is relatively straightforward in the vast
+>>> majority of cases, but it has not been pursued very aggressively so far,
+>>> mostly due to the existence of the corner cases mentioned above.
+>>
+>> This is the same as Danilo's comment; but could you leave a few examples
+>> of conversions that have been done successfully?  Commit hashes that can
+>> demonstrate what it actually takes to convert an acpi driver to a
+>> platform driver and might make it easier for people to reference when
+>> this comes up.
+> 
+> The purpose of this posting and the new document is to grow awareness
+> rather than to tell people how to convert drivers.
+> 
+> I'll start posting driver conversion patches at one point and the
+> motivation for all of them is basically the same, so I thought it
+> would be better to document it in on place and then refer to it
+> instead of repeating the same information every time a conversion
+> patch is posted.
 
-Well, this is not just debug messages, rather a whole debug facility
-enabled via pm_debug_messages, which is kind of confusing.
+Thanks for explaining.  Makes sense to me.  If you didn't already commit 
+feel free to add my tag (no need to spin it if you already did).
 
-> So I had another idea I wanted to throw around.  What if instead we had
-> a file /sys/kernel/debug/x86/lps0_constraints?
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
 
-Then you cannot use this without debugfs.
-
-> If the file is never accessed never evaluate constraints.  If you read
-> it once then you can get a dump of all the current constraints and any
-> future suspends during that boot will also include constraints in the
-> logs (IE call lpi_check_constraints()).
-
-So if it is not in debugfs, it would need to be in sysfs and then I
-don't see much difference between it and a module param, honestly.
-
-I actually prefer the latter because it uses an existing infra.
 
