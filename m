@@ -1,172 +1,110 @@
-Return-Path: <linux-acpi+bounces-20219-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20220-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727A4D16ADD
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 06:13:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB91D17016
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 08:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A26D9300D40A
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 05:13:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AA043036B8A
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jan 2026 07:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568130E0CB;
-	Tue, 13 Jan 2026 05:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BALsIr6G";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LtNShwKP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA0E36A010;
+	Tue, 13 Jan 2026 07:27:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD20730DD1E
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 05:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CD529D27D;
+	Tue, 13 Jan 2026 07:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768281209; cv=none; b=Wh2WaLJvMJQqn0SY8xI1sUy2PitdwVSdElPy167kd9xQ7yuzG03gGljzStNyCohpQ95cD4+LzqV1fuydtAbsPcIeuaW6tTBKPIfY0jrkiCE8y4yxegivzFQxmto24g0Y63IjHn6VpF0EYAcAmAwKlW+booLnW1Efi4Xeny1d/Zs=
+	t=1768289258; cv=none; b=QsTyHCYl0j/kC/880AsY4Rd4YZJHC8QWvO4RRBScCp5s5KOxdp5KwtR/YoJkbyCpVW/uvoZ06C/rxoxDoJw+MAL7jsbnQ0OWlKKBmaIpqAjPwo0kIf5gGENk4kJKlqya4lTFwpmEo4MSl7DQfgEn88tUN6FFXD6AcQPJjRR0pYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768281209; c=relaxed/simple;
-	bh=5RD5WrNMzywR0/zMCxxyZS30F4/0MelxtGDY9ehw4VQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lEA3omj80nt/7xwhhvwnTG3Yn0c0E2r7AdA9DfAEUxdbSNSS9ZZ8TJ2rbDgS3lsK/WXUKShhHx4Tivd5xftFObK/GOVva88kM+nxBeqbm1HVHRdkyUjWgBHVTx+1IEE0z5mgcySvqKuUwZVKzCNiPXIMPl8R6yrrN5ICjquLdVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BALsIr6G; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LtNShwKP; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60CN5EAJ176979
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 05:13:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=
-	qcppdkim1; bh=BZHPhzXJ0Mcz+3zRww6wyIQlO4Z+6GX7AaKUsI1bag8=; b=BA
-	LsIr6GJT7JWvOyskC1k9p9VJbn3WWoTC+ig5mjlApKnZD6xZWBQ6suqFZ6hqdw+U
-	WtSBy5PEM/KUvMP9mGDPoCtZMnIyKKaCWCTMXgFE2cy2WDxoIbcgqYHSbwAL6xP9
-	5WeAy6J0N2HKNtJ/2dyiA9l5jXGmdSwn5ACFnLPs8soxhrm7vCxPY37l0AI9mHsL
-	cYaF65LYlXzU1D/CiMNWY+vxWvIBEhdn2zn/tD1sECzHQ3SPz9Z01lvrFhZk+Ect
-	2mKG3kWKOQQ7NeKPS/GO0tAj0y34ag0tYPfBrlHYq39cHJMmvediql6Rg+5nmdy3
-	lxuSUSjC2zXSIOCtZfAw==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bn52f1usa-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Jan 2026 05:13:26 +0000 (GMT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-88a37ca7ffdso96315466d6.3
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Jan 2026 21:13:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768281206; x=1768886006; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BZHPhzXJ0Mcz+3zRww6wyIQlO4Z+6GX7AaKUsI1bag8=;
-        b=LtNShwKPrm1Er5vIiYR5AV40poYdmE6hO5IwmDmhjEoGvYWOaEH1CI2u8o4W0rn0W5
-         ejOjH2wtge7u+iF7lfux6yY72rAcuhwIFD0Cxkh51TQbazkH41OHy6Iapmy1JkxUUalX
-         OAFvlQAvmvYwCfqWd6lzBBgPfKnLN/Zwyhw+zfDJpPJzWmwg1d3BrYuL5NnNBrJimOlV
-         ISrY/fLbl2LebrsqAHcotIcW2j0tKa0IA9aLpqPKiG698N6vKfN9v7syXXWhLk9iABo3
-         72lCbhv3fHBcDAqPKldn4yVPZdtqLWZkDLhks1IhXEQ5XEzWlyMDD9n6WkDPE/9qisam
-         ckzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768281206; x=1768886006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BZHPhzXJ0Mcz+3zRww6wyIQlO4Z+6GX7AaKUsI1bag8=;
-        b=H7u3coCSFY7TgOegknHdZg4PR446RWdN6/wDORGEvS65hUyfxexbQ+1CYy4Rbo5bU9
-         7ooH9c/rQ9+lYGsAb7LU/sMKL7qy2PY+aATMSzRH8hRnoD6h2KIKCMGcygC8vxenKEJx
-         gvJ/PYi4QXTNR+nJd6ln75GUuFabk/ub6HxUPJA/N2Qk9CdePkGqfkNM7wsFkPaanxTB
-         e8OHnh9gJcn9kEtofxyHh/0Ya1xt5TRUcceVgkKs0HJ60UY7hS0HRNqhVaqYoEueu1vW
-         6m24xTdtp4SzCY0gH/DKGjFlM/h/RbN+E3iADAIPkF84KIynSzMr1GbGowVFZ9UK3M5B
-         JyBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3UgKMqy5kZ910JeADFPkLjQVmk6dIIg+36YUYwBq/3/a5pTseRmqeJlIYGnLhmQxqlf5gFX0Is2+3@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYjDCRxo3V8bO4H0OFiZXeFP1zaM76wYcaACxwGNOhLsNMY2QT
-	s1/DO7FjntUA8sMcRus3mVcY7swqtGLMZe8Q6P9JHmfY78fNOhLQt+Xi0xKYBzhPfCYtK0NCv1c
-	yTHZcAJ1u2ZLwGnCXVK1gQBNCbW00wUPznRFkNcAwTQ89I755pBIXgp9FaprSSVZ6NgGV8OYqy1
-	LHId79AZp96yjOP0Vl65zFJxj9rZVfJJWlsGI9LZo=
-X-Gm-Gg: AY/fxX6KI59JcnWS0Fu54+2L93p/2lj0A9PU2CIJ9+O1O70ywHrAO+LmylwuHXDcOi2
-	fJUCTwtPAlamQarng4FfzObfvVY5CrppjTfveQ8c3eETm1xgfTsxQL6ylB5OXgJqKoPom7yJO4m
-	Mq8jFJeb6YyoOIUDQJqVL9igMa1r3IZ/y2FVCirEg5YOH1uaa8N2r6QaqJSqh0JAePCQ==
-X-Received: by 2002:a05:6214:3bc7:b0:890:26d5:c1a0 with SMTP id 6a1803df08f44-890841839e8mr329033216d6.13.1768281206047;
-        Mon, 12 Jan 2026 21:13:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExMAuvIVLlhHW04j7bO5r9MvIUOw7zMKjo1ttv/1gvnxGsx7YpOc4AlsHQuO9SAX7LPChaIbqWy0tH/97CcmI=
-X-Received: by 2002:a05:6214:3bc7:b0:890:26d5:c1a0 with SMTP id
- 6a1803df08f44-890841839e8mr329033026d6.13.1768281205621; Mon, 12 Jan 2026
- 21:13:25 -0800 (PST)
+	s=arc-20240116; t=1768289258; c=relaxed/simple;
+	bh=3YzSrbLp3tdyzRSbOfa5ojt4wQPo9QQYconTrApOeXY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=doc/FIm8KEDnhTjKCnCq9JEh+8NdkS7jVKIN04GB7PTmSQhs+9h6cz73+3Rkqfjey9kS0ezDPdtsrvIwPf/dUvFbTFGF8UCmkn5JFlhffG7Xo5ZBRBit1wUDluwez1YAdCxvMVuu36JbVFefxyUHDFKwNCIef9VvZ5fyQGzxORo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 4ddf78a8f05111f0a38c85956e01ac42-20260113
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:6ddf8585-b307-4c6a-8303-942a827bb13d,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-META: VersionHash:a9d874c,CLOUDID:d6d11361c74c7f87bf0e3847698d3fd1,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:5,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 4ddf78a8f05111f0a38c85956e01ac42-20260113
+X-User: aichao@kylinos.cn
+Received: from kylin-pc.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1051817217; Tue, 13 Jan 2026 15:27:23 +0800
+From: Ai Chao <aichao@kylinos.cn>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ai Chao <aichao@kylinos.cn>
+Subject: [PATCH] ACPI: resource: Add JWIPC JVC9100 to irq1_level_low_skip_override[]
+Date: Tue, 13 Jan 2026 15:27:19 +0800
+Message-ID: <20260113072719.4154485-1-aichao@kylinos.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109090224.3105465-1-himanshu.chauhan@oss.qualcomm.com> <20260109090224.3105465-6-himanshu.chauhan@oss.qualcomm.com>
-In-Reply-To: <20260109090224.3105465-6-himanshu.chauhan@oss.qualcomm.com>
-Reply-To: sunilvl@oss.qualcomm.com
-From: Sunil V L <sunilvl@oss.qualcomm.com>
-Date: Tue, 13 Jan 2026 10:43:14 +0530
-X-Gm-Features: AZwV_Qj6V3rEVBDFKYHXH8y0L1nrX3Jw3QzqIWcDU_wtoiZfXPhPZIbxRemFGYQ
-Message-ID: <CAB19ukF+3tBG=nXe8is5_3xWkt7avjAQ2o5cS=44SAf0mkVPwA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/10] riscv: conditionally compile GHES NMI spool function
-To: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-efi@vger.kernel.org,
-        acpica-devel@lists.linux.dev, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, lenb@kernel.org, james.morse@arm.com,
-        tony.luck@intel.com, ardb@kernel.org, conor@kernel.org,
-        cleger@rivosinc.com, robert.moore@intel.com,
-        anup.patel@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA0MCBTYWx0ZWRfXwwHvHskEvH5U
- hgcoa8FJa0iiDYTQsI0Dm0XSvk+JyvWTukD8/SQcT5AwB+L0VLS0fB2WZ6DrRzBnQynF8LPK3mg
- g1zqX4CHnrT5AmpwOHQU49+qIoF3qaW/QvTfJbyg1MSb9TNYf34V2hOaBk4wv75HAPlOyouvULk
- 7+BwbqlOZb+yxV2P6LxHcoePG0XKVnQjvq9diUdQzO8uwVS2caBrjBAJPvtf7nJVdMxhaWJpUE3
- TDofkHmOZW2N4Y6TqBzCDW4vy4D7kuoYQ6mJHU6XScYlsKv6Wivzh0t2ysfWBavA2uH+iIgnyFD
- cbJsO60bLJHPe8CpwWklBDz9ruQm4or2IVBhsWH83f555gA5MecqEX1ebhTt/6aLbfCLvw2zY9Q
- 0w93TLfrDRkFEzbX+0g4sc04AW4s3Ndm1W7nXzxjqgSADjU0oOh8CIGDo/euEQVF6vUqlFPcJf2
- 6K/nb+UXHeYNsvw+C6w==
-X-Authority-Analysis: v=2.4 cv=TcCbdBQh c=1 sm=1 tr=0 ts=6965d477 cx=c_pps
- a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=9L7PnyXcnU1f3mQPG5kA:9 a=QEXdDO2ut3YA:10 a=pJ04lnu7RYOZP9TFuWaZ:22
-X-Proofpoint-GUID: RIxmo5ih30YKd2KtT5Brsn-8I4eDtnVK
-X-Proofpoint-ORIG-GUID: RIxmo5ih30YKd2KtT5Brsn-8I4eDtnVK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_07,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 clxscore=1015 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601130040
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 9, 2026 at 2:32=E2=80=AFPM Himanshu Chauhan
-<himanshu.chauhan@oss.qualcomm.com> wrote:
->
-> Compile ghes_in_nmi_spool_from_list only when NMI and SEA
-> is enabled. Otherwise compilation fails with "defined but
-> not used" error.
->
-> Signed-off-by: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-> ---
->  drivers/acpi/apei/ghes.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 0dc767392a6c..6fd84a1772c6 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -1387,6 +1387,7 @@ static int ghes_in_nmi_queue_one_entry(struct ghes =
-*ghes,
->         return rc;
->  }
->
-> +#if defined(CONFIG_HAVE_ACPI_APEI_NMI) || defined(CONFIG_ACPI_APEI_SEA)
->  static int ghes_in_nmi_spool_from_list(struct list_head *rcu_list,
->                                        enum fixed_addresses fixmap_idx)
->  {
-> @@ -1405,6 +1406,7 @@ static int ghes_in_nmi_spool_from_list(struct list_=
-head *rcu_list,
->
->         return ret;
->  }
-> +#endif
->
-LGTM.
+Like the JWIPC JVC9100 has its serial IRQ (10 and 11) described
+as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
+breaks the serial.
 
-Reviewed-by: Sunil V L <sunilvl@oss.qualcomm.com>
+irq 10, level, active-low, shared, skip-override
+irq 11, level, active-low, shared, skip-override
+
+Add the JVC9100 to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Signed-off-by: Ai Chao <aichao@kylinos.cn>
+---
+ drivers/acpi/resource.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index d16906f46484..bc8050d8a6f5 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -532,6 +532,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
+ 		},
+ 	},
++	{
++		/* JWIPC JVC9100 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "JVC9100"),
++		},
++	},
+ 	{ }
+ };
+ 
+@@ -706,6 +712,8 @@ struct irq_override_cmp {
+ 
+ static const struct irq_override_cmp override_table[] = {
+ 	{ irq1_level_low_skip_override, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
++	{ irq1_level_low_skip_override, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 1, false },
++	{ irq1_level_low_skip_override, 11, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 1, false },
+ 	{ irq1_edge_low_force_override, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ };
+ 
+-- 
+2.47.1
+
 
