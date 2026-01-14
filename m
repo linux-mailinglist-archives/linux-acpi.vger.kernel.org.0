@@ -1,92 +1,178 @@
-Return-Path: <linux-acpi+bounces-20300-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20289-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCABD1EDA7
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:43:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45532D1ECD5
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7B6E307767C
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:42:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 790C13019BFE
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEB739B499;
-	Wed, 14 Jan 2026 12:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20A3396D33;
+	Wed, 14 Jan 2026 12:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+33kC8C"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jxu6ALux"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4800C399A79;
-	Wed, 14 Jan 2026 12:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C751E25F9;
+	Wed, 14 Jan 2026 12:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768394517; cv=none; b=l/iCu1pI+q+GHstkoUYVNcrgv+6Rdagp8BahQCPWwfgA4nwqPAU9e1D/uobU4RmksC+9Zpbc/G5cLWzxZKP6I14atNhmu0wUc25c6U/JH6orDyaluwJteehEHfehVSvV9bIajyjAKB+7Rg+m3JKqJt0fWoPa4CiketSfeMc4cIg=
+	t=1768394065; cv=none; b=r6rmzZx37Jdico1+BK0nOBYfDiDmCHxfQTBi6uEVY6H5EO4O9FELfjhuvo8LnAOoMBeiZ2bgRVUaM6v/YsZ26wMUdYBcatVGFg7IFOGFTrjXnOB9pFS3HH6yq/eaAiuicbAbe8Ki/sIi3WqkQPUKsCAU/QJ2X05DeyXP7iF/lgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768394517; c=relaxed/simple;
-	bh=6tYFTvvd9kjBEwnncEds/jH92vDYWXEgPZCwJESo4j8=;
+	s=arc-20240116; t=1768394065; c=relaxed/simple;
+	bh=nAZvwTcvE/laxBoMa7e4DUE9HFPasAG1RWIxN36k54I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B+GmM/ZV5uTXzaF1t6gxAe4ekOJZ7cuT7WbLuzk+YRKa5BPYMpDLQaFYD27sPGFtszPWZiywt8L9F9EalZkE9p1w8W+mqQzoq+tCWNZDdoFEhJiwUFqTPJ8WdLWXFYDgzw2s6//k83c+BQzRBw3QlJIcRcTETZv3RyXbcNpyfeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+33kC8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3101FC16AAE;
-	Wed, 14 Jan 2026 12:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768394517;
-	bh=6tYFTvvd9kjBEwnncEds/jH92vDYWXEgPZCwJESo4j8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+33kC8CngrLvNxhPAe2a9LaAHf6JEa+KQyDzYRucZPhSuWRsdZa2vt3Pxn15mARl
-	 F9hZOCiXuvfQfB54ooKp/ab+7FWgAnMKxI3d9D9AHXmqUfxQlJGCYyefFi+6Y0e+WY
-	 9eYAGc1IwZ3Gwn4yvmy05zjNx50KmQ8h0oFY1vrM2NfxT6djoiWf/dEVJX00XVjOrd
-	 0AhIXrtNALAXbeb4wIuNSP04VUj0uIJQ1GWOs88TPh07omgS5wDL/Tc2djElcFlwRe
-	 2jPIqjejLizSiAA/3vGhGTXphpuzQLDy3QvZ2IC5R2ETTwSPH9SmHkF3pxMSVKWJ/A
-	 M122PKgLeMjzA==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- "Dumbre, Saket" <saket.dumbre@intel.com>
-Subject:
- [PATCH v1 17/26] ACPICA: actbl3.h: ACPI 6.6: SRAT: New flag in Memory
- Affinity Structure
-Date: Wed, 14 Jan 2026 13:31:59 +0100
-Message-ID: <3868802.MHq7AAxBmi@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <12822121.O9o76ZdvQC@rafael.j.wysocki>
-References: <12822121.O9o76ZdvQC@rafael.j.wysocki>
+	 MIME-Version; b=ZDgoHWWUc/+9CJxJBoXvjS6eg9L9mal7vLqFxtSpu5RH8EyL1WCJeDxYeiCE5tYjuhYxyC5GeyJaPt07rnrxQXDF9BtkOZc0DW/1/3IeJBXkN0wKONrstXF/M9A3edrXmdCvkl83EpLquulxBPN4u/ooxS1ZPNiz7q4T1EDMZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jxu6ALux; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mQ
+	FTKbJmOROnetJPdTEjD7x5P28wiTI7ho78GWvBYd0=; b=jxu6ALuxnRDLPlc6Aq
+	QVckfXUk2tQl/7Rw5yLgsXkBuLv7qSVz7pwR+vNdXCp6sCwu2hnLN0ygwU8Y+w3I
+	ANL6gSa8ZgRSW/gnrtEJ0+ZHG/kNXOX2bNezwwvuitLKWO31tinuVYXR+rFqfjTL
+	eeJxyOLxXEt1AQ0XPs3Q/Z0NA=
+Received: from emily-VMware-Virtual-Platform.. (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnEXLIjGdp_IcxGQ--.5443S2;
+	Wed, 14 Jan 2026 20:32:10 +0800 (CST)
+From: huyuye <huyuye812@163.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Robert Moore <robert.moore@intel.com>,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	hu.yuye@zte.com.cn,
+	huyuye <huyuye812@163.com>
+Subject: [PATCH v3] ACPI: pci_root: Clear the acpi dependencies after PCI root bridge initialization on RISC-V
+Date: Wed, 14 Jan 2026 20:32:05 +0800
+Message-ID: <20260114123205.4019-1-huyuye812@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260112141630.2869-1-huyuye812@163.com>
+References: <20260112141630.2869-1-huyuye812@163.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAnEXLIjGdp_IcxGQ--.5443S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxurykKr1xGF1kKFy3tF1DJrb_yoWrGw1fpF
+	Wj9w1fCrWkJw47Kr1DZw1UXFy5JanY9342grZru34q9a1kuryYvF92yFyUAa4UuFWDGa1x
+	ZF9rtF1rCF1jvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRrb1bUUUUU=
+X-CM-SenderInfo: 5kx135bhyrjqqrwthudrp/xtbC5AqJkWlnjMrhdAAA3r
 
-From: Pawel Chmielewski <pawel.chmielewski@intel.com>
+On RISC-V platforms with multiple PCI root bridges, the enumeration
+order varies randomly across reboots due to APLIC driver initialization
+occurring after ACPI device scanning. This defers PCI probing to a
+unbound workqueue, resulting in non-deterministic device discovery
+sequences.
 
-ACPI 6.6 introduces Specific-Purpose flag to Memory Affinity structure.
+Such random enumeration leads to changes in device naming across each
+boot, which disrupts storage configurations, network settings, and
+severely impacts the stability of server maintenance.
 
-Link: https://github.com/acpica/acpica/commit/cfce3b689b5e
-Signed-off-by: Pawel Chmielewski <pawel.chmielewski@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+By adding the acpi_dev_clear_dependencies() call in acpi_pci_root_add(),
+this patch enables the firmware to actively control the enumeration order
+of multiple PCI root bridges through the ACPI _DEP method, providing the
+firmware with the opportunity to initialize devices in the intended order,
+thereby ensuring consistent enumeration results across multiple boots.
+
+Signed-off-by: huyuye <huyuye812@163.com>
 ---
- include/acpi/actbl3.h | 1 +
- 1 file changed, 1 insertion(+)
+v2 -> v3:
+- Added back the missing commit description from v1
+- Moved v2 changelog to correct location after "---"
 
-diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-index 79d3aa5a4bad..7ca456e88377 100644
---- a/include/acpi/actbl3.h
-+++ b/include/acpi/actbl3.h
-@@ -238,6 +238,7 @@ struct acpi_srat_mem_affinity {
- #define ACPI_SRAT_MEM_ENABLED       (1)	/* 00: Use affinity structure */
- #define ACPI_SRAT_MEM_HOT_PLUGGABLE (1<<1)	/* 01: Memory region is hot pluggable */
- #define ACPI_SRAT_MEM_NON_VOLATILE  (1<<2)	/* 02: Memory region is non-volatile */
-+#define ACPI_SRAT_MEM_SPEC_PURPOSE  (1<<3)	/* 03: Memory is intended for specific-purpose usage */
+v1 -> v2:
+- Removed the redundant #ifdef CONFIG_ACPI and if (!acpi_disabled) guard
+- Moved acpi_dev_clear_dependencies to RISC-V specific architecture code 
+
+ drivers/acpi/pci_root.c       |  6 ++++++
+ drivers/acpi/riscv/Makefile   |  2 +-
+ drivers/acpi/riscv/acpi_pci.c | 11 +++++++++++
+ include/acpi/acpi_bus.h       |  1 +
+ 4 files changed, 19 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/riscv/acpi_pci.c
+
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 9d7f85dadc48..a16eb9097cdc 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -30,6 +30,11 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 			     const struct acpi_device_id *not_used);
+ static void acpi_pci_root_remove(struct acpi_device *device);
  
- /* 2: Processor Local X2_APIC Affinity (ACPI 4.0) */
++
++void __weak arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
++{
++}
++
+ static int acpi_pci_root_scan_dependent(struct acpi_device *adev)
+ {
+ 	acpiphp_check_host_bridge(adev);
+@@ -760,6 +765,7 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 	pci_lock_rescan_remove();
+ 	pci_bus_add_devices(root->bus);
+ 	pci_unlock_rescan_remove();
++	arch_acpi_pci_root_add_clear_dep(device);
+ 	return 1;
  
+ remove_dmar:
+diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
+index 1284a076fa88..5b1bd0298fb9 100644
+--- a/drivers/acpi/riscv/Makefile
++++ b/drivers/acpi/riscv/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y					+= rhct.o init.o irq.o
++obj-y					+= rhct.o init.o irq.o acpi_pci.o
+ obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
+ obj-$(CONFIG_ACPI_RIMT)			+= rimt.o
+diff --git a/drivers/acpi/riscv/acpi_pci.c b/drivers/acpi/riscv/acpi_pci.c
+new file mode 100644
+index 000000000000..368ff113e5c6
+--- /dev/null
++++ b/drivers/acpi/riscv/acpi_pci.c
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2026, ZTE Corporation
++ *  Author: Yu Ye Hu <hu.yuye@zte.com.cn>
++ */
++#include <linux/acpi.h>
++
++void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
++{
++	acpi_dev_clear_dependencies(device);
++}
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index aad1a95e6863..c00b523a6ebd 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -996,6 +996,7 @@ int acpi_wait_for_acpi_ipmi(void);
+ 
+ int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices);
+ u32 arch_acpi_add_auto_dep(acpi_handle handle);
++void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device);
+ #else	/* CONFIG_ACPI */
+ 
+ static inline int register_acpi_bus_type(void *bus) { return 0; }
 -- 
-2.51.0
-
-
-
+2.43.0
 
 
