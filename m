@@ -1,51 +1,53 @@
-Return-Path: <linux-acpi+bounces-20308-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20307-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15990D1EDFB
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:47:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D0BD1EDF5
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:46:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4BAC43058574
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:42:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E6ED309BE62
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC435399037;
-	Wed, 14 Jan 2026 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946EF39B49A;
+	Wed, 14 Jan 2026 12:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foujHoW9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgB00Mf+"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAC9399A7C;
-	Wed, 14 Jan 2026 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7215839B483;
+	Wed, 14 Jan 2026 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768394545; cv=none; b=UnugaJkuaxHYShmRuf4wkiQkG3QkC5T7tP9RyuPYobFcktZnJMuvmCGrOimIYdWsVUKBUGa+eNUIFUjb1WpL8VovLUnzHN8WvCEe2QlEj1tsRZ/D9VhgePjInGO4kVrmXKTVqd77B5wi8x89EWHO/pN/P/0Gzd9FEZN+Nmiury8=
+	t=1768394542; cv=none; b=qSeOioo82/y/dOo4Sv734A+SUr6v+BRsIZPb1VTgOyvK793LPlZ52nYVhJOJ3T5xI7Gr2pDqDmFQqlp0jjYb7wDNhWOQ4QMnHfCdSRVrjwf6vAzKovKXHoCBpkLVUVcReOTkCMfUPQo1xZ8Hdg1ZOTaohV2HyoYgLI9HRLHr8Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768394545; c=relaxed/simple;
-	bh=4vc9HwTPaEdKgS5O1T3dPX1jAjvKW/U15VtFc2IOnos=;
+	s=arc-20240116; t=1768394542; c=relaxed/simple;
+	bh=nRBzlc4gvxmF1LgRmFaudZE1I+1Q1hR9RouE8HLsTF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O1ZYi6v2fHVAtBpkuwYkvcLSmhk2zHxIgWeNR30k36TsyGBh/nNxwWE3KD7OFTs+ZFMGRuZWMiTjZJA2Ct4lUf2ViVwzMzF1ygGMSfYFAnXp/tHpqYju/5MRzyjjqHNlxoThFtY9yZavnt9VAPfREsB4SrI10Le7YDBLygrZquk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foujHoW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD06C4CEF7;
-	Wed, 14 Jan 2026 12:42:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pSAd5jqZ7JKmMolixbOVU/o7NDlBExIBIvT02gCyyVQ2t34KwTSpJuEFm9sDHozU2j3/5N6Ud7/OiaqHS2b/zNntrYvcnpeByivM4IAyB4yMMUDdONrux6wSN+12e/fjT9YnA7RDNi+Yh0RgixNcp/i9JUHWidr4ZbOzjjzVXf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgB00Mf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC96C16AAE;
+	Wed, 14 Jan 2026 12:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768394545;
-	bh=4vc9HwTPaEdKgS5O1T3dPX1jAjvKW/U15VtFc2IOnos=;
+	s=k20201202; t=1768394541;
+	bh=nRBzlc4gvxmF1LgRmFaudZE1I+1Q1hR9RouE8HLsTF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foujHoW9ktb/nH9IeL5fZIjqsWscke0LusLe+x6XAROZSFM+yeyFyJe8b3eCodGBd
-	 dDOwp/qwjLpcbfZTnJ1orTeG/HrmfVkvMtRYACaiWXEmw2DNHqfdXG/NxmTrjpMJI7
-	 mF2X1ps0gTqTa9mEWOHVeJbfegYTgv+WClyCGFtgijkTi8aVgmIIGWt+uSFNXVFlez
-	 IgMXmR3f7Vfgkayyl+SBiVuzlXc8cOoWvEl9cioia3BHtPvAF49+kQzW2j6TOXG4ug
-	 vIyQXERHV1hZ8v6Pyt2+Hce+zfxxuni7H5rPDaVIJgCO1bX9l4ZRCig0EjHfDABhJy
-	 OvgdHZ2AybjgA==
+	b=hgB00Mf+/M1Izer/043Xe8IvsfAa6xM6mdr47GbFZfIj7gZPjvrX6NT9dnb0kmatg
+	 3F4O7i3reo9tlbE80hcR+9OpCzAyJxy9//mFX9JnUfXlRytjk3okfY0Kunb3F7ng0E
+	 f7cq3fvNXfsUC1CW89zAlNmGKWMhwAyZZBWfoHzIM+3UH7wUKt62YoU5Ts28t6Fv7N
+	 pGuxFy/+5xtAH6ZjDOve2YdOW/mm5MAbhZzZ1thBwhFIui+FsbXNsCj6nYDBEIt27b
+	 O6UU7FzKy+bElirKU0M+ZhUbWxGjhB//Z7hlAT9K2rXVUhlh85Lm/OoXqPK+5iuQ7g
+	 cXgzpxJbQOxdQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
  "Dumbre, Saket" <saket.dumbre@intel.com>
-Subject: [PATCH v1 09/26] ACPICA: Add DTPR table support for the ASL compiler
-Date: Wed, 14 Jan 2026 13:23:40 +0100
-Message-ID: <7902293.EvYhyI6sBW@rafael.j.wysocki>
+Subject:
+ [PATCH v1 10/26] ACPICA: Define DTPR structure related info tables and data
+ template
+Date: Wed, 14 Jan 2026 13:24:38 +0100
+Message-ID: <3676546.iIbC2pHGDl@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <12822121.O9o76ZdvQC@rafael.j.wysocki>
 References: <12822121.O9o76ZdvQC@rafael.j.wysocki>
@@ -55,68 +57,48 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
 
-From: Michal Camacho Romero <michal.camacho.romero@intel.com>
+=46rom: Michal Camacho Romero <michal.camacho.romero@intel.com>
 
-Define DTPR related structures offsets.
+ * DTPR Table Info
+ * TPR Instance Table Info
+ * TPR Array Table Info
+ * TPR Serialize Request Table Info
+ * DTPR Table Data Template
 
-Link: https://github.com/acpica/acpica/commit/c6fc16c8936d
+Link: https://github.com/acpica/acpica/commit/abadf1d34732
 Signed-off-by: Michal Camacho Romero <michal.camacho.romero@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- include/acpi/actbl1.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+=2D--
+ include/acpi/actbl1.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 23449a068c5c..423e7232974a 100644
---- a/include/acpi/actbl1.h
+index 423e7232974a..f16020829f42 100644
+=2D-- a/include/acpi/actbl1.h
 +++ b/include/acpi/actbl1.h
-@@ -37,6 +37,7 @@
- #define ACPI_SIG_DBGP           "DBGP"	/* Debug Port table */
- #define ACPI_SIG_DMAR           "DMAR"	/* DMA Remapping table */
- #define ACPI_SIG_DRTM           "DRTM"	/* Dynamic Root of Trust for Measurement table */
-+#define ACPI_SIG_DTPR           "DTPR"	/* DMA TXT Protection Ranges table */
- #define ACPI_SIG_ECDT           "ECDT"	/* Embedded Controller Boot Resources Table */
- #define ACPI_SIG_EINJ           "EINJ"	/* Error Injection table */
- #define ACPI_SIG_ERST           "ERST"	/* Error Record Serialization Table */
-@@ -47,7 +48,6 @@
- #define ACPI_SIG_HPET           "HPET"	/* High Precision Event Timer table */
- #define ACPI_SIG_IBFT           "IBFT"	/* iSCSI Boot Firmware Table */
- #define ACPI_SIG_MSCT           "MSCT"	/* Maximum System Characteristics Table */
--#define ACPI_SIG_DTPR           "DTPR"	/* TXT DMA Protection Ranges reporting table */
- 
- #define ACPI_SIG_S3PT           "S3PT"	/* S3 Performance (sub)Table */
- #define ACPI_SIG_PCCS           "PCC"	/* PCC Shared Memory Region */
-@@ -1994,7 +1994,7 @@ struct acpi_tpr_array {
- 	u64 base;
+@@ -1976,7 +1976,7 @@ struct acpi_ibft_target {
+=20
+ /*************************************************************************=
+******
+  *
+=2D * DTPR - DMA TPR Reporting
++ * DTPR - DMA TXT Protection Ranges Table
+  *        Version 1
+  *
+  * Conforms to "Intel=C2=AE Trusted Execution Technology (Intel=C2=AE TXT)=
+ DMA Protection
+@@ -1988,6 +1988,7 @@ struct acpi_ibft_target {
+ struct acpi_table_dtpr {
+ 	struct acpi_table_header header;
+ 	u32 flags;		// 36
++	u32 ins_cnt;
  };
- 
--struct acpi_dtpr_instance {
-+struct acpi_tpr_instance {
- 	u32 flags;
- 	u32 tpr_cnt;
- 	struct acpi_tpr_array tpr_array[];
-@@ -2008,7 +2008,7 @@ struct acpi_dtpr_instance {
-  * TPRn_LIMIT[63:20] * applied to the incoming address, to determine if an
-  * access fall within the TPRn defined region.
- *******************************************************************************/
--struct acpi_dtprn_base_reg {
-+struct acpi_tprn_base_reg {
- 	u64 reserved0:3;
- 	u64 rw:1;		// access: 1 == RO, 0 == RW (for TPR must be RW)
- 	u64 enable:1;		// 0 == range enabled, 1 == range disabled
-@@ -2030,7 +2030,7 @@ struct acpi_dtprn_base_reg {
-  * transaction from changing the state of memory.
- *******************************************************************************/
- 
--struct acpi_dtprn_limit_reg {
-+struct acpi_tprn_limit_reg {
- 	u64 reserved0:3;
- 	u64 rw:1;		// access: 1 == RO, 0 == RW (for TPR must be RW)
- 	u64 enable:1;		// 0 == range enabled, 1 == range disabled
--- 
+=20
+ struct acpi_tpr_array {
+=2D-=20
 2.51.0
 
 
