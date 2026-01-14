@@ -1,215 +1,197 @@
-Return-Path: <linux-acpi+bounces-20292-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20290-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74B4D1ED59
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:41:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6694CD1ED2F
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 13:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F30EB300B34F
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 416F430263D8
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 12:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFFC399A40;
-	Wed, 14 Jan 2026 12:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EB6399008;
+	Wed, 14 Jan 2026 12:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m76ep/QD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uNacfl4B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEA2397ADD;
-	Wed, 14 Jan 2026 12:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A788395DB1;
+	Wed, 14 Jan 2026 12:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768394490; cv=none; b=KF7bK6OCZLk2I2ZJg/gjFQAl3fEB2hEcR7RhLkiCzh9ExgcNL+hgBoKb71mCHtdTX6LjLYDXEnMdLl9w1eoAPs9IHEcwb904mNxq0FwsZaqJ7m6IdR+107QNfGmuL6rnF/cbSYrDVaFJUdG+UZsUY5QJbscQEaieByjO18HCoIk=
+	t=1768394423; cv=none; b=Ibfcn0anLMcokYi0ao1g14S7wx/EigHxT3TaDFuE1rktK8ceOb0y9RPJfO0Ba26D7Mdfp/M9iz0cV3kw/s94CzzW3ehvkFBqcrM3yMOv6EAGsyq0wi9kXdefkMVcHU9lArDWlY4B1a1ZEUz+JyotBtUXTzcaqR2+8Ab/xzB2P6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768394490; c=relaxed/simple;
-	bh=5uzFKuLSWXuv3aNl/XrAZb9CeOSAV+yJBjW3NOApDRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YXpAOd56Uu1HogbySMAtcHfR9RaKi5CDBThTenkrY6MgDUsV7gBnvQTPh10aN0r0tZXHnxE1gh2Bc4Dad7Bmuypsyl0U/12hh9KMwuaClfHOgrL42SEdVqySaFSKzg9zzuBn8jQLUpZo/nbYf62onrknR50FQDRabdxe9HNbF20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m76ep/QD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C2FC4CEF7;
-	Wed, 14 Jan 2026 12:41:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768394489;
-	bh=5uzFKuLSWXuv3aNl/XrAZb9CeOSAV+yJBjW3NOApDRM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m76ep/QDPyJ3GhK4IGiJvnCwaGbbs4C5q0eEzm0tvIT2gmlYVFGGA3be8k7FyGYuO
-	 nXnBXZ6Zh5+1FLNZLTb8nyqStEV6Q2nKWqfd4s6FsjccpVVYZOp2+NkNyhs3zB4POZ
-	 03Oa2069WBM8nVQgEKMo3fgUW36PvGgbe/hpK1D3yzZTKfhCd+V3EJ8YX9uEVvwERS
-	 BeybTpsajFCukYJpBXOCV1+gvmU+eTesPCaXmdoa0cfv/hqG/noqmkrsH+ulcmEQCL
-	 XDOKiK6hZ+opJng0QydVvxB3suZ00HBDxbXdq8NlyXdXYGzg0cnrsbIXD0Nqujve3q
-	 46DTlhMwDBzMA==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- "Dumbre, Saket" <saket.dumbre@intel.com>
-Subject: [PATCH v1 25/26] ACPICA: Replace TPRn Base and Limit registers
-Date: Wed, 14 Jan 2026 13:39:10 +0100
-Message-ID: <1871109.TLkxdtWsSY@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <12822121.O9o76ZdvQC@rafael.j.wysocki>
-References: <12822121.O9o76ZdvQC@rafael.j.wysocki>
+	s=arc-20240116; t=1768394423; c=relaxed/simple;
+	bh=i3ywdlJEEbMCErXDckWbFK8qjmi5xbJlVYcN7KDYJQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ShL2z7JoxS29v13P9xvdWB24IypYEldPHMbtcvno+csz965un7mh6xycXoM/K1iVVScLpuYQeu2HqMWmwaHJ41P5q8Y3mZ/RIzFFmZ20s6F7cnd//iV5YjWgKMnEplzjYNmmkgq6MgvH7YYwpmd99z1JHnBv9r1ZBAD9xOrDdsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uNacfl4B; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9F55BC2087B;
+	Wed, 14 Jan 2026 12:39:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F36F6074A;
+	Wed, 14 Jan 2026 12:40:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AE9C110B68235;
+	Wed, 14 Jan 2026 13:40:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768394417; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LdTB9SICd7x5Se7c+EJ+56/scU6NfThvAUtGnGGrMx4=;
+	b=uNacfl4Bs/+dFN/j5D9PlwbjgNS6nb7BgwzaR6oj2DCUMhGki9TlUQ/otRArV4T4TEPthb
+	vLECnyHHIjy9A5cLIyIKysmamaHZLz7lGf9CbftO+0yfLYGAJInMJJcocP1D42nN95FHhu
+	aYoE64ScAcn5BFZ2SnxBsUH+GiBv9fQeYg2sPyuLhoWjcTOT3cDH+pa9NU43D5fftdQd6h
+	mtCKjvOuuQbvV3ChzfQGdId8DRnDXRksF2WWqhMzKpPOb44Pj7ZhKKguWpUfIv6mOnptLC
+	urt5saAEuBgrYfeu017oRmKJVfhFd9ONDBz0VgyPVwVqmSl2jLy0Wjti0WNS1g==
+Date: Wed, 14 Jan 2026 13:40:04 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas
+ Schier <nicolas.schier@linux.dev>, Hans de Goede <hansg@kernel.org>, Ilpo
+ =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Mark Pearson
+ <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>,
+ Manivannan Sadhasivam <mani@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marcel Holtmann
+ <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ linux-acpi@vger.kernel.org, Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>, Sui Jingfeng <sui.jingfeng@linux.dev>
+Subject: Re: [PATCH v3 00/14] Add support for handling PCIe M.2 Key E
+ connectors in devicetree
+Message-ID: <20260114134004.11023a7e@bootlin.com>
+In-Reply-To: <aWSuYd8zqCxZ9DYE@smile.fi.intel.com>
+References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
+	<aWSq_7_5kkQIv9Hc@smile.fi.intel.com>
+	<aWSuYd8zqCxZ9DYE@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-=46rom: Michal Camacho Romero <michal.camacho.romero@intel.com>
+Hi Andy, Manivannan,
 
-Replace TPRn Base and Limit registers with compatible bitmasks for them.
+On Mon, 12 Jan 2026 10:18:41 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Link: https://github.com/acpica/acpica/commit/be91c5813936
-Signed-off-by: Michal Camacho Romero <michal.camacho.romero@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-=2D--
- include/acpi/actbl1.h | 99 +++++++++++++++++++++++++++++++------------
- 1 file changed, 72 insertions(+), 27 deletions(-)
+> +Cc: Herve (btw, any news on LAN966x support?)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index cdcda64d1d8e..8331a3494b75 100644
-=2D-- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -2005,28 +2005,57 @@ struct acpi_tpr_aux_sr {
- };
-=20
- /*
-=2D * TPRn_BASE
-+ * TPRn_BASE (ACPI_TPRN_BASE_REG)
-  *
-  * Specifies the start address of TPRn region. TPR region address and size=
- must
-  * be with 1MB resolution. These bits are compared with the result of the
-  * TPRn_LIMIT[63:20] * applied to the incoming address, to determine if an
-  * access fall within the TPRn defined region.
-+ *
-+ * Minimal TPRn_Base resolution is 1MB.
-+ * Applied to the incoming address, to determine if
-+ * an access fall within the TPRn defined region.
-+ * Width is determined by a bus width which can be
-+ * obtained via CPUID function 0x80000008.
-  */
-=20
-=2Dstruct acpi_tprn_base_reg {
-=2D	u64 reserved0:3;
-=2D	u64 rw:1;		/* access: 1 =3D=3D RO, 0 =3D=3D RW (for TPR must be RW) */
-=2D	u64 enable:1;		/* 0 =3D=3D range enabled, 1 =3D=3D range disabled */
-=2D	u64 reserved1:15;
-=2D	u64 tpr_base_rw:44;
-=2D	/*
-=2D	 * Minimal TPRn_Base resolution is 1MB.
-=2D	 * Applied to the incoming address, to determine if
-=2D	 * an access fall within the TPRn defined region.
-=2D	 * Width is determined by a bus width which can be
-=2D	 * obtained via CPUID function 0x80000008.
-=2D	 */
-=2D};
-+typedef u64 ACPI_TPRN_BASE_REG;
-+
-+/* TPRn_BASE Register Bit Masks */
-+
-+/* Bit 3 - RW: access: 1 =3D=3D RO, 0 =3D=3D RW register (for TPR must be =
-RW) */
-+#define ACPI_TPRN_BASE_RW_SHIFT        3
-+#define ACPI_TPRN_BASE_RW_MASK         ((u64) 1 << ACPI_TPRN_BASE_RW_SHIFT)
-+
-+/*
-+ * Bit 4 - Enable: 0 =E2=80=93 TPRn address range enabled;
-+ *                 1 =E2=80=93 TPRn address range disabled.
-+ */
-+#define ACPI_TPRN_BASE_ENABLE_SHIFT    4
-+#define ACPI_TPRN_BASE_ENABLE_MASK     ((u64) 1 << ACPI_TPRN_BASE_ENABLE_S=
-HIFT)
-+
-+/* Bits 63:20 - tpr_base_rw */
-+#define ACPI_TPRN_BASE_ADDR_SHIFT      20
-+#define ACPI_TPRN_BASE_ADDR_MASK       ((u64) 0xFFFFFFFFFFF << \
-+			 ACPI_TPRN_BASE_ADDR_SHIFT)
-+
-+/* TPRn_BASE Register Bit Handlers*/
-+#define GET_TPRN_BASE_RW(reg)     (((u64) reg & ACPI_TPRN_BASE_RW_MASK) >>=
-  \
-+					  ACPI_TPRN_BASE_RW_SHIFT)
-+#define GET_TPRN_BASE_ENABLE(reg) (((u64) reg & ACPI_TPRN_BASE_ENABLE_MASK=
-) \
-+							 >> ACPI_TPRN_BASE_ENABLE_SHIFT)
-+#define GET_TPRN_BASE_ADDR(reg)   (((u64) reg & ACPI_TPRN_BASE_ADDR_MASK) =
-  \
-+								   >> ACPI_TPRN_BASE_ADDR_SHIFT)
-+
-+#define SET_TPRN_BASE_RW(reg, val) ACPI_REGISTER_INSERT_VALUE(reg,     \
-+										ACPI_TPRN_BASE_RW_SHIFT,       \
-+										ACPI_TPRN_BASE_RW_MASK, val);
-+#define SET_TPRN_BASE_ENABLE(reg, val) ACPI_REGISTER_INSERT_VALUE(reg, \
-+										ACPI_TPRN_BASE_ENABLE_SHIFT,   \
-+										ACPI_TPRN_BASE_ENABLE_MASK, val);
-+#define SET_TPRN_BASE_ADDR(reg, val) ACPI_REGISTER_INSERT_VALUE(reg,   \
-+										ACPI_TPRN_BASE_ADDR_SHIFT,     \
-+										ACPI_TPRN_BASE_ADDR_MASK, val);
-=20
- /*
-  * TPRn_LIMIT
-@@ -2035,20 +2064,36 @@ struct acpi_tprn_base_reg {
-  * to prohibit certain system agents from accessing memory. When an agent
-  * sends a request upstream, whether snooped or not, a TPR prevents that
-  * transaction from changing the state of memory.
-+ *
-+ * Minimal TPRn_Limit resolution is 1MB.
-+ * Width is determined by a bus width
-  */
-=20
-=2Dstruct acpi_tprn_limit_reg {
-=2D	u64 reserved0:3;
-=2D	u64 rw:1;		/* access: 1 =3D=3D RO, 0 =3D=3D RW (for TPR must be RW) */
-=2D	u64 enable:1;		/* 0 =3D=3D range enabled, 1 =3D=3D range disabled */
-=2D	u64 reserved1:15;
-=2D	u64 tpr_limit_rw:44;
-=2D	/*
-=2D	 * Minimal TPRn_Limit resolution is 1MB.
-=2D	 * These bits define TPR limit address.
-=2D	 * Width is determined by a bus width.
-=2D	 */
-=2D};
-+typedef u64 ACPI_TPRN_LIMIT_REG;
-+
-+/* TPRn_LIMIT Register Bit Masks */
-+
-+/* Bit 3 - RW: access: 1 =3D=3D RO, 0 =3D=3D RW register (for TPR must be =
-RW) */
-+#define ACPI_TPRN_LIMIT_RW_SHIFT   3
-+#define ACPI_TPRN_LIMIT_RW_MASK    ((u64) 1 << ACPI_TPRN_LIMIT_RW_SHIFT)
-+
-+/* Bits 63:20 - tpr_limit_rw */
-+#define ACPI_TPRN_LIMIT_ADDR_SHIFT 20
-+#define ACPI_TPRN_LIMIT_ADDR_MASK  ((u64) 0xFFFFFFFFFFF << \
-+								   ACPI_TPRN_LIMIT_ADDR_SHIFT)
-+
-+/* TPRn_LIMIT Register Bit Handlers*/
-+#define GET_TPRN_LIMIT_RW(reg)    (((u64) reg & ACPI_TPRN_LIMIT_RW_MASK)  =
-  \
-+								   >> ACPI_TPRN_LIMIT_RW_SHIFT)
-+#define GET_TPRN_LIMIT_ADDR(reg)  (((u64) reg & ACPI_TPRN_LIMIT_ADDR_MASK)=
-  \
-+								   >> ACPI_TPRN_LIMIT_ADDR_SHIFT)
-+
-+#define SET_TPRN_LIMIT_RW(reg, val) ACPI_REGISTER_INSERT_VALUE(reg,       =
-     \
-+										ACPI_TPRN_LIMIT_RW_SHIFT,              \
-+										ACPI_TPRN_LIMIT_RW_MASK, val);
-+#define SET_TPRN_LIMIT_ADDR(reg, val) ACPI_REGISTER_INSERT_VALUE(reg,     =
-     \
-+										ACPI_TPRN_LIMIT_ADDR_SHIFT,            \
-+										ACPI_TPRN_LIMIT_ADDR_MASK, val);
-=20
- /*
-  * SERIALIZE_REQUEST
-=2D-=20
-2.51.0
+Related to LAN966x support, I am still stucked on issues related to
+fw_devlink and DT overlays [1].
 
+[1] https://lore.kernel.org/all/20260112154731.6540453b@bootlin.com/
 
+> 
+> On Mon, Jan 12, 2026 at 10:04:24AM +0200, Andy Shevchenko wrote:
+> > On Sat, Jan 10, 2026 at 12:26:18PM +0530, Manivannan Sadhasivam via B4 Relay wrote:  
+> > > Hi,
+> > > 
+> > > This series is the continuation of the series [1] that added the initial support
+> > > for the PCIe M.2 connectors. This series extends it by adding support for Key E
+> > > connectors. These connectors are used to connect the Wireless Connectivity
+> > > devices such as WiFi, BT, NFC and GNSS devices to the host machine over
+> > > interfaces such as PCIe/SDIO, USB/UART and NFC. This series adds support for
+> > > connectors that expose PCIe interface for WiFi and UART interface for BT. Other
+> > > interfaces are left for future improvements.
 
+Related to describing a connector in DT. If DT overlays are involved to described
+what is connected to this connector, some issues need to be fixed.
 
+Those issues are related to referencing an external symbol from the overlay.
+
+We, at Boolin, have been working on the topic
+
+A talk (last year at ELC Europe) gives all details about the topic an related issue:
+  https://bootlin.com/pub/conferences/2025/elce/ceresoli-hotplug-status.pdf
+  https://www.youtube.com/watch?v=C8dEQ4OzMnc
+
+Also a discussion took place after this talk:
+  https://lore.kernel.org/all/20250902105710.00512c6d@booty/
+
+Recently, I also send a RFC series to DTC in order to move forward on this symbol
+reverence topic. This series implements features emerged from the pointed out
+discussion.
+
+> > > 
+> > > Serdev device support for BT
+> > > ============================
+> > > 
+> > > Adding support for the PCIe interface was mostly straightforward and a lot
+> > > similar to the previous Key M connector. But adding UART interface has proved to
+> > > be tricky. This is mostly because of the fact UART is a non-discoverable bus,
+> > > unlike PCIe which is discoverable. So this series relied on the PCI notifier to
+> > > create the serdev device for UART/BT. This means the PCIe interface will be
+> > > brought up first and after the PCIe device enumeration, the serdev device will
+> > > be created by the pwrseq driver. This logic is necessary since the connector
+> > > driver and DT node don't describe the device, but just the connector. So to make
+> > > the connector interface Plug and Play, the connector driver uses the PCIe device
+> > > ID to identify the card and creates the serdev device. This logic could be
+> > > extended in the future to support more M.2 cards. Even if the M.2 card uses SDIO
+> > > interface for connecting WLAN, a SDIO notifier could be added to create the
+> > > serdev device.
+> > > 
+> > > Open questions
+> > > ==============
+> > > 
+> > > Though this series adds the relevant functionality for handling the M.2 Key M
+> > > connectors, there are still a few open questions exists on the design. 
+> > > 
+> > > 1. I've used the DT compatible for the serdev swnode to match the existing OF
+> > > device_id of the bluetooth driver. This avoids implementing custom serdev id
+> > > matching as implemented till v2.  
+> > 
+> > Yeah, swnodes are not designed to replace the real DT or other firmware
+> > interface. The idea of swnodes is to have them providing quirks if needed (i.e.
+> > fixing up the broken or missed FW device properties). This should not have been
+> > done this way. Please, consider another approach, e.g. DT-overlay.  
+> 
+> This is what I have in mind when replied to you:
+> 
+> https://lore.kernel.org/all/20251015071420.1173068-1-herve.codina@bootlin.com/
+> 
+> > > 2. PCIe client drivers of some M.2 WLAN cards like the Qcom QCA6390, rely on
+> > > the PCIe device DT node to extract properties such as
+> > > 'qcom,calibration-variant', 'firmware-name', etc... For those drivers, should we
+> > > add the PCIe DT node in the Root Port in conjunction with the Port node as
+> > > below?
+> > > 
+> > > pcie@0 {
+> > > 	wifi@0 {
+> > > 		compatible = "pci17cb,1103";
+> > > 		...
+> > > 		qcom,calibration-variant = "LE_X13S";
+> > > 	};
+> > > 
+> > > 	port {
+> > > 		pcie4_port0_ep: endpoint {
+> > > 			remote-endpoint = <&m2_e_pcie_ep>;
+> > > 		};
+> > > 	};
+> > > };
+
+Using mechanisms used by the LAN966x, those wifi@0 and port nodes could be added by
+a DT overlay by the PCI device driver handling the Qcom QCA6390 PCI device.
+
+Best regards,
+Hervé
 
