@@ -1,134 +1,105 @@
-Return-Path: <linux-acpi+bounces-20326-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20327-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBF5D2002B
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:00:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DB1D1FFE6
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E34E3072EE2
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:54:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22099304F10F
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6C33A1A3B;
-	Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F130F3A1A25;
+	Wed, 14 Jan 2026 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZiWdFN5S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ciM3mmGa"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40ED3A1A2F
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8A03A0EB8
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768406075; cv=none; b=cAzUQPq9lwV3Li4pEyWapcgJaDuiWKE/JyYxl1fqu+hUKV3So+ZzEWKswkJQf9WnxJLk/U27VyzJ9feie4slL2DAvKkyNJ78wkwO3QuxeuGuqFNDwombfDPcKKdDnInvLJU8gbTLHbk9G5TnsfCbwmN1NQ7+O6Mb5ShvBenyPP8=
+	t=1768406225; cv=none; b=BnnDap6M4LXElYxYtnvYosXBZzb+sjquqsrxmWyjkFMQvLtbPZCMsB6IwukqonnI/XNbD+eIklUICoDcDaJvIviD/MvNCXUbeWcOhn80rL6tUNNZ6TzRiV00asGt8JXezLiyrxpZWuyRz1QAZu11l/Q0FWWshE59SGmRnfz8e6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768406075; c=relaxed/simple;
-	bh=/1wTiWpsCpunOq5fzWEU9xuNhfBmPPkOYODo7GujLyk=;
+	s=arc-20240116; t=1768406225; c=relaxed/simple;
+	bh=xsJHSf3/AMwJQdEYVXGOCzU9jiYbWVnUyVT7KumsBhY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FBkHfdNwhi4k090+7dbCsqcmGD0imDIB5AzdwY1DrT29OqT/xMHV9n0g8UKxH0blGBZAXqnB+297yIlnzcJApV/h/WY93LWHfM87JkzgolPnr8KU8OOkee5dOFaUUaS7Q7ay5LzUJ+DNepm6EqSHmDBWcSYAbTe+5FnFf3DPyQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZiWdFN5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7225C4CEF7
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
+	 To:Cc:Content-Type; b=PYeITRYwl5T7EcFXn9aSeO0RdDMyglQgBr9qi7RNuoO0/D2p+tVfXoeV+jFg6nk7CQwBOgP3itBqcN7r5JQ/xNpXXUTSYdUErg89SJV85lgn/yAbd0Elajgfh/HepCB/lnALsHjha5UCT6FVTKv/JHBahTQT1x3unwnGO9xvqrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ciM3mmGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E44DC2BCAF
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768406075;
-	bh=/1wTiWpsCpunOq5fzWEU9xuNhfBmPPkOYODo7GujLyk=;
+	s=k20201202; t=1768406225;
+	bh=xsJHSf3/AMwJQdEYVXGOCzU9jiYbWVnUyVT7KumsBhY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZiWdFN5SvPTdNAUhPXVsu6tOOMTlR5k8zfBkm2whiyn0TUM8irA+D9cTZqhbdgP3X
-	 Ukgbf3CcSpkm6XOXi5GtyQi/cto0zj3Ovdep4vIUD+CqQ01xdm2G83VRsbLN7TsFWa
-	 qq+uSNBtfVle6sUsVPDoMnqDwNl5oFEkcoeJzlTPqZUh60yzQi/uNX40zhsxYejw3a
-	 DnDKcKIPAnkTwSf0h0qmMsyXEcoG3jAE2j37nupLsRPB61hh4d63StfPAphGbKvvjp
-	 KfXp3kRn1j1TMzQB13ygKGl7TtyEAjuq3ThAzjbag6JWKFtbVLp2NZZ99FDcDCARh5
-	 6CPFwNcJDFPdA==
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-45a85a05a70so2110977b6e.3
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 07:54:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXjtu7uZiCDM/7WsWu1AnWCETXpWTzKJpc4xpnrBBNj71JfzCcUCBziUiM1dtJbt6QGMGud6z0bD4W6@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzoq2e/+W/MngsuGrXxI+NfW3EMysadES4f6FzQR4gfCpCcKVB+
-	+9kBpsKcLaHKtvYk6v7N3E7pAUXAqPObAN+xG5nxLQqKuSKwYGKT3LYDlddRt4SXDIxcU6alm5N
-	Wg736B3agbS7ySv8GsfKzYhMZcpLnLQo=
-X-Received: by 2002:a05:6808:1887:b0:444:1450:c1 with SMTP id
- 5614622812f47-45c73e614d1mr2012498b6e.64.1768406074506; Wed, 14 Jan 2026
- 07:54:34 -0800 (PST)
+	b=ciM3mmGaLfb4sR3dwp0OsziDDyZMrmjtQv0yE/eWeVkMVjJ4/iDSkJgdMZLah7KNn
+	 mrV365T7U4hSIO3tf2+e84SJkaTTPI0DHyWaBigzsSndOjxhHinfBHCZQ7Cw+dNbUH
+	 3Cm3GgsF4uh60LnQwgBR7FyBfcfa9TjhtsIvOXcWE8PYDk7MhbDlm97c7t7BWqjEke
+	 av0BqCxUCmLGHnjB/lBs7CcOMZqnqbV9gdbpaUCnGJmsUV4MUxq028Ws2mio0/evFj
+	 8QgwA5/o/1QBZfV9qnd34rN/IouI1hHcGlay/WXkaVA8+NEOaBFI673UqL11pjvv+1
+	 975Y5iTV9nVQQ==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4507605e19aso5850254b6e.2
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 07:57:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU20bMe9RukTw2H5PY6pf6ZrqxOFieg2UXi37VbaUBXjm5u4gX3/mPKPdUofoV+bSJvsiTfZRXZg8Fw@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA9TMEMLKk1SQ/Zx4Ulf0UnZKViUs8lnnW6c9x06gl7H4hZjNW
+	iJw81KG5YRevvQxiiyMJMtd8ks3/BiX95PK8ATt5q1beDxioByF1QI0PNzzym5VJhHH5qlfzkQV
+	VvC+r++7vPkrZ3+R986bsA2O0rmrMA7M=
+X-Received: by 2002:a05:6808:1798:b0:45a:6d11:9895 with SMTP id
+ 5614622812f47-45c715f7907mr2183029b6e.64.1768406224737; Wed, 14 Jan 2026
+ 07:57:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1767871950.git.mchehab+huawei@kernel.org>
-In-Reply-To: <cover.1767871950.git.mchehab+huawei@kernel.org>
+References: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
+In-Reply-To: <20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 14 Jan 2026 16:54:23 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hq_CvW3P6F7paGSaKOw6kzX_yUEsFPfL1Coco6yBAUBw@mail.gmail.com>
-X-Gm-Features: AZwV_QgR6vNMfQl8dFjf7vOcP8tSnhD2ep8Y06c90VtuR0ELeNasIQVPSS6lTjI
-Message-ID: <CAJZ5v0hq_CvW3P6F7paGSaKOw6kzX_yUEsFPfL1Coco6yBAUBw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] apei/ghes: don't OOPS with bad ARM error CPER records
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, acpica-devel@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ankit Agrawal <ankita@nvidia.com>, Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Hanjun Guo <guohanjun@huawei.com>, Huang Yiwei <quic_hyiwei@quicinc.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Jason Tian <jason@os.amperecomputing.com>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Len Brown <lenb@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Tony Luck <tony.luck@intel.com>
+Date: Wed, 14 Jan 2026 16:56:53 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gqso3q8gUZ3wPq1iG7zOBUu2cWMDZiHqCBU5dgdu_KTQ@mail.gmail.com>
+X-Gm-Features: AZwV_QjrZrLf1bCykQ-ryg-5n0xrmuSoINx75tjJllyFFfS_mnMgNK7g8MW_veM
+Message-ID: <CAJZ5v0gqso3q8gUZ3wPq1iG7zOBUu2cWMDZiHqCBU5dgdu_KTQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] irqchip/gic-v5: Code first ACPI boot support
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Jose Marinho <jose.marinho@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 8, 2026 at 12:35=E2=80=AFPM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
+On Thu, Dec 18, 2025 at 11:15=E2=80=AFAM Lorenzo Pieralisi
+<lpieralisi@kernel.org> wrote:
 >
-> Rafael,
+> The ACPI and ACPI IORT specifications were updated to support bindings
+> required to describe GICv5 based systems.
 >
-> Current parsing logic at apei/ghes for ARM Processor Error
-> assumes that the record sizes are correct. Yet, a bad BIOS
-> might produce malformed GHES reports.
+> The ACPI specification GICv5 bindings ECR [1] were approved and the
+> required changes merged in the ACPICA upstream repository[5].
 >
-> Worse than that, it may end exposing data from other memory
-> addresses, as the logic may end dumping large portions of
-> the memory.
+> The Arm IORT specification [2] has been updated to include GICv5 IWB
+> specific bindings in revision E.g.
 >
-> Avoid that by checking the buffer sizes where needed.
+> Implement kernel code that - based on the aforementioned bindings - adds
+> support for GICv5 ACPI probing.
 >
-> ---
->
-> v6:
->  - No code changes, just a cosmetic change at patch 3 description
->  - Added Jonathan's review on all patches
->
-> v5:
->  - Changed the name of a var as requested by Jonathan
->
-> v4:
->  - addressed Jonathan comments;
->  - added two extra patches to prevent other OOM issues.
->
-> v3:
->   - addressed Shuai feedback;
->   - moved all ghes code to one patch;
->   - fixed a typo and a bad indent;
->   - cleanup the size check logic at ghes.c.
->
-> Mauro Carvalho Chehab (4):
->   apei/ghes: ARM processor Error: don't go past allocated memory
->   efi/cper: don't go past the ARM processor CPER record buffer
->   apei/ghes: ensure that won't go past CPER allocated record
->   efi/cper: don't dump the entire memory region
->
->  drivers/acpi/apei/ghes.c        | 38 ++++++++++++++++++++++++++++-----
->  drivers/firmware/efi/cper-arm.c | 12 +++++++----
->  drivers/firmware/efi/cper.c     |  8 ++++++-
->  drivers/ras/ras.c               |  6 +++++-
->  include/acpi/ghes.h             |  1 +
->  include/linux/cper.h            |  3 ++-
->  6 files changed, 56 insertions(+), 12 deletions(-)
->
-> --
+> ACPICA changes supporting the bindings are posted with the series; they
+> were cherry-picked from the upcoming ACPICA Linuxised release patches
+> and they should _not_ be merged in any upstream branch because the
+> full set of Linuxised ACPICA changes will be subsequently posted in
+> order to be merged, I added the two ACPICA patches to make the series
+> self-contained.
 
-Applied as 6.20 material, but I changed the spelling of EFI, APEI,
-CPER, and GHES in the subjects/changelogs to all capitals.
+The patches in question have been included in this series:
+
+https://lore.kernel.org/linux-acpi/12822121.O9o76ZdvQC@rafael.j.wysocki/
+
+and are going to be applied shortly.
 
 Thanks!
 
