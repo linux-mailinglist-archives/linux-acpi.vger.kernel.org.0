@@ -1,302 +1,157 @@
-Return-Path: <linux-acpi+bounces-20348-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20349-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06569D212A6
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 21:24:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7D2D21359
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 21:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ABFF930208F0
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 20:24:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F05EF3030DBF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 20:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF2F33C50D;
-	Wed, 14 Jan 2026 20:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F92DEA68;
+	Wed, 14 Jan 2026 20:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmTQOYP3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OItHARgI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EE232C924;
-	Wed, 14 Jan 2026 20:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5CB1373
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 20:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768422261; cv=none; b=lVMF/Gx/tWPHpQ2S7DNNEOBXxMv5YB3f7Dnwikj7W465SfRn59djZSJlYHZCYFJ2hp0yUktV6ddPGdChpcifUTT5aM2LWwokMYsTjFzP8tGDYSJ+wzRKaJBrQSiUXSC2hbOfn4V6xljFeLgStLFgB9h3WDR3oj6pw1Ed1s9uA4Y=
+	t=1768423557; cv=none; b=L2MI1hbRcbVSHy7cwoq4udQTM/3cvJ05VqUWR5WZ2zmbsFHNbBZfRzdJ8eGccgICdPHJGdZ8bsrrVYJi3R94vPG+3IA47u2eFTrvPQSs7sVT+2Lil9lgemOEZgMggEiMvh1eItc+dXyx83HprnMKcCb4UKyFXsHTjgcxZLh1ZSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768422261; c=relaxed/simple;
-	bh=2QdzLaUu11/vxbPCOmbk67hSo2EwQNx/2DHWgb15TpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=B3fGkWNJVPvATJ0UusyL7P/4/EhfnqMLgAxb93sOpuq7gyz4r58VYiiEe4GxNfzAS/JMgDBgAxDFsInu6ENvggV+ogCgIEK6SMsKxhntouFPIc+BeDBcW0rDGBGu38d+wkRAc6V8iyzXmEbxDOCQXcP0/qFDR+CkzE8dw0WUazo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmTQOYP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62607C4CEF7;
-	Wed, 14 Jan 2026 20:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768422260;
-	bh=2QdzLaUu11/vxbPCOmbk67hSo2EwQNx/2DHWgb15TpU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=OmTQOYP3EX/M2oj/bD+vFJbeX6mnzLjYQLa2cIz3urjOTgTfhc/MPyYaZujrYByd2
-	 Hc4rK7TQmPew2HN0QoVmeOI/6izyuzlDrpRPaIqgG0N3/J4whZ7p28Y4ngSBVaOtKt
-	 5tONS8e8fcEjCDmr0FvLBjO0idvYsIG2m7Pc09k3/ZNlJQxBP3d+ZJFQc3bHJhrEhM
-	 T251PSw0oHYDrCaGLsqsUqHfDUrTy5+BZzy58WpALdjhUoolVdtKkT/n8mS6BpY4UZ
-	 41I5+Gh7qeBxQxeOIE2cVTgeRzohe2w4gQaQ4iJt5buorj7PxNyLvHYPPr7CTeH3lp
-	 IiR8ZsqO9iD5A==
-Date: Wed, 14 Jan 2026 14:24:19 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Badal Nilawar <badal.nilawar@intel.com>
-Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, anshuman.gupta@intel.com,
-	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
-	ilpo.jarvinen@linux.intel.com, rodrigo.vivi@intel.com,
-	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
-	uma.shankar@intel.com, karthik.poosa@intel.com,
-	matthew.auld@intel.com, sk.anirban@intel.com, raag.jadav@intel.com
-Subject: Re: [PATCH v6 01/12] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
-Message-ID: <20260114202419.GA831656@bhelgaas>
+	s=arc-20240116; t=1768423557; c=relaxed/simple;
+	bh=ySq77G2UGDTwO/aW/4jiBWkfMf63RGdBV5p4dv8noQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGNQNVxOMa+9e4yYXvliq5+otColaiCW3BguiRRD7AqzDEwqOJHwOEJZwsYj39/PBZxhK+RzhUW9ej/ZVirfJZrM7WGojY3NQZzEFTRL0TtWuMUdlY9ibg+QQfEXlqJSilm77f/nNgP6GfgIXex2I6uKmGlB5h54n6PhpuztY+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OItHARgI; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768423556; x=1799959556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ySq77G2UGDTwO/aW/4jiBWkfMf63RGdBV5p4dv8noQA=;
+  b=OItHARgIVbvalWHJdZWT4zFPDBtMK+GAKlZFoCJe3k7xorcRNpx6tLY3
+   2yz4EZdKOPs+LR6m8iec6s6nt/n2sAxF1XSEI5dLBBfIU33EXooPuBXOT
+   io/CPJ8/tCO7eoBGN1BMqhNepSoIkf7uN5cPe9udbLvVmgCw6EMfgjLD2
+   cBjKVToX/LlYJ93NaWmPX6k+CB3nyD7uQfQIT+eiJRSr1va8nO4hSffhl
+   4rRz5DqUNvMhDekPVj9+PkDTxHSIlDg9zX1rbR02FWG2vTqmkEfQaQH/L
+   CfUww5LP8XrbrGg7oUZvKao5wa53KAUTj1kV/Ot6jcdxO5BDxt+7ExX68
+   g==;
+X-CSE-ConnectionGUID: 8QlWhZ4gTn6EqW++qnOgNw==
+X-CSE-MsgGUID: 97kd0dyqSG2l6I/FprCOtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="80377138"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="80377138"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 12:45:55 -0800
+X-CSE-ConnectionGUID: JjYveOiIRAOwBhkFA1GvRQ==
+X-CSE-MsgGUID: g1bKBnerRVKTqevG89u3pA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="209821885"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 12:45:53 -0800
+Date: Wed, 14 Jan 2026 22:45:50 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-acpi@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [Question] Best practice for ACPI representation of
+ DPLL/Ethernet dependencies (SyncE)
+Message-ID: <aWgAfsycBDc0mlFv@smile.fi.intel.com>
+References: <3bf214b9-8691-44f7-aa13-8169276a6c2b@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260113164200.1151788-15-badal.nilawar@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3bf214b9-8691-44f7-aa13-8169276a6c2b@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jan 13, 2026 at 10:12:02PM +0530, Badal Nilawar wrote:
-> From: Anshuman Gupta <anshuman.gupta@intel.com>
+On Wed, Jan 14, 2026 at 08:19:05PM +0100, Ivan Vecera wrote:
+
+> I would like to ask for your opinion regarding an ACPI implementation
+> detail for a patch-set I currently have on the netdev mailing list [1].
 > 
-> Implement _DSM method 0Ah, as per PCI Firmware r3.3, sec 4.6.10,
-> to request auxiliary power required by the device when in D3cold state.
+> The patch-set adds support for modeling the relationship between a DPLL
+> device (provider) and an Ethernet controller/PHY (consumer) to support
+> SyncE (Synchronous Ethernet). The topology requires the Ethernet
+> controller/PHY to reference specific pins (sub-nodes) of the DPLL
+> device.
 > 
-> Implementation allows only a single device below the Downstream Port to
-> request for Aux Power Limit under a given Root Port/Downstream Port
-> because it does not track and aggregate requests from all child devices
-> below the Downstream Port as required by PCI Firmware r3.3, sec 4.6.10.
+> Although the target driver (ice) in the patch-set is primarily used in
+> ACPI environments, I aimed for a firmware-agnostic approach using the
+> fwnode API.
 > 
-> Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
-> V2(Bjorn/Rafael):
->   - Call acpi_dsm_check() to find method 0Ah supported
->   - Return retry interval to caller
-> V3(Kuppuswamy)
->   - Add NULL check for retry interval
-> V4
->   - Define enums for aux power request status (Rafael)
->   - Add Co-developed-by and clean up Signed-off-by (Kappuswamy)
->  (Bjorn)
->   - Instead of root pci device pass the pci device of driver, traverse
->     up the tree and discover _DSM
->   - Allow only function 0 of device to request aux power
->   - Allow retry_interval to be NULL
->   - Refine commit message and function description
-> V5(Rafael)
->   - Remove function 0 check and allow first caller of the given
->     downstream port (with _DSM) to requst aux power including
->     different function
->   - Squash Patch v5.02 to this patch
->   - In the logic, to allow single device to req power, use linked list
->     instead of adding extra variables to acpi device structure
->   - return positive code for no main power removal to distinguish from
->     aux power request granted
-> ---
->  drivers/pci/pci-acpi.c   | 136 +++++++++++++++++++++++++++++++++++++++
->  include/linux/pci-acpi.h |   9 +++
->  2 files changed, 145 insertions(+)
+> Provider (DPLL):
+> The DPLL device uses _DSD properties mirroring the definition in the DT
+> bindings [2]. The pins are represented as sub-nodes. ACPI example [3].
 > 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 9369377725fa..645d3005ba50 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1418,6 +1418,142 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
->  	ACPI_FREE(obj);
->  }
->  
-> +static LIST_HEAD(acpi_aux_pwr_list);
-> +static DEFINE_MUTEX(acpi_aux_pwr_lock);
-> +
-> +struct aux_pwr {
-> +	u32 aux_pwr_limit;		/* aux power limit granted by platform firmware */
-> +	struct device *dev;		/* device to which aux power is granted  */
+> Consumer (Ethernet):
+> I defined a new DT schema for the consumer using properties dpll-pins
+> nd dpll-pin-names. And in ACPI, I intend to use hierarchical data
+> extension (_DSD) to reference the DPLL pin sub-nodes from the Ethernet
+> controller package [4], effectively mirroring the DT phandle referencing
+> mechanism.
+> 
+> Question:
+> Is reusing the DT binding definitions within ACPI _DSD (to allow unified
+> fwnode property parsing) the recommended approach for this type of
+> device relationship?
 
-Shorten these to fit in 80 columns like the rest of the file.
+TL;DR: Seems to me you are pretty much doing an ugly hack and yes, you violate
+the existing ACPI resources. More details below.
 
-> +	struct acpi_device *adev;	/* root port/downstream port */
-> +	struct list_head list;
-> +};
-> +
-> +enum aux_pwr_req_status {
-> +	AUX_PWR_REQ_DENIED               = 0x0,
-> +	AUX_PWR_REQ_GRANTED              = 0x1,
-> +	AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL  = 0x2,
-> +	AUX_PWR_REQ_RETRY_INTERVAL_MIN   = 0x11,
-> +	AUX_PWR_REQ_RETRY_INTERVAL_MAX   = 0x1F
+> Or should I define strictly ACPI-specific bindings/objects, considering
+> that the DT bindings for this feature are also new and currently under
+> review?
+> 
+> I want to ensure I am not violating any ACPI abstraction layers by
+> relying too heavily on the DT-style representation in _DSD.
+> 
+> Thanks for your guidance.
 
-Use lower-case hex ("0x1f") like the rest of the file.  Also below.
+First of all, if I understood the HW topology right — it has an I²C muxer
+which has a channel connected to DPLL, which among other functions provides
+some kind of GPIO/pin muxing facility — (correct me, if I'm wrong), the
+irrelevant to ACPI hack is an avoidance of having proper GPIO controller
+driver / description provided with likely pin control and pin muxing
+flavours, which is missing (hence drivers/pinctrl/... should be and it should
+be described in DT).
 
-> +};
-> +
-> +/**
-> + * pci_acpi_request_d3cold_aux_power - Request aux power while device is in D3cold
+Second, ACPI provides the _CRS resources specifically for pin configuration,
+pin control (pin muxing as well). In case it's related those resources must
+be used. The caveat, however, the Linux kernel has not yet implemented the
+glue layer between ACPICA and pin control subsystem (see [5] for more).
 
-Shorten or wrap to fit in 80 columns.
+It might be that I didn't get the picture correctly, but it smells badly to me.
+In any case, I would like to help you and I'm open to more details about this
+case.
 
-> + * @dev: PCI device instance
-> + * @requested_mw: Requested auxiliary power in milliwatts
-> + * @retry_interval: Retry interval returned by platform to retry auxiliary
-> + *                  power request
-> + *
-> + * Request auxilary power to platform firmware, via Root Port/Switch Downstream
-> + * Port ACPI _DSM Function 0Ah, needed for the PCI device when it is in D3cold.
-> + * Evaluate the _DSM and handle the response accordingly.
+> [1]
+> https://patchwork.kernel.org/project/netdevbpf/list/?series=1040080&state=*
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/dpll
+> [3] https://github.com/ivecera/zl3073x-acpi/blob/main/sample1.asl
+> [4] https://github.com/ivecera/zl3073x-acpi/blob/main/dpllnic.asl
 
-Drop this last sentence; I don't think it tells us anything new.
+[5]: https://lore.kernel.org/r/20221130164027.682898-1-niyas.sait@linaro.org
 
-> + * For Multi-Function Devices, driver for Function 0 is required to report an
-> + * aggregate power requirement covering all functions contained within the
-> + * device.
-> + *
-> + * Return: 0 Aux power request granted
-> + *	   1 No main power removal
-> + *         errno on failure.
-> + */
-> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_mw,
-> +				      u32 *retry_interval)
-> +{
-> +	union acpi_object in_obj = {
-> +		.integer.type = ACPI_TYPE_INTEGER,
-> +		.integer.value = requested_mw,
-> +	};
-> +
-> +	union acpi_object *out_obj;
-> +	int result;
-> +	struct pci_dev *bdev;
-> +	struct acpi_device *adev;
-> +	acpi_handle handle;
-> +	struct aux_pwr *apwr, *next;
-> +
-> +	if (!dev)
-> +		return -EINVAL;
+-- 
+With Best Regards,
+Andy Shevchenko
 
-We talked about only allowing this for function 0:
-https://lore.kernel.org/all/20250904183046.GA1267851@bhelgaas/
 
-> +	for (bdev = dev; bdev; bdev = pci_upstream_bridge(bdev)) {
-
-I think bdev should start with pci_upstream_bridge(dev) as in the
-other patch because this _DSM is only allowed in Downstream Ports.
-
-> +		handle = ACPI_HANDLE(&bdev->dev);
-> +		if (handle &&
-> +		    acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4,
-> +				   1 << DSM_PCI_D3COLD_AUX_POWER_LIMIT))
-> +			break;
-> +	}
-> +
-> +	if (!bdev)
-> +		return -ENODEV;
-> +
-> +	adev = ACPI_COMPANION(&bdev->dev);
-> +	if (!adev)
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&acpi_aux_pwr_lock);
-> +	/* Check if aux power already granted to different device */
-> +	list_for_each_entry_safe(apwr, next, &acpi_aux_pwr_list, list) {
-> +		if (apwr->adev == adev && apwr->dev != &dev->dev) {
-> +			pci_info(to_pci_dev(apwr->dev),
-> +				 "D3cold Aux Power request already granted: %u mW\n",
-> +				 apwr->aux_pwr_limit);
-> +			return -EALREADY;
-> +		}
-> +		if (apwr->adev == adev && apwr->dev == &dev->dev) {
-> +			list_del(&apwr->list);
-> +			kfree(apwr);
-> +			break;
-> +		}
-> +	}
-> +
-> +	out_obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&bdev->dev),
-> +					  &pci_acpi_dsm_guid, 4,
-> +					  DSM_PCI_D3COLD_AUX_POWER_LIMIT,
-> +					  &in_obj, ACPI_TYPE_INTEGER);
-> +	if (!out_obj)
-> +		return -EINVAL;
-> +
-> +	result = out_obj->integer.value;
-> +	ACPI_FREE(out_obj);
-> +
-> +	if (retry_interval)
-> +		*retry_interval = 0;
-> +
-> +	switch (result) {
-> +	case AUX_PWR_REQ_DENIED:
-> +		pci_dbg(bdev, "D3cold Aux Power %u mW request denied\n",
-> +			requested_mw);
-> +		return -EINVAL;
-> +	case AUX_PWR_REQ_GRANTED:
-> +		pci_info(bdev, "D3cold Aux Power request granted: %u mW\n",
-> +			 requested_mw);
-> +		apwr = kzalloc(sizeof(*apwr), GFP_KERNEL);
-> +		if (apwr) {
-> +			apwr->aux_pwr_limit = requested_mw;
-> +			apwr->dev = &dev->dev;
-> +			apwr->adev = adev;
-> +			INIT_LIST_HEAD(&apwr->list);
-> +			list_add(&acpi_aux_pwr_list,
-> +				 &apwr->list);
-> +		}
-
-I think we leak this allocation if the device is removed.  I think the
-list idea is more complicated than aggregating would be.
-
-I think we could:
-
-  - add "aux_power_mw" in struct pci_dev
-
-  - walk the tree below bdev, accumulating aux_power_mw
-    (total_aux_power_mw += dev->aux_power_mw)
-
-  - pass "total_aux_power_mw + requested_mw" to the _DSM
-
-  - if successful, set dev->aux_power_mw = requested_mw
-
-> +		return 0;
-> +	case AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL:
-> +		pci_info(bdev, "D3cold Aux Power: Main power won't be removed\n");
-> +		return 2;
-
-Kernel-doc says we return 1 for this case.
-
-> +	case AUX_PWR_REQ_RETRY_INTERVAL_MIN ... AUX_PWR_REQ_RETRY_INTERVAL_MAX:
-> +		pci_info(bdev, "D3cold Aux Power request needs retry, interval: %u seconds\n",
-> +			 result & 0xF);
-
-Lower-case hex.
-
-> +		if (retry_interval) {
-> +			*retry_interval = result & 0xF;
-> +			return -EAGAIN;
-> +		}
-> +		return -EINVAL;
-
-I think we should do:
-
-  case AUX_PWR_REQ_RETRY_INTERVAL_MIN ...  AUX_PWR_REQ_RETRY_INTERVAL_MAX:
-    result &= 0xf;
-    pci_info(bdev, "... needs retry", result);
-    if (retry_interval)
-      *retry_interval = result;
-    return -EAGAIN;
-
-I don't think it's useful to return different errors based on whether
-the caller supplied a "retry_interval" pointer.
-
-> +	default:
-> +		pci_err(bdev, "D3cold Aux Power: Reserved or unsupported response: 0x%x\n",
-> +			result);
-> +		return -EINVAL;
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
 
