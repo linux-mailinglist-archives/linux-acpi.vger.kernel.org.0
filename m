@@ -1,159 +1,141 @@
-Return-Path: <linux-acpi+bounces-20329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BF7D20037
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:00:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B4ED200A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BD0D3002875
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:00:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93A42300B03D
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755CE3A1CF9;
-	Wed, 14 Jan 2026 16:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EA43A1D03;
+	Wed, 14 Jan 2026 16:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nv6Jwqug"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOdjlux8"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9112459D9;
-	Wed, 14 Jan 2026 16:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7049C3A1CF8
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768406441; cv=none; b=QyV/DhZKwoAWoO+CQt4qwjUpHovs9CX1ZJVyDt7FMcUDSn4EmSNEiPKdf5LPX1ZnnNAZT0esmYid8EfdPg0yzT62CBhsKAlSM4XOo75qFJuR9Nz/tPjRkzMaHBQrANV4SJR3fF6UsLINXmVymBkufr3xe4zhA71HAwUJ1tAHbzI=
+	t=1768406556; cv=none; b=jSvs3wfKhyZ6dp0o3Masv9t/MwrBSj7f3asYeYBOrFHMSLt767ZYuS4qGmNWk0DHYQGUxIQfgb6kXweIUtNJhQs37eo1DchwwTgyVrqst1gS9dtiArYdG4F1jvTbB0Pqi+XukgQXGi88VDeSJm6tJZIqtwqsXWIu7RHvpGNQ3/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768406441; c=relaxed/simple;
-	bh=UQRJ5fcHhllBfv67yGhnNCJ+Tsu6dEXBnujxEqv1usA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Orlmbs7Eg7Bum23WhjgieQd2FaQ6l+D9NERRIiedn9Du5kg5/BbQxKnu+myAFj8ADfcBvmt+ChZGHc+EeFYHIecTC6cDmjSrTcMgWADO+oPJLFn19Oa371UjJQRi/03W9roHqc7TOFtvPsu4446KyUuOhCuqLMvVcLpzif1xYKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nv6Jwqug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9C0C4CEF7;
-	Wed, 14 Jan 2026 16:00:32 +0000 (UTC)
+	s=arc-20240116; t=1768406556; c=relaxed/simple;
+	bh=AXktR+ufjv+ZPvWBMJl3y25kMlbF4/kkzq3ciTf68sA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PLdvZuUHvjwd8lMyRJHrEmnxl06iiWH7PcZp8TQgY6rkvtjxqM6GMpP3dgll8eh0kDhUp1Sk8bOy1VSuBG9sYlHtcV7chZxsFdHvrqUrXSKG+/jw9g2J2LpcbAqtg5lItquH0nWKa08QOEnI2I7Ae+MAHEndreruCLje1u3y4cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOdjlux8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044E3C2BCAF
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768406440;
-	bh=UQRJ5fcHhllBfv67yGhnNCJ+Tsu6dEXBnujxEqv1usA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nv6Jwqughj9EJzqz+t+wK38BiQT/64D4Qc8eIsadsxCORoTCISzN9YG1rpQ3yTsGQ
-	 N9jVj96OzvxxpXvncaXTTFORVsaKTgOA4IgARR3sKY46Ha5ZUGe2EV4SuRMN7Db1BY
-	 ZbkAbcJM5lukvvtC9yO3CLZB3Pf1bJOHkinkUmXV8hcSv0vwzrrWqePlk4vphhZdXl
-	 jGGePLJWeJmv/UaNwiI3dWS4ZHFhtFiRwliITrQvQc8rx+BF8H8R90Ih6Vpym27tsm
-	 bk4VdHbxA7U7J7IXJ6G7BaD2cTxScUXatw7hyIDWpQps6KXTcF15s9N8iA18mBwifw
-	 MxrCfGmDVzgNw==
-Date: Wed, 14 Jan 2026 21:30:23 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hans de Goede <hansg@kernel.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	"Derek J. Clark" <derekjohn.clark@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Bartosz Golaszewski <brgl@kernel.org>, 
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Stephan Gerhold <stephan.gerhold@linaro.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 2/9] serdev: Add an API to find the serdev controller
- associated with the devicetree node
-Message-ID: <jngg3qmacno5obsz3ksaggt2pg5btrtuwjwuzrqr7x6timnm5n@ez6ta7uvql7i>
-References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
- <20260112-pci-m2-e-v4-2-eff84d2c6d26@oss.qualcomm.com>
- <2a44e967-ebae-4641-88d7-ccb4536ee3b7@kernel.org>
+	s=k20201202; t=1768406556;
+	bh=AXktR+ufjv+ZPvWBMJl3y25kMlbF4/kkzq3ciTf68sA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hOdjlux8arlMa79v1IKqnfQQ9nP7lVnts0pHJiVD9SvJZAVrLw+y+Agy56pT7WOp7
+	 IVphb8OGaTxI81gdZhFje539Cu7QUPZzBMnoJH19iAvUge0AMH9OmtHe9vZUGoxNDU
+	 lK7Jjb1Ve/8Y/5kGxatNM8qyxnEX1TVVThX3flshdBTafC4Rt6Wys8qRNS2g9ycK1l
+	 LbPvQWGCMgQOohEnHUAVStcK8b3+D23AIddYoPfyYBcg5f+FNkEensVZLRsubIA6FM
+	 U0moCnxcHYjSRrVPuj4OnZ/XOVlJoT8tBVUHIXHliK0foWZiXOMImz4kDNwuYOW1Tp
+	 dB2ow07KvkpCw==
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4507605e19aso5854531b6e.2
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 08:02:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWixfLdv88mZlD12wua/gQ6UpTQ7bJpydpMwfuMGzfgyIIPwg3AmEXHSy8FV0eml6n3dBCtqJoZky8i@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw49kvO90LWXp2W65JvfQ1wJzCv2se1yIzcgvXLY/nFhHn/ZCF/
+	4ZrCOXw3Axw4ZSeCmxcM0HGNnd7zzCGQV9Dyx+57GX0RgDifCzo9VYeveF+GC/+KOwJ4QDo3vUK
+	5YUt64O2vTKajugqhjy34FZR2rvi2ohc=
+X-Received: by 2002:a05:6808:1798:b0:45a:6d11:9895 with SMTP id
+ 5614622812f47-45c715f7907mr2196996b6e.64.1768406555005; Wed, 14 Jan 2026
+ 08:02:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2a44e967-ebae-4641-88d7-ccb4536ee3b7@kernel.org>
+References: <20260112032239.30023-1-xueshuai@linux.alibaba.com> <2a212d70-9752-fecb-a388-d854269a0ff9@huawei.com>
+In-Reply-To: <2a212d70-9752-fecb-a388-d854269a0ff9@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 14 Jan 2026 17:02:24 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0g6eWtNahgiMuzDnPMHs2CS9Pd5TuZB=XuHkk8oqv_aeA@mail.gmail.com>
+X-Gm-Features: AZwV_QgarXOy7rSgjFqFc6d7z_Wf5qeNEsyNdZo2N-xLu5H5XAlPxUp-Njj6_Gc
+Message-ID: <CAJZ5v0g6eWtNahgiMuzDnPMHs2CS9Pd5TuZB=XuHkk8oqv_aeA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] ACPI: APEI: GHES: Performance improvements for
+ error notification handlers
+To: Hanjun Guo <guohanjun@huawei.com>, Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: tony.luck@intel.com, mchehab@kernel.org, dolinux.peng@gmail.com, 
+	yazen.ghannam@amd.com, rafael@kernel.org, dave.jiang@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, leitao@debian.org, 
+	pengdonglin@xiaomi.com, baolin.wang@linux.alibaba.com, 
+	benjamin.cheatham@amd.com, bp@alien8.de, dan.j.williams@intel.com, 
+	james.morse@arm.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, zhuo.song@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 14, 2026 at 03:01:51PM +0100, Hans de Goede wrote:
-> Hi Mani,
-> 
-> Thank you for your work in this.
-> 
-> On 12-Jan-26 17:26, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > 
-> > Add of_find_serdev_controller_by_node() API to find the serdev controller
-> > device associated with the devicetree node.
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  drivers/tty/serdev/core.c | 16 ++++++++++++++++
-> >  include/linux/serdev.h    |  9 +++++++++
-> >  2 files changed, 25 insertions(+)
-> > 
-> > diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-> > index b33e708cb245..25382c2d63e6 100644
-> > --- a/drivers/tty/serdev/core.c
-> > +++ b/drivers/tty/serdev/core.c
-> > @@ -504,6 +504,22 @@ struct serdev_controller *serdev_controller_alloc(struct device *host,
-> >  }
-> >  EXPORT_SYMBOL_GPL(serdev_controller_alloc);
-> >  
-> > +/**
-> > + * of_find_serdev_controller_by_node() - Find the serdev controller associated
-> > + *					 with the devicetree node
-> > + * @node:	Devicetree node
-> > + *
-> > + * Return: Pointer to the serdev controller associated with the node. NULL if
-> > + * the controller is not found.
-> > + */
-> > +struct serdev_controller *of_find_serdev_controller_by_node(struct device_node *node)
-> > +{
-> > +	struct device *dev = bus_find_device_by_of_node(&serdev_bus_type, node);
-> > +
-> > +	return (dev && dev->type == &serdev_ctrl_type) ? to_serdev_controller(dev) : NULL;
-> > +}
-> > +EXPORT_SYMBOL_GPL(of_find_serdev_controller_by_node);
-> > +
-> 
-> This new of_find_serdev_controller_by_node() function needs:
-> 
-> #ifdef CONFIG_OF ... #endif
-> 
-> around it, to match the stubbing you are doing in serdev.h
-> 
+On Mon, Jan 12, 2026 at 12:12=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com> =
+wrote:
+>
+> On 2026/1/12 11:22, Shuai Xue wrote:
+> > changes since v2:
+> > - Use `guard(rcu)()` instead of explicit `rcu_read_lock()`/`rcu_read_un=
+lock()` per Donglin Peng
+> >
+> > changes since v1:
+> > - add Tested-by and Reviewed-by tags from Tony
+> > - change return value from AE_BAD_ADDRESS to -EINVAL ghes_map_error_sta=
+tus per Hanjun
+> > - remove unnecessary blank lines per Hanjun
+> >
+> > This patch series improves the performance of GHES error notification h=
+andlers
+> > (NMI and SEA) by optimizing how they check for active error conditions.
+> >
+> > Currently, both ghes_notify_nmi() and ghes_notify_sea() perform expensi=
+ve
+> > operations on each invocation to determine if there are actual error re=
+cords
+> > to process. This includes mapping/unmapping physical addresses and acce=
+ssing
+> > hardware registers, which causes significant overhead especially on sys=
+tems
+> > with many cores.
+> >
+> > The optimizations introduced in this series:
+> > 1. Pre-map error status registers during initialization
+> > 2. Directly check for active errors using mapped virtual addresses
+> > 3. Extract common functionality into reusable helper functions
+> > 4. Apply the same optimization to both NMI and SEA handlers
+> >
+> > These changes significantly reduce the overhead of error checking:
+> > - NMI handler: From ~15,000 TSC cycles to ~900 cycles
+> > - SEA handler: From 8,138.3 ns to a much faster check
+> >
+> > The initial idea for this optimization came from Tony Luck [1], who ide=
+ntified
+> > and implemented the approach for the NMI handler. This series extends t=
+he
+> > same concept to the SEA handler and refactors common code into shared h=
+elpers.
+> >
+> > Patch 1 (Tony Luck): Improves ghes_notify_nmi() status check by pre-map=
+ping
+> >                       error status registers and avoiding repeated mapp=
+ings.
+> >
+> > Patch 2 (Shuai Xue): Extracts common helper functions for error status =
+handling
+> >                       to eliminate code duplication.
+> >
+> > Patch 3 (Shuai Xue): Applies the same optimization to ghes_notify_sea()=
+ to improve
+> >                       ARMv8 system performance.
+>
+> Looks good to me, and did a simple compile test on both x86 and arm64
+> machine,
+>
+> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Ack.
-
-> >  static int of_serdev_register_devices(struct serdev_controller *ctrl)
-> >  {
-> >  	struct device_node *node;
-> > diff --git a/include/linux/serdev.h b/include/linux/serdev.h
-> > index ecde0ad3e248..db9bfaba0662 100644
-> > --- a/include/linux/serdev.h
-> > +++ b/include/linux/serdev.h
-> > @@ -333,4 +333,13 @@ static inline bool serdev_acpi_get_uart_resource(struct acpi_resource *ares,
-> >  }
-> >  #endif /* CONFIG_ACPI */
-> >  
-> > +#ifdef CONFIG_OF
-> > +struct serdev_controller *of_find_serdev_controller_by_node(struct device_node *node);
-> > +#else
-> > +struct serdev_controller *of_find_serdev_controller_by_node(struct device_node *node)
-> > +{
-> > +	return NULL;
-> > +}
-> 
-> stubs like this one should be static inline to avoid warnings like this one:
-> 
-> In file included from drivers/tty/serdev/core.c:21:
-> ./include/linux/serdev.h:339:27: warning: no previous prototype for ‘of_find_serdev_controller_by_node’ [-Wmissing-prototypes]
->   339 | struct serdev_controller *of_find_serdev_controller_by_node(struct device_node *node)
->       |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-
-Darn... Will fix it. Thanks for spotting!
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Applied as 6.20 material, thanks!
 
