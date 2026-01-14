@@ -1,150 +1,126 @@
-Return-Path: <linux-acpi+bounces-20351-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20352-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B94D21B68
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 00:10:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8B4D21C21
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 00:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87DB4305BC10
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 23:07:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B610302D887
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 23:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A894E37FF41;
-	Wed, 14 Jan 2026 23:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F2C3904D5;
+	Wed, 14 Jan 2026 23:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="LJb19cO1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bojR1z4+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044A43491C4;
-	Wed, 14 Jan 2026 23:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768432069; cv=pass; b=NiBiWeuuh1mrHYbNiWpX9OgnsMO0dbzezW2KomD6GLIMrgR/MVIkTZeXKgCRDeN7hPVWbk4GDdV876TMq783RXwPP2Ru200vK6k3+4Ec+F5Av1ZJ1o1avSY6uPW8kD8NTpRxBgagDc7ocfa4M/x0CF6hISGZxKLKXKvTl3lOXO8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768432069; c=relaxed/simple;
-	bh=CZ9IMoQtCnYTdn07wiZEQD3T5FlVNCbhwRM6TXK3Syc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HQ0++TcEBVSJ8a1upVUALObLoOIAwPAQXiSvtFfa1coyh3OF/F3Z0lBabnRGnuAXJ3ujV6Jsomq9Mi9W34CYsaO5gdINfBpPXOczSlMNVt/ge/ah9igHf6om8Q38ctyt6qoV6SRzgkgy9aCFOiPQyTw2sfTBx+80r5/NPhbL1RY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=LJb19cO1; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1768432030; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=bMCEdjEeapgBTJyI6Q9BkUPgs+kBDzYqmMuNtQJIDt/5YFlvYMAJQ3xuIN8lBqBZa+eydUkE2pNBznzYbFyDjEmCJZTkdniN8Q+D0GlzxaOm3EE7PJCWO3u+UQaQkY6zEpJy0SKxLOl64p1o/M5ZWFG1LqCj3xCUpp3Tr24fELA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768432030; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FP517vtOn/TRrkvUVs7gNtlZQ6ICZ89eoWPe/eRoqJU=; 
-	b=Hc8ud0v5RJaitNv7SqgRg1u86o566XFUJCfbKaIEHrulL5okbUEdCra62M7RLJF2GW2KMyj5gIJRJzwRJf/0qxtA25nQbtS1PIPWr9CX0e6cRahhOmJtPQRVljHJTXSxeTDf3v/qKa+HrUZASKGmXo2XmML7qhzDXRAj+bJsiDQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768432030;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=FP517vtOn/TRrkvUVs7gNtlZQ6ICZ89eoWPe/eRoqJU=;
-	b=LJb19cO1zlGooN53wzuZsRm6hSbV4fxfDtkDfpqMrZQ7yRtsDgIFOdxJDgebGyiZ
-	b3bsPiGl/VVwctMMnW4ASpi3Hn5XjBhLz2JU4oNCKIkxjX6LpkTmT/epif7JOp9r5Tj
-	63uG1BbVvH+bXDgTn+qaIJ4SXnghPf84RohK3aRs=
-Received: by mx.zohomail.com with SMTPS id 1768432028823622.7960735171055;
-	Wed, 14 Jan 2026 15:07:08 -0800 (PST)
-Message-ID: <ab4d90d8-3212-4571-9f92-ac4facd3aa33@collabora.com>
-Date: Thu, 15 Jan 2026 02:07:02 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCA62FD685;
+	Wed, 14 Jan 2026 23:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768433240; cv=none; b=l8HIsjrU4dy6b+H+jwVqtI6EOTRxOisv3EpIN0i8rAs4PFXp0dxrLQOx3IeJz006SNe4Rm6LZLqwNS46vRW5WYQLPll1P+Wy8CwPFuWPPjWaeqn8yRnyximpmFhBSCgI1nQ+cU8YmHr/mGJGihcFlhQg8HXc3kPhbai2vXgzNsE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768433240; c=relaxed/simple;
+	bh=QFhLAdfdwRbMaxWtoYTf49tqZsozy+rXRjby4c7UuNY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LEAhzDMdvoWMEJfrFjaRE9c4l4g7KJBEBVFydPVyglgAfxCNGtvvgGgH0PTXexJY24GtNuv5OvNhVYNtH7x/YGSicBkJ6s+vbbAggMTIMcQROTb4t1PrzFGJED/5NIfm0zzU19qMfeld7+HB6PX8JrNTMK1NydBZS5a2YUQKR4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bojR1z4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E069FC16AAE;
+	Wed, 14 Jan 2026 23:27:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768433239;
+	bh=QFhLAdfdwRbMaxWtoYTf49tqZsozy+rXRjby4c7UuNY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=bojR1z4+h1yVjRTKlWNK+rOmoQAy3g77QHLMbDFuDFbOyHOhF1Ai7veGJKml1r8yK
+	 5rzAJ9gltiWzi9ynbmXt0VKAsufOOwxaaJZ4HQtA83rPAPxfMk2b6ClYmojPGOarb+
+	 0mJtFgtqcb/laKlTv7WiNtm1ilnyzbufbRs+S4t5Kc8JfBYwnQB+YjU+UDe5XpdPw2
+	 A9NXvov0e4vqbXQjB/dyC/BPo5tde9PxfE/iGVP7P7M1QJ6ufQbpiDKQiThkus6fD3
+	 ljSA27aVngW93RXp7jLSNFltRQvCNPnajQB+w9S5qMHoCgwUhe9EpjXS8mI5THTkLR
+	 F7RFQEM58s0YQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 14 Jan 2026 16:27:11 -0700
+Subject: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when
+ compile testing with clang < 18
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 0/8] acpi/x86: s2idle: Introduce and implement runtime
- standby ABI for ACPI s0ix platforms
-To: Antheas Kapenekakis <lkml@antheas.dev>
-Cc: bob.beckett@collabora.com, bookeldor@gmail.com, hadess@hadess.net,
- jaap@haitsma.org, kernel@collabora.com, lennart@poettering.net,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, mccann@jhu.edu,
- rafael@kernel.org, richard@hughsie.com, sebastian.reichel@collabora.com,
- superm1@kernel.org, systemd-devel@lists.freedesktop.org,
- xaver.hugl@gmail.com, John Schoenick <johns@valvesoftware.com>
-References: <20251226102656.6296-1-lkml@antheas.dev>
- <CAGwozwF5wsb8pYmHj5G0uTfr+3vx+HhrfOR9t-pEGPw-jjvbHg@mail.gmail.com>
- <3ca00958-13e5-4732-b500-aa9673a4c965@collabora.com>
- <CAGwozwHLkL5xAXzaKoTyLCGzNjjHUf+bNu8qo+-Tpex7NK6=GA@mail.gmail.com>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <CAGwozwHLkL5xAXzaKoTyLCGzNjjHUf+bNu8qo+-Tpex7NK6=GA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Message-Id: <20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNQQrCMBBFr1Jm7UAS2mq9iriIybQdCY1kYhVK7
+ +6oywfvv7+BUGESODcbFFpZOC8K9tBAmP0yEXJUBmdcb6xtcZpJ0K+ZI77GVDEktTCnSAWrLtC
+ esDOt64ZwNIPvQUuPQiO/fy+X65/lebtTqN807PsH49QFOYcAAAA=
+X-Change-ID: 20260114-ghes-avoid-wflt-clang-older-than-18-504259c709a6
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
+ Hanjun Guo <guohanjun@huawei.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Shuai Xue <xueshuai@linux.alibaba.com>, Len Brown <lenb@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-acpi@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2058; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=QFhLAdfdwRbMaxWtoYTf49tqZsozy+rXRjby4c7UuNY=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJkZaiEdn6ZFtCfmpYZ/WLFCSkCqsf9iR/OpDoU/eYzGp
+ 415XvR1lLIwiHExyIopslQ/Vj1uaDjnLOONU5Ng5rAygQxh4OIUgIlsz2f4Z8+c1PHKKny6492N
+ Fd8ZpaYuKTmxVWSZ3o3tTXGsDjf/LWNk+Bt77MgFlWR5ZnP+e0kte1sOX/5cm+HFJ6MxT6tKTiS
+ YBQA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On 1/13/26 13:11, Antheas Kapenekakis wrote:
-> On Tue, 13 Jan 2026 at 11:50, Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->>
->> Hello,
->>
->> On 1/12/26 23:33, Antheas Kapenekakis wrote:
->>> On Fri, 26 Dec 2025 at 12:27, Antheas Kapenekakis <lkml@antheas.dev> wrote:
->>>>
->>>> This series introduces a new runtime standby ABI to allow firing Modern
->>>> Standby firmware notifications that modify hardware appearance from userspace
->>>> without suspending the kernel. This allows userspace to set the inactivity
->>>> state of the device so that it looks like it is asleep (e.g., flashing the
->>>> power button) while still being able to perform basic computations.
->>>>
->>>> snip
->>>>
->>>> base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
->>>> --
->>>> 2.52.0
->>>>
->>>
->>> Happy new year everyone
->>>
->>> Small bump on this as all of us are starting to get back from holidays
->>>
->>> I still have to bump an asus series before I get back to this. I would
->>> appreciate some feedback in the interim.
->>>
->>> I think targeting 6.20/7.0? is unrealistic so there is no rush from my side
->>>
->>> Antheas
->>
->> Thanks a lot for sending these patches! I briefly looked through them
->> last week and will make another iteration soon.
-> 
-> Hi Dmitry,
-> can you expand a bit on your use-case/KPIs/timeline for your series?
-> 
-> Is it handhelds/laptops or what is the intended use-case?
-> 
-> [2] before the rewrite had been tested on most handheld makes and SKUs
-> (over 70 models) and laptop manufacturers and it performs as expected.
-> As it is multiple months of research I'd like to get some credit for it.
-> 
-> Happy to collaborate in any case, especially if you will log hours on
-> this and can push a variant through faster. I am not sure if starting
-> from scratch is worthwhile for either of us
+After a recent innocuous change to drivers/acpi/apei/ghes.c, building
+ARCH=arm64 allmodconfig with clang-17 or older (which has both
+CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
 
-The primary goal is to support screen-off DSM for a power-efficient
-background games downloading [1] and further resume-to-dark on Steam
-Deck and other handhelds. There is no strict timeline, usual "sooner the
-better". Downstreams will use customized WIP solution till upstream will
-get necessary generic interfaces.
+  drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
+    902 | static void ghes_do_proc(struct ghes *ghes,
+        |             ^
 
-[1] https://store.steampowered.com/news/app/1675200/view/771930569635267984
+A KASAN pass that removes unneeded stack instrumentation, enabled by
+default in clang-18 [1], drastically improves stack usage in this case.
 
-A common approach for upstreaming is to divide problem into smaller
-manageable parts. That's what I'm planning to focus on now to see if we
-can start easy with a minimal changes.
+To avoid the warning in the common allmodconfig case when it can break
+the build, disable KASAN for ghes.o when compile testing with clang-17
+and older. Disabling KASAN outright may hide legitimate runtime issues,
+so live with the warning in that case; the user can either increase the
+frame warning limit or disable -Werror, which they should probably do
+when debugging with KASAN anyways.
 
-Please don't worry about the credit. You did a significant ground work
-that is well recognized by now. Thanks a lot for your efforts and help.
-Starting from scratch of course won't be a good approach with all the
-broad testing you've done.
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
+Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/acpi/apei/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
--- 
+diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
+index 2c474e6477e1..346cdf0a0ef9 100644
+--- a/drivers/acpi/apei/Makefile
++++ b/drivers/acpi/apei/Makefile
+@@ -1,6 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_ACPI_APEI)		+= apei.o
+ obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
++# clang versions prior to 18 may blow out the stack with KASAN
++ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
++KASAN_SANITIZE_ghes.o := n
++endif
+ obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
+ einj-y				:= einj-core.o
+ einj-$(CONFIG_ACPI_APEI_EINJ_CXL) += einj-cxl.o
+
+---
+base-commit: 4c96ec13fcaee154368f19887f7f84985ef605bc
+change-id: 20260114-ghes-avoid-wflt-clang-older-than-18-504259c709a6
+
 Best regards,
-Dmitry
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
