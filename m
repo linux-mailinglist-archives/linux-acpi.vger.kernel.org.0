@@ -1,76 +1,59 @@
-Return-Path: <linux-acpi+bounces-20320-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20321-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C11D1F576
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:16:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89350D1F6A9
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 803A130076A6
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 14:16:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E05F3020490
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 14:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FDD2D94A5;
-	Wed, 14 Jan 2026 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993392D97BB;
+	Wed, 14 Jan 2026 14:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="htk+x4Na"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LHm6Y8m7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BD7231829;
-	Wed, 14 Jan 2026 14:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10579286416;
+	Wed, 14 Jan 2026 14:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768400180; cv=none; b=fh3aja0plzHBvsRzOHb/tH5X5xjqEP473PO3OUJ9LzXjzix9oWWXorcHaTazV4scSAMt1tIvnpKu+63CpKTpnqxyhBICSleC9S1BFjre3HbFIpiB6WfDIaWDkKPPrYDV0BIn1aqDCgS9XMzezQiznRNjD28TmLfU9b3anO48FQ0=
+	t=1768400906; cv=none; b=MkYZTJuOHcPNptNo7zP//ZI2HiHQO9TwWjyh0WdSKmVm0UxJEre5mev9RoDe1gEGVyqj4SRm+27PTnqfoDtsLuxXiruZ3u2YT842koWeDGw70+weC6Dl4RIzKv43w27D5EKeQwoMH21678fGjr9RlJdtgNrqX5gHOVuhCrReuWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768400180; c=relaxed/simple;
-	bh=Zk+X0U0nP+GtJI9b23g7B8znsodnQPS5UKylro1oFwE=;
+	s=arc-20240116; t=1768400906; c=relaxed/simple;
+	bh=dEgz23FFfu4f1kLXVWZPzTpFA+XngIDOaxOHF32UHnE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xzvx485fnRh2JGtEFiuptTHurs0GfvWU1eBPIToOL46OYfuPGOEHpW1n53ICgoo7UxJANeLDI7oOvZIyzwqxG8R9RCTQXEI9S4pihgaguxXdkujjdtZgnWvl+5Wn11eI2DW0jLlhJoL4+CKZSRU23tzCUNYzuhCSvZw7NBCvAOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=htk+x4Na reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 628C540E0194;
-	Wed, 14 Jan 2026 14:16:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id U9i6nnOD5eUv; Wed, 14 Jan 2026 14:16:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768400172; bh=VRoSE/2YTwFhEpBBl9wXpY8ydPU6I1xxtgwmqqKape0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=htk+x4Natx08his9bWPcyT1eRR2E8mDo6r0Ufv6M7oX9I1xf/5nuKcRZPOt5JxFil
-	 0DvrlAz0d2fonr1AfsbmuosW50C8y8AmnD9ABkAVcz/irfYQKSMHS3Y9ltalVds6wU
-	 DTuRZk1RmrxFdRMrSl+9eeEWHB+qnXrGlJIW18D40BH0Xy6VF5Du6dcAqHL/QItIOG
-	 RhFxknDK9aKTwPtwPZsc81Qo0JEgFJCxA1h/UwnEh/jQkCQG/L+NJn8fXYLTBuk/W4
-	 1VKxEB5pqHN7dp5Cq1iwvaQ+uh/YYx/6aGXFad82Mh4WYRT2IpNSty94gOwXqUgk88
-	 iKFWzxUOws2xTDEzs8v7XzGbqOe+Rd6ucImcyNSW4ZQGj+KdtHAiOrbA+YGgScbR2t
-	 QRL7tKqgCCIA+X48lHwrFW3P4rqDumjugBJINl8I0z+W59xVpbdlcDhJ7sg2om9sb/
-	 Vg8KkN7bmGqZdrjoBMYFo9BhQESYLdHsRAMR4uvUmD7lK3Qrl/6CiaGP0QSHTxCdwJ
-	 ql6xe/rslfuUVQk11RN3dRitXJxteJ/bvPvKYj3QndGFsiI8Z/9qcxMUg+EWW7qpZX
-	 VtDCCiOy6v1ID7knmO7TX5qxIvsynDRvzdk0cPpkA4nPPz7chJwTdXHX3AZ2hHoj8I
-	 Smbu6S3Z1aBrY+pY/st1NB+g=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5C64E40E0280;
-	Wed, 14 Jan 2026 14:15:58 +0000 (UTC)
-Date: Wed, 14 Jan 2026 15:15:51 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ahmed Tiba <ahmed.tiba@arm.com>
-Cc: linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-	tony.luck@intel.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	linux-doc@vger.kernel.org, Dmitry.Lamerov@arm.com,
-	Michael.Zhao2@arm.com
-Subject: Re: [PATCH 00/12] ras: share firmware-first estatus handling
-Message-ID: <20260114141551.GKaWelF-Gsvzr71LUs@fat_crate.local>
-References: <20251221013534.GAaUdO5vWqMWAdbWbd@renoirsky.local>
- <20251229115440.2734800-1-ahmed.tiba@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ucKuORcRf5DMon7VvNN15NwkhhUIVvEDd81ncG+/U3VX4IIf278//Utiu85U1E9yO7wK+/j3sLXF0gJ8S0eDWQfKRXI1dFhEoavjCx5WnV/EnomdpOC30lIBRxVKBPiWbvVnUzwiEd/wlb0151T07NZBoTyR38ItYmDi1AHzupo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LHm6Y8m7; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768400901; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=uHmQCxSU+Nsl2SI1GGnceOYZhOceZM7EOZK5RO7J8Pg=;
+	b=LHm6Y8m7PEA17DzqSAOE9Kj2TbUinQZ0nff2y3kmY5zaRkFp09ootFBPi4Adk06Oz9i6aEi2A/By8a6e3woDUa6OTjpBNxv5A+JDec1IDh3eVNxic0RoeJTOAUEuZ+e3l+1vFz40wxuDVIY8vds6WSPXnQEtWkPBQBHuADQ1+fw=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Wx2jRmn_1768400899 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Jan 2026 22:28:20 +0800
+Date: Wed, 14 Jan 2026 22:28:19 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Len Brown <lenb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	James Morse <james.morse@arm.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
+Message-ID: <aWeoA7LDNSB_F38I@U-2FWC9VHC-2323.local>
+References: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
+ <aWUpQ04uNcXtp0wR@bogus>
+ <aWYBef5ZUNKVpg1W@U-2FWC9VHC-2323.local>
+ <aWZZeD496CPi20Gc@bogus>
+ <aWdAiaC10ear9ajR@U-2FWC9VHC-2323.local>
+ <CAJZ5v0h-hjrE85_=6YOJ6oRRZ4=SmKWrs7hCKnrP6_KZTuDePw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -79,70 +62,52 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251229115440.2734800-1-ahmed.tiba@arm.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJZ5v0h-hjrE85_=6YOJ6oRRZ4=SmKWrs7hCKnrP6_KZTuDePw@mail.gmail.com>
 
-On Mon, Dec 29, 2025 at 11:54:36AM +0000, Ahmed Tiba wrote:
-> By =E2=80=9Cerror status=E2=80=9D I=E2=80=99m referring to the UEFI CPE=
-R Generic Error Status block,
-> which is the standard firmware-produced error payload that Linux alread=
-y
+On Wed, Jan 14, 2026 at 12:36:58PM +0100, Rafael J. Wysocki wrote:
+> > > Sure, that could be an option as long as CONFIG_ACPI_PPTT_ERR_DUMP is default
+> > > off and are enabled only when debugging and not always like in distro images.
+> > > Does that work for you ?
+> >
+> > Yes. It sounds great to me.
+> >
+> > > > We have had this in our tree for a while, and the good part is it gives a
+> > > > direct overview of all the processors and caches in system, you get to
+> > > > know the rough number of them from the index, and items are listed side
+> > > > by side so that some minor error could be very obvious in this comparing
+> > > > mode.
+> > > >
+> > >
+> > > Agreed, but all this info are available to userspace in some form already.
+> > > What does this dump give other than debugging a broken PPTT ?
+> >
+> > It is mainly for debugging issues. Though we locally has option to dump it
+> > on boot unconditionally to help kernel/BIOS devleoper to have a quick
+> > overview of the PPTT table, as the table gets updated from time to time,
+> > or sometime the kernel could fail before booting to user space.
+> 
+> The kernel message buffer is not a great place for dumping ACPI tables though.
 
-Standard, schmandard - a bunch of fw crap.
+Yes.
 
-That's UEFI's understanding of a common platform error record, no?
+> If an invalid PPTT prevents the system from booting, print out enough
+> information to identify the cause of the failure.
 
-So why is this a generic estatus and not part of CPER-something?
+Good suggestion! We do have some cases that wrong or missing info
+of some ACPI table entries cause boot failure like IORT table.
 
-You're calling something "estatus" which sounds like a generic thing but =
-it is
-simply a subset of functionality you need to make it work on ARM without
-ACPI and have packaged whatever you need under the name "estatus".
+As for the original issue where kernel printed the error message
+" ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
+can we just printed out all the CPU entries of the PPTT table? 
+which is much cleaner and smaller, and have the enough information
+for quickly identifying the root cause. As the number of cache
+items is usually 3X of number of CPUs.
 
-Why does this thing need to be called an "estatus core"?
+> 
+> For everything else, use the tools in user space.
 
-I'd expect to see a compilation unit which contains shared functionality,=
- gets
-linked to your stuff and that's it. No "fanfares", no CONFIG symbols, no
-nothing.
+OK.
 
-> consumes via GHES on ACPI systems. I=E2=80=99m not introducing a new er=
-ror model
-> here; the intent is to reuse the existing CPER decoding and handling on=
-ce
-> that payload exists.
-
-So why aren't you doing only that? Why are you doing all that extra stuff=
-?
-
-> The practical use case is firmware-first RAS platforms that emit CPER
-> records but do not use ACPI/APEI GHES for discovery or notification. To=
-day,
-> those platforms either have to duplicate CPER parsing logic or miss out=
- on
-> the common Linux RAS handling (standard logging, memory failure flow,
-> vendor notification paths). As a result, the full firmware-first RAS
-> pipeline effectively only works when CPER arrives through GHES.
-
-Yah, got it.
-
-But see above.
-
-Please do not "over-design" this into a separate thing but simply carve o=
-ut
-the functionality and share it. And leave it where it belongs
-- drivers/firmware/efi/ is not the right place as this isn't really EFI. =
-This
-is a piece of APEI/GHES crap you need.
-
-Later, when there's need to make it more sophisticated, then we can talk
-again.
-
-Thx.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Feng
 
