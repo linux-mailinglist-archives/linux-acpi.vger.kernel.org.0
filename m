@@ -1,124 +1,134 @@
-Return-Path: <linux-acpi+bounces-20325-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20326-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514B3D1FEA0
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:47:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBF5D2002B
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:00:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CB5730049FC
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:47:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E34E3072EE2
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 15:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31639E6FD;
-	Wed, 14 Jan 2026 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6C33A1A3B;
+	Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gDEI+zFP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZiWdFN5S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F523A0B20;
-	Wed, 14 Jan 2026 15:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40ED3A1A2F
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768405645; cv=none; b=X908mYV16jV4zWT3xPQWvdE2NUuV2Jw/9R1hW4ijY4+jgHcDw0ZasC9MdahBZKoX1SR96301VXFG9iw74UtPMT7oM0a5ApGX4HXfpWXQLd4IEBR7ywGFE84XXojjlMyECu8gzXWNSZ1v8FlKLyshkt+Bqx3D5Nr98voYS0SNpOQ=
+	t=1768406075; cv=none; b=cAzUQPq9lwV3Li4pEyWapcgJaDuiWKE/JyYxl1fqu+hUKV3So+ZzEWKswkJQf9WnxJLk/U27VyzJ9feie4slL2DAvKkyNJ78wkwO3QuxeuGuqFNDwombfDPcKKdDnInvLJU8gbTLHbk9G5TnsfCbwmN1NQ7+O6Mb5ShvBenyPP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768405645; c=relaxed/simple;
-	bh=UPnHOPIjGmubnCAzxv2GweargRz8EcqG9W3rLov+k0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uV1sOqk1ewRcP/k79xXoGltJFdDBwIpnzLRWLNF6vZG8oeWkX4YJ1eV3a3ewaCoEb3ppa6Fpg05+bxLIJKUI+OED2uAVaaSTf7Eq2u0h/UjWR3A8KiAtvLVawPnFEEK28e2+toV9aA+GfnLNYRAuSLTFi7PEF1JFuWPdMYP4rTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gDEI+zFP; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5591040E0281;
-	Wed, 14 Jan 2026 15:47:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2Abegj8iRGYn; Wed, 14 Jan 2026 15:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768405635; bh=xSyGH2S7hw1AUiS9jEfdC4Jr8F3HyJxMOuZ6mZOurSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gDEI+zFP6Ss3OY2BMcgbNLN6U7b1rIDSoTpKUB2buPrrZIaCri12/AmAYJPCvFLam
-	 xVr8dN9vmC39iER+aqrDI6eEPdJs9jDu5SJm2HSujdKeX+WMVtFn7scxIyP391CrrZ
-	 uDxlfppV1co4BKRgvTr3mf4urvTob2ZO8gc3iC3oIYaA/Qi09Pnsyi1ohpiQKcdRdX
-	 IPStX4Mnb3FyoI8OHQxQ6SI1v1sXu3zihNxvpN2msC1FPV91G9Y7rVhbR9CTYPCwXd
-	 l3H2ncP4mMl8x7V57bLLQ+4C3Gy7P8BznsWOg+YaNBbMI1Eek8yCGfdw9PiFixOxeU
-	 6fBFy2sbgx8riUtgBto4EnqAu8bybVK/QI37n5OjBb9RKLEl2rcZGJQuO3vkHaNZNe
-	 ZxBftFt8d3VDUfd7efGESykH4eyJP0nr2ANXZ/BxfOvGpqwrTKpumDKfmMXTuVwRgV
-	 9A92b7etLcXP+ZyK2eFIs6RP5/1AYim6VJt8Ezr4xZgxUDtxW9W9YwEQs/naCDmuXw
-	 Jp1B5c5uZ2gkql++3Booc1daFCgLsXonLPu0VWNPJoHq//zGKX69DVD27I1Xv9c/ml
-	 dt8B+W4d2egZAZDv1WjRCMNkJqYVfVrMP38EX0VMmHl4mJG6Mn2JkpGXfwWSf6G+aC
-	 YxlOwbepQGXZpEMl2IfwwON0=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1DC3E40E0028;
-	Wed, 14 Jan 2026 15:47:03 +0000 (UTC)
-Date: Wed, 14 Jan 2026 16:46:56 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shenghao Yang <me@shenghaoyang.info>
-Cc: x86@kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] x86/acpi: Add acpi=spcr to use SPCR-provided default
- console
-Message-ID: <20260114154656.GDaWe6cFCruAGbJbhe@fat_crate.local>
-References: <20251228092222.130954-1-me@shenghaoyang.info>
+	s=arc-20240116; t=1768406075; c=relaxed/simple;
+	bh=/1wTiWpsCpunOq5fzWEU9xuNhfBmPPkOYODo7GujLyk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FBkHfdNwhi4k090+7dbCsqcmGD0imDIB5AzdwY1DrT29OqT/xMHV9n0g8UKxH0blGBZAXqnB+297yIlnzcJApV/h/WY93LWHfM87JkzgolPnr8KU8OOkee5dOFaUUaS7Q7ay5LzUJ+DNepm6EqSHmDBWcSYAbTe+5FnFf3DPyQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZiWdFN5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7225C4CEF7
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 15:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768406075;
+	bh=/1wTiWpsCpunOq5fzWEU9xuNhfBmPPkOYODo7GujLyk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZiWdFN5SvPTdNAUhPXVsu6tOOMTlR5k8zfBkm2whiyn0TUM8irA+D9cTZqhbdgP3X
+	 Ukgbf3CcSpkm6XOXi5GtyQi/cto0zj3Ovdep4vIUD+CqQ01xdm2G83VRsbLN7TsFWa
+	 qq+uSNBtfVle6sUsVPDoMnqDwNl5oFEkcoeJzlTPqZUh60yzQi/uNX40zhsxYejw3a
+	 DnDKcKIPAnkTwSf0h0qmMsyXEcoG3jAE2j37nupLsRPB61hh4d63StfPAphGbKvvjp
+	 KfXp3kRn1j1TMzQB13ygKGl7TtyEAjuq3ThAzjbag6JWKFtbVLp2NZZ99FDcDCARh5
+	 6CPFwNcJDFPdA==
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-45a85a05a70so2110977b6e.3
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 07:54:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXjtu7uZiCDM/7WsWu1AnWCETXpWTzKJpc4xpnrBBNj71JfzCcUCBziUiM1dtJbt6QGMGud6z0bD4W6@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzoq2e/+W/MngsuGrXxI+NfW3EMysadES4f6FzQR4gfCpCcKVB+
+	+9kBpsKcLaHKtvYk6v7N3E7pAUXAqPObAN+xG5nxLQqKuSKwYGKT3LYDlddRt4SXDIxcU6alm5N
+	Wg736B3agbS7ySv8GsfKzYhMZcpLnLQo=
+X-Received: by 2002:a05:6808:1887:b0:444:1450:c1 with SMTP id
+ 5614622812f47-45c73e614d1mr2012498b6e.64.1768406074506; Wed, 14 Jan 2026
+ 07:54:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251228092222.130954-1-me@shenghaoyang.info>
+References: <cover.1767871950.git.mchehab+huawei@kernel.org>
+In-Reply-To: <cover.1767871950.git.mchehab+huawei@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 14 Jan 2026 16:54:23 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hq_CvW3P6F7paGSaKOw6kzX_yUEsFPfL1Coco6yBAUBw@mail.gmail.com>
+X-Gm-Features: AZwV_QgR6vNMfQl8dFjf7vOcP8tSnhD2ep8Y06c90VtuR0ELeNasIQVPSS6lTjI
+Message-ID: <CAJZ5v0hq_CvW3P6F7paGSaKOw6kzX_yUEsFPfL1Coco6yBAUBw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] apei/ghes: don't OOPS with bad ARM error CPER records
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, acpica-devel@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ankit Agrawal <ankita@nvidia.com>, Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Hanjun Guo <guohanjun@huawei.com>, Huang Yiwei <quic_hyiwei@quicinc.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Jason Tian <jason@os.amperecomputing.com>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Len Brown <lenb@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Tony Luck <tony.luck@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 28, 2025 at 05:22:22PM +0800, Shenghao Yang wrote:
-> Commit 0231d00082f6 ("ACPI: SPCR: Make SPCR available to x86")
-> made SPCR available as an earlycon option on x86 but did not add
-> it as a preferred console to avoid breaking existing setups -
+On Thu, Jan 8, 2026 at 12:35=E2=80=AFPM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
+>
+> Rafael,
+>
+> Current parsing logic at apei/ghes for ARM Processor Error
+> assumes that the record sizes are correct. Yet, a bad BIOS
+> might produce malformed GHES reports.
+>
+> Worse than that, it may end exposing data from other memory
+> addresses, as the logic may end dumping large portions of
+> the memory.
+>
+> Avoid that by checking the buffer sizes where needed.
+>
+> ---
+>
+> v6:
+>  - No code changes, just a cosmetic change at patch 3 description
+>  - Added Jonathan's review on all patches
+>
+> v5:
+>  - Changed the name of a var as requested by Jonathan
+>
+> v4:
+>  - addressed Jonathan comments;
+>  - added two extra patches to prevent other OOM issues.
+>
+> v3:
+>   - addressed Shuai feedback;
+>   - moved all ghes code to one patch;
+>   - fixed a typo and a bad indent;
+>   - cleanup the size check logic at ghes.c.
+>
+> Mauro Carvalho Chehab (4):
+>   apei/ghes: ARM processor Error: don't go past allocated memory
+>   efi/cper: don't go past the ARM processor CPER record buffer
+>   apei/ghes: ensure that won't go past CPER allocated record
+>   efi/cper: don't dump the entire memory region
+>
+>  drivers/acpi/apei/ghes.c        | 38 ++++++++++++++++++++++++++++-----
+>  drivers/firmware/efi/cper-arm.c | 12 +++++++----
+>  drivers/firmware/efi/cper.c     |  8 ++++++-
+>  drivers/ras/ras.c               |  6 +++++-
+>  include/acpi/ghes.h             |  1 +
+>  include/linux/cper.h            |  3 ++-
+>  6 files changed, 56 insertions(+), 12 deletions(-)
+>
+> --
 
-No one has noticed AFAICT since 2018 (this commit's date).
+Applied as 6.20 material, but I changed the spelling of EFI, APEI,
+CPER, and GHES in the subjects/changelogs to all capitals.
 
-Also:
-
-        /* Do not enable ACPI SPCR console by default */
-        acpi_parse_spcr(earlycon_acpi_spcr_enable, false);
-
-Looks nicely conservative to me.
-
-> users have to round trip the dumped console options
-> ("SPCR: console: uart,io,0x3f8,115200") back via their
-> bootloader.
-
-I don't know what that means.
-
-> Let users opt in so serial console configuration can be made
-> automatic.
-
-Why?
-
-Text says:
-
-	[X86] When used with no options the early console is
-	determined by the ACPI SPCR table.
-
-But the code doesn't enable the SPCR console by default.
-
-I have no clue what this patch is trying to do.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
 
