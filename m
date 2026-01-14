@@ -1,180 +1,112 @@
-Return-Path: <linux-acpi+bounces-20336-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20337-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8436D2039C
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:35:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B727D204FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B65DB3065782
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:32:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB64B3008D43
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA523A0E9F;
-	Wed, 14 Jan 2026 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206FD3A4F29;
+	Wed, 14 Jan 2026 16:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvCxIe+m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PC0i16fR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E4037F8D5
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18A52441A6
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768408373; cv=none; b=TB0RU2E9asIep0OcVLGnnARpetssAVniXcrjVahdXq83MsWD3ShuVHLFeWn/gyPbxD0XSoBl82nGgU5JKTsefSmTKcNYdYmUp07sWQRwvQWlKAxTC8RBYQ8DDQL5sU54dJWf+Y5sZA+EBuDKT+WLqrHFrrMN7ziL7h8eEUWl2KU=
+	t=1768409299; cv=none; b=jJrYLw27yUhPQCbr7ouGLJt35akjpYk0nvG54Sjvj0RtuzYCSC7ni7yJmetEgeVUyxxTJ3FY6e3D1KVjJnqO7OYqVVtLHgNOKDZO5LpqQJunXdkoqGyj08CPCktS0KeiMGjFEC4GRxkB7qIvapv8KkEtfw02mtLn4mAielbAguY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768408373; c=relaxed/simple;
-	bh=yxFbzugBi+XL4Q2zZ3vWzhT8h7XOQYwQ1Ls091Hf2KY=;
+	s=arc-20240116; t=1768409299; c=relaxed/simple;
+	bh=MiLcr3TKt//wLpnljySYy8yHfqsFTihF42uOu5rhE1s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KaOcPQzT/8VGhzuvQgwTEQ3dRecQpHuhuiflT99cFdFCHLIKJA3FJLQLd8IU3flJytzombU50XujyerR5x0zTCZsjVse43YUU9b22+2s1wKiZAOPUfiEeDdW+SiX5JW43+e7Ey6a3vyPF7WjBHuJW4QkcOPv3G3ZTpNRoXzj5+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvCxIe+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B5AC19422
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:32:53 +0000 (UTC)
+	 To:Cc:Content-Type; b=eQmLLUQvlL6/jliPEmD67OXF9HCIyQq6xUAlqCJ66tM1eWKSolB0Rrfi/1r/XViedvyIj4RD6IumPbMAqkSlIAXTw1rPu5eLsx5W5WRQWTni2F6/JggWk4a37BRT54TvgjaYlEtrQdanyoKQFPD+dW2f4T6oITLOCbjX6psJC1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PC0i16fR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEAAC2BC86
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768408373;
-	bh=yxFbzugBi+XL4Q2zZ3vWzhT8h7XOQYwQ1Ls091Hf2KY=;
+	s=k20201202; t=1768409298;
+	bh=MiLcr3TKt//wLpnljySYy8yHfqsFTihF42uOu5rhE1s=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uvCxIe+msDbs0Cnn76p9rza4o6WRHlumXsvvenV4WjtabwouC3kofZxrLYHedTLi0
-	 AOdN2gTvPqaPEDr9CZg2PnpPQ7jFQrGcC0SyaQiw8LRCZQ8tXw6GkAtfPWpeAqJBQH
-	 Li/cCR84fGFT8WWrbLTXfrK9dwlPpX652jpHoS95HA18YzKBfydnSgCrcS6/UfkfqE
-	 hKytybQbhMH4XVq9BAlh/kTRXrCaeNOP2n+L5obLpYmmcdgU9W3O5Ogbx04Fr54hpa
-	 2Yl96qo/3/vN5NsWe7D2zPuIfFGMh6VMLObo3oAbGgPKhXNdlaE5fRiE4rNLfsBw3G
-	 +hKsZxDzAq42g==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6610b05b37dso321304eaf.2
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 08:32:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXsRBY/qPLUODvYFbAnhf2M/zzL/a4yN2tEhlcvHXeudge67gRDtboCrZZ6GMYdcDbrBeGc7kvfuvuX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzScPveIvW1MLBFkEQ86JSasJaZYWRrVJ5Oq6mHB4Zk2u+EZ2cp
-	y7Qtdwq6ZD+JvmYt/LY0qZrb76OuVUQAPFhG8UTM/LJB+OrpdoEn5yV9dbHKoO3kbXDYVoiNmjo
-	4WXQiLglhYExOEXgVygvCo+K75wrGwZQ=
-X-Received: by 2002:a05:6820:4d52:10b0:659:9a49:8f5e with SMTP id
- 006d021491bc7-661006689b3mr1782734eaf.35.1768408372780; Wed, 14 Jan 2026
- 08:32:52 -0800 (PST)
+	b=PC0i16fRiLYddoETv81zHWd7AEvZuUKuuMDYYwaKpbC15l/oGlxXF5fYOLHVcf7Cx
+	 J6M1qXKVQc9le44eSzd54E8lH3Vj2A1fcdo0wXfoLBCDCYxUzOKxjED1F6BQwzLjKd
+	 J8W4A2Ip6VfBDjCAogvvGvNCPsXmyxUZp4C8dJ0XS4sCHofv0daLdydhYfX8llKN9a
+	 FG7M1lwXNWW25tkuwLE1ZprlOl4m5NEGNjbouSnZ3nE7vsM+hfnzzpbysWjq9AcuVs
+	 6FCjDVLc+2R37j4ds0rUpwleu9UJ5KNmt+QhUB1d3XvbOtAZRSH+QqCchiYa6W8IiH
+	 Jl0Mcouc6uk8g==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-455ddb90934so2809266b6e.0
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 08:48:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW+xj/oR+X1skqrChKH7uLVsV96vUnGaF89LmcbMFFxtiIHb+67kdkF1+5K6M40GNbsc8670ssnuRjW@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEQU81oE/a5J2dOCBr5ZbmVatEKwLqB0pPWm+4HgUmWMMQAOmj
+	OUh/EH0ewKgpSohxRiS/HcezX+CsW5fmrCiSLPLKLwjgJ7LFOREhu5RLsSeXBsNls5BIPeOArqe
+	V2JFAnlXlZh8FtzGaGPRGLoCJGTwFnm0=
+X-Received: by 2002:a05:6808:c16c:b0:44f:6e2a:ace with SMTP id
+ 5614622812f47-45c73e33e0amr1746056b6e.52.1768409297839; Wed, 14 Jan 2026
+ 08:48:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260111163214.202262-1-islituo@gmail.com>
-In-Reply-To: <20260111163214.202262-1-islituo@gmail.com>
+References: <20251125064702.3666149-1-lihuisong@huawei.com> <20251208163459.00000842@huawei.com>
+In-Reply-To: <20251208163459.00000842@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 14 Jan 2026 17:32:41 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g_5WTa151v2NfFuh+U8=y=6P7OFvZ7m5RpCaLe_Tggsg@mail.gmail.com>
-X-Gm-Features: AZwV_QjtUxfW2Slv9IXslVN5IR1a0us7ARasuIDRLWGjA0m-pz0Pnn-hZBQ27q8
-Message-ID: <CAJZ5v0g_5WTa151v2NfFuh+U8=y=6P7OFvZ7m5RpCaLe_Tggsg@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: processor: Fix a possible null-pointer
- dereference in acpi_processor_errata_piix4() when debug messages are enabled
-To: Tuo Li <islituo@gmail.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Wed, 14 Jan 2026 17:48:06 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hh79=BgBDAvYE1L3ncX58Mn=U53N_rYhA1a8ObAn_OiQ@mail.gmail.com>
+X-Gm-Features: AZwV_Qgrn-1P1YxlHb2BkNw0DTyu_EIpzAhmnFakWpKrYyi8hUQ5_bwVW-TPy-s
+Message-ID: <CAJZ5v0hh79=BgBDAvYE1L3ncX58Mn=U53N_rYhA1a8ObAn_OiQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor: idle: Add debug log for the state whose
+ entry method is illegal
+To: Jonathan Cameron <jonathan.cameron@huawei.com>, Huisong Li <lihuisong@huawei.com>
+Cc: linuxarm@huawei.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, zhanjie9@hisilicon.com, 
+	zhenglifeng1@huawei.com, yubowen8@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 11, 2026 at 5:32=E2=80=AFPM Tuo Li <islituo@gmail.com> wrote:
+On Mon, Dec 8, 2025 at 5:35=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
-> In acpi_processor_errata_piix4(), the pointer dev is first assigned an ID=
-E
-> device and then reassigned an ISA device:
+> On Tue, 25 Nov 2025 14:47:02 +0800
+> Huisong Li <lihuisong@huawei.com> wrote:
 >
->   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
->   dev =3D pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
->
-> If the first lookup succeeds but the second fails, dev becomes NULL. This
-> leads to a potential null-pointer dereference when dev_dbg() is called:
->
->   if (errata.piix4.bmisx)
->     dev_dbg(&dev->dev, ...);
->
-> To prevent this, use two temporary pointers and retrieve each device
-> independently, avoiding overwriting dev with a possible NULL value.
->
->
-> Signed-off-by: Tuo Li <islituo@gmail.com>
-> ---
-> v3:
-> * Initialize the new variables to NULL and drop redundant checks.
->   Thanks Rafael J. Wysocki for helpful advice.
-> v2:
-> * Add checks for ide_dev and isa_dev before dev_dbg()
->   Thanks Rafael J. Wysocki for helpful advice.
-> ---
->  drivers/acpi/acpi_processor.c | 27 ++++++++++++++-------------
->  1 file changed, 14 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 7ec1dc04fd11..de256e3adeed 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *=
-dev)
->  {
->         u8 value1 =3D 0;
->         u8 value2 =3D 0;
-> +       struct pci_dev *ide_dev =3D NULL, *isa_dev =3D NULL;
->
->
->         if (!dev)
-> @@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci_d=
-ev *dev)
->                  * each IDE controller's DMA status to make sure we catch=
- all
->                  * DMA activity.
->                  */
-> -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> +               ide_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
->                                      PCI_DEVICE_ID_INTEL_82371AB,
->                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
-> -               if (dev) {
-> -                       errata.piix4.bmisx =3D pci_resource_start(dev, 4)=
-;
-> -                       pci_dev_put(dev);
-> +               if (ide_dev) {
-> +                       errata.piix4.bmisx =3D pci_resource_start(ide_dev=
-, 4);
-> +                       pci_dev_put(ide_dev);
->                 }
->
->                 /*
-> @@ -124,24 +125,24 @@ static int acpi_processor_errata_piix4(struct pci_d=
-ev *dev)
->                  * disable C3 support if this is enabled, as some legacy
->                  * devices won't operate well if fast DMA is disabled.
->                  */
-> -               dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
-> +               isa_dev =3D pci_get_subsys(PCI_VENDOR_ID_INTEL,
->                                      PCI_DEVICE_ID_INTEL_82371AB_0,
->                                      PCI_ANY_ID, PCI_ANY_ID, NULL);
-> -               if (dev) {
-> -                       pci_read_config_byte(dev, 0x76, &value1);
-> -                       pci_read_config_byte(dev, 0x77, &value2);
-> +               if (isa_dev) {
-> +                       pci_read_config_byte(isa_dev, 0x76, &value1);
-> +                       pci_read_config_byte(isa_dev, 0x77, &value2);
->                         if ((value1 & 0x80) || (value2 & 0x80))
->                                 errata.piix4.fdma =3D 1;
-> -                       pci_dev_put(dev);
-> +                       pci_dev_put(isa_dev);
->                 }
->
->                 break;
->         }
->
-> -       if (errata.piix4.bmisx)
-> -               dev_dbg(&dev->dev, "Bus master activity detection (BM-IDE=
-) erratum enabled\n");
-> -       if (errata.piix4.fdma)
-> -               dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 disab=
-led)\n");
-> +       if (ide_dev)
-> +               dev_dbg(&ide_dev->dev, "Bus master activity detection (BM=
--IDE) erratum enabled\n");
-> +       if (isa_dev)
-> +               dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 d=
-isabled)\n");
->
->         return 0;
->  }
-> --
+> > According to ACPI spec, entry method in LPI sub-package must be buffer
+> > or integer. Driver will disable the state whose the entry method is
+> > illegal by zero flags in struct acpi_lpi_state. The entry method is
+> > very key in cpuidle. A debug log is very useful developers.
+> >
+> > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> Seems reasonable to me and debug is probably appropriate error for broken
+> firmware.
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
 Applied as 6.20 material, thanks!
+
+> > ---
+> >  drivers/acpi/processor_idle.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idl=
+e.c
+> > index 22909fccf0b1..5f86297c8b23 100644
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -946,6 +946,8 @@ static int acpi_processor_evaluate_lpi(acpi_handle =
+handle,
+> >                       lpi_state->entry_method =3D ACPI_CSTATE_INTEGER;
+> >                       lpi_state->address =3D obj->integer.value;
+> >               } else {
+> > +                     pr_debug("Entry method of state-%d is illegal, di=
+sable it.\n",
+> > +                              state_idx);
+> >                       continue;
+> >               }
+> >
+>
 
