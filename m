@@ -1,126 +1,234 @@
-Return-Path: <linux-acpi+bounces-20340-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20341-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475C7D2088F
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 18:27:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81186D209DC
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 18:46:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BEE6830090C8
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:27:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1016C305657C
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA992FF64C;
-	Wed, 14 Jan 2026 17:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA382327BFA;
+	Wed, 14 Jan 2026 17:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBYzHTr4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3f4RUtw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215CA2F83A7
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9737F325726
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 17:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768411670; cv=none; b=q7OeEaEGE5Ia+COEC5OtcqBQ2WfuguL/qJUmR2d3Tk2G/Rdvl12xfi5oZ44KMiwlcCSd+TiQe8fYZ/3RxjQpmfvC1uUdY12MxhuJFjssxgtgL13Rs2sGTHDyr+utqTO7sEY58yMxghH2n+fNoavIXKzDDsNDQ7yBPZ4HSOnJqHI=
+	t=1768412757; cv=none; b=L+CCN0w2hxS0BcN1GZbFpXNYcS2sLqCIrY2dBVW2tYlI348H/pmpC2vuBx5gmPw/3rSgpTDbtateVPxRB2G/QnyPxOvWxBhgE9qlYsRyBRtnOGQQa+usx6WA8h3GVz3HnFOvCvqI/D2swsacPP1Z171A6NuIETsWpDxfgh4eziQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768411670; c=relaxed/simple;
-	bh=AtMBJUFjx0Qk66tkyHs8WgONAbRSYD0h4JNYvJ2KboE=;
+	s=arc-20240116; t=1768412757; c=relaxed/simple;
+	bh=VLyvNJXlQ7uY8tpXWo5FC7Z644s2L6LFH6yjNoy6qEE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PSdfqLp1SAR7LsiJsFUDUUZzBs2PTX8HEpLfx3ptlZOQlnR+K1Gm1TpQgsAHPhkt0YW1qs2lPbK7XghxrFMLh1P29IfsZxKpBG1NYrB5+D5CP56SJrycinnyxjU2r68N0HsMQ79I8EUlHz4WkVIys59+G1k0WCMmwqv7wbvst9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBYzHTr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB64EC19424
-	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 17:27:49 +0000 (UTC)
+	 To:Cc:Content-Type; b=Anr/JDteuM2SQ+mfQqdeamOglx8zI2BxXL9vn5sc2UHLk2p43WNF0PXorOY8ZgSb11HI/2DUmuaNjtc0s2faiuVa+bDMBcBwUWtiU9HQUMdbRI2VV6ZmBRIORfZlDddsLksczEkxwPcDS1Wc4aDPqsC0eGcZniN5oigqYqo8Xtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3f4RUtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A84EC2BCB7
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 17:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768411669;
-	bh=AtMBJUFjx0Qk66tkyHs8WgONAbRSYD0h4JNYvJ2KboE=;
+	s=k20201202; t=1768412757;
+	bh=VLyvNJXlQ7uY8tpXWo5FC7Z644s2L6LFH6yjNoy6qEE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uBYzHTr4AifLiy+uyJydBo4wScNCiSDfbrI5DIFNS+PZyykv0fQduEkCtXQLyIYRZ
-	 joL3pwq+aXfm6wfQ7U0JUXceLpfosXJ7MvabUl4jRP2WQ2JmmckWh6Yz8Fk+R/Zj4v
-	 hE/YHAtQh3pjLzW8Vpl3XUbgO3O+H31QuHUClxTs8a1V7GCVoNJOJWr0M0u0S/nFUy
-	 eP/tWtrEImAZN54cCxOrLPJszwUgIX+zZTmnEuTnkEuYJAfBP0tDH+5tOlvAXjhr2c
-	 uFzfVUcbMv8In3gMQQbud2rWi9rNH3efezIDHc6F6lSjBDIsQvaGR53FGk4yZAi+/Y
-	 6uojgpszvJjiA==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c76f65feb5so40401a34.0
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 09:27:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX+fUYdo8eZRtUVD59G2Pyz6ptgEOqjGLfNOXNbPs880mWrSuUy5dJV5DX7BampyM7TbFd1ZVCVIouM@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcWevHYJ9/DOYyQBwrCwaVV7hcPU10KSnCfQimpgvuaqpy1aEb
-	R6stGNhkwzyunwY2xdVPyomQqDFULcEoUYXjJtBTsAoyC9rRi/AJ1U/2fa2uv56wih3vVNjILOL
-	MCpb8fqdInLXWgfAHsPTX+CgNXxD6GgA=
-X-Received: by 2002:a05:6808:181c:b0:459:b564:e20e with SMTP id
- 5614622812f47-45c715f3054mr2307374b6e.61.1768411668785; Wed, 14 Jan 2026
- 09:27:48 -0800 (PST)
+	b=L3f4RUtwn3UXoZPZmKpVuAv7wS20RfV9nBeLqZmGUIuaNo8FvXrtH44hdthYVevDH
+	 QSVQZx/Ui5iVSgXFYt4fQV/OR2h5BgZM0KQs8bOzjqskmkZBBtcPZdAQe8kvMzlQV7
+	 0D8fQ5rfmBXgU6sADeLNFwDWj4BiYHWgcJBj3/HVC2LCKSPDslf04gYsc7F7fomOS6
+	 XAeELhC98vWgbpqPJYZUyYa6bAtBZ8ms96XRGp9rnARwthStUCk/pgZyhS8Dvx7NH+
+	 4ef2okqQF+r1LwZp/eSJ0JojapcPG691nvMn06RUn32l9vbyAkm7o3fyZIw/LWsY3F
+	 XlpOzBa2RmVkQ==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b872f1c31f1so18766466b.0
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 09:45:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUJcU3snjKY4ZBNMlrMDaLJllvYjuS8yU/d5W57ywuUjQmSmwNLA1frZpQpx3gCVokrSLlKNPwt7e+K@vger.kernel.org
+X-Gm-Message-State: AOJu0YxD5rQJVFppRsVfP01QzC0XSJtlWee5g7weHSznKdmOjPjTghjR
+	txhKvarKdc0Hs6sqJuXQpr4QGGoC0NCpeb7OeyzLki3lgtP49l0I2l+iuYbrrdlqatSw02ZWTib
+	N3UpPGGfjuP9/p5Ok8dCiQiuf3Cgryw==
+X-Received: by 2002:a17:907:6d14:b0:b7d:1d1b:217a with SMTP id
+ a640c23a62f3a-b87611110eamr270292166b.34.1768412755531; Wed, 14 Jan 2026
+ 09:45:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251125065210.3670266-1-lihuisong@huawei.com> <20251125065210.3670266-2-lihuisong@huawei.com>
-In-Reply-To: <20251125065210.3670266-2-lihuisong@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 14 Jan 2026 18:27:37 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0j9Mp5AqQwpakVLWDmK10cjOOiKtetfCr2OSSukekdPhQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qi7R05XMd3z26R9JiGwThWiB2y_V23dGi_OzYFUWXEpTzExrje2-HIS-AE
-Message-ID: <CAJZ5v0j9Mp5AqQwpakVLWDmK10cjOOiKtetfCr2OSSukekdPhQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: processor: idle: Relocate and verify acpi_processor_ffh_lpi_probe
-To: Huisong Li <lihuisong@huawei.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sudeep.Holla@arm.com, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
-	yubowen8@huawei.com
+References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
+ <20260112-pci-m2-e-v4-5-eff84d2c6d26@oss.qualcomm.com> <20260113171424.GA3925312-robh@kernel.org>
+ <xyttom64ht5hrrp5hecjqehnyfgsv4mfl2t36e2sveu44ccpjl@lkzquse2kqsx>
+In-Reply-To: <xyttom64ht5hrrp5hecjqehnyfgsv4mfl2t36e2sveu44ccpjl@lkzquse2kqsx>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 14 Jan 2026 11:45:42 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJxBNm0y6T7vji6MXgsO65iDJ-tdUEo0cOxkw7EuMKpkg@mail.gmail.com>
+X-Gm-Features: AZwV_Qjd8RRdZiuji8UWlnEg_b-A7CkYgcetFKx6gFJZkZR9Wa6Q2Mjzt04XOZQ
+Message-ID: <CAL_JsqJxBNm0y6T7vji6MXgsO65iDJ-tdUEo0cOxkw7EuMKpkg@mail.gmail.com>
+Subject: Re: [PATCH v4 5/9] dt-bindings: connector: Add PCIe M.2 Mechanical
+ Key E connector
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Stephan Gerhold <stephan.gerhold@linaro.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 25, 2025 at 7:52=E2=80=AFAM Huisong Li <lihuisong@huawei.com> w=
-rote:
+On Wed, Jan 14, 2026 at 10:14=E2=80=AFAM Manivannan Sadhasivam <mani@kernel=
+.org> wrote:
 >
-> The platform used LPI need check if the LPI support and the entry
-> method is valid by the acpi_processor_ffh_lpi_probe(). But the return
-> of acpi_processor_ffh_lpi_probe() in acpi_processor_setup_cpuidle_dev()
-> isn't verified by any caller.
+> On Tue, Jan 13, 2026 at 11:14:24AM -0600, Rob Herring wrote:
+> > On Mon, Jan 12, 2026 at 09:56:04PM +0530, Manivannan Sadhasivam wrote:
+> > > Add the devicetree binding for PCIe M.2 Mechanical Key E connector de=
+fined
+> > > in the PCI Express M.2 Specification, r4.0, sec 5.1.2. This connector
+> > > provides interfaces like PCIe or SDIO to attach the WiFi devices to t=
+he
+> > > host machine, USB or UART+PCM interfaces to attach the Bluetooth (BT)
+> > > devices. Spec also provides an optional interface to connect the UIM =
+card,
+> > > but that is not covered in this binding.
+> > >
+> > > The connector provides a primary power supply of 3.3v, along with an
+> > > optional 1.8v VIO supply for the Adapter I/O buffer circuitry operati=
+ng at
+> > > 1.8v sideband signaling.
+> > >
+> > > The connector also supplies optional signals in the form of GPIOs for=
+ fine
+> > > grained power management.
+> > >
+> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualc=
+omm.com>
+> > > ---
+> > >  .../bindings/connector/pcie-m2-e-connector.yaml    | 154 +++++++++++=
+++++++++++
+> > >  MAINTAINERS                                        |   1 +
+> > >  2 files changed, 155 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/connector/pcie-m2-e-co=
+nnector.yaml b/Documentation/devicetree/bindings/connector/pcie-m2-e-connec=
+tor.yaml
+> > > new file mode 100644
+> > > index 000000000000..b65b39ddfd19
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector=
+.yaml
+> > > @@ -0,0 +1,154 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/connector/pcie-m2-e-connector.yam=
+l#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: PCIe M.2 Mechanical Key E Connector
+> > > +
+> > > +maintainers:
+> > > +  - Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > > +
+> > > +description:
+> > > +  A PCIe M.2 E connector node represents a physical PCIe M.2 Mechani=
+cal Key E
+> > > +  connector. Mechanical Key E connectors are used to connect Wireles=
+s
+> > > +  Connectivity devices including combinations of Wi-Fi, BT, NFC to t=
+he host
+> > > +  machine over interfaces like PCIe/SDIO, USB/UART+PCM, and I2C.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: pcie-m2-e-connector
+> > > +
+> > > +  vpcie3v3-supply:
+> > > +    description: A phandle to the regulator for 3.3v supply.
+> > > +
+> > > +  vpcie1v8-supply:
+> > > +    description: A phandle to the regulator for VIO 1.8v supply.
+> >
+> > I don't see any 1.8V supply on the connector. There are 1.8V IOs and yo=
+u
+> > may need something in DT to ensure those are powered. However, there's
+> > no guarantee that it's a single supply.
+> >
 >
-> What's more, acpi_processor_get_power_info() is a more logical place for
-> verifying the validity of FFH LPI than acpi_processor_setup_cpuidle_dev()=
-.
-> So move acpi_processor_ffh_lpi_probe() from the latter to the former and
-> verify its return.
->
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> ---
->  drivers/acpi/processor_idle.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
-c
-> index 5f86297c8b23..cdf86874a87a 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1252,7 +1252,7 @@ static int acpi_processor_setup_cpuidle_dev(struct =
-acpi_processor *pr,
->
->         dev->cpu =3D pr->id;
->         if (pr->flags.has_lpi)
-> -               return acpi_processor_ffh_lpi_probe(pr->id);
-> +               return 0;
->
->         acpi_processor_setup_cpuidle_cx(pr, dev);
->         return 0;
-> @@ -1264,7 +1264,13 @@ static int acpi_processor_get_power_info(struct ac=
-pi_processor *pr)
->
->         ret =3D acpi_processor_get_lpi_info(pr);
->         if (ret)
-> -               ret =3D acpi_processor_get_cstate_info(pr);
-> +               return acpi_processor_get_cstate_info(pr);
-> +
-> +       if (pr->flags.has_lpi) {
-> +               ret =3D acpi_processor_ffh_lpi_probe(pr->id);
-> +               if (ret)
-> +                       pr_err("Processor FFH LPI state is invalid.\n");
-> +       }
->
->         return ret;
->  }
-> --
+> 1.8v VIO supply is an optional supply and is only required if the platfor=
+m
+> supports 1.8v for sideband signals such as PERST#, WAKE#... I can include=
+ it in
+> the example for completeness.
 
-Please reorder this behind the next patch in the series.
+My point is that PERST# and WAKE# supplies could be 2 different 1.8V
+supplies and those supply the I/O pads of the GPIO pins (and possibly
+external pull-ups) that drive them. The 1.8V supply doesn't supply
+1.8V to the slot, so making it a slot/connector property is wrong.
+
+This isn't exactly a new issue. It could be an issue on any binding
+with GPIOs. Perhaps this needs to be handled within GPIO or pinctrl.
+
+> > > +
+> > > +    oneOf:
+> > > +      - required:
+> > > +          - port@0
+> > > +
+> > > +  clocks:
+> > > +    description: 32.768 KHz Suspend Clock (SUSCLK) input from the ho=
+st system to
+> > > +      the M.2 card. Refer, PCI Express M.2 Specification r4.0, sec 3=
+.1.12.1 for
+> > > +      more details.
+> > > +    maxItems: 1
+> > > +
+> > > +  w-disable1-gpios:
+> > > +    description: GPIO input to W_DISABLE1# signal. This signal is us=
+ed by the
+> > > +      system to disable WiFi radio in the M.2 card. Refer, PCI Expre=
+ss M.2
+> > > +      Specification r4.0, sec 3.1.12.3 for more details.
+> > > +    maxItems: 1
+> > > +
+> > > +  w-disable2-gpios:
+> > > +    description: GPIO input to W_DISABLE2# signal. This signal is us=
+ed by the
+> > > +      system to disable WiFi radio in the M.2 card. Refer, PCI Expre=
+ss M.2
+> > > +      Specification r4.0, sec 3.1.12.3 for more details.
+> > > +    maxItems: 1
+> > > +
+> > > +  viocfg-gpios:
+> > > +    description: GPIO output to IO voltage configuration (VIO_CFG) s=
+ignal. This
+> > > +      signal is used by the M.2 card to indicate to the host system =
+that the
+> > > +      card supports an independent IO voltage domain for the sideban=
+d signals.
+> > > +      Refer, PCI Express M.2 Specification r4.0, sec 3.1.15.1 for mo=
+re details.
+> > > +    maxItems: 1
+> >
+> > What about SDIO and UART WAKE, SDIO RESET, and vendor defined signals?
+> >
+>
+> Not sure about vendor defined signals as they can be either GPIO or inter=
+face
+> signals. How should them be defined?
+
+That kind of breaks any notion of this being a generic slot/connector.
+How's the host supposed to know how to connect them? What if a card
+required them to be driven a certain way before you can discover the
+card? If they can be GPIOs and can be hooked up to the host system
+GPIOs, then you should define GPIOs for them. If they aren't GPIOs on
+a host, then you omit them.
+
+Rob
 
