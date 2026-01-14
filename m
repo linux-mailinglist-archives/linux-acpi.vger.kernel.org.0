@@ -1,253 +1,104 @@
-Return-Path: <linux-acpi+bounces-20333-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20334-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54707D20214
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:16:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96F0D2025E
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 17:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33771306645C
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:14:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8311B3014D0A
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jan 2026 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5013A1E6F;
-	Wed, 14 Jan 2026 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E13A35CD;
+	Wed, 14 Jan 2026 16:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKQ511Jr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0np8qO/"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CE939E6DB;
-	Wed, 14 Jan 2026 16:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530043A35C1
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768407290; cv=none; b=VF4iR9EXqBs4+vGtWLkQp+ZdXmV61fKrbHQto4bM5NSC+KZzBwqLXm/mMT1O6Y/tOwJne4mbq+pS3R+Czse2JKHkTQSsZanx8iA5I0lXTIeNr6UPRrVL9rSYWqdtnaPXE8QK7r3KpztWmmV90ZGVz7I5czL4LrF82d0/O4FB0oE=
+	t=1768407488; cv=none; b=YZyp6yevDFvbj/G8DpVBECVuiTKkoGnN74rVdSPh86ijVVJdgGTuwlF5y1NSehUcxIf/93Hvhz24kiIadyF2yZ+963pwDtkVGiGfRHXWyb5SFmwbnpIF+pCQXNq0aYCbSMdvHpeJkgaZXCA43HpQrML3ch/Mp4BpXPSwA7naVl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768407290; c=relaxed/simple;
-	bh=GhwmK4FZnhVlKOisYnJ/xfW9wiiV6ZkLJ6q2UyKhx9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AosAfNUy5JvNTXgs+z8F4vFxGLAR87+HJn9ZsE/1wrcMH3wlGv8eDeV/XeJZu+zw6uDv+YzVSVPatSVMSt6LV2GW4Slf2l/TnvTz8A/VllU7QjXAgBUWFNeGDymUS6qSRTPT64u0+gTQUpdrs/yozCXuRl3DVyW7J50DRyBH0QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKQ511Jr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838E6C16AAE;
-	Wed, 14 Jan 2026 16:14:41 +0000 (UTC)
+	s=arc-20240116; t=1768407488; c=relaxed/simple;
+	bh=ZeyTuvEG6SItYZ+PthGqNFBLMgVQeKz3xPTTzCsMehU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NJZZ9YtcZFlM7QTuMGQ5BCdIQ23PBKU/WUoQeCc2T27QwgcuYI9DEfS9Q6jVH/5v4+MyxYionwKHQ/4l4as3T0NYqQkdoiF8RIAO9HzGCzlJW9oHklXB0muI1ERfNQJH+AF2qj0eepef/Hk0WnzRksVWTJtvJrGOdeGZf6kuLqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0np8qO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE325C19425
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 16:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768407289;
-	bh=GhwmK4FZnhVlKOisYnJ/xfW9wiiV6ZkLJ6q2UyKhx9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bKQ511Jr8hxW3LfytH59Yr+E9WefLkWV+CausWBDOm+LAo+t7tHRoHnvv4LJQATsb
-	 2T5ZlbgRQkIpS+ejYatUCVVwpZ6QumKRr5w2l58DRwsiyQkkYeGiiPjHH+QYt87SFQ
-	 ssxy6VxI1xrxQDFIPxtTDLrVp71ENOiY+Z2e1NhfhOstOVPH2sLvQlIZz9fg2VqmQQ
-	 LiIS8OxNJzYNab8i8slpo2vQz6KLhlnqCteaSz6+7xHDriSw0trxyxvY2esu8X1vTp
-	 v8IKkdFlsQbzXpWbe+VtYWBC/6VDjEzW25hRiIAZN2uzEA/HtQ3kHM/Ue9U4qJ3zLa
-	 uB3kQNRl7/iVQ==
-Date: Wed, 14 Jan 2026 21:44:32 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] dt-bindings: connector: Add PCIe M.2 Mechanical
- Key E connector
-Message-ID: <xyttom64ht5hrrp5hecjqehnyfgsv4mfl2t36e2sveu44ccpjl@lkzquse2kqsx>
-References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
- <20260112-pci-m2-e-v4-5-eff84d2c6d26@oss.qualcomm.com>
- <20260113171424.GA3925312-robh@kernel.org>
+	s=k20201202; t=1768407488;
+	bh=ZeyTuvEG6SItYZ+PthGqNFBLMgVQeKz3xPTTzCsMehU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=I0np8qO/g390D626bXc2gCH8h+KEEd0TK3ou0uSAbYsvWp8Vbrz7juzQHarIt3Zmr
+	 oq4rwMRUfsOZV+h+C9gyq6DZlcVrWAodmlt4rvgaGARbtAXle5rengzRKQh6Hg3diZ
+	 YjvTvsJfNFomGoYUc9HYpsGAQWru130eYxmJRCoRF08JaLTZ5OB7t4dSPdtc9VEyt+
+	 +KGR4h55B1dLkwMOWnZ/S12AXV8gz3+t5incIgIrtQ+PKu12N3UfOF/LnyASHiksSK
+	 n0vsBimmxNVwYjKzgy0rLQv11Hq5+1Mw/DHEstWBSLLsRDgBpyaDrSewzzm2tN7kpR
+	 54A2PVv0EVWHA==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-40421de595fso201888fac.3
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jan 2026 08:18:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUM57Z358A/rSfN9Ud1GJqHbAJuRDCOjQEI6G9XzbZ6SSmqRUrcLtPqg8mHG0Kot3rrfIBfq3yVlJ8I@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOqO7Mt+vD9Fm6W9K80T8XBZ0MIpVGHUOOTHUKMvP/2VU0pvTq
+	g2p/qQQXf0q8d1VVeJHFWG0+o91X5CqO/8z0CW2Zs8X+ks0YtNTMNguzCdQ/D32vIKD39aFTw6w
+	uvKwONuhyZUTWNoOFTpk8rmsGhL7pquE=
+X-Received: by 2002:a05:6820:f036:b0:660:ffd3:32b with SMTP id
+ 006d021491bc7-661006ccdbamr2424231eaf.44.1768407487064; Wed, 14 Jan 2026
+ 08:18:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260113171424.GA3925312-robh@kernel.org>
+References: <20260114082306.48119-1-kkartik@nvidia.com> <aWdecdvZZbai0qrv@kekkonen.localdomain>
+In-Reply-To: <aWdecdvZZbai0qrv@kekkonen.localdomain>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 14 Jan 2026 17:17:56 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jbAp0ANtJ9XE1ot4g6UHoYGSY9djq4_MvkYvM34+t4mw@mail.gmail.com>
+X-Gm-Features: AZwV_QhedFYQhtDWR2jzFtu6cwsw3SZ5IPLsPain7mKOR29j3DBaV-zLOVZPxXE
+Message-ID: <CAJZ5v0jbAp0ANtJ9XE1ot4g6UHoYGSY9djq4_MvkYvM34+t4mw@mail.gmail.com>
+Subject: Re: [PATCH v4] ACPI: bus: Align acpi_device_get_match_data() with
+ driver match order
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, Kartik Rajput <kkartik@nvidia.com>
+Cc: mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com, 
+	thierry.reding@gmail.com, jonathanh@nvidia.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 13, 2026 at 11:14:24AM -0600, Rob Herring wrote:
-> On Mon, Jan 12, 2026 at 09:56:04PM +0530, Manivannan Sadhasivam wrote:
-> > Add the devicetree binding for PCIe M.2 Mechanical Key E connector defined
-> > in the PCI Express M.2 Specification, r4.0, sec 5.1.2. This connector
-> > provides interfaces like PCIe or SDIO to attach the WiFi devices to the
-> > host machine, USB or UART+PCM interfaces to attach the Bluetooth (BT)
-> > devices. Spec also provides an optional interface to connect the UIM card,
-> > but that is not covered in this binding.
-> > 
-> > The connector provides a primary power supply of 3.3v, along with an
-> > optional 1.8v VIO supply for the Adapter I/O buffer circuitry operating at
-> > 1.8v sideband signaling.
-> > 
-> > The connector also supplies optional signals in the form of GPIOs for fine
-> > grained power management.
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  .../bindings/connector/pcie-m2-e-connector.yaml    | 154 +++++++++++++++++++++
-> >  MAINTAINERS                                        |   1 +
-> >  2 files changed, 155 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
-> > new file mode 100644
-> > index 000000000000..b65b39ddfd19
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
-> > @@ -0,0 +1,154 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/connector/pcie-m2-e-connector.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: PCIe M.2 Mechanical Key E Connector
-> > +
-> > +maintainers:
-> > +  - Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > +
-> > +description:
-> > +  A PCIe M.2 E connector node represents a physical PCIe M.2 Mechanical Key E
-> > +  connector. Mechanical Key E connectors are used to connect Wireless
-> > +  Connectivity devices including combinations of Wi-Fi, BT, NFC to the host
-> > +  machine over interfaces like PCIe/SDIO, USB/UART+PCM, and I2C.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: pcie-m2-e-connector
-> > +
-> > +  vpcie3v3-supply:
-> > +    description: A phandle to the regulator for 3.3v supply.
-> > +
-> > +  vpcie1v8-supply:
-> > +    description: A phandle to the regulator for VIO 1.8v supply.
-> 
-> I don't see any 1.8V supply on the connector. There are 1.8V IOs and you 
-> may need something in DT to ensure those are powered. However, there's 
-> no guarantee that it's a single supply.
-> 
+On Wed, Jan 14, 2026 at 10:14=E2=80=AFAM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Kartik,
+>
+> On Wed, Jan 14, 2026 at 01:53:06PM +0530, Kartik Rajput wrote:
+> > During pre-production development, drivers may provide both ACPI and OF
+> > match tables while a formal ACPI HID for the device is not yet
+> > allocated. Such devices are enumerated via PRP0001. In this case,
+> > acpi_device_get_match_data() consults only the driver=E2=80=99s ACPI ma=
+tch table
+> > and returns NULL, even though the device was successfully matched via
+> > PRP0001.
+> >
+> > This behavior also risks breaking existing PRP0001 setups if a driver
+> > later gains an ACPI HID, as the presence of an ACPI match table changes
+> > the match-data lookup path.
+> >
+> > Make acpi_device_get_match_data() use the same precedence as driver
+> > matching by using __acpi_match_device(). Return match data from the
+> > acpi_id or of_id that was actually matched.
+> >
+> > Remove now-unused acpi_of_device_get_match_data().
+> >
+> > Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+>
+> Thank you for the update, this looks really nice now.
+>
+> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-1.8v VIO supply is an optional supply and is only required if the platform
-supports 1.8v for sideband signals such as PERST#, WAKE#... I can include it in
-the example for completeness.
-
-> > +
-> > +  ports:
-> > +    $ref: /schemas/graph.yaml#/properties/ports
-> > +    description: OF graph bindings modeling the interfaces exposed on the
-> > +      connector. Since a single connector can have multiple interfaces, every
-> > +      interface has an assigned OF graph port number as described below.
-> > +
-> > +    properties:
-> > +      port@0:
-> > +        $ref: /schemas/graph.yaml#/properties/port
-> > +        description: Connector interfaces for Wi-Fi
-> > +
-> > +        properties:
-> > +          endpoint@0:
-> > +            $ref: /schemas/graph.yaml#/properties/endpoint
-> > +            description: PCIe interface
-> > +
-> > +          endpoint@1:
-> > +            $ref: /schemas/graph.yaml#/properties/endpoint
-> > +            description: SDIO interface
-> 
-> I think I already said this, but multiple endpoints are generally for 
-> something that's muxed. Looking at the connector pinout, PCIe and SDIO 
-> are not muxed. So these 2 should be 2 port nodes.
-> 
-
-Sorry, I didn't know that you were asking for 2 port nodes. Will switch to it.
-
-> > +
-> > +        anyOf:
-> > +          - required:
-> > +              - endpoint@0
-> > +          - required:
-> > +              - endpoint@1
-> > +
-> > +      port@1:
-> > +        $ref: /schemas/graph.yaml#/properties/port
-> > +        description: Connector interfaces for BT
-> > +
-> > +        properties:
-> > +          endpoint@0:
-> > +            $ref: /schemas/graph.yaml#/properties/endpoint
-> > +            description: USB 2.0 interface
-> > +
-> > +          endpoint@1:
-> > +            $ref: /schemas/graph.yaml#/properties/endpoint
-> > +            description: UART interface
-> 
-> And UART and USB are not muxed either.
-> 
-
-Ack.
-
-> 
-> > +
-> > +        anyOf:
-> > +          - required:
-> > +              - endpoint@0
-> > +          - required:
-> > +              - endpoint@1
-> > +
-> > +      port@2:
-> > +        $ref: /schemas/graph.yaml#/properties/port
-> > +        description: PCM/I2S interface
-> > +
-> > +      i2c-parent:
-> > +        $ref: /schemas/types.yaml#/definitions/phandle
-> > +        description: I2C interface
-> 
-> Move out of 'ports'.
-> 
-
-Ack.
-
-> > +
-> > +    oneOf:
-> > +      - required:
-> > +          - port@0
-> > +
-> > +  clocks:
-> > +    description: 32.768 KHz Suspend Clock (SUSCLK) input from the host system to
-> > +      the M.2 card. Refer, PCI Express M.2 Specification r4.0, sec 3.1.12.1 for
-> > +      more details.
-> > +    maxItems: 1
-> > +
-> > +  w-disable1-gpios:
-> > +    description: GPIO input to W_DISABLE1# signal. This signal is used by the
-> > +      system to disable WiFi radio in the M.2 card. Refer, PCI Express M.2
-> > +      Specification r4.0, sec 3.1.12.3 for more details.
-> > +    maxItems: 1
-> > +
-> > +  w-disable2-gpios:
-> > +    description: GPIO input to W_DISABLE2# signal. This signal is used by the
-> > +      system to disable WiFi radio in the M.2 card. Refer, PCI Express M.2
-> > +      Specification r4.0, sec 3.1.12.3 for more details.
-> > +    maxItems: 1
-> > +
-> > +  viocfg-gpios:
-> > +    description: GPIO output to IO voltage configuration (VIO_CFG) signal. This
-> > +      signal is used by the M.2 card to indicate to the host system that the
-> > +      card supports an independent IO voltage domain for the sideband signals.
-> > +      Refer, PCI Express M.2 Specification r4.0, sec 3.1.15.1 for more details.
-> > +    maxItems: 1
-> 
-> What about SDIO and UART WAKE, SDIO RESET, and vendor defined signals?
-> 
-
-Not sure about vendor defined signals as they can be either GPIO or interface
-signals. How should them be defined?
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Applied as 6.20 material, thanks!
 
