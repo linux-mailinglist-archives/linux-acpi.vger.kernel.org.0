@@ -1,170 +1,206 @@
-Return-Path: <linux-acpi+bounces-20355-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20356-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D98D22DB6
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 08:34:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B85D22F3F
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 08:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C99F302CF49
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 07:34:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68456309EE25
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 07:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97362749C1;
-	Thu, 15 Jan 2026 07:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539F82D9EDB;
+	Thu, 15 Jan 2026 07:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fvr0ZWXH"
+	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="cb3PVqQD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay15.grserver.gr (relay15.grserver.gr [46.62.234.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D0717BA2
-	for <linux-acpi@vger.kernel.org>; Thu, 15 Jan 2026 07:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACDA32E15F
+	for <linux-acpi@vger.kernel.org>; Thu, 15 Jan 2026 07:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.62.234.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768462458; cv=none; b=poAmWS3YnAJqLnHmEg97ItUd0y9VBPZLsj4TL13ao+Ak0txh7L1ZwX8bCdpWCGLHc3hVYAeYCWrbNT+IHyIArn1aF8SFx3IhKXfDTpQsjNZ3pKw5T7OoN0AosPXUTzykaPkQecelwX3WZTsqnnp9yTkB7ztA/ImckQy4kkAun18=
+	t=1768463386; cv=none; b=W+tChaL5eYCe038feReUBIV6iWj5yL/BbohFo3YciEdvl+TlKLZ01thr46k4ouFwr4skc0hwbhuUlsxQlwAmwdvQrZPDMfrHzryrdR2Eig219C8XBvmaNxclZT1tAn4Gynd2a69TvQBSCcRFNsMTyhGV08g4cDm7/wWLBlz8p/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768462458; c=relaxed/simple;
-	bh=HtpktxwRJwaTEVCT4r0uk8HTyaHmsA/bfVVlgJM4rH8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UqwxQbHjOhyNWoWNl+KNoIIAgiDN6baM0/Y3SOT2CdyzawdtoxXHMNW4qp2jKDjah/PDdmYgvLe64gKPmlu76rnmBYLGXjJvxNU3NHq/fhMOxS/QFL79OlpRCvtpYCx+u2nnlEfnY89JShES3P+9JZpaNLbHO9khvF7kHWqTnbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fvr0ZWXH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768462456;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Acf5ftz2iPMsFNkl3X5gKYrMC5G/p2vaNMThgsq/6Gs=;
-	b=fvr0ZWXHTPOd9wY39V5r8Q757Um4ES9/e0nRaHi8msyIoSHdSENuagIAlRytMdLzlaIEnu
-	Razqw2onxkFfWI9pvMH/sfjSSya4xEZTydArBO1DYFCaFDqQVx1W1T5w4R/3EscUqL6tsC
-	bbZZp93XCwm8P6lxh8s8h1MZPTF0A3E=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-AnXUil91Mvq8SQJ0PdgneA-1; Thu,
- 15 Jan 2026 02:34:10 -0500
-X-MC-Unique: AnXUil91Mvq8SQJ0PdgneA-1
-X-Mimecast-MFC-AGG-ID: AnXUil91Mvq8SQJ0PdgneA_1768462449
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	s=arc-20240116; t=1768463386; c=relaxed/simple;
+	bh=/eV0MUi+e2QCE/kEZ72sJ7VNC+RMsWrL3OEGusFHwyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tWeXlkxW9JfcQiCQ/Hj6mePwQq/C6JqiBT+r13w3+EGQnyn1YNn4rC3ckBiTAXJB6TOX/8NzTKsM5P4apNXnyMLObHDZJF1lj7vbDYApQaBvZQaqR33obgfNVodVcX01xilbtylSgPmCRZqsggPWrN5+T5pzDhJR/LxjM1ftqFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=cb3PVqQD; arc=none smtp.client-ip=46.62.234.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from relay15 (localhost [127.0.0.1])
+	by relay15.grserver.gr (Proxmox) with ESMTP id EF3DD40A92
+	for <linux-acpi@vger.kernel.org>; Thu, 15 Jan 2026 07:49:30 +0000 (UTC)
+Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3EEFC180044D;
-	Thu, 15 Jan 2026 07:34:09 +0000 (UTC)
-Received: from [10.44.32.221] (unknown [10.44.32.221])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2789E180066A;
-	Thu, 15 Jan 2026 07:34:06 +0000 (UTC)
-Message-ID: <16e32f1c-8419-44cf-9da8-4c0cae6165e7@redhat.com>
-Date: Thu, 15 Jan 2026 08:34:05 +0100
+	by relay15.grserver.gr (Proxmox) with ESMTPS id D7E1E40B74
+	for <linux-acpi@vger.kernel.org>; Thu, 15 Jan 2026 07:49:27 +0000 (UTC)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by linux3247.grserver.gr (Postfix) with ESMTPSA id 0AAF420249A
+	for <linux-acpi@vger.kernel.org>; Thu, 15 Jan 2026 09:49:27 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1768463367;
+	bh=/eV0MUi+e2QCE/kEZ72sJ7VNC+RMsWrL3OEGusFHwyc=;
+	h=Received:From:Subject:To;
+	b=cb3PVqQDfHlouYVTeO5WyX2tKxJphC31AOdUvYBs3F96xe6GCJA3F1cEzZpTAWhPZ
+	 WZoW1pI5JTFeY60z5329iwmYbkPJSLYea3fHuqxnrnFjR5lIae/a0E24AbUIZyxytv
+	 jh3JBD0Trke3Y6PnLeBXntjvWUypbXn07rZCrI/9SkpArdA49ZhZRKwGgjiYuMX8el
+	 dEzymvPWxLxirz5pyiattFRPqRiZ4ApgBxg3MBZPkxGF4c6nAxeQWhdco2OagXMSg0
+	 hReuN2aFQV/2X8t/sLtrrCYiLxAyfZAYK9MLmHu1lQtLEeZGt6aGWzknfAhfL8GRJ5
+	 m/udvUPzDREMw==
+Authentication-Results: linux3247.grserver.gr;
+        spf=pass (sender IP is 209.85.208.173) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f173.google.com
+Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
+Received: by mail-lj1-f173.google.com with SMTP id
+ 38308e7fff4ca-382f9930e54so13055871fa.1
+        for <linux-acpi@vger.kernel.org>;
+ Wed, 14 Jan 2026 23:49:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUpSRO26tN6Bz7F1k8uZaCzrtvF1bexsn9JgwIsBDK8nOd+F5LlQCYzy6Iugw87A3oOQNNqGUSJLZtt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe12cjwo0LAj1w7L+MMu6Oga8XtLIDqkwjj7ZhkkN/WjnpMjFp
+	jgD/FFfPuytjEVNo6Mu8wzDC/1YJLPQtV7Yz/D7uj0MnKKK0Sk/ChfpltTMOfy1LgpMdkuVO/Fv
+	qfCZypaWVt+XUnKXIm/8pRV61X3gOElE=
+X-Received: by 2002:a05:651c:551:b0:382:4f57:e8d1 with SMTP id
+ 38308e7fff4ca-3836effcad3mr7054071fa.18.1768463366458; Wed, 14 Jan 2026
+ 23:49:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Question] Best practice for ACPI representation of DPLL/Ethernet
- dependencies (SyncE)
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- linux-acpi@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
-References: <3bf214b9-8691-44f7-aa13-8169276a6c2b@redhat.com>
- <aWgAfsycBDc0mlFv@smile.fi.intel.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <aWgAfsycBDc0mlFv@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+References: <20251226102656.6296-1-lkml@antheas.dev>
+ <CAGwozwF5wsb8pYmHj5G0uTfr+3vx+HhrfOR9t-pEGPw-jjvbHg@mail.gmail.com>
+ <3ca00958-13e5-4732-b500-aa9673a4c965@collabora.com>
+ <CAGwozwHLkL5xAXzaKoTyLCGzNjjHUf+bNu8qo+-Tpex7NK6=GA@mail.gmail.com>
+ <ab4d90d8-3212-4571-9f92-ac4facd3aa33@collabora.com>
+In-Reply-To: <ab4d90d8-3212-4571-9f92-ac4facd3aa33@collabora.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Thu, 15 Jan 2026 09:49:15 +0200
+X-Gmail-Original-Message-ID: 
+ <CAGwozwF7aVapmRYczm+=rPfVDXH0i6UArQtg1TRgc7Vi6+XYxA@mail.gmail.com>
+X-Gm-Features: AZwV_QiKHptTyzLZUNZHxU283KLf4ampz8nJS0iBFH5X6US2i_LgFo5Lx_tn8K8
+Message-ID: 
+ <CAGwozwF7aVapmRYczm+=rPfVDXH0i6UArQtg1TRgc7Vi6+XYxA@mail.gmail.com>
+Subject: Re: [RFC v1 0/8] acpi/x86: s2idle: Introduce and implement runtime
+ standby ABI for ACPI s0ix platforms
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: bob.beckett@collabora.com, bookeldor@gmail.com, hadess@hadess.net,
+	jaap@haitsma.org, kernel@collabora.com, lennart@poettering.net,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, mccann@jhu.edu,
+	rafael@kernel.org, richard@hughsie.com, sebastian.reichel@collabora.com,
+	superm1@kernel.org, systemd-devel@lists.freedesktop.org,
+ xaver.hugl@gmail.com,
+	John Schoenick <johns@valvesoftware.com>
+Content-Type: text/plain; charset="UTF-8"
+X-PPP-Message-ID: 
+ <176846336724.126202.3648425050513174169@linux3247.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
+X-Virus-Status: Clean
 
-Hi Andy,
+On Thu, 15 Jan 2026 at 01:07, Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+>
+> On 1/13/26 13:11, Antheas Kapenekakis wrote:
+> > <snip>
 
-thank you for the honest feedback. I suspect I might have described the 
-topology poorly in my previous email, leading to a misunderstanding 
-regarding the nature of the "pins".
+Hi Dmitry,
+let me go inline.
 
-On 1/14/26 9:45 PM, Andy Shevchenko wrote:
-> On Wed, Jan 14, 2026 at 08:19:05PM +0100, Ivan Vecera wrote:
-> 
->> I would like to ask for your opinion regarding an ACPI implementation
->> detail for a patch-set I currently have on the netdev mailing list [1].
->> ...
->> Question:
->> Is reusing the DT binding definitions within ACPI _DSD (to allow unified
->> fwnode property parsing) the recommended approach for this type of
->> device relationship?
-> 
-> TL;DR: Seems to me you are pretty much doing an ugly hack and yes, you violate
-> the existing ACPI resources. More details below.
-> 
->> Or should I define strictly ACPI-specific bindings/objects, considering
->> that the DT bindings for this feature are also new and currently under
->> review?
->>
->> I want to ensure I am not violating any ACPI abstraction layers by
->> relying too heavily on the DT-style representation in _DSD.
->>
->> Thanks for your guidance.
-> 
-> First of all, if I understood the HW topology right — it has an I²C muxer
-> which has a channel connected to DPLL, which among other functions provides
-> some kind of GPIO/pin muxing facility — (correct me, if I'm wrong), the
-> irrelevant to ACPI hack is an avoidance of having proper GPIO controller
-> driver / description provided with likely pin control and pin muxing
-> flavours, which is missing (hence drivers/pinctrl/... should be and it should
-> be described in DT).
+> The primary goal is to support screen-off DSM for a power-efficient
+> background games downloading [1] and further resume-to-dark on Steam
+> Deck and other handhelds. There is no strict timeline, usual "sooner the
+> better". Downstreams will use customized WIP solution till upstream will
+> get necessary generic interfaces.
+>
+> [1] https://store.steampowered.com/news/app/1675200/view/771930569635267984
 
-This is not a GPIO or Pin Control scenario. The "pins" I am referring to 
-are clock input/output pads dedicated to frequency synchronization 
-(Synchronous Ethernet). They carry continuous clock signals (e.g., 
-10MHz, 25MHz, or recovered network clock), not logic levels controllable 
-via a GPIO subsystem.
+Ok, this makes things clearer. I had done some testing to see the
+viability of such approach.
 
-The Hardware Setup:
+One big problem [1] had was that the compression algorithm that Steam
+used was very CPU intensive. However, it was announced that that
+changed, which makes low power downloads more viable.
 
-Control Plane: A user configures the DPLL device (e.g., via I2C/SPI
-managed by standard ACPI resources/drivers). This part is standard.
+However, even so, I do not think the sleep DSM is designed for
+prolonged background use and certain devices might overheat.
+Specifically, I think the Go S disables its fan while in that DSM.
+Looking back to what Windows does, it only uses the Sleep state to do
+periodic polling, and if there are updates it transitions to display
+off.
 
-Data/Clock/Signal Plane (The issue at hand): There are physical clock
-traces on the board connecting the Ethernet PHY directly to the DPLL.
+This is a fair approach for [1]. For example, device wakes up every
+two hours while connected to a charger, stays on sleep state, checks
+for updates, and if there are any and conditions are met, transitions
+to display off and starts downloading.
 
-PHY Output(s) -> DPLL Input Pin(s) (Recovered Clock)
+However, this means you do not get a smaller tdp limit. Given you
+control the unfrozen userspace in that state though, such a limit does
+not help either. The device will use what it needs to for downloads.
+This makes the SD 5W low power mode puzzling, as it means downloads
+will potentially take longer and I would be punished as a user for
+using that mode. Instead, Steam should be optimized to use less than
+5W or perhaps 10W when downloading from gigabit in some way.
 
-DPLL Output Pin(s) -> PHY Input(s) (Clean Reference Clock)
+Two more considerations in this case are that a lot of devices will
+turn off their controllers when entering display off. And the rest
+when entering sleep. This is good because when you are in dark resume,
+the RGB of the device has turned off. But for [1] it is problematic
+because it assumes the controller works and is what is used to wake
+the device so the mode is broken. For Legion, Sleep is used to turn
+off the controller, and for other devices Sleep Entry/Exit. New in ROG
+Xbox Ally devices is that the controller no longer turns off, but it
+is muted.
 
-Since these are purely clock signals between two peripheral devices (not
-connected to the CPU's GPIO controller), standard ACPI _CRS resources
-like GpioIo or PinFunction do not seem applicable here. To my knowledge,
-ACPI does not have a native "Clock Resource" descriptor for inter-device
-clock dependencies.
+The other consideration is that three additional patches are needed
+for ROG Ally devices to work correctly with this series, 2 cleanup
+commits and 1 small delay. But after that it should be drop in. I
+cannot comment on the new hid drivers for Asus and Legion that are
+currently being developed. Particularly, hid-legion-go(?) has a
+reset_resume() cb where it should have used resume? Or not anything?
+The legion controllers save os mode until they disconnect, which they
+do with this series, so the driver would always re-initialize on
+wake-up.
 
-My intention with _DSD was to model this clock dependency graph, similar
-to how clocks and clock-names are handled in Device Tree (or how camera
-sensors often use _DSD to reference related components).
+> A common approach for upstreaming is to divide problem into smaller
+> manageable parts. That's what I'm planning to focus on now to see if we
+> can start easy with a minimal changes.
 
-Does your objection regarding the "ugly hack" still stand, or is
-modeling these clock dependencies via _DSD properties (referencing
-sub-nodes) an acceptable approach in the absence of a dedicated ACPI
-Clock Resource?
+Sure. One potential approach for this is this series, where the first
+part does the plumbing and the second part the exposing. They can be
+merged independently.
 
-I can provide a simple ASCII diagram of the board layout if that helps 
-clarify the signal flow.
+I also made sure to address Rafael's comments, so the ABI of this
+series is completely independent of ACPI, S0ix or whether the device
+has a display. I also removed all references to Intel, AMD specific
+power envelope terminology. Moreover, most of the logic now resides in
+suspend.c and the hooks are in platform_ calls, so it can be
+implemented for other platforms easily.
 
-> Second, ACPI provides the _CRS resources specifically for pin configuration,
-> pin control (pin muxing as well). In case it's related those resources must
-> be used. The caveat, however, the Linux kernel has not yet implemented the
-> glue layer between ACPICA and pin control subsystem (see [5] for more).
-> 
-> It might be that I didn't get the picture correctly, but it smells badly to me.
-> In any case, I would like to help you and I'm open to more details about this
-> case.
+However, the first part of this series does some refactorings which
+assume a favorable outcome. If we do not want to assume that, a
+simpler initial series would just move the MS/display on/off DSMs to
+.begin() in s2idle.c. If you think that would be easier to merge, you
+are welcome to start with that. Then this series would be refactored
+on top and merged as a single unit. Keep in mind the ROG Ally conflict
+would also arise in this case as well.
 
-Thanks for your willingness to help.
+> Please don't worry about the credit. You did a significant ground work
+> that is well recognized by now. Thanks a lot for your efforts and help.
+> Starting from scratch of course won't be a good approach with all the
+> broad testing you've done.
 
-Regards,
-Ivan
+Great. Sounds good to me.
+
+Antheas
+
+> --
+> Best regards,
+> Dmitry
+>
 
 
