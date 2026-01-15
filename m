@@ -1,153 +1,132 @@
-Return-Path: <linux-acpi+bounces-20374-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20375-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D05D245C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 13:01:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF448D24629
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 13:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 07BFB3020B39
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 12:01:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68A24301B125
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 12:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3550E352925;
-	Thu, 15 Jan 2026 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BED438BF8B;
+	Thu, 15 Jan 2026 12:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EC9VvLD6"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="mgBe9qUR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4F418024;
-	Thu, 15 Jan 2026 12:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BAA1E8826;
+	Thu, 15 Jan 2026 12:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768478494; cv=none; b=ZCGkkYVyoEXrtYDX3Ir3vT1+lTv1ZJxOOaXbWUnThCoYmZQOgMFOYYIsyMusX2+0Zk+lPFxhFKHEG3/Q7e+q5BXzxYzbrArtkikIPQF5Id10OlkWh+zyWAxX9R8S7S8m6L95g08zux0/JNxtfOuqjQlURxjaxcC0980sSyg/blc=
+	t=1768478954; cv=none; b=KHABFOqTUnca55txYDaWTd6Ka9ab3ZUEMiH+xu+35kE4UrCc0d2Xm1J225Je04N7wzgFpdQ2GDUx2nZpQSYawUTMp/9gO7U9jd1NA9QCZ3W0xCuKO91+rZqYQABNbZY3VhR7xtChnaeqRXONhGQ0kM3DDiRrcINmvwNkVqXrM2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768478494; c=relaxed/simple;
-	bh=VWg9tkWooAwTyDYbBBH3VW10anfovUgwUzjPjFnkxqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rFLRJyOKpZOlUhL9N8nNXlnN9XU5YYGQ3XWxgVk2Z59tyfFZs36meadNeTHMNbakDXZu0gtHoi/5B70DDxuQs/XqUAVddJiC3SxPeRSpcZy0i0YLOk2IejYXOUZAc+j9UTvBEIIVK3B9cW0BVTcmXtWcb524BJcEon7oP0E+1QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EC9VvLD6; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 93FD940E0252;
-	Thu, 15 Jan 2026 12:01:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fIkZKrXH-6Ud; Thu, 15 Jan 2026 12:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768478481; bh=EHXXD1og8jlFQ9XvOYhFi/5ELaOn5f8KORiwXzjZrQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EC9VvLD6qRCSk8VAYVc6w0Mqczo//dPyeBqvAdgByrGFTu5GELOXEhU+2J1PtdUbd
-	 qZKHqfCT8zVgXt2edJvSOs7x/pNPTGu0nBH+QyzBaWWh/VLfqo3posK6TtzQ0PwFKx
-	 tpY/4rGN8uakiPCs9/2zvTghvjMYkbJF+q/fY4z65e+4+rp1fmxtLNEqiYvv/chH6A
-	 150wv3FYn29WS9oyGXBgYq7iGqCwBcs1hmNNnprYkKbqxdxR3Nn/rn27LjfCuH4epj
-	 he4lhNR/BJAh6ain0yOTCBuFF+f6YI+iFUzJVJtFbkzhhZtjFlLh7hRCFfzk2CmKnu
-	 gu9WkQAtUUSXQZCciPHRl5occNXtvQ13YUoIoIYbtq/ouGyDe+Kaj9oRLGkGTHSuev
-	 TKgEoQ57KSkGwN/0HUJRGJoergzDF2+rdJvZdGTQEMg8rEDBMFxaUeWJyAAF1JaX9Y
-	 wimf/aCqUXPQwTV8Q+WNmLl+y1AuFbqwqNzI1NiHEX9JbUxBrCMFD7YL/WP1z85HQ7
-	 RdD8MJjoEOUEChm0VvAR22dinY3kzQTj+U7Zuz7SBTQ1rSezb15BmGkKNDF154JNCM
-	 waWtXJ1VNvv0ggO6uRCeCCrpt3d4PiC8rnFvXy4PK+h2vG6TXR0Tp7uWUSbTqBlOuk
-	 q7j+LiQGnMatEPS5wIP6NiCM=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1B3F540E0173;
-	Thu, 15 Jan 2026 12:01:09 +0000 (UTC)
-Date: Thu, 15 Jan 2026 13:00:58 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shenghao Yang <me@shenghaoyang.info>
-Cc: x86@kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] x86/acpi: Add acpi=spcr to use SPCR-provided default
- console
-Message-ID: <20260115120058.GCaWjW-sT7eBr94SEr@fat_crate.local>
-References: <20251228092222.130954-1-me@shenghaoyang.info>
- <20260114154656.GDaWe6cFCruAGbJbhe@fat_crate.local>
- <b5d54942-f280-40ab-b445-00b6dc610a8e@shenghaoyang.info>
+	s=arc-20240116; t=1768478954; c=relaxed/simple;
+	bh=mTx0+Jo/eMYZINLdveDtQ78g/of2CjpNLGc4mszBF6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UKJDweUejUeLAEKP99NA53Qu/56AGX9Q6klidp33Iu2mpl2cdynr8KaW/bzmviFn7Z1MsO6rIzAYEcaCytX+7gwWQ6pFm0IoJBwLGXGMfs8uewu7O4x3lqq7iFGy9iv6CA3H/KTV3KFtMT6+qFeFKqR/QDq+r/5eq9T62J/d0MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=mgBe9qUR; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5k6/7v8yV6HrQ/WzTilWAJ1i4IfvxU7m4urWOhxP/B8=;
+	b=mgBe9qURj8TI95Hdp/7zCyUq87Kuy64vX5KectKpeZFZ0hC3g2Z9xW523hZ4lOu6Wv8XdiuX5
+	flq4yQDl2FMK9PNi0wmdOkdHq70dkAdulYhn0QBtYctb60rO65HWx1ENE+jnIz/syqg7Sv8ZzYP
+	vmGwYLlid+7k7OEjEHc3MVI=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4dsMBj5RZLz1K9Z7;
+	Thu, 15 Jan 2026 20:05:49 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id EECDA4056C;
+	Thu, 15 Jan 2026 20:09:07 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 Jan 2026 20:09:07 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 15 Jan
+ 2026 20:09:07 +0800
+Message-ID: <2b1a456f-b9e3-4722-84ba-ba4fdd4b2ece@huawei.com>
+Date: Thu, 15 Jan 2026 20:09:02 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b5d54942-f280-40ab-b445-00b6dc610a8e@shenghaoyang.info>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ACPI: processor: idle: Relocate and verify
+ acpi_processor_ffh_lpi_probe
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
+	<lihuisong@huawei.com>
+References: <20251125065210.3670266-1-lihuisong@huawei.com>
+ <20251125065210.3670266-2-lihuisong@huawei.com>
+ <CAJZ5v0j9Mp5AqQwpakVLWDmK10cjOOiKtetfCr2OSSukekdPhQ@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0j9Mp5AqQwpakVLWDmK10cjOOiKtetfCr2OSSukekdPhQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Thu, Jan 15, 2026 at 01:09:40AM +0800, Shenghao Yang wrote:
-> We've been inserting the dumped config into the kernel command 
-> line and rebooting on first boot (e.g. console=uart,io,0x3f8,115200),
-> but would love to avoid this loop.
+Hi Rafael,
 
-Yah, put that in your v2 pls. That's much more understandable.
-
-> It's easier this way for larger fleets - we don't want to manage
-> hardware specific serial console settings on the kernel command line
-> if the firmware is already capable of telling us the correct ones.
-
-Should also be in the commit message.
-
-> If earlycon is specified on the command line the console from SPCR
-> is used, but only as a boot console. It's not present in
-> /proc/consoles.
-> 
-> It is possible to retain it with keep_bootcon, but that uses the
-> less efficient (in the 8250 case) 8250_early driver.
-
-Also for the commit message.
-
-> In 0231d00082f6 ("ACPI: SPCR: Make SPCR available to x86") the SPCR
-> console is only added as an option for earlycon but not as an ordinary
-> console so users don't see console output changes.  
-> 
-> The patch adds an opt in so we can get the SPCR console added as
-> an ordinary console.
-
-Yap, your explanations make much more sense, thanks.
-
-Please structure your v2 something like this boilerplate guidance below:
-
-1. Prepare the context for the explanation briefly.
-
-2. Explain the problem at hand.
-
-3. "It happens because of <...>"
-
-4. "Fix it by doing X"
-
-5. "(Potentially do Y)."
-
-And some of those above are optional depending on the issue being
-explained.
-
-For more detailed info, see
-Documentation/process/submitting-patches.rst,
-Section "2) Describe your changes".
-
-Also, to the tone, from Documentation/process/submitting-patches.rst:
-
- "Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-  instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-  to do frotz", as if you are giving orders to the codebase to change
-  its behaviour."
-
-Also, do not talk about what your patch does - that should (hopefully) be
-visible from the diff itself. Rather, talk about *why* you're doing what
-you're doing.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+On 1/15/2026 1:27 AM, Rafael J. Wysocki wrote:
+> On Tue, Nov 25, 2025 at 7:52 AM Huisong Li <lihuisong@huawei.com> wrote:
+>> The platform used LPI need check if the LPI support and the entry
+>> method is valid by the acpi_processor_ffh_lpi_probe(). But the return
+>> of acpi_processor_ffh_lpi_probe() in acpi_processor_setup_cpuidle_dev()
+>> isn't verified by any caller.
+>>
+>> What's more, acpi_processor_get_power_info() is a more logical place for
+>> verifying the validity of FFH LPI than acpi_processor_setup_cpuidle_dev().
+>> So move acpi_processor_ffh_lpi_probe() from the latter to the former and
+>> verify its return.
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/acpi/processor_idle.c | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index 5f86297c8b23..cdf86874a87a 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -1252,7 +1252,7 @@ static int acpi_processor_setup_cpuidle_dev(struct acpi_processor *pr,
+>>
+>>          dev->cpu = pr->id;
+>>          if (pr->flags.has_lpi)
+>> -               return acpi_processor_ffh_lpi_probe(pr->id);
+>> +               return 0;
+>>
+>>          acpi_processor_setup_cpuidle_cx(pr, dev);
+>>          return 0;
+>> @@ -1264,7 +1264,13 @@ static int acpi_processor_get_power_info(struct acpi_processor *pr)
+>>
+>>          ret = acpi_processor_get_lpi_info(pr);
+>>          if (ret)
+>> -               ret = acpi_processor_get_cstate_info(pr);
+>> +               return acpi_processor_get_cstate_info(pr);
+>> +
+>> +       if (pr->flags.has_lpi) {
+>> +               ret = acpi_processor_ffh_lpi_probe(pr->id);
+>> +               if (ret)
+>> +                       pr_err("Processor FFH LPI state is invalid.\n");
+>> +       }
+>>
+>>          return ret;
+>>   }
+>> --
+> Please reorder this behind the next patch in the series.
+Patch 2/3 depends on this patch.
+So I don't know how to reorder this patch.
+>
 
