@@ -1,90 +1,116 @@
-Return-Path: <linux-acpi+bounces-20392-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20393-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4EBD2548E
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 16:22:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC6FD2559A
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 16:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDA7530051A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 15:22:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 17661302E7EA
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 15:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23DF3B8BA9;
-	Thu, 15 Jan 2026 15:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2D33B8BDD;
+	Thu, 15 Jan 2026 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oC124BX9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z11DJnqL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010002.outbound.protection.outlook.com [52.101.201.2])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CC23B8BAF;
-	Thu, 15 Jan 2026 15:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096943B8D4B;
+	Thu, 15 Jan 2026 15:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768490575; cv=fail; b=oJ0Zg7weUGX2Z8szrIXCdCAHmf27N8zE2nlr/vFA+bnH0D5eZrLH7fWS9Esu4qkbG8wACyHkOkc8c00iHvOZqlkL8o59pBryXEU2OieQ21xCzQf/2zdlxg1QY9za4qXp9EeRQx/rVFlwQOm+F4HSWwqqUqBrQChWWuMxjhm62i4=
+	t=1768490772; cv=fail; b=abUhHRVm9XJJ+yAyyZUPlupmdJ1YNoo81zmWpjFFx9GNu9nU//VwA36Cw09n35SYXCfjz+ceB2sZoGnVFlaQXDf3mmsEU049JAGQ1aO9NrOLW1JbWCA2Ugl/k7wy7rP/drI8D9OOUG7JDvxfpcqho2vL/j9jm2fEfJLllhe+jCk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768490575; c=relaxed/simple;
-	bh=NfXp6ERTs6dBjYcito1raxtC4zzU+dHKqcNPmlHgiG8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UVLgGyIsKt78Uw0mc/m69XVoKUQwbD5ASk1DPvKTQLcnoqe6kaMPCvw5nrNEhtGA1mLA6tM95KKEwdV0LmrvIawJNzf7WZpNk+ded4Gac5oR7f80+lo4Fci/rhqOH8BcFaPAgY5glB/18c+n/ndyQ1EjX8Px+3M6q9+FCca19wM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oC124BX9; arc=fail smtp.client-ip=52.101.201.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1768490772; c=relaxed/simple;
+	bh=PZbX+zc7i2Ez6ntXR4wGWXXU3z004j6oy034Jl04Prk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PETJm1X4DwniRmcfdJXl25HjSFKOI+Sai137x1CaOSjZc6mKNwTcOPvIg3aLyzgn2EBLOF/JU4pUCKjJq8sJUC+uPCoEVIW191FbDJ+tdROXRAmJS39s4QcV9KxAo1g5wmq3MG7EeKENFKLZMtD/Kqok9adPI757YZYGmL4Q6hM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z11DJnqL; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768490768; x=1800026768;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=PZbX+zc7i2Ez6ntXR4wGWXXU3z004j6oy034Jl04Prk=;
+  b=Z11DJnqLOYO+hW2QGqThuvNH2L8fR4f2JtbU8TDfakhF90KbAyo0wMHr
+   p9Df0x1I5eGGgdsab0FeknGztqrP+TWe9uAlxSqubOEaZ4fPKwbvAX1vy
+   g8+Wa/JflmP+Ikm9UEzc2d9k22FO+QNPXgD6A5vn9Tic2I4yqDedAouVR
+   GyVVKrBeMhByVbkWydbQDOcFvNaV3fv6LYoavhZNBzstLp5mr4xtipZJd
+   hY+HKC+wlXW6KsvgSmGARQhGCotdEBpGgvsF4MyC7VEzGzI7UEcnfTslG
+   F7p5uhIC5AJJAWHmsExShlM0hzlUSd0Ww+GHBmn83ymcnQ+oRwDS5faBr
+   Q==;
+X-CSE-ConnectionGUID: hJzDULlsSBy9hnTVYKPLBA==
+X-CSE-MsgGUID: BxmVeOfPS1SBqWbljanLDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="73650713"
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
+   d="scan'208";a="73650713"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:25:37 -0800
+X-CSE-ConnectionGUID: az6AUwNbS3anS9EAiZtXTA==
+X-CSE-MsgGUID: H+/2RV0ER+KNpeCimxP7Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
+   d="scan'208";a="228053466"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:25:36 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 15 Jan 2026 07:25:35 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 15 Jan 2026 07:25:35 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.61)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 15 Jan 2026 07:25:35 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ektuc9Z06WWHwuWqDXuLi9ce2oJIZKl4bCqZRgUfIu7kO/u8QeccBERj0XIjoPZZZsb+wOCgIa6kiN4QDFGSdhtcW9tEJGmrQPQ4Nu33WEBt5/Y/hrvETuO5r33RRJ23RlzyozLT6zOENl69jN5ugObYsohi+d9ml0/mzymHNoI9IuRGIfu0GqWRT3F07JF6tyI3/ChIjRGqDFO4h5RcKA6IlU3BOlu5SmcEzQsKnukhHDMZ6+iR3Rcpgp887n0XIcGRXb9GnP8IRJsNv4BnLdiCMHPJDkRVLNn46YuUbMmlks/dBhYwJgdSV5RM7vRgi+PxgnxrIafy/L1awiCERg==
+ b=F4A22wx86nJRXRouffQCzCiAOJ3o5fA90w0kPVpgCr53muHyRl7qfrppwLn/KvcOTiiNsOsu6zJxahNxDJCxNzrsoF2FRWr3IrQp4JBEJNcnNHg0d7kUZNH/cxrHHjPx9JbX+l8C6RocoHQ7G4gtdVaAJr8uSayAFHaUnYXvGbzhI4Ag4psmasmeKJ++cmR1kOZt07hs5WwIQeImo3YY99EUpP/DFKE0F2QKjsHcxNwNilMDkUyFCRagSL4Kv4kKUC1gND7n6tgpEiS80fOJ4ILPdWvIxzoKfjLXHLXx5nzaC/j4QBGyBZKvLXgrRynYIKl6J+cctUsZSrWZhA3iew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bxncVbkA2AX+GZX2EKdZRtoAA6DbhSKhGrchAItjfeM=;
- b=QZw2zj0zHGnp7Suf8eqmCPPQi193Iifc/1pqZBdHY4rcO8IkrDMilVRxoFIxmFE1Jg/ykeQ6Q6ccdAqyqaYWa4YIi1UhYHo7aYQm6hDm7lGdwOodTod6RODm/iIE9bQ7Bo+E/QcnDoAz68FTK2/S1EJ+HdUlrQq9zuhns9ozQbRFR/GglAb4Tsu2ZvuiI/Stiu62pD62Ih59MXJpuK4s5mSWzU2nBCPyUFi5op+p0ecoCwF2T9IEz+IEuIFIiUFrLQ0zT17CC2Ftj+nE9/8sHYsZMeAEREvbFEhNISiy4hsHoVq5UNws6aeR7h8dIMC8DviAfCfcWglAo6QTSHZAxg==
+ bh=3G1VXhA39ta5UsWt8J3P2BUEXDcgiZqDa93kbczGyIY=;
+ b=GYz9x9pQgyyrRbnyUxbfCF9ma3dFRs7OBXXLTI0ko74PeFSGcT6MFm8e+4rkQYVcrpitvY0ufhOMQH8pzDiR26XcPuGeanYLwREsSTAOJGYtaaq+c0wCxXP1mwBO/uB2LXvEgDcRla7IrxrDHe7xvqaTplD8lM/XDn0j7lckh7EzpWR5Tk59/ZGd1y5SXQnyF0O45XmUCRGt21cd+8KbA/XNkh83BKwLnaQ4a+sCk6WP8lN2N91j0Mr4mIU37z6l9nhSfmMnRK8YP7V9ycNvU8bFhglpS5Mi5jJM4vSfSdiPiY+tTmVVTIqKr8T+aCRgdp0ccymkjNZvRWrM1ABl/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bxncVbkA2AX+GZX2EKdZRtoAA6DbhSKhGrchAItjfeM=;
- b=oC124BX9MYMtxTPEAraZEnPOSlMlix2TnOl41IOQG7gZoqX4n9JtwbgPECSu6sNjDg4ETNRZMlKdZMjk4Iu/7skGD2k2NijgS8hOmCcfnMOUGsoK+1qnLH1DCn/dP28fygyJ6lLjQ7RFUvIZdxb0DuyIRFfHl2jZjvvQ2XBlv8/l8IahbHBoU8QTp5KC8jDBu+ZRdbnN4YDM1J+lV28fzLQac8rhbaG8SR95Y7qS2qJmLAE4du3/mQkjDyZDBT/GwPXnboJjGEGHtS7O6k06jT9IwviOqfW/FulkwWxCrC2YpB2GXwQlIYU6IWMXjHXkb3m/j8jJKko4e6uVpS6Ecw==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com (2603:10b6:408:11c::18)
- by PH0PR12MB5606.namprd12.prod.outlook.com (2603:10b6:510:141::16) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com (2603:10b6:930:c6::19)
+ by DS0PR11MB8081.namprd11.prod.outlook.com (2603:10b6:8:15c::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Thu, 15 Jan
- 2026 15:22:38 +0000
-Received: from BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::cf08:f59b:d016:c95f]) by BN9PR12MB5179.namprd12.prod.outlook.com
- ([fe80::cf08:f59b:d016:c95f%5]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
- 15:22:38 +0000
-Message-ID: <0d1a10e8-a8d5-4d27-bd16-0443d5408ca6@nvidia.com>
-Date: Thu, 15 Jan 2026 20:52:25 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/11] cpufreq: CPPC: make scaling_min/max_freq
- read-only when auto_sel enabled
-To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>,
- Pierre Gondois <pierre.gondois@arm.com>, rafael@kernel.org,
- viresh.kumar@linaro.org
-Cc: linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org, ray.huang@amd.com,
- corbet@lwn.net, robert.moore@intel.com, lenb@kernel.org,
- acpica-devel@lists.linux.dev, mario.limonciello@amd.com,
- rdunlap@infradead.org, linux-kernel@vger.kernel.org, gautham.shenoy@amd.com,
- zhanjie9@hisilicon.com, ionela.voinescu@arm.com, perry.yuan@amd.com,
- linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org, treding@nvidia.com,
- jonathanh@nvidia.com, vsethi@nvidia.com, ksitaraman@nvidia.com,
- sanjayc@nvidia.com, nhartman@nvidia.com, bbasu@nvidia.com, sumitg@nvidia.com
-References: <20251223121307.711773-1-sumitg@nvidia.com>
- <20251223121307.711773-11-sumitg@nvidia.com>
- <ed9015a3-42b5-4c0e-af6f-2b4d65c34cd5@arm.com>
- <0fe78528-db0c-494d-8d5e-b89abdc993b2@nvidia.com>
- <f85ce68a-91cb-4b8e-b67e-413e5b62cd03@arm.com>
- <27750fe9-8b0e-4687-bc5f-21e4ec38bf66@huawei.com>
-Content-Language: en-US
-From: Sumit Gupta <sumitg@nvidia.com>
-In-Reply-To: <27750fe9-8b0e-4687-bc5f-21e4ec38bf66@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0178.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a9::11) To BN9PR12MB5179.namprd12.prod.outlook.com
- (2603:10b6:408:11c::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Thu, 15 Jan
+ 2026 15:25:32 +0000
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::1d86:a34:519a:3b0d]) by CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::1d86:a34:519a:3b0d%5]) with mapi id 15.20.9499.005; Thu, 15 Jan 2026
+ 15:25:32 +0000
+Date: Thu, 15 Jan 2026 10:25:25 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+CC: Badal Nilawar <badal.nilawar@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<anshuman.gupta@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<bhelgaas@google.com>, <ilpo.jarvinen@linux.intel.com>,
+	<varun.gupta@intel.com>, <ville.syrjala@linux.intel.com>,
+	<uma.shankar@intel.com>, <karthik.poosa@intel.com>, <matthew.auld@intel.com>,
+	<sk.anirban@intel.com>, <raag.jadav@intel.com>
+Subject: Re: [PATCH v6 06/12] drm/xe/vrsr: Enable VRSR on default VGA boot
+ device
+Message-ID: <aWkG5cEapt_attfS@intel.com>
+References: <20260113164200.1151788-14-badal.nilawar@intel.com>
+ <20260113164200.1151788-20-badal.nilawar@intel.com>
+ <64894565d5eace99fd65f290ee807dabaa2de04f@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <64894565d5eace99fd65f290ee807dabaa2de04f@intel.com>
+X-ClientProxiedBy: BYAPR11CA0054.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::31) To CYYPR11MB8430.namprd11.prod.outlook.com
+ (2603:10b6:930:c6::19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -92,292 +118,255 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5179:EE_|PH0PR12MB5606:EE_
-X-MS-Office365-Filtering-Correlation-Id: 45877c72-6830-4ff8-fe7e-08de5449eae2
+X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|DS0PR11MB8081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9cee31ea-6082-4a76-5280-08de544a521f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18082099003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U2diRHNEMUU4Mkg2dlJJMkVsaHhIbnM2VkRoUDQwcTNrOXFJYVhUOXVEd1ZS?=
- =?utf-8?B?OGdSb2lSYldsdGR0azFxbnZqdjI5U0hIVldxVmt2TGU3dkcvSVdWUHBEcGgw?=
- =?utf-8?B?MjBUVzdWQ3d6dGFUU0Y4am5Od3NGZkpkVEdSMVRScitCQVVmZTkzWVVGcnV6?=
- =?utf-8?B?ZVg0OWkrY3paNWYzV2wyeHJDdmpUejUySFcyT0F1RHlpNHlxdXJ5dTZzYnpK?=
- =?utf-8?B?UXJrZXBvekxBcGUyU3IvbmczZGV0aENUcXhlZU9jbkcrZmF1REVYdFhBd1Jx?=
- =?utf-8?B?ZHpSUktZeDJYZDE5WGxtdUw4Umd3L1d6aEhmK2NQS096cVNidVprOVJNV2pu?=
- =?utf-8?B?R2dMZkd3NmFleHJKVWhJZlkxZEViQ1Q4WlcxejA1UVBLc3A4ajdGajRZQ1RU?=
- =?utf-8?B?T3p4Yk85OCtSRzNJL3drZDNzTDcxZ1B0am5ydlNoRU1QcjZsMXhEcDdoRGJC?=
- =?utf-8?B?V0FFRnpWMDBtYzZRbkRacGdWM1BRMEhsbk5CYUM5S25wSVllSm5iMndDdjNM?=
- =?utf-8?B?c2N4dldUWnRIdjNoWWRQcEp2ZTY3ZmZxb2ZDMXRhWTJqbmJHWnp0UHJnMnpW?=
- =?utf-8?B?TGZ2QmQxNmlHZ2JKT09RemdSRGQ3d3hBZTBaMVRuRlZlTHF1cmJtanE5UjE1?=
- =?utf-8?B?Um5zUkZvOGx0OHNxVGZqWWpnY25PYUtDNVRDcHFiWUJoLzh1L1JnYkY3SzVn?=
- =?utf-8?B?dzg3RldWTjFrdHI0WkZZMGNjb1lsNzd3SkF6TWdUOStXaEdlVXRBVUJ2d1Z3?=
- =?utf-8?B?MWY3Y0d0QURCQk9NUDl3ZkdhWEhCVys2VnVzbTZtci9yMHZJN0FTUDVtUWNz?=
- =?utf-8?B?aENseklSMStQVmNUcWxQSWlrOTNoZ2crVHBKUzBLR09ZZVdRTUx4VVhBbXlG?=
- =?utf-8?B?Q3RhRXUyeUYxdjRyRndCS1lkandtQWtMT0ZnV2xRYmtoQ0VKRVJSRHFDYUE2?=
- =?utf-8?B?ZkZGZDBHa2FQOW9hVmEveHhNa29FNDVZTXhjVFBmaGFuTC9Gb1VDY1grSUpL?=
- =?utf-8?B?UlE4WFB4V215UUN5MlZBcjVVQitLTmZGeTJwSW5KQXN6eHlDV21IaG9MTldl?=
- =?utf-8?B?R1JwekpBSzBxTkx2Z2xMbzExcytrV0VVcW5tNzFBR1dqbXpEUXhXL25mSEt3?=
- =?utf-8?B?SGNubmNuelRtMWhwWHM5Wm9wWHpGSDFzTVNvd1lPa2lpRVJENU1JYitzVTNR?=
- =?utf-8?B?Tk91cUxrOWdUcEhPY1UrR09zYzlXejhWVDRXT1VJREZ2d05HVTY3MUZ2TGFi?=
- =?utf-8?B?WE9WRUVFZGFrc2VEcWNNUDlmSmVWZU5zQkZWUmViUlFpNjlQcjE3a3NWRFk2?=
- =?utf-8?B?T1M0Q2JhbFlrWFFCck1lSkFJaGVzcFpHVkJsUFE0c2RBK3d4UXZZOHdLU2tX?=
- =?utf-8?B?b3ZZZzZuRTFHRHA3S3NzVWVzUktoRU1qay9lb3creXlaejVQbFpteUFVNUFN?=
- =?utf-8?B?MVBWamV5TXZRUFBpeG8wYnJGRk0zalJBYlA5L1crR2x0Wk9rWTRvSjgvZDdT?=
- =?utf-8?B?ZTVOM2N2K29uYTlxazVoVTVLTDhvNEx0Z2krenJ0TjVaZndsY3NDTUFFRlFK?=
- =?utf-8?B?eDdxVlVUdng1eVl2N1d0NnJEczYyd0ErL1M4UWlEZW1seUs4K2VPc0tXWnNB?=
- =?utf-8?B?VGJKdGNXa25LNVJ5Y2RKajB5M2R1S0VXWGoyUGNkV2VtMHVEbDZTeUFOenl2?=
- =?utf-8?B?RWdmR3BTcUhDZVU3UCtBbktnNkhIUmdMK3MyNkFzdkxDTis5WDgwclVheUxR?=
- =?utf-8?B?OVRVMEJsZ3FlUzV6Rks2QXAwYnFjclJpTDN5RW1QTlFJZTQ3YlhkeUFXRVdE?=
- =?utf-8?B?MGQ1NlNKU2tQRnd6RkluODNQTXZIb1dGQW5NNGZqb0tnMUtFcVNmN3RMb1k2?=
- =?utf-8?B?YWRMcTdWcVVTMmpwSTdDVDhTKzJMdjU3Q0w5aG0zdWJLbXdCajN2NFJGbW1S?=
- =?utf-8?B?Nmg0NmJJbTlJcmhMaXNnZ1ZLWFE4ZUl5RHNDaDZhQlZBcmZQQ2lWNTlXVkI3?=
- =?utf-8?B?bXhPclpXUzVuVEFwTm5iZFUvaER0SEx5SG9KWWY2SlUyTjhaZDZjbHBmTysw?=
- =?utf-8?B?RVpSUWh0R1NzRGRMbVVMa1RXS0xVVmZRNzdmQnNoajlFUHdzUDlaQnZ6MDZs?=
- =?utf-8?Q?Pn8s=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?EldUA5sbtE6mAH3hzLSxzCbyNKb8+C9peRdWM8OzBALV86k3I3TV2VK4z3/6?=
+ =?us-ascii?Q?NLfFkjM1dj+XkwAlgqnyoa65jD+5xPlaRFJkwKcC1I68DzlZyKk3WZ9VubYs?=
+ =?us-ascii?Q?jVR5iGQne5OjkIDJAy/HWy9zku2Vz6EemNPpK3XQ7o3nmlnBrJgFi9QlC52Q?=
+ =?us-ascii?Q?dd+VppVytdzALcuH7z/CVVfO69L8KXc2uXtHR/gyfw2ZL95YP0FJvhJm4ExB?=
+ =?us-ascii?Q?PBC1uPWizive88kp4FnAp3+J+CEuttNreaRewEugYMRPnGiXJGCwW2NoXw8i?=
+ =?us-ascii?Q?vDkVJ9r0cM+gqTRtO0mt0j8uqJFPHui/2fVYkObfX7Dcvf34Fs7Kb+J3ll6f?=
+ =?us-ascii?Q?aqmU6s1hcrnnPPAjQPzr0pAys8LOUsH6cKe0ObfAnZ5sXN5v3aDCG8NKkyM+?=
+ =?us-ascii?Q?40D1aShSDwlPD1KxO3v6EKJ7jf1RLCwYGPCVd2qMI/hpoF/Us+ssvDunrRZv?=
+ =?us-ascii?Q?lsbWaG5gr8bR2Btd5wJepfQDDGbfHZuy/dzgfFfNpdyzJ5UOkXg01DCNHy9e?=
+ =?us-ascii?Q?U/JyXc2Ob+I+wm0LeW+MtySodItRj2bYQ/oyIi0rHXwhlZ4j1ZNBeTmse+Do?=
+ =?us-ascii?Q?eg0rtg5gzZIOiF/EuA3xZuCfi2Z3xuAZSAw+V4qt4GA6POuTRNLu+QtyfgYb?=
+ =?us-ascii?Q?nQuuEqxh3Zalhw2toTKrZJHHMprSa3baL2fXSrY+JUoQUuGFKr9Hli4mqNsc?=
+ =?us-ascii?Q?YbjdH34SkAlXeBHsoWatk3o9ScC9hb03/0ghAu2fNYsI/oSnL8y4rk3nSCxZ?=
+ =?us-ascii?Q?wnxUpdsIKh5dUgOSCaYqOcZh+UUQIqEEl0nqI8dCWLkMWz4Ke7oAZzPriL6f?=
+ =?us-ascii?Q?dFrpLp2mJomB9kJbeacDJPHPjhHMX0iERtZuGvx25WHPcTFnd1SYVlrKgpSQ?=
+ =?us-ascii?Q?nblzpUiAh672T2FmsfG6Yrc59KOiGSKCNiZY4nEZPmdJCd6i7wwl+RfpqLLX?=
+ =?us-ascii?Q?9e74MO4ECf6eqRnio/z8mYmztZSQoTYOWNTPJhkT3YJjjNOBgEnXAFHylMSK?=
+ =?us-ascii?Q?whEfVc1mcEjdAFkW4/MBY2xlUSXrPyBSI7VjJViPg10FsdyY7/68qIzuC9oO?=
+ =?us-ascii?Q?7g/+Q0zmPjUnyTkMbppEr0dtNivuKj9oiXmVCdh+bIlo9rRes9+843vRh+yt?=
+ =?us-ascii?Q?TgxVG/QvUo6O0ZZUMYgx2oztj2SyfF0YIv6taqy0zjG0bY65kylBeSsru2iD?=
+ =?us-ascii?Q?u9d/0RnlG4kXkWyhADyXb3ITa8zJDKuaOprEGkMmV4kIWMwLraktyEVOVdlK?=
+ =?us-ascii?Q?oyrKXPXUBonCKJePDHoq9YMwX80bF16YzjbcrBXs8TGvhi7/eRJ/H1lI1bNr?=
+ =?us-ascii?Q?wc0EPT/jzudwgoXVgTQ7WQIje1r8DQpwFBGacLfxZws4SBWQxrmU3jhd0iwd?=
+ =?us-ascii?Q?v3qA0UsO4TnU9LMBcj6LpG3Ig9XKrSjaOMdBy/PdP6eX/6NlyHOG5H858+hz?=
+ =?us-ascii?Q?tblSqpqsxD5vpwF68+yM+N20K+hmDiC8nI+goGe7FzenURGeFVScSrCyKQBW?=
+ =?us-ascii?Q?RCjo8RMANrLwZB4SX3x8D6cH32MPHCZqdPlRQ9wHhBb6eJ4SsRU7vyHUZeGv?=
+ =?us-ascii?Q?OLsiYlvUrbv8v9Krus8=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8430.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?alYwYndFTDM0Mi9FcUhWSVJpdmIrdjF0WTc5bXEvNVdsSGtpZzJVdTNrSmls?=
- =?utf-8?B?SHFZWFJVTVVtNzlmd3FkZlBIdjdXMDZGeUJxSEo5TkQ3ak80RXY3ZjFJUjFu?=
- =?utf-8?B?ZDUvNFBwdXBlSFZXc0FwNVJrY2h6MnEzN3A4a29sVXpGVTNrazhCR0RuRUVZ?=
- =?utf-8?B?MmlhcDhsNm5EU0ptNzNmdEcvSENXNVZMYTAwekM2UXNWZHdLam0xb1lXaWFo?=
- =?utf-8?B?cUphdFFBZmZuZzY3ckVEeGVBVEFtQ3lmd3ByNDBsczdxeXdwL0FXRm5jUlFG?=
- =?utf-8?B?cUV5OG1uVlFTTkxDTUw3T3hTcFUrMWZCTm9mTGxDOWJGMk9LMVJSbFZLVWVV?=
- =?utf-8?B?QzdEMkdkVnRIWURGVFQ5OWVudG5LYjBpN0hIWDNRY3FCcUsxQzVDT0VIbTdu?=
- =?utf-8?B?UTY4Y28wZWI2c25hRjg3VG53VmxjbmgzdSthMjZvSEMzV0tSOHIvZzg5NHha?=
- =?utf-8?B?aDZVZ1pJZmJKRmNId0pkUWRZRkcwRkZ2WGZIYkZwdjBzbTIxdUkzRTQ2N25W?=
- =?utf-8?B?TE9PWFB2ajNQaVBuRTU0VjhlT2xwVzFlOEZPK3lSY013T1MyakhhZUprWXk1?=
- =?utf-8?B?UVJxWWFYVjlnQ2ZqSHR0emUxSWh6Um1hVWk1Tjdsb3JHbGt3bWFnWVk4b0R6?=
- =?utf-8?B?UDR6RjU5bkgzeUZ1UXpyMUNRd3ZvL1RpaGVzR3BPNUdkZERDTm5aQzgvNnh1?=
- =?utf-8?B?TWFOTHJMTmcwcXF1TWZVUkpsd1FuN3krc3BhZzRqQnoreTJmcGRXQ09uU2Ew?=
- =?utf-8?B?SnJyOWZ6V3dOdGs4ZFhINmVuS3NWR0JVek1ZVmRtWktiRTRnN2NxZmtRWXVv?=
- =?utf-8?B?ekdhM3BBQ2wyMXdKcGtYQlFDYUtYaXpLdkwwU25Ed3ZvZlNURkdpc0pGenBl?=
- =?utf-8?B?TnBHYUpqVHlWWkVFWEZXZ0VzV245d0w4T1NlUCtLUlB3QTgyc2JXdlFsNi9X?=
- =?utf-8?B?eVJkdHpjeW50RERBd1RHTkNwcHNZZDFRNXNuRVNVdHZNU0ZrZExUR3kyUUQ2?=
- =?utf-8?B?RTVIVnlXdlNQVWNrV2RGRUJoeVYrVmFoN3FaeGtmWUJWbk42MXd6OXRPMW9j?=
- =?utf-8?B?ME5ZSG1oMkRpZVlZR25ZdkpyWkdyQ2ZpMDJjaktsNVpHdFcwOE91YzNLektL?=
- =?utf-8?B?Ti9tNE42MERMeUFaemIwV0tLZmJRcjhDRjNuQWhFMms5T3RHVkxDTWFHQ2Jk?=
- =?utf-8?B?bC8yd1NXTWpJUUlCeXZETzhDSng2U0pMMzVWV1Yyam9LdFNGNGg1N0QyOEJp?=
- =?utf-8?B?QlRkbWh5ZldZZ1cvMjRmVEpWb3pJTllNbGwrOUpYZWV2cWUwVzkrRnlxd3hs?=
- =?utf-8?B?a0dVejBUUTdmWU41NHZLN2ZxNlFweEI5eCs2K2dFazNnZ1N4VmdYL05JSEpy?=
- =?utf-8?B?UXRXNnl6eXZNaTJqMmlUQS9sV3lDZ2h0aVJzb3p5a1dWSVVRWW1tS2tUSUxm?=
- =?utf-8?B?MGxpTkhZUEtvdGxESjVkVXgrOEtMdnI2TzdQRm1vUS9mSDh0RUw2d1ozUXpN?=
- =?utf-8?B?b0RMbDdGOFlESlNIazV2QjFCSE5nTkZSWFFCMjROZFV5czVMcGxBU3hhWDI3?=
- =?utf-8?B?MTIvQmlGYXNleTBpcWIyS3pHelNWM01kTE1nUzlKN1ljNHI5SkRrQW5Venhj?=
- =?utf-8?B?VVRUdDZIOHJZKzltODNsOUV2cGdYOEZvVGg2ZVRIU25iZSs4MUpKL0NjVmNj?=
- =?utf-8?B?L20wajBQZ3BIMC9QWFhkZEZYUEE4VXhRMUJTTW1UQUQyMVJaY3I2MjFpOTda?=
- =?utf-8?B?ZG02Tk5XNC9zbWNJWDlQMkk0U1lLaDkwM2hINkxFVmhGRWhDRUZQbTh4UjJ0?=
- =?utf-8?B?WjRLZmUwbG5vL0ZxSWVya2RocTRCN1ZVTTczbmRuSDFXbnI4ZGgzL1FPcExn?=
- =?utf-8?B?VUNHK1pVNXhtb0NZa0RGU3JaS1pQazJFOXZUeUtQTmRDbnVLQnZDWjVNdjRh?=
- =?utf-8?B?SWZvZlVmNVNsSmlLMEJlWG1tNC9Lem1ZWWNucHhGeGpxTVB1RmNDT3FoVmp4?=
- =?utf-8?B?Mkh5L2FaRzN2R05tK1d6SFdhVTduVlIrM3VBa3BOSXhMbzFwcjVnQ2t5eDJ1?=
- =?utf-8?B?NnRIMUZTcWFxWHFST0hjajZVUUhlM1JmWUJ0bUJaQUROL210NG95SDJaRktK?=
- =?utf-8?B?OHRrVUJOTXE3SS91TGkzSzcyT0hJNXN5dVBrRy9SYVpBZWhTTnZUanlTQzVP?=
- =?utf-8?B?bmZ1UUI5RlFncW1hcW5qK0pReitDTXdwRGIxZTBTaDNFRmNqaEs4WUZkcWVq?=
- =?utf-8?B?NWlDZGszclp6MFR0VFNjci9GSzB4dWFFYU5DN1dtbUxpQVdTL1FwR1RMRUg2?=
- =?utf-8?B?YUw1L3FQaVBuaTNGTlJxbUFDTVZiMEFSaVRLNWk5VHdHRkwyL0JBQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45877c72-6830-4ff8-fe7e-08de5449eae2
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5179.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xXJeFiNYYayfX1/VBcLBymNCOr1IjJFcUrGmBfx/VWOC2FaLkc6DjlsE4C3K?=
+ =?us-ascii?Q?QN+n7tNvnYtgfXfFB0kr47QTdVfbxvYYqs0oyo7LxaoUVE/inN0pKiTzyBVO?=
+ =?us-ascii?Q?3ya98Vu08dcWc6pPqyDusCgWigcshhT8sbduze4p55TjB99yf+fezVMr6gwK?=
+ =?us-ascii?Q?2O8agAdjlLdVqHrJ2YDVS8IIbLVmaEeNVjB0j2vw9eWwnnVyud+6xsxTBkJJ?=
+ =?us-ascii?Q?X0jfdvdQioX0aXJDr/ciMdEX4LG2/3GxUhJ1Y1WnMwG1qKsOrtAHIh9wp1q8?=
+ =?us-ascii?Q?nW3Nfh0bVlClIh2krpbA+OlO9PiiC+Q8cM0LWhxDPZ0sDuBEu2+ePl0p1d0j?=
+ =?us-ascii?Q?lIbE2/c0oIeZvtr8gnGYPVIPSOtaGJzL4sC4YWmBB6Hq2SXu0ECXRuFTxQgS?=
+ =?us-ascii?Q?onj6Vte23vX3+2qFwT+bca/CdXyJOxjqsFtb5M6wTgdYS/3uJf2yqrx2kXFb?=
+ =?us-ascii?Q?ojxJU30DH8lbazctJO6IgEExUNwFOzC3oychRbq6AaniR3WppLiF5vfDRwAA?=
+ =?us-ascii?Q?A9wMTivEovK8BBzeVLf4velpHmB6RtXoXEA3h0n6psXsNCCBcaIUM3pfgc7F?=
+ =?us-ascii?Q?mn11l6CO4qe1kOqp1hrDaQU0QPWa0Ro4jIb0Z4Jz8oUS8k65DBXWapAv/lLt?=
+ =?us-ascii?Q?DlCDbNI/RSX9XwE2iZV4S5IEWbFAgyAALS7+gyUVoVt2by+E3IBTUHVN/372?=
+ =?us-ascii?Q?6BmJd2Vb/CgyItA02d65EDGGqS8xuqEOdvD4wyJ962tdy4tItOM5ix2vcTT/?=
+ =?us-ascii?Q?GI4A+M8kPx6gniFwNNpxd90bjOQQaFYqzCSbwzoitGpGMI7UzCkosbqHJHh+?=
+ =?us-ascii?Q?uEuAJQfm9eGRaawcw6u5L38H0NmDXNO03USA3DmqHWAxsIjgqxavr8cWnmsO?=
+ =?us-ascii?Q?Cw1x6qqm+bgVexAn2tJvmPxkoCWnAg2xig4Dkko5UdkIhEXM+vHCjfEx17uN?=
+ =?us-ascii?Q?quSfIzo3v84+ZR5Tsi3WcnKBtLEAOUaBw83e20yujnqG1v6Ci+Hb7qu+cJ4D?=
+ =?us-ascii?Q?R/ZK/VlRWdnER+wFbGMj/lxZqLuNWhXy6G44pfeNiWDbiHbQ9hgS5QDz24Xw?=
+ =?us-ascii?Q?ly1iU4Lg6meMVWcFHeWihS1y7NGsb9vWEi1jvVJiH+TNqJd12C2Nu6Lv9fUS?=
+ =?us-ascii?Q?NcottoVQ6UFw6xKJeWKL8GG/Dd+5IyFOyBnF5x6I4VCcp4jmI0TfOGXVr8Lk?=
+ =?us-ascii?Q?XW2Ys9oUz6k/2sfhMk29BxddiCklMjSZuxOSk8r5Us9wAgtX+DZdD3KUaQ2q?=
+ =?us-ascii?Q?FC0BOCWLy0suVq7wPQY2/WdI852NCY0FqZR6Sqk8fUDAlhHFeR17JiXK27QJ?=
+ =?us-ascii?Q?kMlKyk+6X5wpwoffH5+F67XPMMriqdBPM/twDOvpjQ5uZdC2uvh2w7UkaGoz?=
+ =?us-ascii?Q?Q6FayUK3X+Ah+Mkw8CPYpCtvSA7ec+/PmP2BcpakOShKcq+L69Jy9/7yv772?=
+ =?us-ascii?Q?tso49SYm68djOgXfVeQLDR6b/lg3xYQ1j5sYOuy2j3wVO0ypfRdkAgXx8Yqp?=
+ =?us-ascii?Q?A6OZVqqowfAL9sBASSn0L/EPrqkdyvno2pPsoaeMuNbpX+N7bkakPerKpwz9?=
+ =?us-ascii?Q?OogWhUK2hwnONkVFn6GM4zLovEXll+rZIv7+GoL7gd8reTS8bzrgc8Cmx9ED?=
+ =?us-ascii?Q?aWHp63bYPXz26/Fz4zgNG9UkcQ/aLSCpt4Mle6bEkENEbAFyF5I9dnv943xO?=
+ =?us-ascii?Q?Jgun9fF/UaMKkRGevCdhuZ/8opuLWBe7WzqZsqppS91ze8+9rhQLoVfKnF0S?=
+ =?us-ascii?Q?9w9ohI+Mkg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9cee31ea-6082-4a76-5280-08de544a521f
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8430.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 15:22:38.6869
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 15:25:31.8352
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zC0sh8ZjWLm0HKubTOf6Kg3PMzyV79mcJCfE+fOQUVolcV2QEc0oTb8CVEDIbDem6mUkkjmYiyWo6tEDExJXvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5606
+X-MS-Exchange-CrossTenant-UserPrincipalName: CfttEAso0QKYezvUgfRV0to1tdGwYXNk1C8O9G4LsfwEHjl3I/fQr0rRwAFxVmPDCaoifdmIxAAMh0LkUxWRPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8081
+X-OriginatorOrg: intel.com
 
+On Thu, Jan 15, 2026 at 04:25:06PM +0200, Jani Nikula wrote:
+> On Tue, 13 Jan 2026, Badal Nilawar <badal.nilawar@intel.com> wrote:
+> > The VRSR feature is to enhance the display screen refresh experience
+> > when the device exits from the D3cold state. Therefore, apply the VRSR
+> > feature to the default VGA boot device and when a display is connected.
+> 
+> I don't understand how you get from the 1st sentence "therefore" the 2nd
+> sentence. Please elaborate what you're trying to do here, and why.
 
->>> n 08/01/26 22:16, Pierre Gondois wrote:
->>>> External email: Use caution opening links or attachments
->>>>
->>>>
->>>> Hello Sumit, Lifeng,
->>>>
->>>> On 12/23/25 13:13, Sumit Gupta wrote:
->>>>> When autonomous selection (auto_sel) is enabled, the hardware controls
->>>>> performance within min_perf/max_perf register bounds making the
->>>>> scaling_min/max_freq effectively read-only.
->>>> If auto_sel is set, the governor associated to the policy will have no
->>>> actual control.
->>>>
->>>> E.g.:
->>>> If the schedutil governor is used, attempts to set the
->>>> frequency based on CPU utilization will be periodically
->>>> sent, but they will have no effect.
->>>>
->>>> The same thing will happen for the ondemand, performance,
->>>> powersave, userspace, etc. governors. They can only work if
->>>> frequency requests are taken into account.
->>>>
->>>> ------------
->>>>
->>>> This looks like the intel_pstate governor handling where it is possible
->>>> not to have .target() or .target_index() callback and the hardware is in
->>>> charge (IIUC).
->>>> For this case, only 2 governor seem available: performance and powersave.
->>>>
-> As you mentioned in [2], 'it still makes sense to have cpufreq requesting a
-> certain performance level even though autonomous selection is enabled'. So I
-> think it's OK to have a governor when auto_selection is enabled.
->
-> [2] https://lore.kernel.org/all/9f46991d-98c3-41f5-8133-6612b397e33a@arm.com/
->
->> Thanks for pointing me to the first version, I forgot how your
->> first implementation was.
->>
->>
->>> In v1 [1], I added a separate cppc_cpufreq_epp_driver instance without
->>> target*() hooks, using setpolicy() instead (similar to AMD pstate).
->>> However, this approach doesn't allow per-CPU control: if we boot with the
->>> EPP driver, we can't dynamically disable auto_sel for individual CPUs and
->>> return to OS governor control (no target hook available). AMD and Intel
->>> pstate drivers seem to set HW autonomous mode for all CPUs globally,
->>> not per-CPU. So, changed it in v2.
->>> [1] https://lore.kernel.org/lkml/20250211103737.447704-6-sumitg@nvidia.com/
->>>
->> Ok right.
->> This is something I don't really understand in the current intel/amd cpufreq
->> drivers. FWIU:
->> - the cpufreq drivers abstractions allow to access different hardware
->> - the governor abstraction allows to switch between different algorithms
->> to select the 'correct' frequency.
->>
->> So IMO switching to autonomous selection should be done by switching
->> to another governor and the 'auto_sel' file should not be accessible to users.
->>
->> ------------
->>
->> Being able to enable/disable the autonomous selection on a per-policy
->> base seems a valid use-case. It also seems to fit the per-policy governor
->> capabilities.
-> I'm OK with adding an auto-selection governor. It's better to keep this
-> governor only in cppc_cpufreq for now I think.
->
->> However toggling the auto_sel on different CPUs inside the same policy
->> seems inappropriate (this is is not what is done in  this patchset IIUC).
->>
-> I think Sumit means per-policy when he said per-CPU.
+On a scenario with multiple GPU, only one can use the aux power and the
+feature itself was mainly designed for the display case - to bring up
+display faster after the d3cold.
 
-Yes, it's per-policy.
+But yes, the right explanation for the why needs to be here.
 
-Thank you,
-Sumit Gupta
+Also, although unlikely, we never know what users can do out there, and
+perhaps we will have someone with multiple cards and display plugged in
+more than one?! We probably also need a global counter/flag to avoid
+a second one to quick in.
 
+But we definitely need to prioritize the first one with display connected.
 
->>>> ------------
->>>>
->>>> In our case, I think it is desired to unload the scaling governor
->>>> currently in
->>>> use if auto_sel is selected. Letting the rest of the system think it has
->>>> control
->>>> over the freq. selection seems incorrect.
->>>> I am not sure what to replace it with:
->>>> -
->>>> There are no specific performance/powersave modes for CPPC.
->>>> There is a range of values between 0-255
->>>> -
->>>> A firmware auto-selection governor could be created just for this case.
->>>> Being able to switch between OS-driven and firmware driven freq. selection
->>>> is not specific to CPPC (for the future).
->>>> However I am not really able to say the implications of doing that.
->>>>
->>>> ------------
->>>>
->>>> I think it would be better to split your patchset in 2:
->>>> 1. adding APIs for the CPPC spec.
->>>> 2. using the APIs, especially for auto_sel
->>>>
->>>> 1. is likely to be straightforward as the APIs will still be used
->>>> by the driver at some point.
->>>> 2. is likely to bring more discussion.
->>>>
->>> We discussed adding a hw_auto_sel governor as a second step, though the
->>> approach may need refinement during implementation.
->> I didn't find in the thread adding a new governor was discussed in the
->> threads, in case you have a direct link.
->>
->>> Deferred it (to second step) because adding a new governor requires
->>> broader discussion.
->>>
->>> This issue already exists in current code - store_auto_select() enables
->>> auto_sel without any governor awareness. These patches improve the
->>> situation by:
->>> - Updating scaling_min/max_freq when toggling auto_sel mode
->>> - Syncing policy limits with actual HW min/max_perf bounds
->>> - Making scaling_min/max_freq read-only in auto_sel mode
->>>
->>> Would it be acceptable to merge this as a first step, with the governor
->>> handling as a follow-up?
->>> If not and you prefer splitting, which grouping works better:
->>>    A) Patches 1-8 then 9-11.
->>>    B) "ACPI: CPPC *" patches then "cpufreq: CPPC *" patches.
->>>
->> If it's possible I would like to understand what the end result should
->> look like. If ultimately enabling auto_sel implies switching governor
->> I understand, but I didn't find the thread that discussed about that
->> unfortunately.
->>
->>
->>>>> Enforce this by setting policy limits to min/max_perf bounds in
->>>>> cppc_verify_policy(). Users must use min_perf/max_perf sysfs interfaces
->>>>> to change performance limits in autonomous mode.
->>>>>
->>>>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
->>>>> ---
->>>>>    drivers/cpufreq/cppc_cpufreq.c | 32 +++++++++++++++++++++++++++++++-
->>>>>    1 file changed, 31 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
->>>>> index b1f570d6de34..b3da263c18b0 100644
->>>>> --- a/drivers/cpufreq/cppc_cpufreq.c
->>>>> +++ b/drivers/cpufreq/cppc_cpufreq.c
->>>>> @@ -305,7 +305,37 @@ static unsigned int cppc_cpufreq_fast_switch(struct cpufreq_policy *policy,
->>>>>
->>>>>    static int cppc_verify_policy(struct cpufreq_policy_data *policy)
->>>>>    {
->>>>> -     cpufreq_verify_within_cpu_limits(policy);
->>>>> +     unsigned int min_freq = policy->cpuinfo.min_freq;
->>>>> +     unsigned int max_freq = policy->cpuinfo.max_freq;
->>>>> +     struct cpufreq_policy *cpu_policy;
->>>>> +     struct cppc_cpudata *cpu_data;
->>>>> +     struct cppc_perf_caps *caps;
->>>>> +
->>>>> +     cpu_policy = cpufreq_cpu_get(policy->cpu);
->>>>> +     if (!cpu_policy)
->>>>> +             return -ENODEV;
->>>>> +
->>>>> +     cpu_data = cpu_policy->driver_data;
->>>>> +     caps = &cpu_data->perf_caps;
->>>>> +
->>>>> +     if (cpu_data->perf_ctrls.auto_sel) {
->>>>> +             u32 min_perf, max_perf;
->>>>> +
->>>>> +             /*
->>>>> +              * Set policy limits to HW min/max_perf bounds. In autonomous
->>>>> +              * mode, scaling_min/max_freq is effectively read-only.
->>>>> +              */
->>>>> +             min_perf = cpu_data->perf_ctrls.min_perf ?:
->>>>> +                        caps->lowest_nonlinear_perf;
->>>>> +             max_perf = cpu_data->perf_ctrls.max_perf ?: caps->nominal_perf;
->>>>> +
->>>>> +             policy->min = cppc_perf_to_khz(caps, min_perf);
->>>>> +             policy->max = cppc_perf_to_khz(caps, max_perf);
->>>> policy->min/max values are overwritten, but the governor which is
->>>> supposed to use them to select the most fitting frequency will be
->>>> ignored by the firmware I think.
->>>>
->>> Yes.
->>>
->>>>> +     } else {
->>>>> +             cpufreq_verify_within_limits(policy, min_freq, max_freq);
->>>>> +     }
->>>>> +
->>>>> +     cpufreq_cpu_put(cpu_policy);
->>>>>        return 0;
->>>>>    }
->>>>>
+> 
+> So we have xe_pci_probe() -> xe_pm_init() -> xe_pm_vrsr_init() ->
+> xe_display_connected() -> intel_display_connected(), and that's the only
+> path and point in time to check whether displays are connected. If not,
+> the decision is "not VRSR capable", which is just a weird concusion to
+> make. The *capability* does not depend on displays, does it?
+> 
+> If you boot a device without a display, and then plug in a display, no
+> VRSR for you?
+
+yeap, it looks like the check is in the wrong place. It needs to be
+checked when going to d3cold...
+
+> 
+> More comments inline.
+> 
+> > v2: Move generic display logic to i915/display (Jani)
+> >
+> > Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  drivers/gpu/drm/i915/display/intel_display.c | 22 ++++++++++++++++++++
+> >  drivers/gpu/drm/i915/display/intel_display.h |  1 +
+> >  drivers/gpu/drm/xe/display/xe_display.c      |  5 +++++
+> >  drivers/gpu/drm/xe/display/xe_display.h      |  2 ++
+> >  drivers/gpu/drm/xe/xe_pm.c                   |  5 +++++
+> >  5 files changed, 35 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+> > index 81b3a6692ca2..97c74272fb19 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_display.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_display.c
+> > @@ -8426,3 +8426,25 @@ bool intel_scanout_needs_vtd_wa(struct intel_display *display)
+> >  {
+> >  	return IS_DISPLAY_VER(display, 6, 11) && intel_display_vtd_active(display);
+> >  }
+> > +
+> > +bool intel_display_connected(struct intel_display *display)
+> > +{
+> > +	struct drm_connector *list_connector;
+> > +	struct drm_connector_list_iter iter;
+> > +	bool ret = false;
+> > +
+> > +	mutex_lock(&display->drm->mode_config.mutex);
+> > +	drm_connector_list_iter_begin(display->drm, &iter);
+> > +
+> > +	drm_for_each_connector_iter(list_connector, &iter) {
+> > +		if (list_connector->status == connector_status_connected) {
+> > +			ret = true;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	drm_connector_list_iter_end(&iter);
+> > +	mutex_unlock(&display->drm->mode_config.mutex);
+> > +
+> > +	return ret;
+> > +}
+> > diff --git a/drivers/gpu/drm/i915/display/intel_display.h b/drivers/gpu/drm/i915/display/intel_display.h
+> > index f8e6e4e82722..20690aa59324 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_display.h
+> > +++ b/drivers/gpu/drm/i915/display/intel_display.h
+> > @@ -560,5 +560,6 @@ bool assert_port_valid(struct intel_display *display, enum port port);
+> >  
+> >  bool intel_scanout_needs_vtd_wa(struct intel_display *display);
+> >  int intel_crtc_num_joined_pipes(const struct intel_crtc_state *crtc_state);
+> > +bool intel_display_connected(struct intel_display *display);
+> >  
+> >  #endif
+> > diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+> > index f8a831b5dc7d..54ed39b257ad 100644
+> > --- a/drivers/gpu/drm/xe/display/xe_display.c
+> > +++ b/drivers/gpu/drm/xe/display/xe_display.c
+> > @@ -64,6 +64,11 @@ bool xe_display_driver_probe_defer(struct pci_dev *pdev)
+> >  	return intel_display_driver_probe_defer(pdev);
+> >  }
+> >  
+> > +bool xe_display_connected(struct xe_device *xe)
+> > +{
+> > +	return intel_display_connected(xe->display);
+> > +}
+> > +
+> >  /**
+> >   * xe_display_driver_set_hooks - Add driver flags and hooks for display
+> >   * @driver: DRM device driver
+> > diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
+> > index 76db95c25f7e..11d4b09808e5 100644
+> > --- a/drivers/gpu/drm/xe/display/xe_display.h
+> > +++ b/drivers/gpu/drm/xe/display/xe_display.h
+> > @@ -37,6 +37,7 @@ void xe_display_pm_resume(struct xe_device *xe);
+> >  void xe_display_pm_runtime_suspend(struct xe_device *xe);
+> >  void xe_display_pm_runtime_suspend_late(struct xe_device *xe);
+> >  void xe_display_pm_runtime_resume(struct xe_device *xe);
+> > +bool xe_display_connected(struct xe_device *xe);
+> >  
+> >  #else
+> >  
+> > @@ -67,5 +68,6 @@ static inline void xe_display_pm_runtime_suspend(struct xe_device *xe) {}
+> >  static inline void xe_display_pm_runtime_suspend_late(struct xe_device *xe) {}
+> >  static inline void xe_display_pm_runtime_resume(struct xe_device *xe) {}
+> >  
+> > +static inline bool xe_display_connected(struct xe_device *xe) { return false; }
+> 
+> There was a blank line before #endif. Please keep it. Ditto throughout
+> the series.
+> 
+> >  #endif /* CONFIG_DRM_XE_DISPLAY */
+> >  #endif /* _XE_DISPLAY_H_ */
+> > diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+> > index 3fe673f0f87d..e7aa876ce9e0 100644
+> > --- a/drivers/gpu/drm/xe/xe_pm.c
+> > +++ b/drivers/gpu/drm/xe/xe_pm.c
+> > @@ -9,6 +9,7 @@
+> >  #include <linux/fault-inject.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/suspend.h>
+> > +#include <linux/vgaarb.h>
+> >  
+> >  #include <drm/drm_managed.h>
+> >  #include <drm/ttm/ttm_placement.h>
+> > @@ -387,6 +388,7 @@ static int pci_acpi_aux_power_setup(struct xe_device *xe)
+> >  
+> >  static void xe_pm_vrsr_init(struct xe_device *xe)
+> >  {
+> > +	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+> >  	int ret;
+> >  
+> >  	if (!xe->info.has_vrsr)
+> > @@ -395,6 +397,9 @@ static void xe_pm_vrsr_init(struct xe_device *xe)
+> >  	if (!xe_pm_vrsr_capable(xe))
+> >  		return;
+> >  
+> > +	if (pdev != vga_default_device() || !xe_display_connected(xe))
+> 
+> Simply considering the places in the kernel that call
+> vga_default_device(), this just doesn't feel right.
+
+I also don't understand why to check this vga default device...
+
+> 
+> 
+> BR,
+> Jani.
+> 
+> 
+> > +		return;
+> > +
+> >  	/*
+> >  	 * If the VRSR initialization fails, the device will proceed with the regular
+> >  	 * D3cold flow
+> 
+> -- 
+> Jani Nikula, Intel
 
