@@ -1,238 +1,262 @@
-Return-Path: <linux-acpi+bounces-20386-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20387-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58145D24EE7
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 15:26:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A87D24F59
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 15:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E80A30198B8
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 14:25:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EAED93005F08
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 14:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FFE3A1E8C;
-	Thu, 15 Jan 2026 14:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ucw/1zg2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421423A1E97;
+	Thu, 15 Jan 2026 14:31:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E352399000;
-	Thu, 15 Jan 2026 14:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78EC3570AE;
+	Thu, 15 Jan 2026 14:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768487117; cv=none; b=oCMrcvgCkssSPvd65wf+OShSYr/r7H5LUtEFaPBTiQZrT14zZfeqQPW9/DOd/IHdavbI/miKAuIXaulb+/HD8NudMdlXFCbr9riQssc/xv/CxntXfjlCKTWufE5mSjVfr8oZfYjI8vWs+Vmnf51tr+w8w4ls9NIQjhyBsU2Kypk=
+	t=1768487485; cv=none; b=qqR8UEgIIRIAH/SSYtxa9S5MfFQjK2pGnNei0eHDo9XEU9Eysjkpwkeist1TgS9eg63SZEHlY1GZaNbb6RJ2VUdxRzfDcFdZg4YixcvMjMDU6eq2i+QAzfeknOEiIWhU/SxMdzCxPRsqqoP9nIt3ywU5cHFzipxG1PagwhWg31Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768487117; c=relaxed/simple;
-	bh=sysW4MkNR5D/ieE+xD21mNbklbilneOMl2bQIZ4anjA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=omP6BucWaigH5CJ3nKGYJxdzv/+1Dy1SsV3/S/HVrSKLjhZsxOMCbFWx39uFlNZc4XuzsoRQ5T4lGTWfZIaQvLB8blpIOZuQHz4yy4uqF4ahJAfbajgMdBv/S8uMHqS4Ez2vXY+DiVWUucFcVJLf4zhOFIXjVwQs06BKBslrgm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ucw/1zg2; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768487115; x=1800023115;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=sysW4MkNR5D/ieE+xD21mNbklbilneOMl2bQIZ4anjA=;
-  b=Ucw/1zg2fcsNSFGMsXylCG23TzFLX3dKLoY1gdRdp3jVmdg/k5TQdp4a
-   SNjHzsRcyHuvxCol9hKpfcnfXcxXcFmpEoPy0J55Qc+DmQWl+4+hO4cMh
-   ARpfopsPLCoQqbdpnAwmqLTcGE/XxAd8l/8xygKhWIPN4nCXJA7i0/dTy
-   k8XDwO8iysXMFnwxd4XzWjnybrbhmTOw2JFVcS+ISwuw3c+FOfyK003f8
-   P2GkRgOr+n+Cggeh86AYJerRCEt1CRhIAVbGJ9iY3thdGWdLD+X4BXW8e
-   GXxTR4JgaMQbviHbf9AKitZRDiJWh5sYGNBIE65rymn57oiotRfo6imOV
-   Q==;
-X-CSE-ConnectionGUID: sSTdoRm6Soyp1Q4ozAsXMw==
-X-CSE-MsgGUID: ROkXsnedQYS549QcFmn06Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="81236421"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="81236421"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 06:25:14 -0800
-X-CSE-ConnectionGUID: GMIiWiNcS9iOFb/OJPOxMA==
-X-CSE-MsgGUID: Gr3YrumiQlivATe4KDINrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="204846263"
-Received: from ettammin-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.150])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 06:25:09 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Badal Nilawar <badal.nilawar@intel.com>, intel-xe@lists.freedesktop.org,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
-Cc: anshuman.gupta@intel.com, rafael@kernel.org, lenb@kernel.org,
- bhelgaas@google.com, ilpo.jarvinen@linux.intel.com,
- rodrigo.vivi@intel.com, varun.gupta@intel.com,
- ville.syrjala@linux.intel.com, uma.shankar@intel.com,
- karthik.poosa@intel.com, matthew.auld@intel.com, sk.anirban@intel.com,
- raag.jadav@intel.com
-Subject: Re: [PATCH v6 06/12] drm/xe/vrsr: Enable VRSR on default VGA boot
- device
-In-Reply-To: <20260113164200.1151788-20-badal.nilawar@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260113164200.1151788-14-badal.nilawar@intel.com>
- <20260113164200.1151788-20-badal.nilawar@intel.com>
-Date: Thu, 15 Jan 2026 16:25:06 +0200
-Message-ID: <64894565d5eace99fd65f290ee807dabaa2de04f@intel.com>
+	s=arc-20240116; t=1768487485; c=relaxed/simple;
+	bh=rsX5MbYFMyE3gr5uYbY5+bJH/++PXO69jv5d6JdGN84=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NQPf526FNDL7qQHneqcVAD8zNqoZaXayhA/OeADncwYz8TOCSOTnelkHU0OQTZ1JCMlyHgRsHKKd6+cZbKFrsWTidPegGnLLDyBQEgOassjAFOaVCNgO7Tevgby2hpjBypj5h8HxHj51Fzhc8EoaG9BgLAJozOx0YUeBEDjyM0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dsQQD6CLVzJ46ZJ;
+	Thu, 15 Jan 2026 22:31:00 +0800 (CST)
+Received: from dubpeml100008.china.huawei.com (unknown [7.214.145.227])
+	by mail.maildlp.com (Postfix) with ESMTPS id 43B1540539;
+	Thu, 15 Jan 2026 22:31:17 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.195.246.32) by
+ dubpeml100008.china.huawei.com (7.214.145.227) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 15 Jan 2026 14:31:15 +0000
+From: <shiju.jose@huawei.com>
+To: <bp@alien8.de>, <rafael@kernel.org>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <rdunlap@infradead.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<shiju.jose@huawei.com>
+Subject: [PATCH v15 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Thu, 15 Jan 2026 14:30:57 +0000
+Message-ID: <20260115143101.876-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100008.china.huawei.com (7.214.145.227)
 
-On Tue, 13 Jan 2026, Badal Nilawar <badal.nilawar@intel.com> wrote:
-> The VRSR feature is to enhance the display screen refresh experience
-> when the device exits from the D3cold state. Therefore, apply the VRSR
-> feature to the default VGA boot device and when a display is connected.
+From: Shiju Jose <shiju.jose@huawei.com>
 
-I don't understand how you get from the 1st sentence "therefore" the 2nd
-sentence. Please elaborate what you're trying to do here, and why.
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-So we have xe_pci_probe() -> xe_pm_init() -> xe_pm_vrsr_init() ->
-xe_display_connected() -> intel_display_connected(), and that's the only
-path and point in time to check whether displays are connected. If not,
-the decision is "not VRSR capable", which is just a weird concusion to
-make. The *capability* does not depend on displays, does it?
+ACPI RAS2 patches were part of the EDAC series [1].
 
-If you boot a device without a display, and then plug in a display, no
-VRSR for you?
+The code is based on linux.git v6.19-rc5 [2].
 
-More comments inline.
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
 
-> v2: Move generic display logic to i915/display (Jani)
->
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_display.c | 22 ++++++++++++++++++++
->  drivers/gpu/drm/i915/display/intel_display.h |  1 +
->  drivers/gpu/drm/xe/display/xe_display.c      |  5 +++++
->  drivers/gpu/drm/xe/display/xe_display.h      |  2 ++
->  drivers/gpu/drm/xe/xe_pm.c                   |  5 +++++
->  5 files changed, 35 insertions(+)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-> index 81b3a6692ca2..97c74272fb19 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display.c
-> +++ b/drivers/gpu/drm/i915/display/intel_display.c
-> @@ -8426,3 +8426,25 @@ bool intel_scanout_needs_vtd_wa(struct intel_display *display)
->  {
->  	return IS_DISPLAY_VER(display, 6, 11) && intel_display_vtd_active(display);
->  }
-> +
-> +bool intel_display_connected(struct intel_display *display)
-> +{
-> +	struct drm_connector *list_connector;
-> +	struct drm_connector_list_iter iter;
-> +	bool ret = false;
-> +
-> +	mutex_lock(&display->drm->mode_config.mutex);
-> +	drm_connector_list_iter_begin(display->drm, &iter);
-> +
-> +	drm_for_each_connector_iter(list_connector, &iter) {
-> +		if (list_connector->status == connector_status_connected) {
-> +			ret = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	drm_connector_list_iter_end(&iter);
-> +	mutex_unlock(&display->drm->mode_config.mutex);
-> +
-> +	return ret;
-> +}
-> diff --git a/drivers/gpu/drm/i915/display/intel_display.h b/drivers/gpu/drm/i915/display/intel_display.h
-> index f8e6e4e82722..20690aa59324 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display.h
-> +++ b/drivers/gpu/drm/i915/display/intel_display.h
-> @@ -560,5 +560,6 @@ bool assert_port_valid(struct intel_display *display, enum port port);
->  
->  bool intel_scanout_needs_vtd_wa(struct intel_display *display);
->  int intel_crtc_num_joined_pipes(const struct intel_crtc_state *crtc_state);
-> +bool intel_display_connected(struct intel_display *display);
->  
->  #endif
-> diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-> index f8a831b5dc7d..54ed39b257ad 100644
-> --- a/drivers/gpu/drm/xe/display/xe_display.c
-> +++ b/drivers/gpu/drm/xe/display/xe_display.c
-> @@ -64,6 +64,11 @@ bool xe_display_driver_probe_defer(struct pci_dev *pdev)
->  	return intel_display_driver_probe_defer(pdev);
->  }
->  
-> +bool xe_display_connected(struct xe_device *xe)
-> +{
-> +	return intel_display_connected(xe->display);
-> +}
-> +
->  /**
->   * xe_display_driver_set_hooks - Add driver flags and hooks for display
->   * @driver: DRM device driver
-> diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
-> index 76db95c25f7e..11d4b09808e5 100644
-> --- a/drivers/gpu/drm/xe/display/xe_display.h
-> +++ b/drivers/gpu/drm/xe/display/xe_display.h
-> @@ -37,6 +37,7 @@ void xe_display_pm_resume(struct xe_device *xe);
->  void xe_display_pm_runtime_suspend(struct xe_device *xe);
->  void xe_display_pm_runtime_suspend_late(struct xe_device *xe);
->  void xe_display_pm_runtime_resume(struct xe_device *xe);
-> +bool xe_display_connected(struct xe_device *xe);
->  
->  #else
->  
-> @@ -67,5 +68,6 @@ static inline void xe_display_pm_runtime_suspend(struct xe_device *xe) {}
->  static inline void xe_display_pm_runtime_suspend_late(struct xe_device *xe) {}
->  static inline void xe_display_pm_runtime_resume(struct xe_device *xe) {}
->  
-> +static inline bool xe_display_connected(struct xe_device *xe) { return false; }
+Changes
+=======
+v14 -> v15:
+1. Incorporated new changes suggested by Borislav on v13.
+   https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+   
+2. Rebase to v6.19-rc5.
 
-There was a blank line before #endif. Please keep it. Ditto throughout
-the series.
+v13 -> v14:
+1. Modifications for changes wanted by Borislav.
+   https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
 
->  #endif /* CONFIG_DRM_XE_DISPLAY */
->  #endif /* _XE_DISPLAY_H_ */
-> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-> index 3fe673f0f87d..e7aa876ce9e0 100644
-> --- a/drivers/gpu/drm/xe/xe_pm.c
-> +++ b/drivers/gpu/drm/xe/xe_pm.c
-> @@ -9,6 +9,7 @@
->  #include <linux/fault-inject.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/suspend.h>
-> +#include <linux/vgaarb.h>
->  
->  #include <drm/drm_managed.h>
->  #include <drm/ttm/ttm_placement.h>
-> @@ -387,6 +388,7 @@ static int pci_acpi_aux_power_setup(struct xe_device *xe)
->  
->  static void xe_pm_vrsr_init(struct xe_device *xe)
->  {
-> +	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
->  	int ret;
->  
->  	if (!xe->info.has_vrsr)
-> @@ -395,6 +397,9 @@ static void xe_pm_vrsr_init(struct xe_device *xe)
->  	if (!xe_pm_vrsr_capable(xe))
->  		return;
->  
-> +	if (pdev != vga_default_device() || !xe_display_connected(xe))
+2. Changes for the comments from Randy Dunlap 
+   https://lore.kernel.org/all/4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org/
+   https://lore.kernel.org/all/af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org/
+   https://lore.kernel.org/all/26083ba9-1979-4d14-8465-3f54f2f96d23@infradead.org/
+   
+v12 -> v13:
+1. Fixed some bugs reported and changes wanted by Borislav.
+   https://lore.kernel.org/all/20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local/ 
 
-Simply considering the places in the kernel that call
-vga_default_device(), this just doesn't feel right.
+2. Tried modifying the patch header as commented by Borislav.
 
+3. Fixed a bug reported by Yazen.
+   https://lore.kernel.org/all/20250909162434.GB11602@yaz-khff2.amd.com/
 
-BR,
-Jani.
+4. Changed setting 'Requested Address Range' for GET_PATROL_PARAMETERS
+   command to meet the requirements from Daniel for Ampere Computing
+   platform. 
+   https://lore.kernel.org/all/7a211c5c-174c-438b-9a98-fd47b057ea4a@os.amperecomputing.com/
 
+5. In RAS2 driver, removed support for scrub control attributes 'addr' and
+   'size' for the time being with the expectation that a firmware will do
+   the full node demand scrubbing and may enable these attributes in the
+   future.
+   
+6. Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+   the demand scrub, which is used for the RAS2 demand scrub control.
 
-> +		return;
-> +
->  	/*
->  	 * If the VRSR initialization fails, the device will proceed with the regular
->  	 * D3cold flow
+v11 -> v12:
+1. Modified logic for finding the lowest contiguous phy memory addr range for
+NUMA domain using node_start_pfn() and node_spanned_pages() according to the
+feedback from Mike Rapoport in v11.
+https://lore.kernel.org/all/aKsIlFTkBsAF5sqD@kernel.org/
+
+2. Rebase to 6.17-rc4.
+
+v10 -> v11:
+1. Simplified code by removing workarounds previously added to support
+   non-compliant case of single PCC channel shared across all proximity
+   domains (which is no longer required). 
+   https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
+
+2. Fix for the comments from Borislav (Thanks).
+   https://lore.kernel.org/all/20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local/
+
+3. Rebase to 6.17-rc1.
+
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
+
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+  ras: mem: Add ACPI RAS2 memory driver
+
+ Documentation/ABI/testing/sysfs-edac-scrub |  13 +-
+ Documentation/edac/scrub.rst               |  60 +++
+ drivers/acpi/Kconfig                       |  10 +
+ drivers/acpi/Makefile                      |   1 +
+ drivers/acpi/bus.c                         |   3 +
+ drivers/acpi/ras2.c                        | 414 +++++++++++++++++++++
+ drivers/edac/scrub.c                       |  12 +
+ drivers/ras/Kconfig                        |  13 +
+ drivers/ras/Makefile                       |   1 +
+ drivers/ras/acpi_ras2.c                    | 395 ++++++++++++++++++++
+ include/acpi/ras2.h                        |  74 ++++
+ include/linux/edac.h                       |   4 +
+ 12 files changed, 995 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
 
 -- 
-Jani Nikula, Intel
+2.43.0
+
 
