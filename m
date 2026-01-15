@@ -1,66 +1,63 @@
-Return-Path: <linux-acpi+bounces-20372-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20373-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC0ED24008
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 11:45:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19546D2405F
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 11:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F03C23012EB8
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 10:45:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D80F3013306
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 10:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B7C36C59A;
-	Thu, 15 Jan 2026 10:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5227536D4E6;
+	Thu, 15 Jan 2026 10:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bzw1nZu0"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CJZiYdCM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0036C0CC;
-	Thu, 15 Jan 2026 10:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3747133123E;
+	Thu, 15 Jan 2026 10:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768473900; cv=none; b=qdzlAemVo7+4MCX/2IvV6t6yVALBtoJBpCpL+5BquJFmu9isMTdz3eQhZKoJiw8i6/NjsnXXCaqrl+K7n2jk51uyVQzM6TBsBCpObtK41ElBmubqgeA5FM7wwuOsrN63G3ICGng7zO5ksEbRccQIFMQZL5/n+gMOwJvu+xK+xIY=
+	t=1768474340; cv=none; b=qtI3mVd2WPNSEuKaudpBVIitCJka+EkxR8IeJfOSLgifDcCy6dIfWN7SDU8bFcCCoh4ZKrW/xnXDbOJ4fh7CyBNrY3DXuNEcPd3e0fBb4KEB9z/iqNmf7fNLj6ty94a3bq+VUTOPTdfsW00wep4BNR9iYeEx24OF6F2JwG5XE+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768473900; c=relaxed/simple;
-	bh=KCf9/BUWQWrV3YzZSQGIBitilFEV6z7FvLz9+gF37+I=;
+	s=arc-20240116; t=1768474340; c=relaxed/simple;
+	bh=d5ic5UjjSJbUndYwrwl9ywLTfsNx3edbp0zUfoAnl6A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oex+vl1fhQmlZHLjnjUgH+5Ef382bp86X6OXITRa7IBg95eYAos71Mwob4tzCX9dAc7V+3Xyuw0xM04P8va69RY6A3CisXeR/FgKkQMbOdeUT07/W2nlfyxpJIv/ECaL4M5nYkeGweZUQmu1p3roWABM8hPbdwwtmdNX6fBnaQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bzw1nZu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9EAC116D0;
-	Thu, 15 Jan 2026 10:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768473899;
-	bh=KCf9/BUWQWrV3YzZSQGIBitilFEV6z7FvLz9+gF37+I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bzw1nZu02dQejptA0JvWTI5Kzv8ZivGSWw//ar5HN7g3e3fvnK7diB8O0pmaWexh4
-	 5XojmtjQzGc+FqgbwVH2OFPPVeB906fgkmpSff5sPYhHM9sX74IQMkFXLXtpzuQfpO
-	 Pk8R5eLtUsALQjTeXVEzkQhHjDEr5iiYb4F3/cPOxl99In93iEdalxJ3MLkIBxWSLs
-	 H+RNlPsIdKmA7LfQjWgynvtJn1jEMFnR4fv0CDiviCt6UruWq6Lva0mb7fk3SP90DC
-	 JomhCfyV4tem4mdNhgWhbDBkTX7C0gcNvZ9B6aLLKSKPDPMSTV0V4oPzyFvhH5q9zu
-	 hvi8JEqsO6aag==
-Date: Thu, 15 Jan 2026 16:14:41 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark" <derekjohn.clark@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-pm@vger.kernel.org, Stephan Gerhold <stephan.gerhold@linaro.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] dt-bindings: connector: Add PCIe M.2 Mechanical
- Key E connector
-Message-ID: <pfyzilu4xpggftei4th37uv7wb4gpfsntjlagctsydrrc35qci@4uyd3zog6t7j>
-References: <20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com>
- <20260112-pci-m2-e-v4-5-eff84d2c6d26@oss.qualcomm.com>
- <20260113171601.GB3925312-robh@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/UDv80YJ0dl8Dz+oLuIESj2iE8qLaoJzXLt+gqhBMf1SGqy9vf7skx6Y0y+Uxfxfyhp+JbKM0e0GzT4IwnN1R+jvDwmHD/j8oAwyAFauboXPbxOegUCIMzgNLJMDieNWRthbfMsASIyFBXxuyOh5wD8+wxl5zEjMfsVEemOghU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CJZiYdCM; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768474329; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=wfTNfIK//2QZfS4cueGR7+8oULaDBEyK6LYtP0zcy38=;
+	b=CJZiYdCMpgiNZWpgzdlX8xe/JMyHzFIrklzvFNI+B7xIVED1Snf0m4KwQkS9jspQvW2Bno4IPOPxShkyRXQFOpnzWioVWvgVcGiZk4tI3PQyGSZphKME5Pj7PSwXHCHTe5wrFx0ILIPRvjT9aUYwQzkqz/DtV8XlvqvEV3pp0Rw=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0Wx6HLZG_1768474327 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 15 Jan 2026 18:52:08 +0800
+Date: Thu, 15 Jan 2026 18:52:07 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	James Morse <james.morse@arm.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: PPTT: Dump PPTT table when error detected
+Message-ID: <aWjG15INQHBJo6X6@U-2FWC9VHC-2323.local>
+References: <20251231104909.80362-1-feng.tang@linux.alibaba.com>
+ <aWUpQ04uNcXtp0wR@bogus>
+ <aWYBef5ZUNKVpg1W@U-2FWC9VHC-2323.local>
+ <aWZZeD496CPi20Gc@bogus>
+ <aWdAiaC10ear9ajR@U-2FWC9VHC-2323.local>
+ <CAJZ5v0h-hjrE85_=6YOJ6oRRZ4=SmKWrs7hCKnrP6_KZTuDePw@mail.gmail.com>
+ <aWeoA7LDNSB_F38I@U-2FWC9VHC-2323.local>
+ <aWew4SHS4c34z0AU@bogus>
+ <aWit6bbjwfTzDRQw@U-2FWC9VHC-2323.local>
+ <aWi7HjGDAGdRYjS6@bogus>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -69,73 +66,51 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260113171601.GB3925312-robh@kernel.org>
+In-Reply-To: <aWi7HjGDAGdRYjS6@bogus>
 
-On Tue, Jan 13, 2026 at 11:16:01AM -0600, Rob Herring wrote:
-> On Mon, Jan 12, 2026 at 09:56:04PM +0530, Manivannan Sadhasivam wrote:
-> > Add the devicetree binding for PCIe M.2 Mechanical Key E connector defined
-> > in the PCI Express M.2 Specification, r4.0, sec 5.1.2. This connector
-> > provides interfaces like PCIe or SDIO to attach the WiFi devices to the
-> > host machine, USB or UART+PCM interfaces to attach the Bluetooth (BT)
-> > devices. Spec also provides an optional interface to connect the UIM card,
-> > but that is not covered in this binding.
+On Thu, Jan 15, 2026 at 10:02:06AM +0000, Sudeep Holla wrote:
+> On Thu, Jan 15, 2026 at 05:05:45PM +0800, Feng Tang wrote:
+> > Hi Sudeep,
 > > 
-> > The connector provides a primary power supply of 3.3v, along with an
-> > optional 1.8v VIO supply for the Adapter I/O buffer circuitry operating at
-> > 1.8v sideband signaling.
+> > On Wed, Jan 14, 2026 at 03:06:09PM +0000, Sudeep Holla wrote:
+> > > On Wed, Jan 14, 2026 at 10:28:19PM +0800, Feng Tang wrote:
+> > > > 
+> > > > As for the original issue where kernel printed the error message
+> > > > " ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
+> > > > can we just printed out all the CPU entries of the PPTT table? 
+> > > > which is much cleaner and smaller, and have the enough information
+> > > > for quickly identifying the root cause. As the number of cache
+> > > > items is usually 3X of number of CPUs.
+> > > 
+> > > I am still not sure what additional value is gained by listing all those CPU
+> > > entries. On a 512-CPU system, for example, if an issue is identified with the
+> > > entry for CPU 256, what extra information is obtained by listing all the other
+> > > CPUs, such as those sharing the same L3 cache or entire list of CPUs on this
+> > > system?
 > > 
-> > The connector also supplies optional signals in the form of GPIOs for fine
-> > grained power management.
+> > My bad that I didn't make it clear. As for the original issue, the
+> > platform has 8 CPUs, but the PPTT table only has 4 CPUs, while the MADT
+> > and other tables are correct about the CPU numbers, and kernel does
+> > successfully bringup all 8 CPUs. The PPTT message
+> > " ACPI PPTT: PPTT table found, but unable to locate core 1 (1)" is kind
+> > of modest and didn't caught our much attention as all 8 CPUS were onlined
+> > fine. So with the "print only necessary info" suggestion from Rafael,
+> > it will print out only 4 CPUS, which should immediately show the PPTT
+> > table itself is wrong, and worth deeper check.
 > > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  .../bindings/connector/pcie-m2-e-connector.yaml    | 154 +++++++++++++++++++++
-> >  MAINTAINERS                                        |   1 +
-> >  2 files changed, 155 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
-> > new file mode 100644
-> > index 000000000000..b65b39ddfd19
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
-> > @@ -0,0 +1,154 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/connector/pcie-m2-e-connector.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: PCIe M.2 Mechanical Key E Connector
-> > +
-> > +maintainers:
-> > +  - Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > +
-> > +description:
-> > +  A PCIe M.2 E connector node represents a physical PCIe M.2 Mechanical Key E
-> > +  connector. Mechanical Key E connectors are used to connect Wireless
-> > +  Connectivity devices including combinations of Wi-Fi, BT, NFC to the host
-> > +  machine over interfaces like PCIe/SDIO, USB/UART+PCM, and I2C.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: pcie-m2-e-connector
-> > +
-> > +  vpcie3v3-supply:
-> > +    description: A phandle to the regulator for 3.3v supply.
-> > +
-> > +  vpcie1v8-supply:
-> > +    description: A phandle to the regulator for VIO 1.8v supply.
-> > +
-> > +  ports:
 > 
-> Also, nodes go after all properties.
+> To be clear, listing CPUs is annoying on large systems. In your case, it may
+> be only 4 CPUs and that seems fine, but imagine if one CPU entry is missing on
+> a 512 CPU system - dumping a list of 511 CPUs is not only irritating, but also
+> largely useless for diagnosing the issue.
 > 
+> In my view, for the scenario above, the error should say something along the
+> lines of: the PPTT CPU entry count does not match the system CPU count.
 
-Ack.
+This makes sense to me, thanks for the suggestion! Will check how to
+implement it and test. The error happens in early boot phase, and I
+guess only '__cpu_possible_mask' could be used for 'system CPU count'. 
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks,
+Feng
 
