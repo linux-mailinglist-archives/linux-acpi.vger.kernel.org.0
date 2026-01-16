@@ -1,139 +1,303 @@
-Return-Path: <linux-acpi+bounces-20395-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20396-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CA1D26E20
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 18:52:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25605D29C8B
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 02:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F360309D428
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jan 2026 17:46:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB18D303C214
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 01:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5072D3BFE5F;
-	Thu, 15 Jan 2026 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28748335551;
+	Fri, 16 Jan 2026 01:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWC1dbu/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O6lPTtyY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D88E3BF309;
-	Thu, 15 Jan 2026 17:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B4D30EF7C;
+	Fri, 16 Jan 2026 01:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499150; cv=none; b=esYAIEAikXcfwVbRGrMx2sCx9VLhwaKT1PaJho7/EEF8irHj/KzV0W+HajXVnk8BcEN7ZZwDdiP1OkmMHtGVmMJjvKXSZQA2dNkPwviQyfY2wwTX5u5BH0sizLGVYIJgWsp4L8BfUOb28TdU8QXYUGTHQZ2HA3AeNCD71x0IbQc=
+	t=1768528538; cv=none; b=DuhqgnZ5oO+RfCqTEUZJKugUlqvi+crxOoop8U5+X57EbKv8F8cxj5u0tNUEZc2WcYRT00liNjZ2ijKy1iYKC2hyVS0fdyY/KOyTV/4haswTKvWX/cbY23OzAEXA1whZC2tg5Qz+NLKo1SLrV1sau+h+7LudeClPdZHZotrlsSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499150; c=relaxed/simple;
-	bh=7y5GZutTT6vu6rSfOVsILzhDGRx7gArXmT4MXYQzpo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=goLg5zEPdN6s57rQxigZ9UGygwzxnacL+TqBYIe3In3OoWCKfLildPulpwW48d0XgJ/ofbGmr1FSR20tvPh29Pa11kpCaydD3e2ZbkdLFuyQm3GTL01jdpV8srglkNnahQOMAF0VnFqoYKbVx5ScmiQ7tya8FKVwcX5rWXBIiaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWC1dbu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB702C19423;
-	Thu, 15 Jan 2026 17:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768499149;
-	bh=7y5GZutTT6vu6rSfOVsILzhDGRx7gArXmT4MXYQzpo8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=tWC1dbu/Y+1idPEqAS5UlUBs9hUwE4kL8rLdUlTAlDVPqugW22cMaXIREhw4DiSrw
-	 tM71Sxj+O6awmq4rmBIvo/bWPZGP81H6PwSue+RIMEspcYJ3yNSo6oo8Phww1Mexnt
-	 mjr8uYWMYV86J24VaBwlzg0umPr24bfCaKOVM5htFJQd4HN6kMlBBg/JI5qgUTrw7F
-	 2RlTmdUiQFDZi2QYmlM+uLbRdkE1ct/9Rb3LZZbeAZ1ft30VKDW4Wze6Vov/PujO/N
-	 7P6pld56zIICJsX4Jae0t1lvuyzEeO1X0QZi+ogoGKdKsB27k94dKHqCcEeIcPYdOF
-	 xAUwxNGdmj5HA==
-Date: Thu, 15 Jan 2026 11:45:48 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Haakon Bugge <haakon.bugge@oracle.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] PCI/ACPI: Confine program_hpx_type2 to the AER bits
-Message-ID: <20260115174548.GA873328@bhelgaas>
+	s=arc-20240116; t=1768528538; c=relaxed/simple;
+	bh=jYJLmbts15l6IxkppIKSSmoAg25zeFTcy2uoIdpmXZI=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=cl9QnTBeWJ7t4unNaJyUdff/wGn7vuvBYoKf4m3j/doUU/63agM+z8Q4fJW+mWnPminlTDWP734EegLJ4w0TgCU2XnUoOxWz8wOBV06pA0XHa56iYatsXisaW0ICHIVtLWGEgQG4Mv2dy/FGAzfRYN1EJqYFAtIMEM4eZZ2S3xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O6lPTtyY; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768528535; x=1800064535;
+  h=date:from:to:cc:subject:message-id;
+  bh=jYJLmbts15l6IxkppIKSSmoAg25zeFTcy2uoIdpmXZI=;
+  b=O6lPTtyYHWbglB+z6uEOKKeRlYxugunvnWrLwUz9TZe6zrivnNvn2i/y
+   tw7NMmsw8FmEXuQf1tObWH/dINobINDTVf6fCRgTbSYpITEqiC97d/cPt
+   4syVL1MbTcnYb1WP+cNV60HcLuivDPu1pglbgUsgkYLl9rEjjWGT0OO6b
+   XIO1P1ZTFC5rZhyt4k1WO6whesIwNzo9v+td9sDaT6o7sEq9mYr2UQfPH
+   ZDQrm1FZa3c1ZO1onKu5rKxncQW8SkfYPHAWr9gl1yYwaP072vqfyOFu8
+   1fB8u5rXMrY4WFcR6FmPC0ZYlfWyRKspqKQob5lh5VYf7yJ9ZKLvDjS35
+   A==;
+X-CSE-ConnectionGUID: NfNgEP6DQ/20lqOeucFNlg==
+X-CSE-MsgGUID: +ddDatokRjGU+4v+S6OXZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="80957950"
+X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
+   d="scan'208";a="80957950"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 17:55:32 -0800
+X-CSE-ConnectionGUID: c5Yre5TfT+qeoC3MS7bGLQ==
+X-CSE-MsgGUID: 3mBZvA1gTXG90x85KE++Cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
+   d="scan'208";a="205388729"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 15 Jan 2026 17:55:30 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vgZ3f-00000000KF0-3xNi;
+	Fri, 16 Jan 2026 01:55:27 +0000
+Date: Fri, 16 Jan 2026 09:54:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ d22b6c061c9911a8d0f76c6e902c951455c8c4ba
+Message-ID: <202601160927.hJlK4cmK-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52ED30CB-08FB-44AD-B366-AA3263236FA5@oracle.com>
 
-On Thu, Jan 15, 2026 at 03:39:21PM +0000, Haakon Bugge wrote:
-> Thanks for the review, Bjørn!
-> ...
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: d22b6c061c9911a8d0f76c6e902c951455c8c4ba  Merge branch 'pm-runtime-cleanup' into bleeding-edge
 
-> >> +	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_RELAX_EN   |
-> >> +				    PCI_EXP_DEVCTL_PAYLOAD    |
-> >> +				    PCI_EXP_DEVCTL_EXT_TAG    |
-> >> +				    PCI_EXP_DEVCTL_PHANTOM    |
-> >> +				    PCI_EXP_DEVCTL_AUX_PME    |
-> >> +				    PCI_EXP_DEVCTL_NOSNOOP_EN |
-> >> +				    PCI_EXP_DEVCTL_READRQ     |
-> >> +				    PCI_EXP_DEVCTL_BCR_FLR);
-> >> 
-> > Instead of listing the bits we *don't* want to touch, I think we
-> > should explicitly *include* CERE, NFERE, FERE, URRE.  Maybe we should
-> > move the PCI_EXP_AER_FLAGS #define to drivers/pci/pci.h so we could
-> > use it directly, e.g.,
-> > 
-> >  hpx->pci_exp_devctl_and |= ~PCI_EXP_AER_FLAGS;
-> >  hpx->pci_exp_devctl_or &= PCI_EXP_AER_FLAGS;
-> 
-> Good idea. But what about moving it to include/uapi/linux/pci_regs.h
-> and also rename it from PCI_EXP_AER_FLAGS to PCI_EXP_DEVCTL_AER, to
-> match the convention for DEVCTL in pci_regs.h?
+elapsed time: 732m
 
-I suggested drivers/pci/pci.h because (so far) the only need for
-PCI_EXP_AER_FLAGS is in drivers/pci, and that set of flags seems like
-an OS policy.  Most of pci_regs.h is basically translating the PCI
-spec into #defines, without any real usage or policy parts.  I'm not
-sure whether PCI_EXP_AER_FLAGS would be useful to userspace.
+configs tested: 212
+configs skipped: 3
 
-> >> 	if (pcie_cap_has_lnkctl(dev)) {
-> >> +		u16 lnkctl;
-> >> 
-> >> -		/*
-> >> -		 * If the Root Port supports Read Completion Boundary of
-> >> -		 * 128, set RCB to 128.  Otherwise, clear it.
-> >> -		 */
-> >> -		hpx->pci_exp_lnkctl_and |= PCI_EXP_LNKCTL_RCB;
-> >> -		hpx->pci_exp_lnkctl_or &= ~PCI_EXP_LNKCTL_RCB;
-> >> -		if (pcie_root_rcb_set(dev))
-> >> -			hpx->pci_exp_lnkctl_or |= PCI_EXP_LNKCTL_RCB;
-> >> -
-> >> -		pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
-> >> -			~hpx->pci_exp_lnkctl_and, hpx->pci_exp_lnkctl_or);
-> >> +		pcie_capability_read_word(dev, PCI_EXP_LNKCTL, &lnkctl);
-> >> +		if (lnkctl)
-> >> +			pci_warn(dev, "Some bits in PCIe Link Control are set: 0x%04x\n",
-> >> +				 lnkctl);
-> >> 
-> > Sorry, I wasn't clear about this.  I meant that we could log the
-> > LNKCTL AND/OR values from _HPX, not the values from PCI_EXP_LNKCTL
-> > itself.  There will definitely be bits set in PCI_EXP_LNKCTL in normal
-> > operation, which is perfectly fine.
-> > 
-> > But if pci_exp_lnkctl_and or pci_exp_lnkctl_or are non-zero, the
-> > platform is telling us to do something, and we're ignoring it.
-> > *That's* what I think we might want to know about.  pci_info() is
-> > probably sufficient; the user doesn't need to *do* anything with it, I
-> > just want it in case we need to debug an issue.
-> 
-> My bad, Yes, that makes more sense to me. And, you're OK with
-> removing the RCB tweaking as well?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Good question.  My hope is that the code here is just to make sure
-that we don't *clear* PCI_EXP_LNKCTL_RCB when we want it set but a
-type 2 record might clear it by mistake.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-22
+arc                                 defconfig    gcc-15.2.0
+arc                        nsimosci_defconfig    gcc-15.2.0
+arc                   randconfig-001-20260116    gcc-8.5.0
+arc                   randconfig-002-20260116    gcc-8.5.0
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                       aspeed_g5_defconfig    gcc-15.2.0
+arm                        clps711x_defconfig    clang-22
+arm                                 defconfig    gcc-15.2.0
+arm                            dove_defconfig    gcc-15.2.0
+arm                       imx_v4_v5_defconfig    clang-22
+arm                             mxs_defconfig    gcc-15.2.0
+arm                         nhk8815_defconfig    clang-22
+arm                   randconfig-001-20260116    gcc-8.5.0
+arm                   randconfig-002-20260116    gcc-8.5.0
+arm                   randconfig-003-20260116    gcc-8.5.0
+arm                   randconfig-004-20260116    gcc-8.5.0
+arm                        shmobile_defconfig    gcc-15.2.0
+arm                       spear13xx_defconfig    clang-22
+arm                    vt8500_v6_v7_defconfig    gcc-15.2.0
+arm64                            allmodconfig    clang-22
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260116    clang-22
+arm64                 randconfig-002-20260116    clang-22
+arm64                 randconfig-003-20260116    clang-22
+arm64                 randconfig-004-20260116    clang-22
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260116    clang-22
+csky                  randconfig-002-20260116    clang-22
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260116    clang-20
+hexagon               randconfig-002-20260116    clang-20
+i386                             allmodconfig    clang-20
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386        buildonly-randconfig-001-20260116    gcc-12
+i386        buildonly-randconfig-002-20260116    gcc-12
+i386        buildonly-randconfig-003-20260116    gcc-12
+i386        buildonly-randconfig-004-20260116    gcc-12
+i386        buildonly-randconfig-005-20260116    gcc-12
+i386        buildonly-randconfig-006-20260116    gcc-12
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260116    clang-20
+i386                  randconfig-002-20260116    clang-20
+i386                  randconfig-003-20260116    clang-20
+i386                  randconfig-004-20260116    clang-20
+i386                  randconfig-005-20260116    clang-20
+i386                  randconfig-006-20260116    clang-20
+i386                  randconfig-007-20260116    clang-20
+i386                  randconfig-011-20260116    clang-20
+i386                  randconfig-012-20260116    clang-20
+i386                  randconfig-013-20260116    clang-20
+i386                  randconfig-014-20260116    clang-20
+i386                  randconfig-015-20260116    clang-20
+i386                  randconfig-016-20260116    clang-20
+i386                  randconfig-017-20260116    clang-20
+loongarch                        allmodconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260116    clang-20
+loongarch             randconfig-002-20260116    clang-20
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                                defconfig    clang-19
+m68k                       m5249evb_defconfig    clang-22
+m68k                        mvme147_defconfig    gcc-15.2.0
+m68k                        mvme16x_defconfig    clang-22
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                      bmips_stb_defconfig    clang-22
+mips                  cavium_octeon_defconfig    clang-22
+mips                           ci20_defconfig    clang-22
+mips                           ip28_defconfig    clang-22
+mips                  maltasmvp_eva_defconfig    clang-22
+mips                          rm200_defconfig    clang-22
+mips                        vocore2_defconfig    clang-22
+nios2                            allmodconfig    clang-22
+nios2                             allnoconfig    clang-22
+nios2                               defconfig    clang-19
+nios2                 randconfig-001-20260116    clang-20
+nios2                 randconfig-002-20260116    clang-20
+openrisc                         allmodconfig    clang-22
+openrisc                          allnoconfig    clang-22
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                           allyesconfig    clang-19
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260116    clang-22
+parisc                randconfig-002-20260116    clang-22
+parisc64                            defconfig    clang-19
+powerpc                    adder875_defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                      cm5200_defconfig    clang-22
+powerpc                      cm5200_defconfig    gcc-15.2.0
+powerpc                   currituck_defconfig    clang-22
+powerpc                       eiger_defconfig    clang-22
+powerpc                  iss476-smp_defconfig    gcc-15.2.0
+powerpc                      katmai_defconfig    clang-22
+powerpc                 mpc837x_rdb_defconfig    clang-22
+powerpc                     mpc83xx_defconfig    clang-22
+powerpc                  mpc866_ads_defconfig    gcc-15.2.0
+powerpc                    mvme5100_defconfig    clang-22
+powerpc                      ppc44x_defconfig    gcc-15.2.0
+powerpc               randconfig-001-20260116    clang-22
+powerpc               randconfig-002-20260116    clang-22
+powerpc                    sam440ep_defconfig    clang-22
+powerpc                         wii_defconfig    clang-22
+powerpc64             randconfig-001-20260116    clang-22
+powerpc64             randconfig-002-20260116    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260116    gcc-15.2.0
+riscv                 randconfig-002-20260116    gcc-15.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260116    gcc-15.2.0
+s390                  randconfig-002-20260116    gcc-15.2.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                               allyesconfig    clang-19
+sh                        apsh4ad0a_defconfig    clang-22
+sh                                  defconfig    gcc-14
+sh                         ecovec24_defconfig    clang-22
+sh                 kfr2r09-romimage_defconfig    clang-22
+sh                    randconfig-001-20260116    gcc-15.2.0
+sh                    randconfig-002-20260116    gcc-15.2.0
+sh                          rsk7201_defconfig    gcc-15.2.0
+sh                          rsk7269_defconfig    clang-22
+sh                          sdk7786_defconfig    clang-22
+sh                           se7721_defconfig    gcc-15.2.0
+sh                            shmin_defconfig    clang-22
+sh                             shx3_defconfig    clang-22
+sparc                            alldefconfig    gcc-15.2.0
+sparc                             allnoconfig    clang-22
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260116    gcc-10.5.0
+sparc                 randconfig-002-20260116    gcc-10.5.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260116    gcc-10.5.0
+sparc64               randconfig-002-20260116    gcc-10.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260116    gcc-10.5.0
+um                    randconfig-002-20260116    gcc-10.5.0
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260116    gcc-14
+x86_64      buildonly-randconfig-002-20260116    gcc-14
+x86_64      buildonly-randconfig-003-20260116    gcc-14
+x86_64      buildonly-randconfig-004-20260116    gcc-14
+x86_64      buildonly-randconfig-005-20260116    gcc-14
+x86_64      buildonly-randconfig-006-20260116    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260116    clang-20
+x86_64                randconfig-002-20260116    clang-20
+x86_64                randconfig-003-20260116    clang-20
+x86_64                randconfig-004-20260116    clang-20
+x86_64                randconfig-005-20260116    clang-20
+x86_64                randconfig-006-20260116    clang-20
+x86_64                randconfig-011-20260116    clang-20
+x86_64                randconfig-012-20260116    clang-20
+x86_64                randconfig-013-20260116    clang-20
+x86_64                randconfig-014-20260116    clang-20
+x86_64                randconfig-015-20260116    clang-20
+x86_64                randconfig-016-20260116    clang-20
+x86_64                randconfig-071-20260116    clang-20
+x86_64                randconfig-072-20260116    clang-20
+x86_64                randconfig-073-20260116    clang-20
+x86_64                randconfig-074-20260116    clang-20
+x86_64                randconfig-075-20260116    clang-20
+x86_64                randconfig-076-20260116    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                           alldefconfig    clang-22
+xtensa                            allnoconfig    clang-22
+xtensa                           allyesconfig    clang-22
+xtensa                randconfig-001-20260116    gcc-10.5.0
+xtensa                randconfig-002-20260116    gcc-10.5.0
 
-We should audit PCI_EXP_LNKCTL_RCB usage to be sure that if we remove
-this code, PCI_EXP_LNKCTL_RCB will still be set whenever it needs to
-be set.  If we rely on the existence of an _HPX type 2 record for it
-to be set, that would be completely wrong.
-
-Bjorn
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
