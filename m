@@ -1,159 +1,109 @@
-Return-Path: <linux-acpi+bounces-20401-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20402-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4410ED3220B
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 14:52:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C16D32672
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 15:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 403863039850
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 13:52:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70B7A302A978
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jan 2026 14:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A003E26CE0A;
-	Fri, 16 Jan 2026 13:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3D283FFB;
+	Fri, 16 Jan 2026 14:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZktaIa27"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F89C27EFEE;
-	Fri, 16 Jan 2026 13:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C519AD5C;
+	Fri, 16 Jan 2026 14:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768571563; cv=none; b=QMq7X+uva+4tJfAJo3nlJb3lchU0JuUg23BK3jpoa8RLa3BJ45uM1MnKSj9v4O5saculFPFcFuztM3MrqDMgGAQoCbBEjmdUu0Cz6IrTD4z839l8iMsxyuX6hiKPAshKs6/LaatKNjYfuDZWI4OUJMoTh5znqz3cVsHl2vhrnBo=
+	t=1768572473; cv=none; b=TXKW2pGzzbM3YszAv0iA88PQNCANrZhlCNMJcZN9ymSGtKDg+X5t66MWMSvzQ81/JB9DMv3mW3IrQabUsobEyvCWeY9ngt2DdxtRh+k+/ps6JulrY/9fzjI/xhmtFnztwqHSk+4C4/akWNoorNNSaEDrOpsLrqC2oGIOIDiri2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768571563; c=relaxed/simple;
-	bh=ePIBmy4uz5Cl1vlbgFHt/CqUq1vnrvc8+nwgdpWrECo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOibmhK2o6txoiE6nsOTMKLIKUTf2/epIGUSo5dl8vi+UKIYzaKPPixoAwuANmqL2vfd7l+3yhd1g2Gbrz7+0XRVpbGm8v/OoNZYYfJRvP/zuzWEDKEIa3fu3vsZqyYbpi5Ibvz1qzNZx3DmhqUU1Lj+Suzfln0JMJsGL+BSYPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 422631515;
-	Fri, 16 Jan 2026 05:52:34 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.197.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABBA93F632;
-	Fri, 16 Jan 2026 05:52:39 -0800 (PST)
-Date: Fri, 16 Jan 2026 13:52:37 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI/PPTT: Check total CPU numbers when a CPU can't
- be found in PPTT table
-Message-ID: <aWpCpecZr7o0qIw2@bogus>
-References: <20260116072943.26322-1-feng.tang@linux.alibaba.com>
+	s=arc-20240116; t=1768572473; c=relaxed/simple;
+	bh=eapDR7Fiku9DAgANS8q4KICYHlZJQrVNU7ACVjQ8crg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MI71PbD3+nvkVyKo+Yzxa0f1mo6rSMLPe14jk5DKfxGz5YHDk7pc+3YPuj47sW2mjQNmrDtRaPFLumlV2aXCcXbbevpue2aAsyhy7X3ugNQQ0RELuZGh61s3pWyGHJWUx0PMWAhPlFLgC+myaCRH0Vl0/pt45dRcqa2E29B4hSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZktaIa27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26215C116C6;
+	Fri, 16 Jan 2026 14:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768572473;
+	bh=eapDR7Fiku9DAgANS8q4KICYHlZJQrVNU7ACVjQ8crg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=ZktaIa27Pwx1ZVigKY9j03yCEeYYwraKkGm5HMy5wgXq/c3nyVLCStJx/cgojGrdx
+	 Bq7r6Eazv+uwNgpPn3Ajsf94Vhnws0gMDWm+ziJidJMYRzOPx/h/RkVILw8njZl0cn
+	 /m7grO6t8JInbhl7J0g9YNyTFX//8aJF42mk4QIrDtpv0/e1ketdOe2fA6ekm+AMla
+	 bf4niqKj3X2II1l7iW00RgyCRuCayzpHhl4NDhlsPuZKGWmDhA7FEaSRs0k63S3bod
+	 nC2eiJsYJLdiKyPXra3IV+ROZ68dP5KqdKArVUqzgc14h9agS7UK0A0ZvuVell6NdX
+	 9u8oIlw8OqN4g==
+From: Mark Brown <broonie@kernel.org>
+Date: Fri, 16 Jan 2026 14:07:40 +0000
+Subject: [PATCH] mailbox: pcc: Remove spurious IRQF_ONESHOT usage
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116072943.26322-1-feng.tang@linux.alibaba.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260116-mailbox-pcc-non-threaded-irq-v1-1-916b093329cd@kernel.org>
+X-B4-Tracking: v=1; b=H4sIACxGamkC/yXMwQrCMAwA0F8ZORtoKhvor4iHLs1cRNuZThmM/
+ bt1Ht/lrVDEVAqcmxVMPlo0pwo6NMBjSDdBjdXgne8cUYvPoI8+LzgxY8oJ59EkRImo9kLi4E/
+ dkcS1BLWYTAZd9v5y/bu8+7vw/Dth2773XqEegAAAAA==
+X-Change-ID: 20260115-mailbox-pcc-non-threaded-irq-1ca29631e051
+To: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Aishwarya TCV <Aishwarya.TCV@arm.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1300; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=eapDR7Fiku9DAgANS8q4KICYHlZJQrVNU7ACVjQ8crg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpakY37nNngFmII63IJoMuFzEG8RVbUnOBeWq+z
+ HOVxCFlVpqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaWpGNwAKCRAk1otyXVSH
+ 0LgOB/9VP2w4vZa0eV0fskCdzsXJYwqowFHxJc+huh8yvNLMaK7Bo1BJp4E18M6kbyvsQttJyZ5
+ haNQdCwPMcfF+dDvydAoOxgq4wca9PGSgRLs8sypRXPbe8ccvuGasbJBGHmVweMe1HciCFbY+eZ
+ 42n/mPUP7FigydWyfvM8fYHhwlvZgtDL11di/6PCNU4UfC/uV12LBABBlWkspLJScIlnnlWQHVx
+ menXKrJlYqgQU8ZGh04fPftV91w6soeAfYD//15t7sXTdoi6lna5EgWaqxfr61NFIaVI3L56TUU
+ DbLWWQJQF0HjqWNkuNVpoJnUXOi+jDDpAmQj5sfgTBUGxfYs
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, Jan 16, 2026 at 03:29:43PM +0800, Feng Tang wrote:
-> There was a bug that kernel printed error message:
-> " ACPI PPTT: PPTT table found, but unable to locate core 1 (1)"
-> and later on the kernel met issues when building up scheduler domain.
-> 
-> Debug showed the kernel actually brought up all 8 CPUs successfully
-> (MADT and other table worked fine), while the PPTT table was broken
-> as it only had 4 CPUs in total.
-> 
-> Add check for number of CPU of PPTT table against system CPU number,
-> and warn if they are not equal, to help debugging similar issues.
-> 
-> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-> ---
-> Changelog:
-> 
->   v3
->   * Only check the number of CPUs in PPTT table againt system
->     CPU count when error happens, instead of dump all the CPU/cache
-> 	entries (Sudeep/Rafael)
-> 
->   v2
->   * rebase againt 6.19 and refine the commit log
-> 
->  drivers/acpi/pptt.c | 40 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index de5f8c018333..9958c3961001 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -529,6 +529,43 @@ static void acpi_pptt_warn_missing(void)
->  	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
->  }
->  
-> +static void pptt_verify_cpu_count(struct acpi_table_header *table_hdr)
-> +{
-> +	struct acpi_subtable_header *entry;
-> +	unsigned long end;
-> +	struct acpi_pptt_processor *cpu;
-> +	u8 len;
-> +	int nr_pptt_cpus = 0;
-> +	static bool checked;
-> +
-> +	if (checked)
-> +		return;
-> +
-> +	end = (unsigned long)table_hdr + table_hdr->length;
-> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-> +				sizeof(struct acpi_table_pptt));
-> +
-> +	while ((unsigned long)entry + sizeof(struct acpi_pptt_processor) <= end) {
-> +		len = entry->length;
-> +		if (!len) {
-> +			pr_warn("Invalid zero length subtable\n");
-> +			return;
-> +		}
-> +
-> +		cpu = (struct acpi_pptt_processor *)entry;
-> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-> +		if (cpu->header.type == ACPI_PPTT_TYPE_PROCESSOR &&
-> +		    (cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE))
-> +			nr_pptt_cpus++;
-> +	}
-> +
-> +	if (nr_pptt_cpus != num_possible_cpus())
+The PCC code currently specifies IRQF_ONESHOT if the interrupt could
+potentially be shared but doesn't actually use request_threaded_irq() and
+the interrupt handler does not use IRQ_WAKE_THREAD so IRQF_ONESHOT is
+never relevant. Since commit aef30c8d569c ("genirq: Warn about using
+IRQF_ONESHOT without a threaded handler") specifying it has resulted in a
+WARN_ON(), fix this by removing IRQF_ONESHOT.
 
-This is going to be tricky. I recall some config option that sets all
-`NR_CPUS` as possible. In short it will break if that is enabled.
+Reported-by: Aishwarya TCV <Aishwarya.TCV@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/mailbox/pcc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +		pr_warn("The number of CPUs (%d) in PPTT table doesn't match system's CPU count (%d)!\n",
-> +			nr_pptt_cpus, num_possible_cpus());
-> +
-> +	checked = true;
-> +}
-> +
->  /**
->   * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
->   * @table: Pointer to the head of the PPTT table
-> @@ -565,6 +602,9 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
->  	}
->  	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
->  		    cpu, acpi_cpu_id);
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index ff292b9e0be9..060489e5ae6d 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -552,7 +552,7 @@ static int pcc_startup(struct mbox_chan *chan)
+ 
+ 	if (pchan->plat_irq > 0) {
+ 		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
+-						IRQF_SHARED | IRQF_ONESHOT : 0;
++						IRQF_SHARED : 0;
+ 		rc = devm_request_irq(chan->mbox->dev, pchan->plat_irq, pcc_mbox_irq,
+ 				      irqflags, MBOX_IRQ_NAME, chan);
+ 		if (unlikely(rc)) {
 
-I was expecting the above log will be improved to just say possible mismatch
-with cpu count.
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260115-mailbox-pcc-non-threaded-irq-1ca29631e051
 
-> +
-> +	/* Check whether PPTT table's CPU count match with system count */
-> +	pptt_verify_cpu_count(table);
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
 
-Today it is a request to check the CPU count; tomorrow it will be something
-else in the PPTT. Where do we draw the line on PPTT validation in the kernel?
-These issues ultimately need to be fixed in firmware, and the firmware
-should not depend on the kernel to precisely identify what is wrong in
-the PPTT tables.
-
--- 
-Regards,
-Sudeep
 
