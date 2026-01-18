@@ -1,293 +1,233 @@
-Return-Path: <linux-acpi+bounces-20417-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20418-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA995D38DF0
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Jan 2026 12:00:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D17BD39467
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Jan 2026 12:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 46AF5300B023
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Jan 2026 10:59:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 586F9304DB5C
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Jan 2026 11:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1680313298;
-	Sat, 17 Jan 2026 10:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F18332C92B;
+	Sun, 18 Jan 2026 11:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RI9Qr64n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLfpnukQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5E93128DF;
-	Sat, 17 Jan 2026 10:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696CE32C33E;
+	Sun, 18 Jan 2026 11:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768647598; cv=none; b=tIg69ny+cW3j+jOeTPjxx9crBq3QR+Y281HOJL5hIUOK6YCl1JmVlDD8q4n0mDqQkWbMyx23LGUgIXFzzZD+bC9PFSW21tH/68JCXDUEJCWWW2poa92QOJjLK25t6+LYER60r4gA/93mm/ZB/CgzLC/CAphbpc1w/7DXdVwsWCc=
+	t=1768734040; cv=none; b=iAhr1GdreQeibEAri/vjW86tXZ8S7vY22uO2lUl2YQj25st8eH6eJAME1b7K/nuYsexYYgdnmvVlM1/VpD+pLHpcY2UsRd3jJsINa+J/GsbXI2mQ82mcbP+w2+w9R8j05YmU6cHmQHaiSj09FY5GP6XS5KIfjVRMaGVjaKacSsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768647598; c=relaxed/simple;
-	bh=XrpTOB7cY4I77LN2JHLPO8zuJxrFmCYl4bgYKFpH9KU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=YQ3i9378eIlXLNDrKvNuacbJglJy8k7d5it57qRFEfC74Z06D29vaLp791/kC0tQSyFLUIXy50DpbFIjv79LYKICekqlckPAMnGdyaM++2suaJiWpxyA8jNL3zfzcKfSXC6gSLnZCKSwWXHe41YV20lQfzYdrvDPkjQJHAGQ5xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RI9Qr64n; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768647597; x=1800183597;
-  h=date:from:to:cc:subject:message-id;
-  bh=XrpTOB7cY4I77LN2JHLPO8zuJxrFmCYl4bgYKFpH9KU=;
-  b=RI9Qr64nijAVHCNeYrQpZxvqTclMafkfajiPN5hyguUCGnsA69FYaGjK
-   zAfVw/I13E4sxcaGOa84lRcCBeoP8fY8fYd7eF8GSIuyZjk9xxvVcBfF3
-   v2LEkqKVm0DbZz/k5mu+IH0j3/Ei7ZtMjTBk2TtogQo9wXqxqtlqdFs4O
-   4zCSq8lKA6VyzvuNzD2hsLXdRmOloJQK33lMYqlLK+pAVPA4nqCb03Dw2
-   FcQep2DhNqXFVxt+eAuB58LmUUlClXOn67fzFz72wNb1gIv+K9XytYby6
-   gdMdvuu/I/3yOjKqolvWDjMZLXbH4mgXBl5fNUSTtSEXKsgmglTzFhDuu
-   g==;
-X-CSE-ConnectionGUID: PYcqtdbbRhiN9k9XZthwTA==
-X-CSE-MsgGUID: SGKTxva3TrCysofCny7q6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69839216"
-X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; 
-   d="scan'208";a="69839216"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2026 02:59:54 -0800
-X-CSE-ConnectionGUID: mQYvhpO0TWCqppSZXFvhiA==
-X-CSE-MsgGUID: OKOtZ4QdT4W2X6ZJguJsjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; 
-   d="scan'208";a="205484261"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 17 Jan 2026 02:59:52 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vh421-00000000LmU-474l;
-	Sat, 17 Jan 2026 10:59:49 +0000
-Date: Sat, 17 Jan 2026 18:59:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- f32a1ef7d46f78c7dde6aa42407a7f305e10e419
-Message-ID: <202601171816.BgtVzf6m-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1768734040; c=relaxed/simple;
+	bh=ckRbPlV/dNYcRGTMbUnR2/FtLqhLVon9hSop/7dGzKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=af80+q9QISqxkcrw7BIQ6hDSowCEVlWd9kjwrhP6HDTS+flPW2LEROujj14/0AqK4aoTra+9ZIL9OzI3Qz+03jJavUIG8cS2xFlchy15iXzjQ19DqtpsnrOf85UCosU8ZEM3XTAD/IVlpFbeYEXAqMYC1z29RD3AdOprW1oUKOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLfpnukQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2DDC2BC86;
+	Sun, 18 Jan 2026 11:00:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768734038;
+	bh=ckRbPlV/dNYcRGTMbUnR2/FtLqhLVon9hSop/7dGzKw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gLfpnukQteg9gXxZAA5U22BLRPHRZf5n1G0LRszlaEIYFLLcBeZ5LBU4FTmlgpcc5
+	 e81VAkSqwpQdfLeIG2dYmoQRP1Bv2/dhin0F6HdhXKwV4RL8gfqCBKlLKI8xqOcLnr
+	 GseLEL1A3gdCjXBQA04tP2Rz+1pcDha+sNdp364A24ii9zzEaYG3byU+MojhKEchAP
+	 rOPjDP6tt97QuesvpZBqs99r2pxqH4n2BD9h118jHjq4m5Wsp2QtaIvNLH6MkyzcTU
+	 ZsIdYcp6sdoPyH1FfbVn/MxQ8tNTLw9H836ZWNsOk0/DCl9/KDv+tWRvVhkJjLvcSx
+	 FWxtauzLnWHBw==
+Date: Sun, 18 Jan 2026 12:00:31 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] irqchip/gic-v5: Code first ACPI boot support
+Message-ID: <aWy9T3VDyXpVG41z@lpieralisi>
+References: <20260115-gicv5-host-acpi-v3-0-c13a9a150388@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115-gicv5-host-acpi-v3-0-c13a9a150388@kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: f32a1ef7d46f78c7dde6aa42407a7f305e10e419  Merge branch 'pm-runtime-cleanup' into bleeding-edge
+On Thu, Jan 15, 2026 at 10:50:46AM +0100, Lorenzo Pieralisi wrote:
+> The ACPI and ACPI IORT specifications were updated to support bindings
+> required to describe GICv5 based systems.
+> 
+> The ACPI specification GICv5 bindings ECR [1] were approved and the
+> required changes merged in the ACPICA upstream repository[5].
+> 
+> The Arm IORT specification [2] has been updated to include GICv5 IWB
+> specific bindings in revision E.g.
+> 
+> Implement kernel code that - based on the aforementioned bindings - adds
+> support for GICv5 ACPI probing.
+> 
+> ACPICA changes supporting the bindings were posted [6] - this series
+> depends on [6] to work and should not be merged stand alone.
 
-elapsed time: 915m
+Hi Thomas, Rafael,
 
-configs tested: 202
-configs skipped: 3
+I have noticed you pulled this seris into tip (thanks !) - there
+is a strict dependency on ACPICA patches in [6] though as I tried
+to convey with the paragraph above and dependencies below:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+prerequisite-message-id: <12822121.O9o76ZdvQC@rafael.j.wysocki>
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-22
-arc                              allyesconfig    gcc-15.2.0
-arc                          axs103_defconfig    gcc-15.2.0
-arc                         haps_hs_defconfig    clang-22
-arc                   randconfig-001-20260117    gcc-12.5.0
-arc                   randconfig-002-20260117    gcc-12.5.0
-arm                               allnoconfig    clang-22
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.2.0
-arm                          pxa3xx_defconfig    clang-22
-arm                   randconfig-001-20260117    gcc-12.5.0
-arm                   randconfig-002-20260117    gcc-12.5.0
-arm                   randconfig-003-20260117    gcc-12.5.0
-arm                   randconfig-004-20260117    gcc-12.5.0
-arm64                            allmodconfig    clang-19
-arm64                            allmodconfig    clang-22
-arm64                             allnoconfig    gcc-15.2.0
-arm64                 randconfig-001-20260117    clang-22
-arm64                 randconfig-002-20260117    clang-22
-arm64                 randconfig-003-20260117    clang-22
-arm64                 randconfig-004-20260117    clang-22
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                  randconfig-001-20260117    clang-22
-csky                  randconfig-002-20260117    clang-22
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-22
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon               randconfig-001-20260117    clang-22
-hexagon               randconfig-002-20260117    clang-22
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260117    gcc-13
-i386        buildonly-randconfig-002-20260117    gcc-13
-i386        buildonly-randconfig-003-20260117    gcc-13
-i386        buildonly-randconfig-004-20260117    gcc-13
-i386        buildonly-randconfig-005-20260117    gcc-13
-i386        buildonly-randconfig-006-20260117    gcc-13
-i386                  randconfig-001-20260117    gcc-14
-i386                  randconfig-002-20260117    gcc-14
-i386                  randconfig-003-20260117    gcc-14
-i386                  randconfig-004-20260117    gcc-14
-i386                  randconfig-005-20260117    gcc-14
-i386                  randconfig-006-20260117    gcc-14
-i386                  randconfig-007-20260117    gcc-14
-i386                  randconfig-011-20260117    gcc-14
-i386                  randconfig-012-20260117    gcc-14
-i386                  randconfig-013-20260117    gcc-14
-i386                  randconfig-014-20260117    gcc-14
-i386                  randconfig-015-20260117    gcc-14
-i386                  randconfig-016-20260117    gcc-14
-i386                  randconfig-017-20260117    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-22
-loongarch                         allnoconfig    clang-22
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260117    clang-22
-loongarch             randconfig-002-20260117    clang-22
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                        bcm47xx_defconfig    clang-22
-mips                           ip30_defconfig    clang-22
-mips                          malta_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-22
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260117    clang-22
-nios2                 randconfig-002-20260117    clang-22
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260117    clang-22
-parisc                randconfig-002-20260117    clang-22
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                      bamboo_defconfig    gcc-15.2.0
-powerpc                   motionpro_defconfig    clang-22
-powerpc                      ppc64e_defconfig    gcc-15.2.0
-powerpc               randconfig-001-20260117    clang-22
-powerpc               randconfig-002-20260117    clang-22
-powerpc                    socrates_defconfig    gcc-15.2.0
-powerpc                     tqm8548_defconfig    clang-22
-powerpc64             randconfig-001-20260117    clang-22
-powerpc64             randconfig-002-20260117    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260117    gcc-10.5.0
-riscv                 randconfig-002-20260117    gcc-10.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260117    gcc-10.5.0
-s390                  randconfig-002-20260117    gcc-10.5.0
-sh                               alldefconfig    gcc-15.2.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20260117    gcc-10.5.0
-sh                    randconfig-002-20260117    gcc-10.5.0
-sh                           se7751_defconfig    clang-22
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260117    gcc-14.3.0
-sparc                 randconfig-002-20260117    gcc-14.3.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260117    gcc-14.3.0
-sparc64               randconfig-002-20260117    gcc-14.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260117    gcc-14.3.0
-um                    randconfig-002-20260117    gcc-14.3.0
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260117    clang-20
-x86_64      buildonly-randconfig-002-20260117    clang-20
-x86_64      buildonly-randconfig-003-20260117    clang-20
-x86_64      buildonly-randconfig-004-20260117    clang-20
-x86_64      buildonly-randconfig-005-20260117    clang-20
-x86_64      buildonly-randconfig-006-20260117    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260117    clang-20
-x86_64                randconfig-002-20260117    clang-20
-x86_64                randconfig-003-20260117    clang-20
-x86_64                randconfig-004-20260117    clang-20
-x86_64                randconfig-005-20260117    clang-20
-x86_64                randconfig-006-20260117    clang-20
-x86_64                randconfig-011-20260117    clang-20
-x86_64                randconfig-012-20260117    clang-20
-x86_64                randconfig-013-20260117    clang-20
-x86_64                randconfig-014-20260117    clang-20
-x86_64                randconfig-015-20260117    clang-20
-x86_64                randconfig-016-20260117    clang-20
-x86_64                randconfig-071-20260117    clang-20
-x86_64                randconfig-072-20260117    clang-20
-x86_64                randconfig-073-20260117    clang-20
-x86_64                randconfig-074-20260117    clang-20
-x86_64                randconfig-075-20260117    clang-20
-x86_64                randconfig-076-20260117    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-22
-xtensa                  cadence_csp_defconfig    gcc-15.2.0
-xtensa                randconfig-001-20260117    gcc-14.3.0
-xtensa                randconfig-002-20260117    gcc-14.3.0
+I don't know what's best/easier to handle this dependency but it is there,
+I don't want it to cause you any trouble so I reported it as soon
+as I noticed.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks !
+Lorenzo
+
+> The ACPI bindings were prototyped in edk2 - code available in these
+> branches [3][4].
+> 
+> ===========================
+> Kernel implementation notes
+> ===========================
+> 
+> IRS and ITS probing is triggered using the standard irqchip ACPI probing
+> mechanism - there is no significant difference compared to previous GIC
+> versions other.
+> 
+> The only difference that is worth noting is that GICv3/4 systems include a
+> single MADT component describing the interrupt controller (ie GIC distributor)
+> whereas GICv5 systems include one or more IRSes. The probing code is
+> implemented so that an MADT IRS detection triggers probing for all IRSes
+> in one go.
+> 
+> The IWB driver probes like any other ACPI device. IORT code is updated so
+> that a deviceID for the IWB can be detected.
+> 
+> The only major change compared to GICv3/4 systems is the GSI namespace that
+> is split between PPI/SPI IRQs and IWB backed IRQs.
+> 
+> The main GSI handle - to map an IRQ - has to detect whether to look-up
+> using the top level GSI domain or an IWB domain in that the two IRQ
+> namespaces are decoupled.
+> 
+> IORT code implements the logic to retrieve an IWB domain by looking up its
+> IWB frame id, as described in [1].
+> 
+> Most important implementation detail worth noting is that - at this stage -
+> ACPI code is not capable of handling devices probe order IRQ dependency on
+> the interrupt controller driver their IRQ is routed to.
+> 
+> This is not an issue on GICv3/4 systems in that the full GIC hierarchy
+> probes earlier than any other device, so by the time IRQs mappings have to
+> be carried out (ie acpi_register_gsi()) the GIC drivers have already
+> probed.
+> 
+> On GICv5 systems, the IWB is modelled as a device and its device driver
+> probes at device_initcall time. That's when the IWB IRQ domain is actually
+> registered - which poses problems for devices whose IRQs are IWB routed and
+> require to resolve the IRQ mapping before the IWB driver has a chance to
+> probe.
+> 
+> Work on resolving devices<->IWB probe order dependency has started in
+> parallel with this series and will be posted shortly.
+> 
+> For PPI/SPI/LPI backed IRQs the probe dependency is not a problem because
+> in GICv5 systems the IRSes and ITSes probe early so their IRQ domain are
+> set in place before devices require IRQ mappings.
+> 
+> [1] https://github.com/tianocore/edk2/issues/11148
+> [2] https://developer.arm.com/documentation/den0049/eg
+> [3] https://github.com/LeviYeoReum/edk2/tree/levi/gicv5_patch
+> [4] https://github.com/LeviYeoReum/edk2-platforms/tree/levi/gicv5_patch
+> [5] https://github.com/acpica/acpica/commits/master/
+> [6] https://lore.kernel.org/linux-acpi/12822121.O9o76ZdvQC@rafael.j.wysocki/
+> 
+> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> ---
+> Changes in v3:
+> - Dropped ACPICA patches
+> - Split IRS OF refactoring into a separate patch
+> - Renamed new fwnode interface according to review
+> - Applied minor review comments
+> - Rebased on v6.19-rc5
+> - Link to v2: https://lore.kernel.org/r/20251218-gicv5-host-acpi-v2-0-eec76cd1d40b@kernel.org
+> 
+> Changes in v2:
+> - Cherry-picked ACPICA upstream changes
+> - Minor editorial changes
+> - Removed the "not for merging" tag because now ACPI specs are approved
+> - Rebased against v6.19-rc1
+> - Link to v1: https://lore.kernel.org/r/20251028-gicv5-host-acpi-v1-0-01a862feb5ca@kernel.org
+> 
+> ---
+> Lorenzo Pieralisi (6):
+>       irqdomain: Add parent field to struct irqchip_fwid
+>       PCI/MSI: Make the pci_msi_map_rid_ctlr_node() interface firmware agnostic
+>       irqchip/gic-v5: Split IRS probing into OF and generic portions
+>       irqchip/gic-v5: Add ACPI IRS probing
+>       irqchip/gic-v5: Add ACPI ITS probing
+>       irqchip/gic-v5: Add ACPI IWB probing
+> 
+>  drivers/acpi/arm64/iort.c                | 193 +++++++++++++++++++-----
+>  drivers/acpi/bus.c                       |   3 +
+>  drivers/irqchip/irq-gic-its-msi-parent.c |  43 +++---
+>  drivers/irqchip/irq-gic-v5-irs.c         | 247 ++++++++++++++++++++++++-------
+>  drivers/irqchip/irq-gic-v5-its.c         | 132 ++++++++++++++++-
+>  drivers/irqchip/irq-gic-v5-iwb.c         |  42 ++++--
+>  drivers/irqchip/irq-gic-v5.c             | 138 ++++++++++++++---
+>  drivers/pci/msi/irqdomain.c              |  23 ++-
+>  include/linux/acpi.h                     |   1 +
+>  include/linux/acpi_iort.h                |  11 +-
+>  include/linux/irqchip/arm-gic-v5.h       |   8 +
+>  include/linux/irqdomain.h                |  30 +++-
+>  include/linux/msi.h                      |   3 +-
+>  kernel/irq/irqdomain.c                   |  14 +-
+>  14 files changed, 734 insertions(+), 154 deletions(-)
+> ---
+> base-commit: d0e305301e82474223bf26185e86e7dc2eb85350
+> change-id: 20251022-gicv5-host-acpi-d59d6c1d3d07
+> prerequisite-message-id: <12822121.O9o76ZdvQC@rafael.j.wysocki>
+> prerequisite-patch-id: 9f722bfc7e4861af40637017a83826401b3958e4
+> prerequisite-patch-id: f619b4724a25a5c2b95032ef4c6d0b53dde45142
+> prerequisite-patch-id: 3738d015d93d77b3d381ba8de056be533df48794
+> prerequisite-patch-id: 50b1ee01b2ee63f6db21276ec24dadd645f8931e
+> prerequisite-patch-id: 6671f1c96dc89d5e375196e545c9750c2378f010
+> prerequisite-patch-id: b5d91dce8f61ab75796ba6a766d499d7321c0231
+> prerequisite-patch-id: 1f433eeb8848ce51c2b2fe601813939a042c6c0e
+> prerequisite-patch-id: 4f9aab64e4f4a75c18ae692bd903266069100d34
+> prerequisite-patch-id: 793a7b3fab40b903ffa0855e0db5336acb69505b
+> prerequisite-patch-id: 3eeebe1df8abadc1606cc6dadd15031ad46ff64f
+> prerequisite-patch-id: 3477bb220e91c9cdb4d778ce15e44babbefddf23
+> prerequisite-patch-id: 153be22f930d0c05bc04b37006bdb1e286883a92
+> prerequisite-patch-id: 1a7dcfd7e1317aeec52c772f3150c115e965af52
+> prerequisite-patch-id: 43a604c0109163e51a892d888c728794bca8a0a3
+> prerequisite-patch-id: 580debc0f26b7c301160504e2360de6765e7a179
+> prerequisite-patch-id: 15f2c86c557c835e4aed0cb914c23e04da1392ed
+> prerequisite-patch-id: 00986721db8da2e52c733971b482b9cf0c32910e
+> prerequisite-patch-id: 9d0607df90015bac8768549cbb0a19580f0b2661
+> prerequisite-patch-id: f478f56f3ded4d0ce43254418deb5e10f49555ef
+> prerequisite-patch-id: 6f9563683e92392564935f24cc5e8be23301790c
+> prerequisite-patch-id: 4d701f77a597391e0d04c5da3d6f1cb24d1e40d0
+> prerequisite-patch-id: d70577c2355648acbc7c857c5512df21280e917f
+> prerequisite-patch-id: 8c6408293baa1a758b0b0b4f078eaf7dbe1404e0
+> prerequisite-patch-id: 84008a72aa67b54af8a294a0fc07d2b6eaede597
+> prerequisite-patch-id: 97acab35d513bc6b091efa4185a9826262d5ed79
+> prerequisite-patch-id: 04652a3bfdf9f4fa2ba829631c899ea3569f11a2
+> 
+> Best regards,
+> -- 
+> Lorenzo Pieralisi <lpieralisi@kernel.org>
+> 
 
