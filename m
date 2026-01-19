@@ -1,297 +1,166 @@
-Return-Path: <linux-acpi+bounces-20422-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20423-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83BED3A6A5
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 12:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20600D3A79D
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 12:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BACA530875E1
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 11:18:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 561C430478F1
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 11:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A570D2C234E;
-	Mon, 19 Jan 2026 11:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6AF31BC84;
+	Mon, 19 Jan 2026 11:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UI6BANsZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iphJyRm9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AA22D1916;
-	Mon, 19 Jan 2026 11:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E752031B131
+	for <linux-acpi@vger.kernel.org>; Mon, 19 Jan 2026 11:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768821482; cv=none; b=YKNoaz5Nkj96Arj50nMR7UNPk8TSUsxb9UZoj8ZVxz2CD6OV1wfQNpIbIMvcn9xCLJxeTBWXcGMftbndy7OJUM7lttMbgQeqmWDot6rEmXsjkItyfnWKwixIDaOM5uMK2BlfcxgVb/MulZhvgEZXPi/59x4tACoZB2smmAr4V1Q=
+	t=1768823833; cv=none; b=BSipdiXmEXam2OyLbpFoK7nhtbqFEo2cLF32+eWewKeWfkyIQanzYIYKMUbw0IRV00CASxKWVMXEY7BYNpQhZnkhRlHXZk55i+W1U/c6bho7K75aH5ZG5tD7U6BTlOmZco4Dg3c0L51ej24e4E1EGhfEbtN5rVH7evH61oCEtqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768821482; c=relaxed/simple;
-	bh=XPLMKJ0mPRa+3xpcMU7T9MlRs9O0Q34i6inAof+61m0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bCV0L5yeCuNDgQE6PLckcJcJd8zbRKVO+urMtqSybJEUEUzbyNX7dLB+J/9lCDjuayjrtMBnsuZpC8xJ9FfO7gVGgSYsEpgIrshAQOdvGOcZDU4UCAlbN0OxxcvNTzB6ZrbJ/khyDTyqSyMwaf33UK268ankmXabbVtDKyNFkQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UI6BANsZ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B103240E019B;
-	Mon, 19 Jan 2026 11:17:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id hzHadV7cM7xx; Mon, 19 Jan 2026 11:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768821466; bh=TAX0hP36wyQvHEnz9i/MFLh0hu4HHRH7RkC1l5jU0s4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UI6BANsZJms/cMsQyx9NI0WajdfSiKOsXcvVS8AdbyQxwHurE1TnCzdtYtPha8Q1J
-	 NMiIZdUfX7gmnPpCM30UwyL1kGlYxq5AgSjTA+dIeJGflAkuFOOPw37cfMUD5aH2a/
-	 zSMKMnJOTSOcWUEfwCiO/F6iB5P5khgSCCaYrt+dpnZCR9CZnlBA3W2fBzu2zHf9h7
-	 EIwhJxC2/vPPeJOYqeiAOHFJP93C2Xr0Dsvp6iASvtQ/kt3uOqxwmK7ne60A/ViqYR
-	 mktEibnHEE7OefjMLILpo26O4abbErxLwKKY6yk/Nj4d1zf2N/Ut7PlGyNl/aVO1Y2
-	 CgctK4pHRdvWvxcO1v2TvUYtgU2urGxJDbTavLgCsEd7GnGS9ecZ7jC86UyXrD0Kia
-	 19VFNH3KoGE7Am3YFoPwvAkEECKYIorWwDH4FsxFpBIBwBm+rAGyZ0aa6UAeDGP6vi
-	 pUuKljxcPVvMaq0Ao0w32gKjwElLwRblDhgPQ8InU3Kw6Gj/zrUh1t5iHLBlrL1y9K
-	 kaIpTS6RwNDv5tdeHLmayCMJGbpQ9oYlqA1j8qACBBzdYceFOsAMo4g9XfU5YU9N85
-	 JzbKFz0bVZNsYlwctUpoWE5/RgYZvEWkIwQsfwBSUDcrOc5FzMCBi9o47ZGa/jsSGo
-	 bol7Lf4Gh4l1k2KL44R7ScSI=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B933C40E0028;
-	Mon, 19 Jan 2026 11:17:08 +0000 (UTC)
-Date: Mon, 19 Jan 2026 12:17:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	rdunlap@infradead.org, jonathan.cameron@huawei.com,
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
-Subject: Re: [PATCH v15 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20260119111701.GBaW4Sres045xnfkpz@fat_crate.local>
-References: <20260115143101.876-1-shiju.jose@huawei.com>
- <20260115143101.876-2-shiju.jose@huawei.com>
+	s=arc-20240116; t=1768823833; c=relaxed/simple;
+	bh=lN49dSWIXSzQVQ/AGceCiuBR2wnRoz/OfIwf9iCXlXI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oeFvKryNOSj7FxBUkOKPLku+hGxMdvbWEuO4eESVHQETnl+mz48LnyIL/ga1F7Qhbt6LYZzuI/tTZsszr3gALGd5ScLHkov4d7TNfPiBg0xmL6JihAsx/fdpZJou/3/JyEJDhRp2x7pZLaKY/YD9F9mw1qpcaSeMDoe1rHrt6tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iphJyRm9; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so2272663f8f.0
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Jan 2026 03:57:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768823830; x=1769428630; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rU5rVNMH9FwuytnsYY8KQix/3Ww8tOMfufmDlvcm95A=;
+        b=iphJyRm9MQ12u/fFaW4glSZ4FTpDK0y7Dyy4wgkB3/5YKCt0lLWIamzROXv7urDwft
+         7MAgAC94WfKPNItuSoGZW7dqV0JgP2VTWXvDaUVg3fK50fZwVEXCHQUXgak+V21fSUhO
+         1Ply2Vf/CRlcM9JGLCIm3frAjISjxENPR2IwT+eIXxpxAKpffIeJmdETCp5+uGSuEZQ9
+         XNz/9xCGEg3p5dzcA7bvUypsYNI/djWDPh8XEKL7pm3RRqbM9bsu5jcUNmkMZVReLXXn
+         DOPE0K9TsuFe5oBWqirNK1FPEAPHywsW+NcUgwVUFjBWoQhvdpk6Jk4hbYB0xik3c21s
+         Bj3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768823830; x=1769428630;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rU5rVNMH9FwuytnsYY8KQix/3Ww8tOMfufmDlvcm95A=;
+        b=f2N8FUB7DknRVkiFTutAVrNFbeAm3uh0g2l0jQe6xrh3RtL/TUV56UOIXTVeEMoTcY
+         kJvmiD2BOXkbHY9F6NaVeg/74Dgdd+x9/gl2iOvKrg0I54kyApCm4jOIXNW/0AmdNftP
+         Fyw9XGIbCQmG6Lp7vjusVkvZJB32pDNEnoscEZdm4UF10wmDKuustsFNVLSM0NDydq9g
+         nbawC5SkbF5/G//md7XvYb3uTDdvAE2PoVgjHMpk3OK2UppeIanfjPf+RKdw+2lL3M3+
+         hemOfU8Lg+6ii778zlrSuBppDaggXmz7LM5LtD+lyhhjVdLCRQrMpx+VuAVGy6QlS01P
+         RCJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWV+1+WKeCGquvKQ8wPnvRhTneEi7wJQC339I5LF9tvPWEW1K877AXpuLWR2OcLQSUvRzAZXkhCLpnE@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBOQxy3uLq+BITQJ2g+f+WLewBfxKXbhvK86DClwFoYJ+lECjI
+	V7DdfYyjHuI88Jt539R8/z4I388gl+q6IAQ2UBC55bcdfQ6hrOeeUDWV
+X-Gm-Gg: AZuq6aLGy+6/CAduP9zEuIj5c8tWf0HxMgLNi53UEGKFVJaPX+uaeB0XguzGmVuzqny
+	4wHSSJwjcFjy87irvj+dgTCqasAXbpGGhcqloCDMfebbEABZDUFHugfZCgijjfaUIKNhLAu6sIq
+	+R4o8c+2pmUUE1X6egJcqeB1A8UGFFZpfDQInNj006GhZfI8BGbFa8K7JfvJGkggoRX5LxMlKQr
+	9GxL3l/f6cysND4k1SfgWrXT/Huyi2vns542qe2wdc0JGs+cjrSagytO71v4xb3LAyDU4u53oJ4
+	YxL3F4ULChkevkZINfqABmpWdelTF27lqm+Zj8+xa3zN+oS8iga2UBVguDkqx71d/dVIIehl7A2
+	JDj4I4yYizcE+IBfFINUygWLXpKN9A6ohh10yMdxMcT/INPsrqCKORv9s2guA1xzBML1WYodgkV
+	mvL2WH5FZPgodWbXgWVuPX2uZD/KBN6RBGaBBUeKA2ho9V7Rd/xTOW/UF4lTminoJa/baa5sHqV
+	osZkAhdt+0fTQs6v4/yhzcRMEGb3A6VSIoEjOwSdGR8hA==
+X-Received: by 2002:a5d:5d03:0:b0:431:a50:6ead with SMTP id ffacd0b85a97d-4356a02c4e5mr12617439f8f.20.1768823829908;
+        Mon, 19 Jan 2026 03:57:09 -0800 (PST)
+Received: from ?IPV6:2003:f6:f71c:a900:884f:578f:4f43:4e3f? (p200300f6f71ca900884f578f4f434e3f.dip0.t-ipconnect.de. [2003:f6:f71c:a900:884f:578f:4f43:4e3f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569927007sm22420038f8f.16.2026.01.19.03.56.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 03:57:09 -0800 (PST)
+Message-ID: <a3e23d6c-8cbf-42be-8ca9-3fd68dca6998@gmail.com>
+Date: Mon, 19 Jan 2026 12:56:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260115143101.876-2-shiju.jose@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI/ACPI: Confine program_hpx_type2 to the AER bits
+To: Bjorn Helgaas <helgaas@kernel.org>, Haakon Bugge <haakon.bugge@oracle.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@suse.de>,
+ Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Johannes Thumshirn <jth@kernel.org>, Myron Stowe <myron.stowe@redhat.com>
+References: <20260116211135.GA959225@bhelgaas>
+Content-Language: en-US
+From: Johannes Thumshirn <morbidrsa@gmail.com>
+In-Reply-To: <20260116211135.GA959225@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 15, 2026 at 02:30:58PM +0000, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
-> Driver adds support for RAS2 feature table, which provides interfaces for
-> platform RAS features, e.g., for HW-based memory scrubbing, and logical to
-> PA translation service. RAS2 uses PCC channel subspace for communicating
-> with the ACPI compliant HW platform.
-> 
-> Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
-> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/acpi/Kconfig  |  10 +
->  drivers/acpi/Makefile |   1 +
->  drivers/acpi/bus.c    |   3 +
->  drivers/acpi/ras2.c   | 414 ++++++++++++++++++++++++++++++++++++++++++
->  include/acpi/ras2.h   |  57 ++++++
->  5 files changed, 485 insertions(+)
->  create mode 100644 drivers/acpi/ras2.c
->  create mode 100644 include/acpi/ras2.h
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index ca00a5dbcf75..7f846c22fc30 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -293,6 +293,16 @@ config ACPI_CPPC_LIB
->  	  If your platform does not support CPPC in firmware,
->  	  leave this option disabled.
->  
-> +config ACPI_RAS2
-> +	bool "ACPI RAS2 driver"
-> +	select AUXILIARY_BUS
-> +	depends on MAILBOX
-> +	depends on PCC
-> +	help
-> +	  This driver adds support for RAS2 feature table provides interfaces
-> +	  for platform RAS features, e.g., for HW-based memory scrubbing.
-> +	  Say 'y/n' to enable/disable ACPI RAS2 support.
-> +
->  config ACPI_PROCESSOR
->  	tristate "Processor"
->  	depends on X86 || ARM64 || LOONGARCH || RISCV
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index d1b0affb844f..abfec6745724 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -105,6 +105,7 @@ obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
->  obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
->  obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
->  obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
-> +obj-$(CONFIG_ACPI_RAS2)		+= ras2.o
->  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
->  obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
->  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index a984ccd4a2a0..b02ceb2837c6 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -31,6 +31,7 @@
->  #include <acpi/apei.h>
->  #include <linux/suspend.h>
->  #include <linux/prmt.h>
-> +#include <acpi/ras2.h>
->  
->  #include "internal.h"
->  
-> @@ -1474,6 +1475,8 @@ static int __init acpi_init(void)
->  	acpi_debugger_init();
->  	acpi_setup_sb_notify_handler();
->  	acpi_viot_init();
-> +	acpi_ras2_init();
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
-> new file mode 100644
-> index 000000000000..f27676e61a9c
-> --- /dev/null
-> +++ b/drivers/acpi/ras2.c
-> @@ -0,0 +1,414 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ACPI RAS2 feature table driver.
-> + *
-> + * Copyright (c) 2024-2025 HiSilicon Limited.
-> + *
-> + * Support for RAS2 table - ACPI 6.5 Specification, section 5.2.21, which
-> + * provides interfaces for platform RAS features, e.g., for HW-based memory
-> + * scrubbing, and logical to PA translation service. RAS2 uses PCC channel
-> + * subspace for communicating with the ACPI compliant HW platform.
-> + */
-> +
-> +#define pr_fmt(fmt) "ACPI RAS2: " fmt
-> +
-> +#include <linux/delay.h>
-> +#include <linux/export.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/ktime.h>
-> +#include <acpi/pcc.h>
-> +#include <acpi/ras2.h>
-> +
-> +/**
-> + * struct ras2_sspcc - Data structure for PCC communication
-> + * @mbox_client:	struct mbox_client object
-> + * @pcc_chan:		Pointer to struct pcc_mbox_chan
-> + * @comm_addr:		Pointer to RAS2 PCC shared memory region
-> + * @pcc_lock:		PCC lock to provide mutually exclusive access
-> + *			to PCC channel subspace
-> + * @deadline_us:	Poll PCC status register timeout in micro secs
-> + *			for PCC command complete
-> + * @pcc_mpar:		Maximum Periodic Access Rate (MPAR) for PCC channel
-> + * @pcc_mrtt:		Minimum Request Turnaround Time (MRTT) in micro secs
-> + *			OS must wait after completion of a PCC command before
-> + *			issue next command
-> + * @last_cmd_cmpl_time:	completion time of last PCC command
-> + * @last_mpar_reset:	Time of last MPAR count reset
-> + * @mpar_count:		MPAR count
-> + * @pcc_id:		Identifier of the RAS2 platform communication channel
-> + * @last_cmd:		Last PCC command
-> + * @pcc_chnl_acq:	Status of PCC channel acquired
-> + */
-> +struct ras2_sspcc {
-> +	struct mbox_client		mbox_client;
-> +	struct pcc_mbox_chan		*pcc_chan;
-> +	struct acpi_ras2_shmem __iomem	*comm_addr;
-> +	struct mutex			pcc_lock;
-> +	unsigned int			deadline_us;
-> +	unsigned int			pcc_mpar;
-> +	unsigned int			pcc_mrtt;
-> +	ktime_t				last_cmd_cmpl_time;
-> +	ktime_t				last_mpar_reset;
-> +	int				mpar_count;
-> +	int				pcc_id;
-> +	u16				last_cmd;
-> +	bool				pcc_chnl_acq;
-> +};
-> +
-> +/*
-> + * Arbitrary retries for PCC commands because the remote processor
-> + * could be much slower to reply. Keeping it high enough to cover
-> + * emulators where the processors run painfully slow.
-> + */
-> +#define PCC_NUM_RETRIES 600ULL
-> +
-> +#define RAS2_MAX_NUM_PCC_DESCS 100
-> +#define RAS2_FEAT_TYPE_MEMORY 0x00
-> +
-> +static int decode_cap_error(u32 cap_status)
-> +{
-> +	switch (cap_status) {
-> +	case ACPI_RAS2_NOT_VALID:
-> +	case ACPI_RAS2_NOT_SUPPORTED:
-> +		return -EPERM;
-> +	case ACPI_RAS2_BUSY:
-> +		return -EBUSY;
-> +	case ACPI_RAS2_FAILED:
-> +	case ACPI_RAS2_ABORTED:
-> +	case ACPI_RAS2_INVALID_DATA:
-> +		return -EINVAL;
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +static int check_pcc_chan(struct ras2_sspcc *sspcc)
-> +{
-> +	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
-> +	u16 status;
-> +	int rc;
-> +
-> +	/*
-> +	 * As per ACPI spec, the PCC space will be initialized by
-> +	 * platform and should have set the command completion bit when
-> +	 * PCC can be used by OSPM.
-> +	 *
-> +	 * Poll PCC status register every 3us for maximum of 600ULL * PCC
-> +	 * channel latency until PCC command complete bit is set.
-> +	 */
-> +	rc = readw_relaxed_poll_timeout(&gen_comm_base->status, status,
-> +					status & PCC_STATUS_CMD_COMPLETE, 3,
-> +					sspcc->deadline_us);
-> +	if (rc) {
-> +		pr_warn("PCC check channel timeout for pcc_id=%d rc=%d\n",
-> +			sspcc->pcc_id, rc);
+On 1/16/26 10:11 PM, Bjorn Helgaas wrote:
+> [+cc Johannes (author of e42010d8207f ("PCI: Set Read Completion
+> Boundary to 128 iff Root Port supports it (_HPX)"), Myron; start of
+> thread:
+> https://lore.kernel.org/r/20260113171522.3446407-1-haakon.bugge@oracle.com]
+>
+> On Fri, Jan 16, 2026 at 10:10:43AM +0000, Haakon Bugge wrote:
+>>> On Thu, Jan 15, 2026 at 03:39:21PM +0000, Haakon Bugge wrote:
+>>>> Thanks for the review, Bjørn!
+>>>> ...
+> I should have mentioned this earlier, but I think the commit log
+> should include something about the problem this change fixes.  I
+> assume that the current code changes ExtTag and/or RO, and that causes
+> something bad.  That's what is motivating this change.
+>
+>>>>>> if (pcie_cap_has_lnkctl(dev)) {
+>>>>>> + u16 lnkctl;
+>>>>>>
+>>>>>> - /*
+>>>>>> -  * If the Root Port supports Read Completion Boundary of
+>>>>>> -  * 128, set RCB to 128.  Otherwise, clear it.
+>>>>>> -  */
+>>>>>> - hpx->pci_exp_lnkctl_and |= PCI_EXP_LNKCTL_RCB;
+>>>>>> - hpx->pci_exp_lnkctl_or &= ~PCI_EXP_LNKCTL_RCB;
+>>>>>> - if (pcie_root_rcb_set(dev))
+>>>>>> - hpx->pci_exp_lnkctl_or |= PCI_EXP_LNKCTL_RCB;
+>>>>>> -
+>>>>>> - pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
+>>>>>> - ~hpx->pci_exp_lnkctl_and, hpx->pci_exp_lnkctl_or);
+>>>>>> + pcie_capability_read_word(dev, PCI_EXP_LNKCTL, &lnkctl);
+>>>>>> + if (lnkctl)
+>>>>>> + pci_warn(dev, "Some bits in PCIe Link Control are set: 0x%04x\n",
+>>>>>> +  lnkctl);
+>>>>>>
+>>>>> Sorry, I wasn't clear about this.  I meant that we could log the
+>>>>> LNKCTL AND/OR values from _HPX, not the values from
+>>>>> PCI_EXP_LNKCTL itself.  There will definitely be bits set in
+>>>>> PCI_EXP_LNKCTL in normal operation, which is perfectly fine.
+>>>>>
+>>>>> But if pci_exp_lnkctl_and or pci_exp_lnkctl_or are non-zero, the
+>>>>> platform is telling us to do something, and we're ignoring it.
+>>>>> *That's* what I think we might want to know about.  pci_info()
+>>>>> is probably sufficient; the user doesn't need to *do* anything
+>>>>> with it, I just want it in case we need to debug an issue.
+>>>> My bad, Yes, that makes more sense to me. And, you're OK with
+>>>> removing the RCB tweaking as well?
+>>> Good question.  My hope is that the code here is just to make sure
+>>> that we don't *clear* PCI_EXP_LNKCTL_RCB when we want it set but a
+>>> type 2 record might clear it by mistake.
+>> Commit e42010d8207f ("PCI: Set Read Completion Boundary to 128 iff
+>> Root Port supports it (_HPX)") fixes the "opposite" case, where _HPX
+>> sets the RCB even though the RC does not support it. That commit
+>> removes any RCB setting from the type 2 record from the equation,
+>> and sets RCB if the RC has the bit set. And to me, that seems to be
+>> the correct behaviour.
+> Thanks for digging into that.  You're right that it looks like
+> e42010d8207f ("PCI: Set Read Completion Boundary to 128 iff Root Port
+> supports it (_HPX)") was motivated by a machine with a Root Port with
+> PCI_EXP_LNKCTL_RCB cleared, but an _HPX record telling us to set
+> PCI_EXP_LNKCTL_RCB.
 
-I'll stop here. This version still doesn't address comments from here:
+IIRC (this is nearly 10 years old) that's been the case. But back then 
+it clearly was a bios issue, but we decided to fix it in the kernel if 
+my memory serves me well.
 
-https://lore.kernel.org/r/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local
-
-so I'll wait for a new one which has everything addressed.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
