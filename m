@@ -1,130 +1,101 @@
-Return-Path: <linux-acpi+bounces-20420-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20421-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1152D399E3
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Jan 2026 21:55:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322CDD3A16E
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 09:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D92843007685
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Jan 2026 20:55:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63B82306B7B6
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 08:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3D73074A1;
-	Sun, 18 Jan 2026 20:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97B626B742;
+	Mon, 19 Jan 2026 08:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlKzeFi8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcrbC98R"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1EC3064A2
-	for <linux-acpi@vger.kernel.org>; Sun, 18 Jan 2026 20:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948033FEF;
+	Mon, 19 Jan 2026 08:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768769742; cv=none; b=qe/afFKafcyZGc4R7xXMXh6OXJ4deZpSmtR66tTN9Tc9QVkrieMzc+aLEtyabIk/hLlhznc+3tGT8OuWvo05LUF1kjaJ89czOoA+i/kCLqSJBD0nj1Z1xCB/BF3xn6JG0JiIZeQQ87x0Wc93W488kQqGPrH4wzI76yv+4MOIO2E=
+	t=1768810758; cv=none; b=AguxmpNUv/angHIlkbDvYtqBfzPM5E0fL+KdbytSnZEcHzT1LCYICyspB656NvFHRMMvuQUju8zAkwE3LW3IjOWvxFsFeYpxuFrfSwORyTA7gYA8x/HAjCeSZ/pAlwVSDk6tlSr3Ut+QUmLzGificq6KAHXAlUoiFHrtA5z53k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768769742; c=relaxed/simple;
-	bh=0IOeR/QlIEwrzeqzjdLr90v8L5HbfaxOxY7FREUT8KI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oJ474n2MtZPQYEkry99EL9oXGHal6XPNvDwUi4OW3YVRnfYUnUqUN69gBSmEomkCnDexHOxL8t3GOvX45yfn0MVyOKVJPgaQaA1/XD8QorPy68olH9olJxcFFjdTVjHc52RgJEoB8jHnWsgipa8UMOrkBPhVc0zX9G1s2lqsMP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlKzeFi8; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-45c7c841904so2222544b6e.3
-        for <linux-acpi@vger.kernel.org>; Sun, 18 Jan 2026 12:55:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768769740; x=1769374540; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7WE1A768m44bJfo3XKDJmxUdMA8aOFBeGUhlMA2XN3A=;
-        b=YlKzeFi89AyFxCxvGwvqwUceoMZSP07ZQz6LFC/5dnihFBWy8LhYx6eF6uI2InMSz6
-         z5/IPPWjg61E2F4Mlcskj2T9KK8BQiDT5D45XGg7UTyNvQ1PpT3gpLLxH1YTZbulN83R
-         EOMDsCutrHGecc5TPkIKJVJR5ut2NGUq7ubWMGxUFKi7ERy62UIn2mAmI//THPbr99fA
-         wgw8II1shl37ShWY8M2zkNbzeZm6AP3Gqjo5To/1OADUCyLX8RAwo6U4QstahTU8UJOJ
-         p1srK9br+4tk6uL1AwM5WI2iuYcOlatUYMvicTmp1+LN4FpqaDyE0AXTpNHR9RKyaYMN
-         TlFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768769740; x=1769374540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7WE1A768m44bJfo3XKDJmxUdMA8aOFBeGUhlMA2XN3A=;
-        b=bdZKz9IPLPNP5Qz+hbsxJDhL/qRlNDa/VVfSCkJ+1kl8+QSVvZC9mHpDlmxSi2XqrP
-         wloG4rEwe8IRjdB2/Qg4l8g3GZqbK/mHAL0+B4g9EdVzBJD8jJpKndHtXvmWG1dDBcmn
-         ISkWdnGZKhvr6gwTEiX3vQPew2sr0mrsy1YVrhLxG4PZCgeHWcLQv7w3Vdt1JVcXrgK2
-         itkRtN3Ok+tKDoeXTJZeBmuFtso9SF/Umud1Onw5Z28UJWM8U3/1WSvCCQlSYq14h+LW
-         m7JdCMCxNBt2Z5HdxnNP2+5A2Zs2jbOny5J0HJJQjB7o8+PBUu5EcWf+KNwzPjLsJyoR
-         urKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5nBL6yT91lq+nmorqU9DfohYcZXtUlWPVullV0MWHADkREigUXz9WfUDPoUuOjKk3JoLm0vvWSEmh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjYmBNfX3M/5EiSSpp4hXv0uCPQTaj0tvFyQ4uZ26HwWlsOliF
-	vvZq6dl3DaJRA0IeUUfbvwVIGv3oCDrXTj7KYkCgbk2oFMJOEbZtdWMM+46aGaDhCS2jemWb26s
-	AM3TvqQzUp5Tk5oMfmjkm2FMhe23HMdc=
-X-Gm-Gg: AY/fxX6IpOmoPr/icCWMDVshj2dlRLLd0P4I9v/ALGDWtYbJ5Wtoz6BCd/oLN0T1FZt
-	vKRsh5BnLjIj67ut0IgbTLqtp0dPBxI6Xf0yedEYjUQCAywVzFd25L7daY1T/YM8yTTFdO37YzD
-	IwHVMDZ8YD/eeSVEtGAUe3l9Z4JkIDm9KrXfA974oxQWIcWnK0V0MGCIBJA/USOH8qE2ItpL1ki
-	dhwtX5s+YNy7eRKquFKLZ2EWbUjIfMLEsoB+msFC+eV7WvDgGdIsUI4o7DVevzSnYTEBAof
-X-Received: by 2002:a05:6808:f94:b0:450:c456:10df with SMTP id
- 5614622812f47-45c9d8fbebamr4109264b6e.55.1768769740299; Sun, 18 Jan 2026
- 12:55:40 -0800 (PST)
+	s=arc-20240116; t=1768810758; c=relaxed/simple;
+	bh=KnZdaxE92jWhgcahWpcW1Rw0cpfimRfmShRC4yQuhFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCwH76zQFmftvUf7k8p5mreu6KAEd6YdvnUOvrNhVVXDKc8sMeux/+MJGJOmUxe3G+KYnz4AOKmApkT4rBAUs6QQv66XEjzYh7YPTFrgLyxrCF360rtg7Bmv6cZB2+Xyv1dxVx8ZSEk1fLjeJONNdM6i3cF0iKckkwb/Rl6Ebtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcrbC98R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E46C116C6;
+	Mon, 19 Jan 2026 08:19:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768810758;
+	bh=KnZdaxE92jWhgcahWpcW1Rw0cpfimRfmShRC4yQuhFk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XcrbC98RoIX7bAtmn6KsYQ5JJuJKDZp+ID7EqV3TmcY7ENSUA0pMyi3XccUImgNcu
+	 1e+C2iuXfVsurXF1vopPUnMH/Z69SZdydbBpB+P8jOuIH3f1y/dXRIU9X+iFbMF6uz
+	 6Zo2qC3PkIrqj3e1xzJQFcbf7epFyjEgroYrAtk7UHAN6oQAVGZCTYRm0ZochvWAck
+	 djeizrCyv3JYK17pqNfPOU0a9omzW5w/SrCwH2CGaU06EqLddKRzevMqV5uiRkBFiZ
+	 8KHjbJPA9YFNDnK/n3beVOV3mWhACZ3r1NG6itw2xOKcE/UzAIyyQp7GCXxs0d4JCN
+	 0LtpfDO81RYaA==
+Date: Mon, 19 Jan 2026 09:19:12 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] irqchip/gic-v5: Code first ACPI boot support
+Message-ID: <aW3pALPxn4i9fiDO@lpieralisi>
+References: <20260115-gicv5-host-acpi-v3-0-c13a9a150388@kernel.org>
+ <aWy9T3VDyXpVG41z@lpieralisi>
+ <87sec30yhk.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260116-mailbox-pcc-non-threaded-irq-v1-1-916b093329cd@kernel.org>
-In-Reply-To: <20260116-mailbox-pcc-non-threaded-irq-v1-1-916b093329cd@kernel.org>
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Sun, 18 Jan 2026 14:55:28 -0600
-X-Gm-Features: AZwV_Qizd63QYo8BVUHM6YfDzZGczlXwPXfwd7_I09id4r2khJDqDw1AZEqB5YE
-Message-ID: <CABb+yY1z36Tt+4EGzgcDp1GDZqVseNF7ZzLPGESrjPdbMdwksA@mail.gmail.com>
-Subject: Re: [PATCH] mailbox: pcc: Remove spurious IRQF_ONESHOT usage
-To: Mark Brown <broonie@kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>, Aishwarya TCV <Aishwarya.TCV@arm.com>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sec30yhk.ffs@tglx>
 
-On Fri, Jan 16, 2026 at 8:07=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> The PCC code currently specifies IRQF_ONESHOT if the interrupt could
-> potentially be shared but doesn't actually use request_threaded_irq() and
-> the interrupt handler does not use IRQ_WAKE_THREAD so IRQF_ONESHOT is
-> never relevant. Since commit aef30c8d569c ("genirq: Warn about using
-> IRQF_ONESHOT without a threaded handler") specifying it has resulted in a
-> WARN_ON(), fix this by removing IRQF_ONESHOT.
->
-> Reported-by: Aishwarya TCV <Aishwarya.TCV@arm.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  drivers/mailbox/pcc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index ff292b9e0be9..060489e5ae6d 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -552,7 +552,7 @@ static int pcc_startup(struct mbox_chan *chan)
->
->         if (pchan->plat_irq > 0) {
->                 irqflags =3D pcc_chan_plat_irq_can_be_shared(pchan) ?
-> -                                               IRQF_SHARED | IRQF_ONESHO=
-T : 0;
-> +                                               IRQF_SHARED : 0;
->                 rc =3D devm_request_irq(chan->mbox->dev, pchan->plat_irq,=
- pcc_mbox_irq,
->                                       irqflags, MBOX_IRQ_NAME, chan);
->                 if (unlikely(rc)) {
->
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20260115-mailbox-pcc-non-threaded-irq-1ca29631e051
->
-> Best regards,
-> --
-> Mark Brown <broonie@kernel.org>
->
-Applied to mailbox/for-next.
-Thanks.
+On Sun, Jan 18, 2026 at 03:47:03PM +0100, Thomas Gleixner wrote:
+> On Sun, Jan 18 2026 at 12:00, Lorenzo Pieralisi wrote:
+> > I have noticed you pulled this seris into tip (thanks !) - there
+> > is a strict dependency on ACPICA patches in [6] though as I tried
+> > to convey with the paragraph above and dependencies below:
+> >
+> > prerequisite-message-id: <12822121.O9o76ZdvQC@rafael.j.wysocki>
+> 
+> Duh. I completely missed that.
+> 
+> > I don't know what's best/easier to handle this dependency but it is there,
+> > I don't want it to cause you any trouble so I reported it as soon
+> > as I noticed.
+> 
+> I zap it from my tree for now until that's sorted.
+
+Hi Rafael,
+
+I think the simplest way to sort this out is for this series to go via
+the ACPI tree if that's OK for Thomas, given that the ACPICA code will
+go via the ACPI tree anyway and there are other dependencies on it there
+I assume (this series is fairly self-contained).
+
+Or I can hack together a patch that provides the ACPICA structs needed in an
+irqchip header file, conditional on the ACPICA version, add it to this series
+and remove it at 7.0-rc1, it does not make much sense to create this churn
+given that ACPICA code will be merged this cycle but it is doable.
+
+Please let me know how we can handle it.
+
+Thanks both !
+Lorenzo
 
