@@ -1,142 +1,163 @@
-Return-Path: <linux-acpi+bounces-20430-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20431-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135C6D3B606
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 19:44:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A32FD3B73B
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 20:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12EC93025126
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 18:43:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D8C7F3013BE7
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jan 2026 19:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD2D38E124;
-	Mon, 19 Jan 2026 18:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1530829B8E0;
+	Mon, 19 Jan 2026 19:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RVaYkFjc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Giwc7bAI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF67532B9AE
-	for <linux-acpi@vger.kernel.org>; Mon, 19 Jan 2026 18:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AD828136C
+	for <linux-acpi@vger.kernel.org>; Mon, 19 Jan 2026 19:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768848236; cv=none; b=l96Y5na9YXuL9OrBK0XbCvxkeMw9iIG8lIWkBT8Ny1pdU0pwCuX+0U+24yEJYuC5R3s5x+UaA2nS0uRJKUgWa5noqAs7W/B8DLAuANEiKouKYKuSGacYjuM+adECifKP9euH49TE2P5IxcyOgpPhKECrtAjR8/J27CEPkoE2nAk=
+	t=1768850623; cv=none; b=jJ7Vbn4/++ATPqiH7Z0Ko5e7Uw9h7wwM+Nw3MzDPzk5u2pzslrulNsOR11s5grI9Bml/WGLRaNG4UTNUEelEO+d5ML3GQUgN2tx2NJj0KLHCs720FAhWUvQQ6xh6B5YqewFizaEeBalx4i4ZHJfcE8qputpRvDZUCickqt8oaR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768848236; c=relaxed/simple;
-	bh=EORSyWTZBwNF1raDitypZ1JbYxUbDPTZfmSxwsWftPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rf+UlXXUBmwhv6PU3+cJP8VxFtz57Y3oiWZNNZhA6EnHfcTXtBV/TincMKCpe/615DELWqieh3EgQp1ASlDX/bulsXClt94078EPwsGngxuailRvTXIssNaSzk7AK4Cq+U8/4r1edIeJRZA30Qvr/2tvFjEZtW8JfIfXNiR9eHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RVaYkFjc; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0a8c2e822so10147585ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Jan 2026 10:43:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768848234; x=1769453034; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5rQM+3IbfMPNIay1Twh0Q12FnCMhsPC2tkfESLTSnl0=;
-        b=RVaYkFjcNB+tNs+p8Yy/KTAn1t5fKcinQwsG7PYclvjJzMvK0QV/xRKSYXkZEO5lof
-         2nnX57Tw7zhecLr1qt8ieNq92hO1iiQcpHc1tnFw9GIzjAwr5+W19bG+TesBeYvuYVU5
-         GPIYgLQGczrEMRdmLrPI8wcm35gOwoZKtxT5uPcfoGsk2P+7Pi899650ek1VgWaaE4UN
-         SbpebThWjjozr1PgzhAv1mS3O7b1BcrIX57cAIuL74AED8HEyvssg9Lq2E0TrjrFMoQF
-         UMleZ1inBJTSZZnCo6dCRNCg8l9iOld/3T2qtda84IfkfylcSXoaMj6F7mSz96kvSkR6
-         Yo4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768848234; x=1769453034;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5rQM+3IbfMPNIay1Twh0Q12FnCMhsPC2tkfESLTSnl0=;
-        b=Z9dGDJDK1LkkB4Qm544reqfFIJdd64jlUxwj7CxECDVCLHeNgfqbAWKdqznkopdGVM
-         KylpJ4cCDubZgDcvby57hvgZpGxBk4mxzl9CU0WKFjTNXuMvxp2J6VbW8VBj/hlVwdFF
-         mWY6IPZhWVpRCLE37ydll/6nfbhSIK2RgZ7K3TOB4xz5/BvhxOvF2CjAXqjdgWpg3CaE
-         7Y9pgGJdkxJZgIBW8bZym1YoNoGqcohoCGbZJYZgNqWsPwCZva2PCBtJ+dPnOYiqKJcY
-         PLyaaWydJ52iixm81d72ik/sVxzV5OxZ8rmAjr2XJ8zloUqflWXePcGG8IFCQr+8wyj5
-         GGQA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0i5aZzjjaV+lFfGefD7k2j9eMam9uUYS/mXj4Rmb7fbpcAY46bXxTxOczgPad/7od7z3flO35TIKF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yylv5RsX0gtj5QHQ4i4i5NuZjmEXYqJGx6E2JmOf5CI9HRC5i9R
-	E/kOoYTTGr1+wKfvGWh7jS3RxqnvQMhMB5QWaMHEyoSO49LS7bCdkzQd
-X-Gm-Gg: AZuq6aJwvwJ/BD+LW6jnwJOnPNGzSECdYOLfA5GJtvtQKHPQ6zRN3orzFXPBxODDe9p
-	EhOvVoQSOnZ5M5IV2jEgYPgi4UD+QASmth0SW3fDgRqZIlkLWqT/J5cQsStkDgbNvPAJH6jJY0q
-	h9aryvcE+njTESI+/YL27gLsfsCnRHliQylGpEjYmzO3DYcLFzD9KKhhUDa4p8zLo4WtE6WIE61
-	P5kJ1CxlfrNNuupaPCLmhxPn0GQKSXCgH8b7+/gyNQMO5OE5JWeqmmf6II9w4dHFAkhxOUxqKYr
-	iNLUQNwt2WeMjpMKVRc96RkAUJts17Wg//q0yx5mQem+wG5n9v5a69Un1jbqEb/7NrnRhfkKzJV
-	vYT+kPzjonGeiLx6s2L2Y3decYRSjQsuAvfc18044VrY8anZfywJEzrQSiVq42vgJ+o5nqeP1e2
-	IcdRlV6J6rzRXIJ2tbrXEhDCJdkV8BycwXHS0u06pUgS1yp18=
-X-Received: by 2002:a17:903:2304:b0:2a0:9424:7dc7 with SMTP id d9443c01a7336-2a7504df561mr3155255ad.4.1768848233978;
-        Mon, 19 Jan 2026 10:43:53 -0800 (PST)
-Received: from localhost.localdomain ([132.237.156.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190eee39sm99854165ad.45.2026.01.19.10.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 10:43:53 -0800 (PST)
-From: Shubhakar Gowda <shubakargowdaps@gmail.com>
-X-Google-Original-From: Shubhakar Gowda <Shubhakar_gowda.P_s@dell.com>
-To: dan.j.williams@intel.com
-Cc: vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shubhakar Gowda <Shubhakar_gowda.P_s@dell.com>
-Subject: [PATCH] ACPI: NFIT:Advertise DSM function 0xA (Query ARS error inject capabilities)
-Date: Tue, 20 Jan 2026 00:14:36 +0530
-Message-ID: <20260119184438.19942-1-Shubhakar_gowda.P_s@dell.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768850623; c=relaxed/simple;
+	bh=op3/P2MSJdQK6iBF+k3vH3PsFqSQVZQhP7I+Yu3NIyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ldwyYxLoBeIODEsYoYPJ/5iH8OIgkV/LBCHHgvDJZT+1x0GQfd4OW+r+aZS5w9I6yEJk9qX0ZDsiYQ45q0+zvm+gwwTp2PLFIJHPe39ZZ/bIrMafxu5xWLkU4dSS8Nmezqok+2JX2lwsBI1cKkIdUQr0ZZs2DzKbc0Gryi5RsHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Giwc7bAI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768850618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JvZTzX7KrxWHCJ296wpwtuLfLlM/lLeZzlLJIDHWg7A=;
+	b=Giwc7bAIMqrIZWxhqwxFlNmp6GPhTcGur0QgsJV4eK5UX0lzQ3V00csLsLJlLd/tqdFopE
+	LKxB/02lHxCMtFefGLixkLAL81on/rEw7jwqEqZidg+9vvtpH+E7LavUiT9KXurqnL3xVV
+	kF4tdTxUaq0pko8fxLX7Ol86GSPFsYs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-Ve4Z-nOvPqS9dPSA4JzqxQ-1; Mon,
+ 19 Jan 2026 14:23:35 -0500
+X-MC-Unique: Ve4Z-nOvPqS9dPSA4JzqxQ-1
+X-Mimecast-MFC-AGG-ID: Ve4Z-nOvPqS9dPSA4JzqxQ_1768850613
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C8A61800451;
+	Mon, 19 Jan 2026 19:23:33 +0000 (UTC)
+Received: from [10.44.32.102] (unknown [10.44.32.102])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BF7F21800577;
+	Mon, 19 Jan 2026 19:23:31 +0000 (UTC)
+Message-ID: <97cd04f6-827b-41b6-aab6-b5850c443dbe@redhat.com>
+Date: Mon, 19 Jan 2026 20:23:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] Best practice for ACPI representation of DPLL/Ethernet
+ dependencies (SyncE)
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ linux-acpi@vger.kernel.org
+References: <3bf214b9-8691-44f7-aa13-8169276a6c2b@redhat.com>
+ <aWgAfsycBDc0mlFv@smile.fi.intel.com>
+ <16e32f1c-8419-44cf-9da8-4c0cae6165e7@redhat.com>
+ <aWjpQhGyHXXjsx2b@smile.fi.intel.com>
+ <6debcd61-c60e-4436-8e31-c3210528b755@redhat.com>
+ <aW5mn9pXYOU-3djd@smile.fi.intel.com>
+ <a7b9b269-94a2-436d-b51a-cc2ffc98ea69@lunn.ch>
+ <aW5umnz8RdQiIzoi@smile.fi.intel.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <aW5umnz8RdQiIzoi@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-ACPI 6.6 defines DSM function index 0xA to Query Address Range Scrub
-(ARS) error injection capabilities. This patch adds support for this
-DSM function in the NFIT DSM mask so that userspace and ndctl tool can
-detect platform support for Query ARS error injection capabilities features.
 
-The patch updates NFIT initialization to include DSM 0xA, logs
-supported DSMs for debugging, and uses the existing DSM infrastructure.
-No kernel ABI changes are introduced.
 
-Signed-off-by: Shubhakar Gowda <Shubhakar_gowda.P_s@dell.com>
----
- drivers/acpi/nfit/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+On 1/19/26 6:49 PM, Andy Shevchenko wrote:
+> On Mon, Jan 19, 2026 at 06:43:55PM +0100, Andrew Lunn wrote:
+>>> P.S. Currently I can consider this as Plan B if we found no other better designs.
+>>> However it would be nice to see some review from network people, such as
+>>> Andrew Lunn and Vladimir Oltean. They know much more about networking HW
+>>> topologies and they have an expertise in ACPI.
+>>
+>> I've been reviewing the DT parts. And the DT Maintainers are also
+>> looking at the patches.
+>>
+>> But the question being addressed here is, do we want an ACPI binding,
+>> following ACPI guidelines etc. Or is it OK to just stuff the DT
+>> binding as is into ACPI tables?  No native ACPI binding?
+> 
+> It depends. If [6] was trying to address what [7] describes in the specification
+> and if the current problem with clock fits into all this, perhaps we need to
+> finalize the work started in [6].
+> 
+>> Putting DT into ACPI seems to be accepted when there is a long
+>> established DT binding, but ACPI has nothing. Which is common for
+>> networking with SoCs and Linux driving the hardware, not firmware. But
+>> this is all new, its a new DT binding, should there also be a new ACPI
+>> binding?
+> 
+> Yeah, I understood that point. Unfortunately I'm not so fluent in the Clock
+> related parts in ACPI, and I remember that Niyas did something in the area
+> while he was working for Linaro. Personally, I was interested only in pin
+> control integration part, so I haven't ever looked into other (missing)
+> parts he tried to develop.
+> 
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 5a1ced5..6cc863e 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2113,6 +2113,8 @@ enum nfit_aux_cmds {
- 	NFIT_CMD_ARS_INJECT_SET = 7,
- 	NFIT_CMD_ARS_INJECT_CLEAR = 8,
- 	NFIT_CMD_ARS_INJECT_GET = 9,
-+	/* ACPI 6.6: DSM function 0xA — Query ARS Error Inject Capabilities */
-+	NFIT_CMD_ARS_QUERY_CAP = 10,
- };
- 
- static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
-@@ -2152,10 +2154,13 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
- 		(1 << NFIT_CMD_TRANSLATE_SPA) |
- 		(1 << NFIT_CMD_ARS_INJECT_SET) |
- 		(1 << NFIT_CMD_ARS_INJECT_CLEAR) |
--		(1 << NFIT_CMD_ARS_INJECT_GET);
-+		(1 << NFIT_CMD_ARS_INJECT_GET)	|
-+		(1 << NFIT_CMD_ARS_QUERY_CAP);
- 	for_each_set_bit(i, &dsm_mask, BITS_PER_LONG)
- 		if (acpi_check_dsm(adev->handle, guid, 1, 1ULL << i))
- 			set_bit(i, &acpi_desc->bus_dsm_mask);
-+	dev_dbg(acpi_desc->dev, "NFIT DSM mask detected: %#lx\n",
-+	acpi_desc->bus_dsm_mask);
- 
- 	/* Enumerate allowed NVDIMM_BUS_FAMILY_INTEL commands */
- 	dsm_mask = NVDIMM_BUS_INTEL_FW_ACTIVATE_CMDMASK;
--- 
-2.43.0
+Hi all,
+per Rob's advice, we should reuse existing clock bindings for the
+relationship between DPLL device and network controller / phy.
+
+SyncE typically involves one or more clock outputs from network device
+connected to DPLL device and one output from DPLL routed back to the
+network device. The net device sends a signal received from the ethernet
+port to the DPLL. DPLL then locks on this signal, clears jitter and
+provides phase-aligned output signal back to the network device.
+
+This setup can be defined by this simplified DT example:
+
+&dpll0 {
+	...
+	#clock-cells = <1>;
+	clock-names = "ref0";
+	clocks = <&ethernet0 0>;
+	...
+};
+&ethernet0 {
+	...
+	#clock-cells = <0>;
+	clock-names = "synce_ref";
+	clocks = <&dpll0 5>;
+	...
+};
+
+In this example ethernet0's output 0 (aka rclk) produces clock for
+dpll0's input pin named "ref0" and dpll0's 5th output produces clock for
+ethernet0's input labelled "synce_ref".
+
+Based on [1] example this clock relationship can be represented by _DSD.
+Is it correct?
+
+Thanks,
+Ivan
+
+[1] 
+https://uefi.org/specs/ACPI/6.6/06_Device_Configuration.html#dsd-device-specific-data
 
 
