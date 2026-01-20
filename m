@@ -1,227 +1,329 @@
-Return-Path: <linux-acpi+bounces-20451-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20452-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMbYC0y9cGkRZgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20451-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 12:49:32 +0100
+	id 0Nc6NtMZcGkEVwAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20452-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 01:12:03 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CC456441
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 12:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B09894E5C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 01:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6A30A7055D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 13:31:20 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9D2272263E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 13:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9002642DFE6;
-	Tue, 20 Jan 2026 13:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451203D3D04;
+	Tue, 20 Jan 2026 13:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dhXb1qhU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OlZoXePb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400B53DA7C5
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Jan 2026 13:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197F642E01F;
+	Tue, 20 Jan 2026 13:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768915868; cv=none; b=eztjbmrwOYteBNu8vi8ptGoRPyrGVgFt5nrKzha3+MtzD3byEofnoiLbLHCTQtYNBXA4Z4cATB0jl7Fr3rgWI8mmTVavz/+5bSVz9xMk1Mwkzqnvy/4ZryKugAWdgYfAZaieev2Fnlk2SjfKxjmDZk9HaSwZVAJTYfPgUEuI5Us=
+	t=1768916646; cv=none; b=BPCMeaSLX8X/o+tScSpD1G4ImeSkQKIte0UO0/hL9CH0RgoqjFt6Y6ioIb8N7HfBBrUGwagByen7baQlcRZ5y1im+/jzUmFJCQjar2JIVfrK74Ckkni1vRPJ1p+LyzKTr7X1cQmYCdE4JpHnRSSSt81DaAJ79m5pddqn4rbvEwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768915868; c=relaxed/simple;
-	bh=K0muwfFcrFuu0cK4ER9Us6HYSeK+OV5htB8fao5HxUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=azrLXtoVdi7u0WnRk2TBYjq/1x177Mi1baio7inMGAJagzKE/P2H70t2fnHmAj5S7AjD/Nwo/ea/L9hKAqx+gSkRnp8rY9WgEsHjxWIWP7ddpOo3U8xd8151LtILK1oVORPPGe/fSyKIOn1KPEPQjmo+p/YWcSo/EE7dK1YPiXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dhXb1qhU; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1768916646; c=relaxed/simple;
+	bh=r/wgzgf0EkhTp6BMaxQZXx/C5WQztaEMFzHxhcyHpM4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lQduHgsDFddQ893cmVAgPt0/h/6ffBmolBDs4TyvIWAe1gtUGm1iMySrZUqBhXToN3M4tyDJ9nRV3MevqLWFOn/w12jP/bSrybvSUqIS+vj/a2s2ed+qu3oPc7IMrFDpxTjYCoQcWCrfR7Mt0648QaZWS875OnXwsobkozW6VQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OlZoXePb; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768915863; x=1800451863;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=K0muwfFcrFuu0cK4ER9Us6HYSeK+OV5htB8fao5HxUA=;
-  b=dhXb1qhU4yRz353dC7izwz1zbPLpiTvGUw9be+EY0aNfp7fwuj0dtrJF
-   +KKlOT2IQD7FzAqrbayFjDO8c2C6rJCNXQNxjU9I+2QPaBDD0YAc5ReaQ
-   qU/fQ7LScOgnqE79sWSMq+6Zb9l150U90iZ6H38sPh9LJgu7nmoy1kNdY
-   ZiwbJt5GhJT7BCOq1yxsizlIuX7b3jhp0MWBISnqMmTbqo915ibK0YAOZ
-   L8v+DfzJOauz18466Edh4HUxZatOzSicV/6Tf/qRQOgwHXEEupiajuAmA
-   7eUjOJ0d5LNY4CdA4iVzecTD6AzvxZCmtoh0ZU0O+wNdxSBoxghGuTe3w
-   A==;
-X-CSE-ConnectionGUID: BTrD75juRmak2Q2B8czrHA==
-X-CSE-MsgGUID: HC6f+E2xRI6pzQupmDSXDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81232419"
+  t=1768916644; x=1800452644;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=r/wgzgf0EkhTp6BMaxQZXx/C5WQztaEMFzHxhcyHpM4=;
+  b=OlZoXePbltDlUV1uPgMHvshdY2EgfFXCiQd+E/11ryqyBOXZTGtn7CWo
+   mk+3vTvu1+m9Ej/w7Uzb/0QywYdJ3sauUK7IzL6HEF9IqN+Rx2xwNialH
+   yyIXWc7SZw4QLV1ssvwEfS6ioeAE0FfuRbIT946ZxFVPJl4B+Ez0RkgJO
+   aD3hcHi5bxHBvi6VERlqBXZmo+j8oNjmNGt7mCra+2e2BHsAKUGa7Dbq5
+   HIKjHJb0VMiXjptUfgOLY9ldhLF0JycpX/LFfktsGpTfqazsw8t2FjEiP
+   60sci71ghQ4bw0MkhVAFs+0rLiSiy8A6LI4DWd3qA/9KM9lYfGJt419P8
+   g==;
+X-CSE-ConnectionGUID: qdaMXpY+Sb2jZ6P2ft1MPg==
+X-CSE-MsgGUID: LG93UodES2SxRWFfN3OUKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73979168"
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="81232419"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:31:03 -0800
-X-CSE-ConnectionGUID: tkJHdEecSjWuqcb03eytgA==
-X-CSE-MsgGUID: 3yDdCyUxTFywkdyTVygDNg==
+   d="scan'208";a="73979168"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:44:04 -0800
+X-CSE-ConnectionGUID: kylcqk4sRI6/LbV6iNC9PA==
+X-CSE-MsgGUID: h/Qob4EWRhO9dFdpqLY5pQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="205362834"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.240])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:31:02 -0800
-Date: Tue, 20 Jan 2026 15:30:59 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Ivan Vecera <ivecera@redhat.com>, Linus Walleij <linusw@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [Question] Best practice for ACPI representation of
- DPLL/Ethernet dependencies (SyncE)
-Message-ID: <aW-Dk7-g5x03RKBT@smile.fi.intel.com>
-References: <a7b9b269-94a2-436d-b51a-cc2ffc98ea69@lunn.ch>
- <aW5umnz8RdQiIzoi@smile.fi.intel.com>
- <97cd04f6-827b-41b6-aab6-b5850c443dbe@redhat.com>
- <aW6JNDr0ZoBjHMeS@smile.fi.intel.com>
- <00bc45f8-8847-4f64-b140-790a2567e6bc@redhat.com>
- <aW6UBBvFHP_gEg-V@smile.fi.intel.com>
- <CAD++jLkD3QX4CgEaDsS=4yMzc632Hk3DjYrSangoEbCrcV9JBg@mail.gmail.com>
- <9861f9da-5f5e-4b2a-ab3f-6ac1a3faebdd@redhat.com>
- <aW8sAyChG3hpycwp@smile.fi.intel.com>
- <CAJZ5v0j7hHgs_XEmNm=RKU8d09DMumN+nycfK+xDu-cNVZZOjQ@mail.gmail.com>
+   d="scan'208";a="243712663"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.246.69])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:43:59 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: "Nilawar, Badal" <badal.nilawar@intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+ linux-pci@vger.kernel.org, anshuman.gupta@intel.com, rafael@kernel.org,
+ lenb@kernel.org, bhelgaas@google.com, ilpo.jarvinen@linux.intel.com,
+ varun.gupta@intel.com, ville.syrjala@linux.intel.com,
+ uma.shankar@intel.com, karthik.poosa@intel.com, matthew.auld@intel.com,
+ sk.anirban@intel.com, raag.jadav@intel.com
+Subject: Re: [PATCH v6 06/12] drm/xe/vrsr: Enable VRSR on default VGA boot
+ device
+In-Reply-To: <431ce6be-b083-4002-8dc1-4be8e557d07c@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260113164200.1151788-14-badal.nilawar@intel.com>
+ <20260113164200.1151788-20-badal.nilawar@intel.com>
+ <64894565d5eace99fd65f290ee807dabaa2de04f@intel.com>
+ <aWkG5cEapt_attfS@intel.com>
+ <431ce6be-b083-4002-8dc1-4be8e557d07c@intel.com>
+Date: Tue, 20 Jan 2026 15:43:55 +0200
+Message-ID: <e522e352351d52da15c8a9d7f9332e48092f06d4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0j7hHgs_XEmNm=RKU8d09DMumN+nycfK+xDu-cNVZZOjQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	MID_RHS_MATCH_TO(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	TAGGED_FROM(0.00)[bounces-20451-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	HAS_ORG_HEADER(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20452-lists,linux-acpi=lfdr.de];
 	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: F3CC456441
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: B09894E5C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 01:30:57PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Jan 20, 2026 at 8:17 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Jan 20, 2026 at 06:39:31AM +0100, Ivan Vecera wrote:
-> > > On 1/20/26 12:34 AM, Linus Walleij wrote:
-> > > > On Mon, Jan 19, 2026 at 9:28 PM Andy Shevchenko
-> > > > <andriy.shevchenko@linux.intel.com> wrote:
+On Tue, 20 Jan 2026, "Nilawar, Badal" <badal.nilawar@intel.com> wrote:
+> On 15-01-2026 20:55, Rodrigo Vivi wrote:
+>> On Thu, Jan 15, 2026 at 04:25:06PM +0200, Jani Nikula wrote:
+>>> On Tue, 13 Jan 2026, Badal Nilawar <badal.nilawar@intel.com> wrote:
+>>>> The VRSR feature is to enhance the display screen refresh experience
+>>>> when the device exits from the D3cold state. Therefore, apply the VRSR
+>>>> feature to the default VGA boot device and when a display is connected.
+>>> I don't understand how you get from the 1st sentence "therefore" the 2nd
+>>> sentence. Please elaborate what you're trying to do here, and why.
+>> On a scenario with multiple GPU, only one can use the aux power and the
+>> feature itself was mainly designed for the display case - to bring up
+>> display faster after the d3cold.
+> This is to enhance screen refresh experience of primary display.
 
-(...)
+The way it's being added, it's just really oddly specific.
 
-> > > > > > > > Based on [1] example this clock relationship can be represented by _DSD.
-> > > > > > > > Is it correct?
-> > > > > > >
-> > > > > > > I didn't really get, is this a clock provider-consumer relations or pin
-> > > > > > > connections? If this is a pin connections, why there is no pin mux driver
-> > > > > > > for it?
-> > > > > >
-> > > > > > In fact this should be dpll provider-consumer schema. Consumer (e.g.
-> > > > > > net device, phy...) uses (consumes) DPLL service (frequency
-> > > > > > synchronization, ...) and DPLL device provides such service.
-> > > > > >
-> > > > > > Note that the pin in this context is DPLL pin not pin related to pinctrl
-> > > > > > or so...
-> > > > >
-> > > > > Right, so these are pins with special functions, which are not GPIO like.
-> > > > > But pin mux is not only about GPIO, that's the nice part of it.
-> > > > >
-> > > > > +Cc: Linus for his view on this issue.
-> > > >
-> > > > In theory a pin controller can be instantiated in any random driver that
-> > > > controls a few pins of its own to the outside world, just like we have a few
-> > > > few-pin GPIO chips here and there such as for USB serial adapters.
-> > > >
-> > > > In practice nobody does this, they have some driver-local way of handling
-> > > > pins and mux them around for their special use case.
-> > > >
-> > > > Graphic cards or audio would be an example. Much custom muxing
-> > > > happening there I think.
-> > > >
-> > > > I have no strong opinion on the subject, it's up to the driver author I think.
-> > > >
-> > > > ACPI aspects I can't talk about because I don't understand them...
-> > > >
-> > > > Hope this helps!
-> > >
-> > > I think we might be getting sidetracked by the specific subsystems
-> > > (pinctrl/GPIO/Clock).
-> >
-> > Yes, and this happens due to the DT point of view as far as I understood their
-> > preferences. If it's modeled as clock inputs and outputs we should consider the
-> > same in ACPI, otherwise it will be custom hack on top of the (agreed) way of
-> > solving the issue.
-> >
-> > Nature of the connection (and hence the responsible subsystem in the software)
-> > is the key here. Until we fully understand what's this, we can't properly model
-> > it.
-> >
-> > > The core problem I am trying to solve is modeling the linkage between
-> > > the two devices. The NIC acts as a consumer that needs to "know" about
-> > > the DPLL (the supplier) in the ACPI table.
-> > >
-> > > We need a way to tell the NIC driver: "Here is a handle to the DPLL
-> >
-> > "handle to device" in ACPI assumes the Device() object somewhere in
-> > the namespace. This is what you have in the ASL example.
-> >
-> > > device you are connected to, and here are the specific resource IDs
-> > > (pins) you are wired to. So a user (userspace) can monitor/configure
-> > > such DPLL inputs and outputs using DPLL Netlink API."
-> > >
-> > > Regardless of whether the underlying signal is a clock or a logic level,
-> > > the immediate requirement is simply resolving this cross-device dependency
-> > > so the NIC can identify these resources and report their IDs into userspace.
-> >
-> > Yes, but "simply" not always means "the best" in the long-term. As I said,
-> > your proposed idea doesn't contradict ACPI concepts, the problem is that
-> > it may lead to custom solution for the specific hardware and next one will
-> > create their own N + 1 way of solving the same issue.
-> 
-> And no one will ship the requisite data in the firmware.
-> 
-> > One note nevertheless, instead of "reg" property the ACPI has concept of _ADR
-> > method. We even have acpi_get_local_address() helper for that.
-> 
-> It's not exactly that.  _ADR is for device lookup on self-enumerable
-> buses, and I'm not sure if that's the use case here.
+>>
+>> But yes, the right explanation for the why needs to be here.
+> I will rephrase the explanation.
+>>
+>> Also, although unlikely, we never know what users can do out there, and
+>> perhaps we will have someone with multiple cards and display plugged in
+>> more than one?! We probably also need a global counter/flag to avoid
+>> a second one to quick in.
+>>
+>> But we definitely need to prioritize the first one with display connected.
+> At present there is no way to know which one is primary display that's 
+> why check is against default_vga_device.
+>>
+>>> So we have xe_pci_probe() -> xe_pm_init() -> xe_pm_vrsr_init() ->
+>>> xe_display_connected() -> intel_display_connected(), and that's the only
+>>> path and point in time to check whether displays are connected. If not,
+>>> the decision is "not VRSR capable", which is just a weird concusion to
+>>> make. The *capability* does not depend on displays, does it?
+>>>
+>>> If you boot a device without a display, and then plug in a display, no
+>>> VRSR for you?
+>> yeap, it looks like the check is in the wrong place. It needs to be
+>> checked when going to d3cold...
+>
+> Yes, VRSR will not be enabled if display is not connected at boot.
 
-Ah, thanks for chiming in. Indeed, 6.1.1. "_ADR (Address)" specifies that.
-Although we have some (mis)uses of _ADR in the cases when it corresponds
-to 'reg', exempli gratia the I²C mux ASL requires _ADR while I²C bus (behind
-the mux) is arguably self-enumerable.
+Why? And this needs to be properly explained in the commit message. The
+current one isn't enough.
+
+> *capability* does not depend on display but VRSR use case is.
+
+Please at least don't conflate the two. Don't determine capability based
+on whether the conditions on the use case exist.
+
+Contrast with, I don't know, FBC. The platform will still have FBC
+capability even if the conditions for enabling it aren't met.
+
+BR,
+Jani.
+
+
+>
+>>> More comments inline.
+>>>
+>>>> v2: Move generic display logic to i915/display (Jani)
+>>>>
+>>>> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+>>>> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+>>>> ---
+>>>>   drivers/gpu/drm/i915/display/intel_display.c | 22 ++++++++++++++++++++
+>>>>   drivers/gpu/drm/i915/display/intel_display.h |  1 +
+>>>>   drivers/gpu/drm/xe/display/xe_display.c      |  5 +++++
+>>>>   drivers/gpu/drm/xe/display/xe_display.h      |  2 ++
+>>>>   drivers/gpu/drm/xe/xe_pm.c                   |  5 +++++
+>>>>   5 files changed, 35 insertions(+)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+>>>> index 81b3a6692ca2..97c74272fb19 100644
+>>>> --- a/drivers/gpu/drm/i915/display/intel_display.c
+>>>> +++ b/drivers/gpu/drm/i915/display/intel_display.c
+>>>> @@ -8426,3 +8426,25 @@ bool intel_scanout_needs_vtd_wa(struct intel_display *display)
+>>>>   {
+>>>>   	return IS_DISPLAY_VER(display, 6, 11) && intel_display_vtd_active(display);
+>>>>   }
+>>>> +
+>>>> +bool intel_display_connected(struct intel_display *display)
+>>>> +{
+>>>> +	struct drm_connector *list_connector;
+>>>> +	struct drm_connector_list_iter iter;
+>>>> +	bool ret = false;
+>>>> +
+>>>> +	mutex_lock(&display->drm->mode_config.mutex);
+>>>> +	drm_connector_list_iter_begin(display->drm, &iter);
+>>>> +
+>>>> +	drm_for_each_connector_iter(list_connector, &iter) {
+>>>> +		if (list_connector->status == connector_status_connected) {
+>>>> +			ret = true;
+>>>> +			break;
+>>>> +		}
+>>>> +	}
+>>>> +
+>>>> +	drm_connector_list_iter_end(&iter);
+>>>> +	mutex_unlock(&display->drm->mode_config.mutex);
+>>>> +
+>>>> +	return ret;
+>>>> +}
+>>>> diff --git a/drivers/gpu/drm/i915/display/intel_display.h b/drivers/gpu/drm/i915/display/intel_display.h
+>>>> index f8e6e4e82722..20690aa59324 100644
+>>>> --- a/drivers/gpu/drm/i915/display/intel_display.h
+>>>> +++ b/drivers/gpu/drm/i915/display/intel_display.h
+>>>> @@ -560,5 +560,6 @@ bool assert_port_valid(struct intel_display *display, enum port port);
+>>>>   
+>>>>   bool intel_scanout_needs_vtd_wa(struct intel_display *display);
+>>>>   int intel_crtc_num_joined_pipes(const struct intel_crtc_state *crtc_state);
+>>>> +bool intel_display_connected(struct intel_display *display);
+>>>>   
+>>>>   #endif
+>>>> diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+>>>> index f8a831b5dc7d..54ed39b257ad 100644
+>>>> --- a/drivers/gpu/drm/xe/display/xe_display.c
+>>>> +++ b/drivers/gpu/drm/xe/display/xe_display.c
+>>>> @@ -64,6 +64,11 @@ bool xe_display_driver_probe_defer(struct pci_dev *pdev)
+>>>>   	return intel_display_driver_probe_defer(pdev);
+>>>>   }
+>>>>   
+>>>> +bool xe_display_connected(struct xe_device *xe)
+>>>> +{
+>>>> +	return intel_display_connected(xe->display);
+>>>> +}
+>>>> +
+>>>>   /**
+>>>>    * xe_display_driver_set_hooks - Add driver flags and hooks for display
+>>>>    * @driver: DRM device driver
+>>>> diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
+>>>> index 76db95c25f7e..11d4b09808e5 100644
+>>>> --- a/drivers/gpu/drm/xe/display/xe_display.h
+>>>> +++ b/drivers/gpu/drm/xe/display/xe_display.h
+>>>> @@ -37,6 +37,7 @@ void xe_display_pm_resume(struct xe_device *xe);
+>>>>   void xe_display_pm_runtime_suspend(struct xe_device *xe);
+>>>>   void xe_display_pm_runtime_suspend_late(struct xe_device *xe);
+>>>>   void xe_display_pm_runtime_resume(struct xe_device *xe);
+>>>> +bool xe_display_connected(struct xe_device *xe);
+>>>>   
+>>>>   #else
+>>>>   
+>>>> @@ -67,5 +68,6 @@ static inline void xe_display_pm_runtime_suspend(struct xe_device *xe) {}
+>>>>   static inline void xe_display_pm_runtime_suspend_late(struct xe_device *xe) {}
+>>>>   static inline void xe_display_pm_runtime_resume(struct xe_device *xe) {}
+>>>>   
+>>>> +static inline bool xe_display_connected(struct xe_device *xe) { return false; }
+>>> There was a blank line before #endif. Please keep it. Ditto throughout
+>>> the series.
+>>>
+>>>>   #endif /* CONFIG_DRM_XE_DISPLAY */
+>>>>   #endif /* _XE_DISPLAY_H_ */
+>>>> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+>>>> index 3fe673f0f87d..e7aa876ce9e0 100644
+>>>> --- a/drivers/gpu/drm/xe/xe_pm.c
+>>>> +++ b/drivers/gpu/drm/xe/xe_pm.c
+>>>> @@ -9,6 +9,7 @@
+>>>>   #include <linux/fault-inject.h>
+>>>>   #include <linux/pm_runtime.h>
+>>>>   #include <linux/suspend.h>
+>>>> +#include <linux/vgaarb.h>
+>>>>   
+>>>>   #include <drm/drm_managed.h>
+>>>>   #include <drm/ttm/ttm_placement.h>
+>>>> @@ -387,6 +388,7 @@ static int pci_acpi_aux_power_setup(struct xe_device *xe)
+>>>>   
+>>>>   static void xe_pm_vrsr_init(struct xe_device *xe)
+>>>>   {
+>>>> +	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+>>>>   	int ret;
+>>>>   
+>>>>   	if (!xe->info.has_vrsr)
+>>>> @@ -395,6 +397,9 @@ static void xe_pm_vrsr_init(struct xe_device *xe)
+>>>>   	if (!xe_pm_vrsr_capable(xe))
+>>>>   		return;
+>>>>   
+>>>> +	if (pdev != vga_default_device() || !xe_display_connected(xe))
+>>> Simply considering the places in the kernel that call
+>>> vga_default_device(), this just doesn't feel right.
+>> I also don't understand why to check this vga default device...
+>
+> As previously mentioned, a check for the default VGA device was added to 
+> determine if this is the primary display.
+>
+> Thanks,
+> Badal
+>
+>>
+>>>
+>>> BR,
+>>> Jani.
+>>>
+>>>
+>>>> +		return;
+>>>> +
+>>>>   	/*
+>>>>   	 * If the VRSR initialization fails, the device will proceed with the regular
+>>>>   	 * D3cold flow
+>>> -- 
+>>> Jani Nikula, Intel
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Jani Nikula, Intel
 
