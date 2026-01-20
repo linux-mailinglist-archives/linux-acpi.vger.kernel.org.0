@@ -1,500 +1,496 @@
-Return-Path: <linux-acpi+bounces-20464-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20469-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEj8Iranb2ndEgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20464-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:05:10 +0100
+	id cIq0BeGqb2lUEwAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20469-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:18:41 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5257D47095
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:05:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BDB47477
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AB03C7AC70F
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 15:14:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5588D9E9BDA
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 15:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D001D4611C6;
-	Tue, 20 Jan 2026 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86C52FF16F;
+	Tue, 20 Jan 2026 15:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UzHCXsoP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RHT0EzJG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010022.outbound.protection.outlook.com [40.93.198.22])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D8A45BD5F;
-	Tue, 20 Jan 2026 14:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE62B665;
+	Tue, 20 Jan 2026 15:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921111; cv=fail; b=YdIfLoSEsBm94AwCJPMJJGF9vCRoujd0YJnte9RmS9yJRDdFRc9POfS1fCfjMHGH0g6lGuFDB8eOnZ8UYgMAvDz56kKHClyA9uPVMSuTEuFpaBoEyNSIZGgHItFe2wsrKhAY2m8vyeyum1gHvhqDrYkhbufPQjt3ERXno+iGQBc=
+	t=1768923464; cv=fail; b=i11IBrJbHP2rUx8dTRr+Q4JixxwtnPmrySnzhdmhd9Zlk5aXrqNsAVYGGKJKeZayXqQael+toz3ECtvPWLbTsDwqmE6+XqDE6I3/VGLfgvFf1uAgDXH7SRajtByFmZBYHinoYbL4aYFx8zVbJrG5F83u42valRHio0hBnX38p2o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921111; c=relaxed/simple;
-	bh=mT/h+BhARbnb0XLGXvxJAnGs8tY0s6+qOtIbheT/MeM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aKWbVcfKjU9izG8LS+M9d5SnwBNLMfTY7B9xZft/A2gWO4psFGBXvmTB2YU2q1PhEsAhR/k5XC4EIw9pbYrfkb7HxBXLnVBRdjohLBmH3QZ4jOEGlE7sRMhDJsMDz9n5ZgrqzPhlWvRqGXoB97NcL/8eIHnMnT4V6Wjvli0XJFM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UzHCXsoP; arc=fail smtp.client-ip=40.93.198.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1768923464; c=relaxed/simple;
+	bh=vDm8OAm7QUAgOdXtGfLsq8HQrck3TZWuPJpolht+/aQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=n4qC2bfxa3k6Zu6f59h5XAFNGRtdlLO0GnnVAeRuZKxPjxoAk+2U9Rw7vjhsPRb++y3RnKac9PgqlE30IVdRXuQ/F5/Vcq0ZgXgdhZb/scGoHwDD6ey1ipaRMVl+Hfe+pyTkiAc5WBQh9nXx7I0qDh/DfbQKUEtDR2T5tcGaXu0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RHT0EzJG; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768923462; x=1800459462;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=vDm8OAm7QUAgOdXtGfLsq8HQrck3TZWuPJpolht+/aQ=;
+  b=RHT0EzJGeUs/CM1mXo4CP9eaFr//6YfwLviCobuy//3yW2AgGCua6vsX
+   Ab0vHQq8WMy0jkiS7O9HimDMkOsmfCUR6BFuKZ0JNIsKBfNN4RGH/RlhP
+   4TF9rYSzqCCQ4OB9Qn8IF3GcLYYLwy9QD5voxtWurbsv5+vaD/zYymu54
+   /pUhRw+JVC9T+vXrPIOuzWkdMTJmYrdcnpVs29a0mXZ9Gg1q+33mnL7Vo
+   J8Fnx0V1i6x0ObeLSnid/oqnS8CqsuGlT3ReY8YHY7yLP7SN+Vf17AgZX
+   u3As0YHWjRvFaYALEGA5XKyhLNijDMWuZJt0dmghDVg0VSreZL4EvjL2N
+   A==;
+X-CSE-ConnectionGUID: ICGbGHAKRYGyluISAdreYg==
+X-CSE-MsgGUID: MkOLWVu7Q0SI4CMmILSWMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="69149024"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="69149024"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 07:37:42 -0800
+X-CSE-ConnectionGUID: n4Uf7/TBRZ65aTvA1luWAw==
+X-CSE-MsgGUID: cjtismL9SbWKlDSqk+j18w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="205767006"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 07:37:42 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 20 Jan 2026 07:37:41 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 07:37:41 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.8) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 20 Jan 2026 07:37:41 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t7SisfxwkuLDqBiO7IJ4f51EL+hPYFjzX3KUuj64+GSESatB5XMFIzD+gSd8KE7bsaByu/wHjH65Zk0h9630CmZSmFFiQIbUXJ9hMfDmi4XJ673Rf7nZjKtgu5S7zPKenRVB3gADXPhN/6+qceS9c2AphSqVGLi6YQen50fmrUJmhcGSD/c7qHEhupRQALl9XZRwyDR70MpS6sFkwzqQ7omu3QXvYQ80qhQeDSEYdVfCIWUwnjHsmSn34s+aKO2S8SJX/CLE+PL4w7r7Nx9ZXYblV5gv7Wafl6iC2LHW+eYsKqsZ8tWEdwnTMLe3C0ZQe8rvJB54MB7VpYaoGOih5Q==
+ b=VtG8pmygGWmKRM7k+1ft8w2FoX583kkOR4Ibxc4a9XBFBXOvo6OLvd9h+GuKh1GVUhFu/khb3iv3k8ADGO2KMAOFDjLAlAdAkSOQDcDeWk0POY6IEfYVpAaLf2Xe5a8iDQZ9wHdGYOztgCYzye4kX7CW1tQCIoHQAJD82bsVMjEXLvSaWf16JPMOuzdmwHqMkE36bkVyf81nVv955morsvgwpoUyNTPmDcbEPz0V1+3FNA4a2D8Uuhi0uOrRk/GCxS2dPwm3af2gZmd7m4TPu83gGs0Xwlfz9Q3rpoE+A/yJzH+WGbdSUpfydTdjFQl7HKv746PAR2oAFICOt4a0mQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LKcHk12QPZ6KrrB3doM09+kmyHviu1P/S+X2/ZkWMro=;
- b=NRwiPuSRv0XhmmrswMvZ5fjFhHIqjReDWNzwziqMCPuDQsand7x/BoehHYsSkifUzAL2tT+JtDVuG6gM7HHS9LlTaHkGKXafxtvyw0b4ipAa9u8MAItx2y0SIIij0tsLn0sSt+bukuqZYQ90j5/iD0GFJl1wW5pbaKBSBO0Lr5kN9J1KKTj3GwZw/Ar9x1iCYljDctXXnwtLB4QmjSaivw/MDk5obktkGqmgRN2Mmkdzow2RC6XRTYQxwVI7Jtq1fsB8+nIwnZYIvJZs9Bv7r1eQfuVATfRDc+96sNZ4wqyaB+d2bYLnLzgUA4d4aIbFHQAENzVK7srTcsLmMIAn3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LKcHk12QPZ6KrrB3doM09+kmyHviu1P/S+X2/ZkWMro=;
- b=UzHCXsoPfy0zF5Ps4e1I9momiQp5w+D7WlunCPgEi/icwMvv4vWyF1i5179sP23rhjNXWHno+XxFMjIvIGXj07SJPvKTkda2Rs30Z8/NBiL8bRK/CBgLmCPC12yTB+J3vsiKMDsZld1jFISaue7ueSv2sQnp7gGu4PXWJIHeRMl+07YbrDVeLATrQOspaJQswwDDW4scNdveegeOMKY6WGCaU0mDk0c2W2AWoWNxYcwkb55+rRuoTwcVZcMVQZH9dOH1w6PSM3tporn3qc3333Le1qtSKXsj5L8KAN48JMqee0z5zY0Tj5JB7rEO6iu2ULubbrqTYmufkwQcKyqXWQ==
-Received: from PH7PR13CA0006.namprd13.prod.outlook.com (2603:10b6:510:174::19)
- by BN7PPF9507C739C.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6da) with
+ bh=qesBo/uThQjy2UqNI4NfZScTUSpH3I/4uhcwi426VU4=;
+ b=ib5FEeoEkC/k1b0AB0KLEtNxVIv/CQXURNONpNlTL8KRMoD6RmYbn67Im55wJ+2KFVJpv6WLp7bF7vDpuY0CSxsHjMMVUU7bXvNpPsSnfb1sONHFWNwjDtc8lzX9l8CNLrcAG6IQ+lMEIhL9jxzq09Lq7zqhgYkS2OW/w5EPTGBc2MffC70KiIWq0mCC5HorWtYam6IqyNyKRkejHx32zYMVTcibWctvUWvxKdTifUhBES0sbtNxqEk5b0dTLXoJ2xbRiu/WtaQskp3fe9epe3yGNpblSXsFtANTedf4K//d95dOaJvSX9y0otiN7Iz1w0a8YCzdlh3OAFEcAiBCVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
+ by SA2PR11MB4793.namprd11.prod.outlook.com (2603:10b6:806:fa::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 14:58:19 +0000
-Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
- (2603:10b6:510:174:cafe::11) by PH7PR13CA0006.outlook.office365.com
- (2603:10b6:510:174::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.9 via Frontend Transport; Tue,
- 20 Jan 2026 14:58:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Tue, 20 Jan 2026 14:58:17 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 20 Jan
- 2026 06:57:49 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 20 Jan
- 2026 06:57:49 -0800
-Received: from sumitg-l4t.nvidia.com (10.127.8.14) by mail.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 20 Jan 2026 06:57:41 -0800
-From: Sumit Gupta <sumitg@nvidia.com>
-To: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <pierre.gondois@arm.com>,
-	<zhenglifeng1@huawei.com>, <ionela.voinescu@arm.com>, <lenb@kernel.org>,
-	<robert.moore@intel.com>, <corbet@lwn.net>, <rdunlap@infradead.org>,
-	<ray.huang@amd.com>, <gautham.shenoy@amd.com>, <mario.limonciello@amd.com>,
-	<perry.yuan@amd.com>, <zhanjie9@hisilicon.com>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-CC: <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
-	<jonathanh@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
-	<sanjayc@nvidia.com>, <nhartman@nvidia.com>, <bbasu@nvidia.com>,
-	<sumitg@nvidia.com>
-Subject: [PATCH v6 6/9] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
-Date: Tue, 20 Jan 2026 20:26:20 +0530
-Message-ID: <20260120145623.2959636-7-sumitg@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260120145623.2959636-1-sumitg@nvidia.com>
-References: <20260120145623.2959636-1-sumitg@nvidia.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.10; Tue, 20 Jan
+ 2026 15:37:39 +0000
+Received: from BN9PR11MB5530.namprd11.prod.outlook.com
+ ([fe80::1451:ad37:6612:37fb]) by BN9PR11MB5530.namprd11.prod.outlook.com
+ ([fe80::1451:ad37:6612:37fb%4]) with mapi id 15.20.9542.008; Tue, 20 Jan 2026
+ 15:37:39 +0000
+Message-ID: <bd99f19b-39f8-40c1-825d-16e37c10c95b@intel.com>
+Date: Tue, 20 Jan 2026 21:07:26 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/12] drm/xe/vrsr: Enable VRSR on default VGA boot
+ device
+To: "Shankar, Uma" <uma.shankar@intel.com>, Jani Nikula
+	<jani.nikula@linux.intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Gupta, Anshuman"
+	<anshuman.gupta@intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "ilpo.jarvinen@linux.intel.com"
+	<ilpo.jarvinen@linux.intel.com>, "Gupta, Varun" <varun.gupta@intel.com>,
+	"ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "Poosa,
+ Karthik" <karthik.poosa@intel.com>, "Auld, Matthew" <matthew.auld@intel.com>,
+	"Anirban, Sk" <sk.anirban@intel.com>, "Jadav, Raag" <raag.jadav@intel.com>
+References: <20260113164200.1151788-14-badal.nilawar@intel.com>
+ <20260113164200.1151788-20-badal.nilawar@intel.com>
+ <64894565d5eace99fd65f290ee807dabaa2de04f@intel.com>
+ <aWkG5cEapt_attfS@intel.com> <431ce6be-b083-4002-8dc1-4be8e557d07c@intel.com>
+ <e522e352351d52da15c8a9d7f9332e48092f06d4@intel.com>
+ <DM4PR11MB63604AB8E122613BF072DEFDF489A@DM4PR11MB6360.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <DM4PR11MB63604AB8E122613BF072DEFDF489A@DM4PR11MB6360.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0080.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::10) To BN9PR11MB5530.namprd11.prod.outlook.com
+ (2603:10b6:408:103::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|BN7PPF9507C739C:EE_
-X-MS-Office365-Filtering-Correlation-Id: d0f5c705-cab0-43af-567c-08de58345832
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|SA2PR11MB4793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19d7dd6a-82a4-4de0-ff68-08de5839d7ac
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2l6X/Z/3N0crZghFWh+Hl1iLiHlg91sgPz1DDMFSUElsGjrb+3bjeP9BPrFQ?=
- =?us-ascii?Q?WMKvTOUsWSZ/S+R5JZf7HZ3SSEyR1L1983dG6htwPdatFvHoBGo9XhjB5jMR?=
- =?us-ascii?Q?cpbyuPSDU39M6qO13uVRaTvUfEJnQjSoURtVPYZCVPVdumXhD4KHJaD8/8P/?=
- =?us-ascii?Q?isSubyP5lXeIGswJA70r6+lP3/ozhtBD4T5+4HJcJOmWi+V0tGIb3MU8IC8P?=
- =?us-ascii?Q?PTwhrTwEgkINSlnDwky74dkEhcJvSEImww9c6CZP81qfHml8bQxJ0O6mvlg+?=
- =?us-ascii?Q?hRlZKqmLJ9mUttDKoROwvp7JrUcsZvcoJkiHKVfvvtHe/0LTm5791Mh92dPB?=
- =?us-ascii?Q?HSMXq17hgLI4apxsytSI0w280xreWCxx59CuMWHivhHfPik2eMZR/P5psXqY?=
- =?us-ascii?Q?gXXV6QsqSfoVx1ALfx3z5ep1XWoNeYR+rdxnUm9yG0WvmBBcNqeCQB4+8vmK?=
- =?us-ascii?Q?zSl2XWbv7qd7FDLQBbeY7WBk6ffIabG90SdYyESCYk9ToRI8CB1jG3bU36K5?=
- =?us-ascii?Q?TgGeOyS38QDrdPT65QqKa3TlCtBf7yXU5+Usff0q1QWbZq22ckJEwFdkPsnr?=
- =?us-ascii?Q?059NfGIfbgajY70CmV7+4bhla94eP/Ysau47ycG+MirmmYGhLXixwuxtRCj8?=
- =?us-ascii?Q?J0Dk5ff/e1xwT/RR2PXdd1vagNiJzqaOvEYZLN1KdMh0tp/wksQlx+axfCZ9?=
- =?us-ascii?Q?ASvhMftECUL8ym3+YwCqX+w3tQ2ZaeHsJi9YB5yhUo00RWE1f9fz2NTrxTHP?=
- =?us-ascii?Q?5gaartnzsZBF0E4MZYM6I20kO01xsxJeg6Em8Uc228wTCMmZ9HXDM8yMyvV2?=
- =?us-ascii?Q?gjNt0+Rt9zWjudIe1Ko54DQtH6+1R8ufVcTR/UZUaQKLZjpe3g6Ee1w505Rt?=
- =?us-ascii?Q?8YImxDy88nhvruedJIckmQw78s2F369KaBmr+CWxh5hz5R/AeqGoxlkxusql?=
- =?us-ascii?Q?4++MX2XGiyrkog/H2vQ0xFSk2+JpW0q74azLZ3fGzb0BmICS2+bt4K1+0MG4?=
- =?us-ascii?Q?bK/PCSajxWO7AzXLuMMt2Ta8KRBgfc1kVJY6zQGSsnBbKwozIbZ3Ubi7x8db?=
- =?us-ascii?Q?2Vx+nASEQbkNw0lsbFhA7OjSCbShOiUp1RC6kXh82O/IJhOygsQSSDU8mPF6?=
- =?us-ascii?Q?ax6OFg8yYOlprwaTeQbe45ntEHg2HT9BPOPCnFoUC4KExdvxIb2zhMyELDIu?=
- =?us-ascii?Q?zqCfz8iK4mIvEVjtB/38cKiEuKXIIVNYtTWX/tVSLIRaSVz+BTElQ+yB++jj?=
- =?us-ascii?Q?9AR6xf9jAahsmoeuxtfySFR92eJSeur2KziQjHOP+2pBHHthcK8FDT/oPuoN?=
- =?us-ascii?Q?xmYTSv2pftYUR6QAUvPjPyanff9PRsMMkKmzrsnJL4DEwje/8nWqygyBe0+U?=
- =?us-ascii?Q?0CTC5i8UK5lhOFOeI2HDGJlitNYn5qfdRU7XTEdcbqzgL91eP3NFN0Z7l3Am?=
- =?us-ascii?Q?B8xP1JE9bi3l0r73AeKxSVK1+Ks4gmrTq/nBlOxDu2fH8rMQ88kyy2p6sA6U?=
- =?us-ascii?Q?7fwLSJOCVY1vJV+DtWshWQMIeFKPiNOB/eR422OxamFlpp4OrG+6CDswfhJr?=
- =?us-ascii?Q?usAbX34/qJ7etJ6cTx0q6y7Utf1Uba9jFx/RgFmEQst2hvq3GtGpvKg0uglC?=
- =?us-ascii?Q?yG0mOQBLoeCLD1rpBV3d3EQtROb3ZeTEWG9/hOvoFB9JJH1oTICnKpeE8Hrf?=
- =?us-ascii?Q?UkCThjRaOz2NOtIAZUp90DXZJ+g=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 14:58:17.3087
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WEpjMzdpK1p3Qk85a0JMNTl5RnpSdVN4TUp0dFJLNERBdzJOQ0RyMU1oNCtZ?=
+ =?utf-8?B?bjhZaHc5MkJtVkc3WXl4Z3RHd0c0ajlrM1BYT0pFenhMS0FMYWt4dVVBSW83?=
+ =?utf-8?B?cnVCZnBMYXBCQmFyUXhjck1taXBvVnpnMm9DRmlzeTJ3Tjc2OGsybjZnSTZj?=
+ =?utf-8?B?SjJoL0FKR0R6QWJzaE1yRXA4RkxIUUc0YXlyM1NUeVhIOHgxcmQ2bmErV0RT?=
+ =?utf-8?B?SWNpMzNiMGo5R1Nta1h1YWYyay9GekdndWtkcDVURTlaK0h2RXNIa0gvaFdJ?=
+ =?utf-8?B?c0ZXd21SNUZzblBVOFlHcit3SzFSMmpSYjBYWllhM1o0TTBUbFhGZVpjU3Bs?=
+ =?utf-8?B?ZWprV0FxNXUxTFJnSE1JdWtNRXVMdUJ1Tkp6LzhsTTdnL1NJcnQ2MEFTZklD?=
+ =?utf-8?B?N0hSa3pTSk53SGlyTlpTckFQRHRXSUJoOU0zQ2hNNWh1cWhURHNLL0lESU53?=
+ =?utf-8?B?bVllUVg3OW5KbjhiYWU1dUZjQjA0QlJFRDBqQWtWN1orSVhqZkpKVnVMTkI1?=
+ =?utf-8?B?S3NhTHF4WFZoNjZDUDZBNHMxcmVCa0NneWpkMmRyTFRoamlUNVgvM3RFbk8z?=
+ =?utf-8?B?MUp5YzBwcktRK2ZMdXNxK29HdncyOEM3bG1ERFVzSzhEbWhUc0Rva0MwYlJP?=
+ =?utf-8?B?Um4vSTVVUzY2cnRxMzhBZERJTVJOUE11OXVGVkpXTlpaWklEZTZrNzNmRHFK?=
+ =?utf-8?B?ZzU3RTA5WkN3Rlc4SWNoeU92U3h3R01EdlpRQUJMa2pKUFJLS1lyQVUxYmJ5?=
+ =?utf-8?B?amU0cEhMTHMzdUhSOUd3MFMvN0FGSDVpVURJVXN5WDI0YUpDQmFsK2pQeHMx?=
+ =?utf-8?B?NmFySTluaCtGL3NuNXc0SXhYS2luamxnS2xNaTUvb0NBVHpnRWxZYWVsWGVO?=
+ =?utf-8?B?Ym9vNWJBMlcwSVl2cWVVb1pSTkMyTjI1RTlIQ2tCTmJSdG5nOVp5R1E4SFBH?=
+ =?utf-8?B?YjlMV2VKcEl2TmZsM3hIaElZZE5UVGFHa3h0WFVrcVRqYU1udGVGZzN0YlVT?=
+ =?utf-8?B?MDA4N291b2xTdmwyc1FBSEJGQStETjFTWHV5Yk1mWGtDUE1TaGQyMXFBd2Yw?=
+ =?utf-8?B?WHFvTXJEeEhCcEJVY0l1c1hGbnpOOFFhdEdIZVIrakhzOHg1TEUyQmFaNmt2?=
+ =?utf-8?B?TVA5RWhFK005VzcrTjZNdENhcGhVbStaMTFTS0NVOStHa0MwUmVTY0hqZ3Vs?=
+ =?utf-8?B?Z2ozY2RDMmF2YSt4d0JoMHF5M2JaSjhET0V6Z0RCdzJjdjFSSytYOWVxak9q?=
+ =?utf-8?B?MG81V1B2Sy9yN2RRQWRnME9PMXJGdGxYUzdWdmlidEtpZFFIYUFTVHNubFY4?=
+ =?utf-8?B?aHZtc3dUVUNySTNQSW13WVR5Q1dpQXViRUVUYzg3TXdWZUFkSkcxdHA0eUZ5?=
+ =?utf-8?B?ZHlSZW1DbzFTclRVNHFnUm9weVBpamJBQ1E4YWdKL1V1VklGZWwzazFOVmhO?=
+ =?utf-8?B?WENZd3RkWnZkeFVTdmVqM1AxNXJLalNQV1FKNmtMdzVCS1hRVTZ1UjUwUllC?=
+ =?utf-8?B?WTNhdHpwaFNqelhYaE11ZUI1K1U1OEVXYXRwOUxYaUNqOC9Yb0tINmYvaHZk?=
+ =?utf-8?B?WTN1R3QwZ1pCb3ZzWTV0TENlcFdCU1hVc25Ud3A4RndJeHl2dnZqaTFUOUZI?=
+ =?utf-8?B?K0JIdU52VllrRzcveTVZdkhpa1dCdWgrZE5iRGRxM3dBbXlyT1cvQjAzNlJM?=
+ =?utf-8?B?ZXJ6UWF0dDFuaktDZStFbmJMU0FWaFo1ME8yYWg5dXJLUnBGdm5EbGZ5ZktM?=
+ =?utf-8?B?enRlR0h1akdTMlVxdDJLTUl5a0RRM0hXcjg0MWdsa2p3Zyt1OTk4ZHJKQkxp?=
+ =?utf-8?B?VDFQdW1FdjZmdmgwelVXMlFyQUF4UXdQNnR3ck9pdytSM3pKSjlYclU0NFdw?=
+ =?utf-8?B?NVdxZUdhZUVJVXhra1c4M3cyN3hPRzJGMU4wMnpIMXZ5d2xrUUd5UU1XeUZG?=
+ =?utf-8?B?c0pjWnkwMjJ1VHdhbkNYY25hMVBZTnpwMGR6bkpVVUlMNjRqd09qbDBxb0ph?=
+ =?utf-8?B?YkV1VkFCeEhvY3AweUxPVmR3SjlFWldZV0MvNHJjejBrRGkzbENHRkFNaWZw?=
+ =?utf-8?B?VmcrVmRkZG1lb21MaDJSTGZVZU80RTRvcUxzTjVUUyswTTlkc05wQ1VEY1N3?=
+ =?utf-8?Q?uqZg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TW1yc1lJVlJqM0FBWW95OXhEVGNLL1FkbC9nVUdlWWJNWm5vZCtJczNBN2xh?=
+ =?utf-8?B?N0hTdUxmWWNDVUpiZTFNcEF4R2E3RnQ1c0xQQWdtakFxcXh4Wm1vRzJLTjN2?=
+ =?utf-8?B?dUwxaXhOU1JmWU1sTWFGTjVyc3FybE5SVVRGQU5VRk05ZG1JZjJrUzRERXVJ?=
+ =?utf-8?B?NFJ2QjByRE90T01JU2dtcXRabUR6bjZpaFFzZytlRG82VXdoWnJXNVhiR2hK?=
+ =?utf-8?B?R1RLWGpUb1ZPOXJnaHcxUVN2UVZlS2JzSTFVOFlZdThsK2VUTmFkZW9SV0Vm?=
+ =?utf-8?B?QzN6UWlpNDNWd29IdDdsQnZ2QVIxcEdzclpWWWVKU2ZZTW41THl5bElMRW1P?=
+ =?utf-8?B?VEtaY3VkV1VMR2hBaTRZZWVqYjY4YU1od09neHVUenJUR3c2R1g0dStxa0Y3?=
+ =?utf-8?B?OHFBdmY1TWtUWEJDL05TQ0xVSlBxWk94Tkdjb2cySU1KeTEyaTdsaFAzZEpo?=
+ =?utf-8?B?ZzQ1cURqTVdTZHRVSENJaW9tSWlJNjk2NzA2MFZJWHNwZ0E0MSswUWovUlZV?=
+ =?utf-8?B?Qm1Ed3NFbmJTVXJ1Lzk4cHphWUNkbUtjTjNpaEMydWpUbEI1UHFRMk1WVDQ1?=
+ =?utf-8?B?V0d2Y2NwOXhIMmNOOFFBNjAzOUdhUTE5QmVwQnpoWnFJLzBmL2ppUnN2czls?=
+ =?utf-8?B?bFIwOUlkZUF1UXdxREc3eTdlWEFFNkJrZDRhazZINmRCd0IvTzVVekFNaUdX?=
+ =?utf-8?B?SzFLOEFhSmg4a0ptVFI0d0N5YnpjWkllR083N1ZMNUk0aENPUWpMMlN3Q3dJ?=
+ =?utf-8?B?YjY4WWUzT2lHRXdieVBtSlV3QkNJUnIyQ2JPNmdubGZ5QVY0b0NhNXNXZ0Fu?=
+ =?utf-8?B?OSttY1V5dGlaeEZjbGRFdjBpZFNEWTBJSSt3NklMcmlPSFdmWjVrbFlsZUVH?=
+ =?utf-8?B?c0lUWWttQ1l3a3pmcDB5bXVwNjF4VVlLKytUZ3pOMHMzQTF3MTl4alZqUnZo?=
+ =?utf-8?B?MEYrLy9oYlIwQUVPNlN6SlJPZ0I2Qm1IaWwxcWZNUmcyVVRob1lVWE1uaWwv?=
+ =?utf-8?B?ZFVPWFpKaWg3ajNBeW9wMjNoMnhaM0JqdU1EenB6YWJVOUxhc3FkS1hBUjRq?=
+ =?utf-8?B?cDIzQVZCTHdmSURnRzJ4UWZMcXVob2l1NEpjQU5VRW9BRDh4VkJOMTBYNE1l?=
+ =?utf-8?B?aE5BcnFOTHk5RnJNNnQ3ZkRJUzYrWFRNTE9IWExJUWFNSjF5S1N5Y2hKY0N3?=
+ =?utf-8?B?Tmx0Vzl2eWhxeHdHYzY3c2FuVTRVeHJ1SFZOUnIrODZlbHQ2Qlh2cWhXYWYr?=
+ =?utf-8?B?NE5mR25RNkc1QlVSZmFPWU9ncm1DbDhlT3pmdUE5NTlML01VWHlRZzI4RC8z?=
+ =?utf-8?B?bnFGMWVwYU5PbmZFTjVobjBoM093VHBERkl1UG1pZGltemY4VXVmVllaa2tW?=
+ =?utf-8?B?RXRBT2o0WHZodlR0YStmSDZyNWV1TUdpdWRMMno2SkVnNlRwOURKczAxdGpU?=
+ =?utf-8?B?d24rY21VT3dpams2SWtJY0s2bnJ4QmtJMXQzbXJlME90WFMvcnNqT0tDK0RO?=
+ =?utf-8?B?akJ2ZFRxOXVQZmNDY3AxVVd2VlVyakUrSkpvdGZSaEhCc1NuM0pSZmZDelJV?=
+ =?utf-8?B?Uk5pT2paQXJORmwrRS8rOWgwNUxPSjVMYXZobXkrcUE2RkduenNhLzFraDRo?=
+ =?utf-8?B?U2tQZndQWmhFUlpsWm52Y2g2THlyZEhqWWRSdWYrb1AyTEptQTE0WkczYXdt?=
+ =?utf-8?B?dzlSL00yNHkwL2M5aEEzOXg4YmtrdG1HWEtGTHBPdE9UUmhVU2VCbS9SbzJZ?=
+ =?utf-8?B?ZGlVdDJVdFBwY1NNVmRvRjNHR3dHbnFBelJHTWxhZENNWExDb2J3dml0OFV1?=
+ =?utf-8?B?UUV6V3FpMWIrMWcwU2pYVE1xb1p6aGpya3BOTGFMOUJyN05qanZqUVh6TlNJ?=
+ =?utf-8?B?eGxRS2hPVFhaSmxFc3gxeEViTXpSYVUwL243NTczRTQzSDNjUXZPMzQ4OW1y?=
+ =?utf-8?B?NktQa1hGenUwbUNOYTk2WDV4dmppa3VXaVBVN1R1Umx0eHJjOXJMM2hvRXVo?=
+ =?utf-8?B?TFNaNDBNaDJ5ck5zV2FJcEx1eGYzZURoc0pjK2VkcUU2SHlGbkIvVXdlY04r?=
+ =?utf-8?B?U294UHlRWUQydUtzUy9xNTc4dU41aDFqQkhkbTVnRmdPNFNxUXR1V2FPZGt6?=
+ =?utf-8?B?T01GRm9xa2ZZSDdmN1NrT1EvZEQyZ3ZqK1BuWGUzWlBxbGZXSG02d3pYaGw5?=
+ =?utf-8?B?M0FyOGdFczNaR0pNN3lIQUpRL2FCQ3FpK1piSXNyQ1RTZ2FVZTluY0tqWFJj?=
+ =?utf-8?B?ajJyTlI2Z0E5ZzZJaWd2b1c1c3J3MFN0QTI3VXV2aENSQlJkREVpamNoOUI0?=
+ =?utf-8?B?UWxuaWoxcVRJOFd1Y0h5OTNDaDhGVEdlYTZXQkxUbmRhak9lUXB1UT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19d7dd6a-82a4-4de0-ff68-08de5839d7ac
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 15:37:38.9727
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0f5c705-cab0-43af-567c-08de58345832
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF9507C739C
-X-Spamd-Result: default: False [1.54 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2rP8xYGvWNqdO9cV8bxK454i8WnxTGR/2A1V9HabqcEzLBJNLUe5woLyhIPvpBcdnS8WK+CkMpm/zWGuqi72Jg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4793
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20464-lists,linux-acpi=lfdr.de];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumitg@nvidia.com,linux-acpi@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-20469-lists,linux-acpi=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[nvidia.com,reject];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:email,nvidia.com:mid];
-	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,lists.freedesktop.org:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[badal.nilawar@intel.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 5257D47095
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 75BDB47477
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add cppc_get/set_min_perf() and cppc_get/set_max_perf() APIs to read and
-write the MIN_PERF and MAX_PERF registers.
 
-Also add sysfs interfaces (min_perf, max_perf) in cppc_cpufreq driver
-to expose these controls to userspace. The sysfs values are in frequency
-(kHz) for consistency with other cpufreq sysfs files.
+On 20-01-2026 20:12, Shankar, Uma wrote:
+>
+>> -----Original Message-----
+>> From: Jani Nikula <jani.nikula@linux.intel.com>
+>> Sent: Tuesday, January 20, 2026 7:14 PM
+>> To: Nilawar, Badal <badal.nilawar@intel.com>; Vivi, Rodrigo
+>> <rodrigo.vivi@intel.com>
+>> Cc: intel-xe@lists.freedesktop.org; linux-acpi@vger.kernel.org; linux-
+>> pci@vger.kernel.org; Gupta, Anshuman <anshuman.gupta@intel.com>;
+>> rafael@kernel.org; lenb@kernel.org; bhelgaas@google.com;
+>> ilpo.jarvinen@linux.intel.com; Gupta, Varun <varun.gupta@intel.com>;
+>> ville.syrjala@linux.intel.com; Shankar, Uma <uma.shankar@intel.com>; Poosa,
+>> Karthik <karthik.poosa@intel.com>; Auld, Matthew <matthew.auld@intel.com>;
+>> Anirban, Sk <sk.anirban@intel.com>; Jadav, Raag <raag.jadav@intel.com>
+>> Subject: Re: [PATCH v6 06/12] drm/xe/vrsr: Enable VRSR on default VGA boot
+>> device
+>>
+>> On Tue, 20 Jan 2026, "Nilawar, Badal" <badal.nilawar@intel.com> wrote:
+>>> On 15-01-2026 20:55, Rodrigo Vivi wrote:
+>>>> On Thu, Jan 15, 2026 at 04:25:06PM +0200, Jani Nikula wrote:
+>>>>> On Tue, 13 Jan 2026, Badal Nilawar <badal.nilawar@intel.com> wrote:
+>>>>>> The VRSR feature is to enhance the display screen refresh
+>>>>>> experience when the device exits from the D3cold state. Therefore,
+>>>>>> apply the VRSR feature to the default VGA boot device and when a display
+>> is connected.
+>>>>> I don't understand how you get from the 1st sentence "therefore" the
+>>>>> 2nd sentence. Please elaborate what you're trying to do here, and why.
+>>>> On a scenario with multiple GPU, only one can use the aux power and
+>>>> the feature itself was mainly designed for the display case - to
+>>>> bring up display faster after the d3cold.
+>>> This is to enhance screen refresh experience of primary display.
+>> The way it's being added, it's just really oddly specific.
+>>
+>>>> But yes, the right explanation for the why needs to be here.
+>>> I will rephrase the explanation.
+>>>> Also, although unlikely, we never know what users can do out there,
+>>>> and perhaps we will have someone with multiple cards and display
+>>>> plugged in more than one?! We probably also need a global
+>>>> counter/flag to avoid a second one to quick in.
+>>>>
+>>>> But we definitely need to prioritize the first one with display connected.
+>>> At present there is no way to know which one is primary display that's
+>>> why check is against default_vga_device.
+>>>>> So we have xe_pci_probe() -> xe_pm_init() -> xe_pm_vrsr_init() ->
+>>>>> xe_display_connected() -> intel_display_connected(), and that's the
+>>>>> only path and point in time to check whether displays are connected.
+>>>>> If not, the decision is "not VRSR capable", which is just a weird
+>>>>> concusion to make. The *capability* does not depend on displays, does it?
+>>>>>
+>>>>> If you boot a device without a display, and then plug in a display,
+>>>>> no VRSR for you?
+>>>> yeap, it looks like the check is in the wrong place. It needs to be
+>>>> checked when going to d3cold...
+>>> Yes, VRSR will not be enabled if display is not connected at boot.
+>> Why? And this needs to be properly explained in the commit message. The
+>> current one isn't enough.
+>>
+>>> *capability* does not depend on display but VRSR use case is.
+>> Please at least don't conflate the two. Don't determine capability based on whether
+>> the conditions on the use case exist.
+>>
+>> Contrast with, I don't know, FBC. The platform will still have FBC capability even if
+>> the conditions for enabling it aren't met.
+> Yes right, I think display can be plugged later after boot as well. In this case also VRSR should be
+> enabled.  This can be handled through the display hotplug path and VRSR can be enabled accordingly.
+Sure will add handling in display hotplug path.
+>
+> Also elaborate the reasoning so the assumptions, limitations and design choices are clear and
+> why certain trade offs are made are clarified.
 
-A mutex is used to serialize sysfs store operations to ensure hardware
-register writes and perf_ctrls updates are atomic.
+Sure.
 
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
----
- drivers/acpi/cppc_acpi.c       |  44 +++++++++
- drivers/cpufreq/cppc_cpufreq.c | 157 +++++++++++++++++++++++++++++++++
- include/acpi/cppc_acpi.h       |  20 +++++
- 3 files changed, 221 insertions(+)
+Thanks,
+Badal
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 45c6bd6ec24b..46bf45f8b0f3 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1743,6 +1743,50 @@ int cppc_set_auto_sel(int cpu, bool enable)
- }
- EXPORT_SYMBOL_GPL(cppc_set_auto_sel);
- 
-+/**
-+ * cppc_get_min_perf - Read minimum performance register.
-+ * @cpu: CPU from which to read register.
-+ * @min_perf: Return address.
-+ */
-+int cppc_get_min_perf(int cpu, u64 *min_perf)
-+{
-+	return cppc_get_reg_val(cpu, MIN_PERF, min_perf);
-+}
-+EXPORT_SYMBOL_GPL(cppc_get_min_perf);
-+
-+/**
-+ * cppc_set_min_perf - Write minimum performance register.
-+ * @cpu: CPU to which to write register.
-+ * @min_perf: the desired minimum performance value to be updated.
-+ */
-+int cppc_set_min_perf(int cpu, u32 min_perf)
-+{
-+	return cppc_set_reg_val(cpu, MIN_PERF, min_perf);
-+}
-+EXPORT_SYMBOL_GPL(cppc_set_min_perf);
-+
-+/**
-+ * cppc_get_max_perf - Read maximum performance register.
-+ * @cpu: CPU from which to read register.
-+ * @max_perf: Return address.
-+ */
-+int cppc_get_max_perf(int cpu, u64 *max_perf)
-+{
-+	return cppc_get_reg_val(cpu, MAX_PERF, max_perf);
-+}
-+EXPORT_SYMBOL_GPL(cppc_get_max_perf);
-+
-+/**
-+ * cppc_set_max_perf - Write maximum performance register.
-+ * @cpu: CPU to which to write register.
-+ * @max_perf: the desired maximum performance value to be updated.
-+ */
-+int cppc_set_max_perf(int cpu, u32 max_perf)
-+{
-+	return cppc_set_reg_val(cpu, MAX_PERF, max_perf);
-+}
-+EXPORT_SYMBOL_GPL(cppc_set_max_perf);
-+
- /**
-  * cppc_set_enable - Set to enable CPPC on the processor by writing the
-  * Continuous Performance Control package EnableRegister field.
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 229880c4eedb..66e183b45fb0 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -28,6 +28,8 @@
- 
- static struct cpufreq_driver cppc_cpufreq_driver;
- 
-+static DEFINE_MUTEX(cppc_cpufreq_autonomous_lock);
-+
- #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
- static enum {
- 	FIE_UNSET = -1,
-@@ -570,6 +572,35 @@ static void populate_efficiency_class(void)
- }
- #endif
- 
-+/* Set min/max performance HW register and cache the value */
-+static int cppc_cpufreq_set_mperf_reg(struct cpufreq_policy *policy,
-+				      u64 val, bool is_min)
-+{
-+	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
-+	unsigned int cpu = policy->cpu;
-+	u32 perf;
-+	int ret;
-+
-+	perf = clamp(val, caps->lowest_perf, caps->highest_perf);
-+
-+	ret = is_min ? cppc_set_min_perf(cpu, perf) :
-+		       cppc_set_max_perf(cpu, perf);
-+	if (ret) {
-+		if (ret != -EOPNOTSUPP)
-+			pr_warn("CPU%d: set %s_perf=%u failed (%d)\n",
-+				cpu, is_min ? "min" : "max", perf, ret);
-+		return ret;
-+	}
-+
-+	if (is_min)
-+		cpu_data->perf_ctrls.min_perf = perf;
-+	else
-+		cpu_data->perf_ctrls.max_perf = perf;
-+
-+	return 0;
-+}
-+
- static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
- {
- 	struct cppc_cpudata *cpu_data;
-@@ -918,16 +949,142 @@ CPPC_CPUFREQ_ATTR_RW_U64(auto_act_window, cppc_get_auto_act_window,
- CPPC_CPUFREQ_ATTR_RW_U64(energy_performance_preference_val,
- 			 cppc_get_epp_perf, cppc_set_epp)
- 
-+/**
-+ * show_min_perf - Show minimum performance as frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-+ *
-+ * Reads the MIN_PERF register and converts the performance value to
-+ * frequency (kHz).
-+ */
-+static ssize_t show_min_perf(struct cpufreq_policy *policy, char *buf)
-+{
-+	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
-+	u64 perf;
-+	int ret;
-+
-+	ret = cppc_get_min_perf(policy->cpu, &perf);
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "<unsupported>\n");
-+	if (ret)
-+		return ret;
-+
-+	/* Use lowest_perf if register is uninitialized (0) */
-+	if (perf == 0)
-+		perf = caps->lowest_perf;
-+
-+	/* Convert performance to frequency (kHz) for user */
-+	return sysfs_emit(buf, "%u\n", cppc_perf_to_khz(caps, perf));
-+}
-+
-+/**
-+ * store_min_perf - Set minimum performance from frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer containing the frequency value
-+ * @count: size of @buf
-+ *
-+ * Converts the user-provided frequency (kHz) to a performance value
-+ * and writes it to the MIN_PERF register.
-+ */
-+static ssize_t store_min_perf(struct cpufreq_policy *policy, const char *buf,
-+			      size_t count)
-+{
-+	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	unsigned int freq_khz;
-+	u64 perf;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 0, &freq_khz);
-+	if (ret)
-+		return ret;
-+
-+	/* Convert frequency (kHz) to performance value */
-+	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
-+
-+	guard(mutex)(&cppc_cpufreq_autonomous_lock);
-+	ret = cppc_cpufreq_set_mperf_reg(policy, perf, true);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
-+/**
-+ * show_max_perf - Show maximum performance as frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer to write the frequency value to
-+ *
-+ * Reads the MAX_PERF register and converts the performance value to
-+ * frequency (kHz).
-+ */
-+static ssize_t show_max_perf(struct cpufreq_policy *policy, char *buf)
-+{
-+	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
-+	u64 perf;
-+	int ret;
-+
-+	ret = cppc_get_max_perf(policy->cpu, &perf);
-+	if (ret == -EOPNOTSUPP)
-+		return sysfs_emit(buf, "<unsupported>\n");
-+	if (ret)
-+		return ret;
-+
-+	/* Use highest_perf if register is uninitialized or out of range */
-+	if (perf == 0 || perf > caps->highest_perf)
-+		perf = caps->highest_perf;
-+
-+	/* Convert performance to frequency (kHz) for user */
-+	return sysfs_emit(buf, "%u\n", cppc_perf_to_khz(caps, perf));
-+}
-+
-+/**
-+ * store_max_perf - Set maximum performance from frequency (kHz)
-+ * @policy: cpufreq policy
-+ * @buf: buffer containing the frequency value
-+ * @count: size of @buf
-+ *
-+ * Converts the user-provided frequency (kHz) to a performance value
-+ * and writes it to the MAX_PERF register.
-+ */
-+static ssize_t store_max_perf(struct cpufreq_policy *policy, const char *buf,
-+			      size_t count)
-+{
-+	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	unsigned int freq_khz;
-+	u64 perf;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 0, &freq_khz);
-+	if (ret)
-+		return ret;
-+
-+	/* Convert frequency (kHz) to performance value */
-+	perf = cppc_khz_to_perf(&cpu_data->perf_caps, freq_khz);
-+
-+	guard(mutex)(&cppc_cpufreq_autonomous_lock);
-+	ret = cppc_cpufreq_set_mperf_reg(policy, perf, false);
-+	if (ret)
-+		return ret;
-+
-+	return count;
-+}
-+
- cpufreq_freq_attr_ro(freqdomain_cpus);
- cpufreq_freq_attr_rw(auto_select);
- cpufreq_freq_attr_rw(auto_act_window);
- cpufreq_freq_attr_rw(energy_performance_preference_val);
-+cpufreq_freq_attr_rw(min_perf);
-+cpufreq_freq_attr_rw(max_perf);
- 
- static struct freq_attr *cppc_cpufreq_attr[] = {
- 	&freqdomain_cpus,
- 	&auto_select,
- 	&auto_act_window,
- 	&energy_performance_preference_val,
-+	&min_perf,
-+	&max_perf,
- 	NULL,
- };
- 
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 3fc796c0d902..b358440cd0e2 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -174,6 +174,10 @@ extern int cppc_get_auto_act_window(int cpu, u64 *auto_act_window);
- extern int cppc_set_auto_act_window(int cpu, u64 auto_act_window);
- extern int cppc_get_auto_sel(int cpu, bool *enable);
- extern int cppc_set_auto_sel(int cpu, bool enable);
-+extern int cppc_get_min_perf(int cpu, u64 *min_perf);
-+extern int cppc_set_min_perf(int cpu, u32 min_perf);
-+extern int cppc_get_max_perf(int cpu, u64 *max_perf);
-+extern int cppc_set_max_perf(int cpu, u32 max_perf);
- extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
- extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
- extern int amd_detect_prefcore(bool *detected);
-@@ -270,6 +274,22 @@ static inline int cppc_set_auto_sel(int cpu, bool enable)
- {
- 	return -EOPNOTSUPP;
- }
-+static inline int cppc_get_min_perf(int cpu, u64 *min_perf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+static inline int cppc_set_min_perf(int cpu, u32 min_perf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+static inline int cppc_get_max_perf(int cpu, u64 *max_perf)
-+{
-+	return -EOPNOTSUPP;
-+}
-+static inline int cppc_set_max_perf(int cpu, u32 max_perf)
-+{
-+	return -EOPNOTSUPP;
-+}
- static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
- {
- 	return -ENODEV;
--- 
-2.34.1
-
+>
+> Regards,
+> Uma Shankar
+>
+>> BR,
+>> Jani.
+>>
+>>
+>>>>> More comments inline.
+>>>>>
+>>>>>> v2: Move generic display logic to i915/display (Jani)
+>>>>>>
+>>>>>> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+>>>>>> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+>>>>>> ---
+>>>>>>    drivers/gpu/drm/i915/display/intel_display.c | 22 ++++++++++++++++++++
+>>>>>>    drivers/gpu/drm/i915/display/intel_display.h |  1 +
+>>>>>>    drivers/gpu/drm/xe/display/xe_display.c      |  5 +++++
+>>>>>>    drivers/gpu/drm/xe/display/xe_display.h      |  2 ++
+>>>>>>    drivers/gpu/drm/xe/xe_pm.c                   |  5 +++++
+>>>>>>    5 files changed, 35 insertions(+)
+>>>>>>
+>>>>>> diff --git a/drivers/gpu/drm/i915/display/intel_display.c
+>>>>>> b/drivers/gpu/drm/i915/display/intel_display.c
+>>>>>> index 81b3a6692ca2..97c74272fb19 100644
+>>>>>> --- a/drivers/gpu/drm/i915/display/intel_display.c
+>>>>>> +++ b/drivers/gpu/drm/i915/display/intel_display.c
+>>>>>> @@ -8426,3 +8426,25 @@ bool intel_scanout_needs_vtd_wa(struct
+>> intel_display *display)
+>>>>>>    {
+>>>>>>    	return IS_DISPLAY_VER(display, 6, 11) &&
+>> intel_display_vtd_active(display);
+>>>>>>    }
+>>>>>> +
+>>>>>> +bool intel_display_connected(struct intel_display *display) {
+>>>>>> +	struct drm_connector *list_connector;
+>>>>>> +	struct drm_connector_list_iter iter;
+>>>>>> +	bool ret = false;
+>>>>>> +
+>>>>>> +	mutex_lock(&display->drm->mode_config.mutex);
+>>>>>> +	drm_connector_list_iter_begin(display->drm, &iter);
+>>>>>> +
+>>>>>> +	drm_for_each_connector_iter(list_connector, &iter) {
+>>>>>> +		if (list_connector->status == connector_status_connected) {
+>>>>>> +			ret = true;
+>>>>>> +			break;
+>>>>>> +		}
+>>>>>> +	}
+>>>>>> +
+>>>>>> +	drm_connector_list_iter_end(&iter);
+>>>>>> +	mutex_unlock(&display->drm->mode_config.mutex);
+>>>>>> +
+>>>>>> +	return ret;
+>>>>>> +}
+>>>>>> diff --git a/drivers/gpu/drm/i915/display/intel_display.h
+>>>>>> b/drivers/gpu/drm/i915/display/intel_display.h
+>>>>>> index f8e6e4e82722..20690aa59324 100644
+>>>>>> --- a/drivers/gpu/drm/i915/display/intel_display.h
+>>>>>> +++ b/drivers/gpu/drm/i915/display/intel_display.h
+>>>>>> @@ -560,5 +560,6 @@ bool assert_port_valid(struct intel_display
+>>>>>> *display, enum port port);
+>>>>>>
+>>>>>>    bool intel_scanout_needs_vtd_wa(struct intel_display *display);
+>>>>>>    int intel_crtc_num_joined_pipes(const struct intel_crtc_state
+>>>>>> *crtc_state);
+>>>>>> +bool intel_display_connected(struct intel_display *display);
+>>>>>>
+>>>>>>    #endif
+>>>>>> diff --git a/drivers/gpu/drm/xe/display/xe_display.c
+>>>>>> b/drivers/gpu/drm/xe/display/xe_display.c
+>>>>>> index f8a831b5dc7d..54ed39b257ad 100644
+>>>>>> --- a/drivers/gpu/drm/xe/display/xe_display.c
+>>>>>> +++ b/drivers/gpu/drm/xe/display/xe_display.c
+>>>>>> @@ -64,6 +64,11 @@ bool xe_display_driver_probe_defer(struct pci_dev
+>> *pdev)
+>>>>>>    	return intel_display_driver_probe_defer(pdev);
+>>>>>>    }
+>>>>>>
+>>>>>> +bool xe_display_connected(struct xe_device *xe) {
+>>>>>> +	return intel_display_connected(xe->display);
+>>>>>> +}
+>>>>>> +
+>>>>>>    /**
+>>>>>>     * xe_display_driver_set_hooks - Add driver flags and hooks for display
+>>>>>>     * @driver: DRM device driver
+>>>>>> diff --git a/drivers/gpu/drm/xe/display/xe_display.h
+>>>>>> b/drivers/gpu/drm/xe/display/xe_display.h
+>>>>>> index 76db95c25f7e..11d4b09808e5 100644
+>>>>>> --- a/drivers/gpu/drm/xe/display/xe_display.h
+>>>>>> +++ b/drivers/gpu/drm/xe/display/xe_display.h
+>>>>>> @@ -37,6 +37,7 @@ void xe_display_pm_resume(struct xe_device *xe);
+>>>>>>    void xe_display_pm_runtime_suspend(struct xe_device *xe);
+>>>>>>    void xe_display_pm_runtime_suspend_late(struct xe_device *xe);
+>>>>>>    void xe_display_pm_runtime_resume(struct xe_device *xe);
+>>>>>> +bool xe_display_connected(struct xe_device *xe);
+>>>>>>
+>>>>>>    #else
+>>>>>>
+>>>>>> @@ -67,5 +68,6 @@ static inline void
+>> xe_display_pm_runtime_suspend(struct xe_device *xe) {}
+>>>>>>    static inline void xe_display_pm_runtime_suspend_late(struct xe_device
+>> *xe) {}
+>>>>>>    static inline void xe_display_pm_runtime_resume(struct xe_device
+>>>>>> *xe) {}
+>>>>>>
+>>>>>> +static inline bool xe_display_connected(struct xe_device *xe) {
+>>>>>> +return false; }
+>>>>> There was a blank line before #endif. Please keep it. Ditto
+>>>>> throughout the series.
+>>>>>
+>>>>>>    #endif /* CONFIG_DRM_XE_DISPLAY */
+>>>>>>    #endif /* _XE_DISPLAY_H_ */
+>>>>>> diff --git a/drivers/gpu/drm/xe/xe_pm.c
+>>>>>> b/drivers/gpu/drm/xe/xe_pm.c index 3fe673f0f87d..e7aa876ce9e0
+>>>>>> 100644
+>>>>>> --- a/drivers/gpu/drm/xe/xe_pm.c
+>>>>>> +++ b/drivers/gpu/drm/xe/xe_pm.c
+>>>>>> @@ -9,6 +9,7 @@
+>>>>>>    #include <linux/fault-inject.h>
+>>>>>>    #include <linux/pm_runtime.h>
+>>>>>>    #include <linux/suspend.h>
+>>>>>> +#include <linux/vgaarb.h>
+>>>>>>
+>>>>>>    #include <drm/drm_managed.h>
+>>>>>>    #include <drm/ttm/ttm_placement.h> @@ -387,6 +388,7 @@ static int
+>>>>>> pci_acpi_aux_power_setup(struct xe_device *xe)
+>>>>>>
+>>>>>>    static void xe_pm_vrsr_init(struct xe_device *xe)
+>>>>>>    {
+>>>>>> +	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+>>>>>>    	int ret;
+>>>>>>
+>>>>>>    	if (!xe->info.has_vrsr)
+>>>>>> @@ -395,6 +397,9 @@ static void xe_pm_vrsr_init(struct xe_device *xe)
+>>>>>>    	if (!xe_pm_vrsr_capable(xe))
+>>>>>>    		return;
+>>>>>>
+>>>>>> +	if (pdev != vga_default_device() || !xe_display_connected(xe))
+>>>>> Simply considering the places in the kernel that call
+>>>>> vga_default_device(), this just doesn't feel right.
+>>>> I also don't understand why to check this vga default device...
+>>> As previously mentioned, a check for the default VGA device was added
+>>> to determine if this is the primary display.
+>>>
+>>> Thanks,
+>>> Badal
+>>>
+>>>>> BR,
+>>>>> Jani.
+>>>>>
+>>>>>
+>>>>>> +		return;
+>>>>>> +
+>>>>>>    	/*
+>>>>>>    	 * If the VRSR initialization fails, the device will proceed with the regular
+>>>>>>    	 * D3cold flow
+>>>>> --
+>>>>> Jani Nikula, Intel
+>> --
+>> Jani Nikula, Intel
 
