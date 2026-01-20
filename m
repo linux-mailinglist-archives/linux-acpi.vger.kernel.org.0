@@ -1,155 +1,113 @@
-Return-Path: <linux-acpi+bounces-20471-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20474-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJlHA2Cwb2nMKgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20471-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:42:08 +0100
+	id cNmSBc68b2kOMQAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20474-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 18:35:10 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F1847CEE
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:42:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDADD48A6A
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 18:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 325BF50DCD8
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 16:01:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CFFEF806F4E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 16:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AE0326957;
-	Tue, 20 Jan 2026 15:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EB544CADD;
+	Tue, 20 Jan 2026 15:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GdcaY16e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eac/fBx6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC793254A0;
-	Tue, 20 Jan 2026 15:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3516344CAD0;
+	Tue, 20 Jan 2026 15:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768923623; cv=none; b=aj+3VDbedCseC3iuMTXqewfWFuJp7CBupq10f5zQokmegR933GpAMTRW4t1jTB8FUtydQlxrko0z+9asgfruXz9U9pcs/vYB3KT8ZL/P9vHJ6Hy1j+BDxJbg++KAYscjp+bIydF0U9JfgcO4YNw8KXOoIHI6baKI+uVLYFk9sVM=
+	t=1768923915; cv=none; b=HBCqKCEVSg2R4RkMfQpanLuzuKRR6kbQVDRL/zUnNrHxzl+dKwuvMgOEyD2APmiNDUyvxHgMYimviSlvcxapKpYjfVsFhWWhA9JuCevvtuCVttGFBOVN5YtHKNt7iqdbCm3o7S3oVxgJOKlbNHytGf4W449/psgtSU/HyF741Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768923623; c=relaxed/simple;
-	bh=JDDqSwYFPFdNPo+wfJrfkyuC39HEgDEVEXAsS2iGrgA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MjhUpBuurOTXLeWblwqLDVM6X56NthBhKhjya/om5qowseXIrkwxC5ATU58WrIcXHU49etGb2ou6yCtthmgHkCRLWwRLiv4+Krq9/9wl3lWiyCFmG+f9Bj6FfKVKIRW9SC9jGyNZPXDZDPOwU4FKFlQLgXJ2yxLEcfCohMnZrEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GdcaY16e; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768923622; x=1800459622;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=JDDqSwYFPFdNPo+wfJrfkyuC39HEgDEVEXAsS2iGrgA=;
-  b=GdcaY16eHU7NX/jqnjYLlDRmryQQw7rWGp36jA6EKvmlVcloHt7SBXBi
-   Mckx5WcvY7UNrczeQC9wmFsdgmH8ma8wP8G1zVo1reFK6VzmsYHC3hDAA
-   cLxjc9Jf4EK+ztUJUGjXv9bmwHv9N3A6+MVxWyBJohQ2UEe3wZcMUs6/J
-   CxMZveB14E/ZCvYj2txBcEZNpdQQlRdl7AUmIK3hs/rDcuI7EBB0xG0QA
-   k6wSAvah2Xg2lrtYy0U45RwzZhuQSoh8IV6KQqqJFt/Yehdus372z+HQ1
-   5gg3rNvJJhxPnjj7QQiFl0l1COkQyK4BC6Ef8WXiTK+t0XheAJPKsH0kD
-   A==;
-X-CSE-ConnectionGUID: BjZropz9Q4iXRdTaBqwRRA==
-X-CSE-MsgGUID: yKwLFdLcSPi86/rQ7hpVFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="74003571"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="74003571"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 07:40:21 -0800
-X-CSE-ConnectionGUID: dPmelVMISu2HqsQy/FSosg==
-X-CSE-MsgGUID: aWIltVHTQt+32AFN/1ZsPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="237410797"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa001.fm.intel.com with ESMTP; 20 Jan 2026 07:40:18 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 13B3498; Tue, 20 Jan 2026 16:40:18 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 1/1] ACPI: PCI: simplify code with acpi_get_local_u64_address()
-Date: Tue, 20 Jan 2026 16:40:15 +0100
-Message-ID: <20260120154015.1764021-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1768923915; c=relaxed/simple;
+	bh=7qWRI5TEMbhJwoDvCA7wEdITDjqQD7+a4DGBF4uDdlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FfFSW42aXyvezk552OPCrjb1GRmlUUaMbB3YgdUNuCUGYKAfTdJNSbTZ55ij0IHKc3qNSTaONEqYm4YH5eNUgBPUOr1m9OkcMMfWrF4TroU0OC5ptaM6lLtiPQnzlM34rYBvBW+Jl3t/yNOEMG/k8YeRIMZKTYHzvjEioK2D/F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eac/fBx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47A1C16AAE;
+	Tue, 20 Jan 2026 15:45:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768923914;
+	bh=7qWRI5TEMbhJwoDvCA7wEdITDjqQD7+a4DGBF4uDdlk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Eac/fBx659SpDlgJImaVB+pxGBVIEoF3n6gpD7KVsUtXLvLkUo6oNKQcYXkgDqM6U
+	 FejaC4LWAV/6tVtnMZm7aVY1d8IZ0DbehbDIUljTgr3dkrfC0VaxcxFm3/S0zr/N4Y
+	 +t/IjMi0z/faM/vZGjNr8RT44KcHBvNsBl5v2WviNMKMaJ/KPfpzuLvK0acYWG1vUg
+	 dt2p6YewaINw+Hck9CPp2aUfZsGVv4UwPTp7ZdJKjbTGC7YHmnNB5HvKN374m9TsTI
+	 1BRK+qNqCaCdsJnVyRWC+Ng/nwgBywR32ORuAC8u6q/aUcKa0Wwpw2apb5K6Boiyv4
+	 p2vuelXDuwZ/w==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Hans de Goede <hansg@kernel.org>,
+ Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ Kenneth Chan <kenneth.t.chan@gmail.com>, platform-driver-x86@vger.kernel.org,
+ Azael Avalos <coproscefalo@gmail.com>,
+ Matthew Garrett <matthew.garrett@nebula.com>
+Subject:
+ [PATCH v1 0/2] platform/x86: Fixes for leaks in panasonic-laptop and
+ toshiba-haps drivers
+Date: Tue, 20 Jan 2026 16:42:41 +0100
+Message-ID: <3026924.e9J7NaK4W3@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-20471-lists,linux-acpi=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,nebula.com];
+	TAGGED_FROM(0.00)[bounces-20474-lists,linux-acpi=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 66F1847CEE
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rafael.j.wysocki:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: DDADD48A6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Now we have a helper so there's no need to open-code.
+Hi All,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/pci_slot.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+These are two fixes for leaks in the panasonic-laptop and toshiba-haps drivers,
+in the "probe error" and "remove" paths.
 
-diff --git a/drivers/acpi/pci_slot.c b/drivers/acpi/pci_slot.c
-index 741bcc9d6d6a..1053ab4a9681 100644
---- a/drivers/acpi/pci_slot.c
-+++ b/drivers/acpi/pci_slot.c
-@@ -42,8 +42,9 @@ static int
- check_slot(acpi_handle handle, unsigned long long *sun)
- {
- 	int device = -1;
--	unsigned long long adr, sta;
-+	unsigned long long sta;
- 	acpi_status status;
-+	u64 adr;
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
- 
- 	acpi_get_name(handle, ACPI_FULL_PATHNAME, &buffer);
-@@ -56,10 +57,9 @@ check_slot(acpi_handle handle, unsigned long long *sun)
- 			goto out;
- 	}
- 
--	status = acpi_evaluate_integer(handle, "_ADR", NULL, &adr);
--	if (ACPI_FAILURE(status)) {
--		pr_debug("_ADR returned %d on %s\n",
--			 status, (char *)buffer.pointer);
-+	if (acpi_get_local_u64_address(handle, &adr))
-+		pr_debug("_ADR returned with failure on %s\n",
-+			 (char *)buffer.pointer);
- 		goto out;
- 	}
- 
--- 
-2.50.1
+Thanks!
+
+
 
 
