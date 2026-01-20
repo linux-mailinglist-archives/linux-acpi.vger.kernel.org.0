@@ -1,131 +1,160 @@
-Return-Path: <linux-acpi+bounces-20438-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20439-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE873D3BD0C
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 02:43:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1432430096B6
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 01:43:10 +0000 (UTC)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26A3D3BEDE
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 06:39:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34FD44ED843
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 05:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB40519E97B;
-	Tue, 20 Jan 2026 01:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D9135CB9B;
+	Tue, 20 Jan 2026 05:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cqyGLnHH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KA37WpYx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5ED1D9A5F;
-	Tue, 20 Jan 2026 01:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E69C22A1E1
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Jan 2026 05:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768873386; cv=none; b=hcNNsS0Mv7MahjofHOc4p/qQaQ9/s54Ow2SeD+p1z518HNQHjad5+eiaUfXPUPJmFiufRz1zknlvQP6/B0f6UkYOgvMx2JeO1KQFt9oQHK804r2psmEubQFqfFAJBIsjte5fnoJNKlj3wOLF61xgb2tLWdhScagRZevaz2+pc1M=
+	t=1768887586; cv=none; b=Oj70A9enFNGtibtL+//mDEAseQUs8/Cw0WtC27B7iPV87QHx5ilboObl3OHpIL5b57qis9MXuz04MLvWutv0UHbfPSSO0FaC9+7BmidCY+T/t2wEWe8fUDy2TO24nwbVKTtJaBH0dwLnD8GLxKwKrPS0e80kIj0p54/2fYXD2PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768873386; c=relaxed/simple;
-	bh=u55t6BJyB+ERcjcXZCyKg4mk+LHTiawCnFEdY7ZdWDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rl7Jry92LBlp9rptOzjB9MvvYizjwJQ1HyW2+Mrzq/uo1gx/+b7B66zZHpvVLfD8IV/gG1YWXShr3Y29eYE1JQ+uc9dmTkF2n/Qtvm0ZzOfxMvnUQU+Qc5VDWLidBy4Onnejlj6XdPqStWhHv83TVB8NZDSd5UczBoIHny0pGMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cqyGLnHH; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768873376; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=mVvKRLVKSjhaQcags76jcWsC1thBrEbjjf7dY/EVH18=;
-	b=cqyGLnHHCti97+a6xYMIU/SJsQ75fKaM7LpVxculQcO0VfeJDe4Z96DUQARyH8k7pQoEgg1bsxTW6nc1V8wgtP9rele2NtGEJsa6u9Q13f3udnidp7nYANw81+sWvKsKO/UYGz6qOXIoySMMG2uQecFbDV4NqLanZAgV9yChUt0=
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WxSNHXZ_1768873375 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 20 Jan 2026 09:42:55 +0800
-Date: Tue, 20 Jan 2026 09:42:55 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	James Morse <james.morse@arm.com>,
-	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI/PPTT: Check total CPU numbers when a CPU can't
- be found in PPTT table
-Message-ID: <aW7dnymr6yXFRTDp@U-2FWC9VHC-2323.local>
-References: <20260116072943.26322-1-feng.tang@linux.alibaba.com>
- <aWpCpecZr7o0qIw2@bogus>
+	s=arc-20240116; t=1768887586; c=relaxed/simple;
+	bh=OqyhRfp6fGgjv8Cj/5UdYA2bOSNSi5OPAeShMCWBK58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qXpq9nSrypYa+kgt171tq6VK5ax02LsnENcaVXNsD62VMIJy9Gz8tfUSBaKGFgfU6Jvp5SLHWpaPnlpZL7MV8nE8LKm3pakZ9Rzgd3nm+36oSPTCDBWRy2dL68xSxedaFFytbauzm4y2a4RT/6GiRMNnNj1hFfZdV0XoxOwjTU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KA37WpYx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768887583;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DIEtfRaqrAySH6qZhU4wqCRXW/8XpuyhgSHVkq0Vp9Q=;
+	b=KA37WpYx/s7mJiEyzJtQPrgUEHM4VDwaGzm4btLRCiXb46J/egseem8ggjVVXNE0sTc6JI
+	vP2o2hnpfJlbbP2T5FETRigrzIpjMYWm8+Ri9/2w57meXBB/Mk8GFH1GjNTx5caqxueQ9X
+	f/8qM8yXLhw5kxHNBJYR4ngT9X2wycw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-Zvi6DkXsMhWDTN_U3A-aDw-1; Tue,
+ 20 Jan 2026 00:39:37 -0500
+X-MC-Unique: Zvi6DkXsMhWDTN_U3A-aDw-1
+X-Mimecast-MFC-AGG-ID: Zvi6DkXsMhWDTN_U3A-aDw_1768887576
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9887195609D;
+	Tue, 20 Jan 2026 05:39:35 +0000 (UTC)
+Received: from [10.44.32.102] (unknown [10.44.32.102])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3AF681800665;
+	Tue, 20 Jan 2026 05:39:32 +0000 (UTC)
+Message-ID: <9861f9da-5f5e-4b2a-ab3f-6ac1a3faebdd@redhat.com>
+Date: Tue, 20 Jan 2026 06:39:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aWpCpecZr7o0qIw2@bogus>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Question] Best practice for ACPI representation of DPLL/Ethernet
+ dependencies (SyncE)
+To: Linus Walleij <linusw@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ linux-acpi@vger.kernel.org
+References: <aWgAfsycBDc0mlFv@smile.fi.intel.com>
+ <16e32f1c-8419-44cf-9da8-4c0cae6165e7@redhat.com>
+ <aWjpQhGyHXXjsx2b@smile.fi.intel.com>
+ <6debcd61-c60e-4436-8e31-c3210528b755@redhat.com>
+ <aW5mn9pXYOU-3djd@smile.fi.intel.com>
+ <a7b9b269-94a2-436d-b51a-cc2ffc98ea69@lunn.ch>
+ <aW5umnz8RdQiIzoi@smile.fi.intel.com>
+ <97cd04f6-827b-41b6-aab6-b5850c443dbe@redhat.com>
+ <aW6JNDr0ZoBjHMeS@smile.fi.intel.com>
+ <00bc45f8-8847-4f64-b140-790a2567e6bc@redhat.com>
+ <aW6UBBvFHP_gEg-V@smile.fi.intel.com>
+ <CAD++jLkD3QX4CgEaDsS=4yMzc632Hk3DjYrSangoEbCrcV9JBg@mail.gmail.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <CAD++jLkD3QX4CgEaDsS=4yMzc632Hk3DjYrSangoEbCrcV9JBg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Fri, Jan 16, 2026 at 01:52:37PM +0000, Sudeep Holla wrote:
-> On Fri, Jan 16, 2026 at 03:29:43PM +0800, Feng Tang wrote:
-> > There was a bug that kernel printed error message:
-> > " ACPI PPTT: PPTT table found, but unable to locate core 1 (1)"
-> > and later on the kernel met issues when building up scheduler domain.
-> > 
-> > Debug showed the kernel actually brought up all 8 CPUs successfully
-> > (MADT and other table worked fine), while the PPTT table was broken
-> > as it only had 4 CPUs in total.
-> > 
-> > Add check for number of CPU of PPTT table against system CPU number,
-> > and warn if they are not equal, to help debugging similar issues.
-> > 
-> > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-[...]
-> > +		cpu = (struct acpi_pptt_processor *)entry;
-> > +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
-> > +		if (cpu->header.type == ACPI_PPTT_TYPE_PROCESSOR &&
-> > +		    (cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE))
-> > +			nr_pptt_cpus++;
-> > +	}
-> > +
-> > +	if (nr_pptt_cpus != num_possible_cpus())
+On 1/20/26 12:34 AM, Linus Walleij wrote:
+> On Mon, Jan 19, 2026 at 9:28 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> This is going to be tricky. I recall some config option that sets all
-> `NR_CPUS` as possible. In short it will break if that is enabled.
-
-Thanks for the info.
-
-> > +		pr_warn("The number of CPUs (%d) in PPTT table doesn't match system's CPU count (%d)!\n",
-> > +			nr_pptt_cpus, num_possible_cpus());
-> > +
-> > +	checked = true;
-> > +}
-> > +
-> >  /**
-> >   * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
-> >   * @table: Pointer to the head of the PPTT table
-> > @@ -565,6 +602,9 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
-> >  	}
-> >  	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
-> >  		    cpu, acpi_cpu_id);
+> (...)
+>>>>> Based on [1] example this clock relationship can be represented by _DSD.
+>>>>> Is it correct?
+>>>>
+>>>> I didn't really get, is this a clock provider-consumer relations or pin
+>>>> connections? If this is a pin connections, why there is no pin mux driver
+>>>> for it?
+>>>
+>>> In fact this should be dpll provider-consumer schema. Consumer (e.g.
+>>> net device, phy...) uses (consumes) DPLL service (frequency
+>>> synchronization, ...) and DPLL device provides such service.
+>>>
+>>> Note that the pin in this context is DPLL pin not pin related to pinctrl
+>>> or so...
+>>
+>> Right, so these are pins with special functions, which are not GPIO like.
+>> But pin mux is not only about GPIO, that's the nice part of it.
+>>
+>> +Cc: Linus for his view on this issue.
 > 
-> I was expecting the above log will be improved to just say possible mismatch
-> with cpu count.
- 
-Yep. it should be more explicite about the source.
-
-> > +
-> > +	/* Check whether PPTT table's CPU count match with system count */
-> > +	pptt_verify_cpu_count(table);
+> In theory a pin controller can be instantiated in any random driver that
+> controls a few pins of its own to the outside world, just like we have a few
+> few-pin GPIO chips here and there such as for USB serial adapters.
 > 
-> Today it is a request to check the CPU count; tomorrow it will be something
-> else in the PPTT. Where do we draw the line on PPTT validation in the kernel?
+> In practice nobody does this, they have some driver-local way of handling
+> pins and mux them around for their special use case.
+> 
+> Graphic cards or audio would be an example. Much custom muxing
+> happening there I think.
+> 
+> I have no strong opinion on the subject, it's up to the driver author I think.
+> 
+> ACPI aspects I can't talk about because I don't understand them...
+> 
+> Hope this helps!
+> 
+> Yours,
+> Linus Walleij
 
-I had similar concern, so I listed all items in orignal patch for check.
+Hi all,
+I think we might be getting sidetracked by the specific subsystems
+(pinctrl/GPIO/Clock).
 
-> These issues ultimately need to be fixed in firmware, and the firmware
-> should not depend on the kernel to precisely identify what is wrong in
-> the PPTT tables.
+The core problem I am trying to solve is modeling the linkage between
+the two devices. The NIC acts as a consumer that needs to "know" about
+the DPLL (the supplier) in the ACPI table.
 
-Ideally yes. But upon the sad experience of raising issue to BIOS vendor or
-engineers, the more precise info, the sooner it gets solved and not refused. 
+We need a way to tell the NIC driver: "Here is a handle to the DPLL
+device you are connected to, and here are the specific resource IDs
+(pins) you are wired to. So a user (userspace) can monitor/configure
+such DPLL inputs and outputs using DPLL Netlink API."
+
+Regardless of whether the underlying signal is a clock or a logic level, 
+the immediate requirement is simply resolving this cross-device 
+dependency so the NIC can identify these resources and report their IDs
+into userspace.
 
 Thanks,
-Feng
+Ivan
+
 
