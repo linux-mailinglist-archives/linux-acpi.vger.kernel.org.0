@@ -1,51 +1,51 @@
-Return-Path: <linux-acpi+bounces-20473-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20472-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGjjH9myb2nHMAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20473-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:52:41 +0100
+	id aOJtGky7b2kOMQAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20472-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 18:28:44 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D4F47FEF
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 17:52:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF844890A
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 18:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 46B5C8052E4
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 16:03:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 65B13804F76
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jan 2026 16:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6D643E9E1;
-	Tue, 20 Jan 2026 15:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7EF43D510;
+	Tue, 20 Jan 2026 15:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XC9Ek4+i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oliGbYJi"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0343E9D1;
-	Tue, 20 Jan 2026 15:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219AD328B67;
+	Tue, 20 Jan 2026 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768923910; cv=none; b=s3oVnf06V3qqk79l+H+yGhI3Li93KVGqV1vTEZ+DJayQIrZ60TaijJk9XUULebX4ez9+66+BSDUcujruAQOVxVc37q6fH5YDErb9GIPO8UiBxx0uAvg3ngL9XsG3xIqUN8PYnI/21EviC3EDfnL6bwMm9lxSFY1epftGcWdZ67U=
+	t=1768923905; cv=none; b=bc3n9DdCo43yKH6uoFEKBglyVUvRtb0QSX8Ik8FbpgXeAYgW6g1Iw8xrVj1clMfbvoCAvkl167DK3hCImgVAYS7UAZH/XDOryfHEkck3vQww+XaEjgfyBGsXUz3+7fFcxJLTr3/jhpS7sBF0HqCbz83IxM+0WVQnra+q0DUsyzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768923910; c=relaxed/simple;
-	bh=zYqnFW/CLiGr0H6c7/xe0iWrLitk+h7B2gXsWzlbw4Y=;
+	s=arc-20240116; t=1768923905; c=relaxed/simple;
+	bh=Pg2BkQxsBc9dyXpGiautqBpvS/L5bPjmKtyYe6frzsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ph7WIY/ZzvxCo9w3cUPUMWPA3i40n0Qpi7x8H6tPnI8sELA9ayTWFAuy0G3Vbk8sI59TNqNMPauB+BXqrGi+/msVnPjvAeQbijTWCWyID9rt7H9oDv1+/Ih1bjlWZszbwJPlHu++Xyyp0sqv13db5ZkgQ/yhrzkody/c4uDu47I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XC9Ek4+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0173C16AAE;
-	Tue, 20 Jan 2026 15:45:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r07jCA7o0hNp/EzIAwsYZAnKNkqRA8NoJMcohgn8j+lPcVeGQ3hCUxcaG+uLDzbNBhCLH4K0tFWkvks+NGF5gPZJnTry1gJzN0UxFCWNdegPzG1peqVlG1pYMPWdTGwcU6JRbYMVO5y4tb1it8M3W1qA4zYnahU+K8WsQmnOF/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oliGbYJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C1C16AAE;
+	Tue, 20 Jan 2026 15:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768923909;
-	bh=zYqnFW/CLiGr0H6c7/xe0iWrLitk+h7B2gXsWzlbw4Y=;
+	s=k20201202; t=1768923904;
+	bh=Pg2BkQxsBc9dyXpGiautqBpvS/L5bPjmKtyYe6frzsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XC9Ek4+ils0lYUlIdnxpXQuJyNC0jM8WE3jG06Qx8uQEOzMi8UVv6I2GSM5t4Nh8u
-	 OeSoKae3Gz+XN56IjzBH92mncAJ2CwuHLdQuUG79lQyfR9+GvRtJpiTu/V2AEyJElS
-	 Fj+omA71AJD7pCiBo97dnKA1BDnNqSu8ToX/3CsErTHQ4LLuF0uf4Qp4naUmuQeo/e
-	 +9O6dbk76XZlxAzes8GSEZznQJ42ZQyf1k28h26CLMxHi5Ykh4VqinrQnCLYwskkmT
-	 entvwHIGx05iN9v50S/ZJ+M/Kf+/k1K332/oyF/2XcqrrRWyhgTBM7+ZrlQ6SFN3dX
-	 yYqoy/AHm0uww==
+	b=oliGbYJie196+c4ttIbPNu57yqceJ+D1IEs6ZgTZi+shSIQViVl/n4pP6ddDXCiJE
+	 snYjeR4IiJ5p4PHSbQDQmS3GJhcq5eDObwiY9DS9XwImTK7bEkR6/3V34Dh3khbeX/
+	 KUU/benvNWZfSbH0qoPNWc/vUVG8rIdharRIi6Sb9YWgQiM//vUlZT536nNyzZAVCT
+	 gKVSog0yEr7zmaz0fyAPPVzr/Gmln+Ko3qzuWPlHicfHOP1YJBrhDD06os00XNIARr
+	 bdnC3JnigDe/275MmP3mjsCMTWefQYyepvxRZsh9kijUezYZ6n7mkWNfy7Tr4clzFw
+	 xPo7asB6qzXuA==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Hans de Goede <hansg@kernel.org>,
  Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
@@ -55,10 +55,10 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
  Azael Avalos <coproscefalo@gmail.com>,
  Matthew Garrett <matthew.garrett@nebula.com>
 Subject:
- [PATCH v1 1/2] platform/x86: panasonic-laptop: Fix sysfs group leak in error
- path
-Date: Tue, 20 Jan 2026 16:43:44 +0100
-Message-ID: <3398370.44csPzL39Z@rafael.j.wysocki>
+ [PATCH v1 2/2] platform/x86: toshiba_haps: Fix memory leaks in add/remove
+ routines
+Date: Tue, 20 Jan 2026 16:44:23 +0100
+Message-ID: <10789244.nUPlyArG6x@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <3026924.e9J7NaK4W3@rafael.j.wysocki>
 References: <3026924.e9J7NaK4W3@rafael.j.wysocki>
@@ -82,7 +82,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,nebula.com];
-	TAGGED_FROM(0.00)[bounces-20473-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20472-lists,linux-acpi=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	RCVD_TLS_LAST(0.00)[];
@@ -98,46 +98,66 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,intel.com:email,rafael.j.wysocki:mid]
-X-Rspamd-Queue-Id: 22D4F47FEF
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 1DF844890A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The acpi_pcc_hotkey_add() error path leaks sysfs group pcc_attr_group
-if platform_device_register_simple() fails for the "panasonic" platform
-device.
+toshiba_haps_add() leaks the haps object allocated by it if it returns
+an error after allocating that object successfully.
 
-Address this by making it call sysfs_remove_group() in that case for
-the group in question.
+toshiba_haps_remove() does not free the object pointed to by
+toshiba_haps before clearing that pointer, so it becomes unreachable
+allocated memory.
 
+Address these memory leaks by freeing the memory in question as
+appropriate.
+
+Fixes: 23d0ba0c908a ("platform/x86: Toshiba HDD Active Protection Sensor")
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/platform/x86/panasonic-laptop.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/toshiba_haps.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1089,7 +1089,7 @@ static int acpi_pcc_hotkey_add(struct ac
- 			PLATFORM_DEVID_NONE, NULL, 0);
- 		if (IS_ERR(pcc->platform)) {
- 			result = PTR_ERR(pcc->platform);
--			goto out_backlight;
-+			goto out_sysfs;
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
-@@ -1105,6 +1105,8 @@ static int acpi_pcc_hotkey_add(struct ac
+--- a/drivers/platform/x86/toshiba_haps.c
++++ b/drivers/platform/x86/toshiba_haps.c
+@@ -142,8 +142,8 @@ static void toshiba_haps_remove(struct a
+ {
+ 	sysfs_remove_group(&device->dev.kobj, &haps_attr_group);
  
- out_platform:
- 	platform_device_unregister(pcc->platform);
-+out_sysfs:
-+	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
- out_backlight:
- 	backlight_device_unregister(pcc->backlight);
- out_input:
+-	if (toshiba_haps)
+-		toshiba_haps = NULL;
++	kfree(toshiba_haps);
++	toshiba_haps = NULL;
+ }
+ 
+ /* Helper function */
+@@ -195,15 +195,20 @@ static int toshiba_haps_add(struct acpi_
+ 	/* Set the protection level, currently at level 2 (Medium) */
+ 	ret = toshiba_haps_protection_level(acpi_dev->handle, 2);
+ 	if (ret != 0)
+-		return ret;
++		goto err;
+ 
+ 	ret = sysfs_create_group(&acpi_dev->dev.kobj, &haps_attr_group);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	toshiba_haps = haps;
+ 
+ 	return 0;
++
++err:
++	kfree(haps);
++
++	return ret;
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
 
 
 
