@@ -1,332 +1,278 @@
-Return-Path: <linux-acpi+bounces-20488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iE4tJMW8cGkRZgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20488-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 12:47:17 +0100
+	id +PEjBk7ycGk+awAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20489-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 16:35:42 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2241F5634E
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 12:47:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B780A59441
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 16:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 590DB989A8A
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 11:37:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 909F266CB4A
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jan 2026 14:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1740540B6E6;
-	Wed, 21 Jan 2026 11:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MOnnSka8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE98E3C009C;
+	Wed, 21 Jan 2026 14:41:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B7940B6E4;
-	Wed, 21 Jan 2026 11:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333FF3246FE
+	for <linux-acpi@vger.kernel.org>; Wed, 21 Jan 2026 14:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768995381; cv=none; b=aFce+Ye3MoYlhJfPrcfP5TQ2WEOcE9stFAGLpeWu4FIfFA6RQGfxWfG6DgQTc7IAoozXVqO9m8hWDrXFaps4GH6qrmLp7z0JevyZ88l1MHo3A0C3Pkl6MPupRZ3M4nIfOO+PCbfw7jaqHeGEzb6GoVMYOIeLbObonQNyelutddU=
+	t=1769006506; cv=none; b=rWoHbnu4itHcvt7TLhMq2NBYdFJecJPj87lRDd0Yxk04c2KnzAv9hhgEcnzy0GztqsrDOLHbQE9et3jw+Ke+21udtbrcaSyeJ9+1wKaN8nBOUnUHlp31+K9kZKH3EEdZxEApt1AaKLO/I3ZDrM20I0PvSwuPBlOYjfbL1SiwIMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768995381; c=relaxed/simple;
-	bh=mSmsMtvGwq1jQxsB6FlcxVipMrAkvxQnT9An0dZtQ0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVQYWyA9c2fATUHhDnYih1P811QsGDhRpFrHN/9Z62F5iRuzSQIYNZaSpFCw0m7ufNs81dlwNmIOX+yFzSjLb3czCkgKpvcyJOjXH8Y9TLava/ylcg8LhDmGqYW9TuYTWeOVkdpbotNnvUrC/r2HpqpwvkW9qeSNj6lsVlKgQi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MOnnSka8; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60L5DAob3264903;
-	Wed, 21 Jan 2026 11:35:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=8xSmsePBtJ3EW+zKnS0O0ktRO+JFCw7jsgeeT4kz2Qw=; b=
-	MOnnSka8xoIYh/B6oQ1Uphz72FGG+D8EnlDjAb3NBGkkGFD4nuVoeBlraSbBGhPX
-	9h3UwXuM/47qBP7FGg42txUJEogNnBjquRqynSuYafsOxNWYpU0cpt3kP132CA6P
-	pxSm9CN/Gy+/oeiP+MzDimcOCB2r2JEolo2yMN2mjjTjUBuUgh6PbV1hgbjwxWIi
-	+T5QonDVTGQN+IF3Su/pFTB/ypCUh3fhYi4zC1zWNne3bgd00Tw23PqqZD8dS9z4
-	UNpn7cJuS34ZkvO8GbH5SSlqj3Vj3HYgXMwGxeEf/Ofq28+4diKjADDnF4nwU89u
-	nAhnfgtdsRCQ1nzRBeRJfw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br1b8dq1n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jan 2026 11:35:53 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60LA6OqX019001;
-	Wed, 21 Jan 2026 11:35:52 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bsyrry2x0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jan 2026 11:35:52 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60LBUlCD025086;
-	Wed, 21 Jan 2026 11:35:52 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4bsyrry2rv-3;
-	Wed, 21 Jan 2026 11:35:51 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>
-Cc: Johannes Thumshirn <morbidrsa@gmail.com>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] PCI/ACPI: Confine program_hpx_type2 to the AER bits
-Date: Wed, 21 Jan 2026 12:35:41 +0100
-Message-ID: <20260121113544.4163457-3-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260121113544.4163457-1-haakon.bugge@oracle.com>
-References: <20260121113544.4163457-1-haakon.bugge@oracle.com>
+	s=arc-20240116; t=1769006506; c=relaxed/simple;
+	bh=VpzSOPPipZ7Wk3DVhXqnmZFKnblqi6knYh6FEjxvsEg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q+TbaHLcFxAMwSbXzo/pn9PWlm9fZSIb7wiwCwGSzBN+bOp1utUx48Ijn09MAJxI3VJHKf4vhye51Fhg09ZuTmZfoI4h3QrGmj8BEElE3BKKKClMsOiNlKIs4f/c5ZgpM2jinzLnf98bFtTXFOBZGq9gb3JGjvGo4qNJfFLbYt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35305538592so581174a91.0
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Jan 2026 06:41:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769006504; x=1769611304;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AF6Iy9dgsc5sPND1gabv+P1umCdITLLVFz5zc76lNNw=;
+        b=giz7uUXxkJXvId2fXrbEGEwbDTjX1kamEemsKIZBP+6G2qUeLbmn1nx9GYi7RmUc4y
+         3EAkiWv4cKse3KrwzCn2kOQQOGeaF+VEjvm0GZcHRMXiTd6gjueVFEmCRxJ4ItVjJOFP
+         ZSwqQgjR7Bnqa2WbdOFYEc7x3nrcq0fm06WBins9ZGDr9umLVab7enw/peuhxsP5gEaA
+         LJ8miDX9yD5C2ohKQI67JzLCdpnz8xMpxPQFWZM4owlh4ovr7ZvA/+kZoD6gXPXqSnqK
+         +uwjBHYUqN2M7i05gseowKxgKMkG8nQGPyKV44L4DvgV2XgEPvIB3qUAflgW9WhJ7sG6
+         TO3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUGaeSFv9qgQaUE5yBBT8GOECCN2z4av+UrpPOwwF67FmvpGXxllBDTNQzV6vKua7mFLObonXhgBiqu@vger.kernel.org
+X-Gm-Message-State: AOJu0YydCKh4gMdCVq0ZttA2/q5izrWVxtv000gh9vCryT7BzA0YOWed
+	TvobhLG45LbQFNgQiXqPc8UMME/Qfm8EoPeAXlPE3rVxrTQDHjjFTVGdA0ost1+D
+X-Gm-Gg: AZuq6aLiNVqdaKO3QYi86S8p2cdJV1JV/3zplB++BDUkbV+agDHYNkP2NC+j/lfhstH
+	ok9p9immCk0DSs8sG9+Co0+1wY3+oYUs8+W8BcNLV5oZs65wFX/xPi6HYgkVBkWVodA3O/KmDEs
+	40M24VxelRj7Ll2XiG+4TGCDWIf9RCc3omYbYVMrFlyKTejBq7JwWajAmBcFdF0z3WOyKRTba/Q
+	ok0IH6KWffmWCyfD3nNPPer7lA5MypB4jxsAqVWx/P3z7XwiHmbyUroNYuJ779AKO01hBk8dQ0u
+	kwgMQ3ydlaH9FsfciK6t7reCd+C9HZt/5KQ29Bv5Gv5APrpTesDalDTtwD6v6jSveAoE3UNVCW8
+	nuEawNQxFeKbdDW75zQVhZUu3z+6Y8RlDmVWJ6v3cXxA0l9U2t/+kl9+Up76vdkOTLkRqnLBOlS
+	BoeM1R90JdOfb1WTiIkEezlIllmboBtwnPviUc+R7YxZv+7bM25lLK
+X-Received: by 2002:a05:6214:1bc6:b0:894:7405:d36d with SMTP id 6a1803df08f44-8947405d41dmr18751886d6.51.1769000828944;
+        Wed, 21 Jan 2026 05:07:08 -0800 (PST)
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com. [209.85.222.174])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71c274csm1233370385a.21.2026.01.21.05.07.08
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Jan 2026 05:07:08 -0800 (PST)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c538d17816so845019985a.0
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Jan 2026 05:07:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWIl2vgvF0mblL64dVICCOvIdaijb5dwIz25rdigziXRgvOo5SdXwM67oyoDRPeD10zQ+UqW2UIGLxp@vger.kernel.org
+X-Received: by 2002:a05:6102:3053:b0:5e5:66c6:d23e with SMTP id
+ ada2fe7eead31-5f1a6fd7b8amr5292858137.1.1769000378213; Wed, 21 Jan 2026
+ 04:59:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-21_01,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- adultscore=0 malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2601210097
-X-Authority-Analysis: v=2.4 cv=WbcBqkhX c=1 sm=1 tr=0 ts=6970ba19 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=CF6WusRKGoJ8OkfercgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf awl=host:12104
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDA5NyBTYWx0ZWRfX9XpsfvLL6NYD
- Uk+YDRag+k2Ud1sE/a096WHh6+TxZ06Cg7PO04mKuliheJH5enV0iCXCsAj6TQwzwjnEi2o2aI5
- JGBih8zwIEE1nKTNDHf1huTMFgQNqRuZFclwJIQuHk9OXI0acADnseIXsfESABLSbiES5sdtH0m
- N+GNIPP5XDHroUnAYzBQm0kxTmAlX+Y1nrF1vbY8qKAsi65h/K0my5JJDMNuZv86nK+zqRgrwNu
- FttEOly85PD+ofOtX0pNCDIcysRetxzTPkr7BPK75Y+Zk93eWU8IpHgNOX0pOAFmdHH4pmTWY3r
- 576sogZHVRM3reU4OwS+SwUjscYoFMvIX/gJRsAy65oIGwicD9cmARfbn3SlszdyJJl1JGvoiCN
- TBCsFeXEOg7DEq5pM2ZvxshTCHZooskdankMJ/Br/VaYLL8F1h1stxvTkiuSuOHC1PxhTCK1xzJ
- QeL6YJQ5NDZTcSNI4yTGznP3MB11R0u2DB4/6AZ8=
-X-Proofpoint-ORIG-GUID: JGxWucj1N6acwkaAvfRYpRanyfa6x2xv
-X-Proofpoint-GUID: JGxWucj1N6acwkaAvfRYpRanyfa6x2xv
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com> <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+ <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com> <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+ <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com> <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+ <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com> <20251202102619.5cd971cc@bootlin.com>
+ <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com> <20251202175836.747593c0@bootlin.com>
+ <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com> <20251204083839.4fb8a4b1@bootlin.com>
+ <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+ <20251210132140.32dbc3d7@bootlin.com> <c50c40cc-69f6-436c-a94e-94a3a10f6727@gmail.com>
+ <20251211132044.10f5b1ea@bootlin.com> <1b9fa77b-d74a-4fa7-b2e7-8b389d59a5a0@gmail.com>
+ <20251211161902.11ef4248@bootlin.com>
+In-Reply-To: <20251211161902.11ef4248@bootlin.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 21 Jan 2026 13:59:26 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWGk5ig3v9tGy1cMOg1LmKu3KrxQq2HO1vcQeZPuRxWBQ@mail.gmail.com>
+X-Gm-Features: AZwV_QgoZry7Ux_LWaq66D8-Sle9_xFUD1BP9eHkYs41xWjINnCZsHwmSX1GiNQ
+Message-ID: <CAMuHMdWGk5ig3v9tGy1cMOg1LmKu3KrxQq2HO1vcQeZPuRxWBQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring <robh@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Kalle Niemi <kaleposti@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+	Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [0.24 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-20488-lists,linux-acpi=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linaro.org,lists.infradead.org,lunn.ch,linuxfoundation.org,pengutronix.de,baylibre.com,sang-engineering.com,axentia.se,arndb.de,google.com,opensource.cirrus.com,cirrus.com,linux.intel.com,stgolabs.net,huawei.com,intel.com,vger.kernel.org,lists.linux.dev,microchip.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-20489-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[google.com,kernel.org,linux.ibm.com,gmail.com,suse.de,jp.fujitsu.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,oracle.com,lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,oracle.com:dkim,oracle.com:mid,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haakon.bugge@oracle.com,linux-acpi@vger.kernel.org];
+	DMARC_NA(0.00)[linux-m68k.org];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	FROM_HAS_DN(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[oracle.com,reject];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-acpi@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 2241F5634E
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[60];
+	TAGGED_RCPT(0.00)[linux-acpi,dt,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,mail.gmail.com:mid,linux-m68k.org:email]
+X-Rspamd-Queue-Id: B780A59441
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-program_hpx_type2() is today unconditionally called, despite the fact
-that when the _HPX was added to the ACPI spec. v3.0, the description
-stated:
+Hi Herv=C3=A9,
 
- OSPM [1] will only evaluate _HPX with Setting Record – Type 2 if OSPM
- is not controlling the PCI Express Advanced Error Reporting
- capability.
+Revisiting his old thread (sorry for the delay)...
 
-Hence, we only call program_hpx_type2() when the OSPM owns the PCIe
-hotplug capability but not the AER.
+On Thu, 11 Dec 2025 at 16:19, Herve Codina <herve.codina@bootlin.com> wrote=
+:
+> On Thu, 11 Dec 2025 15:52:28 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > On 11/12/2025 14:20, Herve Codina wrote:
+> > > On Thu, 11 Dec 2025 10:34:46 +0200
+> > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > > Do you see the same trace with:
+> > > - "pinctrl-0 =3D <&i2c1_pins>;" in your overlay
+> > > - fragment0 removed from the overlay (i2c1_pins definition removed fr=
+om
+> > >    the overlay.
+> > > - i2c1_pins node defined in your base DT.
+> >
+> > Just tested. The i2c1 appears and the test-overlay probe gets called,
+> > when the i2c1_pins is in the base-dt and not in the overlay.
+>
+> Geert, do you expirement same results?
 
-The Advanced Configuration and Power Interface (ACPI) Specification
-version 6.6 has a provision that gives the OSPM the ability to control
-the other PCIe Device Control bits any way. In a note in section
-6.2.9, it is stated:
+Yes, after moving the pin control subnode from the overlay[1] to the
+base DTS, the SPI bus and FLASH work after loading the overlay for
+the first time.
 
-"OSPM may override the settings provided by the _HPX object's Type2
-record (PCI Express Settings) or Type3 record (PCI Express Descriptor
-Settings) when OSPM has assumed native control of the corresponding
-feature."
+> > > In other word, is the issues related to adding a pinctrl sub-node (pi=
+nctrl
+> > > pins definition) in the overlay or is it something else?
+> >
+> > Seems to be related to the pinctrl.
+>
+> I don't think that the issue is related to pinctrl itself.
+>
+> IMHO, I think the issue is related to overlays and fw_devlink.
+> The distinction between "a new node is going to lead to a device" vs "a n=
+ew
+> node is just data and will never been attached to a new device" when an
+> overlay is applied is broken.
+>
+> This is broken with the upstream "treewide: Fix probing of devices in DT
+> overlays" commit I've tried to revert. Indeed, on the LAN966x PCI device
+> use case devlinks created are not correct with this commit applied.
+>
+> I am not sure also that devlinks created with a more complex overlay will=
+ be
+> correct. For instance, Matti, with your overlay not sure that a phandle f=
+rom
+> the oscillator node referencing the pmic node will lead to a correct
+> provider/consumer devlink between the pmic device and the oscillator devi=
+ce.
+>
+> On the other hand, this is broken with "of: dynamic: Fix overlayed device=
+s
+> not probing because of fw_devlink" works for the LAN966x PCI device use c=
+ase
+> an lead to correct devlinks but breaks your use cases.
 
-So, in order to preserve the non-AER bits in PCIe Device Control, in
-particular the performance sensitive ExtTag and RO, we make sure
-program_hpx_type2() if called, doesn't modify any non-AER bits.
+Loading my overlay[1] causes the following changes under
+/sys/class/devlink/:
 
-Also, when program_hpx_type2() is called, we completely avoid
-modifying any bits in the Link Control register. However, if the _HPX
-type 2 records contains bits indicating such modifications, we print
-an info message.
+    + genpd_provider:ca53-cpu0--platform:e6e90000.spi ->
+../../devices/virtual/devlink/genpd_provider:ca53-cpu0--platform:e6e90000.s=
+pi
+    + platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+    + platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.=
+spi
+    - platform:e6060000.pinctrl--platform:keys ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:keys
+    + platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:=
+e6e90000.spi
+    + platform:soc--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
 
-[1] Operating System-directed configuration and Power Management
+Note that these changes are exactly the same in the working and the
+non-working case.
 
-Fixes: 40abb96c51bb ("[PATCH] pciehp: Fix programming hotplug parameters")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Removing the overlay again removes all added links, but does not
+restore the keys link:
 
----
+    - genpd_provider:ca53-cpu0--platform:e6e90000.spi ->
+../../devices/virtual/devlink/genpd_provider:ca53-cpu0--platform:e6e90000.s=
+pi
+    - platform:e6055000.gpio--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+    - platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.=
+spi
+    - platform:e6150000.clock-controller--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:=
+e6e90000.spi
+    - platform:soc--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
 
-v1 -> v2:
-   * Fixed comment style
-   * Simplified the and/or logic when programming the Device Control
-     register
-   * Fixed the incorrect and brutal warning about Link Control
-     register bits set and changed it to an info message about _HPX
-     attempting to set/reset bits therein.
-   * Removed the RCB programming from program_hpx_type2()
-   * Moved the PCI_EXP_AER_FLAGS definition from
-     drivers/pci/pcie/aer.c to drivers/pci/pci.h
----
- drivers/pci/pci-acpi.c | 61 +++++++++++++++++++-----------------------
- drivers/pci/pci.h      |  3 +++
- drivers/pci/pcie/aer.c |  3 ---
- 3 files changed, 30 insertions(+), 37 deletions(-)
+Loading the overlay again causes no changes in the links, but the SPI
+bus and FLASH always work.
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 9369377725fa0..34ea22f65a410 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -271,21 +271,6 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
- 	return AE_OK;
- }
- 
--static bool pcie_root_rcb_set(struct pci_dev *dev)
--{
--	struct pci_dev *rp = pcie_find_root_port(dev);
--	u16 lnkctl;
--
--	if (!rp)
--		return false;
--
--	pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
--	if (lnkctl & PCI_EXP_LNKCTL_RCB)
--		return true;
--
--	return false;
--}
--
- /* _HPX PCI Express Setting Record (Type 2) */
- struct hpx_type2 {
- 	u32 revision;
-@@ -311,6 +296,7 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
- {
- 	int pos;
- 	u32 reg32;
-+	const struct pci_host_bridge *host;
- 
- 	if (!hpx)
- 		return;
-@@ -318,6 +304,15 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
- 	if (!pci_is_pcie(dev))
- 		return;
- 
-+	host = pci_find_host_bridge(dev->bus);
-+
-+	/*
-+	 * We only do the HP programming if we own the PCIe native
-+	 * hotplug and not the AER ownership
-+	 */
-+	if (!host->native_pcie_hotplug || host->native_aer)
-+		return;
-+
- 	if (hpx->revision > 1) {
- 		pci_warn(dev, "PCIe settings rev %d not supported\n",
- 			 hpx->revision);
-@@ -325,33 +320,31 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
- 	}
- 
- 	/*
--	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
--	 * those to make sure they're consistent with the rest of the
-+	 * We only allow _HPX to program the AER registers, namely
-+	 * PCI_EXP_DEVCTL_CERE, PCI_EXP_DEVCTL_NFERE,
-+	 * PCI_EXP_DEVCTL_FERE, and PCI_EXP_DEVCTL_URRE.
-+	 *
-+	 * The other settings in PCIe DEVCTL are managed by OS in
-+	 * order to make sure they're consistent with the rest of the
- 	 * platform.
- 	 */
--	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ;
--	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ);
-+	hpx->pci_exp_devctl_and |= ~PCI_EXP_AER_FLAGS;
-+	hpx->pci_exp_devctl_or &= PCI_EXP_AER_FLAGS;
- 
- 	/* Initialize Device Control Register */
- 	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
- 			~hpx->pci_exp_devctl_and, hpx->pci_exp_devctl_or);
- 
--	/* Initialize Link Control Register */
-+	/* Log if _HPX attempts to modify PCIe Link Control register */
- 	if (pcie_cap_has_lnkctl(dev)) {
--
--		/*
--		 * If the Root Port supports Read Completion Boundary of
--		 * 128, set RCB to 128.  Otherwise, clear it.
--		 */
--		hpx->pci_exp_lnkctl_and |= PCI_EXP_LNKCTL_RCB;
--		hpx->pci_exp_lnkctl_or &= ~PCI_EXP_LNKCTL_RCB;
--		if (pcie_root_rcb_set(dev))
--			hpx->pci_exp_lnkctl_or |= PCI_EXP_LNKCTL_RCB;
--
--		pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
--			~hpx->pci_exp_lnkctl_and, hpx->pci_exp_lnkctl_or);
-+		if (hpx->pci_exp_lnkctl_and)
-+			pci_info(dev,
-+				 "_HPX attempts to reset the following bits in PCIe Link Control: 0x%04x\n",
-+				 hpx->pci_exp_lnkctl_and);
-+		if (hpx->pci_exp_lnkctl_or)
-+			pci_info(dev,
-+				 "_HPX attempts to set the following bits in PCIe Link Control: 0x%04x\n",
-+				 hpx->pci_exp_lnkctl_or);
- 	}
- 
- 	/* Find Advanced Error Reporting Enhanced Capability */
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 0e67014aa0013..f388d4414dd3a 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -88,6 +88,9 @@ struct pcie_tlp_log;
- #define PCI_BUS_BRIDGE_MEM_WINDOW	1
- #define PCI_BUS_BRIDGE_PREF_MEM_WINDOW	2
- 
-+#define	PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
-+				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
-+
- extern const unsigned char pcie_link_speed[];
- extern bool pci_early_dump;
- 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e0bcaa896803c..9472d86cef552 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -239,9 +239,6 @@ void pcie_ecrc_get_policy(char *str)
- }
- #endif	/* CONFIG_PCIE_ECRC */
- 
--#define	PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
--				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
--
- int pcie_aer_is_native(struct pci_dev *dev)
- {
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
--- 
-2.43.5
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drive=
+rs.git/commit/?h=3Dtopic/renesas-overlays&id=3D383285b905a20d6734bfcbf7bcf7=
+15c1c2b45395
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
