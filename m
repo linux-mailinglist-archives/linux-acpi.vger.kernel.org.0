@@ -1,80 +1,80 @@
-Return-Path: <linux-acpi+bounces-20562-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20563-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBDNF1dJcmkJiQAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20562-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 16:59:19 +0100
+	id gIBTGq9LcmnpfAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20563-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:09:19 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5DA695F3
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 16:59:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70B869A46
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C669C3013263
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 15:55:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D290309E69D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 16:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F5438F234;
-	Thu, 22 Jan 2026 15:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227D236074D;
+	Thu, 22 Jan 2026 15:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PgcetXa7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Br7FI+Z/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD623542CC
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 15:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324535DD1D
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 15:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769097326; cv=none; b=Wfx1VHE3h7k66jb0PVadkc7I+zXaNodEKGRgxJnZHqd7dcmdu0ikYhAVHTADvvJxEB22gzfaUs0a5s1vEQUAAfqNlEeslKeeKVlfrg1XBPyLwqxN2DQuAdF06RqKeIq0Yh+xXQXmpoSqGRnx+gs3JlPjqw3mYoKd6cpuSazuIao=
+	t=1769097331; cv=none; b=UyXwMLkIIb97btc6EDaFZUska2BV1/q+yEAXUJF8AElM0vNoKvAk1XFs+ZkkORSETeC1QsoOdzB4xT4gKUvE7X8Tfqn1GNiEN483o4Qn8mHyB/vbol6mF0x3WgwBSJ4MlREidqEovQca4Yptzqg0K3Wpkx6kvCKNtf/gxIb6+Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769097326; c=relaxed/simple;
-	bh=pITSoNE3VQ33XxIaYm2AgBt4ZThPk06LRfJuwhvwh/I=;
+	s=arc-20240116; t=1769097331; c=relaxed/simple;
+	bh=V5b8HegB8GRX/lAVl+vWtZpAiWhKdfd1I/+Cxli1x/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHjDa+2W5fsChRAUDL5LxJRld+kwFpW3zXiMxK1uvh1NNl5l0wXoHtN0EkbJq2guriTAt9m3yTQwosy1afMNCYThOh0b5qH2tQrwAHcfbD5H65+Hv2uWVkv3Yq307bVyFrqF4cysd3pUcV5gehIxFCYywC8UWs+Rl5qFI1EatzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PgcetXa7; arc=none smtp.client-ip=74.125.82.175
+	 MIME-Version; b=kbkquxAn1Qd1GxFb2IUytweCoix6SRpbDkArcsyJCL5kSMyP75henMUtB+W5Ci/ITcCL5P5MQR+7DOKDm7v6PgMtTjOyIAmdTlxlcbr7lsPzfPc09JbYH6WdFUPxLd4xuD9JS1oGd/LZhMdIeHKcl2KHnwv4A3zMLYV/cs//JJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Br7FI+Z/; arc=none smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b71557299dso1535449eec.1
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:55:20 -0800 (PST)
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-121a0bcd364so1983527c88.0
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:55:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769097319; x=1769702119; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769097323; x=1769702123; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SKtMTSVYxonSlbpUyIW/ic7Xfc0BNVbSgxoEnuNp57U=;
-        b=PgcetXa7/UbUvlCl5xrRn2P0afO9xNMimnoaK2rZe/taRFWKcnM4Om6dTp1wKm+q0a
-         mhk9xgYkHfw9G9MqzjoZgX2iCZ8YXCxifCLT2B4jEqLsEZXfBa1I8OA36YXOG4y3WIw6
-         +7AQ4mN03yuctxeBDwra0W5ynr0Jxf2Cv4QCxOJ59PnnEw+RrXPTLPfbvMajA9n/G2vo
-         Rg1I/DWIID4Z/vZBA+8DYHFb5Y0eZFKRx6Us9RcU9jobUO4nssxxdXX0ZdKWMKA4FtmC
-         Cr2tMR+BddISbcQJxInHLFsxX6qGXkRefGcYXN8BxSbJ/lxtwbysfU8i5NWedE1PWv+l
-         EPCg==
+        bh=sT7sxUlCTKBw+bxvJar1XKrjKbpL37hYJb8bo9j5S5g=;
+        b=Br7FI+Z/RvxaX4t2XCZthxCvicYRTqC8KliAR2khFB9LAapxggZUTiyREzzFL3AHOh
+         n9TCgAnr0VSLmZoJJkstjmjkB2/ZoMlwP2v4z7z8ib1v2w1EsuQKCuB7d2EAtsUTJMgQ
+         h8uxgitbSqb28MuhMdyXIaB7whECT/EFDvws0cyqN6UvWCR8LzE2abIgBDpKuLtLp/0s
+         lfE2hSCzpVTMBzM8LK7jFSLpoT5EA1FmOxxO9P6aYrAAlzo5IGV+j6CsvWSLM3pjNOj1
+         zjf4h3uEC16heozXI8hq945rXIxaasheBVIUgg9AXfCKRPfp8AVyxV5krlqcxt/tkHxD
+         SGfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769097319; x=1769702119;
+        d=1e100.net; s=20230601; t=1769097323; x=1769702123;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SKtMTSVYxonSlbpUyIW/ic7Xfc0BNVbSgxoEnuNp57U=;
-        b=t4qRKwVU6lyxLsYqOemZN5E75rpqjDrZJ8FvgukrPTsK5kiZ07NkdU2EIssDI6i+Ys
-         tRhszWtNAYCFgVF9PpDPe2w/FeVIbz2GwKdla/EmFJws+D4yzmdusX3lfGM5S5t2MNY3
-         T6d6Ii8/vf7Z6Qm04x32UGH6QEQeES9jNNO+qjvkDYjN9MJWp33m/ca+Vjg99D1IUFlL
-         ckhaiDzGhpNf0DXMpVGmdfkbwZvwPrCzAUk5PzISz+EaKFbzU6Fl0xta95SxitpcLXTZ
-         NpLCuDblEW/2dtQbc+RmcPT1bAaRUXhs37PGZ3mjOfc9MCwdtb9Olc1kNtqD9HjvU+rr
-         BJZg==
-X-Gm-Message-State: AOJu0YzOGtu0Tb2lw264yyRfJlvq8D7oxar49wjywK4pg2jUCOu7zcK9
-	PICt3qKEveg5LU2yvRjZLDEaI2sZ/+5b6wMbxq8BBD5ZJ3IJAbdNtyL/
-X-Gm-Gg: AZuq6aKpB5ZJB2N2EJTx+bHVj8A67kbz4eOdLy/RTT4eslwZrRB6VeWLqAJiuiuh5HJ
-	m0CvJDbSB3RPxE8ce15yg2PfMJKwgL9CkU4qzhjjtSrvOcoAt7cfVkD8K5EfFR/NZGuYXVkc5Ik
-	iavxDSFgk8Mc8D6WGsZuZnTQLIKp2oQahNGGukr03fO7G26LnwV91/+bJ/Ts8+BoTk+SoFseblX
-	QR0W6wgMGfYaQH6ADRJyl2jVsT/Qr7adGVy3AbkCS3MMnG7MkjBAPihpRpVnQA25fdxjZY/bl7J
-	69ymLTodHdBx9ZTDu6754vtQrigXr2z0V8aTcc3Q5b5mHkSGyjYidGtCg9sjiwd2D5Bg5pXZWzV
-	ptOCdhpQiGxVOFy9/+SR9l3I76KXBlZY7zfRwu+8ANC6HrTK6LG9uI724l/cY0Oc0IC45wq2SEB
-	CI5z+GhUYidH50NVgpNOiZ/K7JKLJOH7MOzolMu5GcxjUpnwWhgV2i
-X-Received: by 2002:a05:7300:1908:b0:2ae:5bb5:5732 with SMTP id 5a478bee46e88-2b6b4e97901mr13128772eec.29.1769097318588;
-        Thu, 22 Jan 2026 07:55:18 -0800 (PST)
+        bh=sT7sxUlCTKBw+bxvJar1XKrjKbpL37hYJb8bo9j5S5g=;
+        b=fGiMBg4/+RSaTlOJCqlZ6ugjCdKePziox2SATKaFXDSqipRlqyu/3XR5ba+38dY79+
+         xAQ33oSVmLwAglnxKvPOTxbMpKPX9PGxdRKA7p3LnFfiOxdvScT6zq5g2JVrKXIPU/Fm
+         ho1TClosAuhYbfXVH61FrNUaFh2ygGWGbe7m/ZXBcBRDxsfdGtWmU6Hb2WwWpyZQnDd8
+         W/xp3Np1fhoWcCVrTT48W9j5hVF8YRgSHIK+HLwWxm4Vf7QvonL6rX38V0yRgAFn3aVK
+         g4RW452mvkcv5/oOc0hWGrNMHWCFVKNi3zn9M+vFO5A/zlYcI75PCGWcb68+dewjWGDa
+         8pxQ==
+X-Gm-Message-State: AOJu0YyfaJcRwXlEIcgoZ9wfHRE4gpK3ypTq0+wUS9G+/qgu2pCeTF09
+	HAhopFCIDtGwoQettmvBE3gcV2jfx3elbASFCMTler4GPF/B1g2NwA8m
+X-Gm-Gg: AZuq6aIoyLnfw1aV1diTQm9dZAmYw1Nkatug24T4B5kDydv2Oh9w9O3DKNxwiveD+g4
+	YUCixENa5+3JA8tMi4yJoFa90g6Tu7V2wEVuBfp2Oc0Tn6Fhf/n0HxytOrxOfNHTYG1fH0qWcI8
+	OzYb8hyDDw7RFP8vRK7v/UQjuKORoo5aqzFEc8x5zld2mKdJpYs3whXdzJzcKH9ELKm+AuOdvh6
+	gomCMZeuxIShW7f9aeLr/IIf9IvKVy1bfb74LfIKSoOoQv6gHy2SroeW+yfHFEMPL2DOgaoH/8E
+	qQ5m06Q09s9pnxx0J6mVmVYDskQ/nhyfJOVgcDfT0EczvzlIbtZ0KEbHTgftYb6BEvENlUZRWfr
+	pBvlhJfsmXUSmQWZS+FDykD7Y9Adkvnr8IHf7kK02M5kPVtv1Y65IAvGcAB7etV8Zxb1xQ4E/If
+	HR7akhApV3D8HosynafNZWi1YTwjQ7Z/zlXxYcxNXfVEtHRP8fFzax
+X-Received: by 2002:a05:7300:e88e:b0:2ae:5a9f:d98c with SMTP id 5a478bee46e88-2b6b410b210mr13103401eec.33.1769097323537;
+        Thu, 22 Jan 2026 07:55:23 -0800 (PST)
 Received: from gongqi-WUJIE-Series.. ([38.90.16.207])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm28935599eec.32.2026.01.22.07.55.14
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm28935599eec.32.2026.01.22.07.55.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 07:55:18 -0800 (PST)
+        Thu, 22 Jan 2026 07:55:23 -0800 (PST)
 From: gongqi <550230171hxy@gmail.com>
 To: rafael@kernel.org,
 	dmitry.torokhov@gmail.com,
@@ -89,9 +89,9 @@ Cc: linux-acpi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	550230171hxy@gmail.com
-Subject: [PATCH v2 2/4] Input: i8042: Add quirks for MECHREVO Wujie 15X Pro
-Date: Thu, 22 Jan 2026 23:54:59 +0800
-Message-ID: <20260122155501.376199-3-550230171hxy@gmail.com>
+Subject: [PATCH v2 3/4] platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
+Date: Thu, 22 Jan 2026 23:55:00 +0800
+Message-ID: <20260122155501.376199-4-550230171hxy@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260122155501.376199-1-550230171hxy@gmail.com>
 References: <20260122155501.376199-1-550230171hxy@gmail.com>
@@ -110,7 +110,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -120,7 +120,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com,amd.com,linux.intel.com,perex.cz,suse.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20562-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20563-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
@@ -130,39 +130,38 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EC5DA695F3
+X-Rspamd-Queue-Id: E70B869A46
 X-Rspamd-Action: no action
 
-The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
-correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
-needed to ensure the keyboard and touchpad work reliably.
+The MECHREVO Wujie 15X Pro suffers from spurious IRQ issues related to
+the AMD PMC. Add it to the quirk list to use the spurious_8042 fix.
 
 Signed-off-by: gongqi <550230171hxy@gmail.com>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 7 +++++++
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index 654771275ce87..4cd09560c5bfb 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1176,6 +1176,13 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 404e62ad293a9..ed285afaf9b0d 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -302,6 +302,13 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
+ 		}
  	},
 +	{
++		.ident = "MECHREVO Wujie 15X Pro",
++		.driver_data = &quirk_spurious_8042,
 +		.matches = {
 +			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		}
 +	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with the forcenorestore quirk.
+ 	{}
+ };
+ 
 -- 
 2.43.0
 
