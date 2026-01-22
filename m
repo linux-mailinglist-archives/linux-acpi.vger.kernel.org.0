@@ -1,224 +1,183 @@
-Return-Path: <linux-acpi+bounces-20575-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20576-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBcNHK2kcmmMoQAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20575-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 23:29:01 +0100
+	id +BGDGGyycmn5ogAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20576-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 00:27:40 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126FB6E265
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 23:29:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7406E79A
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 00:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4692A300C59D
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 22:28:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1A88300D350
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 23:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B1637107F;
-	Thu, 22 Jan 2026 22:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C613C1FEA;
+	Thu, 22 Jan 2026 23:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XR/vtUUg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCnv/kW6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA8336920E
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 22:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335D83DB255;
+	Thu, 22 Jan 2026 23:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769120935; cv=none; b=BAG+q+aYMzpRnmrgrvCMOMGS/QEGp3P2UCvnYKtnbY14KCu6Y9ya0giK1c3r5E8sdBh5snjPPYPaLpX+24DRBQKintJlvVqf8t6Iz9p0uAdH+DjMpQdA+y5Jn2bLrL5vZuSLNUiQE6n8ldy+omzQ+6UCoVdX+dU3EL0lAWoJFAw=
+	t=1769124456; cv=none; b=lonuHmZ5sUYM7gn0n48O1nL+zPh/egP1i84BoEOjSuuu7inraRop/+C5vdy28M4fLkv0NnYO7LVKxFgZbGKRVj4cxs7WQ/zfC2nckH4gLF+M56jnc8a4iuoU0U+aqZ72Fr2b0MvITYcgrmKXNASMYETdZpTN7VYVqdUxcZQG0IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769120935; c=relaxed/simple;
-	bh=Ww6JI24WyVKaOTnSpMAoDJHMfr4gWTESqJzmp7NwNMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HwIKgle6kictIYj4DAfBZTTgsg0vkbeUxKf8I6yd2Az2KgDPIPXsJ7IQ3yZjZ5cnJb8eI8Vf3ezR5iaTFlcZcHggG2AVndKwhZmhJ4DW8kOkWKbaqUKcOCud85JSgKXkhAKVtL+gwHtYg9UpzeWVBaOI1V/DObJJwL3JkTEMcbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XR/vtUUg; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29efd139227so11404875ad.1
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 14:28:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769120930; x=1769725730; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=kJ8Ptphxfx/s85nEV5mUoQB9MpWQ43/7kHR4HQJuZbs=;
-        b=XR/vtUUg8eNKUPtotk/GdEduk4qSQ/LmaMRVPMeNi+LGUr/DctL6dTO71zNDjr2WgC
-         ETePKHOPJYskIL9kJ/mKSh3VVwOrmUSoH/SL/yF4eL0mlNB2kMqMWtqPyrHTLU9yfr5e
-         kcXmH2h+i5BXrMtmOsL8uSqjrZcJTVX/YlSt5h4mgqyTal1h0Ye459cZpYghyamBzJ/C
-         VxRIWUZ7n4sL4aRx1UdaCWoIgR1yqBxsy3sGyIQSPDb3rHVpN/ga0lFOq7rpmo/tHNby
-         91Dy/C7HaBlhQOltW2x6g37M2RawQjTt3jQXdpclQnD6xPJnTj80MjWT+J9qTJhTFXmh
-         E82A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769120930; x=1769725730;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kJ8Ptphxfx/s85nEV5mUoQB9MpWQ43/7kHR4HQJuZbs=;
-        b=xFlSyrqEzyEwIGks90paZcMBz+eFEmnQ/RFmTOnUGwUDy6vU2anQQnntPF+abplsYZ
-         2sbEXmQHbYbEFmHin9JYXvnGeWPkgQyh5m37eR76xoSqgr4tfZr77UTGHxNJM7OVd3Tm
-         mtrLLzh2e/2FnSZawqMHHMqRMTuSWj14RDQg6d76W/EwZRZTmBZXVRSc7DvZpcseA40l
-         vRhW8INi+1F3q5fcTa1dUc5KbSP7a58h7uKBc46WUU4Sa/uuK1Mm/P1myRvy21S9+Xfp
-         y79JsKUO+jsTXgshbWx2QLCPdxS1I9vt8L52smu1SlA3seYiVl2GFbdD2VmLDTC8S2WL
-         nDjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVi/SRsj0PSnALbku9xXzwqyXOoQW31GE2I0emsRiB4NIZTW/ETZwFVd1xh2+v7cMOuLTb6d4YxcsFI@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtSIbIdtIASK26h5yL1sOwMr1TNiRHp2GXG36cSgQVOCwlyM9q
-	WnAxuA26AkDqfrAJIVeIG4urhBmb0dCpcjjHYvlu6ButyVirPKkW07K8
-X-Gm-Gg: AZuq6aI1mnlZ4XShxepOlW1QvXequrrKBbh7qTEFzY5xAxUIDl4xmla8xKm57RWvEEn
-	16Mlinu5/w9Ky86fYGd8JIOnJi+mBWmkWO5mQxtw8ZR7fh1Q8TILtIUhj86RM/WYrnSpiRndgM+
-	it0m8HdQkVQanVfk4q43q7MiOV4hrgJ3rje+yFRZN2jGH7PdNtttj2XBziM5gRzsRca8t2MNwp7
-	WFzlw8IpmySbqIhbTFPVLXFKr+oQ11WNZy+0Cz+9sMD4nIEZIIq4e2rfWi8aJGqOd3tF3SmRbiG
-	h0AoOqaEyMbKR3XlBdyHMfmRy7QtV2Fd7JNaIDZ+zSNkuBf6GiHRTIZU1XAP65qtMza9bogTaY7
-	7ZdS3ITq20P1ShRO6shXqrihQQGZ356wHHlo9GzaMsEZVsQfRXZQmRc4z7YoDrge7tF3HQU4U0w
-	Na0o8L52TSKvie0a2pLCrJGReVvU0WHrWvz9OWw/S0OR/B5F2ik73dEmyg2mem
-X-Received: by 2002:a17:902:d54f:b0:2a0:e94e:5df6 with SMTP id d9443c01a7336-2a7fe734034mr7899265ad.50.1769120929632;
-        Thu, 22 Jan 2026 14:28:49 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3533521707asm3312569a91.8.2026.01.22.14.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 14:28:49 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <d7f34e0f-e258-4fef-93eb-1ef0a3123d95@roeck-us.net>
-Date: Thu, 22 Jan 2026 14:28:47 -0800
+	s=arc-20240116; t=1769124456; c=relaxed/simple;
+	bh=TpTvuO5OGPCFjh5XFxTMY09tgERrKThZNyQvlUN/g8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=I+q9T0grv9m7uHZwQIj9wKjNZfwAQZx9hkJPjnQt/G3syQKjX+Bk0xmYfumqocoiOGtvjRo7jx79tRsrgOcGK+Ny0U6yAiTVFo48xQ6phdnnKv7xYxwyqhdnDizfFvlpLOLEfx3mclK6qAgMsNCYuatu0NU6ZoYmXG3mTbu8GGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCnv/kW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B871AC116C6;
+	Thu, 22 Jan 2026 23:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769124454;
+	bh=TpTvuO5OGPCFjh5XFxTMY09tgERrKThZNyQvlUN/g8Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=eCnv/kW66JgUyYthhTx4hls2d3Mf8RMNWBA5dZCbs4Q83J7DI/CZ66KGPPbw35290
+	 tLYHqgH/uAkCgXzG3J29QndIfL14nynk8k0jc/OWSlFxv04n/Zg50LWv9wCw15x8zq
+	 rgUg4KHK/n3f8/H8FqUW5sHnRLRrMyikqGTaB7Yx9uoBa9bCPKmwweyyJ837kk9VCP
+	 5Xjh4IHicmcVCTRXWQQqNrlZ4SyW+90coyQULEg+d06uKvo5RQB7d+j1prY8gbw/Dh
+	 cnSBTllpvDVQzJXrzH/cgKQnHLda1DzHYLAo12Jb1AyLAf1/xNMEMFe7fdXikNfsFc
+	 ZxlF6Satpm01A==
+Date: Thu, 22 Jan 2026 17:27:33 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, anshuman.gupta@intel.com,
+	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com, rodrigo.vivi@intel.com,
+	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
+	uma.shankar@intel.com, karthik.poosa@intel.com,
+	matthew.auld@intel.com, sk.anirban@intel.com, raag.jadav@intel.com
+Subject: Re: [PATCH v6 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
+Message-ID: <20260122232733.GA46175@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex deadlock
- in hwmon_attr_show since v6.18.y
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
- linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
- Igor Raits <igor@gooddata.com>, Daniel Secik <daniel.secik@gooddata.com>,
- Zdenek Pesek <zdenek.pesek@gooddata.com>,
- Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
- <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net>
- <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <531f2fe7-7a17-42cc-8747-ea122fe1c95f@intel.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-20575-lists,linux-acpi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	TAGGED_FROM(0.00)[bounces-20576-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gooddata.com:email,roeck-us.net:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 126FB6E265
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B7406E79A
 X-Rspamd-Action: no action
 
-On 1/22/26 12:42, Rafael J. Wysocki wrote:
-> On Thu, Jan 22, 2026 at 8:51 PM Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On 1/22/26 10:55, Rafael J. Wysocki wrote:
->>> On Thu, Jan 22, 2026 at 7:21 PM Jaroslav Pulchart
->>> <jaroslav.pulchart@gooddata.com> wrote:
->>>>
->>>> Hello,
->>>>
->>>> after upgrading from kernel 6.17.y to 6.18.y we started to observe a regression
->>>> in the ACPI power meter hwmon interface. Reading power*_average sysfs
->>>> attributes blocks indefinitely and causes tasks to enter uninterruptible
->>>> sleep (D state).
->>>
->>> The most recent change in the acpi_power_meter driver was made in
->>> 6.15, so this is not a regression in that driver.
->>>
->>> Also, nothing suspicious is done in power1_average_min_show() and
->>> power1_average_min_store() AFAICS.
->>>
->>
->> I suspect a circular locking problem between the hwmon lock and the
->> resource lock. Unfortunately I don't immediately see it.
->>
->> Would it be possible to test this with a kernel which has lock debugging
->> enabled ? I'd test it myself but I don't have a system available
->> that supports the acpi power meter.
+On Tue, Jan 20, 2026 at 09:29:16PM +0530, Nilawar, Badal wrote:
+> On 15-01-2026 01:25, Bjorn Helgaas wrote:
+> > On Tue, Jan 13, 2026 at 10:12:03PM +0530, Badal Nilawar wrote:
+> > > From: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > 
+> > > Implement _DSM Method 0Bh as per PCI Firmware r3.3, sec 4.6.10, to request
+> > > fixed delay in timing between the time the PME_TO_Ack message is received
+> > > at the PCI Express Downstream Port that originated the PME_Turn_Off
+> > > message, and the time the platform asserts PERST# to the slot during the
+> > > corresponding Endpoint’s or PCI Express Upstream Port’s transition to
+> > > D3cold while the system is in an ACPI operational state.
+> > > Host platform supporting this feature ensures that device is observing
+> > > this delay in every applicable D3Cold transition.
+
+> > > +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us)
+> > > +{
+> ...
+
+> > > +	if (!dev)
+> > > +		return -EINVAL;
+
+Calling this with "dev == NULL" is a bug in the caller, so I don't
+think we should check for this.  That way we will take the NULL
+pointer dereference, cause an oops, and can fix the bug.  If we check
+for NULL, the bug is likely to be unnoticed.
+
+> > Sec 4.6.11 also says we should track this per Downstream Port and
+> > request the maximum of delays requested by any child.  So I think we
+> > need to:
+> > 
+> >    - add a perst_delay in struct pci_dev
+> > 
+> >    - when we find this _DSM, set
+> >      bdev.perst_delay = max(bdev.perst_delay, delay_us)
+> > 
+> >    - pass bdev.perst_delay to the _DSM instead of delay_us
 > 
-> One problem I found in acpi_power_meter through code inspection is
-> calling hwmon_device_unregister() under resource->lock in
-> acpi_power_meter_notify(), which may be responsible for the observed
-> symptoms, but then I'm not sure why it started to be visible after
-> 6.18.
-> 
+> For vrsr use case delay requested is 10ms, which is maximum allowed by this
+> _DSM.
+> I think we should take care of above suggestion when we implement aux power
+> aggregation.
+> For now, I can create another list let's call it acpi_perst_delay_list,
+> similar to acpi_aux_power_list, and
+> allow a only one device to request a PERST delay.
 
-I noticed that too. It is kind of broken; a driver should never do that.
-The proper solution would have been to re-evaluate sensor visibility.
-I have a patch series to add that capability to the hwmon core, but that
-is untested so I never submitted it.
+I think lists will be a maintenance headache.
 
-Anyway, I don't immediately see how that would trigger the problem.
+> > > +		handle = ACPI_HANDLE(&bdev->dev);
+> > > +		if (handle &&
+> > > +		    acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4,
+> > > +				   1 << DSM_PCI_PERST_ASSERTION_DELAY))
+> > > +			break;
+> > > +	}
+> > > +
+> > > +	if (!bdev)
+> > > +		return -ENODEV;
+> > > +
+> > > +	out_obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&bdev->dev),
+> > > +					  &pci_acpi_dsm_guid, 4,
+> > > +					  DSM_PCI_PERST_ASSERTION_DELAY,
+> > > +					  &in_obj, ACPI_TYPE_INTEGER);
+> > > +	if (!out_obj)
+> > > +		return -EINVAL;
+> > > +
+> > > +	result = out_obj->integer.value;
+> > > +	ACPI_FREE(out_obj);
+> > > +
+> > > +	if (result == delay_us) {
+> > > +		pci_info(dev, "PERST# Assertion Delay set to %u microseconds\n", delay_us);
+> >
+> > I think this message should use "bdev" instead of "dev".  I know the
+> > request is for "dev", but the delay connected to bdev and applies to
+> > all functions below the Downstream Port.
+>
+> Since it is set for the device which as requested I kept dev.
 
-Guenter
+It's set for *all* devices below bdev, so I think the message should
+give a clue about that.  If we only include "dev", there is no
+indication that other devices are affected.  Maybe we could include
+both dev and bdev?
 
+  pci_info(bdev, "PERST# assertion delay %u microseconds set as requested by %s\n",
+           delay_us, pci_name(bdev));
 
