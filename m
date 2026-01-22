@@ -1,80 +1,80 @@
-Return-Path: <linux-acpi+bounces-20563-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20564-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIBTGq9LcmnpfAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20563-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:09:19 +0100
+	id YEOyIrZOcmnpfAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20564-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:22:14 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70B869A46
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B44169D12
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 17:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D290309E69D
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 16:00:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E42B30B704D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 16:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227D236074D;
-	Thu, 22 Jan 2026 15:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4B936681D;
+	Thu, 22 Jan 2026 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Br7FI+Z/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ss1uVZj7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324535DD1D
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 15:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9E436074C
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 15:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769097331; cv=none; b=UyXwMLkIIb97btc6EDaFZUska2BV1/q+yEAXUJF8AElM0vNoKvAk1XFs+ZkkORSETeC1QsoOdzB4xT4gKUvE7X8Tfqn1GNiEN483o4Qn8mHyB/vbol6mF0x3WgwBSJ4MlREidqEovQca4Yptzqg0K3Wpkx6kvCKNtf/gxIb6+Ws=
+	t=1769097336; cv=none; b=lq5KT3JqvNSyFp3V83B7GOWPxk07/zDAknsiA+od2folmjcom9GwW81Dvt4fYR9pJC0AjxlkGUftgYK1J1n23uuhCtEBbv2iZAbC72mv+Aq9M8SzFDrfClYKGctt1FRzaG/CSGTjgzhO2xTwUul8RBa/S7Iqn222gO4ojl4JQ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769097331; c=relaxed/simple;
-	bh=V5b8HegB8GRX/lAVl+vWtZpAiWhKdfd1I/+Cxli1x/Y=;
+	s=arc-20240116; t=1769097336; c=relaxed/simple;
+	bh=9BDtGVLm/YNavfQzhSMk9a18TtGw89Iu8RHa4FY/yvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbkquxAn1Qd1GxFb2IUytweCoix6SRpbDkArcsyJCL5kSMyP75henMUtB+W5Ci/ITcCL5P5MQR+7DOKDm7v6PgMtTjOyIAmdTlxlcbr7lsPzfPc09JbYH6WdFUPxLd4xuD9JS1oGd/LZhMdIeHKcl2KHnwv4A3zMLYV/cs//JJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Br7FI+Z/; arc=none smtp.client-ip=74.125.82.52
+	 MIME-Version; b=mxA53u3S0m6f3N88gyhnS/MeENjz7m1cblrUOpjLFn2pdZw5BiSV+Tgid8zFPi+RPLqgNLyf+o8skYD4ZEn49bHLphJjypILExPavVc9ddi4spR9RZ1Y1QgSb5906JvLBPyHJiO4zjJtgq1olQvY6rRtCzlL295jAlDCcHL9TC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ss1uVZj7; arc=none smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-121a0bcd364so1983527c88.0
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:55:25 -0800 (PST)
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-123320591a4so1272876c88.1
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769097323; x=1769702123; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769097328; x=1769702128; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sT7sxUlCTKBw+bxvJar1XKrjKbpL37hYJb8bo9j5S5g=;
-        b=Br7FI+Z/RvxaX4t2XCZthxCvicYRTqC8KliAR2khFB9LAapxggZUTiyREzzFL3AHOh
-         n9TCgAnr0VSLmZoJJkstjmjkB2/ZoMlwP2v4z7z8ib1v2w1EsuQKCuB7d2EAtsUTJMgQ
-         h8uxgitbSqb28MuhMdyXIaB7whECT/EFDvws0cyqN6UvWCR8LzE2abIgBDpKuLtLp/0s
-         lfE2hSCzpVTMBzM8LK7jFSLpoT5EA1FmOxxO9P6aYrAAlzo5IGV+j6CsvWSLM3pjNOj1
-         zjf4h3uEC16heozXI8hq945rXIxaasheBVIUgg9AXfCKRPfp8AVyxV5krlqcxt/tkHxD
-         SGfw==
+        bh=pq4VY/0urpQ2UO/GnbuvVu8bQyR50a/yUYGs16zTipM=;
+        b=Ss1uVZj7KFP5VpFPeNbgCmoVJyEcQ2bAaPJa/GFIsmZ1y6+feW72vh4Okh25tgezlZ
+         8S09KB0wduIbkEvoktIjlRPiXxMwOB05mfGWJ36rI5oa5Z6TU9LvxgnDScu5KZUmwp8o
+         mlfo0OK3jhvLK1EjEJA/p/+IvRK/1YL628odLheVIc0brQlv84o2cHQwDRzDT5QCrA+h
+         RdUeZC5K9TxVvrugouTVK4/MhUEjlaOIK0iDtNP2vEZdH87WnIAq4s0UHTq+YzhmYc1t
+         zdNhEnKyY2pKgyytGhB3alhPG/MnrLR3Z/tN6Eg58z2tP4lI5SeW9hrSF1t/KJpQHf3z
+         eNSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769097323; x=1769702123;
+        d=1e100.net; s=20230601; t=1769097328; x=1769702128;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sT7sxUlCTKBw+bxvJar1XKrjKbpL37hYJb8bo9j5S5g=;
-        b=fGiMBg4/+RSaTlOJCqlZ6ugjCdKePziox2SATKaFXDSqipRlqyu/3XR5ba+38dY79+
-         xAQ33oSVmLwAglnxKvPOTxbMpKPX9PGxdRKA7p3LnFfiOxdvScT6zq5g2JVrKXIPU/Fm
-         ho1TClosAuhYbfXVH61FrNUaFh2ygGWGbe7m/ZXBcBRDxsfdGtWmU6Hb2WwWpyZQnDd8
-         W/xp3Np1fhoWcCVrTT48W9j5hVF8YRgSHIK+HLwWxm4Vf7QvonL6rX38V0yRgAFn3aVK
-         g4RW452mvkcv5/oOc0hWGrNMHWCFVKNi3zn9M+vFO5A/zlYcI75PCGWcb68+dewjWGDa
-         8pxQ==
-X-Gm-Message-State: AOJu0YyfaJcRwXlEIcgoZ9wfHRE4gpK3ypTq0+wUS9G+/qgu2pCeTF09
-	HAhopFCIDtGwoQettmvBE3gcV2jfx3elbASFCMTler4GPF/B1g2NwA8m
-X-Gm-Gg: AZuq6aIoyLnfw1aV1diTQm9dZAmYw1Nkatug24T4B5kDydv2Oh9w9O3DKNxwiveD+g4
-	YUCixENa5+3JA8tMi4yJoFa90g6Tu7V2wEVuBfp2Oc0Tn6Fhf/n0HxytOrxOfNHTYG1fH0qWcI8
-	OzYb8hyDDw7RFP8vRK7v/UQjuKORoo5aqzFEc8x5zld2mKdJpYs3whXdzJzcKH9ELKm+AuOdvh6
-	gomCMZeuxIShW7f9aeLr/IIf9IvKVy1bfb74LfIKSoOoQv6gHy2SroeW+yfHFEMPL2DOgaoH/8E
-	qQ5m06Q09s9pnxx0J6mVmVYDskQ/nhyfJOVgcDfT0EczvzlIbtZ0KEbHTgftYb6BEvENlUZRWfr
-	pBvlhJfsmXUSmQWZS+FDykD7Y9Adkvnr8IHf7kK02M5kPVtv1Y65IAvGcAB7etV8Zxb1xQ4E/If
-	HR7akhApV3D8HosynafNZWi1YTwjQ7Z/zlXxYcxNXfVEtHRP8fFzax
-X-Received: by 2002:a05:7300:e88e:b0:2ae:5a9f:d98c with SMTP id 5a478bee46e88-2b6b410b210mr13103401eec.33.1769097323537;
-        Thu, 22 Jan 2026 07:55:23 -0800 (PST)
+        bh=pq4VY/0urpQ2UO/GnbuvVu8bQyR50a/yUYGs16zTipM=;
+        b=w0MIT//ToKGf/hC9OBvhN+lyVCWS3Qc+w+8mRf08RQG5urvyuoIKeiMA85/SuSvdSg
+         Px+H7fQRr6O9X1TfK0439JnxXQuJy5GxmGF7ivOI5xgy/e1TZlqm4O6E742yDIc9uroW
+         Lj27GlGMv2tEUV6WmaLJ5tAErLeBQR8wFPv0Q1u8LJifdxAIreQ3UsifzSUKPlU2UPvD
+         zrbBqFrPzQlqhgMRfdIy40LbUyl8axILO1+P/jRogxxcjJ10KMWVyqKPK+4YBbEjP91M
+         krVSJFkAL2uCkoNv7l2DnciuvIUPkWjdyy9bNGBX09M/MHU+/oYF6moMyKCPwc3AFEBU
+         M6vA==
+X-Gm-Message-State: AOJu0YzHDYNoaicyhztnwbptrsMJQm/nsANG1L/ELeg/qNgkdX/+OM7S
+	V2VzF2YznxB8OPQ57qnWqP/ZtCd5AjD1AjondWW8ivkhzTw+YSTLToWW
+X-Gm-Gg: AZuq6aJpMEOOtixSwfTCDrt9DLOhKkflQ/qapzdmwUX5Us5QdmlqcTDX0FcHDfNtRV1
+	oxlqpo41C3ogM+bodgQUeF7UjREz8GcSTcXgAGPOfZ8buErx7UpzhsmSA/Hui3R6MVApv1eAPtZ
+	xzyA1l3gigj0PYefemRFYD3f5HbqaHWgYLWP29xIEA+RvlZkJ7p+L336kw0hTJCrClY0tnPmSTK
+	A73iXXbYqWEx+AhcKbXVf77mxN/SJ4s/DiyImR1ovcB0Bpe4v6Ko9SULtCLU1tJqVtW4NT+Orcp
+	pva5DGguWN8evMFheECdl4D71LXcDBumqr7KaIot75g/OaigJ1eQoWhUX9VVHLlG4m6Q0qE3q6P
+	dx0qNixAz2jpzNjEOhQPmo/KuUNUFiax+OcXg8HJyQRaLYw9Vc+MI+YuHYtTGavG0ETgIbxzc6j
+	DsxkKaromTty8paAnGcia3pjLwtzFn8AAqpaKbFgvK2zQqSKJXNzczUS8bVAkgnNs=
+X-Received: by 2002:a05:7300:1496:b0:2b7:1ef:5862 with SMTP id 5a478bee46e88-2b701ef630amr5208031eec.4.1769097327956;
+        Thu, 22 Jan 2026 07:55:27 -0800 (PST)
 Received: from gongqi-WUJIE-Series.. ([38.90.16.207])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm28935599eec.32.2026.01.22.07.55.18
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm28935599eec.32.2026.01.22.07.55.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 07:55:23 -0800 (PST)
+        Thu, 22 Jan 2026 07:55:27 -0800 (PST)
 From: gongqi <550230171hxy@gmail.com>
 To: rafael@kernel.org,
 	dmitry.torokhov@gmail.com,
@@ -89,9 +89,9 @@ Cc: linux-acpi@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	550230171hxy@gmail.com
-Subject: [PATCH v2 3/4] platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
-Date: Thu, 22 Jan 2026 23:55:00 +0800
-Message-ID: <20260122155501.376199-4-550230171hxy@gmail.com>
+Subject: [PATCH v2 4/4] ALSA: hda/conexant: Add headset mic fix for MECHREVO Wujie 15X Pro
+Date: Thu, 22 Jan 2026 23:55:01 +0800
+Message-ID: <20260122155501.376199-5-550230171hxy@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260122155501.376199-1-550230171hxy@gmail.com>
 References: <20260122155501.376199-1-550230171hxy@gmail.com>
@@ -120,7 +120,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com,amd.com,linux.intel.com,perex.cz,suse.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20563-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20564-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
@@ -133,35 +133,30 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E70B869A46
+X-Rspamd-Queue-Id: 2B44169D12
 X-Rspamd-Action: no action
 
-The MECHREVO Wujie 15X Pro suffers from spurious IRQ issues related to
-the AMD PMC. Add it to the quirk list to use the spurious_8042 fix.
+The headset microphone on the MECHREVO Wujie 15X Pro requires the
+CXT_FIXUP_HEADSET_MIC quirk to function properly. Add the PCI SSID
+(0x1d05:0x3012) to the quirk table.
 
 Signed-off-by: gongqi <550230171hxy@gmail.com>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/hda/codecs/conexant.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 404e62ad293a9..ed285afaf9b0d 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -302,6 +302,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Wujie 15X Pro",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		}
-+	},
+diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
+index 5fcbc1312c697..2384e64eada36 100644
+--- a/sound/hda/codecs/conexant.c
++++ b/sound/hda/codecs/conexant.c
+@@ -1123,6 +1123,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad/Ideapad", CXT_FIXUP_LENOVO_XPAD_ACPI),
+ 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
+ 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
++	SND_PCI_QUIRK(0x1d05, 0x3012, "MECHREVO Wujie 15X Pro", CXT_FIXUP_HEADSET_MIC),
+ 	HDA_CODEC_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
+ 	HDA_CODEC_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
  	{}
- };
- 
 -- 
 2.43.0
 
