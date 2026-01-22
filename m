@@ -1,76 +1,76 @@
-Return-Path: <linux-acpi+bounces-20500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJahAf/UcWk+MgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20500-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:42:55 +0100
+	id 0B75A5TUcWk+MgAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20501-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:41:08 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F8D629C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:42:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3EF6298C
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 58F05365634
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 07:36:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 47DB4507E2A
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 07:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB6E47DFAA;
-	Thu, 22 Jan 2026 07:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B71F31AF2C;
+	Thu, 22 Jan 2026 07:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b="jhH9+h6A"
+	dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b="wNQzGcVg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sg-1-33.ptr.blmpb.com (sg-1-33.ptr.blmpb.com [118.26.132.33])
+Received: from sg-1-30.ptr.blmpb.com (sg-1-30.ptr.blmpb.com [118.26.132.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881B131AF2C
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF232512F5
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Jan 2026 07:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769067314; cv=none; b=LtEfPe9N6b3Bw4cSoNPfTPXi1D0vKEl8UY3EPGB4CyjuhQ3OrQUwnX1dhn81ghBX/OjWC/zY3JUV1o7MsnaPdBvyXBfXES4DbpR2LJBfwD3UHxMywv8ceA6L+lqbrzot1DYiZ3gotK3ArOv/oxLNsVsgdUg52waIvemeBb1IPG4=
+	t=1769067315; cv=none; b=HY7J6o+Ma5UrjI9RuEkhFoXd1O8qTkm6vHt2lvexYC30axWYYgCwMUie4zADICgnSbT9weQYHPH/GXLlrvtkWUIRz9Rw/8mkfWFa3VCi81wwaNGpnAxjzsGsdlIZA702GDTrmXHIV3ENJqjMbZ8Oo+afsVIOqhGPPdshjInkpCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769067314; c=relaxed/simple;
-	bh=ZA0dShh7LmxgkvKWG26Qxxa83Xo5UPsRGqNF5OMLKA4=;
-	h=References:Date:Message-Id:Mime-Version:To:Cc:In-Reply-To:
-	 Content-Type:From:Subject; b=UvanpAy7AVVz5Jc3mOLwiK2i+YKJoeNM/ss5ECI/klybohRi2XO0/2temB3xo5mSLmmxATRdAxfFhOxwyEAlZ+FQmjaEfC0CCK0WarS2lOh8bbeo251UrfyJGu2AE0iNVaALFaCO3vJ4/oY1g6p8azh7AhCSzGM67VcKybhbPgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com; spf=pass smtp.mailfrom=picoheart.com; dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b=jhH9+h6A; arc=none smtp.client-ip=118.26.132.33
+	s=arc-20240116; t=1769067315; c=relaxed/simple;
+	bh=Zg4V6RJ5CX9TkQlNvozgJSw3th6d9YeG4f0THZUNWK4=;
+	h=Date:In-Reply-To:To:Cc:Mime-Version:From:Subject:References:
+	 Message-Id:Content-Type; b=mENkOXf6xQoti6uvKLIFVsx/++egbCg0nb3Y58El9jVC8pqOPgv90nh9gmNXIff2dLGbdODp0WXTjKb0Uwe/neopjtQdauV/JjprIMrZ0h3hzguajiGLTVvTfoJcr/3EkTA4jSZmi9ylli9MtoPhgfOD4dKBmz1cd69POajBSYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com; spf=pass smtp.mailfrom=picoheart.com; dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b=wNQzGcVg; arc=none smtp.client-ip=118.26.132.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=picoheart.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=picoheart-com.20200927.dkim.feishu.cn; t=1769067294;
+ s=s1; d=picoheart-com.20200927.dkim.feishu.cn; t=1769067297;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=01FP4vC/jj6alLbiTxMoouO+ZRSgO8bEdY/088MJqcA=;
- b=jhH9+h6AHNS2KkO5f4Zec42IGeHlvuo9vSXwxd+jiKkpEJOKkTi7rWdJOMGHXLKhctyhPR
- VrM7bErmHnwghcMI2vPN6QRu96+Cd+atsZoFvpaV11yiHRg5sNwmaH20M+ihAsIwVvA0l9
- Sg/QFlD1GUF86MUqVG0snmzxsb+rTZ0rOcxR6Vg5VJAO+dyuanMByrag3S5ero+XtR70jf
- niyjNX07WFXktwMWPbnoQM8IxnwwotNp/qOoq/vEMklXOcWsQWm/weqvwfR+Mvs/TXwF6h
- 181ZMf9pdCNmBuJd0ry9aW/Nd/IAGZ10BJWmneEDmG7xAbO3VerXEV54v/IdNw==
-References: <20260122073446.45628-1-yang.yicong@picoheart.com>
-Date: Thu, 22 Jan 2026 15:34:45 +0800
-Message-Id: <20260122073446.45628-2-yang.yicong@picoheart.com>
+ bh=+g/3tjO+rV9WYb2Jh/rm5GHV4Veu7YSdogQYF3BcWcg=;
+ b=wNQzGcVgLadD5kvUkSUhWc45cDCxqGNGk6kd/+Wz0BUSIemBHHh9+csbwE5Lol9hTFdnSx
+ lnDZNlRR+79edruORKpTgTilX5NN3Df7nP4eDQjYgLTtpB2k7e+A3mO3k35LX2QkuYGqfq
+ +HYh0Z6Mj8kSsz4CygQGQGIsuN/U9Jfa/UqKNGfb3YLrzCZgboO/lo9jqP4qz/u0vMPzIu
+ dEM0lIys8QnUps1Lcltctl6o2i2Yrt0O5QcBr33LcrzqoQdqA2ur8uLOgJKS2xrcOBJ4vl
+ QC1TbrPduy45WUvBIN30u0XxrjloAjEMU8p58mzFrI29VsImUHE+9/Z5vYaoSg==
+Date: Thu, 22 Jan 2026 15:34:46 +0800
+In-Reply-To: <20260122073446.45628-1-yang.yicong@picoheart.com>
+Content-Transfer-Encoding: 7bit
+X-Original-From: Yicong Yang <yang.yicong@picoheart.com>
+X-Lms-Return-Path: <lba+26971d31f+b5db0e+vger.kernel.org+yang.yicong@picoheart.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <tglx@kernel.org>, 
+	<gregkh@linuxfoundation.org>, <dakr@kernel.org>
+Cc: <akpm@linux-foundation.org>, <apatel@ventanamicro.com>, <pjw@kernel.org>, 
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
+	<geshijian@picoheart.com>, <weidong.wd@picoheart.com>, 
+	<yang.yicong@picoheart.com>, <linux-acpi@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-To: <rafael@kernel.org>, <lenb@kernel.org>, <tglx@kernel.org>, 
-	<gregkh@linuxfoundation.org>, <dakr@kernel.org>
-Content-Transfer-Encoding: 7bit
-Cc: <akpm@linux-foundation.org>, <apatel@ventanamicro.com>, <pjw@kernel.org>, 
-	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
-	<geshijian@picoheart.com>, <weidong.wd@picoheart.com>, 
-	<yang.yicong@picoheart.com>, <linux-acpi@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
-In-Reply-To: <20260122073446.45628-1-yang.yicong@picoheart.com>
-Received: from G9WYR9K0VW ([58.250.122.114]) by smtp.feishu.cn with ESMTPS; Thu, 22 Jan 2026 15:34:52 +0800
-X-Original-From: Yicong Yang <yang.yicong@picoheart.com>
-X-Lms-Return-Path: <lba+26971d31c+d2fcd4+vger.kernel.org+yang.yicong@picoheart.com>
-Content-Type: text/plain; charset=UTF-8
 From: "Yicong Yang" <yang.yicong@picoheart.com>
-Subject: [PATCH 1/2] ACPI: scan: Use async schedule function for acpi_scan_clear_dep_fn
+Subject: [PATCH 2/2] init: Move console_on_rootfs after async_synchronize_full
+Received: from G9WYR9K0VW ([58.250.122.114]) by smtp.feishu.cn with ESMTPS; Thu, 22 Jan 2026 15:34:54 +0800
 X-Mailer: git-send-email 2.50.1
+References: <20260122073446.45628-1-yang.yicong@picoheart.com>
+Message-Id: <20260122073446.45628-3-yang.yicong@picoheart.com>
+Content-Type: text/plain; charset=UTF-8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -82,12 +82,12 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20500-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20501-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[picoheart.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[yang.yicong@picoheart.com,linux-acpi@vger.kernel.org];
@@ -96,98 +96,52 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[17];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,picoheart-com.20200927.dkim.feishu.cn:dkim]
-X-Rspamd-Queue-Id: A2F8D629C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,picoheart-com.20200927.dkim.feishu.cn:dkim]
+X-Rspamd-Queue-Id: 6D3EF6298C
 X-Rspamd-Action: no action
 
-The device object rescan in acpi_scan_clear_dep_fn is scheduled
-in the system workqueue which is not guaranteed to be finished
-before entering userspace. This will cause the problem that
-some key devices are missed when the init task try to find them,
-e.g. console devices and root devices (PCIe nvme, etc).
-This issues is more possbile to happen on RISCV since these
-devices using GSI interrupt may depend on APLIC and will be
-scanned in acpi_scan_clear_dep_queue() after APLIC initialized.
+Currently the console_on_rootfs() is called before
+async_synchronize_full(), the console initialization
+could be still in process in theory due to async
+probe, etc. Make it after the async_synchronize_full()
+to make sure the initialization work is done.
 
-Fix this by scheduling the acpi_scan_clear_dep_queue() using async
-schedule function rather than the system workqueue. The deferred
-works will be synchronized by async_synchronize_full() before
-entering init task.
-
-Update the comment as well.
+Log the error code as well if we failed to open the console.
 
 Signed-off-by: Yicong Yang <yang.yicong@picoheart.com>
 ---
- drivers/acpi/scan.c | 35 ++++++++++++++++-------------------
- 1 file changed, 16 insertions(+), 19 deletions(-)
+ init/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 416d87f9bd10..bf0d8ba9ba19 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -5,6 +5,7 @@
+diff --git a/init/main.c b/init/main.c
+index b84818ad9685..c37ba5f89b96 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1578,6 +1578,7 @@ static int __ref kernel_init(void *unused)
+ 	kernel_init_freeable();
+ 	/* need to finish all async __init code before freeing the memory */
+ 	async_synchronize_full();
++	console_on_rootfs();
  
- #define pr_fmt(fmt) "ACPI: " fmt
+ 	system_state = SYSTEM_FREEING_INITMEM;
+ 	kprobe_free_init_mem();
+@@ -1647,7 +1648,7 @@ void __init console_on_rootfs(void)
+ 	struct file *file = filp_open("/dev/console", O_RDWR, 0);
  
-+#include <linux/async.h>
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/slab.h>
-@@ -2365,39 +2366,35 @@ struct acpi_scan_clear_dep_work {
- 	struct acpi_device *adev;
- };
+ 	if (IS_ERR(file)) {
+-		pr_err("Warning: unable to open an initial console.\n");
++		pr_err("Warning: unable to open an initial console, err = %ld\n", PTR_ERR(file));
+ 		return;
+ 	}
+ 	init_dup(file);
+@@ -1690,7 +1691,6 @@ static noinline void __init kernel_init_freeable(void)
+ 	kunit_run_all_tests();
  
--static void acpi_scan_clear_dep_fn(struct work_struct *work)
-+static void acpi_scan_clear_dep_fn(void *dev, async_cookie_t cookie)
- {
--	struct acpi_scan_clear_dep_work *cdw;
--
--	cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
-+	struct acpi_device *adev = to_acpi_device(dev);
+ 	wait_for_initramfs();
+-	console_on_rootfs();
  
- 	acpi_scan_lock_acquire();
--	acpi_bus_attach(cdw->adev, (void *)true);
-+	acpi_bus_attach(adev, (void *)true);
- 	acpi_scan_lock_release();
- 
--	acpi_dev_put(cdw->adev);
--	kfree(cdw);
-+	acpi_dev_put(adev);
- }
- 
- static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
- {
--	struct acpi_scan_clear_dep_work *cdw;
--
- 	if (adev->dep_unmet)
- 		return false;
- 
--	cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
--	if (!cdw)
--		return false;
--
--	cdw->adev = adev;
--	INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
  	/*
--	 * Since the work function may block on the lock until the entire
--	 * initial enumeration of devices is complete, put it into the unbound
--	 * workqueue.
-+	 * Async schedule the deferred acpi_scan_clear_dep_fn() since:
-+	 * - acpi_bus_attach() needs to hold acpi_scan_lock which cannot
-+	 *   be acquired under acpi_dep_list_lock (held here)
-+	 * - the deferred work at boot stage is ensured to be finished
-+	 *   before entering init task by the async_synchronize_full()
-+	 *   barrier
-+	 *
-+	 * Use _nocall variant since it'll return on failure instead of
-+	 * run the function synchronously.
- 	 */
--	queue_work(system_dfl_wq, &cdw->work);
-+	if (!async_schedule_dev_nocall(acpi_scan_clear_dep_fn, &adev->dev))
-+		return false;
- 
- 	return true;
- }
+ 	 * check if there is an early userspace init.  If yes, let it do all
 -- 
 2.34.1
 
