@@ -1,155 +1,225 @@
-Return-Path: <linux-acpi+bounces-20505-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20506-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FZ1HP3hcWk+MgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20505-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 09:38:21 +0100
+	id GHU0LynncWkONAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20506-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:00:25 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22BC63480
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 09:38:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE0363AE3
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BBACC728B03
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:31:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ED8F55E284F
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E373A9609;
-	Thu, 22 Jan 2026 08:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB813E8C7C;
+	Thu, 22 Jan 2026 08:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="0KLzKQor"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E7E5MQUA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F7723AB98;
-	Thu, 22 Jan 2026 08:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BF03C1986;
+	Thu, 22 Jan 2026 08:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769070691; cv=none; b=pbfVWnr+AkuBmkLqNgCGdEpW1qiD/LnsZ0/Myw090g9BPEe2kHwxabkys/dLZLnCpBw4t+/5xQFWL+Wu3WL40CNPxo/ERD+3Hts+/KPoa46r7KO2oEupornxteqaj07PhusuC8taFdWaCBhrmGuKSleyE0lGVvb5DbjjEcgObdE=
+	t=1769071915; cv=none; b=nvPWj3CYm0BUVih5HTpscpSJXUhngGfByctubHrVfZ8Y4AHkcbj1+sXoLCT0FKK4fy6FkC/lTcZOeyZJsZLQwL/8sLkb9GZl/QpzgiYY823vYdLHazOPKKFNPX0fFAfKCpe3Xax9o/Y947ds0Ix9p2UZBPR5eZFEpoPhCRc8Uvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769070691; c=relaxed/simple;
-	bh=2xA31qQAvq4VXXtUn7T9PG11OBDVCjOSXHfGGTG0WtE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TUiIlyQ65we2hXtheVpn/hVKrBi7Xl0M4yykMfQZxWN12/K9RqSHw3x0cUkZCEygAmTIGYSXmKemwVihBAD5YLapY2jL/136VBgm3mt9v1c+yfjb+HGsF3yxX043xC1D/BEfbzViy0FFSul75PovUJHWwx/Mk2o2G0IZewA7hU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=0KLzKQor; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=umcwphYtnL9lqP5zR6KMGW2RfVKx0uCr7p26EpoeBhE=;
-	b=0KLzKQoryoB8Wy11zD40OU/dQSQpsRRj236nsLdZlyV3MXK/zxnXGXUe7sPL8y2Gery+8Wm96
-	UYgBUtXlIcBkyzVKIj2YbBGb94owZKg9VA519Voh4f/TZOTVzFgXjwPqYAviMWjWH7Wj2mGLcAC
-	dxHVPvYawDG+tg4ma73lpFU=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dxZ1R086zz1T4Fq;
-	Thu, 22 Jan 2026 16:27:23 +0800 (CST)
-Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 083C140569;
-	Thu, 22 Jan 2026 16:31:27 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
- (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 22 Jan
- 2026 16:31:25 +0800
-Message-ID: <c5619a18-2d1a-4860-b87d-0b4ce261d350@huawei.com>
-Date: Thu, 22 Jan 2026 16:31:25 +0800
+	s=arc-20240116; t=1769071915; c=relaxed/simple;
+	bh=Z1BPPqPX3pPbBMPk0JKd8AgqIRbd45v5OCLMXlCvDmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TWspjDnk60CBP5jG1y4mHpmxTECn3mpXTlBeh901k3LIJWe3fuLYdwKQQ1mB2elTKBy0ri0BHRhkt3bw/CE0bKgLnxSIavDjOPbaPSJVkY+vww/w1uOg9DqXw53t7ksBHzfRovMyDkeKy6eLlTnYLfLGSEp9hGiHFIO0RzHBRQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E7E5MQUA; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769071913; x=1800607913;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Z1BPPqPX3pPbBMPk0JKd8AgqIRbd45v5OCLMXlCvDmI=;
+  b=E7E5MQUA86S2kVqhNNBjhls97COoh4iDg41WpWIUvxZ3zlfilzZMNmtG
+   uqPMBjiAXQqNA8ajbFVXlq1HxI6gZ3KX4BXMgX2yoiyEMV9hahOEoOvOg
+   qB72TC0BFoshZpC+L/Y8TQyKmW+W5HQIgQAZ19HHRj0GB9DJ6KFRnft3s
+   J6W6vL8zo2KHxA+UiZagjRF0LlFuAqpmwri5/kjBD70sI1jJ+IsXJKhR7
+   LYOQrbKMwoB6PUpYIJ8x+PKBKusljKxX7VbLt6tHfUU7gF1dm7VFSItP4
+   0A2YlzlhcpUe6Hvp2PZXLzNRfVvzpxZ+Fp0tKZ7rcJc8XozuLMEidBc4s
+   w==;
+X-CSE-ConnectionGUID: Kzuh9nCeQWO3ObbJjCDniQ==
+X-CSE-MsgGUID: TEjq8q/JTVaSGN/gGfWPFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="87886583"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
+   d="scan'208";a="87886583"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 00:51:52 -0800
+X-CSE-ConnectionGUID: Ut8v1+UKSXefrKbRvupFww==
+X-CSE-MsgGUID: Fmn0XlYCQ9Ow5Wf/9VG+3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
+   d="scan'208";a="211130999"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 00:51:45 -0800
+Date: Thu, 22 Jan 2026 10:51:43 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sui Jingfeng <sui.jingfeng@linux.dev>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 03/14] software node: Implement device_get_match_data
+ fwnode callback
+Message-ID: <aXHlHyba_kkqnQPP@smile.fi.intel.com>
+References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
+ <20260110-pci-m2-e-v3-3-4faee7d0d5ae@oss.qualcomm.com>
+ <aWSpFk9z0zpyKjr6@smile.fi.intel.com>
+ <26a001c3-2140-4241-87dd-604eab3f827b@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/9] ACPI: CPPC: Rename EPP constants for clarity
-To: Sumit Gupta <sumitg@nvidia.com>
-CC: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <pierre.gondois@arm.com>,
-	<ionela.voinescu@arm.com>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<corbet@lwn.net>, <rdunlap@infradead.org>, <ray.huang@amd.com>,
-	<gautham.shenoy@amd.com>, <mario.limonciello@amd.com>, <perry.yuan@amd.com>,
-	<zhanjie9@hisilicon.com>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-tegra@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
-	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
-	<nhartman@nvidia.com>, <bbasu@nvidia.com>
-References: <20260120145623.2959636-1-sumitg@nvidia.com>
- <20260120145623.2959636-4-sumitg@nvidia.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <20260120145623.2959636-4-sumitg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemf200001.china.huawei.com (7.202.181.227)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <26a001c3-2140-4241-87dd-604eab3f827b@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.96 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20505-lists,linux-acpi=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[huawei.com,quarantine];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linuxfoundation.org,linux.dev,linux.intel.com,squebb.ca,gmail.com,holtmann.org,bgdev.pl,vger.kernel.org,linaro.org];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	TAGGED_FROM(0.00)[bounces-20506-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhenglifeng1@huawei.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,huawei.com:email,huawei.com:dkim,huawei.com:mid]
-X-Rspamd-Queue-Id: E22BC63480
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	TAGGED_RCPT(0.00)[linux-acpi,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,intel.com:dkim,smile.fi.intel.com:mid]
+X-Rspamd-Queue-Id: ABE0363AE3
 X-Rspamd-Action: no action
 
-On 2026/1/20 22:56, Sumit Gupta wrote:
-> Update EPP (Energy Performance Preference) constants for better clarity:
-> - Add CPPC_EPP_PERFORMANCE_PREF (0x00) for performance preference
-> - Rename CPPC_ENERGY_PERF_MAX to CPPC_EPP_ENERGY_EFFICIENCY_PREF (0xFF)
->   for energy efficiency
+On Wed, Jan 14, 2026 at 11:21:59AM +0800, Sui Jingfeng wrote:
+> On 2026/1/12 15:56, Andy Shevchenko wrote:
+> > On Sat, Jan 10, 2026 at 12:26:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > Because the software node backend of the fwnode API framework lacks an
+> > > implementation for the .device_get_match_data function callback.
+> > Maybe this is done on purpose.
 > 
-> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-> ---
->  drivers/acpi/cppc_acpi.c | 2 +-
->  include/acpi/cppc_acpi.h | 3 ++-
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 22d7fd669a6c..a09bdabaa804 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1615,7 +1615,7 @@ EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
->   */
->  int cppc_set_epp(int cpu, u64 epp_val)
->  {
-> -	if (epp_val > CPPC_ENERGY_PERF_MAX)
-> +	if (epp_val > CPPC_EPP_ENERGY_EFFICIENCY_PREF)
->  		return -EINVAL;
->  
->  	return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
-> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 6573a759eb8d..4d644f03098e 100644
-> --- a/include/acpi/cppc_acpi.h
-> +++ b/include/acpi/cppc_acpi.h
-> @@ -39,7 +39,8 @@
->  /* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
->  #define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
->  
-> -#define CPPC_ENERGY_PERF_MAX	(0xFF)
-> +#define CPPC_EPP_PERFORMANCE_PREF		0x00
-> +#define CPPC_EPP_ENERGY_EFFICIENCY_PREF		0xFF
->  
->  /* Each register has the folowing format. */
->  struct cpc_reg {
+> It is a *fact* that the broken swnode lacks an implementation for the .device_get_match_data stub.
 
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+No need to re-create board files when it's not needed or doesn't fit.
+
+> Otherwise, If it is really done *on purpose*, the maintainers of swnode
+> backend could/shall document it in the source file *explicitly*.
+
+Probably it should be spoken in a better way.
+
+> > Have you thought about this aspect?
+> 
+> If you are sure, then stop telling us something start with "Maybe ..."
+
+I wasn't the author of the swnode idea I can't read their minds. Please,
+ask the respective people about this directly.
+
+> > > This makes it difficult to use(and/or test) a few drivers that originates
+> > > from DT world on the non-DT platform.
+> > How difficult?
+> 
+> The emphasis isn't on the 'difficult', it means that not convenient
+> 
+> > DSA implementation went to the way of taking DT overlay
+> > approach.
+> 
+> Software node can do the same implementation just as what ACPI fwnode backend does.
+> 
+> > Why that one can't be applied here?
+> 
+> DT overlay requires the OS distribution(such as ubuntu) has theDT overlay
+> config option selected.  this is introduce extra overhead/side effects on the
+> non-DT systems.
+
+If we have hotpluggable or runtime reconfigurable devices this is the expected
+option to support them. I don't see a problem here.
+
+> > > Implement the .device_get_match_data fwnode callback, which helps to keep
+> > > the three backends of the fwnode API aligned as much as possible. This is
+> > > also a fundamental step to make a few drivers OF-independent truely
+> > > possible.
+> > > 
+> > > Device drivers or platform setup codes are expected to provide a software
+> > > node string property, named as "compatible". At this moment, the value of
+> > > this string property is being used to match against the compatible entries
+> > > in the of_device_id table. It can be extended in the future though.
+> > I really do not want to see this patch
+> 
+> Whatever!
+> 
+> Then just stop the endless, bruth-force ranting on such a straight-forward thing.
+> 
+> > without very good justification
+> 
+> Justifications has been provided over and over again.
+> 
+> > (note, there were at least two attempts in the past
+> 
+> This exactly saying that the implementation is missing.
+
+Now you count a third one for your pleasure :-)
+
+P.S.
+We already had this discussion in the past and this attitude won't help
+moving forward.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
