@@ -1,168 +1,274 @@
-Return-Path: <linux-acpi+bounces-20507-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20508-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBknLLHncWkONAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20507-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:02:41 +0100
+	id iD7eABfocWkONAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20508-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:04:23 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A905B64231
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:02:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0E1642D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 10:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 650E5708C99
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:54:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 900DF6A4B33
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jan 2026 08:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AAC3921E7;
-	Thu, 22 Jan 2026 08:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDBC3ACEED;
+	Thu, 22 Jan 2026 08:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hP9b5Cx1"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Cs7omK5N"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC953242A5;
-	Thu, 22 Jan 2026 08:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95CE3A7F49;
+	Thu, 22 Jan 2026 08:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769071991; cv=none; b=rUv/RJ9tVcKqqYCXthQnzewNiD6W/p8Qs4V7XPKHn7mzr9SdNgC3vm85V5vP6mcrdstiZL3UgHVhELSk1D/7qJkyCkijIpZQK2m1PLd6R/XKE1Acp9v0ysMMnEG9JxUMuP98XzXOyaSh5EjWj8QAt3XPxyRrlxbI4X3Hhu/vmyw=
+	t=1769072176; cv=none; b=NVKLExTKLicNBsibkweEJu+VYVqQ+QNXwI0NXx9tBs7kn76KKp626SCn+D5jzurlo/gz+kt1fuiHmCrQ7Zb12I5RicEidGh2adaTF1T9SA1aCpUxFmn/BEaWP7znHgQQrHCiYC7XaHomWaCF3L95vEaE3jbXqpMgdLXHsbbyk0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769071991; c=relaxed/simple;
-	bh=8GXZ78y8CHLxVWaGUwAMSCcpjd9/2XbwpJa6NRVR70k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yq3dALbwoJCDoKckoSzY4Hp1+uwKAaW0CimvSEEjz0Zg4mmG4fTkVoM43qfOZ/puwAcelN5J5IfvPIgJgIaXhac3+JaFcbHveaz2kzk7MVBz5iQG6hFYXXdGJ7WdAVCjKkfyQmPAXY7HOR/V4BCklEXnMcnYHdCaMMz2cE4RgQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hP9b5Cx1; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769071989; x=1800607989;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8GXZ78y8CHLxVWaGUwAMSCcpjd9/2XbwpJa6NRVR70k=;
-  b=hP9b5Cx1Ur53efTptkYhkwKUAMqKXqlnj8JO3jzNJOw4a3zebVnRiuVT
-   olxDK3j37eNhexS0TYN7qM19Q6FREHydE8G/7b7rf+dETsRkq+PoRam/R
-   bO4FpKRFIs1cLyWobOCQePOo0ld+nRcslUtxR6uJSrOU64CwInJTFvzFX
-   jzNT0qRzrchERV/dLGHDQsjZ3C3ZSDYod5oz6sYbY/KV4WDIkKL07MfmV
-   i425q8wwqohS3hrC2OUQVulIUN6tO3AEeNfN5UDGOJF8t6sA6/oHotIus
-   QIE1bqbBZkpvdBV2uL1n8T78yXsk2izoOt+ugrZaEZU0KYB1C61Ov8A5H
-   Q==;
-X-CSE-ConnectionGUID: 60SKLjmwTP+ttGwZ4NKQuA==
-X-CSE-MsgGUID: 9Zj7jEq5ToiuZMRqfCLZ6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="87886668"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
-   d="scan'208";a="87886668"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 00:53:06 -0800
-X-CSE-ConnectionGUID: 2Ox0rrcrTtWxqhipEQyCNQ==
-X-CSE-MsgGUID: jXg7yxJ6Sq6lbQEsmhpcVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
-   d="scan'208";a="211131120"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 00:52:58 -0800
-Date: Thu, 22 Jan 2026 10:52:56 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, Rob Herring <robh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-pm@vger.kernel.org,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	linux-acpi@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>
-Subject: Re: [PATCH v3 00/14] Add support for handling PCIe M.2 Key E
- connectors in devicetree
-Message-ID: <aXHlaMQ1mpi4Tu-f@smile.fi.intel.com>
-References: <20260110-pci-m2-e-v3-0-4faee7d0d5ae@oss.qualcomm.com>
- <aWSq_7_5kkQIv9Hc@smile.fi.intel.com>
- <aWSuYd8zqCxZ9DYE@smile.fi.intel.com>
- <20260114134004.11023a7e@bootlin.com>
+	s=arc-20240116; t=1769072176; c=relaxed/simple;
+	bh=zo/k6MNrNvcqETtnkBU7N9py2eZd8C0HTvTrCTYeNRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ia4eqo4lHFKd05/sJgg7ya/lBHGTS1L6HOKRmQEGhQPJzScJDzWvjyXSItKkvxlROltHbx/x87cLSHRuT3PwUC4deAR2CzlS4Pdgre6lqPjnMCX026VmQAohzUIX/8CPjAWP+ke18Gj53m07XxwPRAMTIyWSvoLy6byjw6c5LL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Cs7omK5N; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=egbATltjKtI2lDt3jOk7R1/+E4l/hmITyhwUo2UnyFk=;
+	b=Cs7omK5NyR4uJO7VAmxcu1sE2rcdo73iU+6c/iYg9a+wUflB0gPeW/Rk07TPI5WNIJOSHNSNl
+	Zg8OCiQx3J89s8VGX5GfxfqqiSnikoO+TZaZsSzJKTFMOgzyK5ePYvO5NneAo3/F9Nvw5d3Xi14
+	0hRS58CCvFcNw+Tuq7J/A6g=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dxZZd0tRlz1cyTK;
+	Thu, 22 Jan 2026 16:52:41 +0800 (CST)
+Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
+	by mail.maildlp.com (Postfix) with ESMTPS id 012E940538;
+	Thu, 22 Jan 2026 16:56:05 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
+ (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 22 Jan
+ 2026 16:56:03 +0800
+Message-ID: <7f0b280d-9c22-46dc-a924-a85591e1034d@huawei.com>
+Date: Thu, 22 Jan 2026 16:56:03 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114134004.11023a7e@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/9] ACPI: CPPC: Add cppc_get_perf() API to read
+ performance controls
+To: Sumit Gupta <sumitg@nvidia.com>
+CC: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <pierre.gondois@arm.com>,
+	<ionela.voinescu@arm.com>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<corbet@lwn.net>, <rdunlap@infradead.org>, <ray.huang@amd.com>,
+	<gautham.shenoy@amd.com>, <mario.limonciello@amd.com>, <perry.yuan@amd.com>,
+	<zhanjie9@hisilicon.com>, <linux-pm@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
+	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
+	<nhartman@nvidia.com>, <bbasu@nvidia.com>
+References: <20260120145623.2959636-1-sumitg@nvidia.com>
+ <20260120145623.2959636-5-sumitg@nvidia.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <20260120145623.2959636-5-sumitg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemf200001.china.huawei.com (7.202.181.227)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linuxfoundation.org,linux.dev,linux.intel.com,squebb.ca,gmail.com,holtmann.org,bgdev.pl,vger.kernel.org,linaro.org];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	TAGGED_FROM(0.00)[bounces-20507-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20508-lists,linux-acpi=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[huawei.com,quarantine];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[37];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhenglifeng1@huawei.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: A905B64231
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,huawei.com:mid,huawei.com:dkim,dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: DD0E1642D7
 X-Rspamd-Action: no action
 
-On Wed, Jan 14, 2026 at 01:40:04PM +0100, Herve Codina wrote:
-> On Mon, 12 Jan 2026 10:18:41 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 2026/1/20 22:56, Sumit Gupta wrote:
+> Add cppc_get_perf() function to read values of performance control
+> registers including desired_perf, min_perf, max_perf, energy_perf,
+> and auto_sel.
 > 
-> > +Cc: Herve (btw, any news on LAN966x support?)
+> This provides a read interface to complement the existing
+> cppc_set_perf() write interface for performance control registers.
 > 
-> Related to LAN966x support, I am still stucked on issues related to
-> fw_devlink and DT overlays [1].
+> Note that auto_sel is read by cppc_get_perf() but not written by
+> cppc_set_perf() to avoid unintended mode changes during performance
+> updates. It can be updated with existing dedicated cppc_set_auto_sel()
+> API.
+> 
+> Use cppc_get_perf() in cppc_cpufreq_get_cpu_data() to initialize
+> perf_ctrls with current hardware register values during cpufreq
+> policy initialization.
+> 
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  drivers/acpi/cppc_acpi.c       | 80 ++++++++++++++++++++++++++++++++++
+>  drivers/cpufreq/cppc_cpufreq.c |  6 +++
+>  include/acpi/cppc_acpi.h       |  5 +++
+>  3 files changed, 91 insertions(+)
+> 
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index a09bdabaa804..de35aeb07833 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1739,6 +1739,86 @@ int cppc_set_enable(int cpu, bool enable)
+>  }
+>  EXPORT_SYMBOL_GPL(cppc_set_enable);
+>  
+> +/**
+> + * cppc_get_perf - Get a CPU's performance controls.
+> + * @cpu: CPU for which to get performance controls.
+> + * @perf_ctrls: ptr to cppc_perf_ctrls. See cppc_acpi.h
+> + *
+> + * Return: 0 for success with perf_ctrls, -ERRNO otherwise.
+> + */
+> +int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+> +{
+> +	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+> +	struct cpc_register_resource *desired_perf_reg,
+> +				     *min_perf_reg, *max_perf_reg,
+> +				     *energy_perf_reg, *auto_sel_reg;
+> +	u64 desired_perf = 0, min = 0, max = 0, energy_perf = 0, auto_sel = 0;
+> +	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+> +	struct cppc_pcc_data *pcc_ss_data = NULL;
+> +	int ret = 0, regs_in_pcc = 0;
+> +
+> +	if (!cpc_desc) {
+> +		pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+> +		return -ENODEV;
+> +	}
+> +
+> +	if (!perf_ctrls) {
+> +		pr_debug("Invalid perf_ctrls pointer\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	desired_perf_reg = &cpc_desc->cpc_regs[DESIRED_PERF];
+> +	min_perf_reg = &cpc_desc->cpc_regs[MIN_PERF];
+> +	max_perf_reg = &cpc_desc->cpc_regs[MAX_PERF];
+> +	energy_perf_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
+> +	auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
+> +
+> +	/* Are any of the regs PCC ?*/
+> +	if (CPC_IN_PCC(desired_perf_reg) || CPC_IN_PCC(min_perf_reg) ||
+> +	    CPC_IN_PCC(max_perf_reg) || CPC_IN_PCC(energy_perf_reg) ||
+> +	    CPC_IN_PCC(auto_sel_reg)) {
+> +		if (pcc_ss_id < 0) {
+> +			pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
+> +			return -ENODEV;
+> +		}
+> +		pcc_ss_data = pcc_data[pcc_ss_id];
+> +		regs_in_pcc = 1;
+> +		down_write(&pcc_ss_data->pcc_lock);
+> +		/* Ring doorbell once to update PCC subspace */
+> +		if (send_pcc_cmd(pcc_ss_id, CMD_READ) < 0) {
+> +			ret = -EIO;
+> +			goto out_err;
+> +		}
+> +	}
+> +
+> +	/* Read optional elements if present */
+> +	if (CPC_SUPPORTED(max_perf_reg))
+> +		cpc_read(cpu, max_perf_reg, &max);
+> +	perf_ctrls->max_perf = max;
+> +
+> +	if (CPC_SUPPORTED(min_perf_reg))
+> +		cpc_read(cpu, min_perf_reg, &min);
+> +	perf_ctrls->min_perf = min;
+> +
+> +	if (CPC_SUPPORTED(desired_perf_reg))
+> +		cpc_read(cpu, desired_perf_reg, &desired_perf);
+> +	perf_ctrls->desired_perf = desired_perf;
 
-Thank you for the update and your reply here!
+desired_perf_reg is not an optional one, so it has to be supported.
 
-> [1] https://lore.kernel.org/all/20260112154731.6540453b@bootlin.com/
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> +
+> +	if (CPC_SUPPORTED(energy_perf_reg))
+> +		cpc_read(cpu, energy_perf_reg, &energy_perf);
+> +	perf_ctrls->energy_perf = energy_perf;
+> +
+> +	if (CPC_SUPPORTED(auto_sel_reg))
+> +		cpc_read(cpu, auto_sel_reg, &auto_sel);
+> +	perf_ctrls->auto_sel = (bool)auto_sel;
+> +
+> +out_err:
+> +	if (regs_in_pcc)
+> +		up_write(&pcc_ss_data->pcc_lock);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_get_perf);
+> +
+>  /**
+>   * cppc_set_perf - Set a CPU's performance controls.
+>   * @cpu: CPU for which to set performance controls.
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index c95dcd7719c3..229880c4eedb 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -594,6 +594,12 @@ static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
+>  		goto free_mask;
+>  	}
+>  
+> +	ret = cppc_get_perf(cpu, &cpu_data->perf_ctrls);
+> +	if (ret) {
+> +		pr_debug("Err reading CPU%d perf ctrls: ret:%d\n", cpu, ret);
+> +		goto free_mask;
+> +	}
+> +
+>  	return cpu_data;
+>  
+>  free_mask:
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 4d644f03098e..3fc796c0d902 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -151,6 +151,7 @@ extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+>  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
+>  extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
+>  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
+> +extern int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+>  extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+> @@ -193,6 +194,10 @@ static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> +static inline int cppc_get_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>  static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+>  {
+>  	return -EOPNOTSUPP;
 
 
