@@ -1,130 +1,132 @@
-Return-Path: <linux-acpi+bounces-20578-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20579-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FBVLaslc2nCsgAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20578-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 08:39:23 +0100
+	id uE2PENI0c2lItAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20579-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 09:44:02 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5062871D5D
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 08:39:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976A772AAA
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 09:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0F8D3019494
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 07:38:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9421A300A634
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jan 2026 08:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E20B33B96B;
-	Fri, 23 Jan 2026 07:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BF433030F;
+	Fri, 23 Jan 2026 08:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dluQ0jAB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOga/W/m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34AC30BF6B;
-	Fri, 23 Jan 2026 07:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6D5320A31;
+	Fri, 23 Jan 2026 08:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769153862; cv=none; b=I/aXN440wdnxHkm775Tszr/Fo+yFezw4CiKk+xEynGhrrz0s7yP6Br8yf75GvcEtwvuuz+5lwYwEOQ2HQFapGHI7OaRDb4wCC4Yn9VFfw3Abnynxkg325/Q+WuQsWDIB4tIOdzkOVX6ejIajG929KhSLpPd89Hlre4K3ILyBZbo=
+	t=1769157755; cv=none; b=C5tCiEZSvorASv/CELjyGIqXVWkeAAKGRkOcvI/y+ENUw1uweXFvlvAXQeyVdizUYOq4ErzYLKgLt+8P+ZngLXkALUfPB7RrQZ7Wnu028SJixnGTftNWoNvrSyBPokgBSabxIBqKjWBcLzYEQRSxLPfZ3hyD1amddFE9GCh9a7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769153862; c=relaxed/simple;
-	bh=vcTjSfEG+HWTwQpAtVnn3Ke1/38d6OtsJ+AlYoxxhGo=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=UBl5VsuE0ZCWbCupJ+nD9kyF+hctK/uv6t96sqVWJMXlxyuQXvf+ljPwfcQwD1QZHvnfUoraSiRoPEKCdJKJsseNEZMdYHOFZ9+5PSkbPykUpGrfua5I/civ/QtewvXuG4uzokr6hl0ANrlnHRb9ITUFMRZvVo8UNVCqDnu7mwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dluQ0jAB; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769153861; x=1800689861;
-  h=date:from:to:cc:subject:message-id;
-  bh=vcTjSfEG+HWTwQpAtVnn3Ke1/38d6OtsJ+AlYoxxhGo=;
-  b=dluQ0jAB4Lv0OSkpSwqg9lA0kg/n+wQhpFwclVJZx6wsqsrTsRTBb73C
-   1xd2Rv+NzLzTlN6NO7QEiP/Ae6EVT84PnXhd2r50lIJ5XetcsfqetlLaz
-   mAwGX+qGGe2dZgPM7evixLYMZL6BYSgUJtLyD2btAGxBI9xOuRSjdsGGf
-   t5okLYI2FqoReXu2x2L8SnfadMm7Vc+oEs4ZUGjuefxtxWq/+IIYGGGVd
-   6kDJNOp49aJjHHW010yIPS7niFEU+Rb0JkOADNVPe5J2ElhYirSAtAl1p
-   N2ubKfrV5lghh9eyTt4VvLlzCoY6B9L4Attvj3Q8DtRRSF/n10z/HvkkU
-   w==;
-X-CSE-ConnectionGUID: CqAQuVZtQC+MM3PzNexyvQ==
-X-CSE-MsgGUID: Uu+jaiFHR1uWaDTO1vJ6FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70465390"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="70465390"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 23:37:40 -0800
-X-CSE-ConnectionGUID: kF1AZjb2R5yRqOkfg2SnBw==
-X-CSE-MsgGUID: sa/aVqylT3iHBlzQRwT0kA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="211415015"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2026 23:37:38 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vjBjc-00000000TeF-0FUA;
-	Fri, 23 Jan 2026 07:37:36 +0000
-Date: Fri, 23 Jan 2026 15:37:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [rafael-pm:bleeding-edge 175/176] ERROR: modpost:
- "tick_nohz_enabled" [drivers/cpufreq/cpufreq_ondemand.ko] undefined!
-Message-ID: <202601231505.4Q8tb33s-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1769157755; c=relaxed/simple;
+	bh=S/zXxDEYmCUkDscKgbWaYUEDm0jge4sk1pPwprWhnbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mmYzIlm4e6ae7XTWvXcJTE9wJiaWPU81l8RA1CXUWqPgHwoOMtAYA0IS4QhoDPZ/sTzh+rXUF0ikAuyohBMhG5iG/JJ6Ge70x2jmGALw0m/zGSc4Wj31cCb2mOof5DqWDJ3PYsqAYjuz59FZhy/9xfP1dXCEwIw2ANjyQwuQcAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOga/W/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED97CC4CEF1;
+	Fri, 23 Jan 2026 08:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769157755;
+	bh=S/zXxDEYmCUkDscKgbWaYUEDm0jge4sk1pPwprWhnbc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dOga/W/mDRkFC6X9CJ0Qbt/kQOExGTnEQQibfgW1GLSexg5OeqDhJML8FE0IKLTSX
+	 6lvobBcB+PepvPcoVO9JQ9Y453OzTJpkEP0rHmtxKbO1HTva4fmV7SQAV4hsSr8Ld4
+	 akRsQGML8xCDbnrGyFQ3T3RCop/s2ap29sHDD/BLyFjXridmr4q0Kg2W0OkNVN3xbq
+	 ufF2jS9hnvZ2HmehQSk131jzS+sPzfhkeEKaYccwo6Srq6NoO45wiLaIVJ1GfzHb45
+	 h97opOnbERX31UuZ3GeIAXoqV1/IoN7EB9GkP5fN/7IsIa6spdsTVv170XcaIKaBIt
+	 gaLigMDagTDFw==
+Date: Fri, 23 Jan 2026 09:42:29 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] irqchip/gic-v5: Code first ACPI boot support
+Message-ID: <aXM0dVthp33yUqj8@lpieralisi>
+References: <20260115-gicv5-host-acpi-v3-0-c13a9a150388@kernel.org>
+ <aWy9T3VDyXpVG41z@lpieralisi>
+ <87sec30yhk.ffs@tglx>
+ <aW3pALPxn4i9fiDO@lpieralisi>
+ <87pl751zeh.ffs@tglx>
+ <aW9V4A7lTGZWTO9e@lpieralisi>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW9V4A7lTGZWTO9e@lpieralisi>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	SUBJECT_ENDS_EXCLAIM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20578-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-20579-lists,linux-acpi=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lpieralisi@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,01.org:url,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 5062871D5D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 976A772AAA
 X-Rspamd-Action: no action
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   8a22b02a1427ff0eab01a1b7cd62355238ba3d5b
-commit: cc85c350babcb86c65da5393532f1cb255c750bc [175/176] cpufreq: ondemand: Simplify idle cputime granularity test
-config: i386-buildonly-randconfig-002-20260123 (https://download.01.org/0day-ci/archive/20260123/202601231505.4Q8tb33s-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260123/202601231505.4Q8tb33s-lkp@intel.com/reproduce)
+On Tue, Jan 20, 2026 at 11:16:00AM +0100, Lorenzo Pieralisi wrote:
+> On Mon, Jan 19, 2026 at 02:54:14PM +0100, Thomas Gleixner wrote:
+> > On Mon, Jan 19 2026 at 09:19, Lorenzo Pieralisi wrote:
+> > > On Sun, Jan 18, 2026 at 03:47:03PM +0100, Thomas Gleixner wrote:
+> > > I think the simplest way to sort this out is for this series to go via
+> > > the ACPI tree if that's OK for Thomas, given that the ACPICA code will
+> > > go via the ACPI tree anyway and there are other dependencies on it there
+> > > I assume (this series is fairly self-contained).
+> > 
+> > I'm fine with that
+> > 
+> > Acked-by: Thomas Gleixner <tglx@kernel.org>
+> 
+> Thank you Thomas, Rafael I hope that works for you too, please let me know
+> if there is anything I can/should do.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601231505.4Q8tb33s-lkp@intel.com/
+Hi Rafael,
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+forgive me for another ping, can you please let me know whether you can pull
+this series on top of acpica changes for v7.0 or it needs to take a different
+route ?
 
->> ERROR: modpost: "tick_nohz_enabled" [drivers/cpufreq/cpufreq_ondemand.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks a lot,
+Lorenzo
 
