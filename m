@@ -1,206 +1,310 @@
-Return-Path: <linux-acpi+bounces-20609-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20610-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id vOvRA5ghd2lmcgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20609-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 09:11:04 +0100
+	id OFTGOZk2d2nhdAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20610-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 10:40:41 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EF385597
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 09:11:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C41861EC
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 10:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDB983003342
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 08:11:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86ED1300DE35
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 09:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6CE2F6935;
-	Mon, 26 Jan 2026 08:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF4532AAB2;
+	Mon, 26 Jan 2026 09:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LKNeZMbq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BaF2boSC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B7A27A47F;
-	Mon, 26 Jan 2026 08:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AE5329385
+	for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 09:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769415061; cv=none; b=goBPBYRCXwZhtpUrMX+38B7IWdGAGJiF32vR5toAqWt7DfapGNN/nMp7SeIBTE0O/4ql+yuxZU9g7Vvgb67EoFUQxjQn0CGKajjSIdFKGO1/TTcp1XFRzrOYqsRmxF545X750xN/CuGUICFHj35esC16eYYbF7iGF36Bm4cw4Jk=
+	t=1769420405; cv=none; b=D3tj0oYyHIdVrCaB8USl+XBHpyV9SWOyTyOrSoEKiOR7kg4gAedemqiFY5myZpTtCPKSvA5Ec3sFKw8N4BPbM46rZtkyRYH1q2i/lXRdGuUhWw+plRckm8tHuxaDwZU+4Xga6iHPu0topT6s/EyhgrYnM69JYN/s2ql7PenEm4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769415061; c=relaxed/simple;
-	bh=GR3zckIVpt6LCL6jaARW/kyCfDLSF1sXbOxzIXTnr6Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kh9yCQxDGCchzxWtwl9tgmGpqCib/nH7n1artrh1m2wjLFrzGOdUP6kHA5qLRz458wVmUgA+hJ5efiVxuBYfSi6+u5GARecFURqu5OJfDrkr83KAdB6jGI4BPYx0Q9Wzpsu60luFqrBH7yLumI6c3ov/i2eifVIxynDIrixtA3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LKNeZMbq; arc=none smtp.client-ip=113.46.200.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YyYWratAnhyYvIsPU6aAB6x0/xonNgcbkzbNqPshYGQ=;
-	b=LKNeZMbqFLdvYz2YeBy0aAN1E+7l3nKA5q817rd/b/G3STx/GRuBXiAD5c861+osb+hPe8NUC
-	pvDYwKR//CrXuJwdmkMyKZGn2JYr8OLoJ3RAXiHnM6epBPN8ctp87YALoaZ/2SLjIRhOY7Er/YS
-	BmQvUpYiD+1CrPP+7DxOHXg=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4f01Mz3VmGznTVZ;
-	Mon, 26 Jan 2026 16:06:55 +0800 (CST)
-Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8F6D740363;
-	Mon, 26 Jan 2026 16:10:50 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
- (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 26 Jan
- 2026 16:10:49 +0800
-Message-ID: <7e86cdbe-f16c-4fe8-92c5-e6fb89f49811@huawei.com>
-Date: Mon, 26 Jan 2026 16:10:49 +0800
+	s=arc-20240116; t=1769420405; c=relaxed/simple;
+	bh=dvZNE+mvgypovO1CpO7HBZhq3LZ0srcdMMc6kzi19+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXXYCa+bQsJN/9iwWB0ijtP5NaOza7Ja9/A/le4KBmSaV1eGQYUluZDwkwyDJONiUKdRoWvrEWkiieW6uLLm+sXRO2kPKkd5dJJYkSeG7Xyu4QNi5n9nTzF8QwkaWfSAVq/RFHRsxFbZGwXO6cStis2hdtr86z3ket3p8ov9Yts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BaF2boSC; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3530715386cso3785435a91.2
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 01:40:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769420403; x=1770025203; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5J/yysAHxIhyaGA7VxFBlt0GOH3uXRc0AwbYc4HyxeI=;
+        b=BaF2boSCc4LqXrZ56GgXYvSx5V48Any4sL139j6wHxB3gLz+JV911NGmdfsb/TCHIc
+         UjsKIw8JXUTk8aQKKBWpMwStVmTmR1kaysE/3J+NpHY4PrCcp+DoB4JfSWWrw+rMUsOh
+         IyiPGxdnJ/kX9SLJCJTQ2D+hKgdJxn2jG8YIXfzU/1Z87ZxYWr0mJOr/EhKTVXBHN+rw
+         VzS5OJ5fvCEGOABwxs6+mKu6ALwnewkW68KnRVt6f736/NTX+pHHnyxODSuQN0F4ggHJ
+         i3EtcFrd5pj15dElwJuCBYHShtAm9BpdzR5DU9GREDUmJP3lqKNO0rTttrdBzGjQPYra
+         JYGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769420403; x=1770025203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5J/yysAHxIhyaGA7VxFBlt0GOH3uXRc0AwbYc4HyxeI=;
+        b=sho3Z9s0kgE5gxsPHydje1gobbdDRijxnqUzfyzAPvP6qoK5pU+N8Ho/eE0V9iuWTt
+         PA72HuA3R3NKXu8vTFoP/LVDyQO9zq2/AYq6BGMu85KTg3nZcL1/BziJvWFGQzEQ6QUs
+         lNsfprgrnV+u1ruBjNERbNJ7XU24UQVub55WMakFO1dfuQqqGz7J+fnHhOXOR2BfSWBT
+         fvs6ST3v62lLHeqsWQ2j/+g4kmQUo9cvhBsfbu7tR4QjZZVY9wfJvSjh/9BQYj2IZOlN
+         AcSUQNAcswAaFuuFwptI7+DzHNpJyETpinUO6WRe+VS0bP67wwgJkHbGqKdqEhQzAnVB
+         IJlA==
+X-Forwarded-Encrypted: i=1; AJvYcCVILjOfwObJDlUSsG8JQDtJXxRe/4UudhRACnGNRJHH2nlwV4CKMiZwycHljigQkSobVqky53maJhg9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/OMO6myJ2dZfT/GtXIsYitLzpwbga5ZzRKzCB2LZ6ZeDWXo5X
+	4Ne0EjihFVERmJTbkGeDAiI2o9wGUUrpu2fT4CEC/RgDx15E5wTlKcoH
+X-Gm-Gg: AZuq6aLEuOmIUH+xRmaRMhhrp2Y8+wO8nrnFQlL2vW1OGVKRoZk+ZdBMZW9D6fM9ktn
+	9ie7EzBi86lTxZx39nlX9pW4j7d1ZMwqfX3wkqO37VIDbwxiQwjs1fdBsuTGYz+4W4Hmpys6qOQ
+	9zisBdwl0At1wobC6YmgDb4627uF4U9s0SH/dJgPWGvtZf/44VPHQ2k7SBxXA4XRXZc4ALKArx8
+	KfJx5olxqHRk92soQa7maHCN6THoiFp8XKfTjexDZSKhg08kGEu0aFF0PwP7FYaAuj/bzelmpTD
+	TokAAlsFEXwY+1u9T9u/vk9kEWZNnvDmCkjcRB5GKfM2fRcKWK8rQXmKoyXjKnB4HcFpfJg4nsw
+	QtdHyuZRqgfUuuFDK2U0keM6bpWYBqlYPJHPm93DBQp6NzlZhVCWvZ531Zbddfi8R2hWfQIE5bR
+	e4u6tsOp1qoo4wFz3Y24Xbz+Nilg==
+X-Received: by 2002:a17:90a:dfd0:b0:32e:7270:9499 with SMTP id 98e67ed59e1d1-353c3fda458mr2846857a91.0.1769420403261;
+        Mon, 26 Jan 2026 01:40:03 -0800 (PST)
+Received: from gmail.com ([2402:e280:3e9b:22f:d4f6:7f7c:22ee:831c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8231871f97asm8896952b3a.40.2026.01.26.01.40.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 01:40:02 -0800 (PST)
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	sumeet4linux@gmail.com
+Subject: [PATCH] ACPI: Replace sprintf with sysfs_emit
+Date: Mon, 26 Jan 2026 15:09:49 +0530
+Message-ID: <20260126093949.8910-1-sumeet4linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/9] ACPI: CPPC: Extend cppc_set_epp_perf() for
- FFH/SystemMemory
-To: Sumit Gupta <sumitg@nvidia.com>
-CC: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <pierre.gondois@arm.com>,
-	<ionela.voinescu@arm.com>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<corbet@lwn.net>, <rdunlap@infradead.org>, <ray.huang@amd.com>,
-	<gautham.shenoy@amd.com>, <mario.limonciello@amd.com>, <perry.yuan@amd.com>,
-	<zhanjie9@hisilicon.com>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-tegra@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
-	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
-	<nhartman@nvidia.com>, <bbasu@nvidia.com>
-References: <20260120145623.2959636-1-sumitg@nvidia.com>
- <20260120145623.2959636-6-sumitg@nvidia.com>
- <a7a4d351-eed3-4ea6-a84f-e525b7ac13a6@huawei.com>
- <86303677-6124-424f-999d-c420eac0cceb@nvidia.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <86303677-6124-424f-999d-c420eac0cceb@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemf200001.china.huawei.com (7.202.181.227)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	TAGGED_FROM(0.00)[bounces-20609-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20610-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[sumeet4linux@gmail.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhenglifeng1@huawei.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:dkim,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 95EF385597
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 49C41861EC
 X-Rspamd-Action: no action
 
-On 2026/1/25 4:08, Sumit Gupta wrote:
-> 
-> On 22/01/26 14:48, zhenglifeng (A) wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> On 2026/1/20 22:56, Sumit Gupta wrote:
->>> Extend cppc_set_epp_perf() to write both auto_sel and energy_perf
->>> registers when they are in FFH or SystemMemory address space.
->>>
->>> This keeps the behavior consistent with PCC case where both registers
->>> are already updated together, but was missing for FFH/SystemMemory.
->>>
->>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
->>> ---
->>>   drivers/acpi/cppc_acpi.c | 24 +++++++++++++++++++++---
->>>   1 file changed, 21 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->>> index de35aeb07833..45c6bd6ec24b 100644
->>> --- a/drivers/acpi/cppc_acpi.c
->>> +++ b/drivers/acpi/cppc_acpi.c
->>> @@ -1562,6 +1562,8 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->>>        struct cpc_register_resource *auto_sel_reg;
->>>        struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
->>>        struct cppc_pcc_data *pcc_ss_data = NULL;
->>> +     bool autosel_ffh_sysmem;
->>> +     bool epp_ffh_sysmem;
->>>        int ret;
->>>
->>>        if (!cpc_desc) {
->>> @@ -1572,6 +1574,11 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->>>        auto_sel_reg = &cpc_desc->cpc_regs[AUTO_SEL_ENABLE];
->>>        epp_set_reg = &cpc_desc->cpc_regs[ENERGY_PERF];
->>>
->>> +     epp_ffh_sysmem = CPC_SUPPORTED(epp_set_reg) &&
->>> +             (CPC_IN_FFH(epp_set_reg) || CPC_IN_SYSTEM_MEMORY(epp_set_reg));
->>> +     autosel_ffh_sysmem = CPC_SUPPORTED(auto_sel_reg) &&
->>> +             (CPC_IN_FFH(auto_sel_reg) || CPC_IN_SYSTEM_MEMORY(auto_sel_reg));
->>> +
->>>        if (CPC_IN_PCC(epp_set_reg) || CPC_IN_PCC(auto_sel_reg)) {
->>>                if (pcc_ss_id < 0) {
->>>                        pr_debug("Invalid pcc_ss_id for CPU:%d\n", cpu);
->>> @@ -1597,11 +1604,22 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
->>>                ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
->>>                up_write(&pcc_ss_data->pcc_lock);
->>>        } else if (osc_cpc_flexible_adr_space_confirmed &&
->>> -                CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
->>> -             ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
->>> +                (epp_ffh_sysmem || autosel_ffh_sysmem)) {
->>> +             if (autosel_ffh_sysmem) {
->>> +                     ret = cpc_write(cpu, auto_sel_reg, enable);
->>> +                     if (ret)
->>> +                             return ret;
->>> +             }
->>> +
->>> +             if (epp_ffh_sysmem) {
->>> +                     ret = cpc_write(cpu, epp_set_reg,
->>> +                                     perf_ctrls->energy_perf);
->>> +                     if (ret)
->>> +                             return ret;
->>> +             }
->> Don't know if such a scenario exists, but if one of them is in PCC and the
->> other is in FFH or system memory, only the one in PCC will be updated
->> based on your modifications.
-> The current code handles mixed cases correctly.
-> When either register is in PCC, the first if block executes and calls
-> cpc_write() for both registers. The cpc_write() internally handles
-> each register's type (PCC, FFH, or SystemMemory)
+Replace all sprintf() calls with sysfs_emit() in sysfs show functions.
+sysfs_emit() is preferred over sprintf() for formatting sysfs output
+as it provides better bounds checking and prevents potential buffer
+overflows.
 
-Yes, I was wrong.
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+---
+ drivers/acpi/device_sysfs.c | 20 ++++++++++----------
+ drivers/acpi/sysfs.c        | 30 +++++++++++++++---------------
+ 2 files changed, 25 insertions(+), 25 deletions(-)
 
-According to the first if block, cpc_wite() is OK to be called for a
-register not in PCC. So it looks like this 'else if' is unnecessary. Only
-CPC_SUPPORTED is needed to be checked before calling cpc_write(), isn't it?
-
-> 
-> 
-> Thank you,
-> Sumit Gupta
-> 
-> 
-> 
->>>        } else {
->>>                ret = -ENOTSUPP;
->>> -             pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
->>> +             pr_debug("_CPC in PCC/FFH/SystemMemory are not supported\n");
->>>        }
->>>
->>>        return ret;
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index cd199fbe4dc9..a52dc35ff9ba 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -27,7 +27,7 @@ static ssize_t acpi_object_path(acpi_handle handle, char *buf)
+ 	if (result)
+ 		return result;
+ 
+-	result = sprintf(buf, "%s\n", (char *)path.pointer);
++	result = sysfs_emit(buf, "%s\n", (char *)path.pointer);
+ 	kfree(path.pointer);
+ 	return result;
+ }
+@@ -347,7 +347,7 @@ static ssize_t real_power_state_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	return sprintf(buf, "%s\n", acpi_power_state_string(state));
++	return sysfs_emit(buf, "%s\n", acpi_power_state_string(state));
+ }
+ 
+ static DEVICE_ATTR_RO(real_power_state);
+@@ -357,7 +357,7 @@ static ssize_t power_state_show(struct device *dev,
+ {
+ 	struct acpi_device *adev = to_acpi_device(dev);
+ 
+-	return sprintf(buf, "%s\n", acpi_power_state_string(adev->power.state));
++	return sysfs_emit(buf, "%s\n", acpi_power_state_string(adev->power.state));
+ }
+ 
+ static DEVICE_ATTR_RO(power_state);
+@@ -399,7 +399,7 @@ hid_show(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct acpi_device *acpi_dev = to_acpi_device(dev);
+ 
+-	return sprintf(buf, "%s\n", acpi_device_hid(acpi_dev));
++	return sysfs_emit(buf, "%s\n", acpi_device_hid(acpi_dev));
+ }
+ static DEVICE_ATTR_RO(hid);
+ 
+@@ -408,7 +408,7 @@ static ssize_t uid_show(struct device *dev,
+ {
+ 	struct acpi_device *acpi_dev = to_acpi_device(dev);
+ 
+-	return sprintf(buf, "%s\n", acpi_device_uid(acpi_dev));
++	return sysfs_emit(buf, "%s\n", acpi_device_uid(acpi_dev));
+ }
+ static DEVICE_ATTR_RO(uid);
+ 
+@@ -418,9 +418,9 @@ static ssize_t adr_show(struct device *dev,
+ 	struct acpi_device *acpi_dev = to_acpi_device(dev);
+ 
+ 	if (acpi_dev->pnp.bus_address > U32_MAX)
+-		return sprintf(buf, "0x%016llx\n", acpi_dev->pnp.bus_address);
++		return sysfs_emit(buf, "0x%016llx\n", acpi_dev->pnp.bus_address);
+ 	else
+-		return sprintf(buf, "0x%08llx\n", acpi_dev->pnp.bus_address);
++		return sysfs_emit(buf, "0x%08llx\n", acpi_dev->pnp.bus_address);
+ }
+ static DEVICE_ATTR_RO(adr);
+ 
+@@ -482,7 +482,7 @@ sun_show(struct device *dev, struct device_attribute *attr,
+ 	if (ACPI_FAILURE(status))
+ 		return -EIO;
+ 
+-	return sprintf(buf, "%llu\n", sun);
++	return sysfs_emit(buf, "%llu\n", sun);
+ }
+ static DEVICE_ATTR_RO(sun);
+ 
+@@ -498,7 +498,7 @@ hrv_show(struct device *dev, struct device_attribute *attr,
+ 	if (ACPI_FAILURE(status))
+ 		return -EIO;
+ 
+-	return sprintf(buf, "%llu\n", hrv);
++	return sysfs_emit(buf, "%llu\n", hrv);
+ }
+ static DEVICE_ATTR_RO(hrv);
+ 
+@@ -513,7 +513,7 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
+ 	if (ACPI_FAILURE(status))
+ 		return -EIO;
+ 
+-	return sprintf(buf, "%llu\n", sta);
++	return sysfs_emit(buf, "%llu\n", sta);
+ }
+ static DEVICE_ATTR_RO(status);
+ 
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index e596224302f4..1bd2f555e673 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -687,7 +687,7 @@ static ssize_t counter_show(struct kobject *kobj,
+ 	    acpi_irq_not_handled;
+ 	all_counters[num_gpes + ACPI_NUM_FIXED_EVENTS + COUNT_GPE].count =
+ 	    acpi_gpe_count;
+-	size = sprintf(buf, "%8u", all_counters[index].count);
++	size = sysfs_emit(buf, "%8u", all_counters[index].count);
+ 
+ 	/* "gpe_all" or "sci" */
+ 	if (index >= num_gpes + ACPI_NUM_FIXED_EVENTS)
+@@ -698,29 +698,29 @@ static ssize_t counter_show(struct kobject *kobj,
+ 		goto end;
+ 
+ 	if (status & ACPI_EVENT_FLAG_ENABLE_SET)
+-		size += sprintf(buf + size, "  EN");
++		size += sysfs_emit_at(buf, size, "  EN");
+ 	else
+-		size += sprintf(buf + size, "    ");
++		size += sysfs_emit_at(buf, size, "    ");
+ 	if (status & ACPI_EVENT_FLAG_STATUS_SET)
+-		size += sprintf(buf + size, " STS");
++		size += sysfs_emit_at(buf, size, " STS");
+ 	else
+-		size += sprintf(buf + size, "    ");
++		size += sysfs_emit_at(buf, size, "    ");
+ 
+ 	if (!(status & ACPI_EVENT_FLAG_HAS_HANDLER))
+-		size += sprintf(buf + size, " invalid     ");
++		size += sysfs_emit_at(buf, size, " invalid     ");
+ 	else if (status & ACPI_EVENT_FLAG_ENABLED)
+-		size += sprintf(buf + size, " enabled     ");
++		size += sysfs_emit_at(buf, size, " enabled     ");
+ 	else if (status & ACPI_EVENT_FLAG_WAKE_ENABLED)
+-		size += sprintf(buf + size, " wake_enabled");
++		size += sysfs_emit_at(buf, size, " wake_enabled");
+ 	else
+-		size += sprintf(buf + size, " disabled    ");
++		size += sysfs_emit_at(buf, size, " disabled    ");
+ 	if (status & ACPI_EVENT_FLAG_MASKED)
+-		size += sprintf(buf + size, " masked  ");
++		size += sysfs_emit_at(buf, size, " masked  ");
+ 	else
+-		size += sprintf(buf + size, " unmasked");
++		size += sysfs_emit_at(buf, size, " unmasked");
+ 
+ end:
+-	size += sprintf(buf + size, "\n");
++	size += sysfs_emit_at(buf, size, "\n");
+ 	return result ? result : size;
+ }
+ 
+@@ -937,7 +937,7 @@ static void __exit interrupt_stats_exit(void)
+ 
+ static ssize_t pm_profile_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+ {
+-	return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
++	return sysfs_emit(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
+ }
+ 
+ static const struct kobj_attribute pm_profile_attr = __ATTR_RO(pm_profile);
+@@ -946,7 +946,7 @@ static ssize_t enabled_show(struct kobject *kobj, struct kobj_attribute *attr, c
+ {
+ 	struct acpi_hotplug_profile *hotplug = to_acpi_hotplug_profile(kobj);
+ 
+-	return sprintf(buf, "%d\n", hotplug->enabled);
++	return sysfs_emit(buf, "%d\n", hotplug->enabled);
+ }
+ 
+ static ssize_t enabled_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -1000,7 +1000,7 @@ void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
+ static ssize_t force_remove_show(struct kobject *kobj,
+ 				 struct kobj_attribute *attr, char *buf)
+ {
+-	return sprintf(buf, "%d\n", 0);
++	return sysfs_emit(buf, "%d\n", 0);
+ }
+ 
+ static ssize_t force_remove_store(struct kobject *kobj,
+-- 
+2.43.0
 
 
