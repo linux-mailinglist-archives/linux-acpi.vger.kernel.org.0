@@ -1,254 +1,480 @@
-Return-Path: <linux-acpi+bounces-20630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KvMKLagd2kCjQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20630-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 18:13:26 +0100
+	id mEKHDKShd2kCjQEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20631-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 18:17:24 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1208B8B584
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 18:13:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B2A8B5F4
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 18:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1F9E3012C71
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 17:08:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5331300462B
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 17:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709A7349B11;
-	Mon, 26 Jan 2026 17:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00E334B426;
+	Mon, 26 Jan 2026 17:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="ENG8Nb2m"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RuKMGasL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020117.outbound.protection.outlook.com [52.101.193.117])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101BF349AF9;
-	Mon, 26 Jan 2026 17:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.117
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769447333; cv=fail; b=ortKOHSUFfCvmmCKg2OhLInaQwDYSMqNVOUPk0hLmXUBaytQuYqQ5vkhWgSF9UpCSCuQX26aF9VdB0XGsWlVRfwR9gsAOauhDVjK6nN7yva+S25hLA9XKD2MZBKHZyv+oUoZuAK06nQEOYqsoDfw3aBYp/NRIG/+H4DIsajlQsM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769447333; c=relaxed/simple;
-	bh=LXoUrSNykTpMwAOOkXY1V6qdVvq5PpM257AbUJ8qKK0=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GneZyj9uWm44ZOBwSHMgoSvTpNlhJ+vNqor5jCYnVOkaCohQVcDJ3nCHRLNrA9YrEva7HmUI1Mo+rIN+H7qA6UT7qxaJ2M4/QrVmT6nOpzcRuKRF4/1Fx6d8iG+koNRUHKRNxtWTTe7nUt96IeNxWTSDpsb312IpxGdM7/PuOaM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=ENG8Nb2m reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.193.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OAdS21BtUJ4GfcIsmsifCgZA+KherRnf9PF6g54Q7VjESzH8jNq4g2zt1KJZiX7QJlJYr0axqc44D5l84FmZ9cUI0jMJ8C+rFLP1DnMe6bCu+iP9c48vABAYeDufVDH3GCLorNaFI8nfIJwJ1aMoYEp7/cmbWX6PaxvcHLK1bkt3QKnzFtd9N7bKr/1JpOCkM8JYq2TRkZs0El7/ntOpWVxWvCC5twMS2JAgsTtzYR51B700Kn5Jzrxy+uOviyPAD61xNn3Hw6ZqnHLelyKF7XXIPaS6GJYg8F/kkr+p2UiGeHP2kfDXxhRSSeAPrCGCwM1gmwlbGVXRTZf5Q9WU3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HypME+ahKADwFR3eb6ItUSg+M3yb2xhRKbTbWlVQ2ms=;
- b=zEObTgmHw1T5tY37P5EWixPzH7/jbFkD3pIp4q7mBF/4J+rxLL5ZGn2zxctk3yf8JydPM3RfR9Cp6paQja3/RUh3erKMTIH0iBWbe326an9sgXXNQwslcVcRUxOeBCimy97cd1NsL8uVF568xHAjfzqSWGd5XF9JgjXrF1p0/xZb0BWYo7q6fxONQUlRVvRmJC4jLf03fFhsTn3Jc3K/Q/VUVGReMMbTHWg3ro5rb1VlYywlPGUWmj4W7mCO2E4CQC9NYRUDDYQ7l3awJuYT3CnobxlgY/dTN4iThF0oexl/biCNRzCibkrrAv8kv/34UDuCWcLuDawAshY0n1pYFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=amperemail.onmicrosoft.com; dkim=pass
- header.d=amperemail.onmicrosoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HypME+ahKADwFR3eb6ItUSg+M3yb2xhRKbTbWlVQ2ms=;
- b=ENG8Nb2mvoQcgkB/ESYwRKHr6pazzLinyqMQUQO2ZXZKvNqRo+/qPh1E8ohyebv0q1po9xNvJIROjMtlH474ZMuX/EJiNgvupgjt4FHzdeO3BKbUHYaVfvsMjOXfTK09oJQQ+SzOwIGgBTSKRM1+fW2MbsrhQymemta0gJE7Xug=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
-Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
- PH0PR01MB8191.prod.exchangelabs.com (2603:10b6:510:290::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.15; Mon, 26 Jan 2026 17:08:50 +0000
-Received: from BN3PR01MB9212.prod.exchangelabs.com
- ([fe80::3513:ad6e:208c:5dbd]) by BN3PR01MB9212.prod.exchangelabs.com
- ([fe80::3513:ad6e:208c:5dbd%5]) with mapi id 15.20.9542.015; Mon, 26 Jan 2026
- 17:08:49 +0000
-Message-ID: <1313947b-dfe6-480c-bc6c-8d39a4dc88f5@amperemail.onmicrosoft.com>
-Date: Mon, 26 Jan 2026 12:08:44 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] mailbox: pcc: Refactor and improve initialisation and
- interrupt handling
-From: Adam Young <admiyo@amperemail.onmicrosoft.com>
-To: Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>
-Cc: Adam Young <admiyo@os.amperecomputing.com>,
- Robbie King <robbiek@xsightlabs.com>, Huisong Li <lihuisong@huawei.com>,
- Cristian Marussi <cristian.marussi@arm.com>
-References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
- <20251127-ancient-baboon-of-opportunity-5f773d@sudeepholla>
- <aWUnZJ83_AKQDagu@bogus>
- <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
-Content-Language: en-US
-In-Reply-To: <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CY8PR12CA0053.namprd12.prod.outlook.com
- (2603:10b6:930:4c::19) To BN3PR01MB9212.prod.exchangelabs.com
- (2603:10b6:408:2cb::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7164E34B408;
+	Mon, 26 Jan 2026 17:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769447804; cv=none; b=XL72ocQacxf6bu2BELanIAZOZGgdGbHf5oyUdZjjkBJO/FJKboqWI6DMIMVnOnUEHeYT73mxkIPy6QP/a9xaDyhrHPRh0cakQwDatmaQMNnxjyURdrgLIzHRYfOpd9ke5mtj1z+9EH2TXCQYOER5uu/9aDc9Fj2jlWarKgNovZo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769447804; c=relaxed/simple;
+	bh=by31IL0DuWK2HZ0DCYit1nT7P2I/Y7/0K7u870JAWjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jU1wpnG4Iwzfi849iPr4l/3uRXZz4iIZXzUEBYOH7L3EDXRPiXbvQwIU/TdpwbKnAxuJ6hG8y5u51gB0lDWsN0YoZR+z9pxQ4TiG9hGxlo/5E6j0fzP4o+bHa4u5vmD46SXKHyAOwiyCxJEbuxOBekVc/20OBEMtCj9/xO3AIo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RuKMGasL; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C2D3340E02E3;
+	Mon, 26 Jan 2026 17:16:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 9EJ5gUZIqa4I; Mon, 26 Jan 2026 17:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1769447795; bh=khUSUnSnbB6myn/q+lJ3qUIqPF74VgWoryZZE4KY6qw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RuKMGasLxzi11hBWCdBfqcHaZLtX+lxmMneLYiEScDzBCp7n9o4LtouTAzHz0ob9n
+	 /KFDDqa4SR/nOjJOlzZuJC495QTDqIa2TJMYYcOES6/jbVNmml9rzozXn82JO+VZOQ
+	 Rwql0ecYYJgjmZGxgqE/gJxTILyVjbyOMhyHqL27KCFfumRTJdRktyKY1zq4QY4rII
+	 PaowL/Jh9awBsWeOX/X6HlXt6BNdmfIsn2g7MJ3LlCffb3XZgk0VQVVYBMmlD8W7kH
+	 H7AJ8u+wnxDU0GRxJzBBdJPaxhQespqsi2oT1NsdWRUyhUCxOotIHvOxp9PB+dKznH
+	 p2nDbqFfq2ySvFUREie76qfeg4LCiHbmqwde56xrg5qvO1M9x0Lpm77zfm2NUMd7UE
+	 xLHEyNv4RXOaj2hizdChOTzdS+2fRiVt15UF0JI70O+DbMBe3AAa7XGpjW44lfbwc7
+	 o3iET60Kk/sBB6JXC0aPIUxEGa/EfGHyzDleT1bTEXK+6WvqvGRTifgtc+WW9+314H
+	 JX0A9nyJk7Q/VkZuPs670iCoQ+MOP9jOGLhXY9r+CP2yGQQ81NY4VSUaWhpPKp8tdo
+	 jf+QZ0F9fkYgDwYQj7eubQVwZNJJySTogA2Ay4z0jZI/XQwC2PExK0e57VoovBFxLi
+	 iIEMoQzzJh8o+B4v/dpHNJUY=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9CDF340E01AB;
+	Mon, 26 Jan 2026 17:15:58 +0000 (UTC)
+Date: Mon, 26 Jan 2026 18:15:52 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
+	jonathan.cameron@huawei.com, linuxarm@huawei.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com
+Subject: Re: [PATCH v16 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20260126171552.GJaXehSJp33nFnpvVd@fat_crate.local>
+References: <20260123175512.2066-1-shiju.jose@huawei.com>
+ <20260123175512.2066-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|PH0PR01MB8191:EE_
-X-MS-Office365-Filtering-Correlation-Id: a42de07d-048c-41bd-88d9-08de5cfd92fe
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SjQvZUMrVXVQRVJzM21FYjNCS1RvL3pvWmxTcHdxdkIwYm9HKzVxb0JVYVJI?=
- =?utf-8?B?cU5wTzR6MXRWM2hXTzd3YUhVcUpmaUNNZ0dIMndMdDZZbWw4dTNRRGlGNTBL?=
- =?utf-8?B?RTZEdkV2QWhRa0N1RWtXNUhFaVdxU3NvSTd0OExsMFRwWGpudVlDYXp4ZkY1?=
- =?utf-8?B?OWNpakthSDkwK21FK2xydXVTWmlOZ3M0YWlnSE9KYVlnOFlDQUZLRlVVVjFn?=
- =?utf-8?B?Mm9iSmVGSk9nNWJTWFNUNnJlUndjOXFyYjgzZ25zNzl3Ti9aVVVuOTl3Mkxw?=
- =?utf-8?B?L0lmQXVMcSt5em9hWHgzYWVZUjU1STdNdzdpWFZ5OHZ3ZkJWb29LdCtNNTVJ?=
- =?utf-8?B?OVRYRWJtQWI4cVdSSFI5SWtRQWcvT0g3T1JNQkFqdGZJS01ocmg2aGFIcU94?=
- =?utf-8?B?TkVKQzR6cWlPclJlVllScUowR1FpQm5pY1M2UnE4NWpRVUdDNkIvR0kwUkJ2?=
- =?utf-8?B?TkJaQmt2a1QzMW5PYVJFK0FSS3FYYWZYZVNGczJhR21aWDN2aWhlK1JpTjlD?=
- =?utf-8?B?YTk3MnJGdnZyMGZwV1Mxb0Y3Rnk2VG0yOXJFMk1KU2MwS2VyZjFmVWErY0lz?=
- =?utf-8?B?ZTdDazZRSVVSU2J6RFJXZjd6RkRPaXVWSkFvb3FYaWJlZnVoalhUcCtJWUxr?=
- =?utf-8?B?by9TU3NpOFB2Z3I5RGJESG40RVp0RDhZOHY1a1k4UnB1b21UTkFMZCtKYWY4?=
- =?utf-8?B?a080WWROdFBPSTlDMUNaQTlSaVVqUTZDV1N6elFGcTRsOTJTbDcvVTVJU2t5?=
- =?utf-8?B?UUtqS2tnMXZsSk9VRUNrSjFHQ2N1M0FETTBZUkFEa3J0dlVKMjVHVERKWG14?=
- =?utf-8?B?WEpvTTRJQldiMDVlby9ienN2V3FoWWRqMldMQndlTklsMHdtVVhnb25sWHQx?=
- =?utf-8?B?MVd6Sm83NWREYXZldS9BTnRhaE0rQ2c3c003WUtrL2wyNDVyb3l2UlYrTVdQ?=
- =?utf-8?B?WC9CcXJCUXdwQWZIcFRJcFdmL003ek1jUC9hbmpuNVlvSXBaQmc4OFgyODdh?=
- =?utf-8?B?aDhCZHAyUXNSMytpazZHSnAxMkh4a2VtYkRQTTY0RmtURjJwU0xFcVhuaGZY?=
- =?utf-8?B?MmNYaklzRzRKamRLVzNsc2FFMVZpL3M1ck1xaU4zN1JGb0NFNCtMNUlMdEhz?=
- =?utf-8?B?eDVsRDNUZFZ0OHJZSE5wY2RKSm45dkZXOWhveVBrK3VQbGlzcnlWbDJOcHJw?=
- =?utf-8?B?SkVpV0RxN0oybG1hZGN3UW80SFVNYXpOTnBkWDVnNGRSSVlFUXU4TEJ2eG9G?=
- =?utf-8?B?blhNT2x1LzJTQXdLSUxCc3dtd1JRSlVXTGVnNmUxTnREUlNNK1dZRG13Q1hW?=
- =?utf-8?B?dnNqUXo0cTBuUDlYSVRBU0NRUHNvS3BGeFJGVXdqMW12eTA1Rms4Q3RZRmFK?=
- =?utf-8?B?TUZsZXV6MStkZC84Qzl4Y3dxbEU2OWhkNXNIUyt0VzUvU3MweFdOeVhRclJK?=
- =?utf-8?B?NWN0YTA1Njlqd3BaOGtaTlArYWFsU2w0Y2ljWGU4cGVkU2Y4VkdNYnBURE9i?=
- =?utf-8?B?Y1huVWdSbXhiay93THY3Nks0MUg2bGZNTkR6Qnh0VkJSV1locVZHNDhjaWxI?=
- =?utf-8?B?aVdsbDJUb003S3h5ZHNJSGFBV01kMzhkUGlXVi80M0hnY2lCV2R0L3E4bWlJ?=
- =?utf-8?B?WEFROHFVNW1FK3VXdU1tNHE4amk3OG9MbjRXdWJEUGhUYXJtbFJBNGdTMXJ6?=
- =?utf-8?B?QXNqaW1SQXVrZlAyYVJ5VkF2YmRlRlpiU2pvaVJGUnF4ZnlxUUpuZTFhMDJr?=
- =?utf-8?B?dmlPb3VOMGpaYkd3amwxZW1UWjRnalZFaUZ3d2lmVTQxK21JWHNOYXVWTHRv?=
- =?utf-8?B?TXJpWldid29GclVaakxvT29UMG42eWxuMlZ3eEZUOEdKL1lNbmJWSHdNb2VL?=
- =?utf-8?B?aGJBK3NYeE5Rc0RXMGt4NERkNU05UTdEa1V6MllsQWlhT2lKUk5STFJuT2Ev?=
- =?utf-8?B?cHkyaW9DT1c0YlFSNTZEUnc4V2tPanRlbkZ5Tlp2QlRkZ1JXaWx4dG5wZnll?=
- =?utf-8?B?K01uWnZ2SmliamxhaVcyYS8zVjhhSmJZVXlVZzdmTWY4RlpaMnIweUtUdDRB?=
- =?utf-8?B?RDQwcHFyaGx5cGV2VTdvaDdjN2wyTklMMDZ1Um1sRTVRby9nNzY0cnRJZml0?=
- =?utf-8?Q?Y02c=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R0tSdExodFFSQ1cwREorZ0dQcDdWU1ZrRE84VWlSUHBHdDdDQm9RVmhPdEVp?=
- =?utf-8?B?ZTQxeHM2WUl3dkJNTmhrRWU0eFdRcHFBUlNMSjRWQVhXYXY4V0RvMXhSK1My?=
- =?utf-8?B?aTVwTVh5Sk4xZVpSYUlOTFA1alJEanBBY3VmNUxVZVU2T2xPUWw5cTVMS1I0?=
- =?utf-8?B?ZFp3RjVXZGtpdHZjbzl5b1RiMTgrNHZPNktrN3pMZkdnNllIL2VuRy9NUVhy?=
- =?utf-8?B?NTY4aElmeTdWblBoYmc4S2dpcGxXZmtxSmRBdGtndjVyV0hXZUxRNWRyMUph?=
- =?utf-8?B?V293eWd4YlA5QjN2eTBQSXY2VFk2WTFYakRGSjB1aXZNK1VxSURQOVVqWmNB?=
- =?utf-8?B?cktPN2xMaERTV2dtekZaVXhhSG5ZcVVuMVYzcWJLZnI5NUhlaXJsSW1mMFQv?=
- =?utf-8?B?T1NlOUR5TWF5eUdsbWdOMUhzZUF0aEk2OUlUL2ZYeGNjNVJzV0lvd0oydm5P?=
- =?utf-8?B?R3R1QjR6WHo2MDBpSmlhQm9QazBnQjh2akc4V2wrTkloV0QzSUVoNjVldDBn?=
- =?utf-8?B?WjdYcVQxSnVlMkREWnY3MTE1bkxJd002NWJTcVMrcHVicVN3cE9aUmgzaE96?=
- =?utf-8?B?NXVVcEV4REh0OXNNVjJ4SS9saWJ0VkVUbU1LeHBkSXJSaURxQ2JHeHVKNWFX?=
- =?utf-8?B?L25LeFVVeVNxYjdmVDF6U0FMaFZlV1g2NXBwTitBZTFoQlN6b3JoQ3FXOUlS?=
- =?utf-8?B?QWc2M3dBNjV5a253VjVRQW1qZmlvSzRTelhNbUR1czd2ZXpnNGNkZHNRdEtW?=
- =?utf-8?B?Y0xpUXVrdU9mblhtUDhoOVFrSUZhV2lHdjV0WXpPcDFtWUlCNm1TWUhzbU1B?=
- =?utf-8?B?cVovNzdzenE1Uyt0czgxZU1XT0dCTEdNRTM3aE5qMTNuQVp0eTA2MFlRdHhi?=
- =?utf-8?B?WE8zc3JrMC9GVzhLTDhxVlhYVXpIRnhPTHVtcXMyV3hTMnJTaUY1ai80dEtI?=
- =?utf-8?B?RGdsM2xCTmlEbFZqakFUYktvcGZncDM0WTc1dU9Mc2RvQ285R0Exb1lrL3lq?=
- =?utf-8?B?Qy8rZG9xc0NMZUh4aFlpaHZPamlUejJlY0wvdDhFSWtCUC9ZNnZ3eFdUenJ1?=
- =?utf-8?B?OXJNeFV0NExTOVdHalhpMWxkWkhSSjdvQXpBRFMreEJTbnRPUUtkdzQ5Snpr?=
- =?utf-8?B?WjFNTTJHMkF0ZUZ4cHlXcCtWaG4wUzI1YWhFK05MREFkTWFrNk5FaXZ5c2po?=
- =?utf-8?B?bklWeTJ5b04wajJSWDN0UVNhWUVLOU1YZGhKZ0xoT3crWlNUdzdWS0QyMERX?=
- =?utf-8?B?VDhxZVI3ZFR1ektha0tBOE9xSnNaa2N2S3c5NjFINEhRYlpmNEV4N1NjTDZp?=
- =?utf-8?B?TTR2cmhFWDl3YUlHTTBBV0U4dytpOUc0dVN4YUc3dnRKbjFsZEc5VjlsSnlW?=
- =?utf-8?B?QW50QnlueVJUMHhvTGxqNGxhZjJRVUNqZEtmVllwb2NyT0FIVUlHSTA5eEtB?=
- =?utf-8?B?amNRdW5STHd3UWlOWmk1S0dQWVRnK1ROanBmcmtCT2NxTFc4QXBhT1h5V29X?=
- =?utf-8?B?TFNJcEx3dFUwbmNnOWQ0WWZoRGpkN1M1MEFvQzJJNU1WZ1k3dkNFMUxweXFB?=
- =?utf-8?B?MFBmekdxUTNSR0YxOEVDZ21NbmV6MHNwWWpWeWtvUWpqV2tjdHh2N3M1QnNn?=
- =?utf-8?B?Q1VETituSzgwTUpyOWdwamozOHZXL2tlZGI2R2lFZGo3OTJtK2RPOHNtelFw?=
- =?utf-8?B?YlBSNUJxbUFpVkpML0FhZGU3Kzh2a3FEbi9OUEFWTXI0b1k1Z2tDZm96Ynow?=
- =?utf-8?B?b2YrcWRpbjVTUDk3RkZiVEVKck5TV09xNGpHbkd0MG9HSmNidlhvR3BCdVJl?=
- =?utf-8?B?VzN1TVo1L1FaUkV3Ri9OMzl4cGRXNUkvUHhCbk9obi91T3hFajRXYzNvZHZF?=
- =?utf-8?B?M0tsTTdLbUNpWnNYeWZYdVNSOVdvZUdFZHA5cVBLaXBDdzVyUFIvVXZPWE4x?=
- =?utf-8?B?VS9IaERwVHc3ZUU2TUZRYlJzZ05QR24veDdibE1ocnBGelBhVVVWZjFJaXhm?=
- =?utf-8?B?MXF6dWp6NEE3SnIrakN0ZURJbGdxQU9ra3dLaDd6VHgydnlvMzlEVENUZkY0?=
- =?utf-8?B?ditIRjRzMjVRckhvc21nelVBN0dTUXRrQU5ZSlN0NEV3a2NvcG1XSFlyNG1o?=
- =?utf-8?B?djVpbGdZYVFZOW5kRkZ4MU1aa2swODMvZVVPbnIraG5YZzE0c1VTNUhvQk44?=
- =?utf-8?B?UUhSNG1qWnpRakU3TktIekxaZG56Rld5QzBhRzBUNlhMbXBKYzVIZ2FMVkJ2?=
- =?utf-8?B?K3pTeC9YKzBzS2wyVzJpM0M4bjhNRThrdjRnUVlZaWVob0VBTU01WklGZ0RS?=
- =?utf-8?B?NVR0ZGxZOEpQaE9aT0ZjdHFwL2VtZE5PeitHUmlXNEFDZVNBcnllQzNrZ2xt?=
- =?utf-8?Q?mRvqH/6CzsTWBfJcC6RDVThe2HFcPKmcrqP29fW61smPB?=
-X-MS-Exchange-AntiSpam-MessageData-1:
-	HpRU3xl9GqLOpzzZ0HBjXbRCcHLNPw+4tugeb6L7acoWmvVi3jtYM2kk
-X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a42de07d-048c-41bd-88d9-08de5cfd92fe
-X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 17:08:49.7362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OC2B0wHTvvKhCvtwc1Qx1+8D1A3oxmXnukOqZqc3Lr0NF2DsUjtSFqHXr+OgZJ5YEFZrmmLuudhN8Sm1p3An4LXjVJo6/hAgXcxz6XLhq/bBxu816A75kgUmylsL3PPx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB8191
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260123175512.2066-2-shiju.jose@huawei.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.54 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20630-lists,linux-acpi=lfdr.de];
-	DMARC_NA(0.00)[onmicrosoft.com];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,amperecomputing.com,vger.kernel.org,kvack.org,intel.com,amd.com,huawei.com,google.com,linux.intel.com,nec.com,arm.com,hpe.com,os.amperecomputing.com,gmail.com,hisilicon.com,futurewei.com];
+	TAGGED_FROM(0.00)[bounces-20631-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_PERMFAIL(0.00)[amperemail.onmicrosoft.com:s=selector1-amperemail-onmicrosoft-com];
-	FREEMAIL_TO(0.00)[arm.com,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amperemail.onmicrosoft.com:~];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[36];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[admiyo@amperemail.onmicrosoft.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amperemail.onmicrosoft.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1208B8B584
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 87B2A8B5F4
 X-Rspamd-Action: no action
 
+On Fri, Jan 23, 2026 at 05:55:07PM +0000, shiju.jose@huawei.com wrote:
+> +static int parse_ras2_table(struct acpi_table_ras2 *ras2_tab)
+> +{
+> +	struct acpi_ras2_pcc_desc *pcc_desc_list;
+> +	struct ras2_mem_ctx **pctx_list;
+> +	struct ras2_mem_ctx *ras2_ctx;
+> +	u16 i;
+> +
+> +	if (ras2_tab->header.length < sizeof(*ras2_tab)) {
+> +		pr_warn(FW_WARN "ACPI RAS2 table present but broken (too short, size=%u)\n",
+> +			ras2_tab->header.length);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!ras2_tab->num_pcc_descs || ras2_tab->num_pcc_descs > RAS2_MAX_NUM_PCC_DESCS) {
+> +		pr_warn(FW_WARN "No/Invalid number of PCC descs(%d) in ACPI RAS2 table\n",
+> +			ras2_tab->num_pcc_descs);
+> +		return -EINVAL;
+> +	}
+> +
+> +	pctx_list = kcalloc(ras2_tab->num_pcc_descs, sizeof(*pctx_list), GFP_KERNEL);
+> +	if (!pctx_list)
+> +		return -ENOMEM;
+> +
+> +	pcc_desc_list = (struct acpi_ras2_pcc_desc *)(ras2_tab + 1);
+> +	for (i = 0; i < ras2_tab->num_pcc_descs; i++, pcc_desc_list++) {
+> +		if (pcc_desc_list->feature_type != RAS2_FEAT_TYPE_MEMORY)
+> +			continue;
+> +
+> +		ras2_ctx = add_aux_device(RAS2_MEM_DEV_ID_NAME, pcc_desc_list->channel_id,
+> +					  pcc_desc_list->instance);
+> +		if (IS_ERR(ras2_ctx)) {
+> +			pr_warn("Failed to add RAS2 auxiliary device rc=%ld\n", PTR_ERR(ras2_ctx));
+> +			for (; i > 0; i--) {
+> +				if (pctx_list[i - 1])
+> +					auxiliary_device_uninit(&pctx_list[i - 1]->adev);
 
-On 1/26/26 12:07, Adam Young wrote:
->
->
-> On 1/12/26 11:55, Sudeep Holla wrote:
->> On Thu, Nov 27, 2025 at 02:40:56PM +0000, Sudeep Holla wrote:
->>> Hi Jassi,
->>>
->>> On Thu, Oct 16, 2025 at 08:08:14PM +0100, Sudeep Holla wrote:
->>>> This series refines and stabilizes the PCC mailbox driver to improve
->>>> initialisation order, interrupt handling, and completion signaling.
->>>>
->>> Are you happy to pull these patches directly from the list or do you
->>> prefer me to send you pull request or do you want me to direct this via
->>> ACPI/Rafael's tree. Please advice.
->>>
->> Hi Jassi,
->>
->> Sorry for the nag. I did see these patches in -next as well as your
->> v6.19 merge window pull request which didn't make it to Linus tree.
->> However I don't see it -next any longer. Please advice if you want
->> anything from my side so that this can be merged for v6.20/v7.0
->>
->
-> I thought you had an approach you wanted to implement for the 
-> functions that provided access to the Mailbox internals: you wanted to 
-> do them inline but hadn't gotten to them yet.  Is that still the 
-> case?  I will resubmit mine as is with -next if that is acceptable.
->
-Apologies, I realize now that this was about the previous set of 
-patches, and not the ones that Sudeep and I were discussing that depend 
-on them.
+This is wrong - there should be a function called remove_aux_device() which
+unwinds everything add_aux_device() does for all those devices.
+
+In addition, I did a bunch of cleanups ontop, see below. I can't test them so
+pls have a look and run them on your hw and if all good, merge them with your
+patch.
+
+Thx.
+
+---
+
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 7f846c22fc30..0010b38e8f81 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -299,9 +299,10 @@ config ACPI_RAS2
+ 	depends on MAILBOX
+ 	depends on PCC
+ 	help
+-	  This driver adds support for RAS2 feature table provides interfaces
+-	  for platform RAS features, e.g., for HW-based memory scrubbing.
+-	  Say 'y/n' to enable/disable ACPI RAS2 support.
++	  Add support for the RAS2 feature table and provide interfaces for
++	  platform RAS features, such as hardware-based memory scrubbing.
++ 
++	  If unsure, select N.
+ 
+ config ACPI_PROCESSOR
+ 	tristate "Processor"
+diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
+index a9a9c480ee29..6eed1ada18e1 100644
+--- a/drivers/acpi/ras2.c
++++ b/drivers/acpi/ras2.c
+@@ -6,10 +6,11 @@
+  *
+  * Support for RAS2 table - ACPI 6.5 Specification, section 5.2.21, which
+  * provides interfaces for platform RAS features, e.g., for HW-based memory
+- * scrubbing, and logical to PA translation service. RAS2 uses PCC channel
+- * subspace for communicating with the ACPI compliant HW platform.
++ * scrubbing, and logical to physical address translation service. RAS2 uses
++ * PCC channel subspace for communicating with the ACPI compliant HW platform.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) "ACPI RAS2: " fmt
+ 
+ #include <linux/delay.h>
+@@ -26,13 +27,13 @@
+  * @comm_addr:		Pointer to RAS2 PCC shared memory region
+  * @pcc_lock:		PCC lock to provide mutually exclusive access
+  *			to PCC channel subspace
+- * @deadline_us:	Poll PCC status register timeout in micro secs
+- *			for PCC command complete
++ * @deadline_us:	Poll PCC status register timeout in microsecs
++ *			for PCC command completion
+  * @pcc_mpar:		Maximum Periodic Access Rate (MPAR) for PCC channel
+- * @pcc_mrtt:		Minimum Request Turnaround Time (MRTT) in micro secs
++ * @pcc_mrtt:		Minimum Request Turnaround Time (MRTT) in microsecs
+  *			OS must wait after completion of a PCC command before
+- *			issue next command
+- * @last_cmd_cmpl_time:	completion time of last PCC command
++ *			issuing next command
++ * @last_cmd_cmpl_time:	Completion time of last PCC command
+  * @last_mpar_reset:	Time of last MPAR count reset
+  * @mpar_count:		MPAR count
+  * @pcc_id:		Identifier of the RAS2 platform communication channel
+@@ -56,63 +57,67 @@ struct ras2_sspcc {
+ };
+ 
+ /*
+- * Arbitrary retries for PCC commands because the remote processor
+- * could be much slower to reply. Keeping it high enough to cover
+- * emulators where the processors run painfully slow.
++ * Arbitrary retries for PCC commands because the remote processor could be
++ * much slower to reply. Keep it high enough to cover emulators where the
++ * processors run painfully slow.
+  */
+ #define PCC_NUM_RETRIES 600ULL
++#define PCC_MIN_POLL_USECS 3
+ 
+ #define RAS2_MAX_NUM_PCC_DESCS 100
+ #define RAS2_FEAT_TYPE_MEMORY 0x00
+ 
+-static int decode_cap_error(u32 cap_status)
+-{
+-	switch (cap_status) {
+-	case ACPI_RAS2_NOT_VALID:
+-	case ACPI_RAS2_NOT_SUPPORTED:
+-		return -EPERM;
+-	case ACPI_RAS2_BUSY:
+-		return -EBUSY;
+-	case ACPI_RAS2_FAILED:
+-	case ACPI_RAS2_ABORTED:
+-	case ACPI_RAS2_INVALID_DATA:
+-		return -EINVAL;
+-	default:
+-		return 0;
+-	}
+-}
+-
+ static int check_pcc_chan(struct ras2_sspcc *sspcc)
+ {
+ 	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
++	u32 cap_status;
+ 	u16 status;
+ 	int rc;
+ 
+ 	/*
+-	 * As per ACPI spec, the PCC space will be initialized by
++	 * As per ACPI spec, the PCC space will be initialized by the
+ 	 * platform and should have set the command completion bit when
+ 	 * PCC can be used by OSPM.
+ 	 *
+-	 * Poll PCC status register every 3us for maximum of 600ULL * PCC
+-	 * channel latency until PCC command complete bit is set.
++	 * Poll PCC status register every PCC_MIN_POLL_USECS for maximum of
++	 * PCC_NUM_RETRIES * PCC channel latency until PCC command complete
++	 * bit is set.
+ 	 */
+ 	rc = readw_relaxed_poll_timeout(&gen_comm_base->status, status,
+-					status & PCC_STATUS_CMD_COMPLETE, 3, sspcc->deadline_us);
++					status & PCC_STATUS_CMD_COMPLETE,
++					PCC_MIN_POLL_USECS, sspcc->deadline_us);
+ 	if (rc) {
+-		pr_warn("PCC check channel timeout for last command: 0x%x pcc_id=%d rc=%d\n",
+-			 sspcc->last_cmd, sspcc->pcc_id, rc);
++		pr_warn("PCC ID: 0x%x: PCC check channel timeout for last command: 0x%x rc=%d\n",
++		        sspcc->pcc_id, sspcc->last_cmd, rc);
+ 		return rc;
+ 	}
+ 
+ 	if (status & PCC_STATUS_ERROR) {
+-		pr_warn("Error in executing last command: 0x%x for pcc_id=%d\n",
+-			sspcc->last_cmd, sspcc->pcc_id);
++		pr_warn("PCC ID: 0x%x: Error in executing last command: 0x%x\n",
++			sspcc->pcc_id, sspcc->last_cmd);
++
+ 		status &= ~PCC_STATUS_ERROR;
+ 		writew_relaxed(status, &gen_comm_base->status);
+ 		return -EIO;
+ 	}
+ 
+-	rc = decode_cap_error(readw_relaxed(&gen_comm_base->set_caps_status));
++	cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
++	switch (cap_status) {
++	case ACPI_RAS2_NOT_VALID:
++	case ACPI_RAS2_NOT_SUPPORTED:
++		rc = -EPERM;
++		break;
++	case ACPI_RAS2_BUSY:
++		rc = -EBUSY;
++		break;
++	case ACPI_RAS2_FAILED:
++	case ACPI_RAS2_ABORTED:
++	case ACPI_RAS2_INVALID_DATA:
++		rc = -EINVAL;
++		break;
++	default:
++		rc = 0;
++	}
+ 
+ 	writew_relaxed(0x0, &gen_comm_base->set_caps_status);
+ 
+@@ -128,15 +133,18 @@ static int check_pcc_chan(struct ras2_sspcc *sspcc)
+  */
+ int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+ {
+-	struct ras2_sspcc *sspcc = ras2_ctx->sspcc;
+-	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
++	struct acpi_ras2_shmem __iomem *gen_comm_base;
+ 	struct mbox_chan *pcc_channel;
++	struct ras2_sspcc *sspcc;
+ 	unsigned int time_delta;
+ 	int rc;
+ 
+ 	if (!ras2_ctx)
+ 		return -EINVAL;
+ 
++	sspcc = ras2_ctx->sspcc;
++	gen_comm_base = sspcc->comm_addr;
++
+ 	rc = check_pcc_chan(sspcc);
+ 	if (rc < 0)
+ 		return rc;
+@@ -144,9 +152,9 @@ int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+ 	pcc_channel = sspcc->pcc_chan->mchan;
+ 
+ 	/*
+-	 * Handle the Minimum Request Turnaround Time (MRTT).
+-	 * "The minimum amount of time that OSPM must wait after the completion
+-	 * of a command before issuing the next command, in microseconds."
++	 * Handle the Minimum Request Turnaround Time (MRTT): the minimum
++	 * amount of time that OSPM must wait after the completion of
++	 * a command before issuing the next command, in microseconds.
+ 	 */
+ 	if (sspcc->pcc_mrtt) {
+ 		time_delta = ktime_us_delta(ktime_get(), sspcc->last_cmd_cmpl_time);
+@@ -155,24 +163,26 @@ int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+ 	}
+ 
+ 	/*
+-	 * Handle the non-zero Maximum Periodic Access Rate (MPAR).
+-	 * "The maximum number of periodic requests that the subspace channel can
+-	 * support, reported in commands per minute. 0 indicates no limitation."
++	 * Handle the non-zero Maximum Periodic Access Rate (MPAR): the
++	 * maximum number of periodic requests that the subspace channel can
++	 * support, reported in commands per minute. 0 indicates no
++	 * limitation.
+ 	 *
+-	 * This parameter should be ideally zero or large enough so that it can
+-	 * handle maximum number of requests that all the cores in the system can
+-	 * collectively generate. If it is not, follow the spec and just not
+-	 * send the request to the platform after hitting the MPAR limit in
+-	 * any 60s window.
++	 * This parameter should be ideally zero or large enough so that it
++	 * can handle maximum number of requests that all the cores in the
++	 * system can collectively generate. If it is not, follow the spec and
++	 * just not send the request to the platform after hitting the MPAR
++	 * limit in any 60s window.
+ 	 */
+ 	if (sspcc->pcc_mpar) {
+ 		if (!sspcc->mpar_count) {
+ 			time_delta = ktime_ms_delta(ktime_get(), sspcc->last_mpar_reset);
+ 			if (time_delta < 60 * MSEC_PER_SEC) {
+ 				dev_dbg(ras2_ctx->dev,
+-					"PCC command: 0x%x not sent due to MPAR limit", cmd);
++					"PCC command 0x%x not sent due to MPAR limit", cmd);
+ 				return -EIO;
+ 			}
++
+ 			sspcc->last_mpar_reset = ktime_get();
+ 			sspcc->mpar_count = sspcc->pcc_mpar;
+ 		}
+@@ -187,22 +197,24 @@ int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+ 
+ 	/* Ring doorbell */
+ 	rc = mbox_send_message(pcc_channel, &cmd);
++
+ 	/*
+-	 * mbox_send_message() return non-negative integer for successful submission
+-	 * and negative value on failure.
++	 * mbox_send_message() returns a non-negative integer for successful submission
++	 * and a negative value on failure.
+ 	 */
+-	rc = rc < 0 ? rc : 0;
+ 	if (rc < 0) {
+ 		dev_warn(ras2_ctx->dev,
+ 			 "Error sending PCC mbox message command: 0x%x, rc:%d\n", cmd, rc);
+ 		return rc;
++	} else {
++		rc = 0;
+ 	}
+ 
+ 	sspcc->last_cmd = cmd;
+ 
+ 	/*
+ 	 * If Minimum Request Turnaround Time is non-zero, need to record the
+-	 * completion time of both READ and WRITE command for proper handling
++	 * completion time of both READ and WRITE commands for proper handling
+ 	 * of MRTT, so need to check for pcc_mrtt in addition to PCC_CMD_EXEC_RAS2.
+ 	 */
+ 	if (cmd == PCC_CMD_EXEC_RAS2 || sspcc->pcc_mrtt) {
+@@ -222,7 +234,7 @@ int ras2_send_pcc_cmd(struct ras2_mem_ctx *ras2_ctx, u16 cmd)
+ 
+ 	return rc;
+ }
+-EXPORT_SYMBOL_GPL(ras2_send_pcc_cmd);
++EXPORT_SYMBOL_FOR_MODULES(ras2_send_pcc_cmd, "acpi_ras2");
+ 
+ static int register_pcc_channel(struct ras2_mem_ctx *ras2_ctx, int pcc_id)
+ {
+@@ -283,18 +295,20 @@ static struct ras2_mem_ctx *add_aux_device(char *name, int channel, u32 pxm_inst
+ {
+ 	struct ras2_mem_ctx *ras2_ctx;
+ 	struct ras2_sspcc *sspcc;
++	u32 comp_nid;
+ 	int id, rc;
+ 
++	comp_nid = pxm_to_node(pxm_inst);
++	if (comp_nid == NUMA_NO_NODE) {
++		pr_debug("Invalid NUMA node, channel=%d pxm_inst=%d\n", channel, pxm_inst);
++		return ERR_PTR(-EINVAL);
++	}
++
+ 	ras2_ctx = kzalloc(sizeof(*ras2_ctx), GFP_KERNEL);
+ 	if (!ras2_ctx)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ras2_ctx->sys_comp_nid = pxm_to_node(pxm_inst);
+-	if (ras2_ctx->sys_comp_nid == NUMA_NO_NODE) {
+-		pr_debug("Invalid NUMA node, channel=%d pxm_inst=%d\n", channel, pxm_inst);
+-		rc = -EINVAL;
+-		goto ctx_free;
+-	}
++	ras2_ctx->sys_comp_nid = comp_nid;
+ 
+ 	rc = register_pcc_channel(ras2_ctx, channel);
+ 	if (rc < 0) {
+@@ -321,7 +335,7 @@ static struct ras2_mem_ctx *add_aux_device(char *name, int channel, u32 pxm_inst
+ 	rc = auxiliary_device_add(&ras2_ctx->adev);
+ 	if (rc) {
+ 		auxiliary_device_uninit(&ras2_ctx->adev);
+-		return ERR_PTR(rc);
++		goto ida_free;
+ 	}
+ 
+ 	return ras2_ctx;
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
