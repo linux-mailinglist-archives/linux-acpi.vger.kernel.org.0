@@ -1,181 +1,231 @@
-Return-Path: <linux-acpi+bounces-20607-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20608-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMVqO8zmdmlxYgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20607-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 05:00:12 +0100
+	id 4M2VAhQSd2kibwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20608-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 08:04:52 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEEE83CBE
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 05:00:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644E484AC4
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 08:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 32D553001595
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 04:00:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C268E30010E6
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 07:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09B43043B5;
-	Mon, 26 Jan 2026 04:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3196D28850E;
+	Mon, 26 Jan 2026 07:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JXkrTi5C"
+	dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b="THbeQmMl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from sg-1-33.ptr.blmpb.com (sg-1-33.ptr.blmpb.com [118.26.132.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B75B2F39C1
-	for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 04:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6C42882D6
+	for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 07:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769400006; cv=none; b=rnLfKM6eKH/Ib20VrN+Alev/XH743s59FaC7mryySjOQvB9csvlqNsoXRfyVHIdZZVnVmEMS81CRMnQ7CSuKGtqpw5FAwaKkUz3+aQVszy5gZYbVF+Rpn4teJaMus2qy2KiSJ95aRUozgBh1+iMm3J3LA9aI92VWa/bP4Y8AI88=
+	t=1769411089; cv=none; b=W/4PHBrdNcV7MtFfF5LVR2vBRrPl1CHxuPvcmoXzQYqLrWbGOwsu3YqWgVi9PTnwkCRkhEXvxtRgkDn7i+jU9dSsAbjwUL8K9GiANv4Pbc2qzemo2duNZ8+UOAccjK0Rxc5N5WimLnLCpvPYiwm81rmWXlx/4sp8pSY7lqx4JJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769400006; c=relaxed/simple;
-	bh=dWe/Ofg1Ju70PTF+2ND9l7SJJ9rV2eyZ7T92BJiX644=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyC1a9AoFZ/vjmrlQsyJejTYT+MQ5InsoHGvsRNM/lRjUE7Uvfbq4lFDMaj6PfMdA46K9qDkn9EQ8yXggzZhseMKVGVtfijBIN81p6JcUIL2sLe0Wf8owCETqeIvv1LiRygznn+n8LiIn8rSIEFDV+lJt1piXoGxkyt2yjEAujw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JXkrTi5C; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59b6f267721so3764292e87.2
-        for <linux-acpi@vger.kernel.org>; Sun, 25 Jan 2026 20:00:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769400002; x=1770004802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qOBDD584N2G3qYvT8oMwoUGO5hkpiwx3PvZwbmC4EP0=;
-        b=JXkrTi5CdI2s0Toa/N3GkeOYN0uErSAPQP0IANj5jcMOdEmUx7ppOq5yaDKn7NScMO
-         MHsJDiW4H277NroVipvdzaup0J77u5n0MlPEGu0zJ6mPP3avuONaucfvjLPNrmLCbqby
-         T6J+U9/nqCsr/iztMmKcYNFxUNWgeMxlbLDr9caqVDlUGCNjAAMRR/R1y7XRsn8ssiwY
-         gBIhLwm6yGURaqzUerYmXVVzx56l4gUGAnf8CqI9/8xHntReCiRaosZ8U8xPATzsG+VP
-         BNzQh3cDj21mnHzBw9ng0qRxSy0aKtZ0YnrUTajSn0kg/EOr4LG/fs7M70ELj6HK/AEO
-         j1vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769400002; x=1770004802;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qOBDD584N2G3qYvT8oMwoUGO5hkpiwx3PvZwbmC4EP0=;
-        b=RpG0J74tuWOQe5+hxkyomOowgvGLbyUjHssDlf+HFecdC9D/kD3bBVnIBPvrsdxiVr
-         wvI+4H1U0x0aQpZKfYckD4WWwQG5KbOsvMDe2UtSes221ZMBm61YG2Dt/NGCHOnxS0FG
-         sJaSIkKUsPs7lT4H/koDmvQXd97jezW57KohQ0aM3LtsvIINCfbDqh+k2kbZAhWTUwH6
-         Y7vdaNVhiIeXXei4tOvA3QKmYFXz6rUY4vB0xwU/C+aIhGrWMAMRF5NEbDaWMAdbCkZg
-         ZTRP8hDADCsRCvKzJFqBMEiCFu5Uw8kvo3+R+8WoI6TX+q/vFr1fZnlHzFjfbphlyHad
-         T/qA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoF1ii/UjPMUFsF6fmMxTbk1tfnHtjkjDMxh2+r9F0G2GH6DJooyDwH+RJjoMmikSlCbDZusWnAnxd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfYEHTsv45mRXXdG+F44tzMx/Z5iWLDo/w0sv2jARHB8GLsBRJ
-	fdwwclVA2idRb9HnUwdzXhXlCIs+6SXcuYmT0Pi4G044XU8+7UWX0Ea5
-X-Gm-Gg: AZuq6aJgg5eYYF9MFnqexN1YoljHBRGgzFwCeVMmiqql+6ilfPXM4z3Obk4kPA9AbaR
-	rLP9vUfgAP7aahSmFHVEwKaM40eBMXLUhjYg73m/g0Pj7uQ8XVcG5+Y3CEOj9Vnqrmjkqsw9nq2
-	E+OOzJRA7RLWbbgEkUgagxqPudHyL+zZ9QlFa0eGIQxw+pzIk/Lkv819d9/LlQBZr8n27gqPFLT
-	hgfBBWF5LYyGxnFBdqGIAXEFhXzond+AagOEd8xg1ZGKukWKrSqKJmVCtQPmfRIlwt21SbgFYeq
-	zWgGy2IejsXWlcCaX/db7i7+rwBaKDlYG2bgXCjqgxkbsGPShr7Y8nYXeIgrRUD2/lNIONfYrOq
-	lGiJTe+iup0TYW9TA6grP+oiEyS/112XTirIEZSD3KqdV/B75D6I1gBkJJH6ucC/X6+LUjoTK0l
-	4X1Czju2p2gGAO/UDZnUFzZfJ5+KbMDNeF
-X-Received: by 2002:a05:6512:304e:b0:59d:f669:c924 with SMTP id 2adb3069b0e04-59df669c967mr685191e87.27.1769400001890;
-        Sun, 25 Jan 2026 20:00:01 -0800 (PST)
-Received: from happy ([217.15.199.233])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59de48e5fc6sm2434040e87.34.2026.01.25.19.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 20:00:00 -0800 (PST)
-From: Denis Sergeev <denserg.edu@gmail.com>
-To: westeri@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linusw@kernel.org,
-	brgl@kernel.org
-Cc: linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Denis Sergeev <denserg.edu@gmail.com>
-Subject: [PATCH] gpiolib: acpi: use BIT_ULL() for u64 mask in address space handler
-Date: Mon, 26 Jan 2026 06:59:14 +0300
-Message-ID: <20260126035914.16586-1-denserg.edu@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1769411089; c=relaxed/simple;
+	bh=k+Pq56kaBhDIsqjnSPFEoByzYgErIeuMA6WPFjuz0OU=;
+	h=Content-Type:Subject:Date:To:Mime-Version:From:Message-Id:Cc; b=oT77CMHT/iR2BYbro1z9htRCl8F0LW/A8qanAOmqesAqjP5QgKaXe3j+O9/EfHSogJLEKpt15Tmw9kmYxIxd17Tci8QwFZrDr8kZ6jGJXtBQqWILqutVMwwe2CgyLEs5YpRmQ4eCmTE3w2anKXgPY4Z7Da8V0DE1f5aYOKTic9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com; spf=pass smtp.mailfrom=picoheart.com; dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b=THbeQmMl; arc=none smtp.client-ip=118.26.132.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=picoheart.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=picoheart-com.20200927.dkim.feishu.cn; t=1769411079;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=2yqg21lLKCVliEF5qtOlAEdet7rXGcpZ87WW4mE12/o=;
+ b=THbeQmMlKUpE4f6/9nMw1N8liRgkaihY/TPMDgYMisa1gtB6LaIper8ZLYUxmWGHHjrgzU
+ G0UFkKtfI5g2icP/j6/qSSPzJDFm2jnVs2zMugsatOM9MmpNnvGh/zXtqmPT2zkHpxiBgm
+ Vvfm+iWZFDyX5djzPxWPTq3nWSPuPyymNk+j+YSRPMjXligWFReuWzAhUifs3WZ4SSHaEl
+ MMnqrLHkEWZu534FezsrnwnC1/puohK0zjuw1+obbPU6i5Flfwq/uTCeI+cM5/R1yxg47o
+ sFNeYEz/2dRWY5o1w9NDEeirFg4AZhXy/jJ6cF1YC0Wiq7RWA536Y2zB6AJeeQ==
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+269771205+d05844+vger.kernel.org+yang.yicong@picoheart.com>
+Subject: [PATCH v2] ACPI: scan: Use async schedule function for acpi_scan_clear_dep_fn
+Date: Mon, 26 Jan 2026 15:04:27 +0800
+To: <rafael@kernel.org>, <lenb@kernel.org>, <tglx@kernel.org>, 
+	<gregkh@linuxfoundation.org>, <dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+From: "Yicong Yang" <yang.yicong@picoheart.com>
+Message-Id: <20260126070427.64574-1-yang.yicong@picoheart.com>
+Received: from G9WYR9K0VW ([58.250.122.114]) by smtp.feishu.cn with ESMTPS; Mon, 26 Jan 2026 15:04:35 +0800
+X-Original-From: Yicong Yang <yang.yicong@picoheart.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 7bit
+Cc: <akpm@linux-foundation.org>, <apatel@ventanamicro.com>, <pjw@kernel.org>, 
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
+	<geshijian@picoheart.com>, <weidong.wd@picoheart.com>, 
+	<yang.yicong@picoheart.com>, <linux-acpi@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[picoheart-com.20200927.dkim.feishu.cn:s=s1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20607-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxtesting.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[densergedu@gmail.com,linux-acpi@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[picoheart.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20608-lists,linux-acpi=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[yang.yicong@picoheart.com,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[picoheart-com.20200927.dkim.feishu.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url]
-X-Rspamd-Queue-Id: CDEEE83CBE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,picoheart.com:mid,picoheart.com:email,picoheart-com.20200927.dkim.feishu.cn:dkim]
+X-Rspamd-Queue-Id: 644E484AC4
 X-Rspamd-Action: no action
 
-The BIT() macro uses unsigned long, which is 32 bits on 32-bit
-architectures. When iterating over GPIO pins with index >= 32,
-the expression (*value & BIT(i)) causes undefined behavior due
-to shifting by a value >= type width.
+The device object rescan in acpi_scan_clear_dep_fn is scheduled
+in the system workqueue which is not guaranteed to be finished
+before entering userspace. This will cause the problem that
+some key devices are missing when userspace init task tries to
+find them. Two issues observed on our RISCV platforms:
 
-Since 'value' is a pointer to u64, use BIT_ULL() to ensure correct
-64-bit mask on all architectures.
+- kernel panic due to userspace init cannot have an opened
+  console. the console device scanning is queued by
+  acpi_scan_clear_dep_queue and not finished by the time
+  userspace init process running, thus by the time userspace
+  init running, no console is created
+- entering rescue shell due to no root devices (PCIe nvme in
+  our case) found. same reason as above, the PCIe host bridge
+  scanning is queued in above and finished after init process
+  running.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+The reason is because both devices (console, PCIe host bridge)
+depend on riscv-aplic irqchip to serve their interrupts (console's
+wired interrupt and PCI's INTx interrupts). In order to keep the
+dependency these devices are scanned and created after riscv-aplic
+initialized. The riscv-aplic is initialized in device_initcall and
+queue the device scan work with acpi_scan_clear_dep_queue, it's
+close to the time running userspace init process. Since system_dfl_wq
+is used in acpi_scan_clear_dep_queue and no synchronization,
+the issues will happen if userspace init runs before these devices
+are ready.
 
-Fixes: 2c4d00cb8fc5 ("gpiolib: acpi: Use BIT() macro to increase readability")
-Signed-off-by: Denis Sergeev <denserg.edu@gmail.com>
+The solution is to wait for the queued work finished before
+entering userspace init. One possible way is to use a dedicated
+workqueue instead of the system_dfl_wq, and explicitly flush
+it somewhere in the initcall stage before entering userspace.
+One other way is to use async_schedule_dev_nocall() for these
+device scanning. It's designed for asynchronous initialization
+and will work same as before since it's using a dedicated
+unbound workqueue as well, but the kernel init code will
+wait for the work finished (async_synchronize_full) right before
+entering userspace init.
 
+This patch use the second approach. Compared to a dedicated
+workqueue, it's simpler since the async schedule framework have
+handled most works like synchronization, memory allocation of
+works and workqueue. The ACPI code only needs to focus on its
+work. A dedicated workqueue for this could also be redundant
+since some platforms don't need acpi_scan_clear_dep_queue()
+for their device scanning.
+
+Signed-off-by: Yicong Yang <yang.yicong@picoheart.com>
 ---
-The ACPI specification does not define a strict upper bound for the
-number of GPIO pins in the Pin Table. The value is derived from
-16-bit offsets inside the resource descriptor, which theoretically
-allows far more than 64 pins.
+Change since v1:
+Refine the commit message to:
+- include the issues and the analysis
+- include the reason for using the async schedule rather than
+  a dedicated workqueue
+Link: https://lore.kernel.org/linux-riscv/20260122073446.45628-2-yang.yicong@picoheart.com/
 
-However, the current Linux GPIO ACPI OpRegion handler represents the
-pin state as a single u64 value, which inherently limits the number of
-addressable pins to 64. Thus, even though the specification permits
-larger tables, the existing implementation already assumes a <= 64 pin
-mask.
+ drivers/acpi/scan.c | 40 ++++++++++++++++------------------------
+ 1 file changed, 16 insertions(+), 24 deletions(-)
 
-This patch fixes undefined behavior in the valid range [32, 63] on
-32-bit architectures. Extending support beyond 64 pins would require
-a different representation (e.g. bitmap) and is outside the scope of
-this fix.
-
- drivers/gpio/gpiolib-acpi-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 83dd227dbbec..d42f769eeb11 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1159,7 +1159,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
- 		mutex_unlock(&achip->conn_lock);
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 416d87f9bd10..64fcbd6a6adc 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -5,6 +5,7 @@
  
- 		if (function == ACPI_WRITE)
--			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT(i)));
-+			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT_ULL(i)));
- 		else
- 			*value |= (u64)gpiod_get_raw_value_cansleep(desc) << i;
- 	}
+ #define pr_fmt(fmt) "ACPI: " fmt
+ 
++#include <linux/async.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -2360,44 +2361,35 @@ static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *da
+ 	return 0;
+ }
+ 
+-struct acpi_scan_clear_dep_work {
+-	struct work_struct work;
+-	struct acpi_device *adev;
+-};
+-
+-static void acpi_scan_clear_dep_fn(struct work_struct *work)
++static void acpi_scan_clear_dep_fn(void *dev, async_cookie_t cookie)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+-	cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
++	struct acpi_device *adev = to_acpi_device(dev);
+ 
+ 	acpi_scan_lock_acquire();
+-	acpi_bus_attach(cdw->adev, (void *)true);
++	acpi_bus_attach(adev, (void *)true);
+ 	acpi_scan_lock_release();
+ 
+-	acpi_dev_put(cdw->adev);
+-	kfree(cdw);
++	acpi_dev_put(adev);
+ }
+ 
+ static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+ 	if (adev->dep_unmet)
+ 		return false;
+ 
+-	cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
+-	if (!cdw)
+-		return false;
+-
+-	cdw->adev = adev;
+-	INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
+ 	/*
+-	 * Since the work function may block on the lock until the entire
+-	 * initial enumeration of devices is complete, put it into the unbound
+-	 * workqueue.
++	 * Async schedule the deferred acpi_scan_clear_dep_fn() since:
++	 * - acpi_bus_attach() needs to hold acpi_scan_lock which cannot
++	 *   be acquired under acpi_dep_list_lock (held here)
++	 * - the deferred work at boot stage is ensured to be finished
++	 *   before userspace init task by the async_synchronize_full()
++	 *   barrier
++	 *
++	 * Use _nocall variant since it'll return on failure instead of
++	 * run the function synchronously.
+ 	 */
+-	queue_work(system_dfl_wq, &cdw->work);
++	if (!async_schedule_dev_nocall(acpi_scan_clear_dep_fn, &adev->dev))
++		return false;
+ 
+ 	return true;
+ }
 -- 
-2.50.1
-
+2.34.1
 
