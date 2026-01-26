@@ -1,149 +1,169 @@
-Return-Path: <linux-acpi+bounces-20621-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20622-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJkGI69rd2nCfQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20621-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 14:27:11 +0100
+	id QK+BJX9wd2m8gAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20622-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 14:47:43 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3390F88D01
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 14:27:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAD489115
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 14:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2393014C19
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 13:25:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF96F3053B38
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jan 2026 13:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95133385B3;
-	Mon, 26 Jan 2026 13:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4373633AD90;
+	Mon, 26 Jan 2026 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RMivWN4u"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L49Nx+e5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFF3385A1
-	for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 13:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F200433AD8E;
+	Mon, 26 Jan 2026 13:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433942; cv=none; b=cej8vTpXZj7SF6Zk+iqtVK0T4JyAqPba9Ok6ai4wvQ4LJGKcmWLOk4qlHolChvoqjf6HYpTmppp9ZYBpYEn85oUFdYx6Njc7MLD5od/LJ63A9cXAwykR8SZvfa2Cs6Tgfk47NKOy+4h0vp0FE6cFCOhWehUIoA0uX5V09cYue1s=
+	t=1769434963; cv=none; b=qYr3IceIDE6TEBsVo7O5uSKcOOtG/6BoJ+OTb/SpkyaYgBEcBEPh6aKZprpAc9bYJQqNipL0DKzQql1eFv6wgz5bmEhJCLiIlkGMwqvYmC3sazKa7osOenTMU+tN5xZuE7fDTiRnWH9yvxmFYd7BfpMUS+K3ilTfVKLBCNSYBk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433942; c=relaxed/simple;
-	bh=DdCD88aF50DYmnQ9IOnsuZ7DFtissFn0ullB3REUWGo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JgC5aShsqNhMBshFr2r8WzIW4yU56kHIOCqyVr91OwsC2YbVnla7QiM9mPZcWoZph3qJI079v6opUS7Zi/HUVH4c1UDtb91tgoNS9DXL2ys5/RMQs2ldVqSBVUmxTeUbBUBhpG3vTO74JROYVaUF7GELpnTkxYEW/m4/m34gydk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RMivWN4u; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d5c7a2f54so54982515e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Jan 2026 05:25:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769433939; x=1770038739; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjqOOfPtPNNn9huhvOjZdrj5YH3GjxWGXVwA30fCwBk=;
-        b=RMivWN4uN4XKja5WJ/AFgl6L1Z7Y9gSR7DjGBMGpNPGKIYXGvx9la1/Za7uWj4zFFl
-         CSo2L1upGvhqzHKz2iXBLS0EdVj+NA/JBwKMoa3aUzwZgffyfIMrg8BWsN9394GGe54J
-         SP17myoKzfio8jfUVuR7V/g/4mg3zBIKVKbzE8EeK75GsC6ip5i8fV2id4duGTPpvBuD
-         5wS9kBHYwHJ6lfgU7ajOGJvAUhD4znS6t2nAHc5WUwc9dP96G2Qkc8IfwAlPw/z6uwO1
-         DZjyBuJl4iLd1yeuT7SuPp2eyB4geskC7qEbzseCFQjmQbwXxjmUdJb7F5qD8Rf7yrMd
-         TNCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769433939; x=1770038739;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjqOOfPtPNNn9huhvOjZdrj5YH3GjxWGXVwA30fCwBk=;
-        b=MuzyeZQFhnGej22XJ/HMokVgtfM5oEoFvF3vvqkFrcMZAuS7ai3lDwNJip/UHfqdxr
-         6wVbavyW8ap6hK4qM5gFEXZlyYgOrfCsvMOcjVrxzvbr+E64HlTrAJHLP2joqqEP0IfJ
-         cq5SH21nFNG2MjVQvFXbiXw6GnKfL6uQv7avwfZ2SibFfwTfR4sN/VhZXTLwXi3E8zgz
-         7b/cT3k4P7vEaCOOptC+877csfGWlbPsG5tz6XcmqqAzbmjqEPVffNclZSTV0/ZKEVYP
-         oK0yEa65VmbXgqRWPwGIMnWaBswG+MV1L+vrw9i23kMulCERToetEpukPjHAq4zop9nc
-         jizQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0bW4AuwuV/pxuOHvUVcPiFxIBA9U7jl91QgDwcyWTp6xqT3uZl2R+w8840IYChtugmzSX5Bkx/YSt@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmGjHpOsVO5T/0uy/jUGzHOuSmoTVlKkRsXUNgb9vBb10Ora47
-	8iLk8NBlF7nF/kxuOOIplo4CETSaSUyy8y4O64KIyx+7rp2rEW8i/sKXxqsqD2h282aCLNK6OGn
-	rHyqLxve5s35wsG/jlA==
-X-Received: from wmej18.prod.google.com ([2002:a05:600c:42d2:b0:477:a43b:b532])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3e0d:b0:475:d9de:952e with SMTP id 5b1f17b1804b1-4805ce52302mr70480645e9.1.1769433939572;
- Mon, 26 Jan 2026 05:25:39 -0800 (PST)
-Date: Mon, 26 Jan 2026 13:25:38 +0000
-In-Reply-To: <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net>
+	s=arc-20240116; t=1769434963; c=relaxed/simple;
+	bh=GDAHXhSRQj0EBC5oOb2IAJ30dteZ5PgXCZacdEcLSNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMeaDT9h9W4Reg+BfmqwOv2lKdQ5HPRnSdjMxYHXNAXchrQ/5XE1wSPW4lXvzWhQ91QXgi7UJjh+ZnAPbNSheQKnsnLHTyoZC4yA6LihENC2+ywr/S29/heaB0SWQwK1r8f8kctHGFKz0/RW+ljEdq7qu+wb0zfk0mIrfvPTF6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L49Nx+e5; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769434956; x=1800970956;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GDAHXhSRQj0EBC5oOb2IAJ30dteZ5PgXCZacdEcLSNI=;
+  b=L49Nx+e5NyfS/0jEwGPrPkixyZADK7X23pA8GT+YEXCRfxqSLYcmS7Mo
+   FCXbv8njlBdC7PKt3ayN4DxrY7+lc7dk9ul65rleCfyOR1iwH6JrzDpYq
+   oq8kGYsTujgRE3yxRFjEuqxnZ8K9CgXTppnRfM9UxC3FJlBEz+phEX97o
+   EP10L5twKoNQhrpwjwp+C5T4jzzpp6wOmONbUeBnqMzimE6+4XxqiJz9m
+   zC1MqzKqyQha1ATqXYlrjlKcAOxyFY/qWRC3kJpnI4Efl+HS/rIyCoIGD
+   NwdwXSKF3TqDW5xVxphzhi526TRtKWo/BaF/4UZAA6+epVISQ7j7SC0Lj
+   w==;
+X-CSE-ConnectionGUID: +yg/QC5hRmOArciZssG81w==
+X-CSE-MsgGUID: GGtV/8gOTge7BDKb/Kp0NQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="70514002"
+X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
+   d="scan'208";a="70514002"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 05:42:36 -0800
+X-CSE-ConnectionGUID: Rg9mcOUNRK64OyVUSRQ39g==
+X-CSE-MsgGUID: SW7xGHSxRembUdfNx8ZO8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
+   d="scan'208";a="207566550"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa006.fm.intel.com with ESMTP; 26 Jan 2026 05:42:33 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 70F4E95; Mon, 26 Jan 2026 14:42:32 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Subject: [PATCH v1 1/1] gpiolib: acpi: Fix potential out-of-boundary left shift
+Date: Mon, 26 Jan 2026 14:42:26 +0100
+Message-ID: <20260126134226.3617924-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com> <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net>
-Message-ID: <aXdrUsrKVmzpBVd8@google.com>
-Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Len Brown <lenb@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20621-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20622-lists,linux-acpi=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,protonmail.com,umich.edu,linaro.org,collabora.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3390F88D01
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: EBAD489115
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 01:15:53PM +0000, Gary Guo wrote:
-> On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
-> > Currently, the Zeroable trait is defined by pin-init because pin-init
-> > happens to use the trait. However, zeroed types are useful for many
-> > purposes other than pin-init. Also, we wish to implement Zeroable for
-> > types generated by bindgen. For both of these reasons, re-export
-> > Zeroable from the ffi crate, which is a already dependency of the crates
-> > with bindgen output.
-> 
-> I don't see a benefit of re-exporting these from the `ffi` crate? Especially
-> that we re-export `ffi` crate from kernel crate anyway, and `Zeroable` is
-> already in the kernel prelude.
-> 
-> We already derive `Zeroable` for bindgen via `MaybeZeroable` derive in
-> rust/bindgen_parameters.
+GPIO Address Space handler gets a pointer to the in or out value.
+This value is supposed to be at least 64-bit, but it's not limited
+to be exactly 64-bit. When ACPI tables are being parsed, for
+the bigger Connection():s ACPICA creates a Buffer instead of regular
+Integer object. The Buffer exists as long as Namespace holds
+the certain Connection(). Hence we can access the necessary bits
+without worrying. On the other hand, the left shift used in the
+code is limited by 31 (on 32-bit platforms) and otherwise considered
+to be Undefined Behaviour. Also the code uses only the first 64-bit
+address for the value, and anything bigger than	63 will be also
+subject to UB. Fix all this by modifying the code to correctly set or
+clear the respective bit in the bitmap constructed of 64-bit values.
 
-I can't find the convo now, but this change is on my list from when we
-discussed also implementing FromBytes / IntoBytes for the bindings
-types. To do that, we need to move our FromBytes / IntoBytes traits
-somewhere that bindings/uapi can access, and we agreed that the ffi
-crate was a good place for it.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/gpio/gpiolib-acpi-core.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-And then for consistency, also reexport Zeroable from the same location.
+diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+index 83dd227dbbec..da0ab749b4dc 100644
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -1104,6 +1104,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
+ 		unsigned int pin = agpio->pin_table[i];
+ 		struct acpi_gpio_connection *conn;
+ 		struct gpio_desc *desc;
++		u16 vala, valo;
+ 		bool found;
+ 
+ 		mutex_lock(&achip->conn_lock);
+@@ -1158,10 +1159,17 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
+ 
+ 		mutex_unlock(&achip->conn_lock);
+ 
+-		if (function == ACPI_WRITE)
+-			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT(i)));
+-		else
+-			*value |= (u64)gpiod_get_raw_value_cansleep(desc) << i;
++		vala = i / 64;
++		valo = i % 64;
++
++		if (function == ACPI_WRITE) {
++			gpiod_set_raw_value_cansleep(desc, value[vala] & BIT_ULL(valo));
++		} else {
++			if (gpiod_get_raw_value_cansleep(desc))
++				value[vala] |= BIT_ULL(valo);
++			else
++				value[vala] &= ~BIT_ULL(valo);
++		}
+ 	}
+ 
+ out:
+-- 
+2.50.1
 
-Alice
 
