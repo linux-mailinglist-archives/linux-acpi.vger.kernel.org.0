@@ -1,75 +1,73 @@
-Return-Path: <linux-acpi+bounces-20691-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20692-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNlHAYEneWkIvwEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20691-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 22:00:49 +0100
+	id INuQLX8peWkIvwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20692-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 22:09:19 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536889A859
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 22:00:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235059A9CE
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 22:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAC70303D337
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:00:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFED9306A33F
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9FD29B79B;
-	Tue, 27 Jan 2026 21:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A70298CC0;
+	Tue, 27 Jan 2026 21:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugb9wMc2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aT0osf5b"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362D1299A82
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 21:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF252957C2
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 21:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769547614; cv=none; b=ckvV5ItSVEW/C+u4FGtrmqVloiHB+CZH2cFHc7ULIrH/2qonNiJElm/nPA1xxM/g2yLkB+rRx4g8KY+Zb/BNr03QOnR7EmE2cyITjw7slj7c93wpW1qUL3kvWMNdAaX9iC54rOLLg8Dt2EczwjaY4JfTCGkH8qF6NLii2cnh1jM=
+	t=1769547962; cv=none; b=BoC+yIeDUH+vl2tzpCoZ3XshtbViM5s9Ib62eD3BjalBsspNthFFRztFADEvf1DBTLmsYMHvN/YPPZJiaAT6S/PidrStK605zHGFoH5kvg54IilPpqjPTK9MqXv4S1qHkbPtwApet7MoiIyjyel2vt0HCmpWZ14zrpjHqo1fmao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769547614; c=relaxed/simple;
-	bh=OCOXUhmshX8lQ4RJexWvTZS+GGZvNYZYtOFoHXZ4TYE=;
+	s=arc-20240116; t=1769547962; c=relaxed/simple;
+	bh=LZI99ZHcYEZqx7Bb9njG3BMt836bY314YrWdKlDmM2M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m+SwCf4Kz8Q8HZISZqyv5GQT4SYTEoVJbbS7ESgK2PGMrmSPzdIQKBVsrXAYQzpL0oPB/PP55m+ph4wZ8NpvG1mFkVeo0g09BQaxLbacDZvaqnFY8CYoPQ0E5NloYDYhAD2r/CKGen4CVvqCRvy345MqPOS1yaWVo76wrtpSm9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugb9wMc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CD9C19422
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 21:00:13 +0000 (UTC)
+	 To:Cc:Content-Type; b=daA3cGeZ6fBZxHvuEilFLBK5hsLoEc/+ksgl0VkP0p8kevOx9n2sSCUaD0zC/8YTw+MGvPBmp1tuTsymPqncZr/6ZqXzdbc6hgvTRJZ6143rQ5qL8h1nbGn5FESjfpitH3nm6Uosui4sRlom5jpVkZiUQn5vmPNHl0YuOzDM9jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aT0osf5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA87C116C6
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 21:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769547613;
-	bh=OCOXUhmshX8lQ4RJexWvTZS+GGZvNYZYtOFoHXZ4TYE=;
+	s=k20201202; t=1769547961;
+	bh=LZI99ZHcYEZqx7Bb9njG3BMt836bY314YrWdKlDmM2M=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ugb9wMc2nBA6a47Gyd0ilGXSUlY6tZJ4AdNyMft+MqSo9tzSoPJ0FxkHYzaZdOg6s
-	 HoURK8SBCJLQOgPpf6FjnS25w4fHwMBgdbThxZvsKZZfCmH6P+7+7wvuKlvpkvdgHc
-	 qDwmgTYkAr/RfJ2cR9M9X8i3H6PiP1v4pUNrCj8D69ZZTkDigTw8lAJHkp+FQWB9Cs
-	 R8N93UNXzgyGGPSatFLkn51yjhGrlJFxrQh9Y4SwCkaFGCHQI+zxProNeDfI3StOTp
-	 KVkkiGAbrNWDvQiTPuvJQmAHDmDPjitcfX2WSeNOlyZ1LCTkxGYLfA0bix06aWHZp3
-	 6DLSL1BXcQLug==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-662f87f4dddso129548eaf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 13:00:13 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVe0RhUAnQGQp0H6k8gHfJ2WklwcxRXC8yQBdnX5qW9fz9Utif7CzdLdOdTfFv1rjVn3Ifm3hQJUU/P@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp+NK6AwEr/i3BDxkg+Nq+0vkmN90LE0VLS2CjWLWJc2g5pOjB
-	CyhCyLnMRuG9we6E9Qu2hHg9G+DtC20H3NwiyAyCoPNlMGFVyFMl6FfDexUWB3Jb762QyAh1A+F
-	aPehrqGyrHfVEgTTm6pK121cJigjJyQ4=
-X-Received: by 2002:a05:6820:4df2:b0:662:ecc7:719d with SMTP id
- 006d021491bc7-662f20aabbbmr1766269eaf.48.1769547612721; Tue, 27 Jan 2026
- 13:00:12 -0800 (PST)
+	b=aT0osf5ba4PCf6rILAFrDCqufZfrVcjIQGbBhlxe/JcWfCzp8y4dz0s3bkPYE8beN
+	 ZWpms0RLWDHquRZRtWb2cMOVbJ675AUv12CbOZh9NJLKNYVVlkQW4nhFWqi06MYd+p
+	 hvh6BD2dDnYT1qBic8jKTY6lKuLgwETOPqI5PJXtFDSvxB36IuEyKUKAPHbMq3LjFH
+	 kwRXRCI5Y4RZuKv1lPzgQsHSbu3g13bZaDquKThr5Sk28qeOlnerJhRey8supSRCwu
+	 S4/iQzBr+z1cukYK05SQJ3NqfnrlnFVGYdKcjEMLnJtnJuPQTx8sZkBCtz8/5RH/Mj
+	 wewq9hoWnxZBA==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-662cb4bef90so1715144eaf.0
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 13:06:01 -0800 (PST)
+X-Gm-Message-State: AOJu0YwWJEhww+DuQ5K981hN7HKYC63yxAgtqtC0iv/N05c5Jzahrcq+
+	yuPL9LI+Y+K620yk7bgLxBpfkc78RbLrUnjWBaeGEl/dvQmkNEbvZGZPqLjXw/RVt2OV/Y8ev2w
+	D0+D1u2mMnotJoqedDwiZWwW02qcjp70=
+X-Received: by 2002:a05:6820:c95:b0:659:9a49:8f4c with SMTP id
+ 006d021491bc7-662f2036262mr1570270eaf.17.1769547960929; Tue, 27 Jan 2026
+ 13:06:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126093949.8910-1-sumeet4linux@gmail.com>
-In-Reply-To: <20260126093949.8910-1-sumeet4linux@gmail.com>
+References: <20260127063216.240911-1-W_Armin@gmx.de>
+In-Reply-To: <20260127063216.240911-1-W_Armin@gmx.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 Jan 2026 22:00:01 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hpkxkG6SPwzUmpJSmDAjkBxEaT=y6CH7hRfxjdmyj4UQ@mail.gmail.com>
-X-Gm-Features: AZwV_QiA_d9VmaYttY5mVgCTFnCKj2VgYloXXij9SCJj7klGJX4S8cFj3iVKdso
-Message-ID: <CAJZ5v0hpkxkG6SPwzUmpJSmDAjkBxEaT=y6CH7hRfxjdmyj4UQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Replace sprintf with sysfs_emit
-To: Sumeet Pawnikar <sumeet4linux@gmail.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 27 Jan 2026 22:05:49 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hWpp2M-uDGEpM-gzRSbtGGoBfJk6PVbT71iLsovTdxTg@mail.gmail.com>
+X-Gm-Features: AZwV_QhrGywz7cJYJ8ioyPkNrpf8jKlwF7xsD1gDRYn0OOot6kFXdpJNrk8_YpI
+Message-ID: <CAJZ5v0hWpp2M-uDGEpM-gzRSbtGGoBfJk6PVbT71iLsovTdxTg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: OSL: Panic when encountering a fatal ACPI error
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
@@ -77,235 +75,180 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20691-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20692-lists,linux-acpi=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmx.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 536889A859
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: 235059A9CE
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 10:40=E2=80=AFAM Sumeet Pawnikar <sumeet4linux@gmai=
-l.com> wrote:
+On Tue, Jan 27, 2026 at 7:32=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> Replace all sprintf() calls with sysfs_emit() in sysfs show functions.
-> sysfs_emit() is preferred over sprintf() for formatting sysfs output
-> as it provides better bounds checking and prevents potential buffer
-> overflows.
+> The ACPI spec states that the operating system should respond
+> to a fatal ACPI error by "performing a controlled OS shutdown in
+> a timely fashion". Windows complies with this requirement by entering
+> a BSOD upon executing the "Fatal()" ASL opcode, a implementation
+> detail that is used by some firmware implementations for signaling
+> fatal hardware errors.
 >
-> Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-> ---
->  drivers/acpi/device_sysfs.c | 20 ++++++++++----------
->  drivers/acpi/sysfs.c        | 30 +++++++++++++++---------------
->  2 files changed, 25 insertions(+), 25 deletions(-)
->
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index cd199fbe4dc9..a52dc35ff9ba 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -27,7 +27,7 @@ static ssize_t acpi_object_path(acpi_handle handle, cha=
-r *buf)
->         if (result)
->                 return result;
->
-> -       result =3D sprintf(buf, "%s\n", (char *)path.pointer);
-> +       result =3D sysfs_emit(buf, "%s\n", (char *)path.pointer);
->         kfree(path.pointer);
->         return result;
->  }
-> @@ -347,7 +347,7 @@ static ssize_t real_power_state_show(struct device *d=
-ev,
->         if (ret)
->                 return ret;
->
-> -       return sprintf(buf, "%s\n", acpi_power_state_string(state));
-> +       return sysfs_emit(buf, "%s\n", acpi_power_state_string(state));
->  }
->
->  static DEVICE_ATTR_RO(real_power_state);
-> @@ -357,7 +357,7 @@ static ssize_t power_state_show(struct device *dev,
->  {
->         struct acpi_device *adev =3D to_acpi_device(dev);
->
-> -       return sprintf(buf, "%s\n", acpi_power_state_string(adev->power.s=
-tate));
-> +       return sysfs_emit(buf, "%s\n", acpi_power_state_string(adev->powe=
-r.state));
->  }
->
->  static DEVICE_ATTR_RO(power_state);
-> @@ -399,7 +399,7 @@ hid_show(struct device *dev, struct device_attribute =
-*attr, char *buf)
->  {
->         struct acpi_device *acpi_dev =3D to_acpi_device(dev);
->
-> -       return sprintf(buf, "%s\n", acpi_device_hid(acpi_dev));
-> +       return sysfs_emit(buf, "%s\n", acpi_device_hid(acpi_dev));
->  }
->  static DEVICE_ATTR_RO(hid);
->
-> @@ -408,7 +408,7 @@ static ssize_t uid_show(struct device *dev,
->  {
->         struct acpi_device *acpi_dev =3D to_acpi_device(dev);
->
-> -       return sprintf(buf, "%s\n", acpi_device_uid(acpi_dev));
-> +       return sysfs_emit(buf, "%s\n", acpi_device_uid(acpi_dev));
->  }
->  static DEVICE_ATTR_RO(uid);
->
-> @@ -418,9 +418,9 @@ static ssize_t adr_show(struct device *dev,
->         struct acpi_device *acpi_dev =3D to_acpi_device(dev);
->
->         if (acpi_dev->pnp.bus_address > U32_MAX)
-> -               return sprintf(buf, "0x%016llx\n", acpi_dev->pnp.bus_addr=
-ess);
-> +               return sysfs_emit(buf, "0x%016llx\n", acpi_dev->pnp.bus_a=
-ddress);
->         else
-> -               return sprintf(buf, "0x%08llx\n", acpi_dev->pnp.bus_addre=
-ss);
-> +               return sysfs_emit(buf, "0x%08llx\n", acpi_dev->pnp.bus_ad=
-dress);
->  }
->  static DEVICE_ATTR_RO(adr);
->
-> @@ -482,7 +482,7 @@ sun_show(struct device *dev, struct device_attribute =
-*attr,
->         if (ACPI_FAILURE(status))
->                 return -EIO;
->
-> -       return sprintf(buf, "%llu\n", sun);
-> +       return sysfs_emit(buf, "%llu\n", sun);
->  }
->  static DEVICE_ATTR_RO(sun);
->
-> @@ -498,7 +498,7 @@ hrv_show(struct device *dev, struct device_attribute =
-*attr,
->         if (ACPI_FAILURE(status))
->                 return -EIO;
->
-> -       return sprintf(buf, "%llu\n", hrv);
-> +       return sysfs_emit(buf, "%llu\n", hrv);
->  }
->  static DEVICE_ATTR_RO(hrv);
->
-> @@ -513,7 +513,7 @@ static ssize_t status_show(struct device *dev, struct=
- device_attribute *attr,
->         if (ACPI_FAILURE(status))
->                 return -EIO;
->
-> -       return sprintf(buf, "%llu\n", sta);
-> +       return sysfs_emit(buf, "%llu\n", sta);
->  }
->  static DEVICE_ATTR_RO(status);
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index e596224302f4..1bd2f555e673 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -687,7 +687,7 @@ static ssize_t counter_show(struct kobject *kobj,
->             acpi_irq_not_handled;
->         all_counters[num_gpes + ACPI_NUM_FIXED_EVENTS + COUNT_GPE].count =
-=3D
->             acpi_gpe_count;
-> -       size =3D sprintf(buf, "%8u", all_counters[index].count);
-> +       size =3D sysfs_emit(buf, "%8u", all_counters[index].count);
->
->         /* "gpe_all" or "sci" */
->         if (index >=3D num_gpes + ACPI_NUM_FIXED_EVENTS)
-> @@ -698,29 +698,29 @@ static ssize_t counter_show(struct kobject *kobj,
->                 goto end;
->
->         if (status & ACPI_EVENT_FLAG_ENABLE_SET)
-> -               size +=3D sprintf(buf + size, "  EN");
-> +               size +=3D sysfs_emit_at(buf, size, "  EN");
->         else
-> -               size +=3D sprintf(buf + size, "    ");
-> +               size +=3D sysfs_emit_at(buf, size, "    ");
->         if (status & ACPI_EVENT_FLAG_STATUS_SET)
-> -               size +=3D sprintf(buf + size, " STS");
-> +               size +=3D sysfs_emit_at(buf, size, " STS");
->         else
-> -               size +=3D sprintf(buf + size, "    ");
-> +               size +=3D sysfs_emit_at(buf, size, "    ");
->
->         if (!(status & ACPI_EVENT_FLAG_HAS_HANDLER))
-> -               size +=3D sprintf(buf + size, " invalid     ");
-> +               size +=3D sysfs_emit_at(buf, size, " invalid     ");
->         else if (status & ACPI_EVENT_FLAG_ENABLED)
-> -               size +=3D sprintf(buf + size, " enabled     ");
-> +               size +=3D sysfs_emit_at(buf, size, " enabled     ");
->         else if (status & ACPI_EVENT_FLAG_WAKE_ENABLED)
-> -               size +=3D sprintf(buf + size, " wake_enabled");
-> +               size +=3D sysfs_emit_at(buf, size, " wake_enabled");
->         else
-> -               size +=3D sprintf(buf + size, " disabled    ");
-> +               size +=3D sysfs_emit_at(buf, size, " disabled    ");
->         if (status & ACPI_EVENT_FLAG_MASKED)
-> -               size +=3D sprintf(buf + size, " masked  ");
-> +               size +=3D sysfs_emit_at(buf, size, " masked  ");
->         else
-> -               size +=3D sprintf(buf + size, " unmasked");
-> +               size +=3D sysfs_emit_at(buf, size, " unmasked");
->
->  end:
-> -       size +=3D sprintf(buf + size, "\n");
-> +       size +=3D sysfs_emit_at(buf, size, "\n");
->         return result ? result : size;
->  }
->
-> @@ -937,7 +937,7 @@ static void __exit interrupt_stats_exit(void)
->
->  static ssize_t pm_profile_show(struct kobject *kobj, struct kobj_attribu=
-te *attr, char *buf)
->  {
-> -       return sprintf(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
-> +       return sysfs_emit(buf, "%d\n", acpi_gbl_FADT.preferred_profile);
->  }
->
->  static const struct kobj_attribute pm_profile_attr =3D __ATTR_RO(pm_prof=
-ile);
-> @@ -946,7 +946,7 @@ static ssize_t enabled_show(struct kobject *kobj, str=
-uct kobj_attribute *attr, c
->  {
->         struct acpi_hotplug_profile *hotplug =3D to_acpi_hotplug_profile(=
-kobj);
->
-> -       return sprintf(buf, "%d\n", hotplug->enabled);
-> +       return sysfs_emit(buf, "%d\n", hotplug->enabled);
->  }
->
->  static ssize_t enabled_store(struct kobject *kobj, struct kobj_attribute=
- *attr,
-> @@ -1000,7 +1000,7 @@ void acpi_sysfs_add_hotplug_profile(struct acpi_hot=
-plug_profile *hotplug,
->  static ssize_t force_remove_show(struct kobject *kobj,
->                                  struct kobj_attribute *attr, char *buf)
->  {
-> -       return sprintf(buf, "%d\n", 0);
-> +       return sysfs_emit(buf, "%d\n", 0);
->  }
->
->  static ssize_t force_remove_store(struct kobject *kobj,
-> --
+> Comply with the ACPI specification by triggering a kernel panic
+> when ACPICA signals a fatal ACPI error.
 
-Applied as 6.20 material, thanks!
+I'm not sure if a kernel panic really counts as "a controlled OS shutdown".
+
+Shouldn't this be treated in a similar way to crossing a critical
+thermal trip point?
+
+Also, is there a reason beyond "follow Windows" to do this?
+
+> Users can still disable
+> this behavior by using the acpi.panic_on_fatal kernel option to
+> work around firmware bugs.
+
+This is not enough.  You are talking about throwing away user data if
+the firmware asks the kernel to do so.
+
+> Link: https://uefi.org/specs/ACPI/6.6/19_ASL_Reference.html#fatal-fatal-e=
+rror-check
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+> Changes since v1:
+> - use IS_ENABLED() for checking the presence of CONFIG_ACPI_PANIC_ON_FATA=
+L
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  9 +++++++++
+>  drivers/acpi/Kconfig                          | 11 +++++++++++
+>  drivers/acpi/osl.c                            | 19 ++++++++++++++++++-
+>  3 files changed, 38 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
+ion/admin-guide/kernel-parameters.txt
+> index 1058f2a6d6a8..140bb239857f 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -187,6 +187,15 @@ Kernel parameters
+>                         unusable.  The "log_buf_len" parameter may be use=
+ful
+>                         if you need to capture more output.
+>
+> +       acpi.panic_on_fatal=3D    [ACPI]
+> +                       {0 | 1}
+> +                       Causes the kernel to panic when the ACPI bytecode=
+ signals
+> +                       a fatal error. The default value of this setting =
+can
+> +                       be configured using CONFIG_ACPI_PANIC_ON_FATAL.
+> +                       Overriding this value should only be done for dia=
+gnosing
+> +                       ACPI firmware problems, as some firmware implemen=
+tations
+> +                       use this mechanism to signal fatal hardware error=
+s.
+> +
+>         acpi_enforce_resources=3D [ACPI]
+>                         { strict | lax | no }
+>                         Check for resource conflicts between native drive=
+rs
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index df0ff0764d0d..7139e7d8ac25 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -65,6 +65,17 @@ config ACPI_THERMAL_LIB
+>         depends on THERMAL
+>         bool
+>
+> +config ACPI_PANIC_ON_FATAL
+> +       bool "Panic on fatal ACPI error"
+> +       default y
+> +       help
+> +         The ACPI bytecode can signal that a fatal error has occurred us=
+ing the Fatal()
+> +         ASL operator, normaly causing a kernel panic. Disabling this op=
+tion causes such
+> +         a condition to be treated like a ordinary ACPI error.
+> +
+> +         This setting can also be overridden during boot using the acpi.=
+panic_on_fatal
+> +         kernel parameter.
+> +
+>  config ACPI_DEBUGGER
+>         bool "AML debugger interface"
+>         select ACPI_DEBUG
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 05393a7315fe..6375db6d22ea 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -11,7 +11,9 @@
+>
+>  #define pr_fmt(fmt) "ACPI: OSL: " fmt
+>
+> +#include <linux/kconfig.h>
+>  #include <linux/module.h>
+> +#include <linux/panic.h>
+>  #include <linux/kernel.h>
+>  #include <linux/slab.h>
+>  #include <linux/mm.h>
+> @@ -70,6 +72,10 @@ static bool acpi_os_initialized;
+>  unsigned int acpi_sci_irq =3D INVALID_ACPI_IRQ;
+>  bool acpi_permanent_mmap =3D false;
+>
+> +static bool panic_on_fatal =3D IS_ENABLED(CONFIG_ACPI_PANIC_ON_FATAL);
+> +module_param(panic_on_fatal, bool, 0);
+> +MODULE_PARM_DESC(panic_on_fatal, "Trigger a kernel panic when encounteri=
+ng a fatal ACPI error");
+> +
+>  /*
+>   * This list of permanent mappings is for memory that may be accessed fr=
+om
+>   * interrupt context, where we can't do the ioremap().
+> @@ -1381,9 +1387,20 @@ acpi_status acpi_os_notify_command_complete(void)
+>
+>  acpi_status acpi_os_signal(u32 function, void *info)
+>  {
+> +       struct acpi_signal_fatal_info *fatal_info;
+> +
+>         switch (function) {
+>         case ACPI_SIGNAL_FATAL:
+> -               pr_err("Fatal opcode executed\n");
+> +               fatal_info =3D info;
+> +               if (panic_on_fatal) {
+> +                       panic("Fatal ACPI BIOS error (type 0x%X code 0x%X=
+ argument 0x%X)",
+> +                             fatal_info->type, fatal_info->code, fatal_i=
+nfo->argument);
+> +               } else {
+> +                       pr_emerg("Fatal ACPI BIOS error (type 0x%X code 0=
+x%X argument 0x%X)\n",
+> +                                fatal_info->type, fatal_info->code, fata=
+l_info->argument);
+> +                       add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STIL=
+L_OK);
+> +               }
+> +
+>                 break;
+>         case ACPI_SIGNAL_BREAKPOINT:
+>                 /*
+> --
+> 2.39.5
+>
+>
 
