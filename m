@@ -1,140 +1,259 @@
-Return-Path: <linux-acpi+bounces-20668-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20669-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KI/B0ffeGkCtwEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20668-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:52:39 +0100
+	id gBFuI7LoeGmHtwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20669-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 17:32:50 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B50971FB
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:52:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6E497CCB
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 17:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C824B30327E0
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 15:36:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B7A830C8977
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C52F2FE598;
-	Tue, 27 Jan 2026 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C5535E552;
+	Tue, 27 Jan 2026 16:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fsz96Hyv"
+	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="FrL9UJh2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay14.grserver.gr (relay14.grserver.gr [157.180.73.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9EF2652B2
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 15:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CAB1E8836
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 15:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.180.73.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769528208; cv=none; b=hAUSaUhdAzrnBy6cfUr6f3XmJjfgfknfql+cOdm1vtLJYEV2syW5MRGf1yXuoQz9kT96B7XDBHqhVNTioV8zvIRcOjJ0aqyKImGuojZCRYzo3bTpWhmGcrUDpmq/WSoT3Y/QwbKsplq5k6rsyufvtUWjxQ2HFC8bOC8Y6Ww/zsY=
+	t=1769529599; cv=none; b=qnUnuu2bl+7QNpo8WfnKlWrOBCfSHPAy7wmizFE8KGXxaMwWYPkELfG8yhE1ukwHnu55fef/z8zJBeP8tkyZtfzEOCt3UZl9kb7qozVijF3cZiyMenJQEQ29DqyAk/5V1IXFMfjNrGdJpGgOqsMKl9NNc1rm1TFW8b6oC6OngeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769528208; c=relaxed/simple;
-	bh=/rL29wBK2VyCq0Uw+Rgs1l98Q1X+eJF4rtTos+0n+zI=;
+	s=arc-20240116; t=1769529599; c=relaxed/simple;
+	bh=7UbGIR6Ekx7jXYij3Pyl/ouoe5ssVqHUJ/fNeg9ZyC8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pSGVXBPjrvGsE5sbkpfW14qv3zQjeNEEj5qqiQTIwjz4J5lM4IwxC2FcWzgm5j5O0s4uCueXqdtO22uSh/Mbr7PMRslLSyMsk1IMVWl05YtHV9ArsOBeBJSJMHjvNc83Bi7/mMeRKr9QvAaF0NDFLuwOuJ0ANg4KzSey9Huv7yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fsz96Hyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91267C19422
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 15:36:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769528208;
-	bh=/rL29wBK2VyCq0Uw+Rgs1l98Q1X+eJF4rtTos+0n+zI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Fsz96HyvvjmOqlkUjP0dzEA1FeLzyXncxWKWb2N+bKt5Cn13VbJUX/uTe4MJFTcOW
-	 z/X0z4wWE9e99cikxP+J5SuL8aUjpgN5yVZUcb6YY/AuV7KKR0zmEkuYs/QRraZ5Fn
-	 xUGGDys/f1Uh/XxnCZYrwRrSaVYCOvdtfX5FGOJMq6blitncFpUbnbARW+u2Og68zQ
-	 s3AZtAE9vdXZJw+/LQ6tTVPefZiWw32QYUSPgmH2DSFuU7f40+wosXU1kjKYZI5vKH
-	 tf2V5mQ9j/GX3hiXKq02urHShAJo35X/uf2+YY2DDQXQ5kcBcpY1Bq0/vIJZ9BXSll
-	 si2N6xU0T1BUw==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-66106a2f8d1so1968837eaf.1
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 07:36:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWK25xl5ZzR14DzqwmBdk7zmVHcAIiInnGh31RZlCsGhiVeBa9hd8dAJ4ArS8knJdZQJ4dRBj7EbLNP@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUQlBFHSYJhWoUUkTf/oD7i1oqZNtJ8jMLf4zyXl8gpr14CvZ9
-	MCC4fCUSepeX16LgjHT/2D9vVicLC3i4Ti9tBe8+Yy5myP6BNWQQwHhEnOY6SWIz1ObteXWRyLZ
-	/Ckag7Kj4ESHAo+5qci67mSHHTgGLvnc=
-X-Received: by 2002:a05:6820:4610:b0:659:9a49:9042 with SMTP id
- 006d021491bc7-662f2021f55mr947902eaf.13.1769528207445; Tue, 27 Jan 2026
- 07:36:47 -0800 (PST)
+	 To:Cc:Content-Type; b=cu7Uzzrv2sajGkmmVAYRnkaeqGkBdiRjY2lLF2SwIFbpQrAegNN8Pb1BPHiKd5BNY/no+W1e7kvu/lDC3MgYLZqg9OoT+FT5QUlJjhcPBsd1bNXSVC9orp5JmIrKCmp0M4KTLk5u/RebB2KfsTKhhM9W8JojbJsntxBVxVIc9no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=FrL9UJh2; arc=none smtp.client-ip=157.180.73.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from relay14 (localhost [127.0.0.1])
+	by relay14.grserver.gr (Proxmox) with ESMTP id EB55D40B0B
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 15:59:48 +0000 (UTC)
+Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by relay14.grserver.gr (Proxmox) with ESMTPS id DC75F40AFE
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 15:59:47 +0000 (UTC)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by linux3247.grserver.gr (Postfix) with ESMTPSA id 2D9E81FD5CB
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 17:59:47 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1769529587;
+	bh=aB9kxj1zBHCSlg1D4wHLF7HRgwHd7juII+bjzeQhnnA=;
+	h=Received:From:Subject:To;
+	b=FrL9UJh2ZRxMKt6cwBb/I2UdJf6lQycumpRgTl1ysHz3atxOCLfR4Y8zq+ap0sCD3
+	 IhKcgTniqKO2xYCL3WCo17/H/rsncbHAipnldeeoJgyC/6+MsYcp6+O2GhpHPb86vC
+	 HP0Qpqy3+dmfN89/DUrV/HWypvh3R37otfbz4AFTzevb4z+WQVQr/8Jd+tqAIcpjFN
+	 jus0b7El0KnkgyLRANEvxO+nXH2X2ntuDnctj4h/VPMWFMcWOXeduVGpgMFxSOYnUA
+	 68h2DF7Pvu6g7mlADZJ0n0i8wBsikKP6izKeuuyHciUSXOll+5zs1hLBYwetmTT6pw
+	 Z8XQn3lpGG1cg==
+Authentication-Results: linux3247.grserver.gr;
+        spf=pass (sender IP is 209.85.167.52) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f52.google.com
+Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
+Received: by mail-lf1-f52.google.com with SMTP id
+ 2adb3069b0e04-59dd54b1073so5930674e87.0
+        for <linux-acpi@vger.kernel.org>;
+ Tue, 27 Jan 2026 07:59:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVumFtfb/eVJ7uSXECxkEWljPoYp9LgS9zsgBprKdN8afWA+RzUh71a/+RZUuQdxwjC5gHBx5XPiPXR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0JR+iC+c3Gz1sPnFH+PONskqQAzdI7WAIaszi03S39CLPRNKU
+	JDJPwBOiRrnHKnVpR6NJkr34TjEO7YPsbj5b5Ofd2+fkLEqarKO/0GctlIBbshYJfPbULXdQtiH
+	nnoP0eV/sK/3hRAqq5F5DH+IhdHsGNsI=
+X-Received: by 2002:a05:6512:8006:10b0:59e:708:cf56 with SMTP id
+ 2adb3069b0e04-59e0708cfb6mr111582e87.26.1769529586606; Tue, 27 Jan 2026
+ 07:59:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120112258.1595164-1-lihuisong@huawei.com>
-In-Reply-To: <20260120112258.1595164-1-lihuisong@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 Jan 2026 16:36:35 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gg7QcNCLHL2wy7jr6WguQ-qMP9Fu1RrOziAct8YuD+2A@mail.gmail.com>
-X-Gm-Features: AZwV_Qih6vJX854JVs5ONMEwV0NaxXHrSibmfSEIKiFCxGR5w_A-PINqN8X6L3o
-Message-ID: <CAJZ5v0gg7QcNCLHL2wy7jr6WguQ-qMP9Fu1RrOziAct8YuD+2A@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] ACPI: processor: idle: Enhance LPI verification
- and some cleancode
-To: Huisong Li <lihuisong@huawei.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
-	yubowen8@huawei.com, wangzhi12@huawei.com, zhangpengjie2@huawei.com
+References: <20260107154015.322698-1-jriemenschne@student.ethz.ch>
+ <CAJZ5v0gj6YmypO7B-FpjPKc3WK3R5HSso0RaMBER9FMripYCaA@mail.gmail.com>
+In-Reply-To: 
+ <CAJZ5v0gj6YmypO7B-FpjPKc3WK3R5HSso0RaMBER9FMripYCaA@mail.gmail.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Tue, 27 Jan 2026 16:59:35 +0100
+X-Gmail-Original-Message-ID: 
+ <CAGwozwF_Phm_MiLg3Zv89aZUGgV-DW6crXT5P9n75hd7j7hQjw@mail.gmail.com>
+X-Gm-Features: AZwV_Qgdpkr1uWtz5Bsz-CDVReDjhJA4fNROMjnnQdoFg18CwMY_leEE2v2WvLU
+Message-ID: 
+ <CAGwozwF_Phm_MiLg3Zv89aZUGgV-DW6crXT5P9n75hd7j7hQjw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: x86: s2idle: Invoke Microsoft _DSM Function 9 (Turn
+ On Display)
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>,
+ linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-PPP-Message-ID: 
+ <176952958736.2010671.9987305260845602235@linux3247.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
+X-Virus-Status: Clean
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[antheas.dev:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20668-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20669-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ethz.ch:email];
+	DMARC_NA(0.00)[antheas.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,collabora.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[antheas.dev:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkml@antheas.dev,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: A3B50971FB
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: AA6E497CCB
 X-Rspamd-Action: no action
 
-On Tue, Jan 20, 2026 at 12:23=E2=80=AFPM Huisong Li <lihuisong@huawei.com> =
-wrote:
+On Tue, 27 Jan 2026 at 15:50, Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> This series is aimed to enhance LPI verification and redefine
-> two functions to void, which is a part of the series in link [1].
+> On Wed, Jan 7, 2026 at 4:40=E2=80=AFPM Jakob Riemenschneider
+> <riemenschneiderjakob@gmail.com> wrote:
+> >
+> > Windows 11, version 22H2 introduced a new function index (Function 9) t=
+o
+> > the Microsoft LPS0 _DSM, titled "Turn On Display Notification".
+> >
+> > According to Microsoft documentation, this function signals to the syst=
+em
+> > firmware that the OS intends to turn on the display when exiting Modern
+> > Standby. This allows the firmware to release Power Limits (PLx) earlier=
+,
+> > improving resume latency on supported OEM designs. Without this call,
+> > some devices may remain in a throttled power state longer than necessar=
+y
+> > during resume.
 >
-> [1] https://lore.kernel.org/all/20251103084244.2654432-1-lihuisong@huawei=
-.com
+> Has this been observed in the field?
 >
-> ---
-> Changes in v2:
->  - reorder patch
->  - fix commit log in patch 1/3 and 2/3
+> Any examples?
 >
-> ---
-> Huisong Li (3):
->   ACPI: processor: idle: Redefine acpi_processor_setup_cpuidle_states to
->     void
->   ACPI: processor: idle: Redefine acpi_processor_setup_cpuidle_dev to
->     void
->   ACPI: processor: idle: Relocate and verify
->     acpi_processor_ffh_lpi_probe
+> > This patch defines the new function index (ACPI_LPS0_MS_DISPLAY_ON) and
+> > invokes it in acpi_s2idle_restore_early_lps0() immediately after the
+> > screen-on notification, provided the firmware supports the function in
+> > its mask.
+> >
+> > Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-=
+experiences/modern-standby-firmware-notifications#turn-on-display-notificat=
+ion-function-9
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220505
+> > Signed-off-by: Jakob Riemenschneider <jriemenschne@student.ethz.ch>
+> > ---
+> >  drivers/acpi/x86/s2idle.c | 10 +++++++++-
+> >  1 file changed, 9 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> > index 6d4d06236..4ce4cc8a0 100644
+> > --- a/drivers/acpi/x86/s2idle.c
+> > +++ b/drivers/acpi/x86/s2idle.c
+> > @@ -45,6 +45,7 @@ static const struct acpi_device_id lps0_device_ids[] =
+=3D {
+> >  #define ACPI_LPS0_EXIT         6
+> >  #define ACPI_LPS0_MS_ENTRY      7
+> >  #define ACPI_LPS0_MS_EXIT       8
+> > +#define ACPI_LPS0_MS_DISPLAY_ON 9
+> >
+> >  /* AMD */
+> >  #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37=
+721"
+> > @@ -352,6 +353,8 @@ static const char *acpi_sleep_dsm_state_to_str(unsi=
+gned int state)
+> >                         return "lps0 ms entry";
+> >                 case ACPI_LPS0_MS_EXIT:
+> >                         return "lps0 ms exit";
+> > +               case ACPI_LPS0_MS_DISPLAY_ON:
+> > +                       return "lps0 ms display on";
+> >                 }
+> >         } else {
+> >                 switch (state) {
+> > @@ -618,9 +621,14 @@ static void acpi_s2idle_restore_early_lps0(void)
+> >         }
+> >
+> >         /* Screen on */
+> > -       if (lps0_dsm_func_mask_microsoft > 0)
+> > +       if (lps0_dsm_func_mask_microsoft > 0) {
+> >                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+> >                                 lps0_dsm_func_mask_microsoft, lps0_dsm_=
+guid_microsoft);
+> > +                               /* Modern Turn Display On */
+> > +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_DISPLAY_ON,
+> > +                               lps0_dsm_func_mask_microsoft, lps0_dsm_=
+guid_microsoft);
 >
->  drivers/acpi/processor_idle.c | 40 ++++++++++++++++++-----------------
->  1 file changed, 21 insertions(+), 19 deletions(-)
+> Is the ordering right with respect to the non-MSFT screen-on
+> notifications below?
 >
-> --
+> I would expect it to be done after all of the screen-on notifications,
+> so is there a specific reason to do it earlier?
+>
+> > +       }
+> > +
+> >         if (lps0_dsm_func_mask > 0)
+> >                 acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+> >                                         ACPI_LPS0_SCREEN_ON_AMD :
+> > --
+>
+> Also, this kind of clashes with the "dark mode" work in progress, see
+> for example:
+>
+> https://lore.kernel.org/linux-acpi/20251226102656.6296-1-lkml@antheas.dev=
+/
+>
 
-Applied as 6.20 material (with some modifications, mostly in subjects
-and changelogs).
+Hi,
+I wasn't aware of a device that uses this function but I guess OEMs
+could so they shipped buggy firmware. It is added speculatively in my
+series.
 
-Thanks!
+Technically, it is supposed to be called before ms exit, as windows
+uses it to signal that _it will_ turn on the display while in sleep.
+So, exit, intent, ms exit, display on.
+
+I am not sure if it is also called when in the "screen off" state if
+the device uses the mouse while inactive. Someone would need to check
+in Windows using power manager. I do not have a device to check.
+
+So, two comments from me:
+  - Move to before ms_exit, or show it should be fired after (sleep
+exit in windows)
+  - Change the name, as it is a bit confusing, perhaps to
+ACPI_MS_TURN_ON_DISPLAY or similar. If you can make that change I will
+ack it and add rby
+
+This merging first simplifies my series so it should go through (I can
+drop "[RFC v1 6/8] acpi/x86: s2idle: implement turn on display DSM as
+resume notification").
+
+In addition, as we now know resume needs to fire always, I will need
+to make some changes for V2 of my series to make sure that happens
+
+Antheas
+
 
