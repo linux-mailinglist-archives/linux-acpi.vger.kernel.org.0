@@ -1,219 +1,275 @@
-Return-Path: <linux-acpi+bounces-20687-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20688-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDOFOswaeWmPvQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20687-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:06:36 +0100
+	id GFZULoUdeWkQvgEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20688-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:18:13 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8993D9A35C
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:06:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666F99A4B3
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 21:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCD493031F14
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:06:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A2B43041BF9
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A072FFFA3;
-	Tue, 27 Jan 2026 20:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF9F36EAB6;
+	Tue, 27 Jan 2026 20:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="BkRLN/bF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HW70FeFZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay13.grserver.gr (relay13.grserver.gr [178.156.171.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CEE2848BB
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 20:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.156.171.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7890D36EAA7
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 20:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769544369; cv=none; b=Cl3k9NA1FeUfxi1ABZHPWwo+Rz4niiMiNd3KEF58Bjv7POCdxRzXLhqrUEQhXpoCEbq/0sRHuxZzNY1jJey0VmKJw8khvkgklcuY6Wg1Sp0XA0OTqdPh0DO8luhBKSFCo/FZVCZI1LniZ/3241tT7Ims+PLGqNoQsh0b/PgVP0g=
+	t=1769545063; cv=none; b=uJo39JtPqovGLCTQdUDhftCUaU9NNg+3ZXJ2AhDlaa4xptqeqgf1dj2iWb9oj4QJk5CmJFdyaFs8siMIkeF4GYmrSv2MaF7qIYPXMCiGZIg9TtrMLeRfzBRXl55DX8Z4fixsnuqRzVvPMe9P25zvgd1XeBsuefC7EHQreP8FIIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769544369; c=relaxed/simple;
-	bh=xppYAdaAcvAgDOSFr90fE6IKilEGwyIvxqIzNi5BKCU=;
+	s=arc-20240116; t=1769545063; c=relaxed/simple;
+	bh=a33Hqp1gxCbHs3ozHKcUQHsfvseir6CgyC/3r5RJM6I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ObDs9NGZ3PoHRwEvc3kJqE0cKSfpDCvTo3FXart8pwc0jdiXPfSepX+4WOhyWFtFIgXs8wuyHqIs2IST5dD3pqLa8ofNFLBPJW6vzIMJI9tOPFHng9CppGIDC/jJJlqqJUB9/UVFV+MqAqnmuZrXd3yqkMYnJXQ3AuUncmAMmkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=BkRLN/bF; arc=none smtp.client-ip=178.156.171.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay13 (localhost [127.0.0.1])
-	by relay13.grserver.gr (Proxmox) with ESMTP id 02CF75E6D1
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 22:06:00 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay13.grserver.gr (Proxmox) with ESMTPS id EE1405E56C
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 22:05:58 +0200 (EET)
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id ED0461FD951
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 22:05:57 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1769544358;
-	bh=uKuXbRGavKVT9KoOPof4nsymgDYgzNEGzRorQVy3kdw=;
-	h=Received:From:Subject:To;
-	b=BkRLN/bFPVCbn2CQSH6XFaEFXuhtdUAPEiOs89meR/gx3n2v2fu5zi3m8ZPL9gNmT
-	 F5aH1ozwTAW6J1aX3RQJpjuiZ30H9ifEhwcRQ5a59dWX+HAjTr1zictkKvVvjV0UGa
-	 vpJAgjd6uxQhl6RUC9jg7sW6imuJZjNj1Rc51aK4KHKqJp90JcuGuBYDPGY1YQvGFC
-	 o0kJie+/41pdPpGhFkMia3o6i9lnSAcv7L+iO2G/iqauNH7cRio1/QQ9i+DYOQ3NOz
-	 zFpDvwdlvlcS16WmgCJ1yisjwNgZHTpasPaPHq6v7tonYV7qGc2++g/eYMbCKGK4Y3
-	 R29DVX43aPiBw==
-Authentication-Results: linux3247.grserver.gr;
-        spf=pass (sender IP is 209.85.167.50) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lf1-f50.google.com
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-Received: by mail-lf1-f50.google.com with SMTP id
- 2adb3069b0e04-59b6c13b68dso166807e87.0
-        for <linux-acpi@vger.kernel.org>;
- Tue, 27 Jan 2026 12:05:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXVZKFTZz+pkUB8jBe+upYVm0cFBrq/AHnEIuezBsB002FPd3+3YSZtHLIGPdQwCw6aEVFYridawh38@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2ulwFihoqC29/jpZyPKyFVuDh+fs/L1KJwAkqqAp2oh4JoaPy
-	HL0KrdyypWJ7VSGnHc2Mk9RiUzheMagWEa/a0kcYCrGFzpUueWXkCkti3d3rWfricWdt/x0RH/q
-	VQD6/mhBikUFqm8r146bMpxcBvMsCoCk=
-X-Received: by 2002:a05:6512:3505:b0:59e:5b8:ab23 with SMTP id
- 2adb3069b0e04-59e05b8ae19mr658098e87.4.1769544357424; Tue, 27 Jan 2026
- 12:05:57 -0800 (PST)
+	 To:Cc:Content-Type; b=JbVRhnEH/0DeniMAxp7iGa2ZJbfwbP+uXtsne/G8LcpsDDhKPol+Q0DtiQlRtRlFa8/DysSBGbl3FrzH2qqE1uY2IlpjnbtwYna5HakXf2fTckJk4Gyn9LkJaVnhhOvedXlbOUjz2wemAD/Lr2H0xrIWY02aEXRYLXjvuu1P3K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HW70FeFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D23FC19422
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 20:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769545063;
+	bh=a33Hqp1gxCbHs3ozHKcUQHsfvseir6CgyC/3r5RJM6I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HW70FeFZrSJ5tBsfLLlIAQhEzhETh6tGJ8tsLmA0yCoS3laS0upD795WkBN21W5zq
+	 B8ciEbjNYs6hbdNNW+kVuQ5z5T3eDTRzjv7tC8n/3yakZRq6PJpEGuuQ4XZnWsBw0T
+	 wAWDeOfbJz8Re4DdBwfr7/KuHsJ/IfMgGS2JWa+lCgBEGGWu3M6s5a90nnzE/aqx52
+	 3XussOr8obvtKWz4Ei2gYzEA4AloJKZNuC+UC8qLC0xdwkigb0x+Y3K38uttqKiwhL
+	 72aArRFqF+7eQd8x+V9XAiuTuAeJEbRYqpKmrbXk5EKag7XV0oWkPchUkwUUpCsSF7
+	 /bPfKndaxVoJQ==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-662f482180aso401268eaf.2
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 12:17:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWQLdQRsNMMKjz7MPgfTdwxyItHtrI2BxTRNEpD/+bBsZC8yW1TpFqVc9AiRcRgE9L8amlMy7Lqr8Nb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXVUVAaGViq11W0Ljk0voog3KQeQYWqpufsDDt9WKzTgFbrR7U
+	9OvlxOrteZoMXlT6KohkaGYrHUBAX1jMXA7TFydRL+iNSr3EvNSkBaTjhmMCjLw4nyshT0Prw9h
+	sTOkTO5Faqj3tAoY5EnL4BJNDZpR+2pA=
+X-Received: by 2002:a4a:cf16:0:b0:662:f6b4:8c4e with SMTP id
+ 006d021491bc7-662f6b48e48mr773192eaf.80.1769545062036; Tue, 27 Jan 2026
+ 12:17:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260127200121.1292216-1-riemenschneiderjakob@gmail.com>
-In-Reply-To: <20260127200121.1292216-1-riemenschneiderjakob@gmail.com>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 27 Jan 2026 21:05:45 +0100
-X-Gmail-Original-Message-ID: 
- <CAGwozwHdsJ8RJNMA6QsU0M2KpB0+a+sttH=1Kx5Ecf1jOjF9DQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qh_p05slu8otrsIgn8TgNtu9-bT_Voo_Q4wOb9PyKakLLH2n7VRnEX4Muo
-Message-ID: 
- <CAGwozwHdsJ8RJNMA6QsU0M2KpB0+a+sttH=1Kx5Ecf1jOjF9DQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: x86: s2idle: Invoke Microsoft _DSM Function 9
- (Turn On Display)
-To: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Antheas Kapenekakis <antheas@antheas.dev>
+References: <20260120145623.2959636-1-sumitg@nvidia.com> <20260120145623.2959636-2-sumitg@nvidia.com>
+ <CAJZ5v0ipgGt7tetY6p0CW0jyOh9TVeWxgXpFzveTa2CaGB8ZpA@mail.gmail.com> <6be02e54-dd4a-4d8f-b2ee-291da63b0bf2@nvidia.com>
+In-Reply-To: <6be02e54-dd4a-4d8f-b2ee-291da63b0bf2@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 27 Jan 2026 21:17:31 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j8Z3dUZUuUUZPiGthN7yg03yDpWARGJLE8U2fCeUK8Qw@mail.gmail.com>
+X-Gm-Features: AZwV_QhFFimFgohPagii-2LtTrRkBzebBcIWZn4w-qFlB50tTtELmDGXQrkWWSI
+Message-ID: <CAJZ5v0j8Z3dUZUuUUZPiGthN7yg03yDpWARGJLE8U2fCeUK8Qw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/9] cpufreq: CPPC: Add generic helpers for sysfs show/store
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, pierre.gondois@arm.com, 
+	zhenglifeng1@huawei.com, ionela.voinescu@arm.com, lenb@kernel.org, 
+	robert.moore@intel.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com, 
+	perry.yuan@amd.com, zhanjie9@hisilicon.com, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, 
+	vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com, 
+	nhartman@nvidia.com, bbasu@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <176954435816.2986288.10025098337520096852@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[antheas.dev:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[antheas.dev];
+	TAGGED_FROM(0.00)[bounces-20688-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20687-lists,linux-acpi=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[antheas.dev:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkml@antheas.dev,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8993D9A35C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 666F99A4B3
 X-Rspamd-Action: no action
 
-On Tue, 27 Jan 2026 at 21:01, Jakob Riemenschneider
-<riemenschneiderjakob@gmail.com> wrote:
+On Tue, Jan 27, 2026 at 8:01=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wro=
+te:
 >
-> Windows 11, version 22H2 introduced a new function index (Function 9) to
-> the Microsoft LPS0 _DSM, titled "Turn On Display Notification".
 >
-> According to Microsoft documentation, this function signals to the system
-> firmware that the OS intends to turn on the display when exiting Modern
-> Standby. This allows the firmware to release Power Limits (PLx) earlier.
+> On 27/01/26 21:54, Rafael J. Wysocki wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On Tue, Jan 20, 2026 at 3:57=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com>=
+ wrote:
+> >> Add generic helper functions for u64 sysfs attributes that follow the
+> >> common pattern of calling CPPC get/set APIs:
+> >> - cppc_cpufreq_sysfs_show_u64(): reads value and handles -EOPNOTSUPP
+> >> - cppc_cpufreq_sysfs_store_u64(): parses input and calls set function
+> >>
+> >> Add CPPC_CPUFREQ_ATTR_RW_U64() macro to generate show/store functions
+> >> using these helpers, reducing boilerplate for simple attributes.
+> >>
+> >> Convert auto_act_window and energy_performance_preference_val to use
+> >> the new macro.
+> >>
+> >> No functional changes.
+> >>
+> >> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> >> ---
+> >>   drivers/cpufreq/cppc_cpufreq.c | 69 ++++++++++++--------------------=
+--
+> >>   1 file changed, 25 insertions(+), 44 deletions(-)
+> >>
+> >> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpu=
+freq.c
+> >> index 36e8a75a37f1..c95dcd7719c3 100644
+> >> --- a/drivers/cpufreq/cppc_cpufreq.c
+> >> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> >> @@ -863,73 +863,54 @@ static ssize_t store_auto_select(struct cpufreq_=
+policy *policy,
+> >>          return count;
+> >>   }
+> >>
+> >> -static ssize_t show_auto_act_window(struct cpufreq_policy *policy, ch=
+ar *buf)
+> >> +static ssize_t cppc_cpufreq_sysfs_show_u64(unsigned int cpu,
+> >> +                                          int (*get_func)(int, u64 *)=
+,
+> >> +                                          char *buf)
+> >>   {
+> >>          u64 val;
+> >> -       int ret;
+> >> -
+> >> -       ret =3D cppc_get_auto_act_window(policy->cpu, &val);
+> >> +       int ret =3D get_func((int)cpu, &val);
+> >>
+> >> -       /* show "<unsupported>" when this register is not supported by=
+ cpc */
+> >>          if (ret =3D=3D -EOPNOTSUPP)
+> >>                  return sysfs_emit(buf, "<unsupported>\n");
+> >> -
+> >>          if (ret)
+> >>                  return ret;
+> >>
+> >>          return sysfs_emit(buf, "%llu\n", val);
+> >>   }
+> >>
+> >> -static ssize_t store_auto_act_window(struct cpufreq_policy *policy,
+> >> -                                    const char *buf, size_t count)
+> >> +static ssize_t cppc_cpufreq_sysfs_store_u64(unsigned int cpu,
+> >> +                                           int (*set_func)(int, u64),
+> >> +                                           const char *buf, size_t co=
+unt)
+> >>   {
+> >> -       u64 usec;
+> >> +       u64 val;
+> >>          int ret;
+> >>
+> >> -       ret =3D kstrtou64(buf, 0, &usec);
+> >> +       ret =3D kstrtou64(buf, 0, &val);
+> >>          if (ret)
+> >>                  return ret;
+> >>
+> >> -       ret =3D cppc_set_auto_act_window(policy->cpu, usec);
+> >> -       if (ret)
+> >> -               return ret;
+> >> +       ret =3D set_func((int)cpu, val);
+> >>
+> >> -       return count;
+> >> +       return ret ? ret : count;
+> >>   }
+> >>
+> >> -static ssize_t show_energy_performance_preference_val(struct cpufreq_=
+policy *policy, char *buf)
+> >> -{
+> >> -       u64 val;
+> >> -       int ret;
+> >> -
+> >> -       ret =3D cppc_get_epp_perf(policy->cpu, &val);
+> >> -
+> >> -       /* show "<unsupported>" when this register is not supported by=
+ cpc */
+> >> -       if (ret =3D=3D -EOPNOTSUPP)
+> >> -               return sysfs_emit(buf, "<unsupported>\n");
+> >> -
+> >> -       if (ret)
+> >> -               return ret;
+> >> -
+> >> -       return sysfs_emit(buf, "%llu\n", val);
+> >> +#define CPPC_CPUFREQ_ATTR_RW_U64(_name, _get_func, _set_func)        =
+  \
+> >> +static ssize_t show_##_name(struct cpufreq_policy *policy, char *buf)=
+  \
+> >> +{                                                                    =
+  \
+> >> +       return cppc_cpufreq_sysfs_show_u64(policy->cpu, _get_func, buf=
+);\
+> >> +}                                                                    =
+  \
+> >> +static ssize_t store_##_name(struct cpufreq_policy *policy,          =
+  \
+> >> +                            const char *buf, size_t count)           =
+  \
+> >> +{                                                                    =
+  \
+> >> +       return cppc_cpufreq_sysfs_store_u64(policy->cpu, _set_func,   =
+  \
+> >> +                                           buf, count);              =
+  \
+> >>   }
+> >>
+> >> -static ssize_t store_energy_performance_preference_val(struct cpufreq=
+_policy *policy,
+> >> -                                                      const char *buf=
+, size_t count)
+> >> -{
+> >> -       u64 val;
+> >> -       int ret;
+> >> +CPPC_CPUFREQ_ATTR_RW_U64(auto_act_window, cppc_get_auto_act_window,
+> >> +                        cppc_set_auto_act_window)
+> >>
+> >> -       ret =3D kstrtou64(buf, 0, &val);
+> >> -       if (ret)
+> >> -               return ret;
+> >> -
+> >> -       ret =3D cppc_set_epp(policy->cpu, val);
+> >> -       if (ret)
+> >> -               return ret;
+> >> -
+> >> -       return count;
+> >> -}
+> >> +CPPC_CPUFREQ_ATTR_RW_U64(energy_performance_preference_val,
+> >> +                        cppc_get_epp_perf, cppc_set_epp)
+> >>
+> >>   cpufreq_freq_attr_ro(freqdomain_cpus);
+> >>   cpufreq_freq_attr_rw(auto_select);
+> >> --
+> > It looks like this patch could be applied independently of the other
+> > patches in the series.
+> >
+> > Do you want me to do so?
 >
-> Crucially, this patch fixes a functional issue observed on the Lenovo Yoga
-> Slim 7i Aura (15ILL9), where system fans and keyboard backlights fail to
-> resume after suspend. Investigation linked shows the EC on this device
-> turns off these components during sleep but requires the Function 9
-> notification to wake them up again.
->
-> This patch defines the new function index (ACPI_MS_TURN_ON_DISPLAY) and
-> invokes it in acpi_s2idle_restore_early_lps0(). The execution order is
-> updated to match the logic of an "intent" signal:
->
-> 1. LPS0 Exit (Function 6)
-> 2. Turn On Display Intent (Function 9)
-> 3. Modern Standby Exit (Function 8)
-> 4. Screen On (Function 4)
->
-> Invoking Function 9 before the Modern Standby Exit ensures the firmware
-> has time to restore power rails and functionality (like fans) before the
-> software fully exits the sleep state.
->
-> Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-firmware-notifications#turn-on-display-notification-function-9
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220505
-> Suggested-by: Antheas Kapenekakis <antheas@antheas.dev>
+> Yes, this patch is independent and can be applied.
 
-LGTM, no need for rby, sby covers it.
-
-Consider closes + reported by from bugzilla if there is a V3, I
-typically use lkml@antheas.dev but that is small.
-
-I will defer to Rafael now
-
-Best,
-Antheas
-
-> Signed-off-by: Jakob Riemenschneider <riemenschneiderjakob@gmail.com>
-> ---
-> v2:
->  - Renamed constant from ACPI_LPS0_MS_DISPLAY_ON to ACPI_MS_TURN_ON_DISPLAY per feedback.
->  - Moved the Function 9 call to occur before MS Exit (Function 8) to act as an intent signal.
->
->  drivers/acpi/x86/s2idle.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 6d4d06236..de94b57f7 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -45,6 +45,7 @@ static const struct acpi_device_id lps0_device_ids[] = {
->  #define ACPI_LPS0_EXIT         6
->  #define ACPI_LPS0_MS_ENTRY      7
->  #define ACPI_LPS0_MS_EXIT       8
-> +#define ACPI_MS_TURN_ON_DISPLAY 9
->
->  /* AMD */
->  #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
-> @@ -352,6 +353,8 @@ static const char *acpi_sleep_dsm_state_to_str(unsigned int state)
->                         return "lps0 ms entry";
->                 case ACPI_LPS0_MS_EXIT:
->                         return "lps0 ms exit";
-> +               case ACPI_MS_TURN_ON_DISPLAY:
-> +                       return "lps0 ms turn on display";
->                 }
->         } else {
->                 switch (state) {
-> @@ -612,6 +615,9 @@ static void acpi_s2idle_restore_early_lps0(void)
->         if (lps0_dsm_func_mask_microsoft > 0) {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
->                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> +               /* Intent to turn on display */
-> +               acpi_sleep_run_lps0_dsm(ACPI_MS_TURN_ON_DISPLAY,
-> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
->                 /* Modern Standby exit */
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
->                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> --
-> 2.52.0
->
->
-
+Applied as 6.20 material, thanks!
 
