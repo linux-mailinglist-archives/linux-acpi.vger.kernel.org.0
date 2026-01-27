@@ -1,141 +1,171 @@
-Return-Path: <linux-acpi+bounces-20647-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20648-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJn3MDqGeGk/qwEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20647-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:32:42 +0100
+	id mEYhD3OSeGmxrAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20648-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 11:24:51 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EE291C27
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:32:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25E292BF5
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 11:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E058F303607D
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 09:30:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6545301CDA6
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190182DC762;
-	Tue, 27 Jan 2026 09:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AF133CEB9;
+	Tue, 27 Jan 2026 10:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zd85Pid8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NO+b5c1u"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA45C2D59E8;
-	Tue, 27 Jan 2026 09:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C99533CEA1;
+	Tue, 27 Jan 2026 10:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769506202; cv=none; b=j+2eLPKoOw3bbPSPvLDtDhgpq72O8SdAe+81HEWWj0HHbo7FP+Wj5wPjG0ZS65+XRhSHnBOTBmIahKL56u7ZdqBaqgcfIlY11chrNuT9yq5h5XEUzK+rUMf8AuGToURH7cGevmm4JFKEhO0+Y4JrlG9S6X0my8VDTmYbDXr6Cd0=
+	t=1769509316; cv=none; b=KoNrCg+Qt6Xtdg/DX7aYbZPKm4ANg+LRsJMahO+sUreo4AH/FIqvWNwF6+gwBX6Oa0Lgz48H6R5N7XbM4YNa205L3tJNOhqJJrYsyx3bv4tTsPd0WE5Jd9qh3Hyn6514nkMQz3SirOCUs9sIXk/bwOSpNuuY6fmLsXNMmbdDAU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769506202; c=relaxed/simple;
-	bh=p/aELUAJDL5FGGefcJkRH8xIg2MGXOf7m+Juj3lDsOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OaPDHf+mvZbWgWttuy48NQc8e5FW3a7LtirYfPFnqhzlEOJPcq50jgD+66aK0tiPmngBwhMlCkmJ/FyCdNF8/voB3tqEP43+iAV4swJN3c+COWwTfzEwaN7MPROZRz62fnUJ2ehaX88J03AHgjZWQG4zE+og9sid45IECD7SG4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zd85Pid8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2623FC116C6;
-	Tue, 27 Jan 2026 09:30:00 +0000 (UTC)
+	s=arc-20240116; t=1769509316; c=relaxed/simple;
+	bh=oeQyUukbQzjzfnGPsxMRYzzayN1/I685ZVpXUPWFnzE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=o2u+2+aMNm715Hx7or7aUIPDhaFw5x5CF3m0OPk8dc/W7WfQptoov+7REFCtQio2kCJqr3dgRoVMMgASUS9jE2e2GAboAP6wVJ819wEaFV5eql0DFx+PqRdV9ZZtCO3gJKMvGGf+xAprIGeGrB/ld4A2JajBBBWy+t9pjGts7eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NO+b5c1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EBBC16AAE;
+	Tue, 27 Jan 2026 10:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769506201;
-	bh=p/aELUAJDL5FGGefcJkRH8xIg2MGXOf7m+Juj3lDsOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zd85Pid8aQ8FfqrPQIhIeGBcHux56PncQkFIlpprP3EEKVzWweH6KonUlNfLi9gFL
-	 kIzKLn9Xhe6eNi4Ip0ge4E6k8f+GuPM5dAdC6okLi049lYykMifWTg7zP5U5paLS2O
-	 tvQ71JkgFyDFJsdxS7nnlBgc8TNDp3yPKUasXf21SZLTMsqC8nTwMj8qs/TYvYeuC+
-	 bK/ftzuc1M2Uo6JT7qorkoOkt5mbpLUysfeonSEJ3qSGI9wQji0fMAqLjiz+L62jGJ
-	 BwZIS8wWbyBseOJPbeaagUOaYY2Ip7NHmaazC22O7ilLKwOme+cGdqxI5bYrP7LJ3P
-	 jaTgSkleOS7+w==
-Date: Tue, 27 Jan 2026 09:29:58 +0000
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Adam Young <admiyo@amperemail.onmicrosoft.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Robbie King <robbiek@xsightlabs.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: Re: [PATCH 0/6] mailbox: pcc: Refactor and improve initialisation
- and interrupt handling
-Message-ID: <aXiFlkKAuV8QSgcM@bogus>
-References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
- <20251127-ancient-baboon-of-opportunity-5f773d@sudeepholla>
- <aWUnZJ83_AKQDagu@bogus>
- <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
+	s=k20201202; t=1769509315;
+	bh=oeQyUukbQzjzfnGPsxMRYzzayN1/I685ZVpXUPWFnzE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=NO+b5c1u8EKIdtzw+z36S75jauAQvOx3BGcOSwxiFDfQL6oUo86G3RJ/0BzStX+kv
+	 NXC13wNnxKc+bqx8L4ptm4v8p3y6oOyibq9HETx8c05t3vVidd43dzpGp9kTzMTFWZ
+	 Vuu0DQEOG0K74s+T+g1lUEXWh0B4dGNwSEALvgsWVFgGnZTHR+BfC/0IfjcazJMwax
+	 sCvP4Ydz4lIvLSrYgKiwRLbogcAfomxkaqxMg/zlUUv0Q0pSE/5PldgZK+hQGNgc9Q
+	 2qBtslN2gFttqpeQS7QvN5F1kq7Q+kFvjE/IpZHtRBkgXc+3Y/Lmxn7ori66HlMKxI
+	 Au2kE15OPcEHg==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Jan 2026 11:21:50 +0100
+Message-Id: <DFZAP6YM5JHD.3JB06NHLVZF9H@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Igor
+ Korotin" <igor.korotin.linux@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Len Brown" <lenb@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 0/4] Re-export Zeroable and zeroed() from ffi module
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260126-zeroable-ffi-v1-0-0ef101d1ed85@google.com>
+ <DFYJRWUHCOMQ.3L6ZVLOJTNDNO@garyguo.net> <aXdrUsrKVmzpBVd8@google.com>
+ <DFYNFSOP2UVY.27KHATUQMCXHQ@kernel.org>
+ <DFYNILJPAYJE.3CFM49W80ED4O@garyguo.net>
+ <CAH5fLggAfRkjSmYuYAZioXn3OP31Fwr=VGd2znnaHQvPL3tKHg@mail.gmail.com>
+In-Reply-To: <CAH5fLggAfRkjSmYuYAZioXn3OP31Fwr=VGd2znnaHQvPL3tKHg@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,os.amperecomputing.com,xsightlabs.com,huawei.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-20647-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20648-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,protonmail.com,umich.edu,linaro.org,collabora.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 12EE291C27
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B25E292BF5
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 12:07:26PM -0500, Adam Young wrote:
-> 
-> 
-> On 1/12/26 11:55, Sudeep Holla wrote:
-> > On Thu, Nov 27, 2025 at 02:40:56PM +0000, Sudeep Holla wrote:
-> > > Hi Jassi,
-> > > 
-> > > On Thu, Oct 16, 2025 at 08:08:14PM +0100, Sudeep Holla wrote:
-> > > > This series refines and stabilizes the PCC mailbox driver to improve
-> > > > initialisation order, interrupt handling, and completion signaling.
-> > > > 
-> > > Are you happy to pull these patches directly from the list or do you
-> > > prefer me to send you pull request or do you want me to direct this via
-> > > ACPI/Rafael's tree. Please advice.
-> > > 
-> > Hi Jassi,
-> > 
-> > Sorry for the nag. I did see these patches in -next as well as your
-> > v6.19 merge window pull request which didn't make it to Linus tree.
-> > However I don't see it -next any longer. Please advice if you want
-> > anything from my side so that this can be merged for v6.20/v7.0
-> > 
-> 
-> I thought you had an approach you wanted to implement for the functions that
-> provided access to the Mailbox internals: you wanted to do them inline but
-> hadn't gotten to them yet.  Is that still the case?  I will resubmit mine as
-> is with -next if that is acceptable.
-> 
+On Mon Jan 26, 2026 at 5:14 PM CET, Alice Ryhl wrote:
+> On Mon, Jan 26, 2026 at 5:11=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
+:
+>>
+>> On Mon Jan 26, 2026 at 4:08 PM GMT, Benno Lossin wrote:
+>> > On Mon Jan 26, 2026 at 2:25 PM CET, Alice Ryhl wrote:
+>> >> On Mon, Jan 26, 2026 at 01:15:53PM +0000, Gary Guo wrote:
+>> >>> On Mon Jan 26, 2026 at 1:05 PM GMT, Alice Ryhl wrote:
+>> >>> > Currently, the Zeroable trait is defined by pin-init because pin-i=
+nit
+>> >>> > happens to use the trait. However, zeroed types are useful for man=
+y
+>> >>> > purposes other than pin-init. Also, we wish to implement Zeroable =
+for
+>> >>> > types generated by bindgen. For both of these reasons, re-export
+>> >>> > Zeroable from the ffi crate, which is a already dependency of the =
+crates
+>> >>> > with bindgen output.
+>> >>>
+>> >>> I don't see a benefit of re-exporting these from the `ffi` crate? Es=
+pecially
+>> >>> that we re-export `ffi` crate from kernel crate anyway, and `Zeroabl=
+e` is
+>> >>> already in the kernel prelude.
+>> >>>
+>> >>> We already derive `Zeroable` for bindgen via `MaybeZeroable` derive =
+in
+>> >>> rust/bindgen_parameters.
+>> >>
+>> >> I can't find the convo now, but this change is on my list from when w=
+e
+>> >> discussed also implementing FromBytes / IntoBytes for the bindings
+>> >> types. To do that, we need to move our FromBytes / IntoBytes traits
+>> >> somewhere that bindings/uapi can access, and we agreed that the ffi
+>> >> crate was a good place for it.
+>> >>
+>> >> And then for consistency, also reexport Zeroable from the same locati=
+on.
+>> >
+>> > I think you also mentioned at some point that using `pin_init` from
+>> > `bindings` seemed strange and also using the `pin_init::zeroed()`
+>> > function also doesn't fit, since it doesn't have to do with pinned
+>> > initialization.
+>>
+>> Shouldn't it be that a crate that implements Zeroable / FromBytes / Into=
+Bytes
+>> and then pin_init becoming an user of that crate, then?
 
-Honestly, it has been a while and I have lost the context. Please post what
-you have or thinking of on top of linux-next or jassi's -next and we can start
-the discussion fresh.
+I think that's a little bit too much effort just for "nice naming".
 
--- 
-Regards,
-Sudeep
+> The Zeroable trait has to be in pin-init because it's also outside the
+> kernel. You *could* add yet another crate just for this and let
+> pin-init depend on it, but just putting it in the existing ffi seems
+> reasonable to me, and ffi is not a bad name for the owner of those
+> traits anyway.
+>
+> Though I guess if we add zerocopy, that concern goes away.
+
+Indeed, I would just move pin-init to that.
+
+Cheers,
+Benno
 
