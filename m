@@ -1,153 +1,141 @@
-Return-Path: <linux-acpi+bounces-20646-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20647-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL6LO+uCeGmqqgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20646-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:18:35 +0100
+	id SJn3MDqGeGk/qwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20647-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:32:42 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F5F9199D
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:18:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EE291C27
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 10:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11BC53058BB4
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 09:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E058F303607D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 09:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F694333440;
-	Tue, 27 Jan 2026 09:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190182DC762;
+	Tue, 27 Jan 2026 09:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lu6LiKLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zd85Pid8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E634331A71;
-	Tue, 27 Jan 2026 09:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA45C2D59E8;
+	Tue, 27 Jan 2026 09:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769505274; cv=none; b=SnmYj79KTVYolvFAU0qxxs3YUpvvRi7yfn7sEEH/X5NLXkgHtuac9vFNXiKPStqXZgCuvB/qt2aFIv+3XiEAuSREwFqbiOe/OWDUZGU3ZCmamREF3fixH+RWampltJ5Zd+QpTJTgq1bO54WBt0lBvVwZYs6yA0R6KADy+LOl7qQ=
+	t=1769506202; cv=none; b=j+2eLPKoOw3bbPSPvLDtDhgpq72O8SdAe+81HEWWj0HHbo7FP+Wj5wPjG0ZS65+XRhSHnBOTBmIahKL56u7ZdqBaqgcfIlY11chrNuT9yq5h5XEUzK+rUMf8AuGToURH7cGevmm4JFKEhO0+Y4JrlG9S6X0my8VDTmYbDXr6Cd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769505274; c=relaxed/simple;
-	bh=wA5rbgiEwVVcceiEGmwj1C3uIIzfloDmcPxun/ZMq80=;
+	s=arc-20240116; t=1769506202; c=relaxed/simple;
+	bh=p/aELUAJDL5FGGefcJkRH8xIg2MGXOf7m+Juj3lDsOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GmseuPylGvAwd7Tv1S+YJlZubjYpccMlwpq6r207YFOi876Wn8yarMRDPZaXGVrT/w6w/OcdYchU0UjtPBRnIm5/Gtc45B2VradDqG2DR4uiDd3r/2h6KFGKndYARocY6H+/hh8iqgHS9cqr3IbLWFDQGJuil9bnBzInkP2T9ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lu6LiKLz; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769505273; x=1801041273;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=wA5rbgiEwVVcceiEGmwj1C3uIIzfloDmcPxun/ZMq80=;
-  b=lu6LiKLz2FAqdJ8qRl8wGNMUmYzx8bwBFUhk48E2vFPNdj/AjQaZKOdv
-   DNFupMFM9aM/isHPI67ADsKYw8B+M572J7Q5Jbx2Ts3klNn1trI55hblG
-   dRezsan8xCXjQuJMeRU58uzaz0/fp00Y3Px8Zc3w6t7w/8bvrbve/BYC2
-   oSc39rLMtYm7yp18Vc7kj7pR3mSPA3obE3mik8jeaYf/YqIP/krpTpTE6
-   VTY7MgDnKv05CyP2t1cxU7hpxbopJEf8BfUXV8ztPqK4SonvYx+sfkZkS
-   kHOwK62BRKhbB0cMsRuhuffpdZe6BjLCx9laiakUlUfMerVzlD10oNutr
-   Q==;
-X-CSE-ConnectionGUID: GCvdEQlTQvy4+YLMOYZF5A==
-X-CSE-MsgGUID: KKrWwR68RK+OrnIa6aQ96Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="82063815"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="82063815"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 01:14:33 -0800
-X-CSE-ConnectionGUID: eZ8T0zA0QuOuSlCk9I6C5g==
-X-CSE-MsgGUID: edZl9nkTR1mG1M50Et7Lhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="207048789"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.248])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 01:14:30 -0800
-Date: Tue, 27 Jan 2026 11:14:27 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Denis Sergeev <denserg.edu@gmail.com>, westeri@kernel.org,
-	linusw@kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] gpiolib: acpi: use BIT_ULL() for u64 mask in address
- space handler
-Message-ID: <aXiB80UJamq0oeDr@smile.fi.intel.com>
-References: <20260126035914.16586-1-denserg.edu@gmail.com>
- <20260127080759.GY2275908@black.igk.intel.com>
- <CAMRc=MdRQzgSNorb9rHtAGWYPOK7t2o6q2gP9FLB3ECsvgVrAQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OaPDHf+mvZbWgWttuy48NQc8e5FW3a7LtirYfPFnqhzlEOJPcq50jgD+66aK0tiPmngBwhMlCkmJ/FyCdNF8/voB3tqEP43+iAV4swJN3c+COWwTfzEwaN7MPROZRz62fnUJ2ehaX88J03AHgjZWQG4zE+og9sid45IECD7SG4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zd85Pid8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2623FC116C6;
+	Tue, 27 Jan 2026 09:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769506201;
+	bh=p/aELUAJDL5FGGefcJkRH8xIg2MGXOf7m+Juj3lDsOM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zd85Pid8aQ8FfqrPQIhIeGBcHux56PncQkFIlpprP3EEKVzWweH6KonUlNfLi9gFL
+	 kIzKLn9Xhe6eNi4Ip0ge4E6k8f+GuPM5dAdC6okLi049lYykMifWTg7zP5U5paLS2O
+	 tvQ71JkgFyDFJsdxS7nnlBgc8TNDp3yPKUasXf21SZLTMsqC8nTwMj8qs/TYvYeuC+
+	 bK/ftzuc1M2Uo6JT7qorkoOkt5mbpLUysfeonSEJ3qSGI9wQji0fMAqLjiz+L62jGJ
+	 BwZIS8wWbyBseOJPbeaagUOaYY2Ip7NHmaazC22O7ilLKwOme+cGdqxI5bYrP7LJ3P
+	 jaTgSkleOS7+w==
+Date: Tue, 27 Jan 2026 09:29:58 +0000
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Adam Young <admiyo@amperemail.onmicrosoft.com>
+Cc: Sudeep Holla <sudeep.holla@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Cristian Marussi <cristian.marussi@arm.com>
+Subject: Re: [PATCH 0/6] mailbox: pcc: Refactor and improve initialisation
+ and interrupt handling
+Message-ID: <aXiFlkKAuV8QSgcM@bogus>
+References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
+ <20251127-ancient-baboon-of-opportunity-5f773d@sudeepholla>
+ <aWUnZJ83_AKQDagu@bogus>
+ <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MdRQzgSNorb9rHtAGWYPOK7t2o6q2gP9FLB3ECsvgVrAQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,gmail.com,kernel.org,vger.kernel.org,linuxtesting.org];
-	TAGGED_FROM(0.00)[bounces-20646-lists,linux-acpi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,os.amperecomputing.com,xsightlabs.com,huawei.com,arm.com];
+	TAGGED_FROM(0.00)[bounces-20647-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtesting.org:url,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: 54F5F9199D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 12EE291C27
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 10:06:33AM +0100, Bartosz Golaszewski wrote:
-> On Tue, Jan 27, 2026 at 9:08â€¯AM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > On Mon, Jan 26, 2026 at 06:59:14AM +0300, Denis Sergeev wrote:
-> > > The BIT() macro uses unsigned long, which is 32 bits on 32-bit
-> > > architectures. When iterating over GPIO pins with index >= 32,
-> > > the expression (*value & BIT(i)) causes undefined behavior due
-> > > to shifting by a value >= type width.
-> > >
-> > > Since 'value' is a pointer to u64, use BIT_ULL() to ensure correct
-> > > 64-bit mask on all architectures.
-> > >
-> > > Found by Linux Verification Center (linuxtesting.org) with Svace.
-> > >
-> > > Fixes: 2c4d00cb8fc5 ("gpiolib: acpi: Use BIT() macro to increase readability")
-> > > Signed-off-by: Denis Sergeev <denserg.edu@gmail.com>
-> >
-> > Reviewed-by: Mika Westerberg <westeri@kernel.org>
+On Mon, Jan 26, 2026 at 12:07:26PM -0500, Adam Young wrote:
 > 
-> I'll queue this for v6.19-rc8.
+> 
+> On 1/12/26 11:55, Sudeep Holla wrote:
+> > On Thu, Nov 27, 2025 at 02:40:56PM +0000, Sudeep Holla wrote:
+> > > Hi Jassi,
+> > > 
+> > > On Thu, Oct 16, 2025 at 08:08:14PM +0100, Sudeep Holla wrote:
+> > > > This series refines and stabilizes the PCC mailbox driver to improve
+> > > > initialisation order, interrupt handling, and completion signaling.
+> > > > 
+> > > Are you happy to pull these patches directly from the list or do you
+> > > prefer me to send you pull request or do you want me to direct this via
+> > > ACPI/Rafael's tree. Please advice.
+> > > 
+> > Hi Jassi,
+> > 
+> > Sorry for the nag. I did see these patches in -next as well as your
+> > v6.19 merge window pull request which didn't make it to Linus tree.
+> > However I don't see it -next any longer. Please advice if you want
+> > anything from my side so that this can be merged for v6.20/v7.0
+> > 
+> 
+> I thought you had an approach you wanted to implement for the functions that
+> provided access to the Mailbox internals: you wanted to do them inline but
+> hadn't gotten to them yet.  Is that still the case?  I will resubmit mine as
+> is with -next if that is acceptable.
+> 
 
-This is half-baked solution... But okay, let's shut up at least the stream of
-this type of "fixes" in this file.
+Honestly, it has been a while and I have lost the context. Please post what
+you have or thinking of on top of linux-next or jassi's -next and we can start
+the discussion fresh.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Sudeep
 
