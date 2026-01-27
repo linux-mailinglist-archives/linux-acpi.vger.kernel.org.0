@@ -1,166 +1,239 @@
-Return-Path: <linux-acpi+bounces-20680-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20681-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APa3LokLeWnyugEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20680-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:01:29 +0100
+	id YIG1BGMMeWnyugEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20681-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:05:07 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8CA998A0
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:01:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7A199969
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 20:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B2CB30093BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 18:51:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 128D630574FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 18:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AE332AAC1;
-	Tue, 27 Jan 2026 18:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077A1329E75;
+	Tue, 27 Jan 2026 18:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rO/fVk9K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PeneBB5K"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9FF329370
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 18:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD1E324B1E;
+	Tue, 27 Jan 2026 18:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769539864; cv=none; b=NLJjOmEtkcaL3DAV6Q4wsVP2mg1LJGgTQOFG7HPMURLpA9N+osErB7FzCQDRFHCVeB0kxlfm9C011pDzV+38lS4E7SPkjGyqrbS+rwzfxM4we8FluJt0/p/ak99ir0479yMPadvPMU73X1BXV51oR5IKXvBBbSHYWWh0y978BIM=
+	t=1769540218; cv=none; b=ezhMpWPF0uSez+erYVDFF9kxYjQZuINwonaENOlVk7XmM+7BkiQM1+qmHPFMZsRjCiGh5OJzSFOTUjm+Hb5GFKgDWipdKUHBETboqmC9sT5Ksg6LtgKIE43ffyh0IWun6uP9hcOyYEndTL9EQxAMKvOUu5MreS0r0C+QPUdwoxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769539864; c=relaxed/simple;
-	bh=5fCSYs3cjWXNj6kD6uXFDIhla+bxW6w8hXBfqk6eHrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZHSgpnu6sTZN9gXobXCSsG4xB5xmiN+Uee+QpJb6rK9djO0bhBtgYjydP9EuiDEe4GTKfKeqqscJVw/tWetA360S3wJPZ4ZjkKdSNY2/oP9VVBCzXhmmblBiYtzc4erjzbW3TS37u5wTQtUHX8qIvnD4xHvoazCneoukJYxhgXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rO/fVk9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CCFC2BCAF
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 18:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769539864;
-	bh=5fCSYs3cjWXNj6kD6uXFDIhla+bxW6w8hXBfqk6eHrs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rO/fVk9KGOIQL3qj9zN8GwXwvNOtSBr1xxy+CIrUR83dXroBccPza54wycaffC/3V
-	 QNSuK8/wRgmyJChwXoett1m0vsu9yc5a9tAW68Nu+OCg7iEjauaP784XOjOGU22qlt
-	 ATxskFX4anozd4Ez/lqhpViS8/NSris7/FnHzkRtJkHAxbHDpC0r/Jw+z3MZaCsQfM
-	 RvfoSQFd8uH9MqUc2p1yE3ezViWVUJPa/Ng3ff8fzrbLGgEj5I6eOhZ5wG4Ze8aXwV
-	 7t+KB124YLWkwsX3YseO6GOYHFcTvjmycuS4TTlswJ9614jLHq14AcBIw1/wA/rT1+
-	 CFpvqeIwYonvw==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-408778a8ec4so3753296fac.0
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 10:51:04 -0800 (PST)
-X-Gm-Message-State: AOJu0YxTnxGfOIWXSZWVTMx9ybVwSBj6KZsrtBU+ZXwbS3XzE/F69E+n
-	sVgDvUs2Xouk3JdcC7SV6cgQvqq/Fh5tt+8QZyx6sj+tAGsqvRI2CL3UD6Dl/raeR0SsUnGAF78
-	vM7sfppwNDC/t853g2Ar1+eZmtgfeC2s=
-X-Received: by 2002:a05:6820:218:b0:65f:1012:68aa with SMTP id
- 006d021491bc7-662f203a2c0mr1500222eaf.1.1769539863186; Tue, 27 Jan 2026
- 10:51:03 -0800 (PST)
+	s=arc-20240116; t=1769540218; c=relaxed/simple;
+	bh=Ch0LIB4X3I+61DsXgHOBKVGaZxOxxpivi8bEXcVQRqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YLhCz/sjxBHhq5uSAsF7ofShWk+slMq5Hkocvp02LCLYI7NI28GUvk8w8QTx7ImMBjBLQmuNTL78nC0jg0nVv9Pzxi5KbcH9rXqSc5ecM8C0zqmXbURGzxSfHXLoR8N4aeZ4CE4eO4u9u9chbTSX0AfwztOyzZHz7y0a2AoOgGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PeneBB5K; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769540217; x=1801076217;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ch0LIB4X3I+61DsXgHOBKVGaZxOxxpivi8bEXcVQRqI=;
+  b=PeneBB5K61qZ6UsrDgFrzFsILjKlQBhFVzefPAq0/HWBP5aqXn/PAfcW
+   uLiLOqBx0KficCZkvJnMTol4m9hq1I1p91i8vtK+qXASHFvd2F3Qk/e94
+   /BJ31y4c72md5KoMj/anFrYXGZ7vT8r0ibXp0PUZXLh6OJiRjitS+GMUs
+   +2FrK+Q8jVem2oKtK+gEkwCGXPdIXF/djhPiCGTf4035uWXlvxc2UTw/h
+   M4n0Z6zPaJGHLKOJV4phe8Tu1VeR1GSXkkcziF1MNzpKo58avXIBoT6r7
+   EnTk4aZAIsAI+rfSyZVJxBLKKX+u9WM9EsfVnMCt85pGt1qKc+A+HJMrY
+   Q==;
+X-CSE-ConnectionGUID: 3f01NgDtRdCiCJYklNZ28A==
+X-CSE-MsgGUID: J4vS+HKHS6u2dsJ0KUptcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="81377730"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="81377730"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 10:56:56 -0800
+X-CSE-ConnectionGUID: 943+XywOTBeCmu+rfv8XIg==
+X-CSE-MsgGUID: 27YhhHwpQZ6G6ZLX+E50Fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="208409714"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 27 Jan 2026 10:56:51 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkoF6-00000000YrA-2dUf;
+	Tue, 27 Jan 2026 18:56:48 +0000
+Date: Wed, 28 Jan 2026 02:56:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+	will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
+	sudeep.holla@arm.com, rafael@kernel.org, robin.murphy@arm.com,
+	mark.rutland@arm.com, tony.luck@intel.com, bp@alien8.de,
+	tglx@linutronix.de
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, lenb@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	linux-edac@vger.kernel.org, mchehab@kernel.org,
+	xueshuai@linux.alibaba.com, zhuo.song@linux.alibaba.com,
+	oliver.yang@linux.alibaba.com,
+	Ruidong Tian <tianruidong@linux.alibaba.com>
+Subject: Re: [PATCH v6 15/16] ras: AEST: support vendor node CMN700
+Message-ID: <202601280228.CbJgYMRG-lkp@intel.com>
+References: <20260122094656.73399-16-tianruidong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2396510.ElGaqSPkdT@rafael.j.wysocki> <DFHK7ZS7H7LJ.1POCUDPSLC3CP@kernel.org>
- <CAJZ5v0gDXSdAy9wJYUc_yyHD-Y_tPk0eVzWTyMLe7uHm30_Ncw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gDXSdAy9wJYUc_yyHD-Y_tPk0eVzWTyMLe7uHm30_Ncw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 Jan 2026 19:50:51 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0h+xwRJg9=-FYnHy5O=o=YzX_u6Qpt3WQ-3XCbnJyh=vA@mail.gmail.com>
-X-Gm-Features: AZwV_QgEp63WWSibz14NNzgyCI6vuljeFyyemM8eKWk7bs1261BvkPJEzNDPnKU
-Message-ID: <CAJZ5v0h+xwRJg9=-FYnHy5O=o=YzX_u6Qpt3WQ-3XCbnJyh=vA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Documentation: driver-api: Disapprove of using
- ACPI drivers
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede <hansg@kernel.org>, 
-	Linux Documentation <linux-doc@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Armin Wolf <w_armin@gmx.de>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122094656.73399-16-tianruidong@linux.alibaba.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linux.intel.com,linuxfoundation.org,intel.com,gmx.de,amd.com,infradead.org];
-	TAGGED_FROM(0.00)[bounces-20680-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20681-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: DA8CA998A0
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,git-scm.com:url,01.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BB7A199969
 X-Rspamd-Action: no action
 
-On Wed, Jan 7, 2026 at 1:14=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
-> wrote:
->
-> On Tue, Jan 6, 2026 at 3:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
-> >
-> > On Tue Jan 6, 2026 at 1:27 PM CET, Rafael J. Wysocki wrote:
-> > > +This means that it really should never be necessary to bind a driver=
- directly to
-> > > +an ACPI device node because there is a "proper" device object repres=
-enting the
-> > > +corresponding piece of hardware that can be bound to by a "proper" d=
-river using
-> > > +the given ACPI device node as the device's ACPI companion.  Thus, in=
- principle,
-> > > +there is no reason to use ACPI drivers and if they all were replaced=
- with other
-> > > +driver types (for example, platform drivers), some code could be dro=
-pped and
-> > > +some complexity would go away.
-> >
-> > I think it would be good to explicitly encourage people to convert exis=
-ting
-> > drivers (maybe even list some of those) and rephrase the last sentence =
-to list
-> > what exact infrastructure, complexity, etc. can go away once that happe=
-ned.
->
-> I can rephrase the last sentence, but the purpose of this document is
-> to explain the motivation for the change rather than to make a call to
-> action.
->
-> > I think this would make it more likely to receive some contributions to=
-wards
-> > this goal.
->
-> I have prototype driver conversion patches for almost 50% of the cases
-> right now and I'm expecting to have them for all of the cases by the
-> end of the current development cycle, so I'm not sure how much there
-> is to gain.
->
-> I want people to not be surprised when they see those patches though.
+Hi Ruidong,
 
-Actually, all of this work is almost ready to be submitted, but in the
-meantime I put the patches on an experimental branch here:
+kernel test robot noticed the following build warnings:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=
-=3Dexperimental/acpi-driver-conversion
+[auto build test WARNING on arm64/for-next/core]
+[also build test WARNING on rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v6.19-rc7 next-20260126]
+[cannot apply to tip/smp/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-It includes some material already queued up for 6.20/7.0 and a fix
-that has been posted.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ruidong-Tian/ACPI-AEST-Parse-the-AEST-table/20260122-180219
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+patch link:    https://lore.kernel.org/r/20260122094656.73399-16-tianruidong%40linux.alibaba.com
+patch subject: [PATCH v6 15/16] ras: AEST: support vendor node CMN700
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20260128/202601280228.CbJgYMRG-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260128/202601280228.CbJgYMRG-lkp@intel.com/reproduce)
 
-The changelogs are a bit rudimentary and need some more work, but the
-code changes should be complete (famous last words).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601280228.CbJgYMRG-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/ras/aest/aest-cmn.c:209:19: warning: variable 'hnd_base' set but not used [-Wunused-but-set-variable]
+     209 |         u64 errgsr_addr, hnd_base;
+         |                          ^
+   1 warning generated.
+
+
+vim +/hnd_base +209 drivers/ras/aest/aest-cmn.c
+
+   203	
+   204	static int aest_cmn_reorgnize_node(struct aest_device *adev,
+   205					   struct acpi_aest_node *anode, u64 base)
+   206	{
+   207		struct aest_node *cmn_node;
+   208		u64 hnd_offset, cmn_node_offset, reg, logic_id, type, node_id;
+ > 209		u64 errgsr_addr, hnd_base;
+   210		struct aest_record *record;
+   211		int ret, node_index;
+   212		struct cmn_vendor_data *vendor_data;
+   213	
+   214		if (anode->interface_hdr->type !=
+   215		    ACPI_AEST_NODE_SINGLE_RECORD_MEMORY_MAPPED) {
+   216			aest_dev_err(adev, "CMN just use single memory mapping\n");
+   217			return -ENODEV;
+   218		}
+   219	
+   220		hnd_offset = *((u64 *)anode->vendor->vendor_specific_data);
+   221		cmn_node_offset = *((u64 *)&anode->vendor->vendor_specific_data[8]);
+   222	
+   223		reg = readq_relaxed((void *)base + cmn_node_offset + CMN_NODE_INFO);
+   224	
+   225		logic_id = FIELD_GET(CMN_NI_LOGICAL_ID, reg);
+   226		type = FIELD_GET(CMN_NI_NODE_TYPE, reg);
+   227		node_id = FIELD_GET(CMN_NI_NODE_ID, reg);
+   228	
+   229		hnd_base = base + hnd_offset;
+   230		node_index = cmn_config->node_id_map[type];
+   231		errgsr_addr = base + cmn_config->errgsr_offset(hnd_offset, node_index);
+   232	
+   233		// node not register, create it
+   234		cmn_node = &adev->nodes[node_index];
+   235		if (!cmn_node->errgsr) {
+   236			ret = aest_cmn_init_node(adev, cmn_node, anode, type,
+   237						 errgsr_addr);
+   238			if (ret)
+   239				return -ENOMEM;
+   240		}
+   241	
+   242		aest_dev_dbg(adev, "node type %llx, id %llx, offset %llx\n", type,
+   243			     logic_id, cmn_node_offset);
+   244	
+   245		if (!test_bit(0, anode->record_implemented))
+   246			clear_bit(logic_id, cmn_node->record_implemented);
+   247	
+   248		if (!test_bit(0, anode->status_reporting))
+   249			clear_bit(logic_id, cmn_node->status_reporting);
+   250	
+   251		record = &cmn_node->records[logic_id];
+   252		record->name =
+   253			devm_kasprintf(adev->dev, GFP_KERNEL, "record%lld", logic_id);
+   254		if (!record->name)
+   255			return -ENOMEM;
+   256		record->regs_base = devm_ioremap(
+   257			adev->dev, (resource_size_t)anode->interface_hdr->address,
+   258			sizeof(struct ras_ext_regs));
+   259		if (!record->regs_base)
+   260			return -ENOMEM;
+   261		record->addressing_mode = test_bit(0, anode->addressing_mode);
+   262		record->node = cmn_node;
+   263		record->index = logic_id;
+   264		record->access = &aest_access[anode->interface_hdr->type];
+   265	
+   266		vendor_data = devm_kzalloc(adev->dev, sizeof(struct cmn_vendor_data),
+   267					   GFP_KERNEL);
+   268		vendor_data->node_type = type;
+   269		vendor_data->node_id = node_id;
+   270		vendor_data->logic_id = logic_id;
+   271	
+   272		record->vendor_data = vendor_data;
+   273		record->vendor_data_size = sizeof(struct cmn_vendor_data);
+   274	
+   275		aest_record_dbg(record, "base %llx\n", anode->interface_hdr->address);
+   276	
+   277		return 0;
+   278	}
+   279	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
