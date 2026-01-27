@@ -1,270 +1,225 @@
-Return-Path: <linux-acpi+bounces-20675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cG6gF7vueGkCuAEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20675-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 17:58:35 +0100
+	id kO4UJov1eGnYuAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20676-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 18:27:39 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AB398151
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 17:58:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17E0986DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 18:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4FE483001320
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:58:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49AAD3011C7F
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3186635FF41;
-	Tue, 27 Jan 2026 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF58B2E7BD9;
+	Tue, 27 Jan 2026 17:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q+zOukIu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8C72BE034;
-	Tue, 27 Jan 2026 16:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8F12DF14B;
+	Tue, 27 Jan 2026 17:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769533113; cv=none; b=obG0dY/BqGi0F1K0q9/xrKpDD5hrkmgYMQH0YNmzyejm8+FWcTf9fI2ZWiOjcquhwL3+EnlRTTgI1mzuJ3LAAwomVLK2NhHZZ7lridLGAMzzzd86X56sMbp4DbNOkTDE53NvqwkewsjQ+SGzNSyyDnLIThebRsKxnU6TDA+sYCA=
+	t=1769534759; cv=none; b=VxowROiVHtZWeLd9MyPsCRuwE5+kag766DxjNDJnV6DxvbTrSQk3SCv7FGYnLDbXIa96z9IkPZTtz6+rjzs283/cYJD5svvo/mKqBQYXEbidKje/+DuLWXkg3/vsuk4OcnvneX73ghbCKvhJd1N4bT6wZEDSMiNMViHtI/9Crns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769533113; c=relaxed/simple;
-	bh=xdbGX5OuXSqXPESzqj2vsm831HFui/rc4qwES/fLSrI=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nP4Z74lq/vPNtxhEW7fwOBFKQHfxFt91CYH6Ou9yX5ze+ClT/fd97WXbnFlb6JGBov1FLswC5Zlih+/km9UUyrzijJRddLIKFkN4gfEfEBT35yD0yS1fHmzNX6Jd1yfnJUH1WAjYf/z4YE2duWa0esAe3dUQoPe1HeEyp+zTX1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f0s5w6VpwzHnGkS;
-	Wed, 28 Jan 2026 00:57:40 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id C830E40086;
-	Wed, 28 Jan 2026 00:58:26 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Jan
- 2026 16:58:25 +0000
-Date: Tue, 27 Jan 2026 16:58:24 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
+	s=arc-20240116; t=1769534759; c=relaxed/simple;
+	bh=t/ydFRl1MmbIcWNVKHLGwRuO9FF4WkDsBr1/8JHY4s4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=qkDCJ0+uvHoQXI30ZN50qvfd0tKVzKHxyO0Um1/UjNwbZfLLLeLVzRDgJWLITH29eMF92+UFypnlyIv/3WKLDx/yXjgClRqS3C8Wha9PD6fCj/2GSVLZGyhZWenYVCWZ76kqinPDBDM0j3Cauh+BG29D/VLxSDyDsmHLDipbx7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q+zOukIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BFC116C6;
+	Tue, 27 Jan 2026 17:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769534759;
+	bh=t/ydFRl1MmbIcWNVKHLGwRuO9FF4WkDsBr1/8JHY4s4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=q+zOukIug1vRhuzYf7KNMJ3WcKdiE325FzhZI/Jj6ni+swckuhql3g5kSCbltdEJC
+	 8OspZU7ujKjis1YkKY4+NZjdtvtKRR510Fqyi7MGWCWfZMOx7WhNvjhTmXUi1k3YNt
+	 FNqqBj8LKJ9vQHLozgwL8Wi1k/uO+9niMhewMCXOVsRnKX1dbNCQDjp8C4XG35bQA8
+	 61Mv18mmaw0nVJwZX3TVa4cMmdy72HlEQXS4dhrGqT4eAIjLyi5XpmGq6xqxKN228d
+	 /Yg0lEVl+WZJEme+q/UVcDarOpljm7aPuTk7U9GmrpT4s7Qjmljm0B0fKgozVGR6jd
+	 pjAdz/JaE/hcA==
+Date: Tue, 27 Jan 2026 11:25:57 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Lifeng Zheng <zhenglifeng1@huawei.com>, <catalin.marinas@arm.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <gshan@redhat.com>, <miguel.luis@oracle.com>,
-	<guohanjun@huawei.com>, <zhanjie9@hisilicon.com>, <lihuisong@huawei.com>,
-	<yubowen8@huawei.com>, <zhangpengjie2@huawei.com>, <wangzhi12@huawei.com>,
-	<linhongye@h-partners.com>, <salil.mehta@huawei.com>
-Subject: Re: [PATCH] ACPI: processor: Add acpi_processor_start() back to
- parse _CPC tables before CPU online
-Message-ID: <20260127165824.0000247f@huawei.com>
-In-Reply-To: <CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
-References: <20260120113242.3843463-1-zhenglifeng1@huawei.com>
-	<CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+Cc: huyuye <huyuye812@163.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Robert Moore <robert.moore@intel.com>, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, dai.hualiang@zte.com.cn,
+	deng.weixian@zte.com.cn, guo.chang2@zte.com.cn,
+	liu.qingtao2@zte.com.cn, wu.jiabao@zte.com.cn,
+	lin.yongchun@zte.com.cn, hu.yuye@zte.com.cn,
+	zhang.longxiang@zte.com.cn, zuo.jiang@zte.com.cn,
+	li.kunpeng@zte.com.cn
+Subject: Re: [PATCH v2] ACPI: pci_root: Clear the acpi dependencies after PCI
+ root bridge initialization on RISC-V
+Message-ID: <20260127172557.GA364754@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0ixBFGHwvSEp3Ae_s0tyhK338Gju=1+vb+O3_pH2mHyGA@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-20675-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20676-lists,linux-acpi=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[163.com,google.com,ventanamicro.com,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,intel.com,vger.kernel.org,lists.infradead.org,zte.com.cn];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:mid,huawei.com:email]
-X-Rspamd-Queue-Id: E1AB398151
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zte.com.cn:email]
+X-Rspamd-Queue-Id: F17E0986DC
 X-Rspamd-Action: no action
 
-On Tue, 27 Jan 2026 15:42:16 +0100
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
-
-> On Tue, Jan 20, 2026 at 12:33=E2=80=AFPM Lifeng Zheng <zhenglifeng1@huawe=
-i.com> wrote:
+On Tue, Jan 27, 2026 at 04:00:49PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Jan 12, 2026 at 3:17 PM huyuye <huyuye812@163.com> wrote:
 > >
-> > Currently, if boot with maxcpus less than NR_CPUS, the cppc_cpufreq dri=
-ver
-> > will fail to register. Because it requires the domain information of all
-> > possible CPUs to construct shared_cpu_map, which shows the CPUs that sh=
-are
-> > the same domain.
+> > Hi Rafael,
+> > Thank you for your thorough review and valuable comments on v1.
+> > I've updated the patch as follows:
+> > 1. Removed the redundant #ifdef CONFIG_ACPI and if (!acpi_disabled)
+> > guard as you pointed out. The entire code block indeed already depends
+> > on CONFIG_ACPI at a higher level, making the inner guard unnecessary.
+> > 2. Moved acpi_dev_clear_dependencies to RISC-V specific architecture
+> > code (driver/acpi/riscv/acpi_pci.c). This ensures that ACPI dependency
+> > clearing is handled within the appropriate architectural context.
 > >
-> > Commit c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use
-> > same path for cold and hotplug") removes probe() of acpi_processor_driv=
-er
-> > and makes acpi_cppc_processor_probe() only being called the first time =
-CPU
-> > goes online. This means that CPUs that haven't yet gone online will not
-> > have pre-parsed _CPC objects and causes cppc_cpufreq driver register fa=
-il.
-> >
-> > Add acpi_processor_start() back as the probe() callback of
-> > acpi_processor_driver and call acpi_cppc_processor_probe() in it to make
-> > sure all _CPC tables will be parsed when acpi_processor_driver register=
-ed.
-> >
-> > Fixes: c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use=
- same path for cold and hotplug")
-> > Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+> > Best regards
+> > Signed-off-by: huyuye <huyuye812@163.com>
 > > ---
-> >  drivers/acpi/processor_driver.c | 30 ++++++++++++++++++++++++++----
-> >  1 file changed, 26 insertions(+), 4 deletions(-)
+> >  drivers/acpi/pci_root.c       |  6 ++++++
+> >  drivers/acpi/riscv/Makefile   |  2 +-
+> >  drivers/acpi/riscv/acpi_pci.c | 11 +++++++++++
+> >  include/acpi/acpi_bus.h       |  1 +
+> >  4 files changed, 19 insertions(+), 1 deletion(-)
+> >  create mode 100644 drivers/acpi/riscv/acpi_pci.c
 > >
-> > diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_d=
-river.c
-> > index 65e779be64ff..c8b4daf580b0 100644
-> > --- a/drivers/acpi/processor_driver.c
-> > +++ b/drivers/acpi/processor_driver.c
-> > @@ -33,6 +33,7 @@ MODULE_AUTHOR("Paul Diefenbaugh");
-> >  MODULE_DESCRIPTION("ACPI Processor Driver");
-> >  MODULE_LICENSE("GPL");
+> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > index 9d7f85dadc48..a16eb9097cdc 100644
+> > --- a/drivers/acpi/pci_root.c
+> > +++ b/drivers/acpi/pci_root.c
+> > @@ -30,6 +30,11 @@ static int acpi_pci_root_add(struct acpi_device *device,
+> >                              const struct acpi_device_id *not_used);
+> >  static void acpi_pci_root_remove(struct acpi_device *device);
 > >
-> > +static int acpi_processor_start(struct device *dev);
-> >  static int acpi_processor_stop(struct device *dev);
-> >
-> >  static const struct acpi_device_id processor_device_ids[] =3D {
-> > @@ -46,6 +47,7 @@ static struct device_driver acpi_processor_driver =3D=
- {
-> >         .name =3D "processor",
-> >         .bus =3D &cpu_subsys,
-> >         .acpi_match_table =3D processor_device_ids,
-> > +       .probe =3D acpi_processor_start,
-> >         .remove =3D acpi_processor_stop,
-> >  };
-> >
-> > @@ -162,10 +164,6 @@ static int __acpi_processor_start(struct acpi_devi=
-ce *device)
-> >         if (!pr)
-> >                 return -ENODEV;
-> >
-> > -       result =3D acpi_cppc_processor_probe(pr);
-> > -       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
-> > -               dev_dbg(&device->dev, "CPPC data invalid or not present=
-\n");
-> > -
-> >         if (!cpuidle_get_driver() || cpuidle_get_driver() =3D=3D &acpi_=
-idle_driver)
-> >                 acpi_processor_power_init(pr);
-> >
-> > @@ -192,6 +190,30 @@ static int __acpi_processor_start(struct acpi_devi=
-ce *device)
-> >         return result;
-> >  }
-> >
-> > +static int acpi_processor_start(struct device *dev)
+> > +
+> > +void __weak arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
 > > +{
-> > +       struct acpi_device *device =3D ACPI_COMPANION(dev);
-> > +       struct acpi_processor *pr;
-> > +       int result;
-> > +
-> > +       if (!device)
-> > +               return -ENODEV;
-> > +
-> > +       pr =3D acpi_driver_data(device);
-> > +       if (!pr)
-> > +               return -ENODEV;
-> > +
-> > +       /* Protect against concurrent CPU hotplug operations */
-> > +       cpu_hotplug_disable();
-> > +       result =3D acpi_cppc_processor_probe(pr);
-> > +       cpu_hotplug_enable(); =20
->=20
-> This means that CPPC will be initialized for vCPUs that are not
-> enabled on ARM if I'm not mistaken.
-
-If we are just talking powered down at boot it used to do that
-so I assume it was fine. The corner case is ones we are explicitly
-saying are not onlineable yet but marked online capable and will
-turn up later.
-
->=20
-> I'm not sure if it is valid to do so.
-
-The conclusion of the following is I think this is fine but I'm not
-entirely confident about it.
-
-I'm struggling to figure out the right answer to this and
-it's not easy to test. I vaguely recall having some nasty emulation
-hacks to poke some x86 related _CPC stuff a while back.
-I might be able to hack something up for this as well and try to
-create pathological corner cases.
-
-The short answer is CPPC + hotplug isn't a thing today in KVM + QEMU,
-but that's not to say it never will be if someone virtualizes CPC for
-a guest.  Let's consider that hypothetical virtualization / emulation.
-
-So the questions:
-1) Does simply making this acpi_cppc_processor_probe() result in any
-   register accesses to the registers that might be found in _CPC or
-   used via other ACPI methods?
-2) Can we rely on a a VMM not do something nasty if those are accessed
-   on CPUs that haven't been instantiated yet?  e.g. Bus error.
-   A related useful question is: Can we assume these registers are
-   accessible on offlined CPUs?  If they can be unsafe to access from
-   CPUs that are temporary powered down / offline then I think we are fine =
-because
-   the CPPC code must guarantee not to access them. (I'm relying on this!)
-
-For the particular case Lifeng has run into, I think the code that matters
-(beyond instantiation of the infrastructure) is the creation of the
-domain info in acpi_get_psd(). I think _PSD can only be static data so
-shouldn't cause any register accesses to the powered down CPUs.
-
-So 'probably' fine + we'll not really know unless we get CPU HP and
-CPC.
-
-Alternative much more complex change would be to separate the grabbing of
-static data (done here) from setting up anything dynamic which would remain
-in the hotplug handler.  If those registers haven't been discovered we defi=
-nitely
-can't access them from the cpu freq driver.
-
-Thanks,
-
-Jonathan
-
-
-
-
->=20
-> Jonathan?
->=20
-> > +
-> > +       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
-> > +               dev_dbg(&device->dev, "CPPC data invalid or not present=
-\n");
-> > +
-> > +       return 0;
 > > +}
 > > +
-> >  static int acpi_processor_stop(struct device *dev)
+> >  static int acpi_pci_root_scan_dependent(struct acpi_device *adev)
 > >  {
-> >         struct acpi_device *device =3D ACPI_COMPANION(dev);
-> > --
-> > 2.33.0
-> >
-> > =20
->=20
+> >         acpiphp_check_host_bridge(adev);
+> > @@ -760,6 +765,7 @@ static int acpi_pci_root_add(struct acpi_device *device,
+> >         pci_lock_rescan_remove();
+> >         pci_bus_add_devices(root->bus);
+> >         pci_unlock_rescan_remove();
+> > +       arch_acpi_pci_root_add_clear_dep(device);
+> 
+> Actually, this could be as simple as
+> 
+>        if (IS_ENABLED(CONFIG_RISCV))
+>               acpi_dev_clear_dependencies(device);
+> 
+> with a brief comment explaining why it is needed.
+> 
+> Bjorn, any thoughts?
 
+The justification ("If a host bridge B depends on host bridge A (via
+_DEP), this call allows bridge B to proceed with enumeration after
+bridge A is fully initialized") doesn't sound specific to RISC-V.
+
+For that matter, it doesn't sound specific to host bridges either.
+
+The _DEP spec language is a bit vague.  ACPI r6.6, sec 6.5.8, says:
+
+  _DEP evaluates to a package and designates device objects that OSPM
+  should assign a higher priority in start ordering due to
+  dependencies between devices (for example, related to future
+  operation region accesses).
+
+I don't know what "device start" means.  It sounds like this alludes
+to the order in which OSPM runs some device start method?  _INI?
+Should acpi_dev_clear_dependencies() be done at the point where that
+device start method is run?
+
+> >         return 1;
+> >
+> >  remove_dmar:
+> > diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
+> > index 1284a076fa88..5b1bd0298fb9 100644
+> > --- a/drivers/acpi/riscv/Makefile
+> > +++ b/drivers/acpi/riscv/Makefile
+> > @@ -1,5 +1,5 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> > -obj-y                                  += rhct.o init.o irq.o
+> > +obj-y                                  += rhct.o init.o irq.o acpi_pci.o
+> >  obj-$(CONFIG_ACPI_PROCESSOR_IDLE)      += cpuidle.o
+> >  obj-$(CONFIG_ACPI_CPPC_LIB)            += cppc.o
+> >  obj-$(CONFIG_ACPI_RIMT)                        += rimt.o
+> > diff --git a/drivers/acpi/riscv/acpi_pci.c b/drivers/acpi/riscv/acpi_pci.c
+> > new file mode 100644
+> > index 000000000000..368ff113e5c6
+> > --- /dev/null
+> > +++ b/drivers/acpi/riscv/acpi_pci.c
+> > @@ -0,0 +1,11 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (C) 2026, ZTE Corporation
+> > + *  Author: Yu Ye Hu <hu.yuye@zte.com.cn>
+> > + */
+> > +#include <linux/acpi.h>
+> > +
+> > +void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device)
+> > +{
+> > +       acpi_dev_clear_dependencies(device);
+> > +}
+> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> > index aad1a95e6863..c00b523a6ebd 100644
+> > --- a/include/acpi/acpi_bus.h
+> > +++ b/include/acpi/acpi_bus.h
+> > @@ -996,6 +996,7 @@ int acpi_wait_for_acpi_ipmi(void);
+> >
+> >  int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices);
+> >  u32 arch_acpi_add_auto_dep(acpi_handle handle);
+> > +void arch_acpi_pci_root_add_clear_dep(struct acpi_device *device);
+> >  #else  /* CONFIG_ACPI */
+> >
+> >  static inline int register_acpi_bus_type(void *bus) { return 0; }
+> > --
+> > 2.43.0
+> >
 
