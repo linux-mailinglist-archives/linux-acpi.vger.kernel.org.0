@@ -1,163 +1,219 @@
-Return-Path: <linux-acpi+bounces-20663-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20664-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBBaA2/OeGmNtQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20663-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 15:40:47 +0100
+	id 8D8ZNDzUeGmNtQEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20664-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:05:32 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C44595DD6
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 15:40:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77B79646D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 16:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E69C6303DAEC
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 14:38:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C741300844C
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jan 2026 14:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA335B652;
-	Tue, 27 Jan 2026 14:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A61D35D5EE;
+	Tue, 27 Jan 2026 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJWCr1Oi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPH7x2+p"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AF5359714
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 14:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3794C359714
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769524690; cv=none; b=hiY3WpJTVetS8o71B+DWh4zJsIgrxPafe5aTUtwC3qHK/X7HRvnI20TC5i1QKifa2ClKT1RuoBejVY/YsZ7STmMIElz+wtqIleLhKvP+eAwGcpDEfwxcK/7zyvro1A1Ibw2ASM7fEbzkzzl2YuXLwMDqyhQfcetY26K4Qxs2grA=
+	t=1769524949; cv=none; b=UNCZdx11bI4B7AQw7HrsP5OBJ4YoFmGKHNfqpWZMrJUCQxYa1rZkjHStVKc4CrwLlyn3QCDW/sM8R8RH9Geo0HSON485YYjk0r+jt/36h505nME/T14CxvZXSGDoo9Sbtt9wbcjzQttTgcVBCQwAMyv6Gt2FvgwLSfSH3Zu2xpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769524690; c=relaxed/simple;
-	bh=/Huc7ebUuuPY+O5QSMjOHnPihdsygPxTbc17OjaPudI=;
+	s=arc-20240116; t=1769524949; c=relaxed/simple;
+	bh=LTTABU341mk+8DNI37Wpjv9Le3xFvm+L+nfyEaXJ5gg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GyM9l4ft0n/Ave4iy2Re7IytXgOBJFGe/u2IykYFv9P30dGxt5sKxbPWToCMukyj31h12bm7UBQ2NPZLobVCSudHFkM3K7TvLkf+PfjsdwMkHFM04L5Vqa4HCXjUP2NCqKITpOB7x4YOUQ+w5WbCTh0v16gN6t+VxwYqTwHXWDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJWCr1Oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1FEC2BCB6
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 14:38:10 +0000 (UTC)
+	 To:Cc:Content-Type; b=EKnLJIfu8E3rlbpWOKCqqcXuDJU2lGiUR9o3Gtvxh+CHbgNw98RF2tbPenKySApqdwSi/9N7ZGYGplrhKcpdgVSZuAdGqemzY0UF6sCujYtu6tvZJb10sQdtsksYIgCe8gZXfK/Ieedhsp5Ko2o8zgbbS4TryLEVk7JR2N/vuGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPH7x2+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00592C2BCB2
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 14:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769524690;
-	bh=/Huc7ebUuuPY+O5QSMjOHnPihdsygPxTbc17OjaPudI=;
+	s=k20201202; t=1769524949;
+	bh=LTTABU341mk+8DNI37Wpjv9Le3xFvm+L+nfyEaXJ5gg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EJWCr1Oi0pP9WIJ2i39LOol9ap/lfZKZ2fiyandM+XQCp9p1QgRI/Xh+4STUbKfro
-	 GDMx9n4jMcZ14NG7vtSjZ1Tm/INjsDuQL/tN5wZhXMTn5wfD+XAf5ffhRk0UJAjWqW
-	 mrglv6DMryLFEAneSPp8M2P9fAEwUeof2iOqrlMj/qLxlX7jx8/dHXV5DDpWxpQwbb
-	 4Rk0tXQ4ItJr4ibcq8QJK5Ny3GglM/BYwL90lQYEzOEYUrOisBjATHr6dGOc0s0Hyq
-	 uqFKjGbz8BRbS9QOlI4dGHiWluxeLL+Z6RKAF9AFn1UBz/1RaMcMNgEMEg0N0kozvt
-	 +dVF7NN+viRdg==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-45c92df37fdso2403150b6e.3
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 06:38:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUX0fewLa87iu8bZDrJBs4NNkn+qSBXDakVIGfVN+tQ8Vd8B6aGxLB3YYXoFbTZ1i6jWNSWDlO9dBxi@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO4QTbjntZ52L6NqC7Glq/A0WS8hBd9Ts6bqbZvH8irSnNBItv
-	G3WQDJo0yEvzfXu/OceLlTIVk1HkfWHUsRGxqP/PwBMNXoHw5BnMsLtkcIvyfRqPzWjUxrt5oEp
-	bqIi/ZncEqDxhh048mYjbjkVK3uQDlSg=
-X-Received: by 2002:a05:6808:1310:b0:45c:874b:3d4a with SMTP id
- 5614622812f47-45efc50276emr1119220b6e.1.1769524689166; Tue, 27 Jan 2026
- 06:38:09 -0800 (PST)
+	b=EPH7x2+pQWLgqzdf3Kq8zCOE2F1/W7BedgDEeBaZWJf9aFPgHzHMMdQsbR7lFVavM
+	 AFO4KmBcJyZS7A6EQ1WmY5oR4T5Qjc/ExoOWolIzNWhvWZ5BgxIf4ElnuFNVJZ7438
+	 TZKnl2AexHTJm//5/2O2CL3zHx8+YXy+qmK6X/PP8cIWtCeLCXXZveBNLK/3NHAJ9g
+	 0DICPSOE9JAiEd1RC7kZ4C+wFniQOCBscyBz5fo7jPPXJ+Yn194tPFR5KykBNGvASE
+	 8yboTQ6f4eiseGLYMvzwgKM7jhMOd/juXuF4zvLQWxOgcKAvMu3GvA7pEmNjjng6BF
+	 WzkqaCtQzAcGw==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4094b31a037so210403fac.1
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Jan 2026 06:42:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVVqCUDMLs1qIUoBKoSzidwnKjVUOTfXzxSl0wc+44u0TP07sKEA7qr4zZ0Pt3LOdWTdNbRN6/lSp6q@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWMvcv1LsYuYM86Rd5kTCM3bqMWWVbH3R49fHvpqbpbCv+SQO4
+	Znn29FGzA1U9R1X1NEiuvNh70OkZ+RRuL46kGJXTEexAUSpl/Dj7KO4x4dF7HzpBYhpLPPKKJ5K
+	R1CgJWk3RUB2fWwcd0X2uN9p6fXVB4gI=
+X-Received: by 2002:a05:6871:88b:b0:3e8:98d7:72e5 with SMTP id
+ 586e51a60fabf-4093ff8774cmr1113391fac.46.1769524947956; Tue, 27 Jan 2026
+ 06:42:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org>
-In-Reply-To: <20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org>
+References: <20260120113242.3843463-1-zhenglifeng1@huawei.com>
+In-Reply-To: <20260120113242.3843463-1-zhenglifeng1@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 Jan 2026 15:37:58 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0ju+7U10_nuQMijadeFrVxUWQFYJfUyRvga9qEPdK50_Q@mail.gmail.com>
-X-Gm-Features: AZwV_QhVWfAkrO7qybSqqJnJ1Tg8QS5LU98rU2z8KN1v2bcm1AhpEv1pdt_c7rE
-Message-ID: <CAJZ5v0ju+7U10_nuQMijadeFrVxUWQFYJfUyRvga9qEPdK50_Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when
- compile testing with clang < 18
-To: Nathan Chancellor <nathan@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	Borislav Petkov <bp@alien8.de>
-Cc: Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, Len Brown <lenb@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-acpi@vger.kernel.org, llvm@lists.linux.dev, 
-	patches@lists.linux.dev
+Date: Tue, 27 Jan 2026 15:42:16 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
+X-Gm-Features: AZwV_QgZb6LD1n_OwUR9x3_tzRjGXHN2vhZkiDanug5QO1OQbZv8DcDB0vtBEW8
+Message-ID: <CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor: Add acpi_processor_start() back to parse
+ _CPC tables before CPU online
+To: Lifeng Zheng <zhenglifeng1@huawei.com>, jonathan.cameron@huawei.com
+Cc: catalin.marinas@arm.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxarm@huawei.com, gshan@redhat.com, 
+	miguel.luis@oracle.com, guohanjun@huawei.com, zhanjie9@hisilicon.com, 
+	lihuisong@huawei.com, yubowen8@huawei.com, zhangpengjie2@huawei.com, 
+	wangzhi12@huawei.com, linhongye@h-partners.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20663-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[huawei.com,kernel.org,linux.alibaba.com,gmail.com,google.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-20664-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C44595DD6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: E77B79646D
 X-Rspamd-Action: no action
 
-On Thu, Jan 15, 2026 at 12:27=E2=80=AFAM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
+On Tue, Jan 20, 2026 at 12:33=E2=80=AFPM Lifeng Zheng <zhenglifeng1@huawei.=
+com> wrote:
 >
-> After a recent innocuous change to drivers/acpi/apei/ghes.c, building
-> ARCH=3Darm64 allmodconfig with clang-17 or older (which has both
-> CONFIG_KASAN=3Dy and CONFIG_WERROR=3Dy) fails with:
+> Currently, if boot with maxcpus less than NR_CPUS, the cppc_cpufreq drive=
+r
+> will fail to register. Because it requires the domain information of all
+> possible CPUs to construct shared_cpu_map, which shows the CPUs that shar=
+e
+> the same domain.
 >
->   drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds=
- limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
->     902 | static void ghes_do_proc(struct ghes *ghes,
->         |             ^
+> Commit c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use
+> same path for cold and hotplug") removes probe() of acpi_processor_driver
+> and makes acpi_cppc_processor_probe() only being called the first time CP=
+U
+> goes online. This means that CPUs that haven't yet gone online will not
+> have pre-parsed _CPC objects and causes cppc_cpufreq driver register fail=
+.
 >
-> A KASAN pass that removes unneeded stack instrumentation, enabled by
-> default in clang-18 [1], drastically improves stack usage in this case.
+> Add acpi_processor_start() back as the probe() callback of
+> acpi_processor_driver and call acpi_cppc_processor_probe() in it to make
+> sure all _CPC tables will be parsed when acpi_processor_driver registered=
+.
 >
-> To avoid the warning in the common allmodconfig case when it can break
-> the build, disable KASAN for ghes.o when compile testing with clang-17
-> and older. Disabling KASAN outright may hide legitimate runtime issues,
-> so live with the warning in that case; the user can either increase the
-> frame warning limit or disable -Werror, which they should probably do
-> when debugging with KASAN anyways.
->
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
-> Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf=
-1e8c2a30300d08f1a [1]
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Fixes: c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use s=
+ame path for cold and hotplug")
+> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 > ---
->  drivers/acpi/apei/Makefile | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/acpi/processor_driver.c | 30 ++++++++++++++++++++++++++----
+>  1 file changed, 26 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
-> index 2c474e6477e1..346cdf0a0ef9 100644
-> --- a/drivers/acpi/apei/Makefile
-> +++ b/drivers/acpi/apei/Makefile
-> @@ -1,6 +1,10 @@
->  # SPDX-License-Identifier: GPL-2.0
->  obj-$(CONFIG_ACPI_APEI)                +=3D apei.o
->  obj-$(CONFIG_ACPI_APEI_GHES)   +=3D ghes.o
-> +# clang versions prior to 18 may blow out the stack with KASAN
-> +ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-vers=
-ion, 180000),y_y_)
-> +KASAN_SANITIZE_ghes.o :=3D n
-> +endif
->  obj-$(CONFIG_ACPI_APEI_EINJ)   +=3D einj.o
->  einj-y                         :=3D einj-core.o
->  einj-$(CONFIG_ACPI_APEI_EINJ_CXL) +=3D einj-cxl.o
+> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_dri=
+ver.c
+> index 65e779be64ff..c8b4daf580b0 100644
+> --- a/drivers/acpi/processor_driver.c
+> +++ b/drivers/acpi/processor_driver.c
+> @@ -33,6 +33,7 @@ MODULE_AUTHOR("Paul Diefenbaugh");
+>  MODULE_DESCRIPTION("ACPI Processor Driver");
+>  MODULE_LICENSE("GPL");
 >
-> ---
+> +static int acpi_processor_start(struct device *dev);
+>  static int acpi_processor_stop(struct device *dev);
+>
+>  static const struct acpi_device_id processor_device_ids[] =3D {
+> @@ -46,6 +47,7 @@ static struct device_driver acpi_processor_driver =3D {
+>         .name =3D "processor",
+>         .bus =3D &cpu_subsys,
+>         .acpi_match_table =3D processor_device_ids,
+> +       .probe =3D acpi_processor_start,
+>         .remove =3D acpi_processor_stop,
+>  };
+>
+> @@ -162,10 +164,6 @@ static int __acpi_processor_start(struct acpi_device=
+ *device)
+>         if (!pr)
+>                 return -ENODEV;
+>
+> -       result =3D acpi_cppc_processor_probe(pr);
+> -       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+> -               dev_dbg(&device->dev, "CPPC data invalid or not present\n=
+");
+> -
+>         if (!cpuidle_get_driver() || cpuidle_get_driver() =3D=3D &acpi_id=
+le_driver)
+>                 acpi_processor_power_init(pr);
+>
+> @@ -192,6 +190,30 @@ static int __acpi_processor_start(struct acpi_device=
+ *device)
+>         return result;
+>  }
+>
+> +static int acpi_processor_start(struct device *dev)
+> +{
+> +       struct acpi_device *device =3D ACPI_COMPANION(dev);
+> +       struct acpi_processor *pr;
+> +       int result;
+> +
+> +       if (!device)
+> +               return -ENODEV;
+> +
+> +       pr =3D acpi_driver_data(device);
+> +       if (!pr)
+> +               return -ENODEV;
+> +
+> +       /* Protect against concurrent CPU hotplug operations */
+> +       cpu_hotplug_disable();
+> +       result =3D acpi_cppc_processor_probe(pr);
+> +       cpu_hotplug_enable();
 
-I'm inclined to apply this for 6.20/7.0 unless someone has any
-particular heartburn related to it.
+This means that CPPC will be initialized for vCPUs that are not
+enabled on ARM if I'm not mistaken.
+
+I'm not sure if it is valid to do so.
+
+Jonathan?
+
+> +
+> +       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+> +               dev_dbg(&device->dev, "CPPC data invalid or not present\n=
+");
+> +
+> +       return 0;
+> +}
+> +
+>  static int acpi_processor_stop(struct device *dev)
+>  {
+>         struct acpi_device *device =3D ACPI_COMPANION(dev);
+> --
+> 2.33.0
+>
+>
 
