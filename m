@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-20736-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20737-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PyiAshxemlI6QEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20736-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:30:00 +0100
+	id yCQeLIhxemlI6QEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20737-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:28:56 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD53CA889B
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:29:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BFAA881C
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F01E30574FB
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 500DF300CA3F
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9EE378D6D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3630378D82;
 	Wed, 28 Jan 2026 20:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbukFBG+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MDwDdAd9"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4F2378837;
-	Wed, 28 Jan 2026 20:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EC6376472;
+	Wed, 28 Jan 2026 20:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769632091; cv=none; b=mubM2BXCbr5vBWY1t0s3N1cjNewHNMKHTTGoQmuAuJDqxiBcusxgE+p9vhq2rnMXqMqGNoQwfwWTClXUDIXjnCv80W9eguIdg1dpQM6xFZ9ab4jNXjzr5qRveDJIBk2kWLkbbGsF53VDGbtJt4rsm79hcDzO/D6R17v3HXCq8Pc=
+	t=1769632091; cv=none; b=pOGb2gH3okGTOpoMhHSqr5O5eSvDalFuBiczeYvkx61Gd3Dz/sEFHa+QtYm2aSIxssdxNh9Xl5JAdoCfNSzXXNJshm3YeyndY5bia/Q+T4vOpjbIFfblWgFdqqt5rGxUqEUNZbn91TWWexEjds0JjAM3VBh+JvIReucpC/Vkjz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769632091; c=relaxed/simple;
-	bh=ocyqe4U7WsJJbTpfliXFcM4vxluIpCLTh7ZpGc7FQ9c=;
+	bh=jn4odfUh7D9q/BnIUXd595ocfV3eTkf4xm4P7+F2KGs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HFQo9ZxTXLxsR410HCm5IiOV4+sVt+YhPP37D/9K8JLUR1QgREkIhNr+kjxZ0iZF6bgHrQTAGkM9XbOQJNISzsHUREBps7MaYlIe1n0Wj09/6xT+AqAAVGfGh1212kJL06yxu5wDBxqw/sXojDmxXSan8w/aYvnV4VKXD6Ii4eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbukFBG+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE73C2BCB6;
+	 In-Reply-To:To:Cc; b=M2wOOAYZf63eAW5KheZJDh9c/sP1/uULHO8XzYV+Wy5HZ+PX3+XfNeMqI2BEb42czYIPpDBBERJn+ggT+6bIuOUpSxzl1+G3Ocfzef6fS/3tp+gXpqapaKjfcJhPhYEPfTxeMlNrc11/mfFes+TjkeAyhKN2aDx6fOcFr2b1QgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MDwDdAd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FFAC16AAE;
 	Wed, 28 Jan 2026 20:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769632090;
-	bh=ocyqe4U7WsJJbTpfliXFcM4vxluIpCLTh7ZpGc7FQ9c=;
+	s=k20201202; t=1769632091;
+	bh=jn4odfUh7D9q/BnIUXd595ocfV3eTkf4xm4P7+F2KGs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HbukFBG+BVdHcteku9MwelF3rnMrQgJFghq6OZXCg5Wo5w/M6fgaw9wzgtHBlHOW1
-	 rW+G8vQfaNvEpize+pVloepoxynpzcwSDZtd1EvjSC7x6CRsoL+mEwfeiWcRaINuAB
-	 HteP3IzzZ4ADheYpxvQLwdEw4d45oPj+bD4erFph+GLriIDePg7Wy0A795AFfwg58Q
-	 oPznvx57FUi9ilO1GmxcLQEd3anBF7PgGs6eLNE0VUweCeMp0zy8wox7hUNXwW9sYN
-	 nrkbieancGhVy32DDtoVxFMZ22KPgdi7fRCht6u66H7FBBP/GsUmiYk9w4BxjqokkX
-	 +WncgTdQo4sjA==
+	b=MDwDdAd9XRRNE3fXT1SsP2N74mIyBQurX5zlQpUC8Uwy5AxUyQrSaVBKvEKbod00f
+	 3hInkZQcy1YLatEB3rGECMP/1IUZQsPXikMMnz8mqBG/N4WS0dCQJ/ncBfBhARqLkK
+	 v993QwZbPlgeVFVHoLdS+YkInKWyqZru//r+yWQruQdzLUZppye1iEQoeUBJpei/r8
+	 l8yDTPtdKEuywf61SCIRW85jAbXeJUxY+Y+yycda8PnEqfQvOWN6SYz0cA/51FeRWf
+	 TTW453sP2DeaNW4ElCPILZLVN4riIItZH/nbq2wBlp8P4qsNwoKEJ5YV2lfrua3Cw7
+	 7FuCBahkxxcow==
 From: Drew Fustini <fustini@kernel.org>
-Date: Wed, 28 Jan 2026 12:27:34 -0800
-Subject: [PATCH RFC v2 13/17] acpi: pptt: Add helper to find a cache from
- id
+Date: Wed, 28 Jan 2026 12:27:35 -0800
+Subject: [PATCH RFC v2 14/17] include: acpi: actbl2: Add structs for RQSC
+ table
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-ssqosid-cbqri-v2-13-dca586b091b9@kernel.org>
+Message-Id: <20260128-ssqosid-cbqri-v2-14-dca586b091b9@kernel.org>
 References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 In-Reply-To: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -86,12 +86,12 @@ To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
 Cc: Paul Walmsley <paul.walmsley@sifive.com>, linux-acpi@vger.kernel.org, 
  acpica-devel@lists.linux.dev, devicetree@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3896; i=fustini@kernel.org;
- h=from:subject:message-id; bh=ocyqe4U7WsJJbTpfliXFcM4vxluIpCLTh7ZpGc7FQ9c=;
- b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFQZ+FZveccRm85//urc4F8ws39AV4PNEeSnr7A3fJ
- qQfjjZR6ihlYRDjYpAVU2TZ9CHvwhKv0K8L5r/YBjOHlQlkCAMXpwBMZN5JRoY9yR671mX9nXtM
- Y0eh5fX2lpN5ji2OBTNnHiqsUwgTMzZn+B86nb1+klSz0ddQYdlrLO/8j2srLPvgcEXN9ulepdj
- O1ywA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3784; i=fustini@kernel.org;
+ h=from:subject:message-id; bh=jn4odfUh7D9q/BnIUXd595ocfV3eTkf4xm4P7+F2KGs=;
+ b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFQYuf+rF9cdUp/OLUNZB9dDmGU1v8/a8TDT4kd770
+ Fs8T2hKRykLgxgXg6yYIsumD3kXlniFfl0w/8U2mDmsTCBDGLg4BWAiF7Yx/E/VP/jo2DT+dXOC
+ L1V5Le1/cSEtaInd38bvD4/9YGFy+JTMyHB+ZtysU13nM+xZDl1pKptxhLP42asagWTH7GXyDe8
+ murAAAA==
 X-Developer-Key: i=fustini@kernel.org; a=openpgp;
  fpr=1B6F948213EA489734F3997035D5CD577C1E6010
 X-Rspamd-Server: lfdr
@@ -100,12 +100,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20736-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20737-lists,linux-acpi=lfdr.de];
 	FREEMAIL_TO(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,bytedance.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -121,129 +121,135 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD53CA889B
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 92BFAA881C
 X-Rspamd-Action: no action
 
-Add function to find the pointer to an instance of acpi_pptt_cache.
+Add structs for the RQSC table which describes the properties of the
+RISC-V QoS controllers (CBQRI) in the system. The table also describes
+the topological arrangement of the QoS controllers and resources in the
+system. The topology is expressed in terms of the location of the
+resources within the system and the relation between the QoS Controller
+and the resource it manages.
 
-find_acpi_cache_from_id() is based on find_acpi_cache_level_from_id()
-from commit c4170570cc7f ("ACPI / PPTT: Find PPTT cache level by ID") in
-the morse/mpam/snapshot/v6.14-rc1 branch.
-
-TODO: find_acpi_cache_level_from_id() has changed since then so this
-function should be updated. In additon, there may be a simpler way for
-acpi_parse_rqsc() than adding this function to get a pointer to
-acpi_pptt_cache.
-
+Link: https://github.com/riscv-non-isa/riscv-cbqri/releases/tag/v1.0
+Link: https://github.com/riscv-non-isa/riscv-rqsc/blob/main/src/chapter2.adoc
 Signed-off-by: Drew Fustini <fustini@kernel.org>
 ---
- drivers/acpi/pptt.c  | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h |  8 +++++++
- 2 files changed, 71 insertions(+)
+ include/acpi/actbl2.h | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index de5f8c018333..d1002673dc39 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -1063,3 +1063,66 @@ int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index f726bce3eb84..7367990349ee 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -53,6 +53,7 @@
+ #define ACPI_SIG_RGRT           "RGRT"	/* Regulatory Graphics Resource Table */
+ #define ACPI_SIG_RHCT           "RHCT"	/* RISC-V Hart Capabilities Table */
+ #define ACPI_SIG_RIMT           "RIMT"	/* RISC-V IO Mapping Table */
++#define ACPI_SIG_RQSC           "RQSC"	/* RISC-V RISC-V Quality of Service Controller */
+ #define ACPI_SIG_SBST           "SBST"	/* Smart Battery Specification Table */
+ #define ACPI_SIG_SDEI           "SDEI"	/* Software Delegated Exception Interface Table */
+ #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
+@@ -3165,6 +3166,97 @@ enum acpi_rgrt_image_type {
+ 	ACPI_RGRT_TYPE_RESERVED = 2	/* 2 and greater are reserved */
+ };
  
- 	return 0;
- }
++/*******************************************************************************
++ *
++ * RQSC - RISC-V Quality of Service Controller
++ *        Version 1
++ *
++ ******************************************************************************/
++
++struct acpi_table_rqsc_fields_res {
++	u8 type;	// 1
++	u8 resv;	// 1
++	u16 length;	// 2
++	u16 flags;	// 2
++	u8 resv2;	// 1
++	u8 id_type;	// 1
++	u64 id1;	// 8
++	u32 id2;	// 4
++};
++
++struct acpi_table_rqsc_fields {
++	u8 type;	//  1
++	u8 resv;	//  1
++	u16 length;	//  2
++	u32 reg[3];	// 12
++	u32 rcid;	//  4
++	u32 mcid;	//  4
++	u16 flags;	//  2
++	u16 nres;	//  2
++	struct acpi_table_rqsc_fields_res res; // 20
++};
++
++struct acpi_table_rqsc {
++	struct acpi_table_header header;	/* Common ACPI table header */
++	u32 num;
++	struct acpi_table_rqsc_fields f[6];
++};
++
++/* RQSC Flags */
++#define ACPI_RQSC_TIMER_CANNOT_WAKEUP_CPU       (1)
 +
 +/*
-+ * find_acpi_cache_from_id() is adapted from find_acpi_cache_level_from_id()
-+ * introduced by c4170570cc7f ("ACPI / PPTT: Find PPTT cache level by ID")
-+ * in the morse/mpam/snapshot/v6.14-rc1 branch.
-+ *
-+ * TODO: find_acpi_cache_level_from_id() has changed since then so this
-+ * function should be updated. In additon, there may be a simpler way for
-+ * acpi_parse_rqsc() than adding this function to get a pointer to
-+ * acpi_pptt_cache.
++ * RQSC subtables
 + */
-+struct acpi_pptt_cache *find_acpi_cache_from_id(u32 cache_id)
-+{
-+	u32 acpi_cpu_id;
-+	acpi_status status;
-+	int level, cpu, num_levels;
-+	struct acpi_pptt_cache *cache;
-+	struct acpi_table_header *table;
-+	struct acpi_pptt_cache_v1 *cache_v1;
-+	struct acpi_pptt_processor *cpu_node;
++struct acpi_rqsc_node_header {
++	u16 type;
++	u16 length;
++	u16 revision;
++};
 +
-+	status = acpi_get_table(ACPI_SIG_PPTT, 0, &table);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_pptt_warn_missing();
-+		return NULL;
-+	}
++/* Values for RQSC subtable Type above */
++enum acpi_rqsc_node_type {
++	ACPI_RQSC_NODE_TYPE_ISA_STRING = 0x0000,
++	ACPI_RQSC_NODE_TYPE_CMO = 0x0001,
++	ACPI_RQSC_NODE_TYPE_MMU = 0x0002,
++	ACPI_RQSC_NODE_TYPE_RESERVED = 0x0003,
++	ACPI_RQSC_NODE_TYPE_HART_INFO = 0xFFFF,
++};
 +
-+	if (table->revision < 3) {
-+		acpi_put_table(table);
-+		return NULL;
-+	}
++/*
++ * RQSC node specific subtables
++ */
 +
-+	for_each_possible_cpu(cpu) {
-+		num_levels = 0;
-+		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
++/* ISA string node structure */
++struct acpi_rqsc_isa_string {
++	u16 isa_length;
++	char isa[];
++};
 +
-+		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
-+		if (!cpu_node)
-+			break;
-+		num_levels = acpi_count_levels(table, cpu_node, NULL);
++struct acpi_rqsc_cmo_node {
++	u8 reserved;		/* Must be zero */
++	u8 cbom_size;		/* CBOM size in powerof 2 */
++	u8 cbop_size;		/* CBOP size in powerof 2 */
++	u8 cboz_size;		/* CBOZ size in powerof 2 */
++};
 +
-+		for (level = 1; level <= num_levels; level++) {
-+			cache = acpi_find_cache_node(table, acpi_cpu_id,
-+						     ACPI_PPTT_CACHE_TYPE_UNIFIED,
-+						     level, &cpu_node);
-+			if (!cache)
-+				continue;
++struct acpi_rqsc_mmu_node {
++	u8 reserved;		/* Must be zero */
++	u8 mmu_type;		/* Virtual Address Scheme */
++};
 +
-+			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
-+						cache,
-+						sizeof(struct acpi_pptt_cache));
++enum acpi_rqsc_mmu_type {
++	ACPI_RQSC_MMU_TYPE_SV39 = 0,
++	ACPI_RQSC_MMU_TYPE_SV48 = 1,
++	ACPI__MMU_TYPE_SV57 = 2
++};
 +
-+			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
-+			    cache_v1->cache_id == cache_id) {
-+				acpi_put_table(table);
-+				return cache;
-+			}
-+		}
-+	}
++/* Hart Info node structure */
++struct acpi_rqsc_hart_info {
++	u16 num_offsets;
++	u32 uid;		/* ACPI processor UID */
++};
 +
-+	acpi_put_table(table);
-+	return NULL;
-+}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index fbf0c3a65f59..fee6a5059a46 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1546,6 +1546,7 @@ int find_acpi_cpu_topology_package(unsigned int cpu);
- int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
- void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
- int find_acpi_cache_level_from_id(u32 cache_id);
-+struct acpi_pptt_cache *find_acpi_cache_from_id(u32 cache_id);
- int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus);
- #else
- static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
-@@ -1570,10 +1571,17 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
- }
- static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
- 						     cpumask_t *cpus) { }
-+
- static inline int find_acpi_cache_level_from_id(u32 cache_id)
- {
- 	return -ENOENT;
- }
-+
-+static inline struct acpi_pptt_cache *find_acpi_cache_from_id(u32 cache_id)
-+{
-+	return NULL;
-+}
-+
- static inline int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id,
- 						      cpumask_t *cpus)
- {
+ /*******************************************************************************
+  *
+  * RHCT - RISC-V Hart Capabilities Table
 
 -- 
 2.43.0
