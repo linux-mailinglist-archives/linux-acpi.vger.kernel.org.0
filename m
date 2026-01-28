@@ -1,53 +1,52 @@
-Return-Path: <linux-acpi+bounces-20724-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20725-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KsQJ8ZxemlI6QEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20724-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:29:58 +0100
+	id ALYKHNtxemlI6QEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20725-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:30:19 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002FAA8892
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:29:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0518AA88B0
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75A653074A7E
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFD94307C32A
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27F037107C;
-	Wed, 28 Jan 2026 20:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918C2374728;
+	Wed, 28 Jan 2026 20:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmTmP1J+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnEr3FIf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D607337688;
-	Wed, 28 Jan 2026 20:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C82B336ECA;
+	Wed, 28 Jan 2026 20:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769632083; cv=none; b=hRCfFsbB66LQ6lR0QtX5WlKKfQFJ+vCKqWA517Cm6Zn2NOIIxaa+R4B+PlUsv97No1AFzrjl/XHokr4gOPOdZgr01LkOYzwSOMSaBZjuVcBD1pXLl+jvnb4rdJ93VL3Ar7H+0nyAxZMAXbzyLVPe7iUJ/hp68eL/xzcNRpJ1yLA=
+	t=1769632084; cv=none; b=fWjYunNCJjlDzqWR4PZalwJU2HnpVCpQqLE2iNasqgxM2uC5Wi9qIsD16SuS8f7ROmCoN05BQBKewkulIkftCOX1AWFbut8IWCF1WySwsNK+tmXzPs1874Zlh+7Y0TweX3tD/N56WbkxmvcNAaETkQRyjifrbwIYZbcw3hrRVUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769632083; c=relaxed/simple;
-	bh=iU4P/QyFDo51iNRXh33LwyQncDIl37ClLj6x8G/smfI=;
+	s=arc-20240116; t=1769632084; c=relaxed/simple;
+	bh=fj8k7O5ZHAbvxYPSXABfgdwCx96nHjY6bA9gTqNje0o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RVoxPlWlB0uXhltjA+D47odu4JPwi3KyL/bea0TxedetTHlCmP8ISLN9jiFv+YOsXeaohd6WbpvdFApSFo8wr7fj3/gBNOZYgZJNwsxzKKii56nsfj/pfetx2rZw23aHeyieUxyAue/t+NzT9byCv/j8vYG7Hhwh3iNzFqeJ/gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmTmP1J+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472EC2BC9E;
+	 In-Reply-To:To:Cc; b=GkgShrBr5j0eS5ylCkLICGCQi9mQiWoZbeYXM4LrHujKKCOEzReewyR1Y7e7CjIpao2Btk6Uo7ktcUlmRgRSqQc94ByziNU4lOTbke5fPy9tzzAtSafhD/Ct1bmetGfVu0+Nz3dz3D3rDwDBATOe/boFC/DmQqTxEgLHg+CcCt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnEr3FIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE4BC4CEF7;
 	Wed, 28 Jan 2026 20:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769632083;
-	bh=iU4P/QyFDo51iNRXh33LwyQncDIl37ClLj6x8G/smfI=;
+	s=k20201202; t=1769632084;
+	bh=fj8k7O5ZHAbvxYPSXABfgdwCx96nHjY6bA9gTqNje0o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=lmTmP1J+Qghc05Nqc5cuJVnSgKJfS/c5eJF7LeB5R271apI5myUekh302dfbDgCgN
-	 wx+sDKAT57yvi1HnUvqWhNOCDbj2SCV5EUegmE/sDE++rEAZyXqy/BCBUbvX7vse7q
-	 cJ4abyQlrOnkTmmRSdyYptIopsnsZpq+POLi2X4YmB08d4JB9wHhDqAc2jAvl6+GYY
-	 TNgv1oPjxFgfwp0vm7PLyrh71UTJXNSXfKC9lJyLpk0M+dfhUIyeM4f2+bVEvYyhh2
-	 bbv4tz9DF5egQtGnkPc5S6BFFvq4aMGKdl87/9yZEr+6JjKuqn7Gl3K8VRyALJpb7y
-	 2miCt+A7iqigA==
+	b=lnEr3FIfCsXlF/AQZanvEtVWCn/JltE3MGIvF9w4D4ayIgdylOAJhvTtuvl1r1IOB
+	 CdyhNLl88Girdfnj8BXm+NdMj0JPjYlXE6ocKtxhT0Hx+L7zfz0zRGyWi80zX6gbz4
+	 OgmsOZIyMFTBYWi8TBTV18am6n2i77N7/fvZnMmoPzhIf7Z6o8hR2wvYORIFj6je/I
+	 myCicl/CY+6IKLZOWpOQ2HlBJ9WJQS8l1NRyVqqcsEQpi6qCXQx4+5ogUY8gGbrzsb
+	 L0Rozibjfll3jBe4vQq+vImqDRbzfkYQOQHe6+sAc6wcTdyyO7fuW+TnwSOTm2Ixub
+	 hSEzvjmQ9jBTA==
 From: Drew Fustini <fustini@kernel.org>
-Date: Wed, 28 Jan 2026 12:27:22 -0800
-Subject: [PATCH RFC v2 01/17] dt-bindings: riscv: Add Ssqosid extension
- description
+Date: Wed, 28 Jan 2026 12:27:23 -0800
+Subject: [PATCH RFC v2 02/17] RISC-V: Detect the Ssqosid extension
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -55,8 +54,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-ssqosid-cbqri-v2-1-dca586b091b9@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260128-ssqosid-cbqri-v2-2-dca586b091b9@kernel.org>
 References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 In-Reply-To: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -84,15 +83,14 @@ To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
 Cc: Paul Walmsley <paul.walmsley@sifive.com>, linux-acpi@vger.kernel.org, 
- acpica-devel@lists.linux.dev, devicetree@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>
+ acpica-devel@lists.linux.dev, devicetree@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1214; i=fustini@kernel.org;
- h=from:subject:message-id; bh=iU4P/QyFDo51iNRXh33LwyQncDIl37ClLj6x8G/smfI=;
- b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFfpPVLT64/lPNeKa8oEgmen1mrtmnF3btkdEM+bZT
- 5cEdc3lHaUsDGJcDLJiiiybPuRdWOIV+nXB/BfbYOawMoEMYeDiFICJTGpj+MV0pWRf986zx0Nu
- VR9/VLFUSuTSrUS/NeX6ryTPbYy7On0hI0Pj4tWnbWpmT5SIMqmyux6dJueim/9hsViYYOaG5Z0
- 6FmwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1618; i=fustini@kernel.org;
+ h=from:subject:message-id; bh=fj8k7O5ZHAbvxYPSXABfgdwCx96nHjY6bA9gTqNje0o=;
+ b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFfobF4qs9Wp5vWb6ury3XytXTFYXU1Wo2C3hnDqzY
+ am63YaVHaUsDGJcDLJiiiybPuRdWOIV+nXB/BfbYOawMoEMYeDiFICJxK9g+B/N/WVx2Je9++5/
+ WsS0Vmez1XzV4xMTbjRtSGSqkmVr2/uZkeFxsmrwLb+j0f+PTpqiwF/yd31fX6vOQYXj3Hrv2zM
+ FlzEAAA==
 X-Developer-Key: i=fustini@kernel.org; a=openpgp;
  fpr=1B6F948213EA489734F3997035D5CD577C1E6010
 X-Rspamd-Server: lfdr
@@ -101,16 +99,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20724-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20725-lists,linux-acpi=lfdr.de];
 	FREEMAIL_TO(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,bytedance.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[43];
+	RCPT_COUNT_TWELVE(0.00)[42];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -122,38 +120,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 002FAA8892
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,semihalf.com:email]
+X-Rspamd-Queue-Id: 0518AA88B0
 X-Rspamd-Action: no action
 
-Document the ratified Supervisor-mode Quality of Service ID (Ssqosid)
-extension v1.0.
+Ssqosid is the RISC-V Quality-of-Service (QoS) Identifiers specification
+which defines the Supervisor Resource Management Configuration (srmcfg)
+register.
 
 Link: https://github.com/riscv/riscv-ssqosid/releases/tag/v1.0
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Kornel Dulęba <mindal@semihalf.com>
+[fustini: rebase on current upstream]
 Signed-off-by: Drew Fustini <fustini@kernel.org>
 ---
- Documentation/devicetree/bindings/riscv/extensions.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/riscv/include/asm/hwcap.h | 1 +
+ arch/riscv/kernel/cpufeature.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Documentation/devicetree/bindings/riscv/extensions.yaml
-index 5bab356addc8..27a7b4e63eb1 100644
---- a/Documentation/devicetree/bindings/riscv/extensions.yaml
-+++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
-@@ -165,6 +165,12 @@ properties:
-             ratified at commit d70011dde6c2 ("Update to ratified state")
-             of riscv-j-extension.
+diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
+index 4369a2338541..28dff8233b34 100644
+--- a/arch/riscv/include/asm/hwcap.h
++++ b/arch/riscv/include/asm/hwcap.h
+@@ -110,6 +110,7 @@
+ #define RISCV_ISA_EXT_ZALASR		101
+ #define RISCV_ISA_EXT_ZILSD		102
+ #define RISCV_ISA_EXT_ZCLSD		103
++#define RISCV_ISA_EXT_SSQOSID		104
  
-+        - const: ssqosid
-+          description: |
-+            The Ssqosid extension for Quality of Service ID is ratified
-+            as v1.0 in commit 5059e0ca641c  ("Merge pull request #7 from
-+            ved-rivos/Ratified") of riscv-ssqosid.
-+
-         - const: sstc
-           description: |
-             The standard Sstc supervisor-level extension for time compare as
+ #define RISCV_ISA_EXT_XLINUXENVCFG	127
+ 
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index c05b11596c19..bf704b48679c 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -558,6 +558,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
+ 	__RISCV_ISA_EXT_DATA(ssaia, RISCV_ISA_EXT_SSAIA),
+ 	__RISCV_ISA_EXT_DATA(sscofpmf, RISCV_ISA_EXT_SSCOFPMF),
+ 	__RISCV_ISA_EXT_SUPERSET(ssnpm, RISCV_ISA_EXT_SSNPM, riscv_xlinuxenvcfg_exts),
++	__RISCV_ISA_EXT_DATA(ssqosid, RISCV_ISA_EXT_SSQOSID),
+ 	__RISCV_ISA_EXT_DATA(sstc, RISCV_ISA_EXT_SSTC),
+ 	__RISCV_ISA_EXT_DATA(svade, RISCV_ISA_EXT_SVADE),
+ 	__RISCV_ISA_EXT_DATA_VALIDATE(svadu, RISCV_ISA_EXT_SVADU, riscv_ext_svadu_validate),
 
 -- 
 2.43.0
