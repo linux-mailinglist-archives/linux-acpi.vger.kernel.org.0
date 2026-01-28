@@ -1,264 +1,216 @@
-Return-Path: <linux-acpi+bounces-20714-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20715-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOWQMzg7emlB4wEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20714-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:37:12 +0100
+	id 4G1XDzFAemmr4wEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20715-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:58:25 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC59AA5E35
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:37:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796C6A6698
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ACC54306EBB6
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 16:05:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54C023173094
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 16:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83330BBA5;
-	Wed, 28 Jan 2026 16:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vr4AzMKl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8578D3148B6;
+	Wed, 28 Jan 2026 16:40:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86F728D8DB;
-	Wed, 28 Jan 2026 16:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7801E318B91;
+	Wed, 28 Jan 2026 16:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616330; cv=none; b=C+TeGl7GJwVrBEOdc+nI6uOwvrsAL4Ejg6w4Z3pZUnJiXO8mcvUDigdcnn9736qJN2tbh6hSQMO+a/u0WTVwHTlljLGUqRrSP6Mm6FqmuXZUk95LU0yu7M437VcyDY3j0DrRSyTu0Xo0/aGAYkjyrUNR8Ngf0ifGoLLokcMXysU=
+	t=1769618434; cv=none; b=QJpQGKH5I6SXKpJYF45ZJRK2uTGupwYmhZV0EaL6x5qOfh8E20v/+ZgXG3Ufo3D8aDk38NOfyuLr5amnn/ybdZk72A17o3eZH49YZxk99PPfCPE/Ivoh643/S+j2ziyK4NdYPGoZYGDSAlvG/rcoFL6L3PB13n/x6C/99p23fW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616330; c=relaxed/simple;
-	bh=YZgK3C4S4IPlPWuP/KkggCsOmPCiqDm/AZvqYQOdn8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=joKw6ByKZkTTPdjZW5buH9Qmh/C6kpmkCv0rmTvuQxv/BgEZKbgs8zKhJvvsparP5qrpBeXnh4Tc385EsXfbuz4W8R7aY4jwOXCDVCeV3U0JKg0sB31iaHgRNA1YzOvQKWn40pW4MAwvlqRF0dWQPtNsYddU0fD/i1kN+AUdvFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vr4AzMKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F81C2BC86;
-	Wed, 28 Jan 2026 16:05:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769616330;
-	bh=YZgK3C4S4IPlPWuP/KkggCsOmPCiqDm/AZvqYQOdn8A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vr4AzMKlh1dghjAhMQs9pF8qLfKZUNDucWufU4r5CeSua+7zAhSrWoirEWAQg8+Ie
-	 hV+6pidiDY0YX53HtsYo0iHy9SMlkNffb73Ahj3w4Wa10jnIOEMNF1Oned8R0xDY/n
-	 Oae/0kPeS1N9eFtDU4Q1Ugka+vlMZiygECZzYAhzFZmGv7NS4pBwE8OuysYuWiRq1q
-	 IM/YKOCo02+ufrJMYKvdqozpUjBqwQsaOHzGNifZpaKtSJYraDa+TwQip/Klm7geY+
-	 WYsgJCaDaIYghxcGTGKzG8eViImZTFcCSls0QyLcuSXMStL9hvBOtRDEzGvVatoaSa
-	 Qnniz0nwolqEQ==
-Date: Wed, 28 Jan 2026 17:05:27 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [rafael-pm:bleeding-edge 172/186] kernel/time/hrtimer.c:946:48:
- error: implicit declaration of function 'tick_nohz_is_active'; did you mean
- 'tick_nohz_init'?
-Message-ID: <aXozx0PXutnm8ECX@localhost.localdomain>
-References: <202601240853.XfwHlHep-lkp@intel.com>
+	s=arc-20240116; t=1769618434; c=relaxed/simple;
+	bh=KN0RWmM/E0PJw5+tacIVqLz8j2grF2gZqhBSbSiV+TM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=R6mjnwNoPMkfN7dX/pu5a/aa+fdx/XvsKzoSuuV9ZDdEORcwe+c4VPhWESNv1vsSBDlB6Mibe5mA9OoNzNEHLZeCyHyMymBnqm8EJpMb4ox2ayYxAdtGh39rP1+crRfec/doSbsMSIPt1Z3xEkZ8GYx6OHiUJfYb276/af22N3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f1Sft4CpNzJ46ZP;
+	Thu, 29 Jan 2026 00:39:50 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6628540086;
+	Thu, 29 Jan 2026 00:40:28 +0800 (CST)
+Received: from dubpeml500008.china.huawei.com (7.214.146.94) by
+ dubpeml500005.china.huawei.com (7.214.145.207) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 28 Jan 2026 16:40:27 +0000
+Received: from dubpeml500008.china.huawei.com ([7.214.146.94]) by
+ dubpeml500008.china.huawei.com ([7.214.146.94]) with mapi id 15.02.1544.011;
+ Wed, 28 Jan 2026 16:40:27 +0000
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "mchehab@kernel.org"
+	<mchehab@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>, "rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [PATCH v16 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Thread-Topic: [PATCH v16 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Thread-Index: AQHcjJF8dezXiKYfZEmczjDGAWEGLrVktbUAgAMVYQA=
+Date: Wed, 28 Jan 2026 16:40:27 +0000
+Message-ID: <863e6f6f7d15466397948ce8e920a04c@huawei.com>
+References: <20260123175512.2066-1-shiju.jose@huawei.com>
+ <20260123175512.2066-2-shiju.jose@huawei.com>
+ <20260126171552.GJaXehSJp33nFnpvVd@fat_crate.local>
+In-Reply-To: <20260126171552.GJaXehSJp33nFnpvVd@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202601240853.XfwHlHep-lkp@intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [2.64 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20714-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,amperecomputing.com,vger.kernel.org,kvack.org,intel.com,amd.com,huawei.com,google.com,linux.intel.com,nec.com,arm.com,hpe.com,os.amperecomputing.com,gmail.com,hisilicon.com,futurewei.com];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20715-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linux-acpi@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,intel.com:email,01.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: EC59AA5E35
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shiju.jose@huawei.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 796C6A6698
 X-Rspamd-Action: no action
 
-Le Sat, Jan 24, 2026 at 08:59:57AM +0800, kernel test robot a écrit :
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> head:   7e9b0371ed5b9bf9a80c59487f47fca0ba638f61
-> commit: b0d640cf14148cbce9f1651fe6028c7586291cf5 [172/186] cpufreq: ondemand: Simplify idle cputime granularity test
-> config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260124/202601240853.XfwHlHep-lkp@intel.com/config)
-> compiler: nios2-linux-gcc (GCC) 11.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260124/202601240853.XfwHlHep-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601240853.XfwHlHep-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    kernel/time/hrtimer.c: In function 'clock_was_set':
-> >> kernel/time/hrtimer.c:946:48: error: implicit declaration of function 'tick_nohz_is_active'; did you mean 'tick_nohz_init'? [-Werror=implicit-function-declaration]
->      946 |         if (!hrtimer_hres_active(cpu_base) && !tick_nohz_is_active())
->          |                                                ^~~~~~~~~~~~~~~~~~~
->          |                                                tick_nohz_init
-
-Oops, ok here is an update. Hopefully I got it right this time:
-
----
-From: Frederic Weisbecker <frederic@kernel.org>
-Date: Wed, 7 Jan 2026 17:25:09 +0100
-Subject: [PATCH] cpufreq: ondemand: Simplify idle cputime granularity test
-
-cpufreq calls get_cpu_idle_time_us() just to know if idle cputime
-accounting has a nanoseconds granularity.
-
-Use the appropriate indicator instead to make that deduction.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-pm@vger.kernel.org
----
- drivers/cpufreq/cpufreq_ondemand.c | 7 +------
- include/linux/tick.h               | 2 ++
- kernel/time/hrtimer.c              | 2 +-
- kernel/time/tick-internal.h        | 2 --
- kernel/time/tick-sched.c           | 8 +++++++-
- kernel/time/timer.c                | 2 +-
- 6 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
-index a6ecc203f7b7..bb7db82930e4 100644
---- a/drivers/cpufreq/cpufreq_ondemand.c
-+++ b/drivers/cpufreq/cpufreq_ondemand.c
-@@ -334,17 +334,12 @@ static void od_free(struct policy_dbs_info *policy_dbs)
- static int od_init(struct dbs_data *dbs_data)
- {
- 	struct od_dbs_tuners *tuners;
--	u64 idle_time;
--	int cpu;
- 
- 	tuners = kzalloc(sizeof(*tuners), GFP_KERNEL);
- 	if (!tuners)
- 		return -ENOMEM;
- 
--	cpu = get_cpu();
--	idle_time = get_cpu_idle_time_us(cpu, NULL);
--	put_cpu();
--	if (idle_time != -1ULL) {
-+	if (tick_nohz_is_active()) {
- 		/* Idle micro accounting is supported. Use finer thresholds */
- 		dbs_data->up_threshold = MICRO_FREQUENCY_UP_THRESHOLD;
- 	} else {
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index ac76ae9fa36d..738007d6f577 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -126,6 +126,7 @@ enum tick_dep_bits {
- 
- #ifdef CONFIG_NO_HZ_COMMON
- extern bool tick_nohz_enabled;
-+extern bool tick_nohz_is_active(void);
- extern bool tick_nohz_tick_stopped(void);
- extern bool tick_nohz_tick_stopped_cpu(int cpu);
- extern void tick_nohz_idle_stop_tick(void);
-@@ -142,6 +143,7 @@ extern u64 get_cpu_idle_time_us(int cpu, u64 *last_update_time);
- extern u64 get_cpu_iowait_time_us(int cpu, u64 *last_update_time);
- #else /* !CONFIG_NO_HZ_COMMON */
- #define tick_nohz_enabled (0)
-+static inline bool tick_nohz_is_active(void) { return false; }
- static inline int tick_nohz_tick_stopped(void) { return 0; }
- static inline int tick_nohz_tick_stopped_cpu(int cpu) { return 0; }
- static inline void tick_nohz_idle_stop_tick(void) { }
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index f8ea8c8fc895..e1bbf883dfa8 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -943,7 +943,7 @@ void clock_was_set(unsigned int bases)
- 	cpumask_var_t mask;
- 	int cpu;
- 
--	if (!hrtimer_hres_active(cpu_base) && !tick_nohz_active)
-+	if (!hrtimer_hres_active(cpu_base) && !tick_nohz_is_active())
- 		goto out_timerfd;
- 
- 	if (!zalloc_cpumask_var(&mask, GFP_KERNEL)) {
-diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-index 4e4f7bbe2a64..597d816d22e8 100644
---- a/kernel/time/tick-internal.h
-+++ b/kernel/time/tick-internal.h
-@@ -156,7 +156,6 @@ static inline void tick_nohz_init(void) { }
- #endif
- 
- #ifdef CONFIG_NO_HZ_COMMON
--extern unsigned long tick_nohz_active;
- extern void timers_update_nohz(void);
- extern u64 get_jiffies_update(unsigned long *basej);
- # ifdef CONFIG_SMP
-@@ -171,7 +170,6 @@ extern void timer_expire_remote(unsigned int cpu);
- # endif
- #else /* CONFIG_NO_HZ_COMMON */
- static inline void timers_update_nohz(void) { }
--#define tick_nohz_active (0)
- #endif
- 
- DECLARE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases);
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 21ac561a8545..81c619bf662c 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -691,7 +691,7 @@ void __init tick_nohz_init(void)
-  * NO HZ enabled ?
-  */
- bool tick_nohz_enabled __read_mostly  = true;
--unsigned long tick_nohz_active  __read_mostly;
-+static unsigned long tick_nohz_active  __read_mostly;
- /*
-  * Enable / Disable tickless mode
-  */
-@@ -702,6 +702,12 @@ static int __init setup_tick_nohz(char *str)
- 
- __setup("nohz=", setup_tick_nohz);
- 
-+bool tick_nohz_is_active(void)
-+{
-+	return tick_nohz_active;
-+}
-+EXPORT_SYMBOL_GPL(tick_nohz_is_active);
-+
- bool tick_nohz_tick_stopped(void)
- {
- 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 1f2364126894..7e1e3bde6b8b 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -281,7 +281,7 @@ DEFINE_STATIC_KEY_FALSE(timers_migration_enabled);
- 
- static void timers_update_migration(void)
- {
--	if (sysctl_timer_migration && tick_nohz_active)
-+	if (sysctl_timer_migration && tick_nohz_is_active())
- 		static_branch_enable(&timers_migration_enabled);
- 	else
- 		static_branch_disable(&timers_migration_enabled);
--- 
-2.51.1
-
+DQo+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj5Gcm9tOiBCb3Jpc2xhdiBQZXRrb3YgPGJw
+QGFsaWVuOC5kZT4NCj5TZW50OiAyNiBKYW51YXJ5IDIwMjYgMTc6MTYNCj5UbzogU2hpanUgSm9z
+ZSA8c2hpanUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiByYWZhZWxAa2VybmVsLm9yZzsgYWtwbUBs
+aW51eC1mb3VuZGF0aW9uLm9yZzsgcnBwdEBrZXJuZWwub3JnOw0KPmRmZXJndXNvbkBhbXBlcmVj
+b21wdXRpbmcuY29tOyBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+YWNwaUB2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgtZG9jQHZnZXIua2VybmVs
+Lm9yZzsNCj50b255Lmx1Y2tAaW50ZWwuY29tOyBsZW5iQGtlcm5lbC5vcmc7IGxlby5kdXJhbkBh
+bWQuY29tOw0KPllhemVuLkdoYW5uYW1AYW1kLmNvbTsgbWNoZWhhYkBrZXJuZWwub3JnOyBKb25h
+dGhhbiBDYW1lcm9uDQo+PGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IExpbnV4YXJtIDxs
+aW51eGFybUBodWF3ZWkuY29tPjsNCj5yaWVudGplc0Bnb29nbGUuY29tOyBqaWFxaXlhbkBnb29n
+bGUuY29tOyBKb24uR3JpbW1AYW1kLmNvbTsNCj5kYXZlLmhhbnNlbkBsaW51eC5pbnRlbC5jb207
+IG5hb3lhLmhvcmlndWNoaUBuZWMuY29tOw0KPmphbWVzLm1vcnNlQGFybS5jb207IGp0aG91Z2h0
+b25AZ29vZ2xlLmNvbTsgc29tYXN1bmRhcmFtLmFAaHBlLmNvbTsNCj5lcmRlbWFrdGFzQGdvb2ds
+ZS5jb207IHBnb25kYUBnb29nbGUuY29tOyBkdWVud2VuQGdvb2dsZS5jb207DQo+Z3RoZWxlbkBn
+b29nbGUuY29tOyB3c2Nod2FydHpAYW1wZXJlY29tcHV0aW5nLmNvbTsNCj53YnNAb3MuYW1wZXJl
+Y29tcHV0aW5nLmNvbTsgbmlmYW4uY3hsQGdtYWlsLmNvbTsgdGFueGlhb2ZlaQ0KPjx0YW54aWFv
+ZmVpQGh1YXdlaS5jb20+OyBaZW5ndGFvIChCKSA8cHJpbWUuemVuZ0BoaXNpbGljb24uY29tPjsg
+Um9iZXJ0bw0KPlNhc3N1IDxyb2JlcnRvLnNhc3N1QGh1YXdlaS5jb20+OyBrYW5na2FuZy5zaGVu
+QGZ1dHVyZXdlaS5jb207DQo+d2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT4N
+Cj5TdWJqZWN0OiBSZTogW1BBVENIIHYxNiAxLzJdIEFDUEk6UkFTMjogQWRkIGRyaXZlciBmb3Ig
+dGhlIEFDUEkgUkFTMiBmZWF0dXJlDQo+dGFibGUNCj4NCj5PbiBGcmksIEphbiAyMywgMjAyNiBh
+dCAwNTo1NTowN1BNICswMDAwLCBzaGlqdS5qb3NlQGh1YXdlaS5jb20gd3JvdGU6DQo+PiArc3Rh
+dGljIGludCBwYXJzZV9yYXMyX3RhYmxlKHN0cnVjdCBhY3BpX3RhYmxlX3JhczIgKnJhczJfdGFi
+KSB7DQo+PiArCXN0cnVjdCBhY3BpX3JhczJfcGNjX2Rlc2MgKnBjY19kZXNjX2xpc3Q7DQo+PiAr
+CXN0cnVjdCByYXMyX21lbV9jdHggKipwY3R4X2xpc3Q7DQo+PiArCXN0cnVjdCByYXMyX21lbV9j
+dHggKnJhczJfY3R4Ow0KPj4gKwl1MTYgaTsNCj4+ICsNCj4+ICsJaWYgKHJhczJfdGFiLT5oZWFk
+ZXIubGVuZ3RoIDwgc2l6ZW9mKCpyYXMyX3RhYikpIHsNCj4+ICsJCXByX3dhcm4oRldfV0FSTiAi
+QUNQSSBSQVMyIHRhYmxlIHByZXNlbnQgYnV0IGJyb2tlbiAodG9vDQo+c2hvcnQsIHNpemU9JXUp
+XG4iLA0KPj4gKwkJCXJhczJfdGFiLT5oZWFkZXIubGVuZ3RoKTsNCj4+ICsJCXJldHVybiAtRUlO
+VkFMOw0KPj4gKwl9DQo+PiArDQo+PiArCWlmICghcmFzMl90YWItPm51bV9wY2NfZGVzY3MgfHwg
+cmFzMl90YWItPm51bV9wY2NfZGVzY3MgPg0KPlJBUzJfTUFYX05VTV9QQ0NfREVTQ1MpIHsNCj4+
+ICsJCXByX3dhcm4oRldfV0FSTiAiTm8vSW52YWxpZCBudW1iZXIgb2YgUENDIGRlc2NzKCVkKSBp
+bg0KPkFDUEkgUkFTMiB0YWJsZVxuIiwNCj4+ICsJCQlyYXMyX3RhYi0+bnVtX3BjY19kZXNjcyk7
+DQo+PiArCQlyZXR1cm4gLUVJTlZBTDsNCj4+ICsJfQ0KPj4gKw0KPj4gKwlwY3R4X2xpc3QgPSBr
+Y2FsbG9jKHJhczJfdGFiLT5udW1fcGNjX2Rlc2NzLCBzaXplb2YoKnBjdHhfbGlzdCksDQo+R0ZQ
+X0tFUk5FTCk7DQo+PiArCWlmICghcGN0eF9saXN0KQ0KPj4gKwkJcmV0dXJuIC1FTk9NRU07DQo+
+PiArDQo+PiArCXBjY19kZXNjX2xpc3QgPSAoc3RydWN0IGFjcGlfcmFzMl9wY2NfZGVzYyAqKShy
+YXMyX3RhYiArIDEpOw0KPj4gKwlmb3IgKGkgPSAwOyBpIDwgcmFzMl90YWItPm51bV9wY2NfZGVz
+Y3M7IGkrKywgcGNjX2Rlc2NfbGlzdCsrKSB7DQo+PiArCQlpZiAocGNjX2Rlc2NfbGlzdC0+ZmVh
+dHVyZV90eXBlICE9IFJBUzJfRkVBVF9UWVBFX01FTU9SWSkNCj4+ICsJCQljb250aW51ZTsNCj4+
+ICsNCj4+ICsJCXJhczJfY3R4ID0gYWRkX2F1eF9kZXZpY2UoUkFTMl9NRU1fREVWX0lEX05BTUUs
+DQo+cGNjX2Rlc2NfbGlzdC0+Y2hhbm5lbF9pZCwNCj4+ICsJCQkJCSAgcGNjX2Rlc2NfbGlzdC0+
+aW5zdGFuY2UpOw0KPj4gKwkJaWYgKElTX0VSUihyYXMyX2N0eCkpIHsNCj4+ICsJCQlwcl93YXJu
+KCJGYWlsZWQgdG8gYWRkIFJBUzIgYXV4aWxpYXJ5IGRldmljZSByYz0lbGRcbiIsDQo+UFRSX0VS
+UihyYXMyX2N0eCkpOw0KPj4gKwkJCWZvciAoOyBpID4gMDsgaS0tKSB7DQo+PiArCQkJCWlmIChw
+Y3R4X2xpc3RbaSAtIDFdKQ0KPj4gKwkJCQkJYXV4aWxpYXJ5X2RldmljZV91bmluaXQoJnBjdHhf
+bGlzdFtpIC0gMV0tDQo+PmFkZXYpOw0KPg0KPlRoaXMgaXMgd3JvbmcgLSB0aGVyZSBzaG91bGQg
+YmUgYSBmdW5jdGlvbiBjYWxsZWQgcmVtb3ZlX2F1eF9kZXZpY2UoKSB3aGljaA0KPnVud2luZHMg
+ZXZlcnl0aGluZyBhZGRfYXV4X2RldmljZSgpIGRvZXMgZm9yIGFsbCB0aG9zZSBkZXZpY2VzLg0K
+DQpIaSBCb3Jpc2xhdiwNCg0KVGhhbmtzIGZvciBjb21tZW50cyBhbmQgY2hhbmdlcy4NCg0KSSBh
+ZGRlZCByZW1vdmVfYXV4X2RldmljZSgpICBhcyBiZWxvdywgd2hpY2ggd291bGQgY2FsbCByYXMy
+X3JlbGVhc2UoKSBhbmQgZnJlZQ0KYWRkX2F1eF9kZXZpY2UoKSBkb2VzIGZvciB0aGF0IGF1eGls
+aWFyeSBkZXZpY2UuIEhvcGUgaXQgaXMgYWNjZXB0YWJsZT8NCg0KK3N0YXRpYyB2b2lkIHJlbW92
+ZV9hdXhfZGV2aWNlKHN0cnVjdCByYXMyX21lbV9jdHggKnJhczJfY3R4KSB7DQorICAgIGlmICgh
+cmFzMl9jdHgpDQorICAgICAgICByZXR1cm47DQorDQorICAgIGF1eGlsaWFyeV9kZXZpY2VfZGVs
+ZXRlKCZyYXMyX2N0eC0+YWRldik7DQorICAgIGF1eGlsaWFyeV9kZXZpY2VfdW5pbml0KCZyYXMy
+X2N0eC0+YWRldik7DQorfQ0KKw0KPg0KPkluIGFkZGl0aW9uLCBJIGRpZCBhIGJ1bmNoIG9mIGNs
+ZWFudXBzIG9udG9wLCBzZWUgYmVsb3cuIEkgY2FuJ3QgdGVzdCB0aGVtIHNvIHBscw0KPmhhdmUg
+YSBsb29rIGFuZCBydW4gdGhlbSBvbiB5b3VyIGh3IGFuZCBpZiBhbGwgZ29vZCwgbWVyZ2UgdGhl
+bSB3aXRoIHlvdXINCj5wYXRjaC4NCg0KSSB0ZXN0ZWQgeW91ciBjaGFuZ2VzIGFuZCBtZXJnZWQu
+DQpJIGdvdCBhIGNoZWNrcGF0Y2ggd2FybmluZyBmb3IgYmVsb3cgY2hhbmdlLg0KDQpUaGFua3Ms
+DQpTaGlqdQ0KDQo+DQo+VGh4Lg0KPg0KPi0tLQ0KPg0KPmRpZmYgLS1naXQgYS9kcml2ZXJzL2Fj
+cGkvS2NvbmZpZyBiL2RyaXZlcnMvYWNwaS9LY29uZmlnIGluZGV4DQo+N2Y4NDZjMjJmYzMwLi4w
+MDEwYjM4ZThmODEgMTAwNjQ0DQo+LS0tIGEvZHJpdmVycy9hY3BpL0tjb25maWcNCj4rKysgYi9k
+cml2ZXJzL2FjcGkvS2NvbmZpZw0KPkBAIC0yOTksOSArMjk5LDEwIEBAIGNvbmZpZyBBQ1BJX1JB
+UzINCj4gCWRlcGVuZHMgb24gTUFJTEJPWA0KPiAJZGVwZW5kcyBvbiBQQ0MNCj5AQCAtMTg3LDIy
+ICsxOTcsMjQgQEAgaW50IHJhczJfc2VuZF9wY2NfY21kKHN0cnVjdCByYXMyX21lbV9jdHgNCj4q
+cmFzMl9jdHgsIHUxNiBjbWQpDQo+DQo+IAkvKiBSaW5nIGRvb3JiZWxsICovDQo+IAlyYyA9IG1i
+b3hfc2VuZF9tZXNzYWdlKHBjY19jaGFubmVsLCAmY21kKTsNCj4rDQo+IAkvKg0KPi0JICogbWJv
+eF9zZW5kX21lc3NhZ2UoKSByZXR1cm4gbm9uLW5lZ2F0aXZlIGludGVnZXIgZm9yIHN1Y2Nlc3Nm
+dWwNCj5zdWJtaXNzaW9uDQo+LQkgKiBhbmQgbmVnYXRpdmUgdmFsdWUgb24gZmFpbHVyZS4NCj4r
+CSAqIG1ib3hfc2VuZF9tZXNzYWdlKCkgcmV0dXJucyBhIG5vbi1uZWdhdGl2ZSBpbnRlZ2VyIGZv
+ciBzdWNjZXNzZnVsDQo+c3VibWlzc2lvbg0KPisJICogYW5kIGEgbmVnYXRpdmUgdmFsdWUgb24g
+ZmFpbHVyZS4NCj4gCSAqLw0KPi0JcmMgPSByYyA8IDAgPyByYyA6IDA7DQo+IAlpZiAocmMgPCAw
+KSB7DQo+IAkJZGV2X3dhcm4ocmFzMl9jdHgtPmRldiwNCj4gCQkJICJFcnJvciBzZW5kaW5nIFBD
+QyBtYm94IG1lc3NhZ2UgY29tbWFuZDogMHgleCwNCj5yYzolZFxuIiwgY21kLCByYyk7DQo+IAkJ
+cmV0dXJuIHJjOw0KPisJfSBlbHNlIHsNCj4rCQlyYyA9IDA7DQo+IAl9DQo+DQpDaGVja3BhdGNo
+IHdhcm5pbmc6DQoNCldBUk5JTkc6IGVsc2UgaXMgbm90IGdlbmVyYWxseSB1c2VmdWwgYWZ0ZXIg
+YSBicmVhayBvciByZXR1cm4NCiMyMDc6IEZJTEU6IGRyaXZlcnMvYWNwaS9yYXMyLmM6MjA3Og0K
+KyAgICAgICAgcmV0dXJuIHJjOw0KKyAgICB9IGVsc2Ugew0KDQphbmQgbm8gd2FybmluZyB3aXRo
+IGFzIGJlbG93LA0KDQoraWYgKHJjID49IDApIHsNCisJcmMgPSAwOw0KK30gZWxzZSB7DQorCWRl
+dl93YXJuKHJhczJfY3R4LT5kZXYsDQorCQkgICAgICJFcnJvciBzZW5kaW5nIFBDQyBtYm94IG1l
+c3NhZ2UgY29tbWFuZDogMHgleCwgcmM6JWRcbiIsIGNtZCwgcmMpOw0KKwlyZXR1cm4gcmM7DQor
+fQ0KDQo=
 
