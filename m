@@ -1,396 +1,264 @@
-Return-Path: <linux-acpi+bounces-20713-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20714-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFaaOW4jemmv2wEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20713-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 15:55:42 +0100
+	id sOWQMzg7emlB4wEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20714-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:37:12 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A01AA3537
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 15:55:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC59AA5E35
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 17:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DC793004231
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 14:52:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACC54306EBB6
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 16:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCC32690F9;
-	Wed, 28 Jan 2026 14:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83330BBA5;
+	Wed, 28 Jan 2026 16:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YAOOwSTx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vr4AzMKl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7324229B8E1;
-	Wed, 28 Jan 2026 14:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86F728D8DB;
+	Wed, 28 Jan 2026 16:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769611968; cv=none; b=dOjhlK1LoipwEUzbINxmC9kgXIUGMs3iyWMbOmPFJDEmvbvpLktmwX7NBK8kG1Gv7lDBxAVNH58nqpf84MhiTjPoRtwdA1bmysAuqfCruSWsb0Z+iXzb4i+lpseqngPwjGUBabhWWoqS2B3IfrZ0SKeofOrGYQhaA1exs64NUJc=
+	t=1769616330; cv=none; b=C+TeGl7GJwVrBEOdc+nI6uOwvrsAL4Ejg6w4Z3pZUnJiXO8mcvUDigdcnn9736qJN2tbh6hSQMO+a/u0WTVwHTlljLGUqRrSP6Mm6FqmuXZUk95LU0yu7M437VcyDY3j0DrRSyTu0Xo0/aGAYkjyrUNR8Ngf0ifGoLLokcMXysU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769611968; c=relaxed/simple;
-	bh=EnPfrQ6TbHo7xBirLrwfR7OFUtYfvLFnfY2hABM7eMU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=AwPKW+V3Zsdp0agbBFOtvXHw24TddpjimEYyzP4px5LqMqtyq5GKHaez9UPtaHPBTgpSfIzI1y73RdHDVpod/3nhnXChKtoLIU90j/WQ0Lk4N20Mf28SpB2nYv/hrdjKhucful1wcxKB4YJ5KH8HdfnbmyHneA80lSpv+EkrskU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YAOOwSTx; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769611967; x=1801147967;
-  h=date:from:to:cc:subject:message-id;
-  bh=EnPfrQ6TbHo7xBirLrwfR7OFUtYfvLFnfY2hABM7eMU=;
-  b=YAOOwSTxg/rPMYRblMmtnSK83NX+tHbj0p2pgB3xMwISh8CIq/YpwZD/
-   xmH7wezV87tv1lCyDBEX4pEvm2Nuif+MG4ytYMcjRbpL5j6HWAty+Bzi7
-   4l1qC45ZXIrP20gOJ+ZPg5LvmMXXnfK+JXaIJyLRu89R2AYXHjqopYjG+
-   nmXjNaCGE5BTc5kUbXcXr9hquzvX9IhioIjUN8Vl73Yql4D2uV0ut8If2
-   dJceybonYnSuEVfP7YuWDuT8Tc1AI2VatatEGzZeN8j7tBXEyCK5D0SOh
-   9Xp7p7Crvu0FZ553sy8AvAKIbK1I1sDq51Ime1lnOGmHUbcfhaBP0UbTS
-   A==;
-X-CSE-ConnectionGUID: 7u+r4hYaR5mrxRh9BqZhFQ==
-X-CSE-MsgGUID: iW+asA8OQPCUkd9+aQrKDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70881657"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="70881657"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 06:52:46 -0800
-X-CSE-ConnectionGUID: 9yUgPVR9REqnfYAq2GJuZg==
-X-CSE-MsgGUID: zsddxbXKSRuvVSvzcur4Gg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="245886745"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 28 Jan 2026 06:52:43 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vl6uP-00000000ZmK-2QCR;
-	Wed, 28 Jan 2026 14:52:41 +0000
-Date: Wed, 28 Jan 2026 22:51:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
- 4802892d9bdbe890394af0856826bb87b9a6f8c3
-Message-ID: <202601282231.oMbmyEmD-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1769616330; c=relaxed/simple;
+	bh=YZgK3C4S4IPlPWuP/KkggCsOmPCiqDm/AZvqYQOdn8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=joKw6ByKZkTTPdjZW5buH9Qmh/C6kpmkCv0rmTvuQxv/BgEZKbgs8zKhJvvsparP5qrpBeXnh4Tc385EsXfbuz4W8R7aY4jwOXCDVCeV3U0JKg0sB31iaHgRNA1YzOvQKWn40pW4MAwvlqRF0dWQPtNsYddU0fD/i1kN+AUdvFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vr4AzMKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F81C2BC86;
+	Wed, 28 Jan 2026 16:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769616330;
+	bh=YZgK3C4S4IPlPWuP/KkggCsOmPCiqDm/AZvqYQOdn8A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vr4AzMKlh1dghjAhMQs9pF8qLfKZUNDucWufU4r5CeSua+7zAhSrWoirEWAQg8+Ie
+	 hV+6pidiDY0YX53HtsYo0iHy9SMlkNffb73Ahj3w4Wa10jnIOEMNF1Oned8R0xDY/n
+	 Oae/0kPeS1N9eFtDU4Q1Ugka+vlMZiygECZzYAhzFZmGv7NS4pBwE8OuysYuWiRq1q
+	 IM/YKOCo02+ufrJMYKvdqozpUjBqwQsaOHzGNifZpaKtSJYraDa+TwQip/Klm7geY+
+	 WYsgJCaDaIYghxcGTGKzG8eViImZTFcCSls0QyLcuSXMStL9hvBOtRDEzGvVatoaSa
+	 Qnniz0nwolqEQ==
+Date: Wed, 28 Jan 2026 17:05:27 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [rafael-pm:bleeding-edge 172/186] kernel/time/hrtimer.c:946:48:
+ error: implicit declaration of function 'tick_nohz_is_active'; did you mean
+ 'tick_nohz_init'?
+Message-ID: <aXozx0PXutnm8ECX@localhost.localdomain>
+References: <202601240853.XfwHlHep-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <202601240853.XfwHlHep-lkp@intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-20714-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20713-lists,linux-acpi=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linux-acpi@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A01AA3537
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,intel.com:email,01.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: EC59AA5E35
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 4802892d9bdbe890394af0856826bb87b9a6f8c3  Merge branch 'acpi-sysfs' into bleeding-edge
+Le Sat, Jan 24, 2026 at 08:59:57AM +0800, kernel test robot a écrit :
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+> head:   7e9b0371ed5b9bf9a80c59487f47fca0ba638f61
+> commit: b0d640cf14148cbce9f1651fe6028c7586291cf5 [172/186] cpufreq: ondemand: Simplify idle cputime granularity test
+> config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260124/202601240853.XfwHlHep-lkp@intel.com/config)
+> compiler: nios2-linux-gcc (GCC) 11.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260124/202601240853.XfwHlHep-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601240853.XfwHlHep-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    kernel/time/hrtimer.c: In function 'clock_was_set':
+> >> kernel/time/hrtimer.c:946:48: error: implicit declaration of function 'tick_nohz_is_active'; did you mean 'tick_nohz_init'? [-Werror=implicit-function-declaration]
+>      946 |         if (!hrtimer_hres_active(cpu_base) && !tick_nohz_is_active())
+>          |                                                ^~~~~~~~~~~~~~~~~~~
+>          |                                                tick_nohz_init
 
-Error/Warning (recently discovered and may have been fixed):
+Oops, ok here is an update. Hopefully I got it right this time:
 
-    https://lore.kernel.org/oe-kbuild-all/202601240833.jYdOreP4-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202601240853.XfwHlHep-lkp@intel.com
+---
+From: Frederic Weisbecker <frederic@kernel.org>
+Date: Wed, 7 Jan 2026 17:25:09 +0100
+Subject: [PATCH] cpufreq: ondemand: Simplify idle cputime granularity test
 
-    kernel/time/hrtimer.c:946:41: error: call to undeclared function 'tick_nohz_is_active'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    kernel/time/hrtimer.c:946:48: error: implicit declaration of function 'tick_nohz_is_active'; did you mean 'tick_nohz_init'? [-Werror=implicit-function-declaration]
-    kernel/time/hrtimer.c:946:48: error: implicit declaration of function 'tick_nohz_is_active'; did you mean 'tick_nohz_init'? [-Wimplicit-function-declaration]
+cpufreq calls get_cpu_idle_time_us() just to know if idle cputime
+accounting has a nanoseconds granularity.
 
-Error/Warning ids grouped by kconfigs:
+Use the appropriate indicator instead to make that deduction.
 
-recent_errors
-|-- alpha-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- arc-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- arm-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- arm64-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- csky-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- hexagon-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- i386-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- loongarch-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- m68k-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- microblaze-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- mips-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- nios2-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- openrisc-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- parisc-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- powerpc-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- riscv-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- s390-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- sh-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- sparc-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
-|-- um-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- x86_64-allnoconfig
-|   `-- kernel-time-hrtimer.c:error:call-to-undeclared-function-tick_nohz_is_active-ISO-C99-and-later-do-not-support-implicit-function-declarations
-`-- xtensa-allnoconfig
-    `-- kernel-time-hrtimer.c:error:implicit-declaration-of-function-tick_nohz_is_active
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-pm@vger.kernel.org
+---
+ drivers/cpufreq/cpufreq_ondemand.c | 7 +------
+ include/linux/tick.h               | 2 ++
+ kernel/time/hrtimer.c              | 2 +-
+ kernel/time/tick-internal.h        | 2 --
+ kernel/time/tick-sched.c           | 8 +++++++-
+ kernel/time/timer.c                | 2 +-
+ 6 files changed, 12 insertions(+), 11 deletions(-)
 
-elapsed time: 1059m
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index a6ecc203f7b7..bb7db82930e4 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
+@@ -334,17 +334,12 @@ static void od_free(struct policy_dbs_info *policy_dbs)
+ static int od_init(struct dbs_data *dbs_data)
+ {
+ 	struct od_dbs_tuners *tuners;
+-	u64 idle_time;
+-	int cpu;
+ 
+ 	tuners = kzalloc(sizeof(*tuners), GFP_KERNEL);
+ 	if (!tuners)
+ 		return -ENOMEM;
+ 
+-	cpu = get_cpu();
+-	idle_time = get_cpu_idle_time_us(cpu, NULL);
+-	put_cpu();
+-	if (idle_time != -1ULL) {
++	if (tick_nohz_is_active()) {
+ 		/* Idle micro accounting is supported. Use finer thresholds */
+ 		dbs_data->up_threshold = MICRO_FREQUENCY_UP_THRESHOLD;
+ 	} else {
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index ac76ae9fa36d..738007d6f577 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -126,6 +126,7 @@ enum tick_dep_bits {
+ 
+ #ifdef CONFIG_NO_HZ_COMMON
+ extern bool tick_nohz_enabled;
++extern bool tick_nohz_is_active(void);
+ extern bool tick_nohz_tick_stopped(void);
+ extern bool tick_nohz_tick_stopped_cpu(int cpu);
+ extern void tick_nohz_idle_stop_tick(void);
+@@ -142,6 +143,7 @@ extern u64 get_cpu_idle_time_us(int cpu, u64 *last_update_time);
+ extern u64 get_cpu_iowait_time_us(int cpu, u64 *last_update_time);
+ #else /* !CONFIG_NO_HZ_COMMON */
+ #define tick_nohz_enabled (0)
++static inline bool tick_nohz_is_active(void) { return false; }
+ static inline int tick_nohz_tick_stopped(void) { return 0; }
+ static inline int tick_nohz_tick_stopped_cpu(int cpu) { return 0; }
+ static inline void tick_nohz_idle_stop_tick(void) { }
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index f8ea8c8fc895..e1bbf883dfa8 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -943,7 +943,7 @@ void clock_was_set(unsigned int bases)
+ 	cpumask_var_t mask;
+ 	int cpu;
+ 
+-	if (!hrtimer_hres_active(cpu_base) && !tick_nohz_active)
++	if (!hrtimer_hres_active(cpu_base) && !tick_nohz_is_active())
+ 		goto out_timerfd;
+ 
+ 	if (!zalloc_cpumask_var(&mask, GFP_KERNEL)) {
+diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
+index 4e4f7bbe2a64..597d816d22e8 100644
+--- a/kernel/time/tick-internal.h
++++ b/kernel/time/tick-internal.h
+@@ -156,7 +156,6 @@ static inline void tick_nohz_init(void) { }
+ #endif
+ 
+ #ifdef CONFIG_NO_HZ_COMMON
+-extern unsigned long tick_nohz_active;
+ extern void timers_update_nohz(void);
+ extern u64 get_jiffies_update(unsigned long *basej);
+ # ifdef CONFIG_SMP
+@@ -171,7 +170,6 @@ extern void timer_expire_remote(unsigned int cpu);
+ # endif
+ #else /* CONFIG_NO_HZ_COMMON */
+ static inline void timers_update_nohz(void) { }
+-#define tick_nohz_active (0)
+ #endif
+ 
+ DECLARE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases);
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 21ac561a8545..81c619bf662c 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -691,7 +691,7 @@ void __init tick_nohz_init(void)
+  * NO HZ enabled ?
+  */
+ bool tick_nohz_enabled __read_mostly  = true;
+-unsigned long tick_nohz_active  __read_mostly;
++static unsigned long tick_nohz_active  __read_mostly;
+ /*
+  * Enable / Disable tickless mode
+  */
+@@ -702,6 +702,12 @@ static int __init setup_tick_nohz(char *str)
+ 
+ __setup("nohz=", setup_tick_nohz);
+ 
++bool tick_nohz_is_active(void)
++{
++	return tick_nohz_active;
++}
++EXPORT_SYMBOL_GPL(tick_nohz_is_active);
++
+ bool tick_nohz_tick_stopped(void)
+ {
+ 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 1f2364126894..7e1e3bde6b8b 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -281,7 +281,7 @@ DEFINE_STATIC_KEY_FALSE(timers_migration_enabled);
+ 
+ static void timers_update_migration(void)
+ {
+-	if (sysctl_timer_migration && tick_nohz_active)
++	if (sysctl_timer_migration && tick_nohz_is_active())
+ 		static_branch_enable(&timers_migration_enabled);
+ 	else
+ 		static_branch_disable(&timers_migration_enabled);
+-- 
+2.51.1
 
-configs tested: 217
-configs skipped: 5
-
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-22
-arc                              allyesconfig    gcc-15.2.0
-arc                      axs103_smp_defconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                     haps_hs_smp_defconfig    clang-22
-arc                            hsdk_defconfig    clang-22
-arc                   randconfig-001-20260128    gcc-8.5.0
-arc                   randconfig-002-20260128    gcc-8.5.0
-arm                               allnoconfig    clang-22
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.2.0
-arm                       aspeed_g4_defconfig    clang-22
-arm                         at91_dt_defconfig    clang-22
-arm                         bcm2835_defconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                        neponset_defconfig    gcc-15.2.0
-arm                          pxa3xx_defconfig    gcc-15.2.0
-arm                          pxa910_defconfig    gcc-15.2.0
-arm                   randconfig-001-20260128    gcc-8.5.0
-arm                   randconfig-002-20260128    gcc-8.5.0
-arm                   randconfig-003-20260128    gcc-8.5.0
-arm                   randconfig-004-20260128    gcc-8.5.0
-arm                             rpc_defconfig    gcc-15.2.0
-arm64                            allmodconfig    clang-22
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260128    gcc-14.3.0
-arm64                 randconfig-002-20260128    gcc-14.3.0
-arm64                 randconfig-003-20260128    gcc-14.3.0
-arm64                 randconfig-004-20260128    gcc-14.3.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260128    gcc-14.3.0
-csky                  randconfig-002-20260128    gcc-14.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-22
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260128    clang-22
-hexagon               randconfig-002-20260128    clang-22
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260128    clang-20
-i386        buildonly-randconfig-002-20260128    clang-20
-i386        buildonly-randconfig-003-20260128    clang-20
-i386        buildonly-randconfig-004-20260128    clang-20
-i386        buildonly-randconfig-005-20260128    clang-20
-i386        buildonly-randconfig-006-20260128    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260128    gcc-14
-i386                  randconfig-002-20260128    gcc-14
-i386                  randconfig-003-20260128    gcc-14
-i386                  randconfig-004-20260128    gcc-14
-i386                  randconfig-005-20260128    gcc-14
-i386                  randconfig-006-20260128    gcc-14
-i386                  randconfig-007-20260128    gcc-14
-i386                  randconfig-011-20260128    clang-20
-i386                  randconfig-012-20260128    clang-20
-i386                  randconfig-013-20260128    clang-20
-i386                  randconfig-014-20260128    clang-20
-i386                  randconfig-015-20260128    clang-20
-i386                  randconfig-016-20260128    clang-20
-i386                  randconfig-017-20260128    clang-20
-loongarch                        allmodconfig    clang-22
-loongarch                         allnoconfig    clang-22
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260128    clang-22
-loongarch             randconfig-002-20260128    clang-22
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                       m5275evb_defconfig    clang-22
-m68k                        m5407c3_defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                           ip27_defconfig    gcc-15.2.0
-mips                           ip30_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-22
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260128    clang-22
-nios2                 randconfig-002-20260128    clang-22
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-openrisc                  or1klitex_defconfig    clang-22
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260128    gcc-11.5.0
-parisc                randconfig-002-20260128    gcc-11.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                        fsp2_defconfig    gcc-15.2.0
-powerpc                 linkstation_defconfig    clang-22
-powerpc                      mgcoge_defconfig    gcc-15.2.0
-powerpc                     mpc83xx_defconfig    gcc-15.2.0
-powerpc                    mvme5100_defconfig    gcc-15.2.0
-powerpc                      pasemi_defconfig    gcc-15.2.0
-powerpc               randconfig-001-20260128    gcc-11.5.0
-powerpc               randconfig-002-20260128    gcc-11.5.0
-powerpc64             randconfig-001-20260128    gcc-11.5.0
-powerpc64             randconfig-002-20260128    gcc-11.5.0
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260128    gcc-13.4.0
-riscv                 randconfig-002-20260128    gcc-13.4.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.2.0
-s390                          debug_defconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260128    gcc-13.4.0
-s390                  randconfig-002-20260128    gcc-13.4.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20260128    gcc-13.4.0
-sh                    randconfig-002-20260128    gcc-13.4.0
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260128    gcc-11.5.0
-sparc                 randconfig-002-20260128    gcc-11.5.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260128    gcc-11.5.0
-sparc64               randconfig-002-20260128    gcc-11.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260128    gcc-11.5.0
-um                    randconfig-002-20260128    gcc-11.5.0
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260128    gcc-14
-x86_64      buildonly-randconfig-002-20260128    gcc-14
-x86_64      buildonly-randconfig-003-20260128    gcc-14
-x86_64      buildonly-randconfig-004-20260128    gcc-14
-x86_64      buildonly-randconfig-005-20260128    gcc-14
-x86_64      buildonly-randconfig-006-20260128    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260128    gcc-13
-x86_64                randconfig-002-20260128    gcc-13
-x86_64                randconfig-003-20260128    gcc-13
-x86_64                randconfig-004-20260128    gcc-13
-x86_64                randconfig-005-20260128    gcc-13
-x86_64                randconfig-006-20260128    gcc-13
-x86_64                randconfig-011-20260128    clang-20
-x86_64                randconfig-012-20260128    clang-20
-x86_64                randconfig-013-20260128    clang-20
-x86_64                randconfig-014-20260128    clang-20
-x86_64                randconfig-015-20260128    clang-20
-x86_64                randconfig-016-20260128    clang-20
-x86_64                randconfig-071-20260128    clang-20
-x86_64                randconfig-072-20260128    clang-20
-x86_64                randconfig-073-20260128    clang-20
-x86_64                randconfig-074-20260128    clang-20
-x86_64                randconfig-075-20260128    clang-20
-x86_64                randconfig-076-20260128    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-22
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260128    gcc-11.5.0
-xtensa                randconfig-002-20260128    gcc-11.5.0
-xtensa                    xip_kc705_defconfig    clang-22
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
