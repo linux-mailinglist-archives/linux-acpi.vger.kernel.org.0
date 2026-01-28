@@ -1,142 +1,236 @@
-Return-Path: <linux-acpi+bounces-20710-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20711-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNsnG9YHemn11wEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20710-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 13:57:58 +0100
+	id 4BIiCaYPemnG2AEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20711-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 14:31:18 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26E6A1ADB
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 13:57:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268F8A22D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 14:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 44E0D3003614
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 12:57:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29570300C7C9
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 13:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BD1350A29;
-	Wed, 28 Jan 2026 12:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AE3354AC9;
+	Wed, 28 Jan 2026 13:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Djq36+xO"
+	dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b="dJ5Egclq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-30.ptr.blmpb.com (sg-1-30.ptr.blmpb.com [118.26.132.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12071F19A;
-	Wed, 28 Jan 2026 12:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EF43542E2
+	for <linux-acpi@vger.kernel.org>; Wed, 28 Jan 2026 13:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769605074; cv=none; b=MlXze9hmFerIgC4p7tn3vVh5bPSI7UQFMOLO7AWZVttBNW83gnr1WfFETrqU6X7pszvi9rKuvitbR+0vrRIlIYAbjhuBCB6sjFTNwGMpO+S15N7eaBqTTElq7bCPbv74wPmAt3RxexQr17KlSVXA2Dqpi2SajW4JzPBp1dNaex0=
+	t=1769606948; cv=none; b=hMeuNoA+jWZZbHfkuQPYvH2JgWIqRvWWRk97E27tOmliR8dvsaDjmZSM5bDl242CSqITU5s5qlbF2IzKraceLs/TOQCT1RpBeLbagN0SHxmvxeILkJkes4OaF5CwA91VyRa1cQY0pR07Vnq/fEERPYOUY7DroOniYgunj19Ft3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769605074; c=relaxed/simple;
-	bh=qbf35OlwUkZOyPAcdORYU57DxrgU4Du9gKzdljfWqjs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BObswx2Gs7AIDuncU8nyOJTi13YkqpLw/YdYxUU1ACK+YGPcFanj/9s5MqQEdheR80F8bWo9wZT1UeNPbrQtMRoDA9Jx8plyW4EmV0OHOx9VCxGSGlauSCh7B/+Q225KyBjgFb7lcdkkMu1eCVihEWuOmfQnUrYVqoqfDjD/ZaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Djq36+xO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769605073; x=1801141073;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=qbf35OlwUkZOyPAcdORYU57DxrgU4Du9gKzdljfWqjs=;
-  b=Djq36+xO6ZEW51LAmiy1aVJzNtiYpzeTFakcY676rTK3tLHAeURQ0Cer
-   LgQBOEFMsvvIL2kj8Tb6bYRRhCS1zLxDiR2Hk6KX/sfn9uwryNCsNRC2l
-   UyZkVRkueZRyEKBwkQJbM2BNqxkkAbb4plEZ3ZGU/+xQH62sgOXFSeg44
-   K92rJUgh78e1s8iLUruUpK83UpC5g4aBCJPz6boE7YBoJtrth+yZzJnPN
-   pZW5TyUpT+QUlA5Vy18X67FiA1hANW269AZ+GuCHkI1yoMBrE8CoBZLsp
-   NP4omNpjrOpDntoJzvNzP/V5v6ywk0DMRK1Oq8Y5UfY95iol5eO6AY5rg
-   A==;
-X-CSE-ConnectionGUID: 62IgcWlbRQqCfGsfk3XATQ==
-X-CSE-MsgGUID: 3yMmiem/RVufgEcpQC8N3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="82182510"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="82182510"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 04:57:52 -0800
-X-CSE-ConnectionGUID: yoLXo3oKRl+N5S2rOA9BKA==
-X-CSE-MsgGUID: iGZyOTAqSvuRjxE6+sRVng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208277236"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.14])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 04:57:49 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Hans de Goede <hansg@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
- Linux ACPI <linux-acpi@vger.kernel.org>, 
- platform-driver-x86@vger.kernel.org, 
- Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
-In-Reply-To: <12825381.O9o76ZdvQC@rafael.j.wysocki>
-References: <12825381.O9o76ZdvQC@rafael.j.wysocki>
-Subject: Re: [PATCH v1] platform/x86: classmate-laptop: Add missing NULL
- pointer checks
-Message-Id: <176960506373.3435.18235456408554056722.b4-ty@linux.intel.com>
-Date: Wed, 28 Jan 2026 14:57:43 +0200
+	s=arc-20240116; t=1769606948; c=relaxed/simple;
+	bh=2QK1ViLbJ87FLD0VE6w+dGmaUX+pzVccBNJjH2+u7CY=;
+	h=Subject:To:Mime-Version:Message-Id:Content-Type:Cc:Date:From; b=VNxlTfqt4bdkVYGco/+hiyE3qj/uLHCPoDrTypOPf1vZIcVgc0NRWwYwwGq+1gqmvSIcwqwcIjd9IYcEWEUkCU77+144giWKZBN/hVficEvYQiBRrV8u/P1UsIZj4F0YZwMpXlVIBuVRLUZcpKPSlojxqjT5a+xhkWOdwCltv5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com; spf=pass smtp.mailfrom=picoheart.com; dkim=pass (2048-bit key) header.d=picoheart-com.20200927.dkim.feishu.cn header.i=@picoheart-com.20200927.dkim.feishu.cn header.b=dJ5Egclq; arc=none smtp.client-ip=118.26.132.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=picoheart.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=picoheart.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=picoheart-com.20200927.dkim.feishu.cn; t=1769606933;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=vcYXwx5F8javVvZgh4a7pvf8s/p2JUmWBU4iY67rl4o=;
+ b=dJ5Egclq4+OLZhTBlMWeH/6/xatwYPvi9J2nvaFQG/r2BfXtkB5CxJHe6vuNLaNAbqlc2Q
+ b/FSXMYIBerFScFxW+QkI69xifIY05cXq9sue6YCDUyHPKXGC4znbsum/qMB5gBhltCFNi
+ rR7KAvB98PiGCPyGQ8RUcj9WGOgOc82s/1KcZwWvA8a4JAS8BBO/jMxS4afjOx6SghIPdp
+ 0xZHibfqvSOEwNVDILEm7isagquvSME2nCHsJK1petQfjQBgjQVeDkm+GI2xg7RSHHzEjy
+ +XzMIrapUWir67/DhspuwTfgqO26tbKiWaAzI4Rg7koj0X2+cJzp6ljuxthj5A==
+Subject: [PATCH v3] ACPI: scan: Use async schedule function for acpi_scan_clear_dep_fn
+To: <rafael@kernel.org>, <lenb@kernel.org>, <tglx@kernel.org>, 
+	<gregkh@linuxfoundation.org>, <dakr@kernel.org>
+X-Original-From: Yicong Yang <yang.yicong@picoheart.com>
+X-Lms-Return-Path: <lba+2697a0f13+e01960+vger.kernel.org+yang.yicong@picoheart.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Message-Id: <20260128132848.93638-1-yang.yicong@picoheart.com>
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=UTF-8
+Cc: <akpm@linux-foundation.org>, <apatel@ventanamicro.com>, <pjw@kernel.org>, 
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
+	<geshijian@picoheart.com>, <weidong.wd@picoheart.com>, 
+	<yang.yicong@picoheart.com>, <linux-acpi@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>
+Date: Wed, 28 Jan 2026 21:28:47 +0800
+X-Mailer: git-send-email 2.50.1
+Received: from G9WYR9K0VW ([58.250.122.114]) by smtp.feishu.cn with ESMTPS; Wed, 28 Jan 2026 21:28:50 +0800
+From: "Yicong Yang" <yang.yicong@picoheart.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[picoheart-com.20200927.dkim.feishu.cn:s=s1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-acpi@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[picoheart.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20711-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20710-lists,linux-acpi=lfdr.de];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.intel.com:mid];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: E26E6A1ADB
+	FROM_NEQ_ENVFROM(0.00)[yang.yicong@picoheart.com,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[picoheart-com.20200927.dkim.feishu.cn:+];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[picoheart.com:mid,picoheart.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,picoheart-com.20200927.dkim.feishu.cn:dkim]
+X-Rspamd-Queue-Id: 268F8A22D5
 X-Rspamd-Action: no action
 
-On Mon, 26 Jan 2026 21:02:40 +0100, Rafael J. Wysocki wrote:
+The device object rescan in acpi_scan_clear_dep_fn is scheduled
+in the system workqueue which is not guaranteed to be finished
+before entering userspace. This will cause the problem that
+some key devices are missing when userspace init task tries to
+find them. Two issues observed on our RISCV platforms:
 
-> In a few places in the Classmate laptop driver, code using the accel
-> object may run before that object's address is stored in the driver
-> data of the input device using it.
-> 
-> For example, cmpc_accel_sensitivity_store_v4() is the "show" method
-> of cmpc_accel_sensitivity_attr_v4 which is added in cmpc_accel_add_v4(),
-> before calling dev_set_drvdata() for inputdev->dev.  If the sysfs
-> attribute is accessed prematurely, the dev_get_drvdata(&inputdev->dev)
-> call in in cmpc_accel_sensitivity_store_v4() returns NULL which
-> leads to a NULL pointer dereference going forward.
-> 
-> [...]
+- kernel panic due to userspace init cannot have an opened
+  console. the console device scanning is queued by
+  acpi_scan_clear_dep_queue and not finished by the time
+  userspace init process running, thus by the time userspace
+  init running, no console is created
+- entering rescue shell due to no root devices (PCIe nvme in
+  our case) found. same reason as above, the PCIe host bridge
+  scanning is queued in above and finished after init process
+  running.
 
+The reason is because both devices (console, PCIe host bridge)
+depend on riscv-aplic irqchip to serve their interrupts (console's
+wired interrupt and PCI's INTx interrupts). In order to keep the
+dependency these devices are scanned and created after riscv-aplic
+initialized. The riscv-aplic is initialized in device_initcall and
+queue the device scan work with acpi_scan_clear_dep_queue, it's
+close to the time running userspace init process. Since system_dfl_wq
+is used in acpi_scan_clear_dep_queue and no synchronization,
+the issues will happen if userspace init runs before these devices
+are ready.
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+The solution is to wait for the queued work finished before
+entering userspace init. One possible way is to use a dedicated
+workqueue instead of the system_dfl_wq, and explicitly flush
+it somewhere in the initcall stage before entering userspace.
+One other way is to use async_schedule_dev_nocall() for these
+device scanning. It's designed for asynchronous initialization
+and will work same as before since it's using a dedicated
+unbound workqueue as well, but the kernel init code will
+wait for the work finished (async_synchronize_full) right before
+entering userspace init.
 
-The list of commits applied:
-[1/1] platform/x86: classmate-laptop: Add missing NULL pointer checks
-      commit: fe747d7112283f47169e9c16e751179a9b38611e
+This patch use the second approach. Compared to a dedicated
+workqueue, it's simpler since the async schedule framework have
+handled most works like synchronization, memory allocation of
+works and workqueue. The ACPI code only needs to focus on its
+work. A dedicated workqueue for this could also be redundant
+since some platforms don't need acpi_scan_clear_dep_queue()
+for their device scanning.
 
---
- i.
+Signed-off-by: Yicong Yang <yang.yicong@picoheart.com>
+---
+Change since v2:
+- minor code cleanup for return path per Rafael
+Link: https://lore.kernel.org/all/20260126070427.64574-1-yang.yicong@picoheart.com/
 
+Change since v1:
+Refine the commit message to:
+- include the issues and the analysis
+- include the reason for using the async schedule rather than
+  a dedicated workqueue
+Link: https://lore.kernel.org/linux-riscv/20260122073446.45628-2-yang.yicong@picoheart.com/
+
+ drivers/acpi/scan.c | 41 +++++++++++++++--------------------------
+ 1 file changed, 15 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 416d87f9bd10..b78f6be2f946 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -5,6 +5,7 @@
+ 
+ #define pr_fmt(fmt) "ACPI: " fmt
+ 
++#include <linux/async.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -2360,46 +2361,34 @@ static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *da
+ 	return 0;
+ }
+ 
+-struct acpi_scan_clear_dep_work {
+-	struct work_struct work;
+-	struct acpi_device *adev;
+-};
+-
+-static void acpi_scan_clear_dep_fn(struct work_struct *work)
++static void acpi_scan_clear_dep_fn(void *dev, async_cookie_t cookie)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+-	cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
++	struct acpi_device *adev = to_acpi_device(dev);
+ 
+ 	acpi_scan_lock_acquire();
+-	acpi_bus_attach(cdw->adev, (void *)true);
++	acpi_bus_attach(adev, (void *)true);
+ 	acpi_scan_lock_release();
+ 
+-	acpi_dev_put(cdw->adev);
+-	kfree(cdw);
++	acpi_dev_put(adev);
+ }
+ 
+ static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+ 	if (adev->dep_unmet)
+ 		return false;
+ 
+-	cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
+-	if (!cdw)
+-		return false;
+-
+-	cdw->adev = adev;
+-	INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
+ 	/*
+-	 * Since the work function may block on the lock until the entire
+-	 * initial enumeration of devices is complete, put it into the unbound
+-	 * workqueue.
++	 * Async schedule the deferred acpi_scan_clear_dep_fn() since:
++	 * - acpi_bus_attach() needs to hold acpi_scan_lock which cannot
++	 *   be acquired under acpi_dep_list_lock (held here)
++	 * - the deferred work at boot stage is ensured to be finished
++	 *   before userspace init task by the async_synchronize_full()
++	 *   barrier
++	 *
++	 * Use _nocall variant since it'll return on failure instead of
++	 * run the function synchronously.
+ 	 */
+-	queue_work(system_dfl_wq, &cdw->work);
+-
+-	return true;
++	return async_schedule_dev_nocall(acpi_scan_clear_dep_fn, &adev->dev);
+ }
+ 
+ static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
+-- 
+2.34.1
 
