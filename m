@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-20739-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20740-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMypOJ9yemlI6QEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20739-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:33:35 +0100
+	id 4JA7K6Jyemme6gEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20740-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:33:38 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3A5A89B3
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:33:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13546A89BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 21:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F11C306C577
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE873306B143
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jan 2026 20:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD0B3793D4;
-	Wed, 28 Jan 2026 20:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D00B37475B;
+	Wed, 28 Jan 2026 20:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucbNnild"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvNmYpXN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF803793BE;
-	Wed, 28 Jan 2026 20:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205C43793D2;
+	Wed, 28 Jan 2026 20:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769632092; cv=none; b=aKjlj3AKOIt2BFsfDtSfNVQzuOCOMlNwBHCyEulBzGVPuHeOtS/tLDopg2yTAHCbmiLk8AwFFdjl6Qzam3c4rjGFwzQskXL67MFmQlt1c5rrRFOvkbdRR4DX+n4rMD9kZCqSTA5C/dKZKacFR8tHE7deLLGqyYi1DCfrg3DsePw=
+	t=1769632093; cv=none; b=P8LKAQFAH3r4HlrsoUgG+tdr793vJbfUyS6KnyF+HKzs+v0dpIzCLq7fy3Xfd4HVIelfA8YoSB503oZAobXjK6fpbfnLbJEmmuVRwqZWlHhdD4qALRQUqslkvw/GzlU+9huJ2EhT1o1ntSyDWwgTRyYfLJTIANrzTTBm01Ne0DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769632092; c=relaxed/simple;
-	bh=/31EreH53ZbfLgFROUgaazBzJSVsVuqJTT5oOs7SCjM=;
+	s=arc-20240116; t=1769632093; c=relaxed/simple;
+	bh=2p876OLLX8prfj4iRVt0MftQApA/Ndfp5I0kmihgDv8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e1ga4kkXUtpwyIRI5LhctQFtbRUyBt/SuGGhm6TQ7KVFdZEooMwpe3yoHEv5reoYmUl0nrWObDau2KTbwlpD2r2LYxOZHk4uu1Oo7fDfZzPZlf6hTWdQJpt3QWWIKsIjvMOZz2q64JVR9FBD0DNsMLPsalhvoPT+UibFUOZXJtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucbNnild; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB782C16AAE;
-	Wed, 28 Jan 2026 20:28:11 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=AGwcIOBqugLpTWSBPMFnwZ5+pl72kFznA3JZ3uA/xjXqP9CAfN9Da40bBQlWPdbV5ksA/ERXlK1AmH53BXe+LMKj1Z1P34qY5/7Q04OsJmOIjl6qJHdLe0o/1bfXlfyEpQAG/ZDk7EQbmCbIva8wtt/X1kKjQqggfMUNgnMlbS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvNmYpXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1B4C19421;
+	Wed, 28 Jan 2026 20:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769632092;
-	bh=/31EreH53ZbfLgFROUgaazBzJSVsVuqJTT5oOs7SCjM=;
+	bh=2p876OLLX8prfj4iRVt0MftQApA/Ndfp5I0kmihgDv8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ucbNnildD1YQ95dVxpJ2kkQXeMWx+bA6Mc2FsARgFcVczjwggyqCOcgGWKsjXfec0
-	 51D6f5QPatAMeAu9Vw6HX+6MRLWkyyK6yzpjQQlivsYVrTrYieeOmAAYjkYpC6njYK
-	 K7NE0shSt3timYgnt9sBnvphGh2hQP16PqKuqTDkVV3H2wkYDF5c/dL9sHxeiHygKF
-	 6QL+fgFZpGiBtC1RH0UUPAzxFv/9qe2Nje7LN9WU+3iv6g+cZCTL5ZvPakAArH+9Lp
-	 9GlN8ysBJm1zNmO5ChhjFmzSnxiSs0gdkJhnT9j7aw0P+nGRKD/uKtDX9+BI2hS/q1
-	 dAoFoM2VcjExQ==
+	b=nvNmYpXNTrs2Gd+j6e50jmN2l9Z23bYLF6ssVdaiXzTPbUxc1qT0mjM+DcxcHugJA
+	 J/87PsgTsnafBZfhqlt4m2QgOzifGKJFseryVtiSaY/M0PZYJrWd3Zv+x6wuWpMVbc
+	 a1FuXbEM4c1p717fgARM4pWgqSQ/6nuzP/cOqvACY6mrFevw2R7SPPJXKH407qNmfj
+	 p0xLmcEpdgDon99ai9bazDER0LJA7+06Vrm4HlSAQdMY5mHWpeFfHtKjcFyPq/YjCS
+	 TdH8SRbUVexwp+kUyzm/u5LFPIRobL4hdKcn85jEL3DIxztlARfclD0EkOvOxPxA7G
+	 eqS2ZdeZ/bEiw==
 From: Drew Fustini <fustini@kernel.org>
-Date: Wed, 28 Jan 2026 12:27:37 -0800
-Subject: [PATCH RFC v2 16/17] acpi: riscv: Parse RISC-V Quality of Service
- Controller (RQSC) table
+Date: Wed, 28 Jan 2026 12:27:38 -0800
+Subject: [PATCH RFC v2 17/17] acpi: riscv: Add support for RISC-V Quality
+ of Service Controller (RQSC)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-ssqosid-cbqri-v2-16-dca586b091b9@kernel.org>
+Message-Id: <20260128-ssqosid-cbqri-v2-17-dca586b091b9@kernel.org>
 References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 In-Reply-To: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -86,12 +86,12 @@ To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
 Cc: Paul Walmsley <paul.walmsley@sifive.com>, linux-acpi@vger.kernel.org, 
  acpica-devel@lists.linux.dev, devicetree@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5705; i=fustini@kernel.org;
- h=from:subject:message-id; bh=/31EreH53ZbfLgFROUgaazBzJSVsVuqJTT5oOs7SCjM=;
- b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFQZGmc3dXWH840Dfap/on9x8wdaVnnOLfHdbrlfoZ
- HF8f8W3o5SFQYyLQVZMkWXTh7wLS7xCvy6Y/2IbzBxWJpAhDFycAjCRfdsZGf7cnRk68dAd/agJ
- ifslzvismBv8apVhxuS3PauDbFtSvs9mZOgQt1u7wGulryvHyoVrpmtsZF2jVzO1cZL8hI91bI+
- mqnABAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1324; i=fustini@kernel.org;
+ h=from:subject:message-id; bh=2p876OLLX8prfj4iRVt0MftQApA/Ndfp5I0kmihgDv8=;
+ b=owGbwMvMwCV2+43O4ZsaG3kYT6slMWRWFQbtj1tz8omO0oPqJVoaSzVyZ5XOXdDCNGlde9i+1
+ cb+1ue5O0pZGMS4GGTFFFk2fci7sMQr9OuC+S+2wcxhZQIZwsDFKQATSbnM8FfULF18ztyD7n2W
+ pqyZ+yauDr77hnXnoYku5rIKxUJ/WFcyMhy7rmJWJHzzwKmlUrNj/W1SknNrz7VFH7jXoNB0Qjb
+ wEgcA
 X-Developer-Key: i=fustini@kernel.org; a=openpgp;
  fpr=1B6F948213EA489734F3997035D5CD577C1E6010
 X-Rspamd-Server: lfdr
@@ -100,12 +100,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20739-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20740-lists,linux-acpi=lfdr.de];
 	FREEMAIL_TO(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,bytedance.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -121,188 +121,55 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7D3A5A89B3
+X-Rspamd-Queue-Id: 13546A89BB
 X-Rspamd-Action: no action
 
-Add driver to parse the ACPI RISC-V Quality of Service Controller (RQSC)
-table which describes the capacity and bandwidth QoS controllers in a
-system. The QoS controllers implement the RISC-V Capacity and Bandwidth
-Controller QoS Register Interface (CBQRI) specification.
+Enable support for the RQSC table which describes the capacity and
+bandwidth QoS (CBQRI) controllers in a system.
 
 Link: https://github.com/riscv-non-isa/riscv-cbqri/releases/tag/v1.0
 Link: https://github.com/riscv-non-isa/riscv-rqsc/blob/main/src/
 Signed-off-by: Drew Fustini <fustini@kernel.org>
 ---
- MAINTAINERS                   |   1 +
- arch/riscv/include/asm/acpi.h |  10 ++++
- drivers/acpi/riscv/Makefile   |   2 +-
- drivers/acpi/riscv/rqsc.c     | 112 ++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 124 insertions(+), 1 deletion(-)
+ drivers/acpi/riscv/init.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 96ead357a634..e96a83dc9a02 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22512,6 +22512,7 @@ S:	Supported
- F:	arch/riscv/include/asm/qos.h
- F:	arch/riscv/include/asm/resctrl.h
- F:	arch/riscv/kernel/qos/
-+F:	drivers/acpi/riscv/rqsc.c
- F:	include/linux/riscv_qos.h
+diff --git a/drivers/acpi/riscv/init.c b/drivers/acpi/riscv/init.c
+index 7c00f7995e86..784fa0c56516 100644
+--- a/drivers/acpi/riscv/init.c
++++ b/drivers/acpi/riscv/init.c
+@@ -6,10 +6,29 @@
  
- RISC-V RPMI AND MPXY DRIVERS
-diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-index 6e13695120bc..16c6e25eed1e 100644
---- a/arch/riscv/include/asm/acpi.h
-+++ b/arch/riscv/include/asm/acpi.h
-@@ -71,6 +71,16 @@ int acpi_get_riscv_isa(struct acpi_table_header *table,
- 
- void acpi_get_cbo_block_size(struct acpi_table_header *table, u32 *cbom_size,
- 			     u32 *cboz_size, u32 *cbop_size);
-+
-+#ifdef CONFIG_RISCV_ISA_SSQOSID
-+int acpi_parse_rqsc(struct acpi_table_header *table);
-+#else
-+static inline int acpi_parse_rqsc(struct acpi_table_header *table)
-+{
-+	return -EINVAL;
-+}
-+#endif /* CONFIG_RISCV_ISA_SSQOSID */
-+
- #else
- static inline void acpi_init_rintc_map(void) { }
- static inline struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
-diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
-index 1284a076fa88..cf0f38c93a9f 100644
---- a/drivers/acpi/riscv/Makefile
-+++ b/drivers/acpi/riscv/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-y					+= rhct.o init.o irq.o
-+obj-y					+= rhct.o rqsc.o init.o irq.o
- obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
- obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
- obj-$(CONFIG_ACPI_RIMT)			+= rimt.o
-diff --git a/drivers/acpi/riscv/rqsc.c b/drivers/acpi/riscv/rqsc.c
-new file mode 100644
-index 000000000000..a86ddb39fae4
---- /dev/null
-+++ b/drivers/acpi/riscv/rqsc.c
-@@ -0,0 +1,112 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Tenstorrent
-+ *	Author: Drew Fustini <fustini@kernel.org>
-+ *
-+ */
-+
-+#define pr_fmt(fmt) "ACPI: RQSC: " fmt
-+
-+#include <linux/acpi.h>
-+#include <linux/bits.h>
+ #include <linux/acpi.h>
+ #include "init.h"
 +#include <linux/riscv_qos.h>
-+
-+#ifdef CONFIG_RISCV_ISA_SSQOSID
-+
-+#define CBQRI_CTRL_SIZE 0x1000
-+
-+static struct acpi_table_rqsc *acpi_get_rqsc(void)
-+{
-+	static struct acpi_table_header *rqsc;
+ 
+ void __init acpi_arch_init(void)
+ {
++	struct acpi_table_header *rqsc;
 +	acpi_status status;
++	int rc;
 +
-+	/*
-+	 * RQSC will be used at runtime on every CPU, so we
-+	 * don't need to call acpi_put_table() to release the table mapping.
-+	 */
-+	if (!rqsc) {
+ 	riscv_acpi_init_gsi_mapping();
++
+ 	if (IS_ENABLED(CONFIG_ACPI_RIMT))
+ 		riscv_acpi_rimt_init();
++
++	if (!acpi_disabled) {
 +		status = acpi_get_table(ACPI_SIG_RQSC, 0, &rqsc);
 +		if (ACPI_FAILURE(status)) {
-+			pr_warn_once("No RQSC table found\n");
-+			return NULL;
++			pr_err("%s(): failed to find ACPI RQSC table: %d", __func__,
++			       ACPI_FAILURE(status));
++		} else {
++			rc = acpi_parse_rqsc(rqsc);
++			if (rc < 0)
++				pr_err("%s(): failed to parse ACPI RQSC table: %d", __func__, rc);
 +		}
++		acpi_put_table((struct acpi_table_header *)rqsc);
 +	}
-+
-+	return (struct acpi_table_rqsc *)rqsc;
-+}
-+
-+int acpi_parse_rqsc(struct acpi_table_header *table)
-+{
-+	struct acpi_table_rqsc *rqsc;
-+	int err;
-+
-+	BUG_ON(acpi_disabled);
-+	if (!table) {
-+		rqsc = acpi_get_rqsc();
-+		if (!rqsc)
-+			return -ENOENT;
-+	} else {
-+		rqsc = (struct acpi_table_rqsc *)table;
-+	}
-+
-+	for (int i = 0; i < rqsc->num; i++) {
-+		struct cbqri_controller_info *ctrl_info;
-+
-+		ctrl_info = kzalloc(sizeof(*ctrl_info), GFP_KERNEL);
-+		if (!ctrl_info)
-+			return -ENOMEM;
-+
-+		ctrl_info->type = rqsc->f[i].type;
-+		ctrl_info->addr = rqsc->f[i].reg[1];
-+		ctrl_info->size = CBQRI_CTRL_SIZE;
-+		ctrl_info->rcid_count = rqsc->f[i].rcid;
-+		ctrl_info->mcid_count = rqsc->f[i].mcid;
-+
-+		pr_info("Found controller with type %u addr 0x%lx size  %lu rcid  %u mcid  %u",
-+			ctrl_info->type, ctrl_info->addr, ctrl_info->size,
-+			ctrl_info->rcid_count, ctrl_info->mcid_count);
-+
-+		if (ctrl_info->type == CBQRI_CONTROLLER_TYPE_CAPACITY) {
-+			ctrl_info->cache.cache_id = rqsc->f[i].res.id1;
-+			ctrl_info->cache.cache_level =
-+				find_acpi_cache_level_from_id(ctrl_info->cache.cache_id);
-+
-+			struct acpi_pptt_cache *cache;
-+
-+			cache = find_acpi_cache_from_id(ctrl_info->cache.cache_id);
-+			if (cache) {
-+				ctrl_info->cache.cache_size = cache->size;
-+			} else {
-+				pr_warn("%s(): failed to determine size for cache id 0x%x",
-+					__func__, ctrl_info->cache.cache_id);
-+				ctrl_info->cache.cache_size = 0;
-+			}
-+
-+			pr_info("Cache controller has ID 0x%x level %u size %u ",
-+				ctrl_info->cache.cache_id, ctrl_info->cache.cache_level,
-+				ctrl_info->cache.cache_size);
-+
-+			/*
-+			 * For CBQRI, any cpu (technically a hart in RISC-V terms)
-+			 * can access the memory-mapped registers of any CBQRI
-+			 * controller in the system.
-+			 */
-+			err = cpumask_parse("FF", &ctrl_info->cache.cpu_mask);
-+			if (err)
-+				pr_err("Failed to convert cores mask string to cpumask (%d)", err);
-+
-+		} else if (ctrl_info->type == CBQRI_CONTROLLER_TYPE_BANDWIDTH) {
-+			ctrl_info->mem.prox_dom = rqsc->f[i].res.id1;
-+			pr_info("Memory controller with proximity domain %u",
-+				ctrl_info->mem.prox_dom);
-+		}
-+
-+		/* Fill the list shared with RISC-V QoS resctrl */
-+		INIT_LIST_HEAD(&ctrl_info->list);
-+		list_add_tail(&ctrl_info->list, &cbqri_controllers);
-+	}
-+
-+	return 0;
-+}
-+
-+#endif /* CONFIG_RISCV_ISA_SSQOSID */
+ }
 
 -- 
 2.43.0
