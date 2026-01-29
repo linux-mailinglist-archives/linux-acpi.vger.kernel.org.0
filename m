@@ -1,943 +1,312 @@
-Return-Path: <linux-acpi+bounces-20771-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20772-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLXhAGF8e2kQFAIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20771-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 16:27:29 +0100
+	id SAFBG5qMe2mlFQIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20772-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 17:36:42 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B484B16CC
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 16:27:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B3CB243F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 17:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23374300DE30
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 15:27:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A76D3005AAC
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jan 2026 16:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FAA2D837E;
-	Thu, 29 Jan 2026 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552542BE632;
+	Thu, 29 Jan 2026 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="H9MimO9G"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eG/5KUmm";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="EpY/ufLx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993A82C159A
-	for <linux-acpi@vger.kernel.org>; Thu, 29 Jan 2026 15:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7DF28934F;
+	Thu, 29 Jan 2026 16:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769700428; cv=pass; b=B5JS7g0p2ynbtO4AWm3Rjd42L6/zpwqBPspyU6lxeYaPNXCfLwt6rkNu7XI5eeSwihtJMlcjY7l6V1QJrZx1VkuMN1zh9GP1e8wZIutgHYPYgB9YtVq+FM8fXwiPrajbbwKLbAluf/JjoZ46kReZevpTL/mgOWT+NP0ssXlk88E=
+	t=1769704598; cv=fail; b=orWZtsc+6mwOw74AivhnyzLxyZIm9pRkj03g09RjYEU3g0FSMw4WENEODmC/yFHZhQNHK+pZJyZ91/fy6hf/Ichc1YfWXug9BA/0l1GBOFUgUtH/BXUxWWztKuyyjBqIrR9Uzr3GV52pdN4ZVzhiJRpsnOkF/JgleuI3llVBW4g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769700428; c=relaxed/simple;
-	bh=fD/RaxB6C7DQsLnu85NZxyDWU2aE/nhM7JkLHTUiA3g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FUZOqdPemYmd23YJDaF2g5eYilSkXkbYY7VWcMTC8WH3QEeqLLU+Pdahg/izLew/5B1RNnjJ21FuUwyCpWRM169rxMoSKzMeAWq0QOiNEy5cH8Bd6nBW7NkCqGiqa5//e9AHsmHq9SuKkkANunfGDk/bvNjUsfpVlhAeFxeQPcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=H9MimO9G; arc=pass smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gooddata.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2b704f08e73so664211eec.1
-        for <linux-acpi@vger.kernel.org>; Thu, 29 Jan 2026 07:27:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769700425; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XKi1L3W/a5BuFUMQXAnrMgImz9g/vQfWv7AfrVU/KQ5rZQv/zihVdCRQ717GnGRhgh
-         jtbPwc7ghY2Fr4ENtYOcYAkKwTzme9d3SJ5p7xJBltY25B6cY3g28TxBPns7AmOrlFu5
-         8bA22cJudASP26N7C98/3qcXDJApMfY314+slCNFi6pKexLQ59dPYaA+KMqNyAJdXXzV
-         NzYVIH+SGLRJPvjrQmxNjrlIlTDChs1o+FexAXHRdz4tDACYfTS3pmV6fMBmHuzqWtSW
-         G0Wu/w2Q+GfuTfgB9HUc6LtWm9Z4e1k6mXQlIGKNx8JiSb5/8SF8o6Tk4vjSmOmg1o2k
-         22xA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=9S42g+4os9sWkXYSAEeLCYZ/j6yC54XtvzMYpJcWRQk=;
-        fh=EIpmf/gVnbssjaP+Jl5boFBCIZOjTSz9W1H0DnyME2g=;
-        b=edu4ypzAqs8zj74k4ari9JFk91l6R6mBia4/Q00mN3Xdl3I7pJdVdZPN81Z5WleiXy
-         rrt3F6n+hC2nP88q5XaZKJFLhjjbMvImmR6z9Diirju+S4XGh3e1VqpL6DaaLTVUBuQc
-         6S2xHKFyLjn2n+G55V0uH5vAbi5t7jm9Y7ZPRv9lVQa5GLQqNqIwNyMN+I98ZCVWcpbd
-         bHItST+ZHxOGsoo8qZDEAh5TEJHKTO3pwZQDnbeorGwJQo2gUoXIpXLVEBNfCphs9xSw
-         +WqJtUqKKXkq08dBWVmgSRiPt+JqjZq5UjvJpIBnJ3cKKcL9KiLqX9W7akXHZm9OSIBE
-         pFJQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	s=arc-20240116; t=1769704598; c=relaxed/simple;
+	bh=coBj1np7qE4p/u1Bhd85W+J3ULugDoAaDLZ8kM39B4g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=frhCi1vq2v2LHU31++5x61jdE2jGa4b0VGtxELWJTDr2WrI584QVGHws0DuiXJScMKsQQ1Qt4ww26duxYBF2bE568ufm09dmX2PSc8NQ/Pq1qMKyBek/i1NohJFcYcP1kUsmy4v3PxuorxlW91gOyGvr2UcWEu9JiqTd5kRNBno=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eG/5KUmm; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=EpY/ufLx; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60TDgOVX449018;
+	Thu, 29 Jan 2026 16:36:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-id:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=coBj1np7qE4p/u1Bhd85W+J3ULugDoAaDLZ8kM39B4g=; b=
+	eG/5KUmmtu0dvaxiWT0akusKQwusP5MDzWpGESOqHXSFEKxOxS4IDUqLgwt4BW18
+	wp8NCMqr0DJ7hxY4wrfMlVKo1D/hhbaJKOUG9TlNpBwg6l1qPOS3pLedvJ504it7
+	KIm1FRULGbgMS8xdaQpNwluBNvlLDenm1YHc/NhTAab0Vo2zY3UanpNDy0hWtqUv
+	Dxgo3uxARt38O+n5+4c4fc+wt62hknNAYXPWoEoO+XwyxcP6HtEWDd1YWBs0qv8o
+	N6yTqWrthsS2VVWuWIgmc9fESGPOYNRUAv7IslcN5l6nz1TPVJvdzp2d5uSb4F+w
+	yKn+/2Ks6grDhu7Zip5K5A==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bxx09m9q2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Jan 2026 16:36:15 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60TGAVYQ001716;
+	Thu, 29 Jan 2026 16:36:15 GMT
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010071.outbound.protection.outlook.com [52.101.56.71])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhh41t0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Jan 2026 16:36:14 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ri442k1eMQF8Cg4X0gIpXZ2xBjnZQGBXZyI5qHTd6JCTUduQPDcbke70Pn9uz1a9vczK09PeZt7PHwTAXZk3LRhbgGeoFYSzQi9RFYv0nCrPdVSUXw/ajX5SdMW3gMEpi98n59U9X8Gs7H/4oOiU1eQ+LPP1Ny+snxmsz8/4EqbPP1NIIi4+C1VVSQ6oA1Dzi3awIdsoukrA1wBx+ErUZzm/FKRZuvmvGBaz1PFZ43wAjEx7FC1AGEZ1jRgds0Nt1zeLkGZHlxSK947sihcOiEzEaymdALDe63Cq3Z1CuUxXuZQ0LjIPoaDu9Le65sVuv549xVIbLv1AUOj6f1cC5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=coBj1np7qE4p/u1Bhd85W+J3ULugDoAaDLZ8kM39B4g=;
+ b=BBlfyez/c+GL++Cc6inarB/tgH4zY4ZCJTH48WJsXPQUzDdW9ni2ebPYCc2VWCmeMZpFJkCF4BU7qN0WXDDttP60G9iWP4jvlvcbo2AR1WN5U881mdNzL4AoARIyKfYzwn7KrL77x7ZKebb0WF1EQIVyhJDJ4IzKZYSlL0B0TgELLS3T1HwkRwowiz3jbDR7vxOwTnk+ecMx2U1El9orgX27vzXr6R3k5rrPdoA6g749AXVTdNQ6ukF+qg5btVuJfi2K4fqUj0Uaz77HNtNG8oF4Bq6vH3bQ/CO2hEvWI9gHbAnkVsNdu1DsiFh99CQqwIiWx6CEWvxEZCUc9VuYUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gooddata.com; s=google; t=1769700425; x=1770305225; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9S42g+4os9sWkXYSAEeLCYZ/j6yC54XtvzMYpJcWRQk=;
-        b=H9MimO9G6zGs5ZnfSl2w7j2oUhjECCVWDZpOgoQnoM13gTnInsjrbAVPRnUH2O5wJW
-         yES2S4siTIStxKfhe/i9rezv4/TRc2o63EyfSC8mvgOejX59WuT0LQuOD8xe6klNIGS2
-         V6upaZUuJhfQH0WsrOaMl7DYY6r6vlKynBh78=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769700425; x=1770305225;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9S42g+4os9sWkXYSAEeLCYZ/j6yC54XtvzMYpJcWRQk=;
-        b=j1DzgXqxx3qZoFRI0LdPQ5SipXTKu8uRGJ1M0nHjWrZBc1xfcpZWxuHtCD04vBvPYX
-         ZDus8ao18ut9wdmvWTE3eCkBcpBuKuLu/j2fAfiPC5OpfxwuB3HZWJnBZ9rBJX4z2szZ
-         RwAtxKLslATlWRBXLma+SyLQruKRi3IaYEQ6g+6s4M9Pqx/gj/y46as2+a/PkJAKpmUE
-         KEeE4GpOCfLc2sLOFgUf8iCmQ7zbtT5oVHA4VXN+Neht80v5AVh3/hXAtBB/qi1iRoC5
-         W53LBIoY537Qx+VNoNwmZhNe1dhKyVT74dFa/eF71ylvwWU5Zhp034Xmm4es7ClZTEVr
-         zHfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTMHBu6sr5xrlw2Kxd8hHxAxSOYq107uZZAX+qEQP6h0hmXNXMjJiT829KnRfVaISjJzhW4YGuxlky@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOBmgJ1OY7i1l7La06o3p6/SKkpLETg7h6dqyOshidKErxSmRg
-	wRHopVf96yxjR3a5VSHT/PGWl+0Vv9SAImo9HhbTBMYnsuMDYCYU0DVMJQP93sMcgKUb6tpVuui
-	3IHgZd0FRk5WeqRJLYu6cB2kwUFcLuU1VJNOsHIousqdqTmU6RRt2AA==
-X-Gm-Gg: AZuq6aLJgSBRdxwzO+X/k9ccZkT1sMnH9Yv4XbNJ7p8sZvxkDT3Z8W+kYes1tfeIwkg
-	If/qEKyzjW7PshIGl9A7y+yuGDSU1sY1C8sXMKK3Dy4xKfuHJd2gj1u9wr1WT4I/bywEiCmhnbl
-	QBgKNi4WWm3nt8donXjlZxMgkTMABshPX8Yi3iBVy59qrhsYoKr2Am1VecxlpXow2WSwncD+qWW
-	JUZ0sRk6L3UBJ/dSI29A5xTve45/nYw6DxtCH/eEZnFn/+RLuPniZttTHxJ05nYpE/IZ+25
-X-Received: by 2002:a05:7300:d518:b0:2b6:bb18:c70a with SMTP id
- 5a478bee46e88-2b7b1871446mr1623415eec.15.1769700424104; Thu, 29 Jan 2026
- 07:27:04 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=coBj1np7qE4p/u1Bhd85W+J3ULugDoAaDLZ8kM39B4g=;
+ b=EpY/ufLxwihBw2pBAojjgnzIk/W7q0KB6JL8RD0VHim/tFa/kkEGmCWB1R9dnGLFYkqSEaL/tD4nB1iuNJdwy8/dYZFATAmy9L5s8nWRtt+5QJyp7LeOcgYeLTF8/eNAvGdaV+n02ViJ9y/UbFE0QeDkzL8nFxUoTiy6WGUVWgQ=
+Received: from CY8PR10MB6826.namprd10.prod.outlook.com (2603:10b6:930:9d::13)
+ by SA2PR10MB4539.namprd10.prod.outlook.com (2603:10b6:806:117::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
+ 2026 16:36:10 +0000
+Received: from CY8PR10MB6826.namprd10.prod.outlook.com
+ ([fe80::f9d3:19ef:4ce8:4d63]) by CY8PR10MB6826.namprd10.prod.outlook.com
+ ([fe80::f9d3:19ef:4ce8:4d63%2]) with mapi id 15.20.9564.006; Thu, 29 Jan 2026
+ 16:36:10 +0000
+From: Haakon Bugge <haakon.bugge@oracle.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Bjorn Helgaas <bhelgaas@google.com>,
+        Niklas Schnelle
+	<schnelle@linux.ibm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Oliver
+ O'Halloran <oohall@gmail.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Kenji
+ Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+        Alex Williamson
+	<alex@shazbot.org>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v3 2/2] PCI/ACPI: Confine program_hpx_type2 to the AER
+ bits
+Thread-Topic: [PATCH v3 2/2] PCI/ACPI: Confine program_hpx_type2 to the AER
+ bits
+Thread-Index: AQHci6Bzoxg7BPJ1h02CdG3Ul0x5+LVmoDYAgAE9BoCAAYY1gA==
+Date: Thu, 29 Jan 2026 16:36:10 +0000
+Message-ID: <E8CB259F-49BB-47FB-8D41-591DD302F168@oracle.com>
+References: <20260127222442.GA379147@bhelgaas>
+ <5B14DFEB-18F2-46C0-8DD1-166A3BC275B4@oracle.com>
+In-Reply-To: <5B14DFEB-18F2-46C0-8DD1-166A3BC275B4@oracle.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: Apple Mail (2.3864.300.41.1.7)
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR10MB6826:EE_|SA2PR10MB4539:EE_
+x-ms-office365-filtering-correlation-id: ca8fd4d9-52c0-4717-d49e-08de5f54828e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?Z3RKYW9yZWxEenJjdTJzUVJBSlk2WnFxdm00NGpnMjRzYUVid1dkcVFwYUtD?=
+ =?utf-8?B?RE5JbVJQU1MwSXo0N2dIRzRDM2wrRHlyN2VUcm02K0dJN3dnaDQ1cHZWb2pm?=
+ =?utf-8?B?UGY3L3NSZlRKTFBJeUZ4eWdVL2xSYi9xRHMzTjdzbU9FV0hiL3NnM3NYWWFp?=
+ =?utf-8?B?b3JCV2RTS3RBNjBaUUxxRk9pTFV3Q3RtbE0zQm1vQkJLWlREK2N3c3Nqazdn?=
+ =?utf-8?B?SXJZSjh6RXJLdlM0NGhGZjdQTTNBcUxDZkJvMk4rZG5QUWtpU1hQa1Q1dnoy?=
+ =?utf-8?B?YVRIMFd1MnlLQlNEY1pQZWxvVXJhaGJyTTlVaTR3eTJ1eGQvanpnRXo3UEl5?=
+ =?utf-8?B?bS8wdXBSbEF1QWY0ZmVxM3ltWGxiZU1tdHFDc0M1eGR5Mi9HbnZZVzcxc0p4?=
+ =?utf-8?B?eEk1ZUlhak4xQW40OFFKNDBUejlqa0JRNFNhUlNpQU5WcG5IVnRuSFY3NXFi?=
+ =?utf-8?B?MzlVd0lzdXJHdE5Jdi9hMUFYZTJXUkJaWDNCdGZTdE92a2wyMTZnbElqMkN5?=
+ =?utf-8?B?ckdnVW90RHlOZzVLZkUrNkR2cXhwdldCSU4yWGR0S3Y1SXpiYysxZmdEZlpo?=
+ =?utf-8?B?UytoQmJuUElLN1cyL3EwaVdocTltcEUxOVBVSGVEVDJPdDhza3N0K0RJellj?=
+ =?utf-8?B?cHNoSy92Qm1MeFNMNUo3ZDc3cjZJckVwYUZGNHp1ckpqRHJmQllielVtUmpY?=
+ =?utf-8?B?RzMwTHFtRHNhMG1zbm01SWhGSjlpSi9WelliNUx2aGdVL2Q5RTNsR25CT1lC?=
+ =?utf-8?B?YUVld0Eza2Q3ODJVUFhYR21kWkd6SXh0cjFTb0VQZGV3a2RIblI5dlYycEE2?=
+ =?utf-8?B?alRzOXJCd01PUUJydDdZSU5JZUZHMFp0bHA3WWNaa0UvK1daQ01MbXR2bitv?=
+ =?utf-8?B?RmlXN1VSNzlGZXhZY083MkxVdkxOQUNtYVVCZ0xQeXdYbURsWmtLMzdYNWxX?=
+ =?utf-8?B?Q3gvb0hjNkNJTVVKelF0MHdaaVNKQ1RpYjFEcC9wdVZIZ1BaRUF6Rklpc0kv?=
+ =?utf-8?B?cHhmQmJTRVJQUXBWcmhmUDRUdGx2eDlnOHI5VjhxbkZ2Q2ZwdVYzL245QStD?=
+ =?utf-8?B?RWNOVWx0eWR3Y2xvWGZQcS9SRGVQR2hPUjNHaExmWXZSejdhdjNOcjA5MGxk?=
+ =?utf-8?B?dkZUOU9EaFVzMVEzUDhXbEVSd1NCZWdQU0wxUmpEclNPeW0xckF5Nys0MmtU?=
+ =?utf-8?B?am0ybkhKUklGdHNkbGl1SE5VSkNvaG5hZWI5dUVhejB6a2psNEZhS3N3ZkJw?=
+ =?utf-8?B?M0k1ZzhJWml2aFJ3Vkdxc2Y0VXRtMjdDWnRRaVQwWUM3bFRPdExySkoyeWdB?=
+ =?utf-8?B?bHB4aTBKZllDdDF1VHkxaE16cElQd1BVWUZNTGZHNzFPWUc3VG5UeTYrMXlj?=
+ =?utf-8?B?SzRJL09EMW1vTlF0WkxNNThrMDBURWtUNitwcjFrUWpzcGQ5b2xrWFIxeXVQ?=
+ =?utf-8?B?bWVOUTg0N1JQYkg5NUxRemZ5K3JJUCtxQmhxcFJmVEFYM0I1ZWN1ZzQwVDhz?=
+ =?utf-8?B?QVJWOTJSWUh3OUx5c3VVVURORTlzUVdRN01zbHdlQ09YWmpSZFZEZncyRnJG?=
+ =?utf-8?B?QmtJRHRVOUZVSjF6UWl3Z2psV1NEdUI5dEVqbUQyazRYTXl6SHZBcGxqVXJF?=
+ =?utf-8?B?a1k2ZXlJeWlQNldUM2l5bkpWZG15cjNNQlRxZVArRE5QeWI2eEQxMzcwYllR?=
+ =?utf-8?B?bldSMER4UWxLZXp4MXdRWDVUQWNTY1Q3Wm5FWWtSQWNZdE4vUTlEUkU0Ri9k?=
+ =?utf-8?B?YmFlVHZRTWpPeFZNdmhXMGlvMm9nd0tOdERYeDl2Wkd0Q0htS09QMzJwRlJp?=
+ =?utf-8?B?alhNUU9PZnBUT3VhYVJIOEpTNGMydE83VHZxRVVPditTLzBkaVhRbmRyeHo3?=
+ =?utf-8?B?K0UvakYvU25ia1lNRUR0MFhlcndZeWdOSXBQMkFOeGRyUTYxNTZxbE9YNlI2?=
+ =?utf-8?B?d0ZpQ0lqdEl1UGtFYlZqRjF0Ny9yMDYvL21KamttY285SE84Z1VZQUdSaGtJ?=
+ =?utf-8?B?S3FwMjAwcHJNdkxMVU9tc3NhR1pnTFh0UkdCUWYvUWxXYjJudWtpcy9oK0xl?=
+ =?utf-8?B?ZzhLbVd2MTlxV1pZOUk5eDRwNHU3ZVphQVRUOTRBZGNJWXNDNkFtVU82QWIx?=
+ =?utf-8?B?OWorZzlFUlE3dU5aWUwzOHJaSW96Mlk1ODIvbUFBbE9OSVRta1d4cXh4ejhF?=
+ =?utf-8?Q?7j7PsjcThe7FQO36FsQMqDA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR10MB6826.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?OFFpcktNS0o1MWpGOC9zL1lMdjJQRWZhOWVwYmZUNW9VNmdvT2RTZittVGww?=
+ =?utf-8?B?cTJrMTZhSHV1NXBieHBzclQyUEg3d29jaDNsYU1tRW9ESkFoOWV4SjIrQjF3?=
+ =?utf-8?B?WFU4dUJEbHpYYzZ2OTczbFpEdS9mTmxzZy9rWG1reEhDblkwZnR1Qjdhejkv?=
+ =?utf-8?B?eWZaMU1qMU94UGxsUEx6Z1diNXVNM1NCMFY4UlV4cVNJUlZnNVZOdm1RTURx?=
+ =?utf-8?B?MFcrREVHZ1l0K09WYjJWNGFiSEVTQzlRQjJzZjBUWmovcjl0UnhaQlo0bHg1?=
+ =?utf-8?B?OXVXTG5MS1dENDBwRFZyZW94VmJ3aUFZeEtjdHlxNXljaFYwb2RnSFpWRDQ5?=
+ =?utf-8?B?aEEwamN1QmxiZlM2dVB6VCtZTWw3QmQ0L1lIZjgzOHdHOFFhM2d0QWF0cC9O?=
+ =?utf-8?B?Z2dTWXIydVAvQ1NSa0dNSHpFSUpheUcwcW1JODc4YUt1dEtZUDNlVWdZRzFN?=
+ =?utf-8?B?U2d3LzJhZ3NIMVlKQ25Ka1FsN2tJYVBTdEo4RUs1SDdhUG9JYlRJSEhYc2dS?=
+ =?utf-8?B?NGlaWWtsM3FqRi8vUmM2TUFyclo3ZXhLZmlPV3FmYmJOMkhocVlta1dGRi9q?=
+ =?utf-8?B?VHR0MU4xYVFXM1BYUnlqZ3d6VnczTE9aWSs3ejBBaEgzTHc0U09pN0M1M2hH?=
+ =?utf-8?B?TlBlZ3VZc3hwSWRaR3k0WG1BTlJvSmUvenpXMzNrZlZnV2MyRU9NN1FaTm15?=
+ =?utf-8?B?QUhzcWhLRnUvcFZ6TWUxV2pxQmtPd1hqZ1haS3U1T1pPYi9ZUVVvODMveWdV?=
+ =?utf-8?B?ajdvQ1RQa0VPTEdFQzlDa0hZU2hValdHWEdtVjVJK2IxSEc1Y3Y3TVJVTjNS?=
+ =?utf-8?B?NHl3NXZNL0luMHlsTEREZlFIRDg1VzlGRzF3MDdkRFZIVjJUZTNERDAzM2FM?=
+ =?utf-8?B?VCtTVFYyY05zMlMrcC9iSWRJbitzNEthazduaEtoaHF4T0tkdkFaL2hxZjRx?=
+ =?utf-8?B?SG9PNmwzYitnb0pLM0hmVHp0K3hFNUNVVy9YOE01S29JVXJ4N3JCdkNBRVFq?=
+ =?utf-8?B?WWxWYUltLzJFTlE4YVdqalJKUXAxdUFSNHc2ZkFRUXdmM1lnVEJhd3Fha0p6?=
+ =?utf-8?B?YVhzdGJMd2J3WVRRcW53NkpNeHhGMjEzTndYZzlLV240UzJ3ajhidWNKSHlI?=
+ =?utf-8?B?OXBCZVZiUjFCd0p5aXI5eWxjaGxXcGdLVHd6REVzSy8xTFFNWlpRMGc4WGxs?=
+ =?utf-8?B?QjdRVnY5ZkxsZlN2OHRGaHdCMXZxK0xURURueTNVNjdoQ05sNm5uaCtOdnNX?=
+ =?utf-8?B?QTVTbWRtbkl1YWMvY0dMK0ZrNnRRU2RCZjZyS0VPTkdBVXh0U0Y1SXZuVTBn?=
+ =?utf-8?B?MVg3a2htYzRJRVhsV1pBZGJhVjFBa29lMFRDTlRLT1p0bWpWeXRhdGNScFNM?=
+ =?utf-8?B?cURwTnl2Zk40d3NuVCtRenIrS1ZzMkp5V0U2T09rbnVXMVZtQURQNDcxNC9r?=
+ =?utf-8?B?K3hyeEJlL1p2ZDJCOVVZRUhEUjB2NjRTZTB1TllSZHZkWFFKakJhMWdJZXA0?=
+ =?utf-8?B?V3pYMmcxODFoSk1RU0c0Tzd4STdTUEpnQzkwRE9qRi9rK3BuekNvTFNKbHZs?=
+ =?utf-8?B?MVJGa0MyUldUSDNFaS9ZWVJsVkhjY0x3VUJza2svdTY5L2l1OTgzWmJjcDFJ?=
+ =?utf-8?B?bWVlUVRTWVl4YjJYc21WSW9pOHp5ZkF6NGdhSC96ejRrcGtiL1hqaE9vVHJ5?=
+ =?utf-8?B?ZWV0aW50R1AzY0s0NTJHVUNDSlo4a1djajNyMHV4dU9WWTNVbnRmVlRLWDIv?=
+ =?utf-8?B?NEI2VGhQdVlCVFZ4MG4zWi96S1R1V1dTdVZob25Yb0FlOE42VHdFVWdXRWJL?=
+ =?utf-8?B?Tm5Pb250enZIaUhhT01LUXE0d0RXVEQzWEo4RUsxazU1ajk4UHNWZFA4VFVu?=
+ =?utf-8?B?cEhzNXFVeUJ2M2c5eWpObDdVTlc2RkpBNGcxK2pTRllXQ3ptYVdkVlJMZENj?=
+ =?utf-8?B?dGNTRUdONEI3VEMrZFMxbWNwMHZqeXF3MGdOSFU0UlgzTGZYbGtxdHhtaDAr?=
+ =?utf-8?B?OExtL0JHTVpRbDIzS1UxeWRmaW9LaCtRMXVwL1dESVBxM3BPZDNJc091MXh1?=
+ =?utf-8?B?Qk1ma3ZBT3JaUTlsSFlyNmlxZTJ1cnF5QXJQamZuQ0FFQjFzZ3dVZnN4TG9a?=
+ =?utf-8?B?NnljWDU2YkdJemFPMTVOLzJzQklINTZyN0ZQUFdyVnRhVVpEZTFDYVNCMzVJ?=
+ =?utf-8?B?cDhYb1VDV1J2aXd0S3kvWUVjSWZjMHRrMmlyekMxbS9PZ0hzTk5jcVpHQ29v?=
+ =?utf-8?B?WFQ4Um0yVWt5QjA5ZCtnRFhiNktyL0Q0NmoyOVJzUnhhR3N0K1hUYUFHalpI?=
+ =?utf-8?B?VE1IdkFZNGxoNmd1SVlIUTdVYkRsdm5BajBPaFlwVkFNd3MvOWphcjhReWNE?=
+ =?utf-8?Q?rxONe+lQF9rWUyDE=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9FDF0931E236C148A8DC1B95D980D95D@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
- <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net> <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
- <d7f34e0f-e258-4fef-93eb-1ef0a3123d95@roeck-us.net> <CAK8fFZ4izdX_HDtGN60CZ3Ta61nqkUg7ncViM=mGgxKki_5FoQ@mail.gmail.com>
- <a7334568-13ce-4600-8650-607273e67976@roeck-us.net> <CAK8fFZ6gKs7s2rJ=f7bt24f+_cY-jGU33TvX3UP=U58uK-1KaQ@mail.gmail.com>
- <fff54ec8-496e-4c26-b652-358dc4de0de0@roeck-us.net>
-In-Reply-To: <fff54ec8-496e-4c26-b652-358dc4de0de0@roeck-us.net>
-From: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Date: Thu, 29 Jan 2026 16:26:37 +0100
-X-Gm-Features: AZwV_QhtKbHhCiRXRoFngvMUANCUFh8mIGTp7IyODqhKS1Bc8rHOCTn675OlWqc
-Message-ID: <CAK8fFZ4wEUdMAHkfdC_z8ohYB_rEXZ=dHArc75jDibgQ_-ozKw@mail.gmail.com>
-Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex deadlock
- in hwmon_attr_show since v6.18.y
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, Igor Raits <igor@gooddata.com>, 
-	Daniel Secik <daniel.secik@gooddata.com>, Zdenek Pesek <zdenek.pesek@gooddata.com>, 
-	Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	aUNQRROxo4nP5ICL9XXiZ0RzoOvDrHlCbnlm3TUE7o9juwwilpp97TgWYRvP0LJGT+e1OlK/WfU3+kgp/lfKku10r9dzGEkPpsWZYY2SzXxW4YqJlwYQmUllTxVJnPSBnmuTXbuMTZZQqe3qqJf0DiYCAPqsOsdup1CYwo6RPc8AzHYVeNmwu3/UhC1XvBhZr8Wy0Oi0uB/Jx1xhnc9LEsbnZFhhW/XlbZGFCk0fNYWb2t9masJnmhzu6O1l4K99SZc8Ty6UKxndTZq7mPcrhHCpBosqsJd8Px9Ljuzw/PzzxJwbRmblUdQ5St4+w5JFECXbD8bgd1xctz9jzkLTm4Jo02adl5TvusY5GYvVYOsBChS9Q+GiO6+byk5c+ON4ChzEa+vBU/oJlHve2dClyd+QDACC55BFjshRShPPvcru13dxewvVI2RFW9ZpuRk30+pKFG2FYEgCG00zreQD5tZrFmFwubcnBoeMZd/2U2hPDmxwpRz+xEejFxFfFmJIknhALMP6GcBrJEx7z55Hyt9eFuzqZR64fg0lSh93kL22+htkk1+CL3/PyaigBpPrEcJa+xcTDupB7LRYFmhTWyFovYWsaC/tWg5gyXJFlB8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB6826.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca8fd4d9-52c0-4717-d49e-08de5f54828e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2026 16:36:10.4469
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: e6I72tVG1DOq/3TJybTCerujtLMNilOX9NDVSEbhdwLmfE7bZr0qPj49AgeBMwMDwSYYi5nEiv/VGRmWHOHRIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4539
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-29_02,2026-01-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2601290115
+X-Proofpoint-ORIG-GUID: Oaig0m9XNg-JxgQ5uUq7f2iy2tzDhLuK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDExNiBTYWx0ZWRfX2lsNb1J+QGc0
+ Qpy7miSjLsZ/GGpXNoDQs4Ce5GRGJzaub8e0hNyQHV7EwmlBjcgW3nc15K/lJA2ksfnq0erFnJ5
+ nUCXvYMulyEXIm42/ZI9pmHJthXBet7lUMVoJ63pbZ7/OC0Bbccpf/htrqAW/2+M7tksr8xIP1R
+ cXHcMtYrvU8umq1BxwCzo8wnm2Lz7IWtg/T2YVs4n9ahXiJX40yoVWrqS/rRA+5aJ1cOgd0u0Di
+ Jer54xc8z8RZaCy6hwYWBKfrJ/FXmHsq7EHjW/1JXfyAk5B6yi9vrX6lQa5NjKL7BDRXdmpxhR0
+ 51j4EbZ9QpmwGUI0JnE/vHwpkdGPOMKy/DX2OxX1g0UKhpBovb01S6kXNyyYEnhnTWZDxP4wtyb
+ NF5OjVygDkYygWKeDN8EKoY9teTKhPI11MnMMkmluZsgF0OHnBdvvLP+gA+B9hfLjJiXIrHPSWk
+ kYmKlG6DsllgLXT+KVPI8v6zUGI02favF988efpY=
+X-Authority-Analysis: v=2.4 cv=Qe5rf8bv c=1 sm=1 tr=0 ts=697b8c7f b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Wl_u4ra9nSrZaNrLTc0A:9 a=QEXdDO2ut3YA:10 cc=ntf
+ awl=host:13644
+X-Proofpoint-GUID: Oaig0m9XNg-JxgQ5uUq7f2iy2tzDhLuK
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gooddata.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gooddata.com:s=google];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20771-lists,linux-acpi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gooddata.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jaroslav.pulchart@gooddata.com,linux-acpi@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-20772-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,linux.ibm.com,kernel.org,gmail.com,suse.de,jp.fujitsu.com,shazbot.org,vger.kernel.org,lists.ozlabs.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:mid,oracle.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.onmicrosoft.com:dkim];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2B484B16CC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haakon.bugge@oracle.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 11B3CB243F
 X-Rspamd-Action: no action
 
->
-> On 1/27/26 03:58, Jaroslav Pulchart wrote:
-> ...
-> >>> Hello,
-> >>>
-> >>> Thank you for the analysis and insights.
-> >>>
-> >>> To add some context from our side: we observe this issue shortly after
-> >>> a server reinstall or fw updates followed by a reboot, typically when
-> >>> hwmon sensors are accessed for the first time (e.g. by monitoring during
-> >>> early system initialization). We have not seen it trigger during normal
-> >>> operation, such as a simple reboot or on long-running systems.
-> >>>
-> >>> Given this behavior, it is possible that the issue is related to
-> >>> hwmon_device_unregister() being triggered early during system
-> >>> initialization, but I do not have concrete evidence at this point.
-> >>>
-> >>> As a workaround, we will exclude the ACPI power meter from hwmon monitoring
-> >>> (Grafana Alloy) until the mentioned refactoring or a fix becomes available.
-> >>>
-> >>
-> >> Would it be possible for you to test the patch series I just sent out ?
-> >
-> > I suppose these 5 patches from
-> > https://lore.kernel.org/lkml/20260123182208.2229670-1-linux@roeck-us.net/
-> >   ?
->
-> Correct.
->
-> > I will try them and let you know.
-> >
-> Thanks !
-
-
-The issue is still there:
-...
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.470961] usb 3-1.2: new high-speed USB device number 15 using
-xhci_hcd
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.569212] usb 3-1.2: New USB device found, idVendor=413c,
-idProduct=0006, bcdDevice= 0.00
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.577772] usb 3-1.2: New USB device strings: Mfr=1, Product=2,
-SerialNumber=3
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.585217] usb 3-1.2: Product: DRAC 5 Virtual Keyboard and Mouse
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.591473] usb 3-1.2: Manufacturer: DELL
-1769654131840 2026-01-29T02:35:31.840Z Jan 29 03:35:31 10.8.8.76  [
-595.609039] usb 3-1.2: SerialNumber: DELL413C-1
-1769654132091 2026-01-29T02:35:32.091Z Jan 29 03:35:32 10.8.8.76  [
-595.761012] input: DELL DRAC 5 Virtual Keyboard and Mouse as
-/devices/pci0000:c0/0000:c0:07.1/0000:c4:00.4/usb3/3-1/3-1.2/3-1.2:1.0/0003:413C:0006.0001/input/input1
-1769654132091 2026-01-29T02:35:32.091Z Jan 29 03:35:32 10.8.8.76  [
-595.783038] hid-generic 0003:413C:0006.0001: input,hidraw0: USB HID
-v1.01 Mouse [DELL DRAC 5 Virtual Keyboard and Mouse] on
-usb-0000:c4:00.4-1.2/input0
-1769654132091 2026-01-29T02:35:32.091Z Jan 29 03:35:32 10.8.8.76  [
-595.815191] input: DELL DRAC 5 Virtual Keyboard and Mouse as
-/devices/pci0000:c0/0000:c0:07.1/0000:c4:00.4/usb3/3-1/3-1.2/3-1.2:1.1/0003:413C:0006.0002/input/input2
-1769654132341 2026-01-29T02:35:32.341Z Jan 29 03:35:32 10.8.8.76  [
-595.933058] hid-generic 0003:413C:0006.0002: input,hidraw1: USB HID
-v1.01 Keyboard [DELL DRAC 5 Virtual Keyboard and Mouse] on
-usb-0000:c4:00.4-1.2/input1
-1769654164161 2026-01-29T02:36:04.161Z Jan 29 03:36:04 10.8.8.76  [
-627.816246] usb 3-1.4.1: USB disconnect, device number 10
-1769654164913 2026-01-29T02:36:04.913Z Jan 29 03:36:04 10.8.8.76  [
-628.584247] usb 3-1.4.2: USB disconnect, device number 12
-1769654165666 2026-01-29T02:36:05.666Z Jan 29 03:36:05 10.8.8.76  [
-629.352371] usb 3-1.1.2: USB disconnect, device number 11
-1769654166417 2026-01-29T02:36:06.417Z Jan 29 03:36:06 10.8.8.76  [
-630.120248] usb 3-1.4.3: USB disconnect, device number 14
-1769654167168 2026-01-29T02:36:07.168Z Jan 29 03:36:07 10.8.8.76  [
-630.888372] usb 3-1.1.3: USB disconnect, device number 13
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.222248] usb 3-1.3: new high-speed USB device number 16 using
-xhci_hcd
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.324502] usb 3-1.3: New USB device found, idVendor=413c,
-idProduct=a102, bcdDevice= 3.16
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.333081] usb 3-1.3: New USB device strings: Mfr=1, Product=2,
-SerialNumber=3
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.340535] usb 3-1.3: Product: iDRAC Virtual NIC USB Device
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.352328] usb 3-1.3: Manufacturer: Dell(TM)
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.356825] usb 3-1.3: SerialNumber: 5678
-1769654174684 2026-01-29T02:36:14.684Z Jan 29 03:36:14 10.8.8.76  [
-638.416009] cdc_ether 3-1.3:1.0 eth0: register 'cdc_ether' at
-usb-0000:c4:00.4-1.3, CDC Ethernet Device, b4:e9:b8:4f:6e:91
-1769654174934 2026-01-29T02:36:14.934Z Jan 29 03:36:14 10.8.8.76  [
-638.454385] cdc_ether 3-1.3:1.0 idrac: renamed from eth0
-1769654179695 2026-01-29T02:36:19.695Z Jan 29 03:36:19 10.8.8.76  [
-643.432511] usb 3-1.3: USB disconnect, device number 16
-1769654179695 2026-01-29T02:36:19.695Z Jan 29 03:36:19 10.8.8.76  [
-643.444350] cdc_ether 3-1.3:1.0 idrac: unregister 'cdc_ether'
-usb-0000:c4:00.4-1.3, CDC Ethernet Device
-1769654179945 2026-01-29T02:36:19.945Z Jan 29 03:36:19 10.8.8.76  [
-643.661285] usb 3-1.3: new high-speed USB device number 17 using
-xhci_hcd
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:19 10.8.8.76  [
-643.763508] usb 3-1.3: New USB device found, idVendor=413c,
-idProduct=a102, bcdDevice= 3.16
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.772075] usb 3-1.3: New USB device strings: Mfr=1, Product=2,
-SerialNumber=3
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.779541] usb 3-1.3: Product: iDRAC Virtual NIC USB Device
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.791349] usb 3-1.3: Manufacturer: Dell(TM)
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.795849] usb 3-1.3: SerialNumber: 5678
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.856016] cdc_ether 3-1.3:1.0 eth0: register 'cdc_ether' at
-usb-0000:c4:00.4-1.3, CDC Ethernet Device, b4:e9:b8:4f:6e:91
-1769654180195 2026-01-29T02:36:20.195Z Jan 29 03:36:20 10.8.8.76  [
-643.902986] cdc_ether 3-1.3:1.0 idrac: renamed from eth0
-1769654202995 2026-01-29T02:36:42.995Z Jan 29 03:36:42 10.8.8.76  [
-666.728536] usb 3-1.2: USB disconnect, device number 15
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.934016] INFO: task alloy:5878 blocked for more than 122 seconds.
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.940614]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.947641] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.962034] task:alloy           state:D stack:0     pid:5878
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.973362] Call Trace:
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.979963]  <TASK>
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.982237]  __schedule+0x2b5/0x690
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.988110]  schedule+0x23/0x80
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-739.993923]  schedule_preempt_disabled+0x11/0x20
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.000940]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.007959]  hwmon_attr_show+0x36/0x130
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.014925]  dev_attr_show+0x19/0x60
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.020958]  sysfs_kf_seq_show+0xbf/0x140
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.027228]  seq_read_iter+0x112/0x510
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.033861]  ? security_file_permission+0x8e/0xa0
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.041930]  vfs_read+0x215/0x340
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.048231]  ksys_read+0x61/0xe0
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.054964]  do_syscall_64+0x5d/0xc20
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.060965]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.067924] RIP: 0033:0x408d8e
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.073918] RSP: 002b:000000c003785498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.083576] RAX: ffffffffffffffda RBX: 000000000000001e RCX:
-0000000000408d8e
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.092940] RDX: 0000000000000080 RSI: 000000c007188f80 RDI:
-000000000000001e
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.101775] RBP: 000000c0037854d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.111924] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.121914] R13: 0000000000000040 R14: 000000c00632c000 R15:
-ffffffffffffffff
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.131932]  </TASK>
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.135945] INFO: task alloy:5883 blocked for more than 123 seconds.
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.144953]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.153936] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.163925] task:alloy           state:D stack:0     pid:5883
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654276407 2026-01-29T02:37:56.407Z Jan 29 03:37:56 10.8.8.76  [
-740.177931] Call Trace:
-1769654276657 2026-01-29T02:37:56.657Z Jan 29 03:37:56 10.8.8.76  [
-740.182925]  <TASK>
-1769654276657 2026-01-29T02:37:56.657Z Jan 29 03:37:56 10.8.8.76  [
-740.186927]  __schedule+0x2b5/0x690
-1769654276657 2026-01-29T02:37:56.657Z Jan 29 03:37:56 10.8.8.76  [
-740.192928]  schedule+0x23/0x80
-1769654276657 2026-01-29T02:37:56.657Z Jan 29 03:37:56 10.8.8.76  [
-740.198920]  schedule_preempt_disabled+0x11/0x20
-1769654276657 2026-01-29T02:37:56.657Z Jan 29 03:37:56 10.8.8.76  [
-740.205947]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.212932]  hwmon_attr_show+0x36/0x130
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.218871]  dev_attr_show+0x19/0x60
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.224925]  sysfs_kf_seq_show+0xbf/0x140
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.230957]  seq_read_iter+0x112/0x510
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.235922]  ? security_file_permission+0x8e/0xa0
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.242918]  vfs_read+0x215/0x340
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.248342]  ksys_read+0x61/0xe0
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.252913]  do_syscall_64+0x5d/0xc20
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.258922]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.265947] RIP: 0033:0x408d8e
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.269963] RSP: 002b:000000c003705498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.279922] RAX: ffffffffffffffda RBX: 0000000000000020 RCX:
-0000000000408d8e
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.289908] RDX: 0000000000000080 RSI: 000000c003fdd880 RDI:
-0000000000000020
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.298953] RBP: 000000c0037054d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.307962] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.317926] R13: 0000000000000040 R14: 000000c00632d180 R15:
-ffffffffffffffff
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.327908]  </TASK>
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.331948] INFO: task alloy:5894 blocked for more than 123 seconds.
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.340925]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.349925] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.358991] task:alloy           state:D stack:0     pid:5894
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.371996] Call Trace:
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.375999]  <TASK>
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.380121]  __schedule+0x2b5/0x690
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.386395]  schedule+0x23/0x80
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.391923]  schedule_preempt_disabled+0x11/0x20
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.398449]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.404927]  hwmon_attr_show+0x36/0x130
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.410924]  dev_attr_show+0x19/0x60
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.416926]  sysfs_kf_seq_show+0xbf/0x140
-1769654276658 2026-01-29T02:37:56.658Z Jan 29 03:37:56 10.8.8.76  [
-740.422950]  seq_read_iter+0x112/0x510
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.428929]  ? security_file_permission+0x8e/0xa0
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.435194]  vfs_read+0x215/0x340
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.440919]  ksys_read+0x61/0xe0
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.446913]  do_syscall_64+0x5d/0xc20
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.451979]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.459932] RIP: 0033:0x408d8e
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.465174] RSP: 002b:000000c0054f1498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654276908 2026-01-29T02:37:56.908Z Jan 29 03:37:56 10.8.8.76  [
-740.474951] RAX: ffffffffffffffda RBX: 000000000000001f RCX:
-0000000000408d8e
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.483934] RDX: 0000000000000080 RSI: 000000c0061b7c80 RDI:
-000000000000001f
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.493067] RBP: 000000c0054f14d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.502497] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.511956] R13: 0000000000000040 R14: 000000c002f57340 R15:
-ffffffffffffffff
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.521906]  </TASK>
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.525960] INFO: task alloy:5897 blocked for more than 123 seconds.
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.534895]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.543928] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.552923] task:alloy           state:D stack:0     pid:5897
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.565440] Call Trace:
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.569965]  <TASK>
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.574925]  __schedule+0x2b5/0x690
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.580925]  schedule+0x23/0x80
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.585336]  schedule_preempt_disabled+0x11/0x20
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.591994]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.598331]  hwmon_attr_show+0x36/0x130
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.603917]  dev_attr_show+0x19/0x60
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.609926]  sysfs_kf_seq_show+0xbf/0x140
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.615947]  seq_read_iter+0x112/0x510
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.621942]  ? security_file_permission+0x8e/0xa0
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.628930]  vfs_read+0x215/0x340
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.634928]  ksys_read+0x61/0xe0
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.640933]  do_syscall_64+0x5d/0xc20
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.646757]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.652951] RIP: 0033:0x408d8e
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.657979] RSP: 002b:000000c00319d498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654276909 2026-01-29T02:37:56.909Z Jan 29 03:37:56 10.8.8.76  [
-740.666295] RAX: ffffffffffffffda RBX: 0000000000000022 RCX:
-0000000000408d8e
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.675931] RDX: 0000000000000080 RSI: 000000c0068bf480 RDI:
-0000000000000022
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.684957] RBP: 000000c00319d4d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.693924] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.702959] R13: 0000000000000040 R14: 000000c0054eafc0 R15:
-ffffffffffffffff
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.712950]  </TASK>
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.717004] INFO: task alloy:5904 blocked for more than 123 seconds.
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.725940]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.734461] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.744928] task:alloy           state:D stack:0     pid:5904
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.757745] Call Trace:
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.762008]  <TASK>
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:56 10.8.8.76  [
-740.765963]  __schedule+0x2b5/0x690
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.771933]  schedule+0x23/0x80
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.776962]  schedule_preempt_disabled+0x11/0x20
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.783960]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.789927]  hwmon_attr_show+0x36/0x130
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.795947]  dev_attr_show+0x19/0x60
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.801578]  sysfs_kf_seq_show+0xbf/0x140
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.807094]  seq_read_iter+0x112/0x510
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.812920]  ? security_file_permission+0x8e/0xa0
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.819940]  vfs_read+0x215/0x340
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.824996]  ksys_read+0x61/0xe0
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.829967]  do_syscall_64+0x5d/0xc20
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.835946]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.843929] RIP: 0033:0x408d8e
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.848963] RSP: 002b:000000c003b6f498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.858930] RAX: ffffffffffffffda RBX: 0000000000000023 RCX:
-0000000000408d8e
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.868102] RDX: 0000000000000080 RSI: 000000c006359b00 RDI:
-0000000000000023
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.877926] RBP: 000000c003b6f4d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654277159 2026-01-29T02:37:57.159Z Jan 29 03:37:57 10.8.8.76  [
-740.886960] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654277160 2026-01-29T02:37:57.160Z Jan 29 03:37:57 10.8.8.76  [
-740.895980] R13: 0000000000000040 R14: 000000c0061cfa40 R15:
-ffffffffffffffff
-1769654277160 2026-01-29T02:37:57.160Z Jan 29 03:37:57 10.8.8.76  [
-740.905231]  </TASK>
-1769654277160 2026-01-29T02:37:57.160Z Jan 29 03:37:57 10.8.8.76  [
-740.909934] INFO: task alloy:5976 blocked for more than 123 seconds.
-1769654277160 2026-01-29T02:37:57.160Z Jan 29 03:37:57 10.8.8.76  [
-740.918925]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.927926] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.937913] task:alloy           state:D stack:0     pid:5976
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.950975] Call Trace:
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.955934]  <TASK>
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.959916]  __schedule+0x2b5/0x690
-1769654277409 2026-01-29T02:37:57.409Z Jan 29 03:37:57 10.8.8.76  [
-740.965939]  schedule+0x23/0x80
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-740.971951]  schedule_preempt_disabled+0x11/0x20
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-740.978930]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-740.985951]  hwmon_attr_show+0x36/0x130
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-740.990927]  dev_attr_show+0x19/0x60
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-740.996933]  sysfs_kf_seq_show+0xbf/0x140
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.002963]  seq_read_iter+0x112/0x510
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.008447]  ? security_file_permission+0x8e/0xa0
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.015928]  vfs_read+0x215/0x340
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.020959]  ksys_read+0x61/0xe0
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.026759]  do_syscall_64+0x5d/0xc20
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.032936]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.039236] RIP: 0033:0x408d8e
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.044928] RSP: 002b:000000c003b73498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.054940] RAX: ffffffffffffffda RBX: 0000000000000024 RCX:
-0000000000408d8e
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.064928] RDX: 0000000000000080 RSI: 000000c007ca8380 RDI:
-0000000000000024
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.073033] RBP: 000000c003b734d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.082927] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.091964] R13: 0000000000000040 R14: 000000c0054eb880 R15:
-ffffffffffffffff
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.101031]  </TASK>
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.105931] INFO: task alloy:5985 blocked for more than 124 seconds.
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.114475]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.122872] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.132932] task:alloy           state:D stack:0     pid:5985
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.145975] Call Trace:
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.149985]  <TASK>
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.154931]  __schedule+0x2b5/0x690
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.160934]  schedule+0x23/0x80
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.166498]  schedule_timeout+0xe8/0x100
-1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [
-741.172936]  __wait_for_common+0x99/0x1c0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.179148]  ? __pfx_schedule_timeout+0x10/0x10
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.185936]  acpi_ipmi_space_handler.part.0+0x1ac/0x370 [acpi_ipmi]
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.194929]  acpi_ev_address_space_dispatch+0x16d/0x3c0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.202218]  ? __pfx_acpi_ipmi_space_handler+0x10/0x10 [acpi_ipmi]
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.210928]  acpi_ex_access_region+0x5b/0xd0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.217934]  acpi_ex_write_serial_bus+0xb6/0x1e0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.224238]  acpi_ex_store_object_to_node+0x15e/0x200
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.231946]  acpi_ex_opcode_1A_1T_1R+0x24c/0x620
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.238714]  acpi_ds_exec_end_op+0x287/0x510
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.245939]  acpi_ps_parse_loop+0xf6/0x680
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.252154]  acpi_ps_parse_aml+0x17a/0x3d0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.257945]  acpi_ps_execute_method+0x137/0x270
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.264913]  acpi_ns_evaluate+0x1f4/0x2e0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.270934]  acpi_evaluate_object+0x13c/0x2e0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.276946]  acpi_evaluate_integer+0x4f/0xe0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.282982]  ? obj_cgroup_charge_account+0x187/0x2d0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.289892]  update_meter+0x61/0xd0 [acpi_power_meter]
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.297754]  ? __memcg_slab_post_alloc_hook+0x182/0x380
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.305928]  power_meter_read+0x18b/0x280 [acpi_power_meter]
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.313928]  hwmon_attr_show+0x5e/0x130
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.319928]  dev_attr_show+0x19/0x60
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.324928]  sysfs_kf_seq_show+0xbf/0x140
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.329939]  seq_read_iter+0x112/0x510
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.334969]  ? security_file_permission+0x8e/0xa0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.341935]  vfs_read+0x215/0x340
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.347926]  ksys_read+0x61/0xe0
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.352960]  do_syscall_64+0x5d/0xc20
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.358902]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.365954] RIP: 0033:0x408d8e
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.370813] RSP: 002b:000000c0054f3498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.380930] RAX: ffffffffffffffda RBX: 000000000000001d RCX:
-0000000000408d8e
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.390928] RDX: 0000000000000080 RSI: 000000c0041e8b00 RDI:
-000000000000001d
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.399692] RBP: 000000c0054f34d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.407963] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.416332] R13: 0000000000000040 R14: 000000c003e4cc40 R15:
-ffffffffffffffff
-1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [
-741.425938]  </TASK>
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.429965] INFO: task alloy:6000 blocked for more than 124 seconds.
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.437931]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.446711] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.456578] task:alloy           state:D stack:0     pid:6000
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.469626] Call Trace:
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.474928]  <TASK>
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.479810]  __schedule+0x2b5/0x690
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.485949]  schedule+0x23/0x80
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.490930]  schedule_preempt_disabled+0x11/0x20
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.497930]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.503935]  hwmon_attr_show+0x36/0x130
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.508962]  dev_attr_show+0x19/0x60
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.515927]  sysfs_kf_seq_show+0xbf/0x140
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.520941]  seq_read_iter+0x112/0x510
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.525978]  ? security_file_permission+0x8e/0xa0
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.532923]  vfs_read+0x215/0x340
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.537727]  ksys_read+0x61/0xe0
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.542967]  do_syscall_64+0x5d/0xc20
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.548919]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.555966] RIP: 0033:0x408d8e
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.561927] RSP: 002b:000000c006d8b498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.570935] RAX: ffffffffffffffda RBX: 000000000000001c RCX:
-0000000000408d8e
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.580926] RDX: 0000000000000080 RSI: 000000c0033e1880 RDI:
-000000000000001c
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.589949] RBP: 000000c006d8b4d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.598688] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.607931] R13: 0000000000000040 R14: 000000c002e22700 R15:
-ffffffffffffffff
-1769654277910 2026-01-29T02:37:57.910Z Jan 29 03:37:57 10.8.8.76  [
-741.616972]  </TASK>
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.814865] INFO: task alloy:5878 blocked for more than 245 seconds.
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.821416]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.828408] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.839936] task:alloy           state:D stack:0     pid:5878
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.853805] Call Trace:
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.858790]  <TASK>
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.862927]  __schedule+0x2b5/0x690
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.869807]  schedule+0x23/0x80
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.874791]  schedule_preempt_disabled+0x11/0x20
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.880822]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.887787]  hwmon_attr_show+0x36/0x130
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.893810]  dev_attr_show+0x19/0x60
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.898789]  sysfs_kf_seq_show+0xbf/0x140
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.904790]  seq_read_iter+0x112/0x510
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.910791]  ? security_file_permission+0x8e/0xa0
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.917785]  vfs_read+0x215/0x340
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.923818]  ksys_read+0x61/0xe0
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.928487]  do_syscall_64+0x5d/0xc20
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.934787]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.942807] RIP: 0033:0x408d8e
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.947847] RSP: 002b:000000c003785498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.957811] RAX: ffffffffffffffda RBX: 000000000000001e RCX:
-0000000000408d8e
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.967791] RDX: 0000000000000080 RSI: 000000c007188f80 RDI:
-000000000000001e
-1769654399212 2026-01-29T02:39:59.212Z Jan 29 03:39:59 10.8.8.76  [
-862.977779] RBP: 000000c0037854d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-862.986816] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-862.996763] R13: 0000000000000040 R14: 000000c00632c000 R15:
-ffffffffffffffff
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.006797]  </TASK>
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.010603] INFO: task alloy:5883 blocked for more than 245 seconds.
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.019794]       Tainted: G            E
-6.18.7-2.gdc.el9.x86_64 #1
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.028778] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.038822] task:alloy           state:D stack:0     pid:5883
-tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.052796] Call Trace:
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.057796]  <TASK>
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.062792]  __schedule+0x2b5/0x690
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.068791]  schedule+0x23/0x80
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.073859]  schedule_preempt_disabled+0x11/0x20
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.080786]  __mutex_lock.constprop.0+0x3c9/0xa00
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.087800]  hwmon_attr_show+0x36/0x130
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.093779]  dev_attr_show+0x19/0x60
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.099798]  sysfs_kf_seq_show+0xbf/0x140
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.105817]  seq_read_iter+0x112/0x510
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.110795]  ? security_file_permission+0x8e/0xa0
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.116806]  vfs_read+0x215/0x340
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.121800]  ksys_read+0x61/0xe0
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.126850]  do_syscall_64+0x5d/0xc20
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.132861]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.139830] RIP: 0033:0x408d8e
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.144791] RSP: 002b:000000c003705498 EFLAGS: 00000206 ORIG_RAX:
-0000000000000000
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.154779] RAX: ffffffffffffffda RBX: 0000000000000020 RCX:
-0000000000408d8e
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.163829] RDX: 0000000000000080 RSI: 000000c003fdd880 RDI:
-0000000000000020
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.172268] RBP: 000000c0037054d8 R08: 0000000000000000 R09:
-0000000000000000
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.180839] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000000000
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.190798] R13: 0000000000000040 R14: 000000c00632d180 R15:
-ffffffffffffffff
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.200778]  </TASK>
-1769654399462 2026-01-29T02:39:59.462Z Jan 29 03:39:59 10.8.8.76  [
-863.205805] Future hung task reports are suppressed, see sysctl
-kernel.hung_task_warnings
-
-
->
-> Guenter
->
+Pj4+IFRoYW5rcyBmb3IgdGhlIHdvcmQtc21pdGhpbmcgYW5kIGltcHJvdmVkIGFjY3VyYWN5IQ0K
+Pj4+IA0KPj4+ICsJLyogTG9nIGlmIF9IUFggYXR0ZW1wdHMgdG8gbW9kaWZ5IFBDSWUgTGluayBD
+b250cm9sIHJlZ2lzdGVyICovDQo+Pj4gCWlmIChwY2llX2NhcF9oYXNfbG5rY3RsKGRldikpIHsN
+Cj4+PiAtDQo+Pj4gLQkJLyoNCj4+PiAtCQkgKiBJZiB0aGUgUm9vdCBQb3J0IHN1cHBvcnRzIFJl
+YWQgQ29tcGxldGlvbiBCb3VuZGFyeSBvZg0KPj4+IC0JCSAqIDEyOCwgc2V0IFJDQiB0byAxMjgu
+ICBPdGhlcndpc2UsIGNsZWFyIGl0Lg0KPj4+IC0JCSAqLw0KPj4+IC0JCWhweC0+cGNpX2V4cF9s
+bmtjdGxfYW5kIHw9IFBDSV9FWFBfTE5LQ1RMX1JDQjsNCj4+PiAtCQlocHgtPnBjaV9leHBfbG5r
+Y3RsX29yICY9IH5QQ0lfRVhQX0xOS0NUTF9SQ0I7DQo+Pj4gLQkJaWYgKHBjaWVfcm9vdF9yY2Jf
+c2V0KGRldikpDQo+Pj4gLQkJCWhweC0+cGNpX2V4cF9sbmtjdGxfb3IgfD0gUENJX0VYUF9MTktD
+VExfUkNCOw0KPj4+IC0NCj4+PiAtCQlwY2llX2NhcGFiaWxpdHlfY2xlYXJfYW5kX3NldF93b3Jk
+KGRldiwgUENJX0VYUF9MTktDVEwsDQo+Pj4gLQkJCX5ocHgtPnBjaV9leHBfbG5rY3RsX2FuZCwg
+aHB4LT5wY2lfZXhwX2xua2N0bF9vcik7DQo+Pj4gDQo+IFRoaXMgd2FzIHdoYXQgY29uZnVzZWQg
+bWUgYSBsb3QsIHRoZSBiaXQtd2lzZSBOT1QgYWJvdmUuIFRoYXQgbXVzdCBiZSB3cm9uZywgYXMg
+cGNpZV9jYXBhYmlsaXR5X2NsZWFyX2FuZF9zZXRfd29yZCgpIGludmVydHMgdGhlICJjbGVhciIg
+YXJndW1lbnQuDQoNCkhhdmUgdG8gY29ycmVjdCBteXNlbGYgaGVyZS4gQUNQSSBzdGF0ZXM6DQoN
+CldoZW4gY29uZmlndXJpbmcgYSBnaXZlbiByZWdpc3RlciwgT1NQTSB1c2VzIHRoZSBmb2xsb3dp
+bmcgYWxnb3JpdGhtOg0KMS4gUmVhZCB0aGUgcmVnaXN0ZXLigJlzIGN1cnJlbnQgdmFsdWUsIHdo
+aWNoIGNvbnRhaW5zIHRoZSByZWdpc3RlcuKAmXMgZGVmYXVsdCB2YWx1ZS4NCjIuIFBlcmZvcm0g
+YSBiaXQtd2lzZSBBTkQgb3BlcmF0aW9uIHdpdGggdGhlIOKAnEFORCBtYXNr4oCdIGZyb20gdGhl
+IHRhYmxlIGJlbG93Lg0KW10NCg0KQmVjYXVzZSBwY2llX2NhcGFiaWxpdHlfY2xlYXJfYW5kX3Nl
+dF93b3JkKCkgaW52ZXJ0cyB0aGUgImNsZWFyIiBhcmd1bWVudCwgdGhlIGFib3ZlIGJpdHdpc2Ug
+Tk9UIGlzIG9mIGNvdXJzZSBjb3JyZWN0LiBUd28gYml0d2lzZSBOT1RzIGlzIGEgbm8tb3AgYW5k
+IHdlIGZvbGxvdyB0aGUgQUNQSSBvdXRsaW5lZCBhbGdvcml0aG0uDQoNCg0KU29ycnkgZm9yIHRo
+ZSBub2lzZSwgSMOla29uDQoNCg==
 
