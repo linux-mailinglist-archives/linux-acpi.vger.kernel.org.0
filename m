@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-20779-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20780-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OItWHaINfGkyKQIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20779-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 02:47:14 +0100
+	id mNtvK5cQfGl7KQIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20780-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 02:59:51 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44FAB6418
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 02:47:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5164FB64E1
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 02:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90149301413D
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 01:47:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEA7D300F9F5
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jan 2026 01:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B2C21CC62;
-	Fri, 30 Jan 2026 01:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5E131619D;
+	Fri, 30 Jan 2026 01:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="ZSqB55ex"
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="DLP3Frf9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAE1F0E2E;
-	Fri, 30 Jan 2026 01:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FDB32A3D7;
+	Fri, 30 Jan 2026 01:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769737629; cv=none; b=oz/FayMjnSnissOwyGKWUbvrQKrrR1mxRiMyYZFgrxJ6iIW7c7mLM/oMZTXXs4w3Tn3QtFrB7BLSL/Whb/g4unh102SWDfqLt8O4eGffiGAzxNvoPOuThCsyYXQMlBiLPO3ge6O1hwbFAyCWIIcpcMgKd/1+HfQu4EYFGqmmR5E=
+	t=1769738388; cv=none; b=ZNbTkOWNRAZSZ+qWlYJGa2HO9rZjZGAfVR2QszfJxnmnRs6eVvrIJBbbesB1CScdI2jAVdjQVk86/hbNfzpE12bBgYlSSSdlIrQckxxt4rPqUZedH6FWdxeyyTdfd0v4Vcbh6ZV25S4zpSiOycdbBHzOeEtNuE/OSfKXcWSArLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769737629; c=relaxed/simple;
-	bh=rhtjunAyLrQfKXt+o0o+R7BYwOZrQyp3aHgBfQwHpGM=;
+	s=arc-20240116; t=1769738388; c=relaxed/simple;
+	bh=Hvkr6IZ5XACZqD3+ANSaZuO+iyVlTguwLJBvUaozllc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GJr1YvpWkUR4oapdhMuWS+efG7ISDxizv5bnWYrA5ByhdC/StoGK91J1JdcOwGVtsnxKxtSMJR9yDNhaL4+/1Ootfeu6mPeqxZoUr4BdnLcmDSbc6QouoXPoe79INyecXtqGZPguQr3Z0FLuGr2CNO1d+2ZPU/LdG/iecxdKjoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=ZSqB55ex; arc=none smtp.client-ip=113.46.200.224
+	 In-Reply-To:Content-Type; b=Z7IOlvcEWiDALt9HQxqYNZlUIHF1I+yPEojyko4bLzJCPuTU9kUDhv+3l9pq1fQE9XaR8OGohs7ga4kvRr9Ius5dVlb0YfTpyvbNFTsTaszz0VqKoiq/8bw1UG7SXzgTz/sHtXE1cbC3vRuK8OF0YDJcAiO/v4dJtOsmarI7ZPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=DLP3Frf9; arc=none smtp.client-ip=113.46.200.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=3woYsrYL4vY5mM4WGG6FK+ux8A1LQ5/qLYOgx3LgGh8=;
-	b=ZSqB55exqiZXhkmuHhiHwxj7SBwf2Xgt1761TSvD6l3pYmR9e/Tgyg6E2g2wIx9GNvebPVVh4
-	BBPkajdkl7gC6QO8KUYNjO3iQi0XbKWjVMvhoH/CE7zCHSennAsEdWqejxHfMnX4zXIwFVSqb2I
-	P16bSfcP0o1I2W51pAWraLY=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4f2Jgp21H7z1cyT9;
-	Fri, 30 Jan 2026 09:43:34 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id C62E240565;
-	Fri, 30 Jan 2026 09:47:02 +0800 (CST)
+	bh=qbA8Ecr1jQu1uOwstxFWUr2HkCfew3zAUXf5SiCArK8=;
+	b=DLP3Frf9ekZ96o06YGT1yu2GeIX3U/KocajRs0i50XQERqcTRjrdcLmRHKsNgyycMJ8HA7tO0
+	DHA5OuJb1LQPg0ffa7c/GKeiZGnrf2jAcoJHAyfu5EEhi+VBZOJe1P5iV9vbV51Rw4ZIkxHhnLl
+	pbc1OCDUzCjIQXX+MNfJsGM=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4f2Jxx0p2TznTVF;
+	Fri, 30 Jan 2026 09:55:49 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0E84540539;
+	Fri, 30 Jan 2026 09:59:42 +0800 (CST)
 Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 30 Jan 2026 09:47:02 +0800
+ 15.2.1544.11; Fri, 30 Jan 2026 09:59:41 +0800
 Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
  (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 30 Jan
- 2026 09:47:01 +0800
-Message-ID: <b81b86c8-7780-4b11-8830-09ab9c7dd679@huawei.com>
-Date: Fri, 30 Jan 2026 09:47:00 +0800
+ 2026 09:59:41 +0800
+Message-ID: <2d2d2d40-c73a-4988-90fe-fad75e35c75b@huawei.com>
+Date: Fri, 30 Jan 2026 09:59:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,19 +64,18 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to
- acpi_power_meter_notify()
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Guenter Roeck
-	<linux@roeck-us.net>, Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-hwmon@vger.kernel.org>, Igor Raits
-	<igor@gooddata.com>, Daniel Secik <daniel.secik@gooddata.com>, Zdenek Pesek
-	<zdenek.pesek@gooddata.com>, Jiri Jurica <jiri.jurica@gooddata.com>
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <12855313.O9o76ZdvQC@rafael.j.wysocki>
- <d45d7b8a-97dd-4db8-a785-56df128983a4@roeck-us.net>
- <6252535.lOV4Wx5bFT@rafael.j.wysocki>
+Subject: Re: [PATCH 1/3] cpuidle: Add enable_cpuidle() interface
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Sudeep.Holla@arm.com>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
+References: <20251125072933.3706006-1-lihuisong@huawei.com>
+ <20251125072933.3706006-2-lihuisong@huawei.com>
+ <CAJZ5v0j6HPW8thPNLSRRzZCjSSnr69DWBHn9BBR2+L4tOKD6Fw@mail.gmail.com>
+ <11f9d333-4d18-463a-817f-d3f450d1624e@huawei.com>
 From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <6252535.lOV4Wx5bFT@rafael.j.wysocki>
+In-Reply-To: <11f9d333-4d18-463a-817f-d3f450d1624e@huawei.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
@@ -85,7 +84,7 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[h-partners.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -94,10 +93,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[h-partners.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20779-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20780-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,gooddata.com:email,huawei.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,h-partners.com:dkim];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	FROM_NEQ_ENVFROM(0.00)[lihuisong@huawei.com,linux-acpi@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -105,195 +104,77 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D44FAB6418
+X-Rspamd-Queue-Id: 5164FB64E1
 X-Rspamd-Action: no action
 
+Hi Rafael,
 
-On 1/29/2026 10:18 PM, Rafael J. Wysocki wrote:
-> On Wednesday, January 28, 2026 10:52:15 PM CET Guenter Roeck wrote:
->> On Wed, Jan 28, 2026 at 08:52:49PM +0100, Rafael J. Wysocki wrote:
->>> On Wednesday, January 28, 2026 7:45:32 PM CET Rafael J. Wysocki wrote:
->>>> On Wed, Jan 28, 2026 at 7:18 PM Guenter Roeck <linux@roeck-us.net> wrote:
->>>>> Hi all,
->>>>>
->>>>> On Thu, Jan 22, 2026 at 07:55:35PM +0100, Rafael J. Wysocki wrote:
->>>>>> On Thu, Jan 22, 2026 at 7:21 PM Jaroslav Pulchart
->>>>>> <jaroslav.pulchart@gooddata.com> wrote:
->>>>>>> Hello,
->>>>>>>
->>>>>>> after upgrading from kernel 6.17.y to 6.18.y we started to observe a regression
->>>>>>> in the ACPI power meter hwmon interface. Reading power*_average sysfs
->>>>>>> attributes blocks indefinitely and causes tasks to enter uninterruptible
->>>>>>> sleep (D state).
->>>>>> The most recent change in the acpi_power_meter driver was made in
->>>>>> 6.15, so this is not a regression in that driver.
->>>>>>
->>>>>> Also, nothing suspicious is done in power1_average_min_show() and
->>>>>> power1_average_min_store() AFAICS.
->>>>>>
->>>>> I decided to ask AI (Gemini 3, more specifically) for an analysis of the
->>>>> problem, using Chris Mason's prompts for guidance. Result is below.
->>>> So it agrees with me in the analysis part.
->>>>
->> Yes.
->>
->>>>> The suggested fix may be a feasible workaround. Let me know what you think.
->>>> Well, I'm afraid it won't work if two METER_NOTIFY_CONFIG
->>>> notifications compete with each other because they may try to
->>>> unregister the hwmon device at the same time.
->>>>
->> Good point.
->>
->>>> I would just add a separate lock for the notifier (a static one should
->>>> suffice) and make changes to "resource" only under resource->lock.
->>>>
->>>> Let me cut a prototype patch for this.
->>>>
->>> Something like the below (untested).
+On 1/15/2026 8:18 PM, lihuisong (C) wrote:
+>
+> On 1/15/2026 3:18 AM, Rafael J. Wysocki wrote:
+>> On Tue, Nov 25, 2025 at 8:29 AM Huisong Li <lihuisong@huawei.com> wrote:
+>>> The global switch of cpuidle can be turned back on in some case.
+>>> So add enable_cpuidle().
+>> No, this is not going to work.  The "off" switch only affects
+>> initialization AFAICS.
+> I think it would be work.
+> The cpuidle_not_available() also see the "off" on do_idle().
+> And cpuidle_idle_call() check this function first and then select idle 
+> state.
+> Cpuidle doesn't select and enter idle state if this fuction return true.
+I verified that disable_cpuidle() effectively prevents all CPUs from 
+entering any idle states and the cpuidle function is correctly restored 
+after calling enable_cpuidle().
+What do you think?
+
+Best,
+/Huisong
+>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>>> ---
+>>>   drivers/cpuidle/cpuidle.c | 5 ++++-
+>>>   include/linux/cpuidle.h   | 2 ++
+>>>   2 files changed, 6 insertions(+), 1 deletion(-)
 >>>
->>> Note that it also fixes the driver removal which is tangentially related to the
->>> problem at hand.
->> I can't test it either, but I ran it through Gemini and it tells me:
->>
->>    Fixes: tag missing (y) [Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated hwmon_device_register")]
->>
->>    The commit addresses a deadlock regression introduced by the conversion to
->>    hwmon_device_register_with_info.
->>
->>    CHANGE-1: New static mutex `acpi_notify_lock` introduces global serialization.
->>    This prevents concurrent notification handling for multiple power meter devices.
->>    While likely a minor impact given the nature of the device, it technically reduces parallelism compared to the per-device locking used previously.
->>
->> Just for fun I tried again, this time using a model which is more prone to
->> false positives. It pretty much provided the same result in more detail.
->> It is a bit more verbose, so I attached it below. I also asked it to verify,
->> using the backtrace, if the patch is complete, and to suggest a patch
->> description. The result is also attached below.
->>
->> I think this is good enough for a formal patch. WDYT ?
-> With all due respect to the AI, I think that it has missed a couple of things,
-> so below it the patch with my version of the changelog.
->
-> Also, it really wants to be two patches IMV, one adding the
-> IS_ERR(resource->hwmon_dev) checks before hwmon device unregistration and
-> another one fixing the deadlock in question on top of it.  Please let me know
-> if you want me to split this one.
->
-> Jaroslav, it would be nice to get some feedback on it from you as you seem to
-> be the only person here who can test it.
->
-> ---
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to acpi_power_meter_notify()
->
-> The acpi_power_meter driver's .notify() callback function,
-> acpi_power_meter_notify(), calls hwmon_device_unregister() under a lock
-> that is also acquired by callbacks in sysfs attributes of the device
-> being unregistered which is prone to deadlocks between sysfs access and
-> device removal.
->
-> Address this by moving the hwmon device removal in
-> acpi_power_meter_notify() outside the lock in question, but notice
-> that doing it alone is not sufficient because two concurrent
-> METER_NOTIFY_CONFIG notifications may be attempting to remove the
-> same device at the same time.  To prevent that from happening, add a
-> new lock serializing the execution of the switch () statement in
-> acpi_power_meter_notify().  For simplicity, it is a static mutex
-> which should not be a problem from the performance perspective.
->
-> The new lock also allows the hwmon_device_register_with_info()
-> in acpi_power_meter_notify() to be called outside the inner lock
-> because it prevents the other notifications handled by that function
-> from manipulating the "resource" object while the hwmon device based
-> on it is being registered.  The sending of ACPI netlink messages from
-> acpi_power_meter_notify() is serialized by the new lock too which
-> generally helps to ensure that the order of handling firmware
-> notifications is the same as the order of sending netlink messages
-> related to them.
->
-> In addition, notice that hwmon_device_register_with_info() may fail
-> in which case resource->hwmon_dev will become an error pointer,
-> so add checks to avoid attempting to unregister the hwmon device
-> pointer to by it in that case to acpi_power_meter_notify() and
-> acpi_power_meter_remove().
->
-> Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated hwmon_device_register")
-> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->   drivers/hwmon/acpi_power_meter.c |   17 ++++++++++++++---
->   1 file changed, 14 insertions(+), 3 deletions(-)
->
-> --- a/drivers/hwmon/acpi_power_meter.c
-> +++ b/drivers/hwmon/acpi_power_meter.c
-> @@ -47,6 +47,8 @@
->   static int cap_in_hardware;
->   static bool force_cap_on;
->   
-> +static DEFINE_MUTEX(acpi_notify_lock);
-> +
->   static int can_cap_in_hardware(void)
->   {
->   	return force_cap_on || cap_in_hardware;
-> @@ -823,18 +825,26 @@ static void acpi_power_meter_notify(stru
->   
->   	resource = acpi_driver_data(device);
->   
-> +	guard(mutex)(&acpi_notify_lock);
-> +
->   	switch (event) {
->   	case METER_NOTIFY_CONFIG:
-> +		if (!IS_ERR(resource->hwmon_dev))
-> +			hwmon_device_unregister(resource->hwmon_dev);
-> +
->   		mutex_lock(&resource->lock);
-> +
->   		free_capabilities(resource);
->   		remove_domain_devices(resource);
-> -		hwmon_device_unregister(resource->hwmon_dev);
->   		res = read_capabilities(resource);
->   		if (res)
->   			dev_err_once(&device->dev, "read capabilities failed.\n");
->   		res = read_domain_devices(resource);
->   		if (res && res != -ENODEV)
->   			dev_err_once(&device->dev, "read domain devices failed.\n");
-> +
-> +		mutex_unlock(&resource->lock);
-> +
->   		resource->hwmon_dev =
->   			hwmon_device_register_with_info(&device->dev,
->   							ACPI_POWER_METER_NAME,
-> @@ -843,7 +853,7 @@ static void acpi_power_meter_notify(stru
->   							power_extra_groups);
->   		if (IS_ERR(resource->hwmon_dev))
->   			dev_err_once(&device->dev, "register hwmon device failed.\n");
-> -		mutex_unlock(&resource->lock);
-> +
->   		break;
->   	case METER_NOTIFY_TRIP:
->   		sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME);
-> @@ -953,7 +963,8 @@ static void acpi_power_meter_remove(stru
->   		return;
->   
->   	resource = acpi_driver_data(device);
-> -	hwmon_device_unregister(resource->hwmon_dev);
-> +	if (!IS_ERR(resource->hwmon_dev))
-> +		hwmon_device_unregister(resource->hwmon_dev);
->   
-!IS_ERR(resource->hwmon_dev) may be not enough. There might be UAF in 
-concurrent case.
-How about do it like:
-if (!IS_ERR_OR_NULL(resource->hwmon_dev)) {
-        hwmon_device_unregister(resource->hwmon_dev);
-        resource->hwmon_dev = NULL;
-}
->   	remove_domain_devices(resource);
->   	free_capabilities(resource);
->
->
->
->
->
+>>> diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+>>> index 56132e843c99..980ddfd3d930 100644
+>>> --- a/drivers/cpuidle/cpuidle.c
+>>> +++ b/drivers/cpuidle/cpuidle.c
+>>> @@ -48,7 +48,10 @@ void disable_cpuidle(void)
+>>>   {
+>>>          off = 1;
+>>>   }
+>>> -
+>>> +void enable_cpuidle(void)
+>>> +{
+>>> +       off = 0;
+>>> +}
+>>>   bool cpuidle_not_available(struct cpuidle_driver *drv,
+>>>                             struct cpuidle_device *dev)
+>>>   {
+>>> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
+>>> index a9ee4fe55dcf..94c030748af3 100644
+>>> --- a/include/linux/cpuidle.h
+>>> +++ b/include/linux/cpuidle.h
+>>> @@ -168,6 +168,7 @@ struct cpuidle_driver {
+>>>   };
+>>>
+>>>   #ifdef CONFIG_CPU_IDLE
+>>> +extern void enable_cpuidle(void);
+>>>   extern void disable_cpuidle(void);
+>>>   extern bool cpuidle_not_available(struct cpuidle_driver *drv,
+>>>                                    struct cpuidle_device *dev);
+>>> @@ -203,6 +204,7 @@ extern struct cpuidle_driver 
+>>> *cpuidle_get_cpu_driver(struct cpuidle_device *dev)
+>>>   static inline struct cpuidle_device *cpuidle_get_device(void)
+>>>   {return __this_cpu_read(cpuidle_devices); }
+>>>   #else
+>>> +static inline void enable_cpuidle(void) { }
+>>>   static inline void disable_cpuidle(void) { }
+>>>   static inline bool cpuidle_not_available(struct cpuidle_driver *drv,
+>>>                                           struct cpuidle_device *dev)
+>>> -- 
+>>> 2.33.0
+>>>
 
