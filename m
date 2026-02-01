@@ -1,256 +1,235 @@
-Return-Path: <linux-acpi+bounces-20797-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20798-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFNTNCcpf2kMlAIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20797-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 11:21:27 +0100
+	id 4I4rCxA8f2lcmAIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20798-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:08 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B4DC56C4
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 11:21:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C4EC5CE7
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA1DF30022F8
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 10:21:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2821304B03B
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 11:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ECE2E8B8B;
-	Sun,  1 Feb 2026 10:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C64E32D0EF;
+	Sun,  1 Feb 2026 11:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="i7WiGSJD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BR8EL3uF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE62701B1;
-	Sun,  1 Feb 2026 10:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288CC32B997
+	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769941284; cv=none; b=JqAACEFLd6NnhI7HiIe3p/Ni5seJtcDIIXohud3Vu6IJ9pJrBZAzAKdDvpubtOgDKQ/CdFrotRTG5WbHfuqg87Dlki6EbmZ4pyzRI5RY89Jb0R2D0ZWdxXXvjztNszW3e+j4YbAyxY0gobscmwQkStC4T/LM1Bgxk3AWJjGo7kg=
+	t=1769946046; cv=none; b=ZLOm+2d7xwkRje9oAC7a9Wcm0ytAcuNCTxUD/ra+EyOAMrsy7Ko2BeLthvDPzGPwRtlZXGo3Dwdc722x7YC3SA38Wbe+E31D8FHuNFTQ2KNvtS+P08guxjySkQy3X6Ylp9Plv7+980OcLyP0AWJVFvVkDzVMkefCmVpJp9ao8Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769941284; c=relaxed/simple;
-	bh=uTcjg7oWuXYWxhI5viZWpG4AjyZYMiFFCHK6hnZNmbQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CubgFvL3u8ObK/5wC5bOxkKmZuF9fJ57XyC1+3zrcdP5ayxuTFgo4MaqxZTBRL+GxFp0O12S6RdbhZweKgVMsGYJI8rafFAzvn2Qfsu8+eHciQGE+1JyGeaLV7Tk+L3vSpNlgKNXA2UJPYwDZ0ImpqReBq798mOm19fTimUkmNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=i7WiGSJD; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1769941198; x=1770545998; i=w_armin@gmx.de;
-	bh=9x7HpyWOhbUGkwEQIBNa7vexJVFMvQ6wdp3e0Aovy30=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=i7WiGSJDLPksZeJeN5ZeGfcXT7eTrn9bq5uASZzw91IbSbkTGvCX3bGW5ohJlN3C
-	 wx84muhLR71ozgINowEpd1vThw+c2KFdRCmJzz7nQo0+4Q1umF2mN3GIHPhw1vIFp
-	 OMaBUFWpB4g2E0lDD0z1zu5aadXmRG7V9gASh3cbHHVYRQUldlR+CWotRkVgbgXVl
-	 RPNKWHTOrbl9Xkt6mYzFMMLgsKk2iwNKEay6CYdzqm3+n/u/ZnJMkfdBQyDTobGQK
-	 ve21mPDQVdQgW/a34ehaW/wQKbq13nwr56riwW6xpGTr0oeAZh71ssKMDmvcDU1v1
-	 69zzkepqCcmcJa99Lw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.66.134.249] ([164.15.244.57]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mulm5-1w3TTi22Jn-00t7V6; Sun, 01
- Feb 2026 11:19:58 +0100
-Message-ID: <2a4e5667-ae24-403f-8fbd-cb37bd66f055@gmx.de>
-Date: Sun, 1 Feb 2026 11:19:46 +0100
+	s=arc-20240116; t=1769946046; c=relaxed/simple;
+	bh=X7d+pL2lizoInntJAYHY+lwKrg+eG690PPgws7MJqCg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=THpC+jrNlM4Yu8KO7f5lQUGYHfqjeU31SFvBUyWYVK6c3lHGM/fPwyoWOxajV8MuJtCfdArx7ZNCSZLdZLzdXs6Lo38CwfE+jNurHD8mPEPKrdlOgjXI48uSOSgRtv1asdbHuZgyanqWCKc14ytqwTJQH+1DdQ5ikfArXMKmbck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BR8EL3uF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2994C2BCB1
+	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:40:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769946045;
+	bh=X7d+pL2lizoInntJAYHY+lwKrg+eG690PPgws7MJqCg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BR8EL3uFRP2VA6S0bHrjlBqtUEgUycaD7b1Or17dTh18G5HxklFkseqvZ57oEVx/C
+	 4URGF4QL7BF6ch2XO2222H9TURkYhNPYtydy9u+VF8IxWYyYTBiiulUsss10JlVoYf
+	 o/pIO3fOgApwewHYiasnQaN30E5zQxB4jXnx4ZjK7YXMWiSUkU/ng7io5QA2ai9sc2
+	 oM7Y4rtUggR4h6Idg41bPjW6Rf/l1DQhyTFRNs4eBgJGkbO7WuD+hr9h1TB18naHCw
+	 P06dCB1gH5Gt3oaB48nuLwdgglAElVqI3yarVZ+I3pD20+anwn7Gg987WKm+CdxTUx
+	 xAdayFrGQ63bA==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7cfd9b898cdso2308297a34.2
+        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 03:40:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW5Nnk53o1/YaF0BDCRSqJ6QYBsb2RJ2S4bz6ulVmSWF8V5iQghoBdwJaV4ZFFTqXAL9V9/oxzE7sJ6@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo5kn/FzEQvo2w9Yu2D/eIu/adSKgEPimIlvcbwp6MVR3ZlWK4
+	xh9Gd3gKgsmIE4JBfKmCn9l1cR/dNU97w6JjTWYkH7Ezc760Ph1AxayPWvvCPNZLUiOgZHO5lLo
+	hF13968nJMfBUewDtar4pfWOEq5NRwko=
+X-Received: by 2002:a05:6820:1793:b0:657:717a:8c8 with SMTP id
+ 006d021491bc7-6630f008f69mr3812159eaf.3.1769946044825; Sun, 01 Feb 2026
+ 03:40:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: crash during resume of PCIe bridge from v5.17 to next-20260130
- (v5.16 works)
-To: Bert Karwatzki <spasswolf@web.de>, Thomas Gleixner <tglx@kernel.org>,
- linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org, Mario Limonciello
- <mario.limonciello@amd.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- regressions@lists.linux.dev, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
- <rafael.j.wysocki@intel.com>, acpica-devel@lists.linux.dev,
- Robert Moore <robert.moore@intel.com>, Saket Dumbre
- <saket.dumbre@intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Clemens Ladisch <clemens@ladisch.de>, Jinchao Wang
- <wangjinchao600@gmail.com>, Yury Norov <yury.norov@gmail.com>,
- Anna Schumaker <anna.schumaker@oracle.com>, Baoquan He <bhe@redhat.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Dave Young <dyoung@redhat.com>,
- Doug Anderson <dianders@chromium.org>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Helge Deller <deller@gmx.de>,
- Ingo Molnar <mingo@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joanthan Cameron <Jonathan.Cameron@huawei.com>,
- Joel Granados <joel.granados@kernel.org>,
- John Ogness <john.ogness@linutronix.de>, Kees Cook <kees@kernel.org>,
- Li Huafei <lihuafei1@huawei.com>, "Luck, Tony" <tony.luck@intel.com>,
- Luo Gengkun <luogengkun@huaweicloud.com>,
- Max Kellermann <max.kellermann@ionos.com>, Nam Cao <namcao@linutronix.de>,
- oushixiong <oushixiong@kylinos.cn>, Petr Mladek <pmladek@suse.com>,
- Qianqiang Liu <qianqiang.liu@163.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Sohil Mehta <sohil.mehta@intel.com>, Tejun Heo <tj@kernel.org>,
- Thomas Zimemrmann <tzimmermann@suse.de>,
- Thorsten Blum <thorsten.blum@linux.dev>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Vivek Goyal <vgoyal@redhat.com>, Yunhui Cui <cuiyunhui@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260113094129.3357-1-spasswolf@web.de> <87h5spk01t.ffs@tglx>
- <bc20529d7520e7db7de2022bf9c96a1bc3a2f0df.camel@web.de> <87v7h5ia3d.ffs@tglx>
- <99f1aaba32030d2b9285dbd983fdf8518a181a8d.camel@web.de>
- <82b4d69a5b943aa5e8aa7cc33fcc00bce02e557c.camel@web.de>
- <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:TYg08LGyCYWL0RjzI4ONXXWizRQBxv3kR0Vr5r4HV9kjJpvdgCk
- 0/euWXpFGLD3gHCPcA7Nn4THoLVo8V1+lhIVEn1W7cOXNQTJObE8suIv4sTMUWnXfEsO+m4
- nbNJlDZrG0yHIOgLOST7YGB7Ei63IJwRrysLzSek8cIyf831VirJFVUZAhDI95fwV4TOtqH
- UUCCKBtgJtb4pRxIeMQlg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:AveMuN3d2N4=;Qo9YCR/IA9BExtuLwf39GJ6cxAA
- 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
- G4SLRa/k=
+References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
+ <12855313.O9o76ZdvQC@rafael.j.wysocki> <d45d7b8a-97dd-4db8-a785-56df128983a4@roeck-us.net>
+ <6252535.lOV4Wx5bFT@rafael.j.wysocki> <30300396-25b0-4d56-b8dd-c65d221c80bb@roeck-us.net>
+In-Reply-To: <30300396-25b0-4d56-b8dd-c65d221c80bb@roeck-us.net>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sun, 1 Feb 2026 12:40:31 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gLs3YU8vj6uojYo=3c8kKLWeo5Ej2PUO+=BcWPjg0g=Q@mail.gmail.com>
+X-Gm-Features: AZwV_Qg1pnvi-gkv78OEWCB9ccxp_AKmbAg3JYhMNeTbWJWjrAQN47JVpLzNzTQ
+Message-ID: <CAJZ5v0gLs3YU8vj6uojYo=3c8kKLWeo5Ej2PUO+=BcWPjg0g=Q@mail.gmail.com>
+Subject: Re: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to acpi_power_meter_notify()
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, 
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	Igor Raits <igor@gooddata.com>, Daniel Secik <daniel.secik@gooddata.com>, 
+	Zdenek Pesek <zdenek.pesek@gooddata.com>, Jiri Jurica <jiri.jurica@gooddata.com>, 
+	Huisong Li <lihuisong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20797-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[web.de,kernel.org,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,linutronix.de,kernel.org,goodmis.org,lists.linux.dev,intel.com,google.com,ladisch.de,gmail.com,oracle.com,redhat.com,chromium.org,igalia.com,gmx.de,ziepe.ca,huawei.com,huaweicloud.com,ionos.com,kylinos.cn,suse.com,163.com,suse.de,linux.dev,linux.intel.com,bytedance.com,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20798-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_GT_50(0.00)[50];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 71B4DC56C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,roeck-us.net:email,gooddata.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7C4EC5CE7
 X-Rspamd-Action: no action
 
-Am 01.02.26 um 01:36 schrieb Bert Karwatzki:
-
-> I found the error, the commit
-> ("drm/amd: Check if ASPM is enabled from PCIe subsystem")
-> has been applied twice first as cba07cce39ac and a second time
-> as 7294863a6f01 after it had been superseeded by commit
-> 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device")
-> This effectively disables ASPM globally after the built-in GPU (which does not
-> support ASPM) is probed. This is the reason for the crashes and loss of devices
-> errors which on average occur after ~1000 resumes of the discrete GPU.
+On Sat, Jan 31, 2026 at 4:29=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
 >
-> snippet from git log --oneline drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c in linux-next:
-> 158a05a0b885 drm/amdgpu: Add use_xgmi_p2p module parameter
-> 7294863a6f01 drm/amd: Check if ASPM is enabled from PCIe subsystem  <--- This does not belong here!
-> b784f42cf78b drm/amdgpu: drop testing module parameter
-> 0b1a63487b0f drm/amdgpu: drop benchmark module parameter
-> cec2cc7b1c4a drm/amdgpu: Fix typo in *whether* in comment
-> 0ab5d711ec74 drm/amd: Refactor `amdgpu_aspm` to be evaluated per device <--- This removes the code from the previous commit.
-> cba07cce39ac drm/amd: Check if ASPM is enabled from PCIe subsystem  <--- The first time the commit was applied.
-> dfcc3e8c24cc drm/amdgpu: make cyan skillfish support code more consistent
+> Hi all,
 >
-> The fix is simply to revert commit 7294863a6f01.
+> On Thu, Jan 29, 2026 at 03:18:11PM +0100, Rafael J. Wysocki wrote:
 >
-> I sent a patch for linux-next (unfortunately without CC'ing stable) and a seperate patch for
-> v6.18.8, I hope this does not cause confusion ...
->
-> Bert Karwatzki
+> I decided to apply the patch below as-is. While we don't have confirmatio=
+n
+> that it fixes the immediate problem, it is a starting point and won't mak=
+e
+> the situation worse. A complete fix which does not require re-registering
+> the hardware monitoring device will require more work and will not be
+> suitable for LTS backports.
 
-Good work! Thank you for researching the faulty commit that lead to this strange behavior.
+Sounds good to me, thank you!
 
-Thanks,
-Armin Wolf
-
+> > ---
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Subject: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to =
+acpi_power_meter_notify()
+> >
+> > The acpi_power_meter driver's .notify() callback function,
+> > acpi_power_meter_notify(), calls hwmon_device_unregister() under a lock
+> > that is also acquired by callbacks in sysfs attributes of the device
+> > being unregistered which is prone to deadlocks between sysfs access and
+> > device removal.
+> >
+> > Address this by moving the hwmon device removal in
+> > acpi_power_meter_notify() outside the lock in question, but notice
+> > that doing it alone is not sufficient because two concurrent
+> > METER_NOTIFY_CONFIG notifications may be attempting to remove the
+> > same device at the same time.  To prevent that from happening, add a
+> > new lock serializing the execution of the switch () statement in
+> > acpi_power_meter_notify().  For simplicity, it is a static mutex
+> > which should not be a problem from the performance perspective.
+> >
+> > The new lock also allows the hwmon_device_register_with_info()
+> > in acpi_power_meter_notify() to be called outside the inner lock
+> > because it prevents the other notifications handled by that function
+> > from manipulating the "resource" object while the hwmon device based
+> > on it is being registered.  The sending of ACPI netlink messages from
+> > acpi_power_meter_notify() is serialized by the new lock too which
+> > generally helps to ensure that the order of handling firmware
+> > notifications is the same as the order of sending netlink messages
+> > related to them.
+> >
+> > In addition, notice that hwmon_device_register_with_info() may fail
+> > in which case resource->hwmon_dev will become an error pointer,
+> > so add checks to avoid attempting to unregister the hwmon device
+> > pointer to by it in that case to acpi_power_meter_notify() and
+> > acpi_power_meter_remove().
+> >
+> > Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated =
+hwmon_device_register")
+> > Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/hwmon/acpi_power_meter.c |   17 ++++++++++++++---
+> >  1 file changed, 14 insertions(+), 3 deletions(-)
+> >
+> > --- a/drivers/hwmon/acpi_power_meter.c
+> > +++ b/drivers/hwmon/acpi_power_meter.c
+> > @@ -47,6 +47,8 @@
+> >  static int cap_in_hardware;
+> >  static bool force_cap_on;
+> >
+> > +static DEFINE_MUTEX(acpi_notify_lock);
+> > +
+> >  static int can_cap_in_hardware(void)
+> >  {
+> >       return force_cap_on || cap_in_hardware;
+> > @@ -823,18 +825,26 @@ static void acpi_power_meter_notify(stru
+> >
+> >       resource =3D acpi_driver_data(device);
+> >
+> > +     guard(mutex)(&acpi_notify_lock);
+> > +
+> >       switch (event) {
+> >       case METER_NOTIFY_CONFIG:
+> > +             if (!IS_ERR(resource->hwmon_dev))
+> > +                     hwmon_device_unregister(resource->hwmon_dev);
+> > +
+> >               mutex_lock(&resource->lock);
+> > +
+> >               free_capabilities(resource);
+> >               remove_domain_devices(resource);
+> > -             hwmon_device_unregister(resource->hwmon_dev);
+> >               res =3D read_capabilities(resource);
+> >               if (res)
+> >                       dev_err_once(&device->dev, "read capabilities fai=
+led.\n");
+> >               res =3D read_domain_devices(resource);
+> >               if (res && res !=3D -ENODEV)
+> >                       dev_err_once(&device->dev, "read domain devices f=
+ailed.\n");
+> > +
+> > +             mutex_unlock(&resource->lock);
+> > +
+> >               resource->hwmon_dev =3D
+> >                       hwmon_device_register_with_info(&device->dev,
+> >                                                       ACPI_POWER_METER_=
+NAME,
+> > @@ -843,7 +853,7 @@ static void acpi_power_meter_notify(stru
+> >                                                       power_extra_group=
+s);
+> >               if (IS_ERR(resource->hwmon_dev))
+> >                       dev_err_once(&device->dev, "register hwmon device=
+ failed.\n");
+> > -             mutex_unlock(&resource->lock);
+> > +
+> >               break;
+> >       case METER_NOTIFY_TRIP:
+> >               sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME)=
+;
+> > @@ -953,7 +963,8 @@ static void acpi_power_meter_remove(stru
+> >               return;
+> >
+> >       resource =3D acpi_driver_data(device);
+> > -     hwmon_device_unregister(resource->hwmon_dev);
+> > +     if (!IS_ERR(resource->hwmon_dev))
+> > +             hwmon_device_unregister(resource->hwmon_dev);
+> >
+> >       remove_domain_devices(resource);
+> >       free_capabilities(resource);
 
