@@ -1,235 +1,179 @@
-Return-Path: <linux-acpi+bounces-20798-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20799-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4I4rCxA8f2lcmAIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20798-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:08 +0100
+	id uAe3Ljc8f2lcmAIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20799-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:47 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C4EC5CE7
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0D3C5CF2
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 12:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2821304B03B
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 11:40:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8F80300CC29
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 11:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C64E32D0EF;
-	Sun,  1 Feb 2026 11:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1382032D0E3;
+	Sun,  1 Feb 2026 11:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BR8EL3uF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej38oT4m"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288CC32B997
-	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E464626A0DD
+	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769946046; cv=none; b=ZLOm+2d7xwkRje9oAC7a9Wcm0ytAcuNCTxUD/ra+EyOAMrsy7Ko2BeLthvDPzGPwRtlZXGo3Dwdc722x7YC3SA38Wbe+E31D8FHuNFTQ2KNvtS+P08guxjySkQy3X6Ylp9Plv7+980OcLyP0AWJVFvVkDzVMkefCmVpJp9ao8Ro=
+	t=1769946165; cv=none; b=ZeV7XwCuwIAPTTBZ3LMAAyFcBIaxNA79ikDUDTdTvJ5qk/+TPNiOiKODeJYBoaMn+nPc78WGB/eQtH5li0AD7MB0EWqzoWUs17R7OJHy5DzegzYsmVNSfIr3RC1QyGh1Pluu9AHW8mfdCipojb+EuANIwDro8060+FHotIeS2R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769946046; c=relaxed/simple;
-	bh=X7d+pL2lizoInntJAYHY+lwKrg+eG690PPgws7MJqCg=;
+	s=arc-20240116; t=1769946165; c=relaxed/simple;
+	bh=IT4JR0prKa0OCOwFNNDgH78mXPijBfUxl0EpG3hii7c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=THpC+jrNlM4Yu8KO7f5lQUGYHfqjeU31SFvBUyWYVK6c3lHGM/fPwyoWOxajV8MuJtCfdArx7ZNCSZLdZLzdXs6Lo38CwfE+jNurHD8mPEPKrdlOgjXI48uSOSgRtv1asdbHuZgyanqWCKc14ytqwTJQH+1DdQ5ikfArXMKmbck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BR8EL3uF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2994C2BCB1
-	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:40:45 +0000 (UTC)
+	 To:Cc:Content-Type; b=nSmECsJogg4WCnzIqb99+Nv2D/2uXgCR/nZq2lpcTO6eeuny+LLidms0OUlIXIlc3CCkYjGD/sxmxcEiYIFtoF+SOClcTP8xN8XfBKmIsmXuz4DdEHEalU3bw9ueEUept5LqPKupfVtWB5exDP2BHMp9yaQjf0h2Vf8wxnT0bvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej38oT4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C275C116D0
+	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 11:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769946045;
-	bh=X7d+pL2lizoInntJAYHY+lwKrg+eG690PPgws7MJqCg=;
+	s=k20201202; t=1769946164;
+	bh=IT4JR0prKa0OCOwFNNDgH78mXPijBfUxl0EpG3hii7c=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BR8EL3uFRP2VA6S0bHrjlBqtUEgUycaD7b1Or17dTh18G5HxklFkseqvZ57oEVx/C
-	 4URGF4QL7BF6ch2XO2222H9TURkYhNPYtydy9u+VF8IxWYyYTBiiulUsss10JlVoYf
-	 o/pIO3fOgApwewHYiasnQaN30E5zQxB4jXnx4ZjK7YXMWiSUkU/ng7io5QA2ai9sc2
-	 oM7Y4rtUggR4h6Idg41bPjW6Rf/l1DQhyTFRNs4eBgJGkbO7WuD+hr9h1TB18naHCw
-	 P06dCB1gH5Gt3oaB48nuLwdgglAElVqI3yarVZ+I3pD20+anwn7Gg987WKm+CdxTUx
-	 xAdayFrGQ63bA==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7cfd9b898cdso2308297a34.2
-        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 03:40:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW5Nnk53o1/YaF0BDCRSqJ6QYBsb2RJ2S4bz6ulVmSWF8V5iQghoBdwJaV4ZFFTqXAL9V9/oxzE7sJ6@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo5kn/FzEQvo2w9Yu2D/eIu/adSKgEPimIlvcbwp6MVR3ZlWK4
-	xh9Gd3gKgsmIE4JBfKmCn9l1cR/dNU97w6JjTWYkH7Ezc760Ph1AxayPWvvCPNZLUiOgZHO5lLo
-	hF13968nJMfBUewDtar4pfWOEq5NRwko=
-X-Received: by 2002:a05:6820:1793:b0:657:717a:8c8 with SMTP id
- 006d021491bc7-6630f008f69mr3812159eaf.3.1769946044825; Sun, 01 Feb 2026
- 03:40:44 -0800 (PST)
+	b=ej38oT4m6BNSEpwC/byEndhBm1H5h/7y50SvsO2w03ICGrlZ6G7ATmC7b/qF8ZmsR
+	 OTiycp80Qq5k5VWkwEvoljBwLr1rtiXJSy8pcs+InnHsxmw3eEIIH30flw+vEt1YmZ
+	 1P96wLdY/McimrnKt5zV3qa9u6Nl8jJ2iIMBKMtqTCeaGv/xJBjGCErb17f1f+mB92
+	 wav7pjKF11pjPzoNEao6oXg1c5Yhnttd1nAmB7V4+JD1kZV9MNBjEbtjaOoAiVL3LI
+	 +Bzx0FfTGqqORLRFOQdNYNNNsOlsx02K9eswjwy8xBa3OUn2OArCYHDJv+MoMNf6Ho
+	 kakr9KtC1rAOw==
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-4095cd2b11eso2582973fac.1
+        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 03:42:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXuggYh+bMkLDa2TpdxTQQrOSrQfFbKWS3VP17d5Y9DkquLmCfgSAtnOkeny1ytEiaKjIyH+UOSyH3y@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn6gd3+shmFTzXdWRwFMJ+EE7rfQd5l/F3ijjjypzvv7eIVCf2
+	lHL2HAdEplHXw+1XGl/7JFxy1sJU6y33NzMR5vvLwEowYLzi0sqMZEERRTUDPeCyzGMC7P0ETus
+	uFZG+lfXaoRV9iSu0xZ6D4xo9GD1LcZo=
+X-Received: by 2002:a05:6820:2008:b0:662:f764:9064 with SMTP id
+ 006d021491bc7-6630f3850d7mr3448575eaf.48.1769946163562; Sun, 01 Feb 2026
+ 03:42:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <12855313.O9o76ZdvQC@rafael.j.wysocki> <d45d7b8a-97dd-4db8-a785-56df128983a4@roeck-us.net>
- <6252535.lOV4Wx5bFT@rafael.j.wysocki> <30300396-25b0-4d56-b8dd-c65d221c80bb@roeck-us.net>
-In-Reply-To: <30300396-25b0-4d56-b8dd-c65d221c80bb@roeck-us.net>
+References: <20260113094129.3357-1-spasswolf@web.de> <87h5spk01t.ffs@tglx>
+ <bc20529d7520e7db7de2022bf9c96a1bc3a2f0df.camel@web.de> <87v7h5ia3d.ffs@tglx>
+ <99f1aaba32030d2b9285dbd983fdf8518a181a8d.camel@web.de> <82b4d69a5b943aa5e8aa7cc33fcc00bce02e557c.camel@web.de>
+ <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de> <2a4e5667-ae24-403f-8fbd-cb37bd66f055@gmx.de>
+In-Reply-To: <2a4e5667-ae24-403f-8fbd-cb37bd66f055@gmx.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Sun, 1 Feb 2026 12:40:31 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gLs3YU8vj6uojYo=3c8kKLWeo5Ej2PUO+=BcWPjg0g=Q@mail.gmail.com>
-X-Gm-Features: AZwV_Qg1pnvi-gkv78OEWCB9ccxp_AKmbAg3JYhMNeTbWJWjrAQN47JVpLzNzTQ
-Message-ID: <CAJZ5v0gLs3YU8vj6uojYo=3c8kKLWeo5Ej2PUO+=BcWPjg0g=Q@mail.gmail.com>
-Subject: Re: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to acpi_power_meter_notify()
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, 
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	Igor Raits <igor@gooddata.com>, Daniel Secik <daniel.secik@gooddata.com>, 
-	Zdenek Pesek <zdenek.pesek@gooddata.com>, Jiri Jurica <jiri.jurica@gooddata.com>, 
-	Huisong Li <lihuisong@huawei.com>
+Date: Sun, 1 Feb 2026 12:42:30 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0i+7yCP-H1snkd-+h-jqXa53fMyJ3bLB6H-1u+P-KuONg@mail.gmail.com>
+X-Gm-Features: AZwV_QhE6FdYk90VCTuNf4rJKUHvyfE-AQ-aLS-eKFM9kup3-2BqSx_MCuon4vA
+Message-ID: <CAJZ5v0i+7yCP-H1snkd-+h-jqXa53fMyJ3bLB6H-1u+P-KuONg@mail.gmail.com>
+Subject: Re: crash during resume of PCIe bridge from v5.17 to next-20260130
+ (v5.16 works)
+To: Armin Wolf <W_Armin@gmx.de>, Bert Karwatzki <spasswolf@web.de>
+Cc: Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-next@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	regressions@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
+	acpica-devel@lists.linux.dev, Robert Moore <robert.moore@intel.com>, 
+	Saket Dumbre <saket.dumbre@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Clemens Ladisch <clemens@ladisch.de>, Jinchao Wang <wangjinchao600@gmail.com>, 
+	Yury Norov <yury.norov@gmail.com>, Anna Schumaker <anna.schumaker@oracle.com>, 
+	Baoquan He <bhe@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, Dave Young <dyoung@redhat.com>, 
+	Doug Anderson <dianders@chromium.org>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+	Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>, Joel Granados <joel.granados@kernel.org>, 
+	John Ogness <john.ogness@linutronix.de>, Kees Cook <kees@kernel.org>, 
+	Li Huafei <lihuafei1@huawei.com>, "Luck, Tony" <tony.luck@intel.com>, 
+	Luo Gengkun <luogengkun@huaweicloud.com>, Max Kellermann <max.kellermann@ionos.com>, 
+	Nam Cao <namcao@linutronix.de>, oushixiong <oushixiong@kylinos.cn>, 
+	Petr Mladek <pmladek@suse.com>, Qianqiang Liu <qianqiang.liu@163.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Sohil Mehta <sohil.mehta@intel.com>, 
+	Tejun Heo <tj@kernel.org>, Thomas Zimemrmann <tzimmermann@suse.de>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Ville Syrjala <ville.syrjala@linux.intel.com>, 
+	Vivek Goyal <vgoyal@redhat.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20798-lists,linux-acpi=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,amd.com,linutronix.de,goodmis.org,lists.linux.dev,intel.com,google.com,ladisch.de,gmail.com,oracle.com,redhat.com,chromium.org,igalia.com,gmx.de,ziepe.ca,huawei.com,huaweicloud.com,ionos.com,kylinos.cn,suse.com,163.com,suse.de,linux.dev,linux.intel.com,bytedance.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-20799-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,web.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[51];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,roeck-us.net:email,gooddata.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C7C4EC5CE7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,gmx.de:email]
+X-Rspamd-Queue-Id: 1D0D3C5CF2
 X-Rspamd-Action: no action
 
-On Sat, Jan 31, 2026 at 4:29=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
+On Sun, Feb 1, 2026 at 11:20=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> Hi all,
+> Am 01.02.26 um 01:36 schrieb Bert Karwatzki:
 >
-> On Thu, Jan 29, 2026 at 03:18:11PM +0100, Rafael J. Wysocki wrote:
+> > I found the error, the commit
+> > ("drm/amd: Check if ASPM is enabled from PCIe subsystem")
+> > has been applied twice first as cba07cce39ac and a second time
+> > as 7294863a6f01 after it had been superseeded by commit
+> > 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per devi=
+ce")
+> > This effectively disables ASPM globally after the built-in GPU (which d=
+oes not
+> > support ASPM) is probed. This is the reason for the crashes and loss of=
+ devices
+> > errors which on average occur after ~1000 resumes of the discrete GPU.
+> >
+> > snippet from git log --oneline drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c =
+in linux-next:
+> > 158a05a0b885 drm/amdgpu: Add use_xgmi_p2p module parameter
+> > 7294863a6f01 drm/amd: Check if ASPM is enabled from PCIe subsystem  <--=
+- This does not belong here!
+> > b784f42cf78b drm/amdgpu: drop testing module parameter
+> > 0b1a63487b0f drm/amdgpu: drop benchmark module parameter
+> > cec2cc7b1c4a drm/amdgpu: Fix typo in *whether* in comment
+> > 0ab5d711ec74 drm/amd: Refactor `amdgpu_aspm` to be evaluated per device=
+ <--- This removes the code from the previous commit.
+> > cba07cce39ac drm/amd: Check if ASPM is enabled from PCIe subsystem  <--=
+- The first time the commit was applied.
+> > dfcc3e8c24cc drm/amdgpu: make cyan skillfish support code more consiste=
+nt
+> >
+> > The fix is simply to revert commit 7294863a6f01.
+> >
+> > I sent a patch for linux-next (unfortunately without CC'ing stable) and=
+ a seperate patch for
+> > v6.18.8, I hope this does not cause confusion ...
+> >
+> > Bert Karwatzki
 >
-> I decided to apply the patch below as-is. While we don't have confirmatio=
-n
-> that it fixes the immediate problem, it is a starting point and won't mak=
-e
-> the situation worse. A complete fix which does not require re-registering
-> the hardware monitoring device will require more work and will not be
-> suitable for LTS backports.
+> Good work! Thank you for researching the faulty commit that lead to this =
+strange behavior.
 
-Sounds good to me, thank you!
+Yes, nice work, thanks!
 
-> > ---
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Subject: [PATCH v1] hwmon: (acpi_power_meter) Fix deadlocks related to =
-acpi_power_meter_notify()
-> >
-> > The acpi_power_meter driver's .notify() callback function,
-> > acpi_power_meter_notify(), calls hwmon_device_unregister() under a lock
-> > that is also acquired by callbacks in sysfs attributes of the device
-> > being unregistered which is prone to deadlocks between sysfs access and
-> > device removal.
-> >
-> > Address this by moving the hwmon device removal in
-> > acpi_power_meter_notify() outside the lock in question, but notice
-> > that doing it alone is not sufficient because two concurrent
-> > METER_NOTIFY_CONFIG notifications may be attempting to remove the
-> > same device at the same time.  To prevent that from happening, add a
-> > new lock serializing the execution of the switch () statement in
-> > acpi_power_meter_notify().  For simplicity, it is a static mutex
-> > which should not be a problem from the performance perspective.
-> >
-> > The new lock also allows the hwmon_device_register_with_info()
-> > in acpi_power_meter_notify() to be called outside the inner lock
-> > because it prevents the other notifications handled by that function
-> > from manipulating the "resource" object while the hwmon device based
-> > on it is being registered.  The sending of ACPI netlink messages from
-> > acpi_power_meter_notify() is serialized by the new lock too which
-> > generally helps to ensure that the order of handling firmware
-> > notifications is the same as the order of sending netlink messages
-> > related to them.
-> >
-> > In addition, notice that hwmon_device_register_with_info() may fail
-> > in which case resource->hwmon_dev will become an error pointer,
-> > so add checks to avoid attempting to unregister the hwmon device
-> > pointer to by it in that case to acpi_power_meter_notify() and
-> > acpi_power_meter_remove().
-> >
-> > Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated =
-hwmon_device_register")
-> > Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/hwmon/acpi_power_meter.c |   17 ++++++++++++++---
-> >  1 file changed, 14 insertions(+), 3 deletions(-)
-> >
-> > --- a/drivers/hwmon/acpi_power_meter.c
-> > +++ b/drivers/hwmon/acpi_power_meter.c
-> > @@ -47,6 +47,8 @@
-> >  static int cap_in_hardware;
-> >  static bool force_cap_on;
-> >
-> > +static DEFINE_MUTEX(acpi_notify_lock);
-> > +
-> >  static int can_cap_in_hardware(void)
-> >  {
-> >       return force_cap_on || cap_in_hardware;
-> > @@ -823,18 +825,26 @@ static void acpi_power_meter_notify(stru
-> >
-> >       resource =3D acpi_driver_data(device);
-> >
-> > +     guard(mutex)(&acpi_notify_lock);
-> > +
-> >       switch (event) {
-> >       case METER_NOTIFY_CONFIG:
-> > +             if (!IS_ERR(resource->hwmon_dev))
-> > +                     hwmon_device_unregister(resource->hwmon_dev);
-> > +
-> >               mutex_lock(&resource->lock);
-> > +
-> >               free_capabilities(resource);
-> >               remove_domain_devices(resource);
-> > -             hwmon_device_unregister(resource->hwmon_dev);
-> >               res =3D read_capabilities(resource);
-> >               if (res)
-> >                       dev_err_once(&device->dev, "read capabilities fai=
-led.\n");
-> >               res =3D read_domain_devices(resource);
-> >               if (res && res !=3D -ENODEV)
-> >                       dev_err_once(&device->dev, "read domain devices f=
-ailed.\n");
-> > +
-> > +             mutex_unlock(&resource->lock);
-> > +
-> >               resource->hwmon_dev =3D
-> >                       hwmon_device_register_with_info(&device->dev,
-> >                                                       ACPI_POWER_METER_=
-NAME,
-> > @@ -843,7 +853,7 @@ static void acpi_power_meter_notify(stru
-> >                                                       power_extra_group=
-s);
-> >               if (IS_ERR(resource->hwmon_dev))
-> >                       dev_err_once(&device->dev, "register hwmon device=
- failed.\n");
-> > -             mutex_unlock(&resource->lock);
-> > +
-> >               break;
-> >       case METER_NOTIFY_TRIP:
-> >               sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME)=
-;
-> > @@ -953,7 +963,8 @@ static void acpi_power_meter_remove(stru
-> >               return;
-> >
-> >       resource =3D acpi_driver_data(device);
-> > -     hwmon_device_unregister(resource->hwmon_dev);
-> > +     if (!IS_ERR(resource->hwmon_dev))
-> > +             hwmon_device_unregister(resource->hwmon_dev);
-> >
-> >       remove_domain_devices(resource);
-> >       free_capabilities(resource);
+I wish all of the reporters of kernel issues were so persistent.
 
