@@ -1,144 +1,174 @@
-Return-Path: <linux-acpi+bounces-20805-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20806-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id R175L4uEf2mzsgIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20805-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 17:51:23 +0100
+	id sKnMAbCYf2n3uAIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20806-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 19:17:20 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B47FC68CA
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 17:51:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF708C6E13
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 19:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BA8A3006B2C
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 16:42:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7473F30062FE
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 18:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39AB26F47D;
-	Sun,  1 Feb 2026 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ECE27FD51;
+	Sun,  1 Feb 2026 18:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxcwkt/N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jCduGZVx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CA326ED3E;
-	Sun,  1 Feb 2026 16:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C693EBF3D
+	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 18:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769964137; cv=none; b=CiLu8wYg9opmh+cJnCuKOuoCXi0H1xT3rWAXzPgDAyfbGMhPe2Pt9Ll4yNA6eIS/pgQOWRzryLFgrJ0vlnDKJw/wiDsxlKgownKN2YdxzHW3SbUSiWVBamRMR83IWzhiqHV8HWqF53sgK+DPACr+MRfQu4tSVfkXTS2ePqc46aw=
+	t=1769969830; cv=none; b=EMe5P7piKsAs6qldCy1Dl3fGIeLGpvjrDloJmSs6baSqyMWCGH+P6PKlCMsTi9yPlF/PDDLkGgjOEbcSeiwBaxacRJ5MXC8FVLANbe7RqJMlyKbIS0RMtnwAhvBJ5AKhH+c20DEJ2IBt4jXwPjaLn903MBo1HpqPx2MQ7YDApnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769964137; c=relaxed/simple;
-	bh=Xcg5dMcD3gfNoe5awtJkp8+RbxVdfVBZaTZPNqrYjsk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ixbLVBKzJoQfVMG5or+2jwp/dRLyDlnpMVy/AgpXEIf9Jf/Lxmvikwzb/qkjnDH352JHbSZG9Fh0V5/o8Obj4Tz8ys2TgopTHXxTXf0wJO7Uv2vcK79lfOIdYnyjP+BrmkpPZ2nvRMdY7V8rg+WnhF8eia4mnH05+VCJDDjSe5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxcwkt/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB24C4CEF7;
-	Sun,  1 Feb 2026 16:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769964137;
-	bh=Xcg5dMcD3gfNoe5awtJkp8+RbxVdfVBZaTZPNqrYjsk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mxcwkt/NJDeCumyF+iPJGRDfOF3UVmIcxHuGv004PbaOKxTzEL5UkW7GumCL3+MQr
-	 ybGXH39WMcFOrskVirc1pFP7TCthYqwzVis2cs01ea0LyoKNo4OTAU08wUrYuq3NCG
-	 XMZHtCMgMTBBmoeChxlsqlrK5/JZtWJvUYGgktcRq7YAHq8kEKdGoG9tijXzjZAeLw
-	 ac1k8JaBEGEijEeSvUNipJT4oXqPMfVZsbwrdOvtxuSOrELHK6ol9r+wMeqe9zDetR
-	 BuG+UMRquoetvBTT2jt63tRn6an4Fuxk4spFesgZfw0j/NHkVjA27tCkdn6c9EKxMc
-	 T/90nh4ZXqImA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Bert Karwatzki <spasswolf@web.de>, linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org, spasswolf@web.de, Mario Limonciello
- <mario.limonciello@amd.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
- Rostedt <rostedt@goodmis.org>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
- regressions@lists.linux.dev, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
- <rafael.j.wysocki@intel.com>, acpica-devel@lists.linux.dev, Robert Moore
- <robert.moore@intel.com>, Saket Dumbre <saket.dumbre@intel.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Clemens Ladisch <clemens@ladisch.de>,
- Jinchao Wang <wangjinchao600@gmail.com>, Yury Norov
- <yury.norov@gmail.com>, Anna Schumaker <anna.schumaker@oracle.com>,
- Baoquan He <bhe@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, Dave
- Young <dyoung@redhat.com>, Doug Anderson <dianders@chromium.org>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Helge Deller
- <deller@gmx.de>, Ingo Molnar <mingo@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, Joanthan
- Cameron <Jonathan.Cameron@huawei.com>, Joel Granados
- <joel.granados@kernel.org>, John Ogness <john.ogness@linutronix.de>, Kees
- Cook <kees@kernel.org>, Li Huafei <lihuafei1@huawei.com>, "Luck, Tony"
- <tony.luck@intel.com>, Luo Gengkun <luogengkun@huaweicloud.com>, Max
- Kellermann <max.kellermann@ionos.com>, Nam Cao <namcao@linutronix.de>,
- oushixiong <oushixiong@kylinos.cn>, Petr Mladek <pmladek@suse.com>,
- Qianqiang Liu <qianqiang.liu@163.com>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, Sohil Mehta <sohil.mehta@intel.com>, Tejun Heo
- <tj@kernel.org>, Thomas Zimemrmann <tzimmermann@suse.de>, Thorsten Blum
- <thorsten.blum@linux.dev>, Ville Syrjala <ville.syrjala@linux.intel.com>,
- Vivek Goyal <vgoyal@redhat.com>, Yunhui Cui <cuiyunhui@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, W_Armin@gmx.de
-Subject: Re: crash during resume of PCIe bridge from v5.17 to next-20260130
- (v5.16 works)
-In-Reply-To: <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
-References: <20260113094129.3357-1-spasswolf@web.de> <87h5spk01t.ffs@tglx>
- <bc20529d7520e7db7de2022bf9c96a1bc3a2f0df.camel@web.de>
- <87v7h5ia3d.ffs@tglx>
- <99f1aaba32030d2b9285dbd983fdf8518a181a8d.camel@web.de>
- <82b4d69a5b943aa5e8aa7cc33fcc00bce02e557c.camel@web.de>
- <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
-Date: Sun, 01 Feb 2026 17:42:13 +0100
-Message-ID: <87a4xs2z6i.ffs@tglx>
+	s=arc-20240116; t=1769969830; c=relaxed/simple;
+	bh=GUrSB2n7oRGHcPWkgJseQFjjXQatFD2FzE1j1iw6aYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ip+fAeqYGWlL0GpBY7e6lMqS/0ZE71I53mDIZ7sJR+uHeWNBMAOTYTW1fICTw+upiBght6svBIvvhB/XJ7zMEbYNOU5KbJ6hH2kTo338kxr0qw31tMnlcAqSjHShDRDKHwHkafpqiJ4gr15SpZwZmfN5dflZJ6xLp6+KM9oMS3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jCduGZVx; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so3207587a91.3
+        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 10:17:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769969827; x=1770574627; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ujk5k65rRpax7qPZizdIUInwgoyZVajK00HSdGaFW4A=;
+        b=jCduGZVxIkW4NcfG4AgGYnKp/jAFY2qXs60z05koxHd+ij7FqJ+V4Xw5Dt7vQasHPH
+         OicIOCjXA8fz2bYAX3cWNAIgg83Jh1k1xybwq7OlzuXkkPK5x+qYrQUndnx8ubqjF11q
+         kQke8sYxsJbJD2hoKBquMLyy+Wu+VJEj//5ujx4WyWrfNUcVtdaODHrAAYKUnGcK+qBu
+         X29fIg3gVksGRprxnirU3DWC2dxbSSrraA50uqIUwG8OBW6Rg5Go6gxJy0yfoJmMfV3g
+         bg7mJe+gcf9meT0X4B+s8vz/P2ZZa7AW8yysNJRtRKERHbLRATP5WSNFRljt/9W6KULG
+         +pbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769969827; x=1770574627;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ujk5k65rRpax7qPZizdIUInwgoyZVajK00HSdGaFW4A=;
+        b=w8rVeqVwX3uFVt2BGATWRhEfnbU8CNwMqkyp+S+i1rdacxiX4xiIWSqIEZ8Gc6+Of6
+         dxxgLXp7Y5cfDlQarvTp4+Pcl3X2FCkUANa3rIeC6ao9jYASwVFksqErUZyFxW3GDDA3
+         jXWsRXfJXoT5pwKiI8+jv04CTWix7uh7YDblv1KlzoH5kODIGgsVCJMPn07OOAmwYlYG
+         R72cmeycpLkyXlq7H4VZwPTZx5CtQPUUypX7CU3CO7aP5Ex+Z2q8DS/lgSB6Gsc89K36
+         2WJ2Y2p+/Sq2jDGRlr3l3IseIbLWB6iYzum2u7qbdvX2JDOTNDtgxEYYjtLzmLJ4JGBL
+         6YdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCFw+J1jlRZFAalUrjYf9MeQwzcpthnE+iFH8LGx6FIg8y+3TiUFysxmEk7lZlBLo31r4K8fnx/YdI@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUV7zyvzXPQUXCRHEM8Vy2JWLuPRaA+EOR4m0Eld9YCEr7W3hR
+	njNuxuDavfwAVTabnojtC2OE+IttmZDoCTMZG/4ScaafR3D7a5tUAppN
+X-Gm-Gg: AZuq6aIJo4zkgfLwYZMkEJWX6/oNmG1E22x9aOzBtSt+etnzAT/Ergxro9OK+BXtOQJ
+	+sCMKXQLq4ia5JuZJDra71cApFU1kY1qtU0zGtYc8y4vr+KHxTMNlGtBdi0FuWy+f1VU9HebCZf
+	843DmkwQiorZGq6hj3PLJbI+f6ytEP0FB7lr5zZFrYT4zprJuhJanxtihk/m6KeDzYgaHioWOW8
+	BAcu6MYn37KthAyMAy7+svpAx84EYovWLpxk1rUYTIPmWvdiy4Izy+961piQD2CYD2KUmf/nEUy
+	boEzcDTw3z0qbt0vlxLL2FzEUPoIIhIau8+SY/YCEA2sm3iEK42lvo3m1agXnI9rgmvG0Np+j5C
+	Bn6v22zAOzxbdyQ3fon7r4/kbWBLqlE+E725Sy3/CT1kR+hWyFdtYBzcren+mpfSQS8XqeXm7gJ
+	svvQBCehD68yLANNU+
+X-Received: by 2002:a17:90b:3ccd:b0:352:bd7c:ddbd with SMTP id 98e67ed59e1d1-3543b38af32mr9508501a91.23.1769969826957;
+        Sun, 01 Feb 2026 10:17:06 -0800 (PST)
+Received: from gmail.com ([2409:4081:2d1d:b4be:89d5:e086:c91c:ec66])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3543bab8025sm3192608a91.0.2026.02.01.10.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 10:17:06 -0800 (PST)
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+To: rafael@kernel.org,
+	robert.moore@intel.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	sumeet4linux@gmail.com
+Subject: [PATCH] tools/power/acpi: Replace strcpy/strcat with snprintf in osunixdir.c
+Date: Sun,  1 Feb 2026 23:46:20 +0530
+Message-ID: <20260201181620.4964-1-sumeet4linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[web.de,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-20805-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,amd.com,linutronix.de,kernel.org,goodmis.org,lists.linux.dev,intel.com,google.com,ladisch.de,gmail.com,oracle.com,redhat.com,chromium.org,igalia.com,gmx.de,ziepe.ca,huawei.com,huaweicloud.com,ionos.com,kylinos.cn,suse.com,163.com,suse.de,linux.dev,linux.intel.com,bytedance.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-20806-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[51];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumeet4linux@gmail.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B47FC68CA
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF708C6E13
 X-Rspamd-Action: no action
 
-On Sun, Feb 01 2026 at 01:36, Bert Karwatzki wrote:
-> I found the error, the commit 
-> ("drm/amd: Check if ASPM is enabled from PCIe subsystem")
-> has been applied twice first as cba07cce39ac and a second time
-> as 7294863a6f01 after it had been superseeded by commit
-> 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device") 
-> This effectively disables ASPM globally after the built-in GPU (which does not
-> support ASPM) is probed. This is the reason for the crashes and loss of devices
-> errors which on average occur after ~1000 resumes of the discrete GPU.
+Replace unsafe strcpy() and strcat() calls with snprintf() in
+osunixdir.c to prevent potential buffer overflow vulnerabilities
+when constructing file paths.
 
-Wow. Nice detective work...
+The snprintf() function performs automatic bounds checking to ensure
+the destination buffer is not overflowed.
+
+No functional change.
+
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+---
+ .../power/acpi/os_specific/service_layers/osunixdir.c  | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/power/acpi/os_specific/service_layers/osunixdir.c b/tools/power/acpi/os_specific/service_layers/osunixdir.c
+index b9bb83116549..5dc960c6b376 100644
+--- a/tools/power/acpi/os_specific/service_layers/osunixdir.c
++++ b/tools/power/acpi/os_specific/service_layers/osunixdir.c
+@@ -113,9 +113,8 @@ char *acpi_os_get_next_filename(void *dir_handle)
+ 				return (NULL);
+ 			}
+ 
+-			strcpy(temp_str, external_info->dir_pathname);
+-			strcat(temp_str, "/");
+-			strcat(temp_str, dir_entry->d_name);
++			snprintf(temp_str, str_len, "%s/%s",
++				 external_info->dir_pathname, dir_entry->d_name);
+ 
+ 			err = stat(temp_str, &temp_stat);
+ 			if (err == -1) {
+@@ -137,8 +136,9 @@ char *acpi_os_get_next_filename(void *dir_handle)
+ 
+ 				/* copy to a temp buffer because dir_entry struct is on the stack */
+ 
+-				strcpy(external_info->temp_buffer,
+-				       dir_entry->d_name);
++				snprintf(external_info->temp_buffer,
++					 sizeof(external_info->temp_buffer),
++					 "%s", dir_entry->d_name);
+ 				return (external_info->temp_buffer);
+ 			}
+ 		}
+-- 
+2.43.0
+
 
