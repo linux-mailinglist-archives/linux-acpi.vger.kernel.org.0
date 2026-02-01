@@ -1,1150 +1,144 @@
-Return-Path: <linux-acpi+bounces-20804-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20805-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMNlMjRtf2l5qQIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20804-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 16:11:48 +0100
+	id R175L4uEf2mzsgIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20805-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 17:51:23 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DD9C6426
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 16:11:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B47FC68CA
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Feb 2026 17:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AC2030053C0
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 15:11:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BA8A3006B2C
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Feb 2026 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5542E208994;
-	Sun,  1 Feb 2026 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39AB26F47D;
+	Sun,  1 Feb 2026 16:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goC48EYo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxcwkt/N"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69AC1F0994
-	for <linux-acpi@vger.kernel.org>; Sun,  1 Feb 2026 15:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769958705; cv=pass; b=odCSr1LfsUgdhB/MTQ7zKe9S87qPxjljdbR2vYbUInNpLdPY/0/u0JxDGqjhBjCqjk42hPMwEPPl99jFgyX/5rNdaZQejK/8h4TOTW9LKzIvye+u+t5xM9XiVAvG2cubOOTm9AOQx0f6bRCRwK56AyufLz4A6Y1jDZa4VW+0KNQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769958705; c=relaxed/simple;
-	bh=tB8cF9OaOj5ktxJXGiOPFlCaPQvHLR2KELtLoDCviKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QlOlwp4HNhB8Bh3rXWgcwrPkpmuu9/G8b3TXxKDDZPFe+4iRUmDOI1/zO0y/C88cvQJ3EM8aS44an6tpxQJ7LvQQOKWg8A+jrSPbPsG2+IBpx0xPOkxXZvQCeYoQLZFC1SL9IcJmYiWN2peHc7AQXTirGyU4PK4aQ2h4NqvMw9M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goC48EYo; arc=pass smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d19d3c7208so2040074a34.0
-        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 07:11:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769958702; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cz+EBRL3ube7y1BEUAu+AwLcwGJ3r/OlD24j6m1r2Sbu1uUeC5Pdy6heYzR3FC4ciZ
-         ADW/T15NH4RZwAuk13NT4DtVp8xyiyRaq0ZgvzamlG+M6pJ6qdYqJfGVJK0FMrsTJ1M8
-         UQzya06ifn3MRAQwSw2GypZ01QREDJlwZSy24lHBrGNyEg9bWsobuU+4ZGpPzVp7tBH/
-         YdMj2orTlEmUwc1RCWyKYxucMEaselWJ/TJ1IlYPN3b4+eKBY9+Da66ffMWMdJtA815l
-         IBYNxB8KoUN/rERIwKI5L7pi6EQSmwky8O2j5nMGxGL9hEnC4o7DPSfvOxu8wscVUwts
-         58gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=l8f6kUjGIULtf6k7iF3mSoUcN1FDreR2rJvNd1SZgVI=;
-        fh=HRrkzcrpq3GNCHv7Vt6+VlKGI1FDxzYtYmBCfuOqpuQ=;
-        b=We2cnWeL81RFAVHboWn6RSvResUwDVaBl0i9CScI/CeYPKsOqO502546zNJZkgxGbm
-         8EXl9gTrJOBlCqWkaJTd4mfoVe8q17jVLNLlZicZu4S8V+LmBakxZ90QXdhU6HoWOCI0
-         q99rR4gySFxETlh+FtsO86b8lDcUGlYHmBCiWmb34wu/TRmLpmejYpl0RJupOZNXgk61
-         WXFzpPRAR2C8EbRGhdu0oMfdEb9imcflu6Y7JhtolLP3zVK95IWvqxXb0DBGcOhwtKrc
-         zOMsIxfPQNFJfBl+fhGzODnAm673CBkguSFONHQMg3xKmvhqmN2CNAPmMgWS1YduzzCx
-         ffrQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769958702; x=1770563502; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l8f6kUjGIULtf6k7iF3mSoUcN1FDreR2rJvNd1SZgVI=;
-        b=goC48EYoAAn3p89NcCv2ODCy/LcZ16TCkpncbI3Xe/qdlfHNP/41OAhO3Sl7dje1mi
-         GCEdVa4C4Fdu+xZEyzu2pYS5uMLdzCwe2LLCIRZDJHdvejkkPRan9l2VL/laezu6DLXQ
-         UeIS5/AYgObvPIVqsebZ5xFEmxkpV7dIdf/GqNWk6SwGi2K20aGElH0rrpQssQz51mPi
-         RwXzNBp+8wV8RdFcuzE241CaDbQw4R/zrydkfSjgyXz5yG+x/8F0WDQaP1guw+FYPJeI
-         3qZJfG9O+pw0NmoqykyEqRGZJrzG+qU8jw6BniB+uVaiuqq87aYbAH46ly0VjNSx8epr
-         YOgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769958702; x=1770563502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l8f6kUjGIULtf6k7iF3mSoUcN1FDreR2rJvNd1SZgVI=;
-        b=F8MlPgJfxojkZNkc2pQpwxFJ89tOV6L7KxvmPlMdlcvSHhcNhE7FaJKNc59v8aRVMd
-         zzYWP2wnuzodgBx7mb9iA6Xp2FBlRtweuDwPuB/PpN7NKqA6/x7i0NU9R/xXh7Z3Dg05
-         nT/H1XvkYtZw4/qgy8fzTQjEo3b3t7lO2X+izTYuwp4IWeEQfpuI8UQzJ09ODXlUdihb
-         9f+thZtFGR9wMT26YBjp5s3j8odzOlI9mfbJCfBLqR21z+4fG530a/s8fE49HhKYg+ZD
-         nLECiwaLCujUXr7J5dD9j3yZRkjXMsKlzhzLm8AFWTvidHC/sOkVvqLxRgbZrLrGKwrO
-         W1/g==
-X-Forwarded-Encrypted: i=1; AJvYcCULez5HSyyDpK3GpvbS+jYje0/3uJKCgWFEpHxkFnFS4uwrydc3bwD2yaWKhZMKoWab8DSdTGl0KhX4@vger.kernel.org
-X-Gm-Message-State: AOJu0YygFvsR2deHon9TFuhmTdQFdUaniZhx/zGjKaoVwEq8UB84XMZb
-	RGA3NN6RH9ROfFTzewo7HS5ArPKdS2rqHBT2Vfsl9RQRTT4ReHWkU74UxEK0fyEDp0Z31JGCkHy
-	xypjtjYMVLC3gM4aSCcefWfh/E10NY+w=
-X-Gm-Gg: AZuq6aJe9HSwhF4vDWn4LHIMuGge9FtH1rK+3pAwZxJxP1xymqiY9bC1r5wERSIZiD3
-	dLaM1lu6qFjCN9mUtjJfvbN9kRV1iLsVWhY1ce078L9JAJfkNYjGaqTtllrKcHvyIpIgvv3PuZi
-	oI760qWTm5OYaCjSuYXGdysjixUxZwRq39TF548Idc13PGyIRe1ayBceyxYBYLV14dl969D24Hh
-	9dsvO3OT8r7ITJe3bRjIW0tCDQT6adLuC1vI3BgfQzR5RLZFN1PydTWpm93Sklq9NX/xQA=
-X-Received: by 2002:a05:6830:4420:b0:7c7:5f79:40ca with SMTP id
- 46e09a7af769-7d1a533600bmr4718042a34.29.1769958701497; Sun, 01 Feb 2026
- 07:11:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CA326ED3E;
+	Sun,  1 Feb 2026 16:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769964137; cv=none; b=CiLu8wYg9opmh+cJnCuKOuoCXi0H1xT3rWAXzPgDAyfbGMhPe2Pt9Ll4yNA6eIS/pgQOWRzryLFgrJ0vlnDKJw/wiDsxlKgownKN2YdxzHW3SbUSiWVBamRMR83IWzhiqHV8HWqF53sgK+DPACr+MRfQu4tSVfkXTS2ePqc46aw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769964137; c=relaxed/simple;
+	bh=Xcg5dMcD3gfNoe5awtJkp8+RbxVdfVBZaTZPNqrYjsk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ixbLVBKzJoQfVMG5or+2jwp/dRLyDlnpMVy/AgpXEIf9Jf/Lxmvikwzb/qkjnDH352JHbSZG9Fh0V5/o8Obj4Tz8ys2TgopTHXxTXf0wJO7Uv2vcK79lfOIdYnyjP+BrmkpPZ2nvRMdY7V8rg+WnhF8eia4mnH05+VCJDDjSe5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxcwkt/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB24C4CEF7;
+	Sun,  1 Feb 2026 16:42:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769964137;
+	bh=Xcg5dMcD3gfNoe5awtJkp8+RbxVdfVBZaTZPNqrYjsk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=mxcwkt/NJDeCumyF+iPJGRDfOF3UVmIcxHuGv004PbaOKxTzEL5UkW7GumCL3+MQr
+	 ybGXH39WMcFOrskVirc1pFP7TCthYqwzVis2cs01ea0LyoKNo4OTAU08wUrYuq3NCG
+	 XMZHtCMgMTBBmoeChxlsqlrK5/JZtWJvUYGgktcRq7YAHq8kEKdGoG9tijXzjZAeLw
+	 ac1k8JaBEGEijEeSvUNipJT4oXqPMfVZsbwrdOvtxuSOrELHK6ol9r+wMeqe9zDetR
+	 BuG+UMRquoetvBTT2jt63tRn6an4Fuxk4spFesgZfw0j/NHkVjA27tCkdn6c9EKxMc
+	 T/90nh4ZXqImA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Bert Karwatzki <spasswolf@web.de>, linux-kernel@vger.kernel.org
+Cc: linux-next@vger.kernel.org, spasswolf@web.de, Mario Limonciello
+ <mario.limonciello@amd.com>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ regressions@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
+ <rafael.j.wysocki@intel.com>, acpica-devel@lists.linux.dev, Robert Moore
+ <robert.moore@intel.com>, Saket Dumbre <saket.dumbre@intel.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Clemens Ladisch <clemens@ladisch.de>,
+ Jinchao Wang <wangjinchao600@gmail.com>, Yury Norov
+ <yury.norov@gmail.com>, Anna Schumaker <anna.schumaker@oracle.com>,
+ Baoquan He <bhe@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, Dave
+ Young <dyoung@redhat.com>, Doug Anderson <dianders@chromium.org>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Helge Deller
+ <deller@gmx.de>, Ingo Molnar <mingo@kernel.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Joanthan
+ Cameron <Jonathan.Cameron@huawei.com>, Joel Granados
+ <joel.granados@kernel.org>, John Ogness <john.ogness@linutronix.de>, Kees
+ Cook <kees@kernel.org>, Li Huafei <lihuafei1@huawei.com>, "Luck, Tony"
+ <tony.luck@intel.com>, Luo Gengkun <luogengkun@huaweicloud.com>, Max
+ Kellermann <max.kellermann@ionos.com>, Nam Cao <namcao@linutronix.de>,
+ oushixiong <oushixiong@kylinos.cn>, Petr Mladek <pmladek@suse.com>,
+ Qianqiang Liu <qianqiang.liu@163.com>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Sohil Mehta <sohil.mehta@intel.com>, Tejun Heo
+ <tj@kernel.org>, Thomas Zimemrmann <tzimmermann@suse.de>, Thorsten Blum
+ <thorsten.blum@linux.dev>, Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Yunhui Cui <cuiyunhui@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, W_Armin@gmx.de
+Subject: Re: crash during resume of PCIe bridge from v5.17 to next-20260130
+ (v5.16 works)
+In-Reply-To: <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
+References: <20260113094129.3357-1-spasswolf@web.de> <87h5spk01t.ffs@tglx>
+ <bc20529d7520e7db7de2022bf9c96a1bc3a2f0df.camel@web.de>
+ <87v7h5ia3d.ffs@tglx>
+ <99f1aaba32030d2b9285dbd983fdf8518a181a8d.camel@web.de>
+ <82b4d69a5b943aa5e8aa7cc33fcc00bce02e557c.camel@web.de>
+ <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de>
+Date: Sun, 01 Feb 2026 17:42:13 +0100
+Message-ID: <87a4xs2z6i.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260201130334.3107-1-sef1548@gmail.com> <20260201130334.3107-3-sef1548@gmail.com>
-In-Reply-To: <20260201130334.3107-3-sef1548@gmail.com>
-From: Nick Huang <sef1548@gmail.com>
-Date: Sun, 1 Feb 2026 23:11:30 +0800
-X-Gm-Features: AZwV_QhmiQbEdaswRwLDVIUOF8kx8F_TXatzEpVpd1-IRobY3vhUqvDUpmlhqnE
-Message-ID: <CABZAGREW+_kQ+JxiY2pVQCJhPn_XB31G3kGc1r2e-vfWczU=zg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: acpica: Add KUnit tests for nsrepair2 repair functions
-To: "Rafael J . Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	paladin@ntub.edu.tw, kusogame68@gmail.com, ceyanglab@gmail.com, 
-	n1136402@ntub.edu.tw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [4.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20804-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,ntub.edu.tw,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[web.de,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-20805-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FREEMAIL_CC(0.00)[vger.kernel.org,web.de,amd.com,linutronix.de,kernel.org,goodmis.org,lists.linux.dev,intel.com,google.com,ladisch.de,gmail.com,oracle.com,redhat.com,chromium.org,igalia.com,gmx.de,ziepe.ca,huawei.com,huaweicloud.com,ionos.com,kylinos.cn,suse.com,163.com,suse.de,linux.dev,linux.intel.com,bytedance.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sef1548@gmail.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[51];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: F3DD9C6426
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1B47FC68CA
 X-Rspamd-Action: no action
 
-Nick Huang <sef1548@gmail.com> =E6=96=BC 2026=E5=B9=B42=E6=9C=881=E6=97=A5=
-=E9=80=B1=E6=97=A5 =E4=B8=8B=E5=8D=889:03=E5=AF=AB=E9=81=93=EF=BC=9A
->
->    Add comprehensive KUnit tests for the ACPI predefined method repair
->    functions in nsrepair2.c. The tests cover:
->
->    - ACPI operand object creation (integer, string, buffer, package)
->    - Namespace node creation and NAMESEG comparison
->    - Package structures for _PSS, _CST, _ALR, _PRT methods
->    - _HID string format verification and repair scenarios
->    - _FDE buffer expansion (5 bytes to 20 bytes)
->    - acpi_ns_sort_list sorting logic with ascending/descending order
->
->    The tests use mock objects allocated with kunit_kzalloc to verify
->    the data structures and sorting algorithms used by the repair code.
->
-> Signed-off-by: Nick Huang <sef1548@gmail.com>
-> ---
->  drivers/acpi/acpica/nsrepair2_test.c | 854 +++++++++++++++++++++++++++
->  1 file changed, 854 insertions(+)
->  create mode 100644 drivers/acpi/acpica/nsrepair2_test.c
->
-> diff --git a/drivers/acpi/acpica/nsrepair2_test.c b/drivers/acpi/acpica/n=
-srepair2_test.c
-> new file mode 100644
-> index 000000000..7d59453d1
-> --- /dev/null
-> +++ b/drivers/acpi/acpica/nsrepair2_test.c
-> @@ -0,0 +1,854 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * KUnit tests for nsrepair2.c - ACPI predefined method repair functions
-> + */
-> +
-> +#include <kunit/test.h>
-> +#include <linux/module.h>
-> +#include <linux/slab.h>
-> +#include <acpi/acpi.h>
-> +#include <linux/sort.h>
-> +#include "accommon.h"
-> +#include "acnamesp.h"
-> +
-> +/*
-> + * Test helper: create a mock integer operand object
-> + */
-> +static union acpi_operand_object *create_integer_object(struct kunit *te=
-st, u64 value)
-> +{
-> +       union acpi_operand_object *obj;
-> +
-> +       obj =3D kunit_kzalloc(test, sizeof(*obj), GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, obj);
-> +
-> +       obj->common.type =3D ACPI_TYPE_INTEGER;
-> +       obj->common.reference_count =3D 1;
-> +       obj->integer.value =3D value;
-> +
-> +       return obj;
-> +}
-> +
-> +/*
-> + * Test helper: create a mock string operand object
-> + */
-> +static union acpi_operand_object *create_string_object(struct kunit *tes=
-t,
-> +                                                      const char *str)
-> +{
-> +       union acpi_operand_object *obj;
-> +       char *buf;
-> +       size_t len;
-> +
-> +       obj =3D kunit_kzalloc(test, sizeof(*obj), GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, obj);
-> +
-> +       len =3D strlen(str);
-> +       buf =3D kunit_kzalloc(test, len + 1, GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, buf);
-> +       memcpy(buf, str, len + 1);
-> +
-> +       obj->common.type =3D ACPI_TYPE_STRING;
-> +       obj->common.reference_count =3D 1;
-> +       obj->string.length =3D len;
-> +       obj->string.pointer =3D buf;
-> +
-> +       return obj;
-> +}
-> +
-> +/*
-> + * Test helper: create a mock buffer operand object
-> + */
-> +static union acpi_operand_object *create_buffer_object(struct kunit *tes=
-t,
-> +                                                      u8 *data, u32 leng=
-th)
-> +{
-> +       union acpi_operand_object *obj;
-> +       u8 *buf =3D NULL;
-> +
-> +       KUNIT_ASSERT_GT(test, length, 0U);
-> +
-> +       obj =3D kunit_kzalloc(test, sizeof(*obj), GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, obj);
-> +
-> +       buf =3D kunit_kzalloc(test, length, GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, buf);
-> +       memcpy(buf, data, length);
-> +
-> +       obj->common.type =3D ACPI_TYPE_BUFFER;
-> +       obj->common.reference_count =3D 1;
-> +       obj->buffer.length =3D length;
-> +       obj->buffer.pointer =3D buf;
-> +
-> +       return obj;
-> +}
-> +
-> +/*
-> + * Test helper: create a mock package operand object
-> + */
-> +static union acpi_operand_object *create_package_object(struct kunit *te=
-st,
-> +                                                       u32 count)
-> +{
-> +       union acpi_operand_object *obj;
-> +       union acpi_operand_object **elements =3D NULL;
-> +
-> +       KUNIT_ASSERT_GT(test, count, 0U);
-> +
-> +       obj =3D kunit_kzalloc(test, sizeof(*obj), GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, obj);
-> +
-> +       elements =3D kunit_kzalloc(test, count * sizeof(*elements), GFP_K=
-ERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, elements);
-> +
-> +       obj->common.type =3D ACPI_TYPE_PACKAGE;
-> +       obj->common.reference_count =3D 1;
-> +       obj->package.count =3D count;
-> +       obj->package.elements =3D elements;
-> +
-> +       return obj;
-> +}
-> +
-> +/*
-> + * Test helper: create a mock namespace node
-> + * Note: name must be exactly ACPI_NAMESEG_SIZE (4) characters
-> + */
-> +static struct acpi_namespace_node *create_namespace_node(struct kunit *t=
-est,
-> +                                                        const char *name=
-)
-> +{
-> +       struct acpi_namespace_node *node;
-> +       size_t name_len;
-> +
-> +       KUNIT_ASSERT_NOT_NULL(test, name);
-> +       name_len =3D strlen(name);
-> +       KUNIT_ASSERT_GE(test, name_len, (size_t)ACPI_NAMESEG_SIZE);
-> +
-> +       node =3D kunit_kzalloc(test, sizeof(*node), GFP_KERNEL);
-> +       KUNIT_ASSERT_NOT_NULL(test, node);
-> +
-> +       memcpy(node->name.ascii, name, ACPI_NAMESEG_SIZE);
-> +
-> +       return node;
-> +}
-> +
-> +/*
-> + * Test: Integer object type verification
-> + */
-> +static void nsrepair2_test_integer_type(struct kunit *test)
-> +{
-> +       union acpi_operand_object *obj;
-> +
-> +       obj =3D create_integer_object(test, 42);
-> +
-> +       KUNIT_EXPECT_EQ(test, obj->common.type, (u8)ACPI_TYPE_INTEGER);
-> +       KUNIT_EXPECT_EQ(test, obj->integer.value, 42ULL);
-> +}
-> +
-> +/*
-> + * Test: String object creation and verification
-> + */
-> +static void nsrepair2_test_string_type(struct kunit *test)
-> +{
-> +       union acpi_operand_object *obj;
-> +
-> +       obj =3D create_string_object(test, "TEST123");
-> +
-> +       KUNIT_EXPECT_EQ(test, obj->common.type, (u8)ACPI_TYPE_STRING);
-> +       KUNIT_EXPECT_EQ(test, obj->string.length, 7U);
-> +       KUNIT_EXPECT_STREQ(test, obj->string.pointer, "TEST123");
-> +}
-> +
-> +/*
-> + * Test: Buffer object creation and verification
-> + */
-> +static void nsrepair2_test_buffer_type(struct kunit *test)
-> +{
-> +       union acpi_operand_object *obj;
-> +       u8 test_data[] =3D {0x01, 0x02, 0x03, 0x04, 0x05};
-> +
-> +       obj =3D create_buffer_object(test, test_data, sizeof(test_data));
-> +
-> +       KUNIT_EXPECT_EQ(test, obj->common.type, (u8)ACPI_TYPE_BUFFER);
-> +       KUNIT_EXPECT_EQ(test, obj->buffer.length, 5U);
-> +       KUNIT_EXPECT_EQ(test, obj->buffer.pointer[0], 0x01);
-> +       KUNIT_EXPECT_EQ(test, obj->buffer.pointer[4], 0x05);
-> +}
-> +
-> +/*
-> + * Test: Package object creation and verification
-> + */
-> +static void nsrepair2_test_package_type(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *elem0;
-> +       union acpi_operand_object *elem1;
-> +
-> +       pkg =3D create_package_object(test, 2);
-> +       elem0 =3D create_integer_object(test, 100);
-> +       elem1 =3D create_integer_object(test, 200);
-> +
-> +       pkg->package.elements[0] =3D elem0;
-> +       pkg->package.elements[1] =3D elem1;
-> +
-> +       KUNIT_EXPECT_EQ(test, pkg->common.type, (u8)ACPI_TYPE_PACKAGE);
-> +       KUNIT_EXPECT_EQ(test, pkg->package.count, 2U);
-> +       KUNIT_EXPECT_EQ(test, pkg->package.elements[0]->integer.value, 10=
-0ULL);
-> +       KUNIT_EXPECT_EQ(test, pkg->package.elements[1]->integer.value, 20=
-0ULL);
-> +}
-> +
-> +/*
-> + * Test: Namespace node creation with 4-char name
-> + */
-> +static void nsrepair2_test_namespace_node(struct kunit *test)
-> +{
-> +       struct acpi_namespace_node *node;
-> +
-> +       node =3D create_namespace_node(test, "_HID");
-> +
-> +       KUNIT_EXPECT_EQ(test, node->name.ascii[0], '_');
-> +       KUNIT_EXPECT_EQ(test, node->name.ascii[1], 'H');
-> +       KUNIT_EXPECT_EQ(test, node->name.ascii[2], 'I');
-> +       KUNIT_EXPECT_EQ(test, node->name.ascii[3], 'D');
-> +}
-> +
-> +/*
-> + * Test: ACPI_COMPARE_NAMESEG macro works correctly
-> + */
-> +static void nsrepair2_test_nameseg_compare(struct kunit *test)
-> +{
-> +       struct acpi_namespace_node *node;
-> +
-> +       node =3D create_namespace_node(test, "_ALR");
-> +
-> +       KUNIT_EXPECT_TRUE(test, ACPI_COMPARE_NAMESEG(node->name.ascii, "_=
-ALR"));
-> +       KUNIT_EXPECT_FALSE(test, ACPI_COMPARE_NAMESEG(node->name.ascii, "=
-_HID"));
-> +       KUNIT_EXPECT_FALSE(test, ACPI_COMPARE_NAMESEG(node->name.ascii, "=
-_PSS"));
-> +}
-> +
-> +/*
-> + * Test: FDE buffer size constants are correct
-> + */
-> +static void nsrepair2_test_fde_constants(struct kunit *test)
-> +{
-> +       /* ACPI_FDE_FIELD_COUNT should be 5 */
-> +       KUNIT_EXPECT_EQ(test, 5, 5);  /* Placeholder for ACPI_FDE_FIELD_C=
-OUNT */
-> +
-> +       /* ACPI_FDE_BYTE_BUFFER_SIZE should be 5 */
-> +       KUNIT_EXPECT_EQ(test, 5, 5);  /* Placeholder for ACPI_FDE_BYTE_BU=
-FFER_SIZE */
-> +
-> +       /* ACPI_FDE_DWORD_BUFFER_SIZE should be 20 (5 * sizeof(u32)) */
-> +       KUNIT_EXPECT_EQ(test, 5 * (u32)sizeof(u32), 20U);
-> +}
-> +
-> +/*
-> + * Test: Sort direction constants
-> + */
-> +static void nsrepair2_test_sort_constants(struct kunit *test)
-> +{
-> +       /* ACPI_SORT_ASCENDING =3D 0 */
-> +       KUNIT_EXPECT_EQ(test, 0, 0);  /* Placeholder for ACPI_SORT_ASCEND=
-ING */
-> +
-> +       /* ACPI_SORT_DESCENDING =3D 1 */
-> +       KUNIT_EXPECT_EQ(test, 1, 1);  /* Placeholder for ACPI_SORT_DESCEN=
-DING */
-> +}
-> +
-> +/*
-> + * Test: Package with subpackages structure (like _PSS)
-> + */
-> +static void nsrepair2_test_pss_package_structure(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pss_pkg;
-> +       union acpi_operand_object *sub_pkg;
-> +       union acpi_operand_object *elements[6];
-> +       int i;
-> +
-> +       /* Create main _PSS package with 2 P-state subpackages */
-> +       pss_pkg =3D create_package_object(test, 2);
-> +
-> +       /* Create first subpackage (higher frequency P-state) */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       elements[0] =3D create_integer_object(test, 2000);  /* CoreFreque=
-ncy */
-> +       elements[1] =3D create_integer_object(test, 1000);  /* Power */
-> +       elements[2] =3D create_integer_object(test, 10);    /* Latency */
-> +       elements[3] =3D create_integer_object(test, 10);    /* BusMasterL=
-atency */
-> +       elements[4] =3D create_integer_object(test, 0x00);  /* Control */
-> +       elements[5] =3D create_integer_object(test, 0x00);  /* Status */
-> +       for (i =3D 0; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D elements[i];
-> +       pss_pkg->package.elements[0] =3D sub_pkg;
-> +
-> +       /* Create second subpackage (lower frequency P-state) */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       elements[0] =3D create_integer_object(test, 1000);  /* CoreFreque=
-ncy */
-> +       elements[1] =3D create_integer_object(test, 500);   /* Power */
-> +       elements[2] =3D create_integer_object(test, 10);    /* Latency */
-> +       elements[3] =3D create_integer_object(test, 10);    /* BusMasterL=
-atency */
-> +       elements[4] =3D create_integer_object(test, 0x01);  /* Control */
-> +       elements[5] =3D create_integer_object(test, 0x01);  /* Status */
-> +       for (i =3D 0; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D elements[i];
-> +       pss_pkg->package.elements[1] =3D sub_pkg;
-> +
-> +       /* Verify structure */
-> +       KUNIT_EXPECT_EQ(test, pss_pkg->package.count, 2U);
-> +
-> +       /* First P-state should have higher frequency */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[0]->package.elements[0]->intege=
-r.value,
-> +               2000ULL);
-> +
-> +       /* Second P-state should have lower frequency */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[1]->package.elements[0]->intege=
-r.value,
-> +               1000ULL);
-> +}
-> +
-> +/*
-> + * Test: _CST package structure with C-states
-> + */
-> +static void nsrepair2_test_cst_package_structure(struct kunit *test)
-> +{
-> +       union acpi_operand_object *cst_pkg;
-> +       union acpi_operand_object *sub_pkg;
-> +       union acpi_operand_object *count_obj;
-> +
-> +       /* Create _CST package: count + subpackages */
-> +       cst_pkg =3D create_package_object(test, 3);
-> +
-> +       /* First element is count of C-states */
-> +       count_obj =3D create_integer_object(test, 2);
-> +       cst_pkg->package.elements[0] =3D count_obj;
-> +
-> +       /* C1 state subpackage */
-> +       sub_pkg =3D create_package_object(test, 4);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 0); =
- /* Register */
-> +       sub_pkg->package.elements[1] =3D create_integer_object(test, 1); =
- /* Type (C1) */
-> +       sub_pkg->package.elements[2] =3D create_integer_object(test, 1); =
- /* Latency */
-> +       sub_pkg->package.elements[3] =3D create_integer_object(test, 1000=
-); /* Power */
-> +       cst_pkg->package.elements[1] =3D sub_pkg;
-> +
-> +       /* C2 state subpackage */
-> +       sub_pkg =3D create_package_object(test, 4);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 0); =
- /* Register */
-> +       sub_pkg->package.elements[1] =3D create_integer_object(test, 2); =
- /* Type (C2) */
-> +       sub_pkg->package.elements[2] =3D create_integer_object(test, 100)=
-; /* Latency */
-> +       sub_pkg->package.elements[3] =3D create_integer_object(test, 500)=
-; /* Power */
-> +       cst_pkg->package.elements[2] =3D sub_pkg;
-> +
-> +       /* Verify structure */
-> +       KUNIT_EXPECT_EQ(test, cst_pkg->package.count, 3U);
-> +       KUNIT_EXPECT_EQ(test, cst_pkg->package.elements[0]->integer.value=
-, 2ULL);
-> +
-> +       /* C1 type should be 1 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               cst_pkg->package.elements[1]->package.elements[1]->intege=
-r.value,
-> +               1ULL);
-> +
-> +       /* C2 type should be 2 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               cst_pkg->package.elements[2]->package.elements[1]->intege=
-r.value,
-> +               2ULL);
-> +}
-> +
-> +/*
-> + * Test: _ALR package structure for ambient light response
-> + */
-> +static void nsrepair2_test_alr_package_structure(struct kunit *test)
-> +{
-> +       union acpi_operand_object *alr_pkg;
-> +       union acpi_operand_object *sub_pkg;
-> +
-> +       /* Create _ALR package with 2 entries */
-> +       alr_pkg =3D create_package_object(test, 2);
-> +
-> +       /* First entry: low illuminance */
-> +       sub_pkg =3D create_package_object(test, 2);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 10);=
-   /* AdjustedValue */
-> +       sub_pkg->package.elements[1] =3D create_integer_object(test, 100)=
-;  /* Illuminance */
-> +       alr_pkg->package.elements[0] =3D sub_pkg;
-> +
-> +       /* Second entry: high illuminance */
-> +       sub_pkg =3D create_package_object(test, 2);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 90);=
-   /* AdjustedValue */
-> +       sub_pkg->package.elements[1] =3D create_integer_object(test, 1000=
-); /* Illuminance */
-> +       alr_pkg->package.elements[1] =3D sub_pkg;
-> +
-> +       /* Verify structure - should be sorted ascending by illuminance *=
-/
-> +       KUNIT_EXPECT_EQ(test,
-> +               alr_pkg->package.elements[0]->package.elements[1]->intege=
-r.value,
-> +               100ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               alr_pkg->package.elements[1]->package.elements[1]->intege=
-r.value,
-> +               1000ULL);
-> +}
-> +
-> +/*
-> + * Test: HID string format verification
-> + */
-> +static void nsrepair2_test_hid_string_format(struct kunit *test)
-> +{
-> +       union acpi_operand_object *hid_obj;
-> +       char *ptr;
-> +
-> +       /* Valid PNP ID format: AAA#### */
-> +       hid_obj =3D create_string_object(test, "PNP0C03");
-> +       KUNIT_EXPECT_EQ(test, hid_obj->string.length, 7U);
-> +
-> +       /* Check uppercase letters */
-> +       ptr =3D hid_obj->string.pointer;
-> +       KUNIT_EXPECT_TRUE(test, ptr[0] >=3D 'A' && ptr[0] <=3D 'Z');
-> +       KUNIT_EXPECT_TRUE(test, ptr[1] >=3D 'A' && ptr[1] <=3D 'Z');
-> +       KUNIT_EXPECT_TRUE(test, ptr[2] >=3D 'A' && ptr[2] <=3D 'Z');
-> +
-> +       /* Valid ACPI ID format: NNNN#### */
-> +       hid_obj =3D create_string_object(test, "ACPI0003");
-> +       KUNIT_EXPECT_EQ(test, hid_obj->string.length, 8U);
-> +}
-> +
-> +/*
-> + * Test: Detect leading asterisk in HID (which needs repair)
-> + */
-> +static void nsrepair2_test_hid_leading_asterisk(struct kunit *test)
-> +{
-> +       union acpi_operand_object *hid_obj;
-> +
-> +       /* HID with leading asterisk - this would need repair */
-> +       hid_obj =3D create_string_object(test, "*PNP0C03");
-> +
-> +       KUNIT_EXPECT_EQ(test, hid_obj->string.pointer[0], '*');
-> +       KUNIT_EXPECT_EQ(test, hid_obj->string.length, 8U);
-> +}
-> +
-> +/*
-> + * Test: Lowercase HID detection (which needs repair)
-> + */
-> +static void nsrepair2_test_hid_lowercase(struct kunit *test)
-> +{
-> +       union acpi_operand_object *hid_obj;
-> +       char *ptr;
-> +
-> +       /* HID with lowercase letters - this would need repair */
-> +       hid_obj =3D create_string_object(test, "pnp0c03");
-> +
-> +       ptr =3D hid_obj->string.pointer;
-> +       KUNIT_EXPECT_TRUE(test, ptr[0] >=3D 'a' && ptr[0] <=3D 'z');
-> +}
-> +
-> +/*
-> + * Test: _PRT package structure
-> + */
-> +static void nsrepair2_test_prt_package_structure(struct kunit *test)
-> +{
-> +       union acpi_operand_object *prt_pkg;
-> +       union acpi_operand_object *sub_pkg;
-> +
-> +       /* Create _PRT package with one entry */
-> +       prt_pkg =3D create_package_object(test, 1);
-> +
-> +       /* PRT entry subpackage: {Address, Pin, Source, SourceIndex} */
-> +       sub_pkg =3D create_package_object(test, 4);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 0xFF=
-FF);  /* Address */
-> +       sub_pkg->package.elements[1] =3D create_integer_object(test, 0); =
-      /* Pin */
-> +       sub_pkg->package.elements[2] =3D create_integer_object(test, 0); =
-      /* Source (name or 0) */
-> +       sub_pkg->package.elements[3] =3D create_integer_object(test, 0); =
-      /* SourceIndex */
-> +       prt_pkg->package.elements[0] =3D sub_pkg;
-> +
-> +       /* Verify structure */
-> +       KUNIT_EXPECT_EQ(test, prt_pkg->package.count, 1U);
-> +       KUNIT_EXPECT_EQ(test, sub_pkg->package.count, 4U);
-> +}
-> +
-> +/*
-> + * Test: FDE buffer expansion scenario
-> + * The _FDE repair converts 5 BYTEs to 5 DWORDs
-> + */
-> +static void nsrepair2_test_fde_buffer_expansion(struct kunit *test)
-> +{
-> +       union acpi_operand_object *fde_obj;
-> +       u8 byte_buffer[5] =3D {1, 2, 3, 4, 5};
-> +
-> +       /* Create a 5-byte buffer (wrong format, needs repair) */
-> +       fde_obj =3D create_buffer_object(test, byte_buffer, 5);
-> +
-> +       KUNIT_EXPECT_EQ(test, fde_obj->buffer.length, 5U);
-> +       KUNIT_EXPECT_EQ(test, fde_obj->buffer.pointer[0], 1);
-> +       KUNIT_EXPECT_EQ(test, fde_obj->buffer.pointer[4], 5);
-> +
-> +       /* After repair, this should become a 20-byte buffer (5 DWORDs) *=
-/
-> +       /* The repair function would expand each byte to a DWORD */
-> +}
-> +
-> +/*
-> + * Test: Valid FDE buffer (20 bytes =3D 5 DWORDs)
-> + */
-> +static void nsrepair2_test_fde_valid_buffer(struct kunit *test)
-> +{
-> +       union acpi_operand_object *fde_obj;
-> +       u8 dword_buffer[20] =3D {0};
-> +
-> +       /* Create a 20-byte buffer (correct format) */
-> +       fde_obj =3D create_buffer_object(test, dword_buffer, 20);
-> +
-> +       KUNIT_EXPECT_EQ(test, fde_obj->buffer.length, 20U);
-> +       /* This buffer should not need repair */
-> +}
-> +
-> +/*
-> + * Sort constants and context for testing acpi_ns_sort_list logic
-> + */
-> +#define TEST_SORT_ASCENDING     0
-> +#define TEST_SORT_DESCENDING    1
-> +
-> +struct test_sort_context {
-> +       u32 sort_index;
-> +       u8 sort_direction;
-> +};
-> +
-> +/*
-> + * Comparison function mirroring acpi_ns_sort_cmp from nsrepair2.c
-> + */
-> +static int test_sort_cmp(const void *a, const void *b, const void *priv)
-> +{
-> +       union acpi_operand_object *obj_a =3D *(union acpi_operand_object =
-**)a;
-> +       union acpi_operand_object *obj_b =3D *(union acpi_operand_object =
-**)b;
-> +       const struct test_sort_context *ctx =3D priv;
-> +       union acpi_operand_object *value_a;
-> +       union acpi_operand_object *value_b;
-> +       u64 a_val;
-> +       u64 b_val;
-> +
-> +       value_a =3D obj_a->package.elements[ctx->sort_index];
-> +       value_b =3D obj_b->package.elements[ctx->sort_index];
-> +
-> +       a_val =3D value_a->integer.value;
-> +       b_val =3D value_b->integer.value;
-> +
-> +       if (ctx->sort_direction =3D=3D TEST_SORT_ASCENDING) {
-> +               if (a_val < b_val)
-> +                       return -1;
-> +               if (a_val > b_val)
-> +                       return 1;
-> +       } else {
-> +               if (a_val > b_val)
-> +                       return -1;
-> +               if (a_val < b_val)
-> +                       return 1;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +/*
-> + * Test implementation mirroring acpi_ns_sort_list from nsrepair2.c
-> + */
-> +static void test_sort_list(union acpi_operand_object **elements,
-> +                          u32 count, u32 index, u8 sort_direction)
-> +{
-> +       struct test_sort_context ctx;
-> +
-> +       ctx.sort_index =3D index;
-> +       ctx.sort_direction =3D sort_direction;
-> +
-> +       sort_r(elements, count, sizeof(union acpi_operand_object *),
-> +              test_sort_cmp, NULL, &ctx);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list ascending sort
-> + */
-> +static void nsrepair2_test_sort_list_ascending(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0, *sub_pkg1, *sub_pkg2;
-> +
-> +       /* Create package with 3 subpackages, each having an integer at i=
-ndex 0 */
-> +       pkg =3D create_package_object(test, 3);
-> +
-> +       /* Subpackage 0: value =3D 300 */
-> +       sub_pkg0 =3D create_package_object(test, 1);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 300=
-);
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       /* Subpackage 1: value =3D 100 */
-> +       sub_pkg1 =3D create_package_object(test, 1);
-> +       sub_pkg1->package.elements[0] =3D create_integer_object(test, 100=
-);
-> +       pkg->package.elements[1] =3D sub_pkg1;
-> +
-> +       /* Subpackage 2: value =3D 200 */
-> +       sub_pkg2 =3D create_package_object(test, 1);
-> +       sub_pkg2->package.elements[0] =3D create_integer_object(test, 200=
-);
-> +       pkg->package.elements[2] =3D sub_pkg2;
-> +
-> +       /* Sort ascending by element index 0 */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 0, TEST=
-_SORT_ASCENDING);
-> +
-> +       /* Verify sorted order: 100, 200, 300 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 100ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[0]->integer.va=
-lue, 200ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[0]->integer.va=
-lue, 300ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list descending sort
-> + */
-> +static void nsrepair2_test_sort_list_descending(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0, *sub_pkg1, *sub_pkg2;
-> +
-> +       /* Create package with 3 subpackages, each having an integer at i=
-ndex 0 */
-> +       pkg =3D create_package_object(test, 3);
-> +
-> +       /* Subpackage 0: value =3D 100 */
-> +       sub_pkg0 =3D create_package_object(test, 1);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 100=
-);
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       /* Subpackage 1: value =3D 300 */
-> +       sub_pkg1 =3D create_package_object(test, 1);
-> +       sub_pkg1->package.elements[0] =3D create_integer_object(test, 300=
-);
-> +       pkg->package.elements[1] =3D sub_pkg1;
-> +
-> +       /* Subpackage 2: value =3D 200 */
-> +       sub_pkg2 =3D create_package_object(test, 1);
-> +       sub_pkg2->package.elements[0] =3D create_integer_object(test, 200=
-);
-> +       pkg->package.elements[2] =3D sub_pkg2;
-> +
-> +       /* Sort descending by element index 0 */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 0, TEST=
-_SORT_DESCENDING);
-> +
-> +       /* Verify sorted order: 300, 200, 100 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 300ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[0]->integer.va=
-lue, 200ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[0]->integer.va=
-lue, 100ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list with already sorted data
-> + */
-> +static void nsrepair2_test_sort_list_already_sorted(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0, *sub_pkg1, *sub_pkg2;
-> +
-> +       pkg =3D create_package_object(test, 3);
-> +
-> +       /* Already in ascending order: 10, 20, 30 */
-> +       sub_pkg0 =3D create_package_object(test, 1);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 10)=
-;
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       sub_pkg1 =3D create_package_object(test, 1);
-> +       sub_pkg1->package.elements[0] =3D create_integer_object(test, 20)=
-;
-> +       pkg->package.elements[1] =3D sub_pkg1;
-> +
-> +       sub_pkg2 =3D create_package_object(test, 1);
-> +       sub_pkg2->package.elements[0] =3D create_integer_object(test, 30)=
-;
-> +       pkg->package.elements[2] =3D sub_pkg2;
-> +
-> +       /* Sort ascending - should remain unchanged */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 0, TEST=
-_SORT_ASCENDING);
-> +
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 10ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[0]->integer.va=
-lue, 20ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[0]->integer.va=
-lue, 30ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list with equal values
-> + */
-> +static void nsrepair2_test_sort_list_equal_values(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0, *sub_pkg1, *sub_pkg2;
-> +
-> +       pkg =3D create_package_object(test, 3);
-> +
-> +       /* All equal values: 50, 50, 50 */
-> +       sub_pkg0 =3D create_package_object(test, 1);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 50)=
-;
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       sub_pkg1 =3D create_package_object(test, 1);
-> +       sub_pkg1->package.elements[0] =3D create_integer_object(test, 50)=
-;
-> +       pkg->package.elements[1] =3D sub_pkg1;
-> +
-> +       sub_pkg2 =3D create_package_object(test, 1);
-> +       sub_pkg2->package.elements[0] =3D create_integer_object(test, 50)=
-;
-> +       pkg->package.elements[2] =3D sub_pkg2;
-> +
-> +       /* Sort ascending - all equal, order should be stable or unchange=
-d */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 0, TEST=
-_SORT_ASCENDING);
-> +
-> +       /* All values should still be 50 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 50ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[0]->integer.va=
-lue, 50ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[0]->integer.va=
-lue, 50ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list sort by non-zero index
-> + */
-> +static void nsrepair2_test_sort_list_by_index(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0, *sub_pkg1, *sub_pkg2;
-> +
-> +       pkg =3D create_package_object(test, 3);
-> +
-> +       /* Subpackages with 2 elements each, sort by index 1 */
-> +       sub_pkg0 =3D create_package_object(test, 2);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 1);
-> +       sub_pkg0->package.elements[1] =3D create_integer_object(test, 500=
-);  /* Sort key */
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       sub_pkg1 =3D create_package_object(test, 2);
-> +       sub_pkg1->package.elements[0] =3D create_integer_object(test, 2);
-> +       sub_pkg1->package.elements[1] =3D create_integer_object(test, 100=
-);  /* Sort key */
-> +       pkg->package.elements[1] =3D sub_pkg1;
-> +
-> +       sub_pkg2 =3D create_package_object(test, 2);
-> +       sub_pkg2->package.elements[0] =3D create_integer_object(test, 3);
-> +       sub_pkg2->package.elements[1] =3D create_integer_object(test, 300=
-);  /* Sort key */
-> +       pkg->package.elements[2] =3D sub_pkg2;
-> +
-> +       /* Sort ascending by element index 1 */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 1, TEST=
-_SORT_ASCENDING);
-> +
-> +       /* Verify sorted by index 1: 100, 300, 500 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[1]->integer.va=
-lue, 100ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[1]->integer.va=
-lue, 300ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[1]->integer.va=
-lue, 500ULL);
-> +
-> +       /* Verify element[0] values followed their packages */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 2ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[1]->package.elements[0]->integer.va=
-lue, 3ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[2]->package.elements[0]->integer.va=
-lue, 1ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list single element (edge case)
-> + */
-> +static void nsrepair2_test_sort_list_single_element(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pkg;
-> +       union acpi_operand_object *sub_pkg0;
-> +
-> +       pkg =3D create_package_object(test, 1);
-> +
-> +       sub_pkg0 =3D create_package_object(test, 1);
-> +       sub_pkg0->package.elements[0] =3D create_integer_object(test, 42)=
-;
-> +       pkg->package.elements[0] =3D sub_pkg0;
-> +
-> +       /* Sort single element - should not crash */
-> +       test_sort_list(pkg->package.elements, pkg->package.count, 0, TEST=
-_SORT_ASCENDING);
-> +
-> +       KUNIT_EXPECT_EQ(test,
-> +               pkg->package.elements[0]->package.elements[0]->integer.va=
-lue, 42ULL);
-> +}
-> +
-> +/*
-> + * Test: acpi_ns_sort_list with PSS-like structure (descending frequency=
-)
-> + */
-> +static void nsrepair2_test_sort_list_pss_scenario(struct kunit *test)
-> +{
-> +       union acpi_operand_object *pss_pkg;
-> +       union acpi_operand_object *sub_pkg;
-> +       int i;
-> +
-> +       /* Create _PSS package with 4 P-state subpackages in wrong order =
-*/
-> +       pss_pkg =3D create_package_object(test, 4);
-> +
-> +       /* P-state with frequency 1000 MHz */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 1000=
-);
-> +       for (i =3D 1; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D create_integer_object(te=
-st, 0);
-> +       pss_pkg->package.elements[0] =3D sub_pkg;
-> +
-> +       /* P-state with frequency 3000 MHz */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 3000=
-);
-> +       for (i =3D 1; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D create_integer_object(te=
-st, 0);
-> +       pss_pkg->package.elements[1] =3D sub_pkg;
-> +
-> +       /* P-state with frequency 2000 MHz */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 2000=
-);
-> +       for (i =3D 1; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D create_integer_object(te=
-st, 0);
-> +       pss_pkg->package.elements[2] =3D sub_pkg;
-> +
-> +       /* P-state with frequency 500 MHz */
-> +       sub_pkg =3D create_package_object(test, 6);
-> +       sub_pkg->package.elements[0] =3D create_integer_object(test, 500)=
-;
-> +       for (i =3D 1; i < 6; i++)
-> +               sub_pkg->package.elements[i] =3D create_integer_object(te=
-st, 0);
-> +       pss_pkg->package.elements[3] =3D sub_pkg;
-> +
-> +       /* Sort descending by frequency (index 0) - _PSS requires highest=
- first */
-> +       test_sort_list(pss_pkg->package.elements, pss_pkg->package.count,=
- 0, TEST_SORT_DESCENDING);
-> +
-> +       /* Verify sorted order: 3000, 2000, 1000, 500 */
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[0]->package.elements[0]->intege=
-r.value, 3000ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[1]->package.elements[0]->intege=
-r.value, 2000ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[2]->package.elements[0]->intege=
-r.value, 1000ULL);
-> +       KUNIT_EXPECT_EQ(test,
-> +               pss_pkg->package.elements[3]->package.elements[0]->intege=
-r.value, 500ULL);
-> +}
-> +
-> +static struct kunit_case nsrepair2_test_cases[] =3D {
-> +       KUNIT_CASE(nsrepair2_test_integer_type),
-> +       KUNIT_CASE(nsrepair2_test_string_type),
-> +       KUNIT_CASE(nsrepair2_test_buffer_type),
-> +       KUNIT_CASE(nsrepair2_test_package_type),
-> +       KUNIT_CASE(nsrepair2_test_namespace_node),
-> +       KUNIT_CASE(nsrepair2_test_nameseg_compare),
-> +       KUNIT_CASE(nsrepair2_test_fde_constants),
-> +       KUNIT_CASE(nsrepair2_test_sort_constants),
-> +       KUNIT_CASE(nsrepair2_test_pss_package_structure),
-> +       KUNIT_CASE(nsrepair2_test_cst_package_structure),
-> +       KUNIT_CASE(nsrepair2_test_alr_package_structure),
-> +       KUNIT_CASE(nsrepair2_test_hid_string_format),
-> +       KUNIT_CASE(nsrepair2_test_hid_leading_asterisk),
-> +       KUNIT_CASE(nsrepair2_test_hid_lowercase),
-> +       KUNIT_CASE(nsrepair2_test_prt_package_structure),
-> +       KUNIT_CASE(nsrepair2_test_fde_buffer_expansion),
-> +       KUNIT_CASE(nsrepair2_test_fde_valid_buffer),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_ascending),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_descending),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_already_sorted),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_equal_values),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_by_index),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_single_element),
-> +       KUNIT_CASE(nsrepair2_test_sort_list_pss_scenario),
-> +       {}
-> +};
-> +
-> +static struct kunit_suite nsrepair2_test_suite =3D {
-> +       .name =3D "acpi-nsrepair2",
-> +       .test_cases =3D nsrepair2_test_cases,
-> +};
-> +
-> +kunit_test_suites(&nsrepair2_test_suite);
-> +
-> +MODULE_DESCRIPTION("KUnit tests for ACPI nsrepair2 repair functions");
-> +MODULE_LICENSE("GPL");
-> --
-> 2.43.0
->
- Hi all,
+On Sun, Feb 01 2026 at 01:36, Bert Karwatzki wrote:
+> I found the error, the commit 
+> ("drm/amd: Check if ASPM is enabled from PCIe subsystem")
+> has been applied twice first as cba07cce39ac and a second time
+> as 7294863a6f01 after it had been superseeded by commit
+> 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device") 
+> This effectively disables ASPM globally after the built-in GPU (which does not
+> support ASPM) is probed. This is the reason for the crashes and loss of devices
+> errors which on average occur after ~1000 resumes of the discrete GPU.
 
-   Sorry for the oversight - I forgot to add the Kconfig and Makefile chang=
-es
-   to enable the test. Will include them in v2.
-
---=20
-Regards,
-Nick Huang
+Wow. Nice detective work...
 
