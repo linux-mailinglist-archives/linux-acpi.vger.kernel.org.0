@@ -1,203 +1,223 @@
-Return-Path: <linux-acpi+bounces-20819-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20820-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKL/Mn62gGl3AgMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20819-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 15:36:46 +0100
+	id CFSyBX7WgGmFBwMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20820-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 17:53:18 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DFFCD70A
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 15:36:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9346FCF346
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 17:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED1EE3087363
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 14:28:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64F13302D5A6
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 16:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35D136CE04;
-	Mon,  2 Feb 2026 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3341E290DBB;
+	Mon,  2 Feb 2026 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="aTgBNQQh"
+	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="og9CIMwr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C4836D4EB;
-	Mon,  2 Feb 2026 14:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770042497; cv=none; b=mBuqkteg/63ZoZ57ZwFQHMzOAV/M5KnoW5Ostb4P+j+QUN3uoG3Cjt4zWbD74WpTeIyfLNgeWMTZgVncfRrlQWBkK08vuVyFzIiEPTueAwI8VHK7J0cZ1Ps83fMCPed0qc82+f0T70gB9lYok4/M+rO0iFRUxr22hQVAoZrmmRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770042497; c=relaxed/simple;
-	bh=18gfPfnS76lTnOnvubbkQRKtlWGXJGHF5diwW/VEeLw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DOLvzMB+y1arspPyl9kUb7NlFhZFTT8Cbx0VeclaOZ1A1iol8JvcsUhDcTGzlMfWoJ3gIfHxb1pcZNIdkfXxdpBdLHs9hI/sw81Y3C7OO92eZYRl3FYZAABGv17OJcu6T9MeQzsF1B2ylx5lwbg1c5i29slTCB7zuU6kdfT8uEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=aTgBNQQh; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=BsYw1jdHI6UNaHJ0xGEA+g0R+OyYdE59KzSX/GWoWYg=; b=aTgBNQQhltAuw96wTOS8uy9t3o
-	u5GM4R+satqAZlav3VkjHQMCbIG+RU7NskjwGA0dSj4hMrzgo3GbAQY6aonNxs5O34lCC8JVWXB3v
-	20VQ2YCokPSqSK2xreRzSFq2dcdhkY71p3FBlRSJ2FhYaloOS6gMTGmL/sJzYm7H8d2IyQ3Gk3Kwy
-	x8pNfhc+PtmsR1Yq3cwsj/0kUr/8gf54yPRr6qfmF39F41WG2wO3E8fcR4C0B+soL7U3O+sRwqt1w
-	ZVwyNntOpXeIXXsnuzW2YYLxdpZPW2fi2O9huq1p51c0Ip/wltzgBdMk6rNaGHud87OYBeFFeLHmu
-	1y8f8MTQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vmuuT-0046Xj-1B; Mon, 02 Feb 2026 14:28:13 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 02 Feb 2026 06:27:40 -0800
-Subject: [PATCH v2 2/2] docs: add ABI documentation for
- /sys/kernel/hwerr_recovery_stats/
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B393F37E310
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Feb 2026 16:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770050944; cv=pass; b=gYR/VRngnjdJ9QJ5gyBj1SijY9CKgz/5DqOl7JJ3fQ05XzUhOfwePy1CbGnve+5G/WOmt74hBLi+gKLf1gqvtO+GxXe3CwrIvJz/JUYnx26jrUwsDYzVXai+SmyXrIM9vGDQm9xOw/my6q9VFabZVXSPkx9BDnVPumeSr/52GFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770050944; c=relaxed/simple;
+	bh=LxjhE4ad+4M4QuDhOSFV4xQtXxPt8C0iZWA46vmpN34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gGSqAgj2mHKGUgMe8RGYPoSMjYtYtVZ8Y8aHVoabVnv3Y0maRZzdajg483EVgK5cMviQE5OI7Tpg5rnKd0d9JNLKIck6L498AJOAo4SNwLDF3BE1Vz6mSV0lVd+jz6OneAdLrFZJcZ+KBplH5L3MfUhRTK1YMwGVewIMpWFJcQ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=og9CIMwr; arc=pass smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gooddata.com
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-124a1b4dd40so1185797c88.0
+        for <linux-acpi@vger.kernel.org>; Mon, 02 Feb 2026 08:49:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770050942; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DCioDGZJ9X2yH1+3zG1gXGFgm6mPNrksIpdIjs5Y9+DYTJUc4GZDxEyKlmISz/cGEe
+         Tlvrzo4ztMutPgH3Qi6gE4X8JLQQ8QHaD8kvR1MQXGf5MSNXr/oqR6TqJDo1yvHBaVr+
+         KvZFlQDPy3ER25f8WWn2PuYMHs/VNfyIevP3aofzVV4472JmFZZ41zUyOnaDu9Qj2+jQ
+         4DBUnE8fyO7zqZjK5xHmi+WP5YTUMtu+siH2tOH1RWE/pUULSRbLcDj/oEL82JnBOxP0
+         lU1+sV4yWESB+uG7MfgmVPNFRPy7oKF75BRBeOPX4fFEazOBSYcgZpWSeEoO0pEThhn2
+         eRpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
+        fh=f3LWDRss+M6OOFXDttn2SvULJt9G5godXIhfs2DuczI=;
+        b=jpcqJerSPnbIlaSZFFeCga7JrTxyJGDN+845jTXQGj3HQDRJxOIcZUXoLRQ/D3N1Dp
+         fgv1KzoAzbAG99RwYeeyd89dlohORnSGTNjjOwjvbSJcgL4q4N7KXJftSxWiPbsNX+P+
+         etoaLPkh2wVTr0+MINRyS4fh2PqsZpmv5E7duvod+GiSE2N9xGyBWquHbb0i+OaleShu
+         8zRMTs+biBy+o/7xTBYzlbV3N8xpH+J/dfYIklYP2QsDAzV6UJqUpOh8/dwY6y5Fr9rD
+         /tjWyZRkBvfU5vwtmUnZISWX+mtj4JxeA27jY75k6xy8bq9rowkwXsplbeKw9ap+LN91
+         +n6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gooddata.com; s=google; t=1770050942; x=1770655742; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
+        b=og9CIMwryTcCuW5cHCBToxyHP63/bgLVSKAiSoq7JgTJwHq412dVTREfZBNTuhT09o
+         RhOa3fZma8w1tOaRxO2YBhqZaVF/0ErbfA4wms8IgOs9GCO0BlnoFTyBKODEvxJXEvbQ
+         65naG0QX+7bal5nXeRwKgJ6LiXCzFieTT+uNc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770050942; x=1770655742;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
+        b=DDfrjQyejFt/5d8cNUfZBjmyzI+J5cF+xy5mCIY7/ArPJURZCAyrNUMQCXHb4FaVQz
+         mEIj3zW4q1u71MWkxP6jACfzzv3s6IrndUbHpfUCf7Ej3bTmfD5SFAPOuVOSjlf8q5Rq
+         G8xEjzNbyYXx0AW01/Esv3oPI43j+CKUzqAsmdi4eelq083TbbLQVwWT7tV94YCQJMgF
+         TbtapUNfS8FxS9J2MPZotpZxciId9uc5cvUgoHpdN+uZ6VnyPvDqALjxU9fmufr/BzwL
+         j7RtXNcrCS+jBvUe/jWV4Unc4kvHNMqcc/cTu/xlSggtVaAQXTBFQr2Z98FGe2Q+Itca
+         G5lA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxiB8FwTYsCLNbdBLYhKJllNPgOqgfXDS0DZmQhC+re0dPC6mUf0wy+CFFmnbhYB1kXkpiaEW+2s2H@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxOq828rHot7aNAi/kDf0ptue2PT7J3xc9F96gpswR9dM/TZhE
+	GzavCSZqvet8+oSOp14outQ7hY41RXottko3pYMEzyyTibk5IGVTmeksypbNJpRcz/FsnmCCdw6
+	MuQkoyU4pQWFdGS5NS/B20REGy4QsFHlJsskRQZBz
+X-Gm-Gg: AZuq6aIHxGAGt5YGteA9xJwNser+5pA1YsL3cGGrY7nR+4MDheaMsVdci6LSvEI+fH9
+	KAdbSweBbWecEKNGtLxigkYtYJ1R6qOYUMwO7Adlf3veRFeVhn1hTZG+lvZ3iwkzMBEDNCVRMIW
+	7IdLuLlsN1UkXrE8sGZhKP/SsD0XYzXjwui4JwV+gbHrkXNLLPaW/liup6/KXWEMt/z3kop5Ifk
+	w2d0raSXZjbHTgCLWlqpU0N70hh0HOfOJdPLCQ1VTxJ6qvWLpel9EJ4aT5mhklIc/QUVMQt
+X-Received: by 2002:a05:7022:6610:b0:119:e56b:958a with SMTP id
+ a92af1059eb24-125c0f88d5dmr5930820c88.15.1770050941664; Mon, 02 Feb 2026
+ 08:49:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-vmcoreinfo_sysfs-v2-2-8f3b5308b894@debian.org>
-References: <20260202-vmcoreinfo_sysfs-v2-0-8f3b5308b894@debian.org>
-In-Reply-To: <20260202-vmcoreinfo_sysfs-v2-0-8f3b5308b894@debian.org>
-To: akpm@linux-foundation.org, bhe@redhat.com
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, 
- dyoung@redhat.com, tony.luck@intel.com, xueshuai@linux.alibaba.com, 
- vgoyal@redhat.com, zhiquan1.li@intel.com, olja@meta.com, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-f4305
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3053; i=leitao@debian.org;
- h=from:subject:message-id; bh=18gfPfnS76lTnOnvubbkQRKtlWGXJGHF5diwW/VEeLw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpgLRtcjZ4+WBywa2wxT1191HPWP7OKn4XR6Tn9
- uqH93TzJzmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaYC0bQAKCRA1o5Of/Hh3
- bXbeEACoupF1Pf8XMs+rEdztojnWgDL4it51PtcayAHw+CQ6Wdp1MY6lxhkmj0g1+YNf+SwxbRl
- QynpeiRWj8Q15AddCGhpfuh7Uj4EuytJ6LXF18iIygYbwxlqC6GHxcYALJDCe/0RCpvnmrB5t0C
- KFSumDtE69FQYF2XESSku2W12rRODBRbnqvMWXdUkdVUobQyWmVhzGrntc7YDDX8MAg9si7Q6RQ
- WRrOTx28/G/RnNnzV/y4JBPjPJWV6Ibb7xGBrpVoiOJSJzEkGPBbKl6ZE+Fm3a+CmQp50aOLeWp
- yEscW50qSksuh0MyMdyDr1YhG+1vibIu/YUePZscz/cU7lK2dO+lORrafpeeEHHVbS5mnxmeM+R
- XDzkv+QiSPJIz1SAblR4iVeIwJYVuhI8irPOuv5KvdGWG1LE9aCEb/IZQKF3zQ3fOl5ywUK97JR
- SgoWnzj4yei259VzhSdUsgb9UR3RhGX8IX5TN8YJ7Yip9jK2Q4h3GL9loYly8g0c3ptWRDSaV4f
- eL50p/ADmpWoj899YL94PfCLUhZ8LSx+/QrwOdWmq3n6l46BPoEdrrF9LcXVnNDXIjw1tfAlhA8
- SAOGRYTZHatuaHp8sqoHRksVztne8OSrCPc70LI+pubdyQxWbmjuYKvYSVq59R3S/0PBxZm0oAF
- 6TW1S81PupfKqIw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
+ <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
+ <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net> <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
+ <d7f34e0f-e258-4fef-93eb-1ef0a3123d95@roeck-us.net> <CAK8fFZ4izdX_HDtGN60CZ3Ta61nqkUg7ncViM=mGgxKki_5FoQ@mail.gmail.com>
+ <a7334568-13ce-4600-8650-607273e67976@roeck-us.net> <CAK8fFZ6gKs7s2rJ=f7bt24f+_cY-jGU33TvX3UP=U58uK-1KaQ@mail.gmail.com>
+ <fff54ec8-496e-4c26-b652-358dc4de0de0@roeck-us.net> <CAK8fFZ4wEUdMAHkfdC_z8ohYB_rEXZ=dHArc75jDibgQ_-ozKw@mail.gmail.com>
+ <4f151d4c-fdc6-4281-87b0-b7120eeb1b46@roeck-us.net>
+In-Reply-To: <4f151d4c-fdc6-4281-87b0-b7120eeb1b46@roeck-us.net>
+From: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Date: Mon, 2 Feb 2026 17:48:35 +0100
+X-Gm-Features: AZwV_Qg-Z86It63WG7mLh3EaECuQjkUS0rUhn8KgZZJIYFsFZmHm47Ne5ImaBcU
+Message-ID: <CAK8fFZ401-nez_CgDTTnQiPT=oBRRJuYooXyEKFuCdHpGCPXtA@mail.gmail.com>
+Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex deadlock
+ in hwmon_attr_show since v6.18.y
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-hwmon@vger.kernel.org, Igor Raits <igor@gooddata.com>, 
+	Daniel Secik <daniel.secik@gooddata.com>, Zdenek Pesek <zdenek.pesek@gooddata.com>, 
+	Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gooddata.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gooddata.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-20820-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-20819-lists,linux-acpi=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gooddata.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	FROM_NEQ_ENVFROM(0.00)[jaroslav.pulchart@gooddata.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 35DFFCD70A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,gooddata.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9346FCF346
 X-Rspamd-Action: no action
 
-Document the new hwerr_recovery_stats sysfs directory that exposes
-hardware error recovery statistics.
+>
+> On Thu, Jan 29, 2026 at 04:26:37PM +0100, Jaroslav Pulchart wrote:
+> > >
+> > > On 1/27/26 03:58, Jaroslav Pulchart wrote:
+> > > ...
+> > > >>> Hello,
+> > > >>>
+> > > >>> Thank you for the analysis and insights.
+> > > >>>
+> > > >>> To add some context from our side: we observe this issue shortly after
+> > > >>> a server reinstall or fw updates followed by a reboot, typically when
+> > > >>> hwmon sensors are accessed for the first time (e.g. by monitoring during
+> > > >>> early system initialization). We have not seen it trigger during normal
+> > > >>> operation, such as a simple reboot or on long-running systems.
+> > > >>>
+> > > >>> Given this behavior, it is possible that the issue is related to
+> > > >>> hwmon_device_unregister() being triggered early during system
+> > > >>> initialization, but I do not have concrete evidence at this point.
+> > > >>>
+> > > >>> As a workaround, we will exclude the ACPI power meter from hwmon monitoring
+> > > >>> (Grafana Alloy) until the mentioned refactoring or a fix becomes available.
+> > > >>>
+> > > >>
+> > > >> Would it be possible for you to test the patch series I just sent out ?
+> > > >
+> > > > I suppose these 5 patches from
+> > > > https://lore.kernel.org/lkml/20260123182208.2229670-1-linux@roeck-us.net/
+> > > >   ?
+> > >
+> > > Correct.
+> > >
+> > > > I will try them and let you know.
+> > > >
+> > > Thanks !
+> >
+> >
+> > The issue is still there:
+> > ...
+>
+> Thnaks a lot for testing.
+>
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.105931] INFO: task alloy:5985 blocked for more than 124 seconds.
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.114475]       Tainted: G            E 6.18.7-2.gdc.el9.x86_64 #1
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.122872] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.132932] task:alloy           state:D stack:0     pid:5985 tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.145975] Call Trace:
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.149985]  <TASK>
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.154931]  __schedule+0x2b5/0x690
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.160934]  schedule+0x23/0x80
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.166498]  schedule_timeout+0xe8/0x100
+> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.172936]  __wait_for_common+0x99/0x1c0
+> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.179148]  ? __pfx_schedule_timeout+0x10/0x10
+> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.185936]  acpi_ipmi_space_handler.part.0+0x1ac/0x370 [acpi_ipmi]
+> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.194929]  acpi_ev_address_space_dispatch+0x16d/0x3c0
+>
+> Looks like acpi holds another lock. Can you check if the patch submitted by
+> Rafael fixes the problem ?
 
-Update hw-recoverable-errors.rst to reference the new sysfs interface
-for runtime monitoring.
+Hello,
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- .../ABI/testing/sysfs-kernel-hwerr_recovery_stats  | 47 ++++++++++++++++++++++
- Documentation/driver-api/hw-recoverable-errors.rst |  3 +-
- 2 files changed, 49 insertions(+), 1 deletion(-)
+I tested the patch as a standalone change, and the issue is still present.
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-hwerr_recovery_stats b/Documentation/ABI/testing/sysfs-kernel-hwerr_recovery_stats
-new file mode 100644
-index 0000000000000..4cb9f5a89fba9
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-kernel-hwerr_recovery_stats
-@@ -0,0 +1,47 @@
-+What:		/sys/kernel/hwerr_recovery_stats/
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Directory containing hardware error recovery statistics.
-+		These statistics track recoverable hardware errors that the
-+		kernel has handled since boot.
-+
-+		Each file contains a single integer representing the count
-+		of recovered errors for that subsystem.
-+
-+What:		/sys/kernel/hwerr_recovery_stats/cpu
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Count of CPU-related recovered errors (MCE, ARM processor
-+		errors).
-+
-+What:		/sys/kernel/hwerr_recovery_stats/memory
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Count of memory-related recovered errors.
-+
-+What:		/sys/kernel/hwerr_recovery_stats/pci
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Count of PCI/PCIe AER non-fatal recovered errors.
-+
-+What:		/sys/kernel/hwerr_recovery_stats/cxl
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Count of CXL (Compute Express Link) recovered errors.
-+
-+What:		/sys/kernel/hwerr_recovery_stats/others
-+Date:		February 2026
-+KernelVersion:	6.20
-+Contact:	Breno Leitao <leitao@debian.org>
-+Description:
-+		Count of other hardware recovered errors.
-diff --git a/Documentation/driver-api/hw-recoverable-errors.rst b/Documentation/driver-api/hw-recoverable-errors.rst
-index fc526c3454bd7..4aefcd103be22 100644
---- a/Documentation/driver-api/hw-recoverable-errors.rst
-+++ b/Documentation/driver-api/hw-recoverable-errors.rst
-@@ -36,7 +36,8 @@ Data Exposure and Consumption
-   types like CPU, memory, PCI, CXL, and others.
- - It is exposed via vmcoreinfo crash dump notes and can be read using tools
-   like `crash`, `drgn`, or other kernel crash analysis utilities.
--- There is no other way to read these data other than from crash dumps.
-+- It is also exposed via sysfs at ``/sys/kernel/hwerr_recovery_stats/`` for runtime
-+  monitoring without requiring a crash dump.
- - These errors are divided by area, which includes CPU, Memory, PCI, CXL and
-   others.
- 
+However, I can now reliably reproduce the problem. It is triggered while
+Dell iDRAC is being reset or updated and is temporarily unavailable. During
+this time, a [kipmi0] task enters D state for an extended period, and
+shortly after (or during this), the ACPI power meter hwmon interface ends up
+in the locked state described earlier.
 
--- 
-2.47.3
+This explains why we mostly observe the issue after redeployments in our
+environment: server redeployments typically include iDRAC firmware updates
+or resets performed together with operating system installation or updates.
 
+Best
+
+>
+> Thanks,
+> Guenter
 
