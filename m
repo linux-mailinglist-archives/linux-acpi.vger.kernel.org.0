@@ -1,223 +1,268 @@
-Return-Path: <linux-acpi+bounces-20820-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20821-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFSyBX7WgGmFBwMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20820-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 17:53:18 +0100
+	id MEecCvnngGleCAMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20821-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 19:07:53 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9346FCF346
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 17:53:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B259DCFEE1
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 19:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64F13302D5A6
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 16:49:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78944302BE9C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 18:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3341E290DBB;
-	Mon,  2 Feb 2026 16:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877E838B9BA;
+	Mon,  2 Feb 2026 18:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="og9CIMwr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="El6aRqcr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B393F37E310
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Feb 2026 16:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770050944; cv=pass; b=gYR/VRngnjdJ9QJ5gyBj1SijY9CKgz/5DqOl7JJ3fQ05XzUhOfwePy1CbGnve+5G/WOmt74hBLi+gKLf1gqvtO+GxXe3CwrIvJz/JUYnx26jrUwsDYzVXai+SmyXrIM9vGDQm9xOw/my6q9VFabZVXSPkx9BDnVPumeSr/52GFI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770050944; c=relaxed/simple;
-	bh=LxjhE4ad+4M4QuDhOSFV4xQtXxPt8C0iZWA46vmpN34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gGSqAgj2mHKGUgMe8RGYPoSMjYtYtVZ8Y8aHVoabVnv3Y0maRZzdajg483EVgK5cMviQE5OI7Tpg5rnKd0d9JNLKIck6L498AJOAo4SNwLDF3BE1Vz6mSV0lVd+jz6OneAdLrFZJcZ+KBplH5L3MfUhRTK1YMwGVewIMpWFJcQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=og9CIMwr; arc=pass smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gooddata.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-124a1b4dd40so1185797c88.0
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Feb 2026 08:49:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770050942; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DCioDGZJ9X2yH1+3zG1gXGFgm6mPNrksIpdIjs5Y9+DYTJUc4GZDxEyKlmISz/cGEe
-         Tlvrzo4ztMutPgH3Qi6gE4X8JLQQ8QHaD8kvR1MQXGf5MSNXr/oqR6TqJDo1yvHBaVr+
-         KvZFlQDPy3ER25f8WWn2PuYMHs/VNfyIevP3aofzVV4472JmFZZ41zUyOnaDu9Qj2+jQ
-         4DBUnE8fyO7zqZjK5xHmi+WP5YTUMtu+siH2tOH1RWE/pUULSRbLcDj/oEL82JnBOxP0
-         lU1+sV4yWESB+uG7MfgmVPNFRPy7oKF75BRBeOPX4fFEazOBSYcgZpWSeEoO0pEThhn2
-         eRpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
-        fh=f3LWDRss+M6OOFXDttn2SvULJt9G5godXIhfs2DuczI=;
-        b=jpcqJerSPnbIlaSZFFeCga7JrTxyJGDN+845jTXQGj3HQDRJxOIcZUXoLRQ/D3N1Dp
-         fgv1KzoAzbAG99RwYeeyd89dlohORnSGTNjjOwjvbSJcgL4q4N7KXJftSxWiPbsNX+P+
-         etoaLPkh2wVTr0+MINRyS4fh2PqsZpmv5E7duvod+GiSE2N9xGyBWquHbb0i+OaleShu
-         8zRMTs+biBy+o/7xTBYzlbV3N8xpH+J/dfYIklYP2QsDAzV6UJqUpOh8/dwY6y5Fr9rD
-         /tjWyZRkBvfU5vwtmUnZISWX+mtj4JxeA27jY75k6xy8bq9rowkwXsplbeKw9ap+LN91
-         +n6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC35838B9B6
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Feb 2026 18:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770055260; cv=none; b=XI/wcrLTt1K6ZmLhvv8DOTPVcUopwj7LViPM0q6YxmFc3BzO2fHtfg9dh9QdU8pZjOKYEeNHL3C4rTJr3VDgCt+I1Bsl9YTc+ZMtuJyTdIwq1ysh/75i+h5iO4KWntBDByqSTx14uwKdNQuM1++hP25v0AGdzcs8Zgpi52LPHwA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770055260; c=relaxed/simple;
+	bh=zD2IuoVSwNvUncA02blTiyoyy3mk4YM0JDUdBM1suf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BT42xhqMSa8/riVeq2ziGc+Rm+LnHXXwOEJ0EnJ9VRs9L0IleJN9k8/UcLYw9g8ecpZTmNMfflR0rnV9++NOOL5unmN66bzYJRH339/inE0Auz6NC/tGiaV8c7HlkKSqCYNe9w2WJYlylq9gAgf3HMe+kVp9+xOVyL0nNBBfzE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=El6aRqcr; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8230c2d3128so2491416b3a.0
+        for <linux-acpi@vger.kernel.org>; Mon, 02 Feb 2026 10:00:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gooddata.com; s=google; t=1770050942; x=1770655742; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
-        b=og9CIMwryTcCuW5cHCBToxyHP63/bgLVSKAiSoq7JgTJwHq412dVTREfZBNTuhT09o
-         RhOa3fZma8w1tOaRxO2YBhqZaVF/0ErbfA4wms8IgOs9GCO0BlnoFTyBKODEvxJXEvbQ
-         65naG0QX+7bal5nXeRwKgJ6LiXCzFieTT+uNc=
+        d=gmail.com; s=20230601; t=1770055258; x=1770660058; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=N95LWhnwiTDjRbAQUoKW7KNGEcZrvfdD25aUio1+39o=;
+        b=El6aRqcrzfMrhnmExjMgTI7JXAKdmexUReQCiGTTL7saPPEQVFizjlknKDG2NkuF/A
+         A8DHjojHeNSv3kPv8sjghrJDW+CBX++7/7aGfoLDyrU7kXmAcj+chRDmwNDcy/l3Ad+r
+         pDWvBJkgBJ3QrwiAUpmH+EPbH/H8YlJOAR4Ym/UVxG5L+X61YB6WQ1bOOFrdGTEZr3s8
+         UzEPOH1n8q2Qln6OT4LEdosM1YVu68a5zcVIpXA4wxu4jMEhPWce1DIQciUKyc5jS6Ig
+         BoYqUhmB1weWXD5nE9nv0dPpYcvS8Rm3gYugLtr8RIS34ftRHERxWH7ov1BnwGGmAM3f
+         UZGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770050942; x=1770655742;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BCN8Le0pLyitc3CNSBu8WOx/swSsqQ2swPw/Rz8TUzI=;
-        b=DDfrjQyejFt/5d8cNUfZBjmyzI+J5cF+xy5mCIY7/ArPJURZCAyrNUMQCXHb4FaVQz
-         mEIj3zW4q1u71MWkxP6jACfzzv3s6IrndUbHpfUCf7Ej3bTmfD5SFAPOuVOSjlf8q5Rq
-         G8xEjzNbyYXx0AW01/Esv3oPI43j+CKUzqAsmdi4eelq083TbbLQVwWT7tV94YCQJMgF
-         TbtapUNfS8FxS9J2MPZotpZxciId9uc5cvUgoHpdN+uZ6VnyPvDqALjxU9fmufr/BzwL
-         j7RtXNcrCS+jBvUe/jWV4Unc4kvHNMqcc/cTu/xlSggtVaAQXTBFQr2Z98FGe2Q+Itca
-         G5lA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxiB8FwTYsCLNbdBLYhKJllNPgOqgfXDS0DZmQhC+re0dPC6mUf0wy+CFFmnbhYB1kXkpiaEW+2s2H@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxOq828rHot7aNAi/kDf0ptue2PT7J3xc9F96gpswR9dM/TZhE
-	GzavCSZqvet8+oSOp14outQ7hY41RXottko3pYMEzyyTibk5IGVTmeksypbNJpRcz/FsnmCCdw6
-	MuQkoyU4pQWFdGS5NS/B20REGy4QsFHlJsskRQZBz
-X-Gm-Gg: AZuq6aIHxGAGt5YGteA9xJwNser+5pA1YsL3cGGrY7nR+4MDheaMsVdci6LSvEI+fH9
-	KAdbSweBbWecEKNGtLxigkYtYJ1R6qOYUMwO7Adlf3veRFeVhn1hTZG+lvZ3iwkzMBEDNCVRMIW
-	7IdLuLlsN1UkXrE8sGZhKP/SsD0XYzXjwui4JwV+gbHrkXNLLPaW/liup6/KXWEMt/z3kop5Ifk
-	w2d0raSXZjbHTgCLWlqpU0N70hh0HOfOJdPLCQ1VTxJ6qvWLpel9EJ4aT5mhklIc/QUVMQt
-X-Received: by 2002:a05:7022:6610:b0:119:e56b:958a with SMTP id
- a92af1059eb24-125c0f88d5dmr5930820c88.15.1770050941664; Mon, 02 Feb 2026
- 08:49:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770055258; x=1770660058;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N95LWhnwiTDjRbAQUoKW7KNGEcZrvfdD25aUio1+39o=;
+        b=DieoOuQKZaZr8bZgMAV+0XQa36/18QYeUb5nSmRTy5ZasQVp8jRIdqB0lrmVOz1mE5
+         nhO5m2HqhcFbj2t3kLyH+tF4aqDbicUNBEAMyiDkcT6ttWy2P1yTgo17BcfAKR0ZDaPF
+         itc5uVjrcTUl3TbtS3trhlP3mjlAbgZr4OaV+uM+YyEKVXmccyAd0mbDUaZP6Nq/gWqo
+         L8pHKNJ9HKTuPFICyVabjAHb4P2GrbiK/yFdlq264ju7ivWROcam/KTXFjWwFWzPR6WK
+         f3Pn3Dz7dMFhAdyRwyiJWTC5xXnstarT0Lz7kWsFF8uzJCW0SC9xD6Mp2sXdgHejHnhX
+         JuAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxGnBVaEMuaGm/cM8naknpO9Krt30PjxiAYA2nFFw9U05xXOFefXURay094zZRIS2G4wrfXiieY1t4@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCPok/IPhQyBXlWtOthpO30mo2l2Wqo5QN7VF7njgqBxTcTlpj
+	40GHCYRIwehVm8TBdsDx/SiIU4P345qZ+SCRo1OR0/0xNkmVu27zn+hs
+X-Gm-Gg: AZuq6aKPQhsIKlXChujp3PDf1jvbnRjKxlXZPwboLBAGBlorkZ0kTdhCHL+78tHUj2o
+	HaEWh+4zntgxTgULDBExpMS6nn+JnB1FJD7PUPUmX/4ApPceDCcjzJGRc1V6Dk/uC0MBJ4l/sGE
+	gZ8Ja+PmrrBSrW68p5hPhshMgUzoFlyGxLgJ61+h7omjE+LRacuYw8JvXch+N4ydrX+33rgylEI
+	jWcUpmhUejlymuvMCFyJR/D9V1zHzpaI90PqsBaX74/THTtBFP+eIurU+uAfgyDieMz5GNzoLv/
+	9jlcQGAOOoNmRQRrydLUT5h9BtmBbviqARVhEBrXobxlqwrXLLEv25x+RgQxq8yIniumGn9cgEq
+	3YXRFfDHVUVB7iA92DhO+fvETqJJzvToc6ib0LA8Ca8HnKEZt/H1ZOhtdg1vieAG8AjcPcXEAzM
+	MHEbpsWKjEel/6vU6npgRI82SIbpay1myt8OldGLTN6W428hcQCB3IWTs5pT5E
+X-Received: by 2002:a05:6a21:690:b0:34f:241f:aa1e with SMTP id adf61e73a8af0-392e006f0abmr12391905637.31.1770055258027;
+        Mon, 02 Feb 2026 10:00:58 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b57fafsm17773526b3a.26.2026.02.02.10.00.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Feb 2026 10:00:57 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <27d60756-d33e-4926-9a02-f52505339de6@roeck-us.net>
+Date: Mon, 2 Feb 2026 10:00:56 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
- <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net> <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
- <d7f34e0f-e258-4fef-93eb-1ef0a3123d95@roeck-us.net> <CAK8fFZ4izdX_HDtGN60CZ3Ta61nqkUg7ncViM=mGgxKki_5FoQ@mail.gmail.com>
- <a7334568-13ce-4600-8650-607273e67976@roeck-us.net> <CAK8fFZ6gKs7s2rJ=f7bt24f+_cY-jGU33TvX3UP=U58uK-1KaQ@mail.gmail.com>
- <fff54ec8-496e-4c26-b652-358dc4de0de0@roeck-us.net> <CAK8fFZ4wEUdMAHkfdC_z8ohYB_rEXZ=dHArc75jDibgQ_-ozKw@mail.gmail.com>
- <4f151d4c-fdc6-4281-87b0-b7120eeb1b46@roeck-us.net>
-In-Reply-To: <4f151d4c-fdc6-4281-87b0-b7120eeb1b46@roeck-us.net>
-From: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Date: Mon, 2 Feb 2026 17:48:35 +0100
-X-Gm-Features: AZwV_Qg-Z86It63WG7mLh3EaECuQjkUS0rUhn8KgZZJIYFsFZmHm47Ne5ImaBcU
-Message-ID: <CAK8fFZ401-nez_CgDTTnQiPT=oBRRJuYooXyEKFuCdHpGCPXtA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex deadlock
  in hwmon_attr_show since v6.18.y
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, Igor Raits <igor@gooddata.com>, 
-	Daniel Secik <daniel.secik@gooddata.com>, Zdenek Pesek <zdenek.pesek@gooddata.com>, 
-	Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, Igor Raits <igor@gooddata.com>,
+ Daniel Secik <daniel.secik@gooddata.com>,
+ Zdenek Pesek <zdenek.pesek@gooddata.com>,
+ Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>
+References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
+ <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
+ <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net>
+ <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
+ <d7f34e0f-e258-4fef-93eb-1ef0a3123d95@roeck-us.net>
+ <CAK8fFZ4izdX_HDtGN60CZ3Ta61nqkUg7ncViM=mGgxKki_5FoQ@mail.gmail.com>
+ <a7334568-13ce-4600-8650-607273e67976@roeck-us.net>
+ <CAK8fFZ6gKs7s2rJ=f7bt24f+_cY-jGU33TvX3UP=U58uK-1KaQ@mail.gmail.com>
+ <fff54ec8-496e-4c26-b652-358dc4de0de0@roeck-us.net>
+ <CAK8fFZ4wEUdMAHkfdC_z8ohYB_rEXZ=dHArc75jDibgQ_-ozKw@mail.gmail.com>
+ <4f151d4c-fdc6-4281-87b0-b7120eeb1b46@roeck-us.net>
+ <CAK8fFZ401-nez_CgDTTnQiPT=oBRRJuYooXyEKFuCdHpGCPXtA@mail.gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <CAK8fFZ401-nez_CgDTTnQiPT=oBRRJuYooXyEKFuCdHpGCPXtA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gooddata.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gooddata.com:s=google];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20820-lists,linux-acpi=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-20821-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gooddata.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jaroslav.pulchart@gooddata.com,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-acpi@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,gooddata.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9346FCF346
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B259DCFEE1
 X-Rspamd-Action: no action
 
->
-> On Thu, Jan 29, 2026 at 04:26:37PM +0100, Jaroslav Pulchart wrote:
-> > >
-> > > On 1/27/26 03:58, Jaroslav Pulchart wrote:
-> > > ...
-> > > >>> Hello,
-> > > >>>
-> > > >>> Thank you for the analysis and insights.
-> > > >>>
-> > > >>> To add some context from our side: we observe this issue shortly after
-> > > >>> a server reinstall or fw updates followed by a reboot, typically when
-> > > >>> hwmon sensors are accessed for the first time (e.g. by monitoring during
-> > > >>> early system initialization). We have not seen it trigger during normal
-> > > >>> operation, such as a simple reboot or on long-running systems.
-> > > >>>
-> > > >>> Given this behavior, it is possible that the issue is related to
-> > > >>> hwmon_device_unregister() being triggered early during system
-> > > >>> initialization, but I do not have concrete evidence at this point.
-> > > >>>
-> > > >>> As a workaround, we will exclude the ACPI power meter from hwmon monitoring
-> > > >>> (Grafana Alloy) until the mentioned refactoring or a fix becomes available.
-> > > >>>
-> > > >>
-> > > >> Would it be possible for you to test the patch series I just sent out ?
-> > > >
-> > > > I suppose these 5 patches from
-> > > > https://lore.kernel.org/lkml/20260123182208.2229670-1-linux@roeck-us.net/
-> > > >   ?
-> > >
-> > > Correct.
-> > >
-> > > > I will try them and let you know.
-> > > >
-> > > Thanks !
-> >
-> >
-> > The issue is still there:
-> > ...
->
-> Thnaks a lot for testing.
->
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.105931] INFO: task alloy:5985 blocked for more than 124 seconds.
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.114475]       Tainted: G            E 6.18.7-2.gdc.el9.x86_64 #1
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.122872] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.132932] task:alloy           state:D stack:0     pid:5985 tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.145975] Call Trace:
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.149985]  <TASK>
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.154931]  __schedule+0x2b5/0x690
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.160934]  schedule+0x23/0x80
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.166498]  schedule_timeout+0xe8/0x100
-> > 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.172936]  __wait_for_common+0x99/0x1c0
-> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.179148]  ? __pfx_schedule_timeout+0x10/0x10
-> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.185936]  acpi_ipmi_space_handler.part.0+0x1ac/0x370 [acpi_ipmi]
-> > 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.194929]  acpi_ev_address_space_dispatch+0x16d/0x3c0
->
-> Looks like acpi holds another lock. Can you check if the patch submitted by
-> Rafael fixes the problem ?
+On 2/2/26 08:48, Jaroslav Pulchart wrote:
+>>
+>> On Thu, Jan 29, 2026 at 04:26:37PM +0100, Jaroslav Pulchart wrote:
+>>>>
+>>>> On 1/27/26 03:58, Jaroslav Pulchart wrote:
+>>>> ...
+>>>>>>> Hello,
+>>>>>>>
+>>>>>>> Thank you for the analysis and insights.
+>>>>>>>
+>>>>>>> To add some context from our side: we observe this issue shortly after
+>>>>>>> a server reinstall or fw updates followed by a reboot, typically when
+>>>>>>> hwmon sensors are accessed for the first time (e.g. by monitoring during
+>>>>>>> early system initialization). We have not seen it trigger during normal
+>>>>>>> operation, such as a simple reboot or on long-running systems.
+>>>>>>>
+>>>>>>> Given this behavior, it is possible that the issue is related to
+>>>>>>> hwmon_device_unregister() being triggered early during system
+>>>>>>> initialization, but I do not have concrete evidence at this point.
+>>>>>>>
+>>>>>>> As a workaround, we will exclude the ACPI power meter from hwmon monitoring
+>>>>>>> (Grafana Alloy) until the mentioned refactoring or a fix becomes available.
+>>>>>>>
+>>>>>>
+>>>>>> Would it be possible for you to test the patch series I just sent out ?
+>>>>>
+>>>>> I suppose these 5 patches from
+>>>>> https://lore.kernel.org/lkml/20260123182208.2229670-1-linux@roeck-us.net/
+>>>>>    ?
+>>>>
+>>>> Correct.
+>>>>
+>>>>> I will try them and let you know.
+>>>>>
+>>>> Thanks !
+>>>
+>>>
+>>> The issue is still there:
+>>> ...
+>>
+>> Thnaks a lot for testing.
+>>
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.105931] INFO: task alloy:5985 blocked for more than 124 seconds.
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.114475]       Tainted: G            E 6.18.7-2.gdc.el9.x86_64 #1
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.122872] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.132932] task:alloy           state:D stack:0     pid:5985 tgid:5871  ppid:1      task_flags:0x400140 flags:0x00080001
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.145975] Call Trace:
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.149985]  <TASK>
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.154931]  __schedule+0x2b5/0x690
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.160934]  schedule+0x23/0x80
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.166498]  schedule_timeout+0xe8/0x100
+>>> 1769654277410 2026-01-29T02:37:57.410Z Jan 29 03:37:57 10.8.8.76  [ 741.172936]  __wait_for_common+0x99/0x1c0
+>>> 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.179148]  ? __pfx_schedule_timeout+0x10/0x10
+>>> 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.185936]  acpi_ipmi_space_handler.part.0+0x1ac/0x370 [acpi_ipmi]
+>>> 1769654277660 2026-01-29T02:37:57.660Z Jan 29 03:37:57 10.8.8.76  [ 741.194929]  acpi_ev_address_space_dispatch+0x16d/0x3c0
+>>
+>> Looks like acpi holds another lock. Can you check if the patch submitted by
+>> Rafael fixes the problem ?
+> 
+> Hello,
+> 
+> I tested the patch as a standalone change, and the issue is still present.
+> 
+> However, I can now reliably reproduce the problem. It is triggered while
+> Dell iDRAC is being reset or updated and is temporarily unavailable. During
+> this time, a [kipmi0] task enters D state for an extended period, and
+> shortly after (or during this), the ACPI power meter hwmon interface ends up
+> in the locked state described earlier.
+> 
+> This explains why we mostly observe the issue after redeployments in our
+> environment: server redeployments typically include iDRAC firmware updates
+> or resets performed together with operating system installation or updates.
+> 
 
-Hello,
+Thanks for the update. Do you have a dmesg log showing the problem with Rafael's
+patch applied, by any chance ?
 
-I tested the patch as a standalone change, and the issue is still present.
+Thanks,
+Guenter
 
-However, I can now reliably reproduce the problem. It is triggered while
-Dell iDRAC is being reset or updated and is temporarily unavailable. During
-this time, a [kipmi0] task enters D state for an extended period, and
-shortly after (or during this), the ACPI power meter hwmon interface ends up
-in the locked state described earlier.
-
-This explains why we mostly observe the issue after redeployments in our
-environment: server redeployments typically include iDRAC firmware updates
-or resets performed together with operating system installation or updates.
-
-Best
-
->
-> Thanks,
-> Guenter
 
