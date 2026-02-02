@@ -1,412 +1,266 @@
-Return-Path: <linux-acpi+bounces-20814-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20815-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CF6LJ/IngGnv3QIAu9opvQ
-	(envelope-from <linux-acpi+bounces-20814-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 05:28:34 +0100
+	id OBSoJEeAgGnE8wIAu9opvQ
+	(envelope-from <linux-acpi+bounces-20815-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 11:45:27 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0953DC829D
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 05:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E98DCB297
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Feb 2026 11:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86EDD3006B26
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 04:28:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C519307B0AD
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Feb 2026 10:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BD728F935;
-	Mon,  2 Feb 2026 04:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539953570AC;
+	Mon,  2 Feb 2026 10:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="WqFwtzKD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="P6dYQzSj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012003.outbound.protection.outlook.com [40.107.200.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BE527B50C
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Feb 2026 04:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D2F2C15B5;
+	Mon,  2 Feb 2026 10:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770006509; cv=pass; b=TO0R5ypF6pm6Mr2Oe1CfbXucT2aGV6kRyM+Za3hQtHu5xvjh46doU8Z4NkIoksEVv34mN0nIsqCTDlAupH7phDG5oE+y+PlP8KjGqjeG6s0CvkCRPPRr5T+v50oq1JTrPGNMMJG/oq4o5/WzTX4qDoAwCe9nFmGm8JmPxC683ng=
+	t=1770028651; cv=fail; b=Uo+qpq8FImep4kjk/V4d/hRS0XVF7OEKFTwfXwaty3wI75sVIGzDeaP1nCVRi/NLd1CdnY1bwQYR/8Ex7iG00ykOcirLfviE5YpstqY7SemejJjd9y+yiucx1vHS58iALI2hROs/XnHz1uvbv+v3gljXVPjIeArGoFS3yTmSQyY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770006509; c=relaxed/simple;
-	bh=pUVGgthQ839+VjER5eMc/k3P643CMKy+SrYbAa3c6hc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rJ2L+Ili74BwdsropIA3fnYgoiV/situPcgGObBhmEGcDeZnhRkpkjaNdVvVO3+d0flm/XdFhbKvZJMujSgQA854G/G+V1Bc5eHrN/jGLLDL4b1l1VEs40JNeVAk2E+P9R5gEPzYoOOuonT/s8g5DIbZAJfWyJF9zmBnfw+DB+s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=WqFwtzKD; arc=pass smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38319cbc8fbso35841901fa.1
-        for <linux-acpi@vger.kernel.org>; Sun, 01 Feb 2026 20:28:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770006505; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NGzGkxyVNrOfskmR93YNJUXYN+SemyfoveWJ4j3WDElJwe8X/Z0uKgLJDCjX1WDFCV
-         YFWplRsQyBnmvERkDF1WtYdzXhwXNmre9gDBj0hjwtwDsK1ITgP5D1wqZiwlgr1WVNab
-         bbRiexD6mFOeLeQO7Kgad4hfBxBuDWWV5pngjzdsGNpUbDJLefC/qI0t3uESkJd/z6QH
-         hfNGi/jOvjYAyso3TWPH9kqYm/pkNcJLV8wEvV5dgpNT+6gchIIjH48ZZVD+d8bq3LSR
-         FwXklS4d/NERi5G97FOmDyCLehCt/xQX1RoQsO74axlDjCkaX9oO94vFvknfGGJf98Gl
-         epxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2RZFio6MipuyvvHseqe3FSKD7GaQ7TcS4ZKkrjtcRy0=;
-        fh=uc3DXUQ1YEnNSEf2bgrgKcBTUzTkea2H/BeqhhdWPdA=;
-        b=PetqWLGeAdOb7kMBqR/92BKmYYhvRz7CGupkEaFY2O1QBbeDrUpTQsukNLwE0TGq5o
-         5fc4Y1cJPH05icK3OmaXOpGs/Mo7LgiffJ7ISruIKkbaacbM4eYVHU8h3wsBWSciTG8j
-         KLkoNdlm4lZ0lCW4J8FPE+S4G5VYC9AAosj8Nfo2FhTXblzDo87vgPCanRb/euQP1PJ5
-         GXNpbK5nhavMXoilrmUata/ggSCaKveGbDw8R/D8d1mGsiPLPEWb6Lgn3IClmN3hiIJR
-         o0231lv9/DFOH6pS8LVm+Q4u0aFQoy+KLrFPZ/hZikUC9/WKwDJuw0snWTX7/87Dg/cc
-         DWbA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1770006505; x=1770611305; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2RZFio6MipuyvvHseqe3FSKD7GaQ7TcS4ZKkrjtcRy0=;
-        b=WqFwtzKD6L7JZ5vXdcSuMzkgN1S7tJC17gpW45FmKVC99FTd/ox1Am8QF1nr2nlIcU
-         GYQchnSQ8veZ2sCggxuCa6qwt3sGJvcMwamAAVyROgjLhuviyfLe0tqIVYf50xt7UumO
-         e3eFIvCTap6NOYDWH7NYWGnK5wTJ7PuMRBWfAMcVg8DMZ1QnIF39vQyEVqE8GsR0pgqa
-         5LVWIKKknLe0IlCWXIWAmq5Icq7j6BGsQZe23EssiplS0wLS4pUgDc2cQRgu2vP9C3lX
-         PlQnfnF6TcEeQSSkUo7dnxdYXjefxf/6V5vFwcvhRzuQ7dKFZeobnI2zu9j/xQSUymmY
-         cfrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770006505; x=1770611305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2RZFio6MipuyvvHseqe3FSKD7GaQ7TcS4ZKkrjtcRy0=;
-        b=EvhBbxICRz4rV5toahuqgQC3b2IVQkuOedbXs2BweN0zGib8UoniEwPXGDGIfUJ1Wz
-         W6XffIUKH4quGUBDdn4qQdSJaHgWhNm0kwjbBX0hYewtTIk/qntI11CFim22JHstJDTO
-         NHzFhg8R0GciB+Vk4QSA3Ewz/Rf3NFpZUDCoLN6A/3NaWGhIOdHfRVyex4evWyURkNqq
-         crx/PaOSCPqADOY/dwgB7TOOoc+V482333ZAhE2UWBIcECPKPHesZ2xn8FeM7QHbdbnP
-         RM9kzYtzkhGyACmc5TEDKjdf7yj1aG2iBoOedM2TW0csBdYpkNEpo0x7xWzS/bmAz3S9
-         G9Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUICxQwVoPV0uk0Xk2hcwREohQTt26ENrSJG/vXfMhOfl+XkRYMELYkp0odoCkMcydKmZgW/j62fYnI@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqTfcXtYr6LhWFlkojBiepMxJgMMBjqBdIwedj4CR1t1qWqcD1
-	5v8aWetAU4nm8sI1wuV0ZLB7dxIf6S2MmZkQl04GErA+DkBBxFggQ4xVGzt49nOQIE4r+kI93cl
-	lLCl76q2z8pzQaGGlHPg4KYHHTuYo1CYeNm+zP94Gmf8kaqay669CXno=
-X-Gm-Gg: AZuq6aK4GNyXaVI9nLwDnFiBJIvGmyAgBEK/zPxaGNBD61JKw+n9A6Lc9t0nbOtQq8o
-	PdaXgx/RZF6tmdFu4Lw4+jw3tyQCWgO71WFAzlI3z//rsGT9/V5PGZMbs1VfL1qfwSN2wJ3lUSm
-	0zux3Im9LnHtTFqJE/oqOwlFTBejl86zf+GhKxGlnXOxpXk4iDErD1NTtH8y2IfSE9CnSCrN5Ai
-	0Lh9H9JHAH+UFn4zW77i1GSryEp2t22Aq9vOj1O0/PJX/HZxzFC58MGJ7GXKlX9gvrunPCWrF5F
-	xA==
-X-Received: by 2002:a17:907:74e:b0:b8d:be69:78bf with SMTP id
- a640c23a62f3a-b8dff5dd77amr628734866b.20.1770006490652; Sun, 01 Feb 2026
- 20:28:10 -0800 (PST)
+	s=arc-20240116; t=1770028651; c=relaxed/simple;
+	bh=3cRhKtlQyQSLUyZ5PIylGJf1eLrxAJUPwDMd//V4MLM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rvLiP6jbVtRF7MxghS7Ea4Yn6F69OKwst0+Cm7V+AubctzkHDtvBiiNTNJUIOPi/pymK9x2D5CHjLwzT4lYrJmsN7S26AQPBl1fHKArDZrRweGwxml+BxtNsB1wPIn2eyxQm5pnvfzzkLlAxs/qvBX9o8RnGMrAd7cHQnglr4rc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=P6dYQzSj; arc=fail smtp.client-ip=40.107.200.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xGbbugoRZ3Bs8jWo7ugiT+zJjJLFPshUCNvtWOc4VodD3z/UXNOidswg6WhDQOxKuUWI5gSGpD0Tta3pFV/n0L03DrENXgKGbcjXXTWTgefKEMa+J8EeJRSZBmCnKms41imhocOcwExFndRVNxe+gYUR5BnJ1mjViujKFgG5Ms+gFFfHXmz5/UXK/m4gYDDnhx0Bedk3PA8uYFSDvEKM3eWhz1JQIwaKg1wHpFf1FAl9yrVSExvSN02ixIc0ltuTUxy3YkRKj7ohD0dHgaGBFGW31AHEeguZd/eCoChHcY1P12lPuhj1aryLFTF2cjxp5j/L9jtwpOHZpU8MEhL4wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O3/MbYweNFvYR9KpCdZHux7EJ77fgZU7kU7erAflfNs=;
+ b=amFyrFIXKQ0Xo3XcplZxQGefmx5SSQ77Rtx+k446JTtjBv2Sn/iW6ZWDvufQHn30bHlu/XKxLWRVOSvIMiMePVDu/1mKW5ewE6MxLk1hfrPF3qEH4WY/NBZWhMCMRTlLZvqohCdONfUNJ7/3C/O9S45TVYRBt0kOUoOvH5cwiqCxBkY932yKst2JP1wIZKI8y1VU7UPmk48/ctaFFxseLSAhUUJftqK63gT5WJapoN8bD1dOoNz5e6DTfXXLxl5z4dJ5uh270HY6dlcQgBnstjyMAgHwBEjHRHJQcjURuD6DE7naAlwm0V6SUUmfv5et9AkbCSUL83jAD4i0VEnJ2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O3/MbYweNFvYR9KpCdZHux7EJ77fgZU7kU7erAflfNs=;
+ b=P6dYQzSjotoeK17bnyuEe9QmHP54DWfVqrbyYxzMUodWg80AG+AmP/GruvkyFWDBCfch3Mc2x7THIvJhX0gkwzr4F4MmYe2OTapgbnDnWbspAXWInAOHEzyh4Hrzaeyzxi+2/sldzd3Qhzl0aXLXVY1yOqF3iGJAqwNJCmmCNPY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by MN0PR12MB5739.namprd12.prod.outlook.com (2603:10b6:208:372::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 10:37:25 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 10:37:25 +0000
+Message-ID: <1331d331-7056-4a32-a69d-e4556bb117b0@amd.com>
+Date: Mon, 2 Feb 2026 11:37:12 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: crash during resume of PCIe bridge from v5.17 to next-20260130
+ (v5.16 works)
+To: Thomas Gleixner <tglx@kernel.org>, Bert Karwatzki <spasswolf@web.de>,
+ linux-kernel@vger.kernel.org
+Cc: linux-next@vger.kernel.org, Mario Limonciello
+ <mario.limonciello@amd.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ regressions@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, "Rafael J . Wysocki"
+ <rafael.j.wysocki@intel.com>, acpica-devel@lists.linux.dev,
+ Robert Moore <robert.moore@intel.com>, Saket Dumbre
+ <saket.dumbre@intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Clemens Ladisch <clemens@ladisch.de>, Jinchao Wang
+ <wangjinchao600@gmail.com>, Yury Norov <yury.norov@gmail.com>,
+ Anna Schumaker <anna.schumaker@oracle.com>, Baoquan He <bhe@redhat.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, Dave Young <dyoung@redhat.com>,
+ Doug Anderson <dianders@chromium.org>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Helge Deller <deller@gmx.de>,
+ Ingo Molnar <mingo@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+ Joel Granados <joel.granados@kernel.org>,
+ John Ogness <john.ogness@linutronix.de>, Kees Cook <kees@kernel.org>,
+ Li Huafei <lihuafei1@huawei.com>, "Luck, Tony" <tony.luck@intel.com>,
+ Luo Gengkun <luogengkun@huaweicloud.com>,
+ Max Kellermann <max.kellermann@ionos.com>, Nam Cao <namcao@linutronix.de>,
+ oushixiong <oushixiong@kylinos.cn>, Petr Mladek <pmladek@suse.com>,
+ Qianqiang Liu <qianqiang.liu@163.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Sohil Mehta <sohil.mehta@intel.com>, Tejun Heo <tj@kernel.org>,
+ Thomas Zimemrmann <tzimmermann@suse.de>,
+ Thorsten Blum <thorsten.blum@linux.dev>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Yunhui Cui <cuiyunhui@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, W_Armin@gmx.de
+References: <20260113094129.3357-1-spasswolf@web.de> <87h5spk01t.ffs@tglx>
+ <bc20529d7520e7db7de2022bf9c96a1bc3a2f0df.camel@web.de> <87v7h5ia3d.ffs@tglx>
+ <99f1aaba32030d2b9285dbd983fdf8518a181a8d.camel@web.de>
+ <82b4d69a5b943aa5e8aa7cc33fcc00bce02e557c.camel@web.de>
+ <630a4020c87c122c004321971e43c334fd7aceb4.camel@web.de> <87a4xs2z6i.ffs@tglx>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <87a4xs2z6i.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0377.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f7::13) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org> <20260128-ssqosid-cbqri-v2-3-dca586b091b9@kernel.org>
-In-Reply-To: <20260128-ssqosid-cbqri-v2-3-dca586b091b9@kernel.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Mon, 2 Feb 2026 12:27:59 +0800
-X-Gm-Features: AZwV_Qh6sUTHEto5Wt3yZWj9_zPb8qdXk_-HeJ2r0Rjdk_jaW_mUHlx9PsMyamI
-Message-ID: <CAEEQ3wmK_4y-woedO0htdh3tnO=4SEGwRUrDsGLYRWwsPF105w@mail.gmail.com>
-Subject: Re: [External] [PATCH RFC v2 03/17] RISC-V: Add support for srmcfg
- CSR from Ssqosid ext
-To: Drew Fustini <fustini@kernel.org>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	=?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Adrien Ricciardi <aricciardi@baylibre.com>, 
-	Nicolas Pitre <npitre@baylibre.com>, =?UTF-8?Q?Kornel_Dul=C4=99ba?= <mindal@semihalf.com>, 
-	Atish Patra <atish.patra@linux.dev>, Atish Kumar Patra <atishp@rivosinc.com>, 
-	Vasudevan Srinivasan <vasu@rivosinc.com>, Ved Shanbhogue <ved@rivosinc.com>, 
-	Chen Pei <cp0613@linux.alibaba.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
-	Weiwei Li <liwei1518@gmail.com>, guo.wenjia23@zte.com.cn, liu.qingtao2@zte.com.cn, 
-	Reinette Chatre <reinette.chatre@intel.com>, Tony Luck <tony.luck@intel.com>, 
-	Babu Moger <babu.moger@amd.com>, Peter Newman <peternewman@google.com>, 
-	Fenghua Yu <fenghua.yu@intel.com>, James Morse <james.morse@arm.com>, 
-	Ben Horgan <ben.horgan@arm.com>, Dave Martin <Dave.Martin@arm.com>, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, x86@kernel.org, 
-	Rob Herring <robh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Sunil V L <sunilvl@ventanamicro.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MN0PR12MB5739:EE_
+X-MS-Office365-Filtering-Correlation-Id: c21a52c9-5b96-4f83-9839-08de62470dd1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Zml1a0oraTRydlR3a1Nzd2pxcE4xUS9NNlJ5UFN5dDcwQWZrV3lvWnhYMHZr?=
+ =?utf-8?B?OHJxZzRnL3dwTy9UR0R3eUoyQjBpb3hxKzNHQ2UrMDI1c0FzcTJoK21nT2tZ?=
+ =?utf-8?B?V2NiSURHTHY4T3JBMFIxajhKOGppd0VtSDJGclBrOU5OT2xzTVZYallGanE2?=
+ =?utf-8?B?NGZJMkJpL1JSVm9TSEtYSW0wOWpWS0l1cEdkMTFjeGxqM2cvaDZiWFovR05K?=
+ =?utf-8?B?dTdIL29IRjNMRm1QU2VXMitmMFMvb3A2OEZXTXMzOW11a2pzRGE5VHpSWGxs?=
+ =?utf-8?B?ZVBEMXR3Z04zeERSbGNFTEtvUjF0WjBlSGZ5ODc5T1ZIYU80ZUdZZ1ZmTUQ4?=
+ =?utf-8?B?YjRaZVJpcElVY0R3a3ZjMFNwbjMvUE5VNjh1czZzWE05S29kSVlJU2pSSzdT?=
+ =?utf-8?B?UTYrNWhvT0NuSkhmSHhRZE1DNzMzeHZUVmN3Njc5WGx6K25kZDZQSXg5eXlF?=
+ =?utf-8?B?VVlKcFBMdDJFbHlGcG00K1NGUjRZWWtEODVVZm5GOEd5K0d5dGtSYStla1l3?=
+ =?utf-8?B?Y2NZL1NYZ2IxWmFSWlRWZEpBZE5VcGw0cDBUOSs0dWhVUEMyZTZlaEVWRkVw?=
+ =?utf-8?B?S05qdnl1elY2Z2Y5VDZqOFdVRUxudFA2K1hPQnYrVjBuZWxBUDJzUmxQQnZl?=
+ =?utf-8?B?RjVaWnJyVHd4aHlaZnVUVE9hZW9PaXgwV0hkVGg1amR0bFcyL2NBalRPSHRo?=
+ =?utf-8?B?MzluLzBZN1hwWngvaXRYL0pJdXdhVk9ENGs1TzkrMS9zVzNrbVl1WEdPeDNh?=
+ =?utf-8?B?VVgyaXJrR0xHemRHYUgrbUo5alJRMlBtVkRQd1dTY29ncmpoVmNsaXRGbGlN?=
+ =?utf-8?B?a2llUk5BUEp1UTJOb3BOb3B0ODE0OFdjU2lCWFZ3SDU3bzBkekRYK1NwOWpG?=
+ =?utf-8?B?MVhtV0FHZzgvSTZxWkI5djVPMlZNZ2FFZVZJQzVJc3UwY3BVbXVIamg0VEFy?=
+ =?utf-8?B?SFZSMU9kQlNUMVBDbE8zM1MwNDBHWXdpZ3cvVm4zSGdEWk5BWThpWUFhenUz?=
+ =?utf-8?B?MHhYZUJoQlp2bVRkTFRKdk1GTlNlcDVQcUVZL2NQYnlSbWQyT3B6RzM2d3BG?=
+ =?utf-8?B?Q1ZMSUlDbnF0QUh1aVJ0UWRrRE5yT0x3WkZzMW5iYkdabEhKa0FWMytHaTIw?=
+ =?utf-8?B?amJOZmhPY0FHRFVqOS9sbWJYajAwRU80c0N0bmk4ODZVY1JWNDZwRlBRRE4z?=
+ =?utf-8?B?NkwzMHVRS0NvLzcvdHpZamxsc1NjU0E0b1hTeGdES2J1T3ozL2lZQWc5djVI?=
+ =?utf-8?B?dkdHR0dCQVNscXJ6ODR0MzR5RkJ2cjlML2xHZExJallXbG5vb245SjNtcHRo?=
+ =?utf-8?B?S3FuN0hmNFhmdFVJT3RTcGZyL3NtS1FLZWplZ2prbCtjVWdhaHp1ZVoxcVMz?=
+ =?utf-8?B?NWZtbEZUUzZFOEt4NXd6bGt3c05oRUtjcURvR1RXTWJnbGczNWVXdUNGZjYy?=
+ =?utf-8?B?Mk9VQ3RHWFQxYmZTNW5kZWI4V2dJOE1yTkFLL0p2T1d6R001NkozK3krb2Jv?=
+ =?utf-8?B?RzJqNExrN2N2NWhjdjhkVVZacDBPVGc5UmJrUHh5SjY0WENjMXdBcitLSXpY?=
+ =?utf-8?B?NkdKRG56aEdVN3JKNlpOcDVDUXVIY3F2Z3ZEL1hPV1BWMGtFMzg0WTZ4YjZW?=
+ =?utf-8?B?a05yK1hXSHRrOHVUZ1NvdlJHV2haZWZLaEtCcnFXWTMvRXQ5b0w2dlRtNS85?=
+ =?utf-8?B?blNoUFRvVnNsMzh5RnFOVFRuRFRCakV4dkZ4ZnlQV1RZbVNMZXcyNldaanBk?=
+ =?utf-8?B?T0pBZVVyU0I0VzRvQjRydFJ5WkRqWThDUGxZL3ZiLzZIZTFmejIwbzVwMDhi?=
+ =?utf-8?B?U21SVzNvVXBld1JFSm9wK3FMV0psRTJkclkvaWlnOGZrekdoZUtwOC9tZFMx?=
+ =?utf-8?B?dm0zbUp3YTh6QkNrZ2xrS2NJUURvRHpyMFBCU1Z6WlVoNDZ6Q2hEY2phd3RO?=
+ =?utf-8?B?c3JGVlZzZE5KVktXS1Q5TVBPdnozSlFDM0huQVdreCt5MElHcU5Td09hN3BI?=
+ =?utf-8?B?cUx2VC9uUXNWRklBVnBSWkFBUUJ4WUtuRFhqbDB0NGlzdU5qenRjSTVDdU5P?=
+ =?utf-8?B?SENvRlNmbG5VcjZRdXBsdVMrd3NsRlRVQ0dZQ3IwQ1hSWGM2ZWtFYzZpcnVJ?=
+ =?utf-8?Q?f++k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bnk4NnJNV3FtT1NnTjdpdXJkUU1lWWFlN1l6N0RyYUNDYjNYYlJOM3B3a0Rs?=
+ =?utf-8?B?V29tRXZUVVRoVXVJdkM4aTRLeDM4aTFnSkRCNndoRFF5M2dDQ3E5TmhYV05E?=
+ =?utf-8?B?bXVYR1ZQWEZOczNlWnFrZjNYSm04OUVvbVJhSFAzL3RHTlo3RWkzUnJ3TDVp?=
+ =?utf-8?B?em5jNENibS9heHBURDRvMTU4Z0NKVnlmZVpPNWcxby92MkFJOVU3RmhsWTAz?=
+ =?utf-8?B?ZjZXYVpGZnBHd2xHeVo4Uk85ZVlmd0ErTlZDYXNQSnF6WkRFSzkxOUpFQ01x?=
+ =?utf-8?B?U2Q3Qzh6RjQ0STJ1RVU3dVlYdGorZGwwWmp2QjAxY3pWTTRNc0JxVTJJNk8z?=
+ =?utf-8?B?OHJNUlEyRHF6SlNkdStaZkZib0owdXJtbElUTXVZemdaOUttY2dXSnAyMGc1?=
+ =?utf-8?B?S1ROYjIyd25wR01FMnk0SWRwZ2Zydm1NeERUS3AxRk1zaTJ2UC8zZFZiZ2pQ?=
+ =?utf-8?B?Ym9Uc3J6RkcrdFZReGgxQlVTc2RIS0NQdHVSckFYQnBIeENCN1BjdS91SXR5?=
+ =?utf-8?B?eVlpdlpqSXpIVDRBMk9taUVLVXJ0aGowU2ZhalBNOWRhY1AyS2RSR1Z3cVlR?=
+ =?utf-8?B?OFRwWUZHTjg2Q1hCK05zVnlwZGNBTFFIcnF5dUs1MmRROGt3V090cS9lZUZz?=
+ =?utf-8?B?VlJPQ0w3WmRIdWFCV3ZrL0xEcEJwUlVMOTlacmRaZ3dGbHc1bFVuNzZHWGlk?=
+ =?utf-8?B?TEpKdEtocXhiOXN6VFQxeHBMTXk5NWlkUS9wVVZsSkQ3N0o0WUR6Z0ZYM210?=
+ =?utf-8?B?T3d5SXNjdzVjVkQ2K3VIVzVVWWpWR2s0WFN4cDFnSFkybnovSXZaNUI0NHVB?=
+ =?utf-8?B?WEtPYk9lOTMxOTR3dUo0OG95aG94LzgzOFY1MHc4NmpUSndGSzRpTFZxM1B3?=
+ =?utf-8?B?VWhhc0E5STFLc3JGWDMxU1dUSjBQUmxQRzlqRCsrVU1zbU5nV0ZwckFkbkhE?=
+ =?utf-8?B?SU1oQWZTdTVMQ0FHbmdrQXF1QVhyZzZIZnVDbDZWQ2J0RFhXKzBPWWorbFI4?=
+ =?utf-8?B?TkFwRzhuQ3phSE42cnQwdzFFam1OcGxZeGc0SWM3b1F5ZlVHd0Q5Q3Zxa3Yv?=
+ =?utf-8?B?akI1NkdUSWRpZFo1UGZIcFE0OTIvSGFWdTJpSDVPdE9zeERDVmdSbnh5UVRw?=
+ =?utf-8?B?ankrdit1d2thb1JGcFQ2akRqblY4dWRNVUVFNW1YMm41T1FYMTcwREJpdDli?=
+ =?utf-8?B?UHFzZHdjdXhsTTV0Z3FEUGhyNTB3R1ZXd0VndUdOUDFSWnpmTWs3bEgvdlFW?=
+ =?utf-8?B?eVdtOWhadHE1TitqVmlYQW5WV3BBT0tLT3BQbTloZXdtSDdjRjhENHNRQ0Z0?=
+ =?utf-8?B?YW15ZDN6RFdlTm5YQW5TM2wwRldMWk1jc0RzOTNGUlpQWEZOUWpHbFVCQ29G?=
+ =?utf-8?B?OVExRGlGeXNFZnRsVzFTdVJ4eHVEMXYxaFExbklLY04zemxJSkRzczNnSnpj?=
+ =?utf-8?B?cHRqeGVSNVd4UGVnSXc2V0p5MzV2VUlIeVpXSGR2Z0xndVBCUlJzUEZrQWli?=
+ =?utf-8?B?RWxoUXdZaXVmUWZVeGhyZk1CWlRxZnRrYXdacXhRWjNvYWtGWVFCRWhhMUl1?=
+ =?utf-8?B?WVhHSXdqR1c1U2JTUU9WMk9nd3NheldBSHFWZCtENVlFTnQ4cldOTllwWHNJ?=
+ =?utf-8?B?bnV0dlNtN0d5UDFUaXN1L1lGTzIyZk9SYkl1VkRrNWJ3WmIxV1N4VDM4MjFJ?=
+ =?utf-8?B?YTdnclZNMlQ1U2c1d1RPeEdLRWtvMHgrQzh0VlA2VDJlUXpNemc4WFluWjRE?=
+ =?utf-8?B?QmpoRmp1bTFINWwxWjArSDdSenBDM1lQQzlDcU8wbFRwc1lpWVlCVHZWaGph?=
+ =?utf-8?B?cEdmK05ocGt4WmZrSkJtd1V4VU1BQ3ErZWl2cmxqcURNVXNsdG1XbGM3dlZk?=
+ =?utf-8?B?dm1PNHZGMlZPQ2xjbE5jRjNZd2dSWmxDWXoveVdMcHN6MnQ1MnhtN2ozbTNH?=
+ =?utf-8?B?VFpOV2kzcHdNY0ExTEpwWFFoRWJJeTIrTDJHMndwTWR2VHlOcGFWRS9IaGJI?=
+ =?utf-8?B?cFJLTE1yejl4UWd2NEVWbDY1OFptUjRiOTdSRXUrRjFwWk82eXAvakppcmlO?=
+ =?utf-8?B?KzdDYk8xM0dEbjBlMnJxcEI0Nm9ENENQWDdGRkZpNzhzYThuaGhPTE9WdGlB?=
+ =?utf-8?B?WVhMOWVvb1Frb1UrQnRLNXdseGoyam8wanRWM1V1Tyt4UGIxeUxXYVNmcEow?=
+ =?utf-8?B?ZnZ6K0FpNURJcFR5WERoaDhaTUxLemJ4dkdLa3BaUnRkRTZtUnM2ZG5HdVJi?=
+ =?utf-8?B?UWpTcnI0c05yaVR0VGE3YUVJVzArVmQ2Qm1WZ1NZTTRPNFdyWkdDY1lKaG1W?=
+ =?utf-8?Q?6SBtWvOXwgFTcBYGZK?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c21a52c9-5b96-4f83-9839-08de62470dd1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 10:37:24.9765
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XJLUJ5DGoBDfhZzYBfoeJVs8ycBkfmHTKF5eHAIswgTFPCnsZCbjwIcdbNsQOgfM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5739
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20814-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,linutronix.de,kernel.org,goodmis.org,lists.linux.dev,intel.com,google.com,ladisch.de,gmail.com,oracle.com,redhat.com,chromium.org,igalia.com,gmx.de,ziepe.ca,huawei.com,huaweicloud.com,ionos.com,kylinos.cn,suse.com,163.com,suse.de,linux.dev,linux.intel.com,bytedance.com,linux-foundation.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20815-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[41];
-	FREEMAIL_CC(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cuiyunhui@bytedance.com,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[kernel.org,web.de,vger.kernel.org];
+	DKIM_TRACE(0.00)[amd.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,bytedance.com:dkim,brainfault.org:email]
-X-Rspamd-Queue-Id: 0953DC829D
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 3E98DCB297
 X-Rspamd-Action: no action
 
-Hi Drew=EF=BC=8C
+On 2/1/26 17:42, Thomas Gleixner wrote:
+> On Sun, Feb 01 2026 at 01:36, Bert Karwatzki wrote:
+>> I found the error, the commit 
+>> ("drm/amd: Check if ASPM is enabled from PCIe subsystem")
+>> has been applied twice first as cba07cce39ac and a second time
+>> as 7294863a6f01 after it had been superseeded by commit
+>> 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device") 
+>> This effectively disables ASPM globally after the built-in GPU (which does not
+>> support ASPM) is probed. This is the reason for the crashes and loss of devices
+>> errors which on average occur after ~1000 resumes of the discrete GPU.
+> 
+> Wow. Nice detective work...
 
-On Thu, Jan 29, 2026 at 4:28=E2=80=AFAM Drew Fustini <fustini@kernel.org> w=
-rote:
->
-> Add support for the srmcfg CSR defined in the Ssqosid ISA extension
-> (Supervisor-mode Quality of Service ID). The CSR contains two fields:
->
->   - Resource Control ID (RCID) used determine resource allocation
->   - Monitoring Counter ID (MCID) used to track resource usage
->
-> Requests from a hart to shared resources like cache will be tagged with
-> these IDs. This allows the usage of shared resources to be associated
-> with the task currently running on the hart.
->
-> A srmcfg field is added to thread_struct and has the same format as the
-> srmcfg CSR. This allows the scheduler to set the hart's srmcfg CSR to
-> contain the RCID and MCID for the task that is being scheduled in. The
-> srmcfg CSR is only written to if the thread_struct.srmcfg is different
-> than the current value of the CSR.
->
-> A per-cpu variable cpu_srmcfg is used to mirror that state of the CSR.
-> This is because access to L1D hot memory should be several times faster
-> than a CSR read. Also, in the case of virtualization, accesses to this
-> CSR are trapped in the hypervisor.
->
-> Link: https://github.com/riscv/riscv-ssqosid/releases/tag/v1.0
-> Co-developed-by: Kornel Dul=C4=99ba <mindal@semihalf.com>
-> Signed-off-by: Kornel Dul=C4=99ba <mindal@semihalf.com>
-> [fustini: rename csr, refactor switch_to, rebase on upstream]
-> Signed-off-by: Drew Fustini <fustini@kernel.org>
-> ---
->  MAINTAINERS                        |  7 +++++++
->  arch/riscv/Kconfig                 | 17 ++++++++++++++++
->  arch/riscv/include/asm/csr.h       |  8 ++++++++
->  arch/riscv/include/asm/processor.h |  3 +++
->  arch/riscv/include/asm/qos.h       | 41 ++++++++++++++++++++++++++++++++=
-++++++
->  arch/riscv/include/asm/switch_to.h |  3 +++
->  arch/riscv/kernel/Makefile         |  2 ++
->  arch/riscv/kernel/qos/Makefile     |  2 ++
->  arch/riscv/kernel/qos/qos.c        |  5 +++++
->  9 files changed, 88 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 765ad2daa218..e98d553bd0ca 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -22505,6 +22505,13 @@ F:     drivers/perf/riscv_pmu.c
->  F:     drivers/perf/riscv_pmu_legacy.c
->  F:     drivers/perf/riscv_pmu_sbi.c
->
-> +RISC-V QOS RESCTRL SUPPORT
-> +M:     Drew Fustini <fustini@kernel.org>
+Good catch, indeed.
 
-If you don=E2=80=99t mind, to help support RISC-V QoS resctrl development a=
-nd
-ensure interface stability, could you please add an 'R:' entry with my
-email address?
+But it is not clear to me why disabling ASPM causes trouble, usually it is the other way around.
 
-> +L:     linux-riscv@lists.infradead.org
-> +S:     Supported
-> +F:     arch/riscv/include/asm/qos.h
-> +F:     arch/riscv/kernel/qos/
-> +
->  RISC-V RPMI AND MPXY DRIVERS
->  M:     Rahul Pathak <rahul@summations.net>
->  M:     Anup Patel <anup@brainfault.org>
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 6b39f37f769a..35a6238b02c5 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -595,6 +595,23 @@ config RISCV_ISA_SVNAPOT
->
->           If you don't know what to do here, say Y.
->
-> +config RISCV_ISA_SSQOSID
-> +       bool "Ssqosid extension support for supervisor mode Quality of Se=
-rvice ID"
-> +       default y
-> +       help
-> +         Adds support for the Ssqosid ISA extension (Supervisor-mode
-> +         Quality of Service ID).
-> +
-> +         Ssqosid defines the srmcfg CSR which allows the system to tag t=
-he
-> +         running process with an RCID (Resource Control ID) and MCID
-> +         (Monitoring Counter ID). The RCID is used to determine resource
-> +         allocation. The MCID is used to track resource usage in event
-> +         counters.
-> +
-> +         For example, a cache controller may use the RCID to apply a
-> +         cache partitioning scheme and use the MCID to track how much
-> +         cache a process, or a group of processes, is using.
-> +
->  config RISCV_ISA_SVPBMT
->         bool "Svpbmt extension support for supervisor mode page-based mem=
-ory types"
->         depends on 64BIT && MMU
-> diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
-> index 4a37a98398ad..2590b89b8f72 100644
-> --- a/arch/riscv/include/asm/csr.h
-> +++ b/arch/riscv/include/asm/csr.h
-> @@ -75,6 +75,13 @@
->  #define SATP_ASID_MASK _AC(0xFFFF, UL)
->  #endif
->
-> +/* SRMCFG fields */
-> +#define SRMCFG_RCID_MASK       _AC(0x00000FFF, UL)
-> +#define SRMCFG_MCID_MASK       SRMCFG_RCID_MASK
-> +#define SRMCFG_MCID_SHIFT      16
-> +#define SRMCFG_MASK            ((SRMCFG_MCID_MASK << SRMCFG_MCID_SHIFT) =
-| \
-> +                                 SRMCFG_RCID_MASK)
-> +
->  /* Exception cause high bit - is an interrupt if set */
->  #define CAUSE_IRQ_FLAG         (_AC(1, UL) << (__riscv_xlen - 1))
->
-> @@ -317,6 +324,7 @@
->  #define CSR_STVAL              0x143
->  #define CSR_SIP                        0x144
->  #define CSR_SATP               0x180
-> +#define CSR_SRMCFG             0x181
->
->  #define CSR_STIMECMP           0x14D
->  #define CSR_STIMECMPH          0x15D
-> diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/=
-processor.h
-> index da5426122d28..183c55e32b96 100644
-> --- a/arch/riscv/include/asm/processor.h
-> +++ b/arch/riscv/include/asm/processor.h
-> @@ -122,6 +122,9 @@ struct thread_struct {
->         /* A forced icache flush is not needed if migrating to the previo=
-us cpu. */
->         unsigned int prev_cpu;
->  #endif
-> +#ifdef CONFIG_RISCV_ISA_SSQOSID
-> +       u32 srmcfg;
-> +#endif
->  };
->
->  /* Whitelist the fstate from the task_struct for hardened usercopy */
-> diff --git a/arch/riscv/include/asm/qos.h b/arch/riscv/include/asm/qos.h
-> new file mode 100644
-> index 000000000000..84830d7c6dc4
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/qos.h
-> @@ -0,0 +1,41 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_RISCV_QOS_H
-> +#define _ASM_RISCV_QOS_H
-> +
-> +#ifdef CONFIG_RISCV_ISA_SSQOSID
-> +
-> +#include <linux/sched.h>
-> +#include <linux/jump_label.h>
-> +
-> +#include <asm/barrier.h>
-> +#include <asm/csr.h>
-> +#include <asm/hwcap.h>
-> +
-> +/* cached value of srmcfg csr for each cpu */
-> +DECLARE_PER_CPU(u32, cpu_srmcfg);
-> +
-> +static inline void __switch_to_srmcfg(struct task_struct *next)
-> +{
-> +       u32 *cpu_srmcfg_ptr =3D this_cpu_ptr(&cpu_srmcfg);
-> +       u32 thread_srmcfg;
-> +
-> +       thread_srmcfg =3D READ_ONCE(next->thread.srmcfg);
-> +
-> +       if (thread_srmcfg !=3D *cpu_srmcfg_ptr) {
-> +               *cpu_srmcfg_ptr =3D thread_srmcfg;
-> +               csr_write(CSR_SRMCFG, thread_srmcfg);
-> +       }
-> +}
-> +
-> +static __always_inline bool has_srmcfg(void)
-> +{
-> +       return riscv_has_extension_unlikely(RISCV_ISA_EXT_SSQOSID);
-> +}
-> +
-> +#else /* ! CONFIG_RISCV_ISA_SSQOSID  */
-> +
-> +static __always_inline bool has_srmcfg(void) { return false; }
-> +#define __switch_to_srmcfg(__next) do { } while (0)
-> +
-> +#endif /* CONFIG_RISCV_ISA_SSQOSID */
-> +#endif /* _ASM_RISCV_QOS_H */
-> diff --git a/arch/riscv/include/asm/switch_to.h b/arch/riscv/include/asm/=
-switch_to.h
-> index 0e71eb82f920..a684a3795d3d 100644
-> --- a/arch/riscv/include/asm/switch_to.h
-> +++ b/arch/riscv/include/asm/switch_to.h
-> @@ -14,6 +14,7 @@
->  #include <asm/processor.h>
->  #include <asm/ptrace.h>
->  #include <asm/csr.h>
-> +#include <asm/qos.h>
->
->  #ifdef CONFIG_FPU
->  extern void __fstate_save(struct task_struct *save_to);
-> @@ -119,6 +120,8 @@ do {                                                 =
-       \
->                 __switch_to_fpu(__prev, __next);        \
->         if (has_vector() || has_xtheadvector())         \
->                 __switch_to_vector(__prev, __next);     \
-> +       if (has_srmcfg())                               \
-> +               __switch_to_srmcfg(__next);     \
->         if (switch_to_should_flush_icache(__next))      \
->                 local_flush_icache_all();               \
->         __switch_to_envcfg(__next);                     \
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index f60fce69b725..a3c36d18145c 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -125,3 +125,5 @@ obj-$(CONFIG_ACPI)          +=3D acpi.o
->  obj-$(CONFIG_ACPI_NUMA)        +=3D acpi_numa.o
->
->  obj-$(CONFIG_GENERIC_CPU_VULNERABILITIES) +=3D bugs.o
-> +
-> +obj-$(CONFIG_RISCV_ISA_SSQOSID) +=3D qos/
-> diff --git a/arch/riscv/kernel/qos/Makefile b/arch/riscv/kernel/qos/Makef=
-ile
-> new file mode 100644
-> index 000000000000..9f996263a86d
-> --- /dev/null
-> +++ b/arch/riscv/kernel/qos/Makefile
-> @@ -0,0 +1,2 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +obj-$(CONFIG_RISCV_ISA_SSQOSID) +=3D qos.o
-> diff --git a/arch/riscv/kernel/qos/qos.c b/arch/riscv/kernel/qos/qos.c
-> new file mode 100644
-> index 000000000000..7b06f7ae9056
-> --- /dev/null
-> +++ b/arch/riscv/kernel/qos/qos.c
-> @@ -0,0 +1,5 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <asm/qos.h>
-> +
-> +/* cached value of sqoscfg csr for each cpu */
-> +DEFINE_PER_CPU(u32, cpu_srmcfg);
->
-> --
-> 2.43.0
->
-
-Thanks,
-Yunhui
+Regards,
+Christian.
 
