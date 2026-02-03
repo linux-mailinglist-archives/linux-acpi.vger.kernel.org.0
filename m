@@ -1,215 +1,214 @@
-Return-Path: <linux-acpi+bounces-20839-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20840-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCvrN/NTgmliSQMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20839-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Feb 2026 21:00:51 +0100
+	id uJRPMaJZgmliSwMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20840-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Feb 2026 21:25:06 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A449DE541
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Feb 2026 21:00:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCC6DE767
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Feb 2026 21:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F792306778C
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Feb 2026 20:00:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9917A3038F20
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Feb 2026 20:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CA42DF6F8;
-	Tue,  3 Feb 2026 20:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABAC36D51E;
+	Tue,  3 Feb 2026 20:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vgjzg0JC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUsGp35S"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3CC13AA2D;
-	Tue,  3 Feb 2026 20:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CC936D4FC
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Feb 2026 20:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770148844; cv=none; b=VTaTowldsH19nTwlcdGcBHm5tn0GHNnIRHYv8OauIW2p6kjWa6RKXl8MRikISF+5TCVPdt2PCSaERHQHAWb05tENE1RgUGtSBajuoScSvxULA9gBd++wBuECMgPu4YJFdksZyrwefsfg779hZAMMs+L/Kizn76JT8S4t7jjnuuU=
+	t=1770150302; cv=none; b=kIHOO5msmZqWD+8sGk3S79LlloUNkGalC7Wo+3CYNV/y3h8ZqDTSOhWC/GWm3OaRbkgk8M9/vizp0RfE6qJLKxdENBA4ZB/zVwWk/MjLHvV2eVEhzPbI/CVOTsbv113C0GPhI/j00YKmCdun4eiFzMwtUdF2hjFgDew2Z0XlMQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770148844; c=relaxed/simple;
-	bh=eKNCgEBO6pJ63QzdwEPsSvrcDi0qCByDuzz0mMYiFKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HOUuNZHcvji/CV3LH3bMZzI3y/fNU0q4Zt0RPdno6CyxX9OJEKa04xqfoo4KnWRht67cgRLe+DqIFeOssyz/S75HEJ4KZjQn+MsPy/sNX8uHVkkHtULMY4ZlfC+tFe9Dn0opcNtwY0oGn1EiPjJACgTL//q9favZ1G7k1NZpdag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vgjzg0JC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C604C116D0;
-	Tue,  3 Feb 2026 20:00:43 +0000 (UTC)
+	s=arc-20240116; t=1770150302; c=relaxed/simple;
+	bh=BTjXD26SYyc+9FHq9itXaZBWEZ5WY9RIwmpBHoxp8hU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sNgFwKleunPqsljOSdFgbOHkX98J/DqHgPCScmcoyCMvQpivBTvg+GOYX6Y5uc3o6Cuk2wgcFOAgrgbK2mcDPv+Ah/WPu465rTbNg5BhIs7cx8QTG8kGnTH4pajw8+3W1cVzI8R9OQ/FuQa43a9160trbeOXCWSo8CORgl1SALU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUsGp35S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536FBC2BCB2
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Feb 2026 20:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770148843;
-	bh=eKNCgEBO6pJ63QzdwEPsSvrcDi0qCByDuzz0mMYiFKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vgjzg0JCTwi6+FOUDOBQKyIoi3VkM882ESZIcy/MG2dCcCJs9Ai4arJyd0ixH8v7m
-	 S7It/2f7BM11O0G7UWgPil4+56euEY5wTzKUXrz/IXiLRouE1vxXoSrSuYg+QRj5Zt
-	 9ltn3owIlgdSX0rys2mVxyHescG6B/LRC7Lmaam45gPO9xj3d1bdmLcdCDhiSADNL2
-	 777RTr+vSdumMGGFRngZI+TZ2HzwitiZbd3y7h8kX34Snxiisu/uiy5mP4W1V0Brac
-	 ComsQ4qzNb+IUiacCvJBGtYNo7CMxAg39nNbwHdAOyUksePbGrCtKaJZG2ODB6B90l
-	 i/ejsWPrZKCag==
-Date: Tue, 3 Feb 2026 12:00:42 -0800
-From: Drew Fustini <fustini@kernel.org>
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Adrien Ricciardi <aricciardi@baylibre.com>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	Kornel =?utf-8?Q?Dul=C4=99ba?= <mindal@semihalf.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Vasudevan Srinivasan <vasu@rivosinc.com>,
-	Ved Shanbhogue <ved@rivosinc.com>,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Weiwei Li <liwei1518@gmail.com>, guo.wenjia23@zte.com.cn,
-	liu.qingtao2@zte.com.cn,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Tony Luck <tony.luck@intel.com>, Babu Moger <babu.moger@amd.com>,
-	Peter Newman <peternewman@google.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	James Morse <james.morse@arm.com>, Ben Horgan <ben.horgan@arm.com>,
-	Dave Martin <Dave.Martin@arm.com>, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, x86@kernel.org,
-	Rob Herring <robh@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [External] [PATCH RFC v2 16/17] acpi: riscv: Parse RISC-V
- Quality of Service Controller (RQSC) table
-Message-ID: <aYJT6pjtWZIUBc1J@x1>
-References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
- <20260128-ssqosid-cbqri-v2-16-dca586b091b9@kernel.org>
- <CAEEQ3wnAqSFUhezyUmJQut8eXThGJ1zxtdNTbFtJusyDstgVUg@mail.gmail.com>
+	s=k20201202; t=1770150302;
+	bh=BTjXD26SYyc+9FHq9itXaZBWEZ5WY9RIwmpBHoxp8hU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GUsGp35Sih8cc0hh9rnacnQMEoFDWdpsvnIBcCFeBHdBBqAQPw+YTr2jjbfYVaO+h
+	 J/bK73vgxdViQE6PON0ys/JULJi5X4bGSWwF5zKnX3ug8S87ROi5PEZh5RNi+fMCn/
+	 r8W7Nw4dzs93zCnKROoHmLncCE4KuZ6mZdbDBDAt7Pd5N8HUzBuZM53SwlIxD5LaZh
+	 dSowLOD7wEcpubBwWnWssw4nxf6KFtfPnZYgSan+qXuXSa9vWBzKy+IUy+kixMIqyI
+	 pA1S9YAWQNlT5cabsw2sWf5MfzrxAfNxNiRXbXpVmtSCXY6vO+RyjAltUCKGB+N3RF
+	 8H5SFKwKvUESg==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-45c733ccc32so3839751b6e.0
+        for <linux-acpi@vger.kernel.org>; Tue, 03 Feb 2026 12:25:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXG8z/aIN7hW3Pu2X7bp+wpe4/NuTKQ4kRnhzBmwrVy0tDmwhuJHtQG2lowcfEYTJC3aVeWFdkyQQDv@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8Ru5LnfOaj/T/he/nJ5gZHtnmj13Rv42yZgVmZLo8e/e+fUQn
+	tBDO9sj4H9pB58C+jR1LSx2HGmSjXSsAH6JL6qso3JM5objVnfJ9EIQiMB5mkrfh1kaL4u3LHda
+	t7G0llQOhySSR6yo9a0pfNVw0TpsARgk=
+X-Received: by 2002:a05:6808:1905:b0:45c:8bc0:fcdf with SMTP id
+ 5614622812f47-462d588335bmr361499b6e.10.1770150301081; Tue, 03 Feb 2026
+ 12:25:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wnAqSFUhezyUmJQut8eXThGJ1zxtdNTbFtJusyDstgVUg@mail.gmail.com>
+References: <20260129104817.3752340-1-sumitg@nvidia.com> <20260129104817.3752340-5-sumitg@nvidia.com>
+ <4432fa04-e67c-422a-aae4-2938be431985@huawei.com> <c96312c7-b13f-4f5c-9512-cc0382c1c77b@nvidia.com>
+ <74f3e6cf-7c13-43e6-a8f6-2b46184b8ad6@gmail.com> <944fc140-e5c5-425f-a6ad-883e87eed8a3@nvidia.com>
+ <CAJZ5v0hUdLsh8UK5G6rHHD49RQGYLAiU1J-11DK-fLTKnuqhUQ@mail.gmail.com>
+ <CAJZ5v0ggzD0PEti-r20Sm-8n0gPigPh=NgE2Oa=UKzMmwB0jpw@mail.gmail.com> <211d9dfa-26e6-4fc3-b70b-f5fbca49e5fd@nvidia.com>
+In-Reply-To: <211d9dfa-26e6-4fc3-b70b-f5fbca49e5fd@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 3 Feb 2026 21:24:50 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0if=tMiyLB-efkzB67SniJS-2pCVv1-eN+vzZxqrdAM8Q@mail.gmail.com>
+X-Gm-Features: AZwV_QjXaHsQZ2uAWLZvX1hT_RYnLifph_oQl3U2gGF9mLZZdm4jux8kCljAbGs
+Message-ID: <CAJZ5v0if=tMiyLB-efkzB67SniJS-2pCVv1-eN+vzZxqrdAM8Q@mail.gmail.com>
+Subject: Re: [PATCH v7 4/7] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Russell Haley <yumpusamongus@gmail.com>, 
+	"zhenglifeng (A)" <zhenglifeng1@huawei.com>, pierre.gondois@arm.com, viresh.kumar@linaro.org, 
+	ionela.voinescu@arm.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com, 
+	perry.yuan@amd.com, zhanjie9@hisilicon.com, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, 
+	vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com, 
+	nhartman@nvidia.com, bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20839-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20840-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,huawei.com,arm.com,linaro.org,lwn.net,infradead.org,amd.com,hisilicon.com,vger.kernel.org,lists.linux.dev,nvidia.com];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[41];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fustini@kernel.org,linux-acpi@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A449DE541
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 7CCC6DE767
 X-Rspamd-Action: no action
 
-On Mon, Feb 02, 2026 at 07:08:48PM +0800, yunhui cui wrote:
-> Hi Drew,
-> 
-> On Thu, Jan 29, 2026 at 4:28 AM Drew Fustini <fustini@kernel.org> wrote:
+On Tue, Feb 3, 2026 at 3:32=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wrot=
+e:
+>
+>
+> On 03/02/26 18:24, Rafael J. Wysocki wrote:
+> > External email: Use caution opening links or attachments
 > >
-> > Add driver to parse the ACPI RISC-V Quality of Service Controller (RQSC)
-> > table which describes the capacity and bandwidth QoS controllers in a
-> > system. The QoS controllers implement the RISC-V Capacity and Bandwidth
-> > Controller QoS Register Interface (CBQRI) specification.
 > >
-> > Link: https://github.com/riscv-non-isa/riscv-cbqri/releases/tag/v1.0
-> > Link: https://github.com/riscv-non-isa/riscv-rqsc/blob/main/src/
-> > Signed-off-by: Drew Fustini <fustini@kernel.org>
-> > ---
-> >  MAINTAINERS                   |   1 +
-> >  arch/riscv/include/asm/acpi.h |  10 ++++
-> >  drivers/acpi/riscv/Makefile   |   2 +-
-> >  drivers/acpi/riscv/rqsc.c     | 112 ++++++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 124 insertions(+), 1 deletion(-)
+> > On Tue, Feb 3, 2026 at 1:45=E2=80=AFPM Rafael J. Wysocki <rafael@kernel=
+.org> wrote:
+> >> On Tue, Feb 3, 2026 at 10:41=E2=80=AFAM Sumit Gupta <sumitg@nvidia.com=
+> wrote:
+> >>>>>> Hi Sumit,
+> >>>>>>
+> >>>>>> I am thinking that maybe it is better to call these two sysfs inte=
+rface
+> >>>>>> 'min_freq' and 'max_freq' as users read and write khz instead of r=
+aw
+> >>>>>> value.
+> >>>>> Thanks for the suggestion.
+> >>>>> Kept min_perf/max_perf to match the CPPC register names
+> >>>>> (MIN_PERF/MAX_PERF), making it clear to users familiar with
+> >>>>> CPPC what's being controlled.
+> >>>>> The kHz unit is documented in the ABI.
+> >>>>>
+> >>>>> Thank you,
+> >>>>> Sumit Gupta
+> >>>> On my x86 machine with kernel 6.18.5, the kernel is exposing raw val=
+ues:
+> >>>>
+> >>>>> grep . /sys/devices/system/cpu/cpu0/acpi_cppc/*
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/feedback_ctrs:ref:34290401885=
+6568
+> >>>> del:437439724183386
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/guaranteed_perf:63
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf:88
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq:0
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf:36
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf:1
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq:3900
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf:62
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf:62
+> >>>> /sys/devices/system/cpu/cpu0/acpi_cppc/wraparound_time:1844674407370=
+9551615
+> >>>>
+> >>>> It would be surprising for a nearby sysfs interface with very simila=
+r
+> >>>> names to use kHz instead.
+> >>>>
+> >>>> Thanks,
+> >>>>
+> >>>> Russell Haley
+> >>> I can rename to either of the below:
+> >>> - min/max_freq: might be confused with scaling_min/max_freq.
+> >>> - min/max_perf_freq: keeps the CPPC register association clear.
+> >>>
+> >>> Rafael, Any preferences here?
+> >> On x86 the units in CPPC are not kHz and there is no easy reliable way
+> >> to convert them to kHz.
+> >>
+> >> Everything under /sys/devices/system/cpu/cpu0/acpi_cppc/ needs to be
+> >> in CPPC units, not kHz (unless, of course, kHz are CPPC units).
+>
+>
+> In v1 [1], these controls were added under acpi_cppc sysfs.
+> After discussion, they were moved under cpufreq, and [2] was merged first=
+.
+> The decision to use frequency scale instead of raw perf was made
+> for consistency with other cpufreq interfaces as per (v3 [3]).
+>
+> CPPC units in our case are also not in kHz. The kHz conversion uses the
+> existing cppc_perf_to_khz()/cppc_khz_to_perf() helpers which are already
+> used in cppc_cpufreq attributes. So the conversion behavior is consistent
+> with existing cpufreq interfaces.
+>
+> [1]
+> https://lore.kernel.org/lkml/076c199c-a081-4a7f-956c-f395f4d5e156@nvidia.=
+com/
+> [2]
+> https://lore.kernel.org/all/20250507031941.2812701-1-zhenglifeng1@huawei.=
+com/
+> [3]
+> https://lore.kernel.org/lkml/80e16de0-63e4-4ead-9577-4ebba9b1a02d@nvidia.=
+com/
+>
+> > That said, the new attributes will show up elsewhere.
 > >
-[..]
-> > +int acpi_parse_rqsc(struct acpi_table_header *table)
-> > +{
-> > +       struct acpi_table_rqsc *rqsc;
-> > +       int err;
-> > +
-> > +       BUG_ON(acpi_disabled);
-> > +       if (!table) {
-> > +               rqsc = acpi_get_rqsc();
-> > +               if (!rqsc)
-> > +                       return -ENOENT;
-> > +       } else {
-> > +               rqsc = (struct acpi_table_rqsc *)table;
-> > +       }
-> > +
-> > +       for (int i = 0; i < rqsc->num; i++) {
-> > +               struct cbqri_controller_info *ctrl_info;
-> > +
-> > +               ctrl_info = kzalloc(sizeof(*ctrl_info), GFP_KERNEL);
-> > +               if (!ctrl_info)
-> > +                       return -ENOMEM;
-> > +
-> > +               ctrl_info->type = rqsc->f[i].type;
-> > +               ctrl_info->addr = rqsc->f[i].reg[1];
-> > +               ctrl_info->size = CBQRI_CTRL_SIZE;
-> > +               ctrl_info->rcid_count = rqsc->f[i].rcid;
-> > +               ctrl_info->mcid_count = rqsc->f[i].mcid;
-> > +
-> > +               pr_info("Found controller with type %u addr 0x%lx size  %lu rcid  %u mcid  %u",
-> > +                       ctrl_info->type, ctrl_info->addr, ctrl_info->size,
-> > +                       ctrl_info->rcid_count, ctrl_info->mcid_count);
-> > +
-> > +               if (ctrl_info->type == CBQRI_CONTROLLER_TYPE_CAPACITY) {
-> > +                       ctrl_info->cache.cache_id = rqsc->f[i].res.id1;
-> > +                       ctrl_info->cache.cache_level =
-> > +                               find_acpi_cache_level_from_id(ctrl_info->cache.cache_id);
-> > +
-> > +                       struct acpi_pptt_cache *cache;
-> > +
-> > +                       cache = find_acpi_cache_from_id(ctrl_info->cache.cache_id);
-> > +                       if (cache) {
-> > +                               ctrl_info->cache.cache_size = cache->size;
-> > +                       } else {
-> > +                               pr_warn("%s(): failed to determine size for cache id 0x%x",
-> > +                                       __func__, ctrl_info->cache.cache_id);
-> > +                               ctrl_info->cache.cache_size = 0;
-> > +                       }
-> > +
-> > +                       pr_info("Cache controller has ID 0x%x level %u size %u ",
-> > +                               ctrl_info->cache.cache_id, ctrl_info->cache.cache_level,
-> > +                               ctrl_info->cache.cache_size);
-> > +
-> > +                       /*
-> > +                        * For CBQRI, any cpu (technically a hart in RISC-V terms)
-> > +                        * can access the memory-mapped registers of any CBQRI
-> > +                        * controller in the system.
-> > +                        */
-> > +                       err = cpumask_parse("FF", &ctrl_info->cache.cpu_mask);
-> 
-> Hardcode? acpi_pptt_get_cpumask_from_cache_id(ctrl_info->cache.cache_id,
-> &ctrl_info->cache.cpu_mask); ?
+> > So why do you need to add these things in the first place?
+>
+> Currently there's no sysfs interface to dynamically control the
+> MIN_PERF/MAX_PERF bounds when using autonomous mode. This helps
+> users tune power and performance at runtime.
 
-Thanks, I will give that a try as the current value 0xFF is not flexible.
+So what about scaling_min_freq and scaling_max_freq?
 
-Drew
+intel_pstate uses them for an analogous purpose.
 
