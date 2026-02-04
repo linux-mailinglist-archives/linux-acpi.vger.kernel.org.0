@@ -1,193 +1,267 @@
-Return-Path: <linux-acpi+bounces-20850-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20851-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFLkA74bg2l/hwMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20850-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Feb 2026 11:13:18 +0100
+	id EFAeJ8VEg2nqkgMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20851-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Feb 2026 14:08:21 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BF7E4525
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Feb 2026 11:13:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B15E62EE
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Feb 2026 14:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DEE633008D62
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Feb 2026 10:13:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAC883031810
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Feb 2026 13:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B394C3D6677;
-	Wed,  4 Feb 2026 10:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9B93F077F;
+	Wed,  4 Feb 2026 13:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aOOwuMYV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="G2+4yvK7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+o1V0p+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9593D666F
-	for <linux-acpi@vger.kernel.org>; Wed,  4 Feb 2026 10:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0673876D2
+	for <linux-acpi@vger.kernel.org>; Wed,  4 Feb 2026 13:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770199995; cv=none; b=fcmcTVDbI+QpLEBl3LNFvBz+Y55QYWwL46zRTuB4GLYqVKp8m5GasQiJs5S60T4JM0vX4pOJyq56RgqaIJhplX5Ddq6x/JYYQVNPK4f0uZi7HfEvVb7o6vrQnSXtOTf+K7hkcq48KIEMPQmcDWjXqz7SXDzyy0DrWqmCofsBtcI=
+	t=1770210164; cv=none; b=TfMMO6hMrAaj3gW3X4xN6r6ThnAVLMwKhT2o5bgdagQ2j2gsO9Zw6C/USomq0L48pRxeQP+VUhOyLBWlI3vcLX1x7mrmOoieWqP3fe97VDPBCRQoXak3ev0LabXISSPzgiYEZlWvV5c90KX8/O9Y1+r3GE5ir5wz4NYQlU3eSUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770199995; c=relaxed/simple;
-	bh=hSr+3DkhuTBLC1ZfqOWGzt2/OnptmSjLzpO3fr14naQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s3XXSul6nFoupIQqTEl2xrzc44pcBDtbSmIOI5uC5BH9f0lPRFCyMm1Hl2raD8QrM4XKcAtRkh4nwJd1c3Um/Eel6wlGYJZMya++8s+BLYMUies+bUvnsc/yDp5Axdpwi3NEYEK56wprXOWekbkWaozUJ0eha6ti5AMod6XSy7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aOOwuMYV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=G2+4yvK7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6147EW29012510
-	for <linux-acpi@vger.kernel.org>; Wed, 4 Feb 2026 10:13:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	L/6g19zllu1CyIYxIc77Lzd8D+AGpB8pGSv9LnXDuYk=; b=aOOwuMYV/1/46lOw
-	GQawbMvilp5VR/6MtoI4Wx/s321mybbUro8tybOtgBfWhRD/6GYUo5cHq4buEnAM
-	gGarvBYOWsPlzewaEhvhCsM9QslWokn40VxCE9eWJ9WGDkrkDIjETfGEPtj/0wMS
-	ObmFlxXuUm3RYP9Y7trlnVHtQx0G4ns4oUh02YOLtSNWNNC75y2G6rgCL1wMqBjy
-	tD+m4w2JkfhTw0JWLcKjysIqf1W2zuw5B8/lzMeDYf9tvTvStLaQlCo07E2DtK7M
-	KuQDTZCCrshexvheDHoOT4yE57uSG/g4QdYVPI+FtTYBkk2oqpWRjkRRuTzZ2Nur
-	jk61Sg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c3h07kwhy-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Wed, 04 Feb 2026 10:13:14 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c52f07fbd0so2943077485a.2
-        for <linux-acpi@vger.kernel.org>; Wed, 04 Feb 2026 02:13:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770199994; x=1770804794; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L/6g19zllu1CyIYxIc77Lzd8D+AGpB8pGSv9LnXDuYk=;
-        b=G2+4yvK76fLeruHloPrkZgEb7S9i+vbtP3N4N88XklKlhZk9FORAc9wtorfAlffnKK
-         12GNo9/xRtQ3CYFzNgdWK+jTyGnsqCK/4Fy+MhePyntAMWTZ35hq5i6KWc6Ndw4oj12y
-         HyXxJU2U4u3063mXodr86vF4rJK8Ozxlf2bGS4j873BXSotvA3O9dkmljlQwXLJjFjK6
-         xF/a3u+jd/woqcZcEx/fYNVVZpqnA8yW7llQ3WkVHlNYwJj4ngdLEV4a1Uzsjn843H3+
-         uZLLjaIcnPIBJZX5pYqI5xZuhO1TzU5kT4CxDcUEmL7IAcV0eYKICmJ9zeBBDk6MWc0y
-         p9cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770199994; x=1770804794;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=L/6g19zllu1CyIYxIc77Lzd8D+AGpB8pGSv9LnXDuYk=;
-        b=JV87yeOSGcdn44z66Iz94fb52ATliMiqGwqtevcM2zSipS0yamDoPJ2hidGHazM4/n
-         WcoEU6xE3iK/jGs3TfTOAEM9LFnMCkW/PuRGwiPdXACk/X0V6nPcWZUViiUi6l3KhxRn
-         Tu08Kph/URcUFhQRgezELDSgIGhuaNmU27QAhgUpA/LGKvJ/JzNAIJVVyPUwV+/bH1KK
-         wZrzc//0cqw1g9lQmR5TqWFlnimAwYnvYICXb0xD8efFWXKiAw+3OZNDMm90KhxCPNfa
-         m14VTN90BWDmBCIxJ2rW5ueBr5jcmeSIePelkD2KCBzcGflYi1eruk7Av+QlggBha4IY
-         HQzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWyUBNugNAvZf7VsGeGeOc0KmN6rriMheEBjL0fIwLt7ertd26J3CjzgQUyK4rlh63garzOpT6vVv7o@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/XY4gXQXkeBBbz+ohLpo7oGXeO2MKlSlcEbaZUXF8vA0QJjhS
-	wAGjO0cmyXK34z4wjnEGz8TYZ6oUPmK7uUjIg2lc4W9esB5cEpTGqsYV36JK6Pk6D+DTp09hhM9
-	u1b81Xg244zWqgPnKGA4Dxx3xrNIJImiisWMtrmqQLVw5DwUxZB3FH/bw6gGkzPIdfnmbUWOV
-X-Gm-Gg: AZuq6aLXesnfBQlWaESmeHjklDODim0gM/5ankyV315lvOF1QtrOIiSZsRxRzesWRJg
-	4geMKN4GQwd4ltSLaDIVeXer82QcKfIivgxS/ckLhRkSpkd7PF/KoictpGPidwg6m9paOIWvaey
-	NkMnvaMZds4EdpPEtIl3OOw3lNlE6+IlwTikEJ1PerCOOtCNazOKPMrjuLGl65rfZEzG7L5nCUK
-	8ri9FM0A/u/+qfLgsRrP/ln3DC9fgF/tZjJQUqkhaj54AdIitydIH8VRNe89d5rOwjvTLj+Zu3C
-	B2kXddkV8PRp2NrzGjYDqAQhbVMz9AxgFG1hWHWSKjyJlR9qox5TlaMZ6fRTn/FO/6G/iPk+1kZ
-	dsEsrMZh3XDWQK1BWF8wHGcc42QE2sQngytK7
-X-Received: by 2002:a05:620a:4506:b0:8bb:1a5b:5a47 with SMTP id af79cd13be357-8ca2f807305mr315918685a.17.1770199993744;
-        Wed, 04 Feb 2026 02:13:13 -0800 (PST)
-X-Received: by 2002:a05:620a:4506:b0:8bb:1a5b:5a47 with SMTP id af79cd13be357-8ca2f807305mr315915785a.17.1770199993209;
-        Wed, 04 Feb 2026 02:13:13 -0800 (PST)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:fcc2:cae:2a7f:59c6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4361805f25dsm5575037f8f.29.2026.02.04.02.13.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 02:13:12 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: linux-gpio@vger.kernel.org, Alban Bedel <alban.bedel@lht.dlh.de>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        Mika Westerberg <westeri@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linusw@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gpiolib: acpi: Fix gpio count with string references
-Date: Wed,  4 Feb 2026 11:13:11 +0100
-Message-ID: <177019998811.9840.13337538910664862668.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260129145944.3372777-1-alban.bedel@lht.dlh.de>
-References: <20260129145944.3372777-1-alban.bedel@lht.dlh.de>
+	s=arc-20240116; t=1770210164; c=relaxed/simple;
+	bh=I+ebxz3GapT/F42T4+CxRemWso5iJAqp78kDiVsXGsA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f2FA3PVgm3okMJA0t6gNYNgUm+VCrc9fECr+HWd3RNr8z3lpOju7tqRBq+tgPvlCQF7gzVQqq2PpZQBRlPJPZ6xR1V/DgOTgdrfv1FmnPXtpLJRvhnlHMMjqCwT64zQYzqgG3uBhCnrovAA+TEROUK+GZmieJ8euColF4bkvLkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+o1V0p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A64C2BCB3
+	for <linux-acpi@vger.kernel.org>; Wed,  4 Feb 2026 13:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770210163;
+	bh=I+ebxz3GapT/F42T4+CxRemWso5iJAqp78kDiVsXGsA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=A+o1V0p+UV4zad/pXOSvyYXpJryJxwHncAa0iJHbGVWU8b7xM+oGjpHHgkmLCKxWO
+	 9KGc5KfTqs8qEGPXEDk2tqd/ItLmH7BkRwURbhD2H5OBTJh82HL1muVPAwNVqsXhmj
+	 nlJyeVMbNnXbna6n9Z+j2iDMGo//gQyj0AuLp6A/c6FX6b5Jygb3T6pH9CNmxJ+57E
+	 dQ/3yi7H8tam/sNyx6uLPCtUSx3xmUFgMRnKxXdi88hPkfswdxJMGyl84jvL+b4VwQ
+	 FfnlV91MOYhmDfzZfPowo91F51d5Xk7B1vkLagaNkrvB0qpZMsO9TB9UnePFyKJp6r
+	 Q8cGSthK33Lnw==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-40438e0cba6so4520205fac.1
+        for <linux-acpi@vger.kernel.org>; Wed, 04 Feb 2026 05:02:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWieiWdtyb2rgYQl62gfJ/NrwNTx/aDfzRQ8HxqjKFQ3LIxR5VUJUIMDyxocjbV/uBsvvRqbkHXtM3q@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrS/NAr1ruD6HjeTbZaqhT0SkjdEJ15Nac0xbSoWQzpBjATMCn
+	Fda7g+NCxrv7124D9uzFSkZpDebQSTwIL9ZQ0X83i8qDKiY4Lw4IEKV5EIhKpr9vkAvDfG+b0vH
+	O4OqeB6z9FHLmw9bSBu4s+yvGjGRUL4A=
+X-Received: by 2002:a4a:e906:0:b0:659:9a49:8eb8 with SMTP id
+ 006d021491bc7-66a23432fe4mr1265953eaf.60.1770210162665; Wed, 04 Feb 2026
+ 05:02:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA0MDA3NyBTYWx0ZWRfX5Ok6RZP7hWNC
- KJN6YBVgYg8QFHbZiXnNKQ+pLAJrKcm6mSv5jgSHP3n/tR/qXAq8hOceOJF3Z36mk7XTf3Vl+1A
- 2sRtH0IrJNfIYpl6iFX5JG6onK/UqEc2gdoKhjpiRPPBDn7C2kd8Z6/HuRORuuHkq/UtpBaQnyX
- OkvXeJ2bvDgFCCpg3er2bMkJ0QRkxbUZcwLmd4NEbsHaRNArlluf61niOXjv7uvHWVQYBdWj18o
- f6A4EkdnRpyR0quOZmaLkX40LjLDcg2R+JlepX3AJKiyVyC29vvGRayqmkB0hXlV6nSP8h0KrtB
- RndJbTShRel4drSQJBkXyAe3ZdEyCggre4pzWYC91H17YffC/2BjL64sTS3mjj2N2IMcVXw+W2z
- ySJKVGGYCu9gFkzgUn9jyh8frXWlRRPBUzRo5nmlzLmVibRnyVSSPyrjKwIIg4BFNpm2VlV6vNE
- pqB0z0lVDj5YI5fBjYg==
-X-Authority-Analysis: v=2.4 cv=CMknnBrD c=1 sm=1 tr=0 ts=69831bba cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=NvIUnWIGczD_N1uvXP4A:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: Kf76ICjsXwIuMy37ViA8zqE26jF6hcnL
-X-Proofpoint-GUID: Kf76ICjsXwIuMy37ViA8zqE26jF6hcnL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-04_02,2026-02-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602040077
+References: <20260129104817.3752340-1-sumitg@nvidia.com> <20260129104817.3752340-5-sumitg@nvidia.com>
+ <4432fa04-e67c-422a-aae4-2938be431985@huawei.com> <c96312c7-b13f-4f5c-9512-cc0382c1c77b@nvidia.com>
+ <74f3e6cf-7c13-43e6-a8f6-2b46184b8ad6@gmail.com> <944fc140-e5c5-425f-a6ad-883e87eed8a3@nvidia.com>
+ <CAJZ5v0hUdLsh8UK5G6rHHD49RQGYLAiU1J-11DK-fLTKnuqhUQ@mail.gmail.com>
+ <CAJZ5v0ggzD0PEti-r20Sm-8n0gPigPh=NgE2Oa=UKzMmwB0jpw@mail.gmail.com>
+ <211d9dfa-26e6-4fc3-b70b-f5fbca49e5fd@nvidia.com> <CAJZ5v0if=tMiyLB-efkzB67SniJS-2pCVv1-eN+vzZxqrdAM8Q@mail.gmail.com>
+ <e7570bc3-5420-4743-8a75-8602559ca235@amd.com> <b8603fcb-b0ab-47da-ae90-e82f7b9bcd67@nvidia.com>
+In-Reply-To: <b8603fcb-b0ab-47da-ae90-e82f7b9bcd67@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 4 Feb 2026 14:02:31 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h4yOAW5y-B76EooeBLdMBmmL1hRf3PZ0udA+FYR4EPKQ@mail.gmail.com>
+X-Gm-Features: AZwV_QhCjeh-XYu45P0hnBYAXK49X1-cttxr4eR82FwIbJTI78XtQKvZNdg_NH4
+Message-ID: <CAJZ5v0h4yOAW5y-B76EooeBLdMBmmL1hRf3PZ0udA+FYR4EPKQ@mail.gmail.com>
+Subject: Re: [PATCH v7 4/7] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Russell Haley <yumpusamongus@gmail.com>, "zhenglifeng (A)" <zhenglifeng1@huawei.com>, 
+	pierre.gondois@arm.com, viresh.kumar@linaro.org, ionela.voinescu@arm.com, 
+	corbet@lwn.net, rdunlap@infradead.org, ray.huang@amd.com, 
+	gautham.shenoy@amd.com, perry.yuan@amd.com, zhanjie9@hisilicon.com, 
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, treding@nvidia.com, 
+	jonathanh@nvidia.com, vsethi@nvidia.com, ksitaraman@nvidia.com, 
+	sanjayc@nvidia.com, nhartman@nvidia.com, bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20850-lists,linux-acpi=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,linux-acpi@vger.kernel.org];
+	FREEMAIL_CC(0.00)[amd.com,kernel.org,gmail.com,huawei.com,arm.com,linaro.org,lwn.net,infradead.org,hisilicon.com,vger.kernel.org,lists.linux.dev,nvidia.com];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-20851-lists,linux-acpi=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A4BF7E4525
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 04B15E62EE
 X-Rspamd-Action: no action
 
+On Wed, Feb 4, 2026 at 10:51=E2=80=AFAM Sumit Gupta <sumitg@nvidia.com> wro=
+te:
+>
+>
+> On 04/02/26 01:58, Mario Limonciello wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On 2/3/26 2:24 PM, Rafael J. Wysocki wrote:
+> >> On Tue, Feb 3, 2026 at 3:32=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com>=
+ wrote:
+> >>>
+> >>>
+> >>> On 03/02/26 18:24, Rafael J. Wysocki wrote:
+> >>>> External email: Use caution opening links or attachments
+> >>>>
+> >>>>
+> >>>> On Tue, Feb 3, 2026 at 1:45=E2=80=AFPM Rafael J. Wysocki
+> >>>> <rafael@kernel.org> wrote:
+> >>>>> On Tue, Feb 3, 2026 at 10:41=E2=80=AFAM Sumit Gupta <sumitg@nvidia.=
+com>
+> >>>>> wrote:
+> >>>>>>>>> Hi Sumit,
+> >>>>>>>>>
+> >>>>>>>>> I am thinking that maybe it is better to call these two sysfs
+> >>>>>>>>> interface
+> >>>>>>>>> 'min_freq' and 'max_freq' as users read and write khz instead
+> >>>>>>>>> of raw
+> >>>>>>>>> value.
+> >>>>>>>> Thanks for the suggestion.
+> >>>>>>>> Kept min_perf/max_perf to match the CPPC register names
+> >>>>>>>> (MIN_PERF/MAX_PERF), making it clear to users familiar with
+> >>>>>>>> CPPC what's being controlled.
+> >>>>>>>> The kHz unit is documented in the ABI.
+> >>>>>>>>
+> >>>>>>>> Thank you,
+> >>>>>>>> Sumit Gupta
+> >>>>>>> On my x86 machine with kernel 6.18.5, the kernel is exposing raw
+> >>>>>>> values:
+> >>>>>>>
+> >>>>>>>> grep . /sys/devices/system/cpu/cpu0/acpi_cppc/*
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/feedback_ctrs:ref:34290401=
+8856568
+> >>>>>>>
+> >>>>>>> del:437439724183386
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/guaranteed_perf:63
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf:88
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq:0
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf:36
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf:1
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq:3900
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf:62
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf:62
+> >>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/wraparound_time:1844674407=
+3709551615
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> It would be surprising for a nearby sysfs interface with very
+> >>>>>>> similar
+> >>>>>>> names to use kHz instead.
+> >>>>>>>
+> >>>>>>> Thanks,
+> >>>>>>>
+> >>>>>>> Russell Haley
+> >>>>>> I can rename to either of the below:
+> >>>>>> - min/max_freq: might be confused with scaling_min/max_freq.
+> >>>>>> - min/max_perf_freq: keeps the CPPC register association clear.
+> >>>>>>
+> >>>>>> Rafael, Any preferences here?
+> >>>>> On x86 the units in CPPC are not kHz and there is no easy reliable
+> >>>>> way
+> >>>>> to convert them to kHz.
+> >>>>>
+> >>>>> Everything under /sys/devices/system/cpu/cpu0/acpi_cppc/ needs to b=
+e
+> >>>>> in CPPC units, not kHz (unless, of course, kHz are CPPC units).
+> >>>
+> >>>
+> >>> In v1 [1], these controls were added under acpi_cppc sysfs.
+> >>> After discussion, they were moved under cpufreq, and [2] was merged
+> >>> first.
+> >>> The decision to use frequency scale instead of raw perf was made
+> >>> for consistency with other cpufreq interfaces as per (v3 [3]).
+> >>>
+> >>> CPPC units in our case are also not in kHz. The kHz conversion uses t=
+he
+> >>> existing cppc_perf_to_khz()/cppc_khz_to_perf() helpers which are
+> >>> already
+> >>> used in cppc_cpufreq attributes. So the conversion behavior is
+> >>> consistent
+> >>> with existing cpufreq interfaces.
+> >>>
+> >>> [1]
+> >>> https://lore.kernel.org/lkml/076c199c-a081-4a7f-956c-f395f4d5e156@nvi=
+dia.com/
+> >>>
+> >>> [2]
+> >>> https://lore.kernel.org/all/20250507031941.2812701-1-zhenglifeng1@hua=
+wei.com/
+> >>>
+> >>> [3]
+> >>> https://lore.kernel.org/lkml/80e16de0-63e4-4ead-9577-4ebba9b1a02d@nvi=
+dia.com/
+> >>>
+> >>>
+> >>>> That said, the new attributes will show up elsewhere.
+> >>>>
+> >>>> So why do you need to add these things in the first place?
+> >>>
+> >>> Currently there's no sysfs interface to dynamically control the
+> >>> MIN_PERF/MAX_PERF bounds when using autonomous mode. This helps
+> >>> users tune power and performance at runtime.
+> >>
+> >> So what about scaling_min_freq and scaling_max_freq?
+> >>
+> >> intel_pstate uses them for an analogous purpose.
+> >
+> > FWIW same thing for amd_pstate.
+> >
+>
+> intel_pstate and amd_pstate seem to use setpolicy() to update
+> scaling_min/max_freq and program MIN_PERF/MAX_PERF.
 
-On Thu, 29 Jan 2026 15:59:44 +0100, Alban Bedel wrote:
-> Since commit 9880702d123f2 ("ACPI: property: Support using strings in
-> reference properties") it is possible to use strings instead of local
-> references. This work fine with single GPIO but not with arrays as
-> acpi_gpio_package_count() didn't handle this case. Update it to handle
-> strings like local references to cover this case as well.
-> 
-> 
-> [...]
+That's one possibility.
 
-Applied, thanks!
+intel_pstate has a "cpufreq-compatible" mode (in which case it is
+called intel_cpufreq) and still uses HWP (which is the underlying
+mechanism for CPPC on Intel platforms).
 
-[1/1] gpiolib: acpi: Fix gpio count with string references
-      https://git.kernel.org/brgl/c/c62e0658d458d8f100445445c3ddb106f3824a45
+> However, as discussed in v5 [1], cppc_cpufreq cannot switch to
+> a setpolicy based approach because:
+> - We need per-CPU control of auto_sel: With setpolicy, we can't
+>    dynamically disable auto_sel for individual CPUs and return to the
+>    target() (no target hook available).
+>    intel_pstate and amd_pstate seem to set HW autonomous mode for
+>    all CPUs, not per-CPU.
+> - We need to retain the target() callback - the CPPC spec allows
+>    desired_perf to be used even when autonomous selection is enabled.
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+intel_pstate in the "cpufreq-compatible" mode updates its HWP min and
+max limits when .target() (or .fast_switch() or .adjust_perf()) is
+called.
+
+I guess that would not be sufficient in cppc_cpufreq for some reason?
+
+> [1]
+> https://lore.kernel.org/lkml/66f58f43-631b-40a0-8d42-4e90cd24b757@arm.com=
+/
 
