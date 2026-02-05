@@ -1,90 +1,74 @@
-Return-Path: <linux-acpi+bounces-20869-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20870-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JkXHTvvhGkU6wMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20869-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:27:55 +0100
+	id 0JYTJnDxhGnR6wMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20870-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:37:20 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC4BF6D84
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:27:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AF4F6E25
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2B23301F4AB
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Feb 2026 19:27:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6AE73006020
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Feb 2026 19:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0218B3271E3;
-	Thu,  5 Feb 2026 19:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAD8327C1C;
+	Thu,  5 Feb 2026 19:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Swl6Bhwm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrSZaLCR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D347932694C
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA632264AB
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770319661; cv=none; b=g5DblXo19i0Vtx0ks+hLPRP68tyN5y9Dct+pxVrkIvYedT9ZHEj+5DaCIW7TAapgmiuOl6hoaFb7YN0N7EBCDuLnT68YHOIIJtPzbg2utXiTXcKjb/v1yclryVr1cEpddpKvcrnCtqIysux9byqxTcMoiLjJThOgPzirmf2GRwc=
+	t=1770320234; cv=none; b=J4vAT6jVDn/cssIks93N7i3eysBcvF8lebf0hQ4biKNi3Be5IKYh7DW1/RGtphGKeBuuuBl+zwpnBg4j+Ixgjvfi7nnLJAY8xmGbtWu8LeWa9MMfRtPhFlQczIrHztZvJjJKm2q4SvAabVozLlEuayiHB9FySihicDsuJEWolYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770319661; c=relaxed/simple;
-	bh=lVqH9YXUENR1THUynMSza+9sAUW6necQO2XQfXpawAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BwxJ7LopTXcMXefydxBirWoIz9p60YwAfmu8VM2NGti+dj3p75SOWWwxn9jOAN7InUC0hy8PGO8CdgzdtmGFpFsqMzZqkJo8SxrWdNecwW20+k+/vGcWCsM4yixKaQcj/rdLSU6lKNGz6HJc9sbZYPY3YZ8zdcMvBnIbal9DeXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Swl6Bhwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7CAC2BCB3
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:27:41 +0000 (UTC)
+	s=arc-20240116; t=1770320234; c=relaxed/simple;
+	bh=C35OIlauGBh1KgJmGUKWlvHv4nFK/Uc2SNhDIHEmCh0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZDoHbfeh5uc7meHF27sHMYFhZfhX5lHPcGBjucBt4ZwfDuUg2JvEFUzonk5gDn9YtWK981vrNQFroBz1QXp7RxtmDSbim0XWxHjDBzIo65JkOBvhK7N5Erxavi/SSzevTbR38l9+U8xcMflUScldynj/C4PPTMiAhQHWc3E/uTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrSZaLCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA78C19421
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770319661;
-	bh=lVqH9YXUENR1THUynMSza+9sAUW6necQO2XQfXpawAg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Swl6Bhwm61In1+nItp1x7MaE5aIHKD1M0B8TgOGljboJRPxhQaKAnL6ptkSQ8GimH
-	 2eYkMNQobZ8NhGphqW8y/QLZBx1zJnEnnQocdmRBzbl5fmCihrm1Txusbgz7OYleWK
-	 5AiHzQQqOREwWy3PSqJQGA16W2LPoHaGEpCa9KdrBdYAil8LPwzIQZzBgXLBK+cAbp
-	 0KQQ54mc1ef/JWMTkkMoTXz7M0cnoCkSl86oSjf0P2h3SRz/DO/feMDG9wmFHgWMVt
-	 RgmtVo1qjE+8qpWKqG72RUX7Slj8xQ+ADOHRl/DyOOLHHyOvoTyHG4Vdn9oFmKEgMz
-	 oMF9sVU/GdEAw==
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d122733808so563327a34.2
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Feb 2026 11:27:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW772HX3mt8k7OdvIeSMm5c1K04dRh5Bu1UrLZYeq/ADZKjqCeQjNLVEpFCBdCTyczoWOd5bKGynNDJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcoZUPKNwSGt+0dKafoEqCOjVS4ovWV0Z53+wMi+YmSeHrMSDf
-	aUstMSo2DG6wBXIUQCeOKBhRCUj70PH2uOQrV6ASauUBqnvF6jGGf5RkJBTerLm6XW9X5k+rTga
-	ydKhInYbYdkRzIOenADmvqf3JbnIpvdQ=
-X-Received: by 2002:a05:6830:828e:b0:7c5:3c7d:7e65 with SMTP id
- 46e09a7af769-7d4644296ebmr58017a34.16.1770319660609; Thu, 05 Feb 2026
- 11:27:40 -0800 (PST)
+	s=k20201202; t=1770320233;
+	bh=C35OIlauGBh1KgJmGUKWlvHv4nFK/Uc2SNhDIHEmCh0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=YrSZaLCRKvrWpMNWBRN8zixdUMVWIsymyizJMQdseGLMyYKoCt4D8lpDWexFU5WiY
+	 HiLuTXYcfl/pwEAG7VNGGwpsABouolNa5OhShNe5D6voXh/SttxM2CbkKp43J4daiA
+	 6vo/Rko5SkE8qcuIZF6ybRBrkkB/YnWW3LkjTDdGgwepjGJh2KIBYxHCM3UG7P6CQp
+	 edFbnSsRfKIZeFYHQJJiWdMvTJRRRv2iNlc30+LjtnJ92pmqc3khoCK11sC572goHv
+	 zdSE4TH+KxC2e9bQmpdiuAOuX4qrzGxqKqvQDSUii53/jEUmaaF+orxkJBmEWec8jI
+	 lTSRO17EVp07g==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6611cab8ca3so817218eaf.3
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Feb 2026 11:37:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW0p2AN8y7UbD7aoalyX8yxouCHlTtehJmiycm+ob52VwZViAY/QBKOG6HMw8oE/i08wiKynBsGZOF+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIK0fEZPD9+oYF9n+5S9Z6EzRd/H+U19ZebAiol9NBRdtsd0sE
+	aCaDC2+XtCFQAWZm/UHoH8NtIU+q3MHih6S0zIrJEFo5xdKnCR9UQYBS/p7Glhx5wkMtusRViu+
+	HN+uFxFzNG9mQpB83nSjyYwq/MsJdzQM=
+X-Received: by 2002:a05:6820:490e:b0:65d:b36:bdd4 with SMTP id
+ 006d021491bc7-66d09cac7d5mr223330eaf.17.1770320232670; Thu, 05 Feb 2026
+ 11:37:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260129104817.3752340-1-sumitg@nvidia.com> <20260129104817.3752340-5-sumitg@nvidia.com>
- <4432fa04-e67c-422a-aae4-2938be431985@huawei.com> <c96312c7-b13f-4f5c-9512-cc0382c1c77b@nvidia.com>
- <74f3e6cf-7c13-43e6-a8f6-2b46184b8ad6@gmail.com> <944fc140-e5c5-425f-a6ad-883e87eed8a3@nvidia.com>
- <CAJZ5v0hUdLsh8UK5G6rHHD49RQGYLAiU1J-11DK-fLTKnuqhUQ@mail.gmail.com>
- <CAJZ5v0ggzD0PEti-r20Sm-8n0gPigPh=NgE2Oa=UKzMmwB0jpw@mail.gmail.com>
- <211d9dfa-26e6-4fc3-b70b-f5fbca49e5fd@nvidia.com> <CAJZ5v0if=tMiyLB-efkzB67SniJS-2pCVv1-eN+vzZxqrdAM8Q@mail.gmail.com>
- <e7570bc3-5420-4743-8a75-8602559ca235@amd.com> <b8603fcb-b0ab-47da-ae90-e82f7b9bcd67@nvidia.com>
- <CAJZ5v0h4yOAW5y-B76EooeBLdMBmmL1hRf3PZ0udA+FYR4EPKQ@mail.gmail.com> <a1cdc4ee-1aaa-4685-b1a9-a6961a486cd8@nvidia.com>
-In-Reply-To: <a1cdc4ee-1aaa-4685-b1a9-a6961a486cd8@nvidia.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 5 Feb 2026 20:27:29 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jCT5exCOz1gmHN+gXaamn-W0Yg0g8KN77vB5tUmsGFOw@mail.gmail.com>
-X-Gm-Features: AZwV_QjYbWmk9CpFs4_fQbMfpghyGM5juCTPanm_jBC_7JecsACmsCoO-gdsJcQ
-Message-ID: <CAJZ5v0jCT5exCOz1gmHN+gXaamn-W0Yg0g8KN77vB5tUmsGFOw@mail.gmail.com>
-Subject: Re: [PATCH v7 4/7] ACPI: CPPC: add APIs and sysfs interface for min/max_perf
-To: Sumit Gupta <sumitg@nvidia.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Russell Haley <yumpusamongus@gmail.com>, "zhenglifeng (A)" <zhenglifeng1@huawei.com>, 
-	pierre.gondois@arm.com, viresh.kumar@linaro.org, ionela.voinescu@arm.com, 
-	corbet@lwn.net, rdunlap@infradead.org, ray.huang@amd.com, 
-	gautham.shenoy@amd.com, perry.yuan@amd.com, zhanjie9@hisilicon.com, 
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, treding@nvidia.com, 
-	jonathanh@nvidia.com, vsethi@nvidia.com, ksitaraman@nvidia.com, 
-	sanjayc@nvidia.com, nhartman@nvidia.com, bbasu@nvidia.com
+Date: Thu, 5 Feb 2026 20:37:01 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j8M0=M3hO3kJKRPA4Q99TgQODRxPoSu5RFe6qV4Cv_-w@mail.gmail.com>
+X-Gm-Features: AZwV_QiTgoy5pvdE7LZ5lmGdrlD2MxEkcuh0ir0X8YpkAd947UtZfMjZD02i-oI
+Message-ID: <CAJZ5v0j8M0=M3hO3kJKRPA4Q99TgQODRxPoSu5RFe6qV4Cv_-w@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v6.20-rc1/v7.0-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
@@ -92,184 +76,398 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20869-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,amd.com,gmail.com,huawei.com,arm.com,linaro.org,lwn.net,infradead.org,hisilicon.com,vger.kernel.org,lists.linux.dev,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-20870-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: CAC4BF6D84
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: A9AF4F6E25
 X-Rspamd-Action: no action
 
-On Thu, Feb 5, 2026 at 8:21=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wrot=
-e:
->
-> >>>>>>>>>>> Hi Sumit,
-> >>>>>>>>>>>
-> >>>>>>>>>>> I am thinking that maybe it is better to call these two sysfs
-> >>>>>>>>>>> interface
-> >>>>>>>>>>> 'min_freq' and 'max_freq' as users read and write khz instead
-> >>>>>>>>>>> of raw
-> >>>>>>>>>>> value.
-> >>>>>>>>>> Thanks for the suggestion.
-> >>>>>>>>>> Kept min_perf/max_perf to match the CPPC register names
-> >>>>>>>>>> (MIN_PERF/MAX_PERF), making it clear to users familiar with
-> >>>>>>>>>> CPPC what's being controlled.
-> >>>>>>>>>> The kHz unit is documented in the ABI.
-> >>>>>>>>>>
-> >>>>>>>>>> Thank you,
-> >>>>>>>>>> Sumit Gupta
-> >>>>>>>>> On my x86 machine with kernel 6.18.5, the kernel is exposing ra=
-w
-> >>>>>>>>> values:
-> >>>>>>>>>
-> >>>>>>>>>> grep . /sys/devices/system/cpu/cpu0/acpi_cppc/*
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/feedback_ctrs:ref:342904=
-018856568
-> >>>>>>>>>
-> >>>>>>>>> del:437439724183386
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/guaranteed_perf:63
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf:88
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq:0
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf:36
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf:1
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq:3900
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf:62
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf:62
-> >>>>>>>>> /sys/devices/system/cpu/cpu0/acpi_cppc/wraparound_time:18446744=
-073709551615
-> >>>>>>>>>
-> >>>>>>>>>
-> >>>>>>>>> It would be surprising for a nearby sysfs interface with very
-> >>>>>>>>> similar
-> >>>>>>>>> names to use kHz instead.
-> >>>>>>>>>
-> >>>>>>>>> Thanks,
-> >>>>>>>>>
-> >>>>>>>>> Russell Haley
-> >>>>>>>> I can rename to either of the below:
-> >>>>>>>> - min/max_freq: might be confused with scaling_min/max_freq.
-> >>>>>>>> - min/max_perf_freq: keeps the CPPC register association clear.
-> >>>>>>>>
-> >>>>>>>> Rafael, Any preferences here?
-> >>>>>>> On x86 the units in CPPC are not kHz and there is no easy reliabl=
-e
-> >>>>>>> way
-> >>>>>>> to convert them to kHz.
-> >>>>>>>
-> >>>>>>> Everything under /sys/devices/system/cpu/cpu0/acpi_cppc/ needs to=
- be
-> >>>>>>> in CPPC units, not kHz (unless, of course, kHz are CPPC units).
-> >>>>>
-> >>>>> In v1 [1], these controls were added under acpi_cppc sysfs.
-> >>>>> After discussion, they were moved under cpufreq, and [2] was merged
-> >>>>> first.
-> >>>>> The decision to use frequency scale instead of raw perf was made
-> >>>>> for consistency with other cpufreq interfaces as per (v3 [3]).
-> >>>>>
-> >>>>> CPPC units in our case are also not in kHz. The kHz conversion uses=
- the
-> >>>>> existing cppc_perf_to_khz()/cppc_khz_to_perf() helpers which are
-> >>>>> already
-> >>>>> used in cppc_cpufreq attributes. So the conversion behavior is
-> >>>>> consistent
-> >>>>> with existing cpufreq interfaces.
-> >>>>>
-> >>>>> [1]
-> >>>>> https://lore.kernel.org/lkml/076c199c-a081-4a7f-956c-f395f4d5e156@n=
-vidia.com/
-> >>>>>
-> >>>>> [2]
-> >>>>> https://lore.kernel.org/all/20250507031941.2812701-1-zhenglifeng1@h=
-uawei.com/
-> >>>>>
-> >>>>> [3]
-> >>>>> https://lore.kernel.org/lkml/80e16de0-63e4-4ead-9577-4ebba9b1a02d@n=
-vidia.com/
-> >>>>>
-> >>>>>
-> >>>>>> That said, the new attributes will show up elsewhere.
-> >>>>>>
-> >>>>>> So why do you need to add these things in the first place?
-> >>>>> Currently there's no sysfs interface to dynamically control the
-> >>>>> MIN_PERF/MAX_PERF bounds when using autonomous mode. This helps
-> >>>>> users tune power and performance at runtime.
-> >>>> So what about scaling_min_freq and scaling_max_freq?
-> >>>>
-> >>>> intel_pstate uses them for an analogous purpose.
-> >>> FWIW same thing for amd_pstate.
-> >>>
-> >> intel_pstate and amd_pstate seem to use setpolicy() to update
-> >> scaling_min/max_freq and program MIN_PERF/MAX_PERF.
-> > That's one possibility.
-> >
-> > intel_pstate has a "cpufreq-compatible" mode (in which case it is
-> > called intel_cpufreq) and still uses HWP (which is the underlying
-> > mechanism for CPPC on Intel platforms).
-> >
-> >> However, as discussed in v5 [1], cppc_cpufreq cannot switch to
-> >> a setpolicy based approach because:
-> >> - We need per-CPU control of auto_sel: With setpolicy, we can't
-> >>     dynamically disable auto_sel for individual CPUs and return to the
-> >>     target() (no target hook available).
-> >>     intel_pstate and amd_pstate seem to set HW autonomous mode for
-> >>     all CPUs, not per-CPU.
-> >> - We need to retain the target() callback - the CPPC spec allows
-> >>     desired_perf to be used even when autonomous selection is enabled.
-> > intel_pstate in the "cpufreq-compatible" mode updates its HWP min and
-> > max limits when .target() (or .fast_switch() or .adjust_perf()) is
-> > called.
-> >
-> > I guess that would not be sufficient in cppc_cpufreq for some reason?
-> >
-> >> [1]
-> >> https://lore.kernel.org/lkml/66f58f43-631b-40a0-8d42-4e90cd24b757@arm.=
-com/
->
-> We can do the same as intel_cpufreq. CPPC spec allows setting
-> MIN_PERF/MAX_PERF even when auto_selection is disabled, so we will
-> have to update them always from policy limits in target().
->
-> However, this would override BIOS-configured MIN_PERF/MAX_PERF values.
-> Since policy->min/max are set from hardware capabilities during init,
-> any governor would overwrite BIOS bounds with policy limits (hardware
-> capability bounds) on their first frequency request - even when user
-> hasn't explicitly changed scaling_min/max_freq.
->
-> Does intel_cpufreq also override BIOS-configured HWP min/max values?
+Hi Linus,
 
-Yes, it does.
+This goes a bit early, but it's ready.
 
-> Should we preserve BIOS-configured values until user explicitly changes
-> scaling_min/max_freq?
+Please pull from the tag
 
-Why would that be useful?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.20-rc1
 
-> Is there any mechanism in cpufreq core to detect explicit user changes to=
- scaling_min/max_freq?
+with top-most commit 0f64b6acb0e14559daf1de7be5dbcee3874512aa
 
-Not today, but since scaling_min/max_freq have their own freq QoS
-requests, it should be doable if need be.
+ Merge branch 'pm-tools'
 
-In any case, I would very much prefer using the existing
-scaling_min/max_freq interface, even if that would require some
-additional plumbing, to adding new sysfs attributes pretty much for
-the same purpose that would only be used by one driver.
+on top of commit 1730daa3b425ea8c88ae599af6e1a4957bd2d81a
+
+ Merge tag 'cpufreq-arm-fixes-6.19-rc8' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm
+
+to receive power management updates for 6.20-rc1/7.0-rc1 (whichever it
+turns out to be).
+
+By the number of commits, cpufreq is the leading party (again) and the
+most visible change there is the removal of the omap-cpufreq driver
+that has not been used for a long time (good riddance).  There are also
+quite a few changes in the cppc_cpufreq driver, mostly related to fixing
+its frequency invariance engine in the case when the CPPC registers
+used by it are not in PCC.  In addition to that, support for AM62L3 is
+added to the ti-cpufreq driver and the cpufreq-dt-platdev list is
+updated for some platforms.  The remaining cpufreq changes are assorted
+fixes and cleanups.
+
+Next up is cpuidle and the changes there are dominated by intel_idle
+driver updates, mostly related to the new command line facility allowing
+users to adjust the list of C-states used by the driver.  There are also
+a few updates of cpuidle governors, including two menu governor fixes
+and some refinements of the teo governor, and a MAINTAINERS update
+adding Christian Loehle as a cpuidle reviewer.  [Thanks for stepping up
+Christian!]
+
+The most significant update related to system suspend and hibernation
+is the one to stop freezing the PM runtime workqueue during system PM
+transitions which allows some deadlocks to be avoided.  There is also
+a fix for possible concurrent bit field updates in the core device
+suspend code and a few other minor fixes.
+
+Apart from the above, several drivers are updated to discard the return
+value of pm_runtime_put() which is going to be converted to a void
+function as soon as everybody stops using its return value, PL4 support
+for Ice Lake is added to the Intel RAPL power capping driver, and there
+are assorted cleanups, documentation fixes, and some cpupower utility
+improvements.
+
+Specifics:
+
+ - Remove the unused omap-cpufreq driver (Andreas Kemnade)
+
+ - Optimize error handling code in cpufreq_boost_trigger_state() and
+   make cpufreq_boost_trigger_state() return -EOPNOTSUPP if no policy
+   supports boost (Lifeng Zheng)
+
+ - Update cpufreq-dt-platdev list for tegra, qcom, TI (Aaron Kling,
+   Dhruva Gole, and Konrad Dybcio)
+
+ - Minor improvements to the cpufreq and cpumask rust implementation
+   (Alexandre Courbot, Alice Ryhl, Tamir Duberstein, and Yilin Chen)
+
+ - Add support for AM62L3 SoC to the ti-cpufreq driver (Dhruva Gole)
+
+ - Update arch_freq_scale in the CPPC cpufreq driver's frequency
+   invariance engine (FIE) in scheduler ticks if the related CPPC
+   registers are not in PCC (Jie Zhan)
+
+ - Assorted minor cleanups and improvements in ARM cpufreq drivers (Juan
+   Martinez, Felix Gu, Luca Weiss, and Sergey Shtylyov)
+
+ - Add generic helpers for sysfs show/store to cppc_cpufreq (Sumit
+   Gupta)
+
+ - Make the scaling_setspeed cpufreq sysfs attribute return the actual
+   requested frequency to avoid confusion (Pengjie Zhang)
+
+ - Simplify the idle CPU time granularity test in the ondemand cpufreq
+   governor (Frederic Weisbecker)
+
+ - Enable asym capacity in intel_pstate only when CPU SMT is not
+   possible (Yaxiong Tian)
+
+ - Update the description of rate_limit_us default value in cpufreq
+   documentation (Yaxiong Tian)
+
+ - Add a command line option to adjust the C-states table in the
+   intel_idle driver, remove the 'preferred_cstates' module parameter
+   from it, add C-states validation to it and clean it up (Artem
+   Bityutskiy)
+
+ - Make the menu cpuidle governor always check the time till the closest
+   timer event when the scheduler tick has been stopped to prevent it
+   from mistakenly selecting the deepest available idle state (Rafael
+   Wysocki)
+
+ - Update the teo cpuidle governor to avoid making suboptimal decisions
+   in certain corner cases and generally improve idle state selection
+   accuracy (Rafael Wysocki)
+
+ - Remove an unlikely() annotation on the early-return condition in
+   menu_select() that leads to branch misprediction 100% of the time
+   on systems with only 1 idle state enabled, like ARM64 servers (Breno
+   Leitao)
+
+ - Add Christian Loehle to MAINTAINERS as a cpuidle reviewer (Christian
+   Loehle)
+
+ - Stop flagging the PM runtime workqueue as freezable to avoid system
+   suspend and resume deadlocks in subsystems that assume asynchronous
+   runtime PM to work during system-wide PM transitions (Rafael Wysocki)
+
+ - Drop redundant NULL pointer checks before acomp_request_free() from
+   the hibernation code handling image saving (Rafael Wysocki)
+
+ - Update wakeup_sources_walk_start() to handle empty lists of wakeup
+   sources as appropriate (Samuel Wu)
+
+ - Make dev_pm_clear_wake_irq() check the power.wakeirq value under
+   power.lock to avoid race conditions (Gui-Dong Han)
+
+ - Avoid bit field races related to power.work_in_progress in the core
+   device suspend code (Xuewen Yan)
+
+ - Make several drivers discard pm_runtime_put() return value in
+   preparation for converting that function to a void one (Rafael
+   Wysocki)
+
+ - Add PL4 support for Ice Lake to the Intel RAPL power capping
+   driver (Daniel Tang)
+
+ - Replace sprintf() with sysfs_emit() in power capping sysfs show
+   functions (Sumeet Pawnikar)
+
+ - Make dev_pm_opp_get_level() return value match the documentation
+   after a previous update of the latter (Aleks Todorov)
+
+ - Use scoped for each OF child loop in the OPP code (Krzysztof
+   Kozlowski)
+
+ - Fix a bug in an example code snippet and correct typos in the energy
+   model management documentation (Patrick Little)
+
+ - Fix miscellaneous problems in cpupower (Kaushlendra Kumar):
+
+   * idle_monitor: Fix incorrect value logged after stop
+   * Fix inverted APERF capability check
+   * Use strcspn() to strip trailing newline
+   * Reset errno before strtoull()
+   * Show C0 in idle-info dump
+
+ - Improve cpupower installation procedure by making the systemd step
+   optional and allowing users to disable the installation of systemd's
+   unit file (Jo=C3=A3o Marcos Costa)
+
+Thanks!
+
+
+---------------
+
+Aaron Kling (1):
+      cpufreq: Add Tegra186 and Tegra194 to cpufreq-dt-platdev blocklist
+
+Aleks Todorov (1):
+      OPP: Return correct value in dev_pm_opp_get_level
+
+Alexandre Courbot (1):
+      rust: cpufreq: always inline functions using build_assert with argume=
+nts
+
+Alice Ryhl (1):
+      rust: cpufreq: add __rust_helper to helpers
+
+Andreas Kemnade (2):
+      cpufreq: omap: remove driver
+      MAINTAINERS: remove omap-cpufreq
+
+Artem Bityutskiy (5):
+      intel_idle: Remove unused driver version constant
+      intel_idle: Remove the 'preferred_cstates' parameter
+      intel_idle: Initialize sysfs after cpuidle driver initialization
+      intel_idle: Add cmdline option to adjust C-states table
+      intel_idle: Add C-states validation
+
+Breno Leitao (1):
+      cpuidle: menu: Remove incorrect unlikely() annotation
+
+Christian Loehle (1):
+      MAINTAINERS: Add myself as cpuidle reviewer
+
+Daniel Tang (1):
+      powercap: intel_rapl: Add PL4 support for Ice Lake
+
+Dhruva Gole (2):
+      cpufreq: dt-platdev: Add ti,am62l3 to blocklist
+      cpufreq: ti-cpufreq: add support for AM62L3 SoC
+
+Felix Gu (1):
+      cpufreq: scmi: Fix device_node reference leak in scmi_cpu_domain_id()
+
+Frederic Weisbecker (1):
+      cpufreq: ondemand: Simplify idle cputime granularity test
+
+Gui-Dong Han (1):
+      PM: sleep: wakeirq: harden dev_pm_clear_wake_irq() against races
+
+Jie Zhan (3):
+      ACPI: CPPC: Factor out and export per-cpu cppc_perf_ctrs_in_pcc_cpu()
+      cpufreq: CPPC: Factor out cppc_fie_kworker_init()
+      cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
+
+Jo=C3=A3o Marcos Costa (1):
+      cpupower: make systemd unit installation optional
+
+Juan Martinez (1):
+      cpufreq/amd-pstate: Add comment explaining nominal_perf usage
+for performance policy
+
+Kaushlendra Kumar (5):
+      cpupower: idle_monitor: fix incorrect value logged after stop
+      tools/cpupower: Fix inverted APERF capability check
+      tools/cpupower: Use strcspn() to strip trailing newline
+      tools/power cpupower: Reset errno before strtoull()
+      tools/power cpupower: Show C0 in idle-info dump
+
+Konrad Dybcio (1):
+      cpufreq: dt-platdev: Block the driver from probing on more QC platfor=
+ms
+
+Krzysztof Kozlowski (1):
+      OPP: of: Simplify with scoped for each OF child loop
+
+Lifeng Zheng (2):
+      cpufreq: Return -EOPNOTSUPP if no policy supports boost
+      cpufreq: cpufreq_boost_trigger_state() optimization
+
+Luca Weiss (1):
+      dt-bindings: cpufreq: qcom-hw: document Milos CPUFREQ Hardware
+
+Patrick Little (2):
+      Documentation: Fix typos in energy model documentation
+      PM: EM: Documentation: Fix bug in example code snippet
+
+Pengjie Zhang (1):
+      cpufreq: userspace: make scaling_setspeed return the actual
+requested frequency
+
+Rafael J. Wysocki (19):
+      PM: sleep: Do not flag runtime PM workqueue as freezable
+      USB: core: Discard pm_runtime_put() return value
+      drm/imagination: Discard pm_runtime_put() return value
+      media: ccs: Discard pm_runtime_put() return value
+      watchdog: rz: Discard pm_runtime_put() return values
+      watchdog: rzv2h_wdt: Discard pm_runtime_put() return value
+      hwspinlock: omap: Discard pm_runtime_put() return value
+      coresight: Discard pm_runtime_put() return values
+      platform/chrome: cros_hps_i2c: Discard pm_runtime_put() return value
+      scsi: ufs: core: Discard pm_runtime_put() return values
+      genirq/chip: Change irq_chip_pm_put() return type to void
+      drm: Discard pm_runtime_put() return value
+      cpuidle: governors: menu: Always check timers with tick stopped
+      cpuidle: governors: teo: Avoid selecting states with zero-size bins
+      cpuidle: governors: teo: Avoid fake intercepts produced by tick
+      cpuidle: governors: teo: Refine tick_intercepts vs total events check
+      PM: hibernate: Drop NULL pointer checks before acomp_request_free()
+      cpuidle: governors: teo: Adjust the classification of wakeup events
+      cpuidle: governors: teo: Refine intercepts-based idle state lookup
+
+Samuel Wu (1):
+      PM: wakeup: Handle empty list in wakeup_sources_walk_start()
+
+Sergey Shtylyov (1):
+      cpufreq: scmi: correct SCMI explanation
+
+Sumeet Pawnikar (1):
+      powercap: Replace sprintf() with sysfs_emit() in sysfs show functions
+
+Sumit Gupta (1):
+      cpufreq: CPPC: Add generic helpers for sysfs show/store
+
+Tamir Duberstein (1):
+      rust: cpufreq: replace `kernel::c_str!` with C-Strings
+
+Xuewen Yan (1):
+      PM: sleep: core: Avoid bit field races related to work_in_progress
+
+Yaxiong Tian (2):
+      cpufreq: intel_pstate: Enable asym capacity only when CPU SMT is
+not possible
+      cpufreq: Documentation: Update description of rate_limit_us default v=
+alue
+
+Yilin Chen (1):
+      rust: cpumask: rename methods of Cpumask for clarity and consistency
+
+---------------
+
+ Documentation/admin-guide/pm/cpufreq.rst           |   2 +-
+ .../bindings/cpufreq/cpufreq-qcom-hw.yaml          |   2 +
+ Documentation/power/energy-model.rst               |  18 +-
+ Documentation/power/runtime_pm.rst                 |   7 +-
+ Documentation/scheduler/sched-energy.rst           |   8 +-
+ MAINTAINERS                                        |   2 +-
+ drivers/acpi/cppc_acpi.c                           |  48 ++--
+ drivers/base/power/main.c                          |   7 +-
+ drivers/base/power/wakeirq.c                       |   9 +-
+ drivers/base/power/wakeup.c                        |   4 +-
+ drivers/cpufreq/Kconfig.arm                        |   5 -
+ drivers/cpufreq/Makefile                           |   1 -
+ drivers/cpufreq/amd-pstate.c                       |  13 +
+ drivers/cpufreq/cppc_cpufreq.c                     | 164 +++++++------
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   6 +
+ drivers/cpufreq/cpufreq.c                          |  13 +-
+ drivers/cpufreq/cpufreq_ondemand.c                 |   7 +-
+ drivers/cpufreq/cpufreq_userspace.c                |   4 +-
+ drivers/cpufreq/intel_pstate.c                     |   2 +-
+ drivers/cpufreq/omap-cpufreq.c                     | 195 ---------------
+ drivers/cpufreq/rcpufreq_dt.rs                     |   5 +-
+ drivers/cpufreq/scmi-cpufreq.c                     |   3 +-
+ drivers/cpufreq/ti-cpufreq.c                       |  34 ++-
+ drivers/cpuidle/governors/menu.c                   |  24 +-
+ drivers/cpuidle/governors/teo.c                    |  98 ++++++--
+ drivers/gpu/drm/arm/malidp_crtc.c                  |   6 +-
+ drivers/gpu/drm/bridge/imx/imx8qm-ldb.c            |   4 +-
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c           |   4 +-
+ .../gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |   5 +-
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c       |   5 +-
+ drivers/gpu/drm/imagination/pvr_power.h            |   4 +-
+ drivers/gpu/drm/imx/dc/dc-crtc.c                   |  12 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c                     |   5 +-
+ drivers/gpu/drm/vc4/vc4_vec.c                      |  12 +-
+ drivers/hwspinlock/omap_hwspinlock.c               |   4 +-
+ drivers/hwtracing/coresight/coresight-cpu-debug.c  |  12 +-
+ drivers/idle/intel_idle.c                          | 268 +++++++++++++++++=
+----
+ drivers/media/i2c/ccs/ccs-core.c                   |   4 +-
+ drivers/opp/core.c                                 |   2 +-
+ drivers/opp/of.c                                   |   4 +-
+ drivers/platform/chrome/cros_hps_i2c.c             |   4 +-
+ drivers/powercap/intel_rapl_msr.c                  |   1 +
+ drivers/powercap/powercap_sys.c                    |  13 +-
+ drivers/ufs/core/ufshcd-priv.h                     |   4 +-
+ drivers/usb/core/driver.c                          |   8 +-
+ drivers/watchdog/rzg2l_wdt.c                       |   4 +-
+ drivers/watchdog/rzv2h_wdt.c                       |   8 +-
+ include/acpi/cppc_acpi.h                           |   5 +
+ include/linux/irq.h                                |   2 +-
+ include/linux/pm.h                                 |   2 +-
+ include/linux/tick.h                               |   2 +
+ kernel/irq/chip.c                                  |  22 +-
+ kernel/power/main.c                                |   2 +-
+ kernel/power/swap.c                                |   8 +-
+ kernel/time/hrtimer.c                              |   2 +-
+ kernel/time/tick-internal.h                        |   2 -
+ kernel/time/tick-sched.c                           |   8 +-
+ kernel/time/timer.c                                |   2 +-
+ rust/helpers/cpufreq.c                             |   3 +-
+ rust/kernel/cpufreq.rs                             |   5 +-
+ rust/kernel/cpumask.rs                             |  10 +-
+ tools/power/cpupower/Makefile                      |  17 +-
+ tools/power/cpupower/lib/cpuidle.c                 |   7 +-
+ tools/power/cpupower/utils/cpufreq-info.c          |   2 +-
+ tools/power/cpupower/utils/cpuidle-info.c          |   2 +-
+ .../cpupower/utils/idle_monitor/cpuidle_sysfs.c    |   2 +-
+ 66 files changed, 633 insertions(+), 546 deletions(-)
 
