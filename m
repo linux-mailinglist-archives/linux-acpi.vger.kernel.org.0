@@ -1,282 +1,321 @@
-Return-Path: <linux-acpi+bounces-20872-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20874-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sK8QNbDyhGkF7AMAu9opvQ
-	(envelope-from <linux-acpi+bounces-20872-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:42:40 +0100
+	id oJG/IpochWkO8gMAu9opvQ
+	(envelope-from <linux-acpi+bounces-20874-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 23:41:30 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3D0F6E84
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 20:42:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC873F82BD
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Feb 2026 23:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC1B23017019
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Feb 2026 19:42:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFA563004205
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Feb 2026 22:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED240329C7D;
-	Thu,  5 Feb 2026 19:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4AB3358B0;
+	Thu,  5 Feb 2026 22:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9qSoCP5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="neJMixHJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8791F3D56
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21A526AF4
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 22:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770320557; cv=none; b=HdkFPiOud5FrIyB6fINzTuzHQeIPqAzAwyRkJQ34jJeWx6S4MERde/vWbCysTW4zcKyDb28oQLmFUwQiUy3Iw5b+c7R0Ci5mlh6SL9HBQe3HzSeuFYaYdGT6J3MEF1SAXbcbGQUSpHsTeUB/QQf5drJAEOmfAl+ClxAwuuKH7ZI=
+	t=1770331278; cv=none; b=KJBiw3IZ0jTKOqb3g3vQGqyIVyIERfTwWuRCqKzo9sYmcBSRVd++KmtoThQQ3ILoLJQDu/ReVoCGm98qz51EKgjWKvAFoqPq0hMwDJIsdCburdB8EI64y66DDfVxnwSWBWm1Da+l5ypzYVXHaCdj3OcAX5WVO3O464YWxvVjhDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770320557; c=relaxed/simple;
-	bh=5WVz5Jep1PszBcH0ttRMBL3JFtE4hrI25hoBStHHHps=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=VFUy0D1kquOBcV6DGMKu9rIpPKWpTBXpjCT6BsL/TbgRNUCJHgJeQTrZdXIZaycPO2HCYF73wj2JgiXjaHJdlmWvACxwjpAqjACdNoCZAUPsZwWY3DBgQ9Tqq7KaxFnqrFaXI1uVdZrhmWqUmJaW1K3O3lj8A6V6a4k2cRtw+BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9qSoCP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F966C116D0
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Feb 2026 19:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770320557;
-	bh=5WVz5Jep1PszBcH0ttRMBL3JFtE4hrI25hoBStHHHps=;
-	h=From:Date:Subject:To:Cc:From;
-	b=M9qSoCP571hzo5db60JZFke7Mn+dTd07PA6uIlHwVYiNZlhAA0KPAUdwdP0vJeJhr
-	 U1BCr/TYMbwWLptem2AR0kKDYjnTo+2iyDwgqW7YooCm7awbyFPd/MYylDfifrZ4yi
-	 7BPOBQpfLuP1864SOtPGTBtWl+/1wFfQ/RbPYAEbWaIu3r/XqyAcspg4sd6pddO9H3
-	 1bwd04r41s76KIsUMgA1oQbiEwphhyb6Y4Ssz6/Toip2MX6Ymkl4uRzwfkoHMDqr07
-	 3MKoCZVJCEmj2gmz3HpvODlZgIc1uVBkc+RTeo3IjQFQ0HD6Mx/XGiu5yyzZBA+kJK
-	 PJ9QWbe055UqA==
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-662f485e58aso621607eaf.0
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Feb 2026 11:42:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXrJVve2L84pXl5hWUUagwZmOPZeqBzdVfsbJvEDKFqLZQdTL6kV87NcbC5BE/coI6/W+D3oLKMYESU@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWgUZj/hF2Kgssw/4efJBzVY939NF36nebmKb+fk/F4TUbkjyu
-	AfuZYSqIpVprN2A2PMrrHPa60ab6qQBrWyoFy4ktNrfX4pts5l4jovNtTNxptehcU954aIOEuUQ
-	yAaapQyAcYtHmXTVXtRd93T/hJkp6OMg=
-X-Received: by 2002:a05:6820:1c98:b0:662:f746:5728 with SMTP id
- 006d021491bc7-66d0c6666aamr214835eaf.60.1770320556461; Thu, 05 Feb 2026
- 11:42:36 -0800 (PST)
+	s=arc-20240116; t=1770331278; c=relaxed/simple;
+	bh=Juj1bsdRU0I+IrAom3HInXgDgXdJO/+1D0a5t61HPPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cthbOinSXZUOj38pQCLAiRqe5DPGGflV08+gG59lEBLePjA9vxLcMZQo4rH84wtXkX0RaYeNJ+vNOXVPfuJsfKAQvj4NB4Dil7e9Nk7HhDEO1BHg14M6PRwHLFaPBi3kqdSnvY9KFWlT6lmfJfhseok63WS3giup6mm94lHsCf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=neJMixHJ; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8ca01dc7d40so149555885a.1
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Feb 2026 14:41:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770331277; x=1770936077; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RSUkyn5i2wEO3zAje7Mo7JuGzOwqmCv+J4WE0D+9tcU=;
+        b=neJMixHJQBlDQkrbq7u+XcHURhEuvuKpyLKJ65Isz2pR4vkNLhJ9FoWRbCHxPicupz
+         hHskvm9OqAt6fJK7UhKqSyXpzK1LhRDKcZPO7utvCGtzA9fMOrJfaxhLhLYzNoQ0+YUy
+         FRifW3vyf4x6i4saMAvTryw305SpryBGesP/8lVYHtRlqn/DztNT/KGbv1XxyEdxJj4o
+         1WoKhat0+TXBS93LVqNEHaVMsHarw8SBvCL8/dZDTshVGmPamz2kOQZjC4A4lfBomWlH
+         FzFe571+XgHawosDi1KByNPhA+u4K7cqkH6gOrkaK7fU67MY8yC2Uh/xrPwy8cD66vt8
+         aTcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770331277; x=1770936077;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RSUkyn5i2wEO3zAje7Mo7JuGzOwqmCv+J4WE0D+9tcU=;
+        b=sIgsqOsFzdU+TC7f53t+a/lppgh9YWBQDWL5k9OsY8OCUpbOXkfxeMlBMvLtBGxnx9
+         GfXJuctKIk4d4dkVssG7lqyeBUMQtV4hXW5fHjGwor+f9kkcs1dHk77I0Xha/dPc9F+P
+         z6NqxgP5P+SY73c5q/ZW0nzyYn+liXvhtvdmPi59y+52i3PJrvkrqNTTbGXeU7AbyshU
+         TEsrJcSxqmUZrVIhIo0GTLycNxVuF8YV/FKxjfU6pdgsUcUTxY0MNoXigHJU6lxdqHe2
+         xh5q8oAEjpOzUT8IBh1t22+/1vjfoT6ny1hP4X5NwrLBZfR5m86v+Bbyx48TUXKjd8Ss
+         HIGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFhmEXECKUriG46WpvpSdw4eouPcwxpPLcKDlBYqo9+9LxSJ8HGTGESMfOUGMh/NTijlaowFTmc5bF@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmrDFA8u6PCoi2znWVA//6Az/cyuCaUqUH0PCHMr5EvVZqemlB
+	m1dfHSrRM10+rwnzdhJwQBT+F9mG0JtFrRE+cfvrqiv/+gPxGYdGbZYRXfTOTfLY
+X-Gm-Gg: AZuq6aL3vwH13W+R9pabo25d1qWmuEXHg4+gbKpsWzZA8n0tCh39Vme6cXQJVenxXX5
+	nycqi52JP24o9jAusLCCGwxRAumFldFPLmA7tAb5GX4CWWRb7bVeGBv7H2APK4hlJdDt7EiUoWd
+	HupHSEBi9smUWrcxC3JahIREbw7i2kLcgAI5iojb4f8LLl2hVKAmhoNYJb3JwT5UgLIp+dcgnEw
+	04gpWhp7VovETGMIFxERxXeajX3E7xo31WrAoGcXqyyFOLH3h5ood1w54JQnEm7QhyiVLM6J/vj
+	OmOQcW0hzwGw8q6fT3xPWngOwAwur2x4bUJerFDYs51+ZykDJwD1rqhwN85YFAbSu4+gcS2lHON
+	4AnGJlGYuk2+YKf6ng/Yte6unqDe9kRmz7C/fAgV47xF+7C2YLIOpM1784EgpOa7+k8mdAgoNzK
+	nrZ3/oxk/ZXcT5J0OH8EMcBjvO
+X-Received: by 2002:a05:7022:b9b:b0:11b:9386:8271 with SMTP id a92af1059eb24-1270407446dmr233143c88.46.1770325047565;
+        Thu, 05 Feb 2026 12:57:27 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1270414f28bsm360512c88.0.2026.02.05.12.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 12:57:26 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 5 Feb 2026 12:57:25 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Igor Raits <igor@gooddata.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	Daniel Secik <daniel.secik@gooddata.com>,
+	Zdenek Pesek <zdenek.pesek@gooddata.com>,
+	Jiri Jurica <jiri.jurica@gooddata.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average
+ sysfs read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
+Message-ID: <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
+References: <CAK8fFZ43wrQ8A_bO_g+rKN9O31sxULtqA0hUieZSzEH5KqeW1Q@mail.gmail.com>
+ <CAJZ5v0hEu_io2BAzp9weUDHwHngorjZ37GRUK=ngSXNjtp38qw@mail.gmail.com>
+ <CAK8fFZ65Vro5nQqJq_cvsY93hgDbfTdibWnNr5b0Bixzc-ESfg@mail.gmail.com>
+ <CAK8fFZ6Vi4xayvdKh-_eLi-nDNMLuEoMsvwEnb33QqnwS7o4BA@mail.gmail.com>
+ <1c8f748a-5c5d-4234-ae86-7bb12045a373@roeck-us.net>
+ <CA+9S74i+BC3=E0opOPMff0cuC1OPYSecii0C8fVZ+NM7bptNcQ@mail.gmail.com>
+ <fee01c19-2711-487e-91e9-d57f9be04b98@roeck-us.net>
+ <CA+9S74jR9jRRE-DNMxNg=6Uv2uDAUar2n-RkVDJqzkDfNu3eog@mail.gmail.com>
+ <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net>
+ <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 5 Feb 2026 20:42:25 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hOUCPEPeE1bN3BkgRnM3ouDX301f5qnK53BTD+oU5=rw@mail.gmail.com>
-X-Gm-Features: AZwV_Qg_PBKt0KwCcVNFUErnqpTpkdFpjZMCnzZ55TUbg-y2VOCD2raFwlY1wKk
-Message-ID: <CAJZ5v0hOUCPEPeE1bN3BkgRnM3ouDX301f5qnK53BTD+oU5=rw@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v6.20-rc1/v7.0-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, 
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-20872-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-20874-lists,linux-acpi=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 3C3D0F6E84
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:mid,roeck-us.net:email]
+X-Rspamd-Queue-Id: DC873F82BD
 X-Rspamd-Action: no action
 
-Hi Linus,
+On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki wrote:
+> Cc: Corey
+> 
+> On Thu, Feb 5, 2026 at 6:51 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
+> > > On Wed, Feb 4, 2026 at 11:49 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > >
+> > > > On 2/4/26 11:54, Igor Raits wrote:
+> > > > > I have written a patch with the help of AI and it fixes the problem. Attached.
+> > > > >
+> > > >
+> > > > "No MIME, no links, no compression, no attachments.  Just plain text"
+> > >
+> > > Sorry for that, I had assumed that attaching the file would make it in-line.
+> > >
+> > > > ... which means I can not provide inline feedback, which is the whole
+> > > > point of the above.
+> > > >
+> > > > Your patch crosses subsystems, so it will need to be split in two
+> > > > (assuming the ACPI side is even needed). Also, references to iDRAC
+> > > > in common code seem inappropriate.
+> > >
+> > > Yes, this I believe was the essential part (it was the last piece in
+> > > my testing which fixed the hanging):
+> > >
+> >
+> > Then I'll need to ask differently: What happens if you drop the IPMI code,
+> > and just keep the wait_for_completion -> wait_for_completion_timeout
+> > change ? Would that be sufficient to solve the problem ?
+> 
+> I'd rather say "Would that be sufficient to make the symptoms go
+> away?" as it most likely papers over the real problem.
+> 
 
-This goes a bit early, but it's ready.
+Good point. Worse, it may result in UAF or memory leaks.
 
-Please pull from the tag
+> > Either case, the need for this change suggests that the ipmi change
+> > may not be complete, since it should send a completion with an error.
+> 
+> I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
+> handle if the BMC is non-functional") should also be considered as a
+> possible way forward because it clearly did not improve things as
+> expected, at least in this particular case.
+> 
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.20-rc1
+I tend to agree. I ran a number of AI code reviews over the patch, and
+each time it finds new (and different) problems. The fact that the acpi
+patch is still needed even after applying the ipmi changes suggests that
+something is still missing in the ipmi code.
 
-with top-most commit 8035d70cf85e86f36f5eb1e07b243f300a936b8b
+> It evidently did something that confuses things quite a bit.  Either
+> it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
+> the "hosed" state and refusing to accept messages.
+> 
 
- Merge branch 'thermal-intel'
+More than that. My latest AI results are below, just for reference
+(using Gemini 3 with Chris Mason's debug prompts). The prompt I used
+for this run is:
 
-on top of commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+"
+The top commit in the linux/ directory results in hung tasks if the BMC
+stops responding. Using @review-prompts/kernel/debugging.md analyze the
+patch, identify the reason for the hung task problem, suggest and implement
+a fix. Note that there may be more than one problem in the patch, so analyze
+the complete patch and do not stop after fiding the first regression.
+"
 
- Linux 6.19-rc4
+I think that catches most of the problem, but not all of it.
 
-to receive thermal control updates for 6.20-rc1/7.0-rc1 (whichever it
-turns out to be).
+Guenter
 
-These add support for "slow" (long-term trend) workload type hints
-to the Intel int340x thermal driver and selftests (and enable it for
-Panther Lake), add support for MT8196 along with DT bindings and for
-MT7987 to the Mediatek LVTS thermal driver, add support for RZ/T2H and
-RZ/N2H along with DT bindings to the Renesas rzg3e thermal driver,
-add support for the Panther Lake, Wildcat Lake and Nova Lake processors
-to the intel_tcc_cooling driver, fix bugs, make some cosmetic changes
-including code cleanups and library function substitutions, and update
-documentation.
+---
 
-Specifics:
+Summary of crash or warning:
+Hung task detected in ipmi_si driver when BMC becomes non-functional.
+Processes waiting for IPMI responses (e.g. ipmitool, monitoring agents) enter D state and never recover.
 
- - Add Panther Lake, Wildcat Lake and Nova Lake processor IDs to the
-   list of supported processors in the intel_tcc_cooling thermal
-   driver (Srinivas Pandruvada)
+Kernel version if available:
+Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
 
- - Drop unnecessary explicit driver data clearing on removal from the
-   intel_pch_thermal driver (Kaushlendra Kumar)
+Machine type if available:
+Generic Server with BMC
 
- - Add support for "slow" workload type hints to the int340x
-   processor_thermal driver and enable it on the Panther Lake
-   platform (Srinivas Pandruvada)
+Cleaned up copy of oops or stack trace:
+[  120.123456] INFO: task ipmitool:1234 blocked for more than 120 seconds.
+[  120.123457]       Not tainted 6.14.0-rc1 #1
+[  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  120.123459] task:ipmitool        state:D stack:    0 pid: 1234 ppid:  100 flags:0x00000000
+[  120.123460] Call Trace:
+[  120.123461]  <TASK>
+[  120.123462]  __schedule+0x123/0x456
+[  120.123463]  schedule+0x45/0x78
+[  120.123464]  schedule_timeout+0x9a/0xbc
+[  120.123465]  wait_for_completion+0xde/0xf0
+[  120.123466]  ipmi_request_settime+0x123/0x145
+[  120.123467]  ...
+[  120.123468]  </TASK>
 
- - Use sysfs_emit{_at}() in sysfs show functions in Intel thermal
-   drivers (Thorsten Blum)
+Any other kernel messages you found relevant:
+N/A
 
- - Update the x86_pkg_temp_thermal driver to handle THERMAL_TEMP_INVALID
-   that can be passed to it via sysfs as expected (Rafael Wysocki)
+Explanation of the problem:
+1. Hung Task:
+The patch "ipmi:si: Gracefully handle if the BMC is non-functional" introduces a new state `SI_HOSED` to handle BMC failures. When the driver detects that the BMC is not responding, it transitions to `SI_HOSED` and fails the currently processing message (`curr_msg`). However, if a new message is queued via `sender()` (populating `waiting_msg`) during a recovery probe (state `SI_GETTING_FLAGS`), and that probe subsequently fails, the state machine transitions back to `SI_HOSED`. In this transition, the driver checks and fails `curr_msg`, but it neglects to check or fail `waiting_msg`. As a result, the `waiting_msg` remains in the queue indefinitely, causing the waiting process to hang.
 
- - Drop a redundant local variable from the intel_tcc_cooling thermal
-   driver and fix a kerneldoc comment typo in the TCC library (Sumeet
-   Pawnikar)
+2. Excessive Polling (Timer Overwrite):
+In `smi_timeout()`, the timer is unconditionally reset to a short timeout (e.g., 10ms) at the end of the function, unless the state machine is IDLE. When the state machine returns `SI_SM_HOSED`, `smi_event_handler()` correctly sets the timer to a long backoff (1 second). However, `smi_timeout()` subsequently overwrites this with the short timeout. This causes the driver to poll the hosed BMC every 10ms instead of backing off for 1 second, resulting in unnecessary CPU overhead.
 
- - Fix CFLAGS and LDFLAGS in the pkg-config libthermal template (Romain
-   Gantois)
+Functions, snippets and call traces of code related to the problem:
 
- - Support multiple temp to raw conversion functions in the Mediatek
-   LVTS thermal driver and add MT8196 and MT6991 support to it (Laura
-   Nao)
+drivers/char/ipmi/ipmi_si_intf.c: smi_event_handler()
 
- - Add Mediatek LVTS driver support for MT7987 (Frank Wunderlich)
+	} else if (si_sm_result == SI_SM_HOSED) {
+		/* ... */
+		smi_info->si_state = SI_HOSED;
+		if (smi_info->curr_msg != NULL) {
+			return_hosed_msg(smi_info, IPMI_BUS_ERR);
+		}
+		/* BUG 1: waiting_msg is NOT checked here! */
 
- - Use the existing HZ_PER_MHZ macro on STM32 (Andy Shevchenko)
+		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED); /* Sets 1s timeout */
+		goto out;
+	}
 
- - Use the existing clamp() macro on BCM2835 (Thorsten Blum)
+drivers/char/ipmi/ipmi_si_intf.c: smi_timeout()
 
- - Make the reset line optional in order to support new Renesas SoCs
-   where it is not available and add support for RZ/T2H and RZ/N2H
-   to the rzg3e thermal driver (Cosmin Tanislav)
+	smi_result = smi_event_handler(smi_info, time_diff);
+	/* ... */
+	if (smi_result != SI_SM_IDLE)
+		smi_mod_timer(smi_info, timeout); /* BUG 2: Overwrites 1s timeout with ~10ms */
 
- - Document RZ/V2N TSU in the r9a09g047-tsu DT bindings (Ovidiu
-   Panait)
+List of potential commits related to the problem:
+bc3a9d217755f65c137f145600f23bf1d6c31ea9 ipmi:si: Gracefully handle if the BMC is non-functional
 
- - Fix all kernel-doc warnings in the internal thermal core header
-   file (Randy Dunlap)
+Suggested fix:
+1. When entering `SI_HOSED` state in `smi_event_handler`, check for and fail any pending `waiting_msg` in addition to `curr_msg`.
+2. In `smi_timeout`, do not reset the timer if the state is `SI_HOSED`, preserving the backoff timeout set by `smi_event_handler`.
 
- - Fix a device node reference leak in thermal_of_cm_lookup() (Felix Gu)
+---
+Suggested diffs from that run:
 
- - Replace some old-style library function calls with ones that are
-   currently recommended in several places in the thermal core and
-   debugfs code (Sumeet Pawnikar, Thorsten Blum)
+diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
+index 1c65275906b4..023b0e819f91 100644
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -810,6 +810,11 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
+ 			 */
+ 			return_hosed_msg(smi_info, IPMI_BUS_ERR);
+ 		}
++		if (smi_info->waiting_msg != NULL) {
++			smi_info->curr_msg = smi_info->waiting_msg;
++			smi_info->waiting_msg = NULL;
++			return_hosed_msg(smi_info, IPMI_BUS_ERR);
++		}
+ 		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
+ 		goto out;
+ 	}
+@@ -1130,10 +1135,12 @@ static void smi_timeout(struct timer_list *t)
+ 		timeout = jiffies + SI_TIMEOUT_JIFFIES;
+ 	}
+ 
+-	if (smi_result != SI_SM_IDLE)
+-		smi_mod_timer(smi_info, timeout);
+-	else
++	if (smi_result != SI_SM_IDLE) {
++		if (smi_info->si_state != SI_HOSED)
++			smi_mod_timer(smi_info, timeout);
++	} else {
+ 		smi_info->timer_running = false;
++	}
+ 	spin_unlock_irqrestore(&(smi_info->si_lock), flags);
+ }
+ 
 
-Thanks!
-
-
----------------
-
-Andy Shevchenko (1):
-      thermal/drivers/stm32: Use predefined HZ_PER_MHZ instead of a custom one
-
-Cosmin Tanislav (5):
-      thermal: renesas: rzg3e: make reset optional
-      thermal: renesas: rzg3e: make min and max temperature per-chip
-      thermal: renesas: rzg3e: make calibration value retrieval per-chip
-      dt-bindings: thermal: r9a09g047-tsu: document RZ/T2H and RZ/N2H
-      thermal: renesas: rzg3e: add support for RZ/T2H and RZ/N2H
-
-Felix Gu (1):
-      thermal/of: Fix reference leak in thermal_of_cm_lookup()
-
-Frank Wunderlich (2):
-      dt-bindings: thermal: mediatek: Add LVTS thermal controller
-definition for MT7987
-      thermal/drivers/mediatek/lvts_thermal: Add mt7987 support
-
-Kaushlendra Kumar (1):
-      thermal: intel: intel_pch_thermal: Drop explicit driver data clearing
-
-Laura Nao (8):
-      dt-bindings: thermal: mediatek: Add LVTS thermal controller
-support for MT8196
-      thermal/drivers/mediatek/lvts: Make number of calibration
-offsets configurable
-      thermal/drivers/mediatek/lvts: Add platform ops to support
-alternative conversion logic
-      thermal/drivers/mediatek/lvts: Add lvts_temp_to_raw variant
-      thermal/drivers/mediatek/lvts: Add support for ATP mode
-      thermal/drivers/mediatek/lvts: Support MSR offset for 16-bit
-calibration data
-      thermal/drivers/mediatek/lvts_thermal: Add MT8196 support
-      dt-bindings: nvmem: mediatek: efuse: Add support for MT8196
-
-Ovidiu Panait (1):
-      dt-bindings: thermal: r9a09g047-tsu: Document RZ/V2N TSU
-
-Rafael J. Wysocki (1):
-      thermal: intel: x86_pkg_temp_thermal: Handle invalid temperature
-
-Randy Dunlap (1):
-      thermal: core: thermal_core.h: fix all kernel-doc warnings
-
-Romain Gantois (1):
-      tools: lib: thermal: Correct CFLAGS and LDFLAGS in pkg-config template
-
-Srinivas Pandruvada (3):
-      thermal: intel: intel_tcc_cooling: Add CPU models in the support list
-      thermal: int340x: processor_thermal: Enable slow workload type hints
-      thermal: intel: selftests: workload_hint: Support slow workload hints
-
-Sumeet Pawnikar (4):
-      thermal: Replace sprintf() with sysfs_emit() for sysfs show functions
-      thermal: debugfs: Use seq_puts() for constant string output
-      thermal: intel: fix typo "nagative" in comment for cpu argument
-      drivers: thermal: intel: tcc_cooling: Drop redundant local variable
-
-Thorsten Blum (5):
-      thermal: core: Use strnlen() in thermal_zone_device_register_with_trips()
-      thermal: intel: int340x: Use sysfs_emit{_at}() in sysfs show functions
-      thermal: sysfs: Replace snprintf() with strscpy() in policy_store()
-      thermal: intel: Use sysfs_emit() in a sysfs show function
-      thermal/drivers/broadcom: Use clamp to simplify bcm2835_thermal_temp2adc
-
----------------
-
- .../devicetree/bindings/nvmem/mediatek,efuse.yaml  |   1 +
- .../bindings/thermal/mediatek,lvts-thermal.yaml    |   3 +
- .../bindings/thermal/renesas,r9a09g047-tsu.yaml    |  34 +-
- Documentation/driver-api/thermal/intel_dptf.rst    |   3 +
- drivers/thermal/broadcom/bcm2835_thermal.c         |   8 +-
- .../int340x_thermal/processor_thermal_device.c     |   5 +-
- .../intel/int340x_thermal/processor_thermal_rfim.c |   9 +-
- .../int340x_thermal/processor_thermal_wt_hint.c    |  57 +++-
- .../int340x_thermal/processor_thermal_wt_req.c     |   7 +-
- drivers/thermal/intel/intel_pch_thermal.c          |   1 -
- drivers/thermal/intel/intel_tcc.c                  |   8 +-
- drivers/thermal/intel/intel_tcc_cooling.c          |  13 +-
- drivers/thermal/intel/therm_throt.c                |   5 +-
- drivers/thermal/intel/x86_pkg_temp_thermal.c       |   3 +
- drivers/thermal/mediatek/lvts_thermal.c            | 362 +++++++++++++++++++--
- drivers/thermal/renesas/rzg3e_thermal.c            | 123 ++++---
- drivers/thermal/st/stm_thermal.c                   |   4 +-
- drivers/thermal/thermal_core.c                     |   8 +-
- drivers/thermal/thermal_core.h                     |   7 +-
- drivers/thermal/thermal_debugfs.c                  |   2 +-
- drivers/thermal/thermal_hwmon.c                    |   4 +-
- drivers/thermal/thermal_of.c                       |   4 +-
- drivers/thermal/thermal_sysfs.c                    |  38 +--
- .../dt-bindings/thermal/mediatek,lvts-thermal.h    |  29 ++
- tools/lib/thermal/libthermal.pc.template           |   4 +-
- .../intel/workload_hint/workload_hint_test.c       |  74 +++--
- 26 files changed, 651 insertions(+), 165 deletions(-)
 
