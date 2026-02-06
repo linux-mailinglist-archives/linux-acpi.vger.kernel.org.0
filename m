@@ -1,284 +1,339 @@
-Return-Path: <linux-acpi+bounces-20877-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20878-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iASTHH67hWmOFgQAu9opvQ
-	(envelope-from <linux-acpi+bounces-20877-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 10:59:26 +0100
+	id WEzWFurZhWlZHQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-20878-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 13:09:14 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB29BFC589
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 10:59:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C34CFD7A2
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 13:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA9CD3008D32
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Feb 2026 09:58:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9126E3006D47
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Feb 2026 12:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E282A361DAD;
-	Fri,  6 Feb 2026 09:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60AD3A0B05;
+	Fri,  6 Feb 2026 12:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6LtHyeTA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msRoMfjU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E0530FC16;
-	Fri,  6 Feb 2026 09:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2914309EE7
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Feb 2026 12:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770371882; cv=none; b=CydjDvbYxBVN5oLf7trU8ppFjYqoZN1qf3iP2CgC/QGrgG0Z4JeJMKA8LL+SdJvVXlkTR/EdtF+/IiM8I21Eyn8S3u0hsXOxBXM60Ptu9REaw1h7dWLYtcubJlVmVqSibuVM3Zkq6WznC3gZsqvikl0iaiSez8g17O53QqvyqdM=
+	t=1770379749; cv=none; b=jxSqoZjlmCGRD8zO+qZQsLXxdweLY7G0vq7PWfOEb+KsVnDSWB+30N1QppybUzZUmZ7yCrpJwCkUg7j8O5t1RjKFkSvMPnKrdrcbe8e1VjswNezDWSjyOzfYtbJsmYBDaMVdb5e1QA3yEK1l9jJA6y61AVRiwkWT2EkA/7xuaLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770371882; c=relaxed/simple;
-	bh=BEmwiq72zBE0klGcj6xELmKJtHUh+w9CgjynqQrpcJw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=R518WxZby8a6UMU5IqKjq6PCwVD00aUJCnmDCK5tyBidcg9EWUpt75+Y+g3ooHkNM7Fbjz+NUkNQaoyqDPB2uqXAql2gBMJS5ykUMVEJk8orcgxvGmkVfK5CzSGknc5HgN6L6/YwJ0kV10bIk3WQyjRZESsNcOTdmFEv/7sJzGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6LtHyeTA; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QCCxSwUSjYSX6lhaYzgvb5EaDtE7CqfWMfyMf84FJNA=;
-	b=6LtHyeTA6DD2NB/13hvsqOLfqozq0nLg2zRfP1/b4UhTIRnxAZKImRSTFsM3qpikG5DB1YmKs
-	JLpQexxO7s7kPLeJAxjNUJs3Ni1wRd3utecQk6wWBHPqIn/EfQMInLl19xkSPdETc0qjOrUnNep
-	MTYPp+iT7VR4CK6g7u9D/6Y=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4f6qCf16PPzLlSX;
-	Fri,  6 Feb 2026 17:53:18 +0800 (CST)
-Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5657440568;
-	Fri,  6 Feb 2026 17:57:53 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
- (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Feb
- 2026 17:57:52 +0800
-Message-ID: <4257cdb1-c18b-4274-95b4-617f1da76518@huawei.com>
-Date: Fri, 6 Feb 2026 17:57:52 +0800
+	s=arc-20240116; t=1770379749; c=relaxed/simple;
+	bh=YhG37LeR9IP7/7ZENXZfb+hZAsjNbmgjXLGpt1n63Gg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tl/rBVHhRZU5ml4GRQHGamBZI54VAFFshfUsvIeyP6G0RmvUnjuyNvz4P85gMxJhCqnbLQrKSqAIyPpnvd+LiEHm2C1Z9gPMgcuInvFATQvJkXHTQaJFWilz86ufRje8KZWks4rGSB75pHgH/38Ec9nuhnAsjXRh+rQYQWF/GzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msRoMfjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C12BC2BCB1
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Feb 2026 12:09:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770379749;
+	bh=YhG37LeR9IP7/7ZENXZfb+hZAsjNbmgjXLGpt1n63Gg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=msRoMfjUNYZLVWSFNPALKU4CRj1M4YsVLdoGppduDnAA1HF6rgD1IwSFh+HxxS5F3
+	 HojO2hiMoYCX2E5pIylsScXB6aUIfI9+GONpORIFxgWvSjwyEXKW3JskE7rxNWHkZ3
+	 WsOpXq1tJOmIXleWqCJQzlVv3aDVzpb8tjTrlXGQKotl3sLWA8kb/Ulwo7cSxNQ8VM
+	 fnsXP3cLtBH/sioDUJGOI3fPUlyZIOrkfJ/uoZxkwkcRCHF3A94uQ7enQOkLM+CXbE
+	 gug/SDbMQcU2idsaYgK77mQrzMQNSn40c3o5zu9+kZBUKZUnUicdFt5EF6M8TxHklX
+	 8lXEtlT0EbWJQ==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4094d7d71a9so206070fac.3
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Feb 2026 04:09:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVWsxot4z/MyWTHxbld2Vc/WJIDPXDkardy72gCIAgLn/e4ZIyOyS0hC9sgFqKd/2iCRs6C4VQqFVSC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUtdD3N6pspgQqM2qNa3NOpHFtqLYoJXkH7RZzdoqVXKLe+fiU
+	siphbLIe7xp1qgF87LDoZRNx3zX6fJakzzoJWzLyZX7zahldGZumj38Rq1Akm8Lq61l+sEgOyB+
+	1dSyfJl4XCNHZoxmHSKR50up56CUWV6M=
+X-Received: by 2002:a05:6870:d06:b0:3e8:983c:c8a with SMTP id
+ 586e51a60fabf-40a96e80e57mr1332822fac.37.1770379748073; Fri, 06 Feb 2026
+ 04:09:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: processor: Add acpi_processor_start() back to parse
- _CPC tables before CPU online
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Jonathan Cameron <jonathan.cameron@huawei.com>, <catalin.marinas@arm.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <gshan@redhat.com>, <miguel.luis@oracle.com>,
-	<guohanjun@huawei.com>, <zhanjie9@hisilicon.com>, <lihuisong@huawei.com>,
-	<yubowen8@huawei.com>, <zhangpengjie2@huawei.com>, <wangzhi12@huawei.com>,
-	<linhongye@h-partners.com>, <salil.mehta@huawei.com>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Linux PM <linux-pm@vger.kernel.org>
-References: <20260120113242.3843463-1-zhenglifeng1@huawei.com>
- <CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
- <20260127165824.0000247f@huawei.com>
- <CAJZ5v0irPpqEZkCLPmdMU4CxR6ma_j11Z6Nxx8c5fd0aFq9dBw@mail.gmail.com>
- <762300a5-acd8-476d-bc6c-494b912995d3@huawei.com>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <762300a5-acd8-476d-bc6c-494b912995d3@huawei.com>
+References: <CAK8fFZ43wrQ8A_bO_g+rKN9O31sxULtqA0hUieZSzEH5KqeW1Q@mail.gmail.com>
+ <CAJZ5v0hEu_io2BAzp9weUDHwHngorjZ37GRUK=ngSXNjtp38qw@mail.gmail.com>
+ <CAK8fFZ65Vro5nQqJq_cvsY93hgDbfTdibWnNr5b0Bixzc-ESfg@mail.gmail.com>
+ <CAK8fFZ6Vi4xayvdKh-_eLi-nDNMLuEoMsvwEnb33QqnwS7o4BA@mail.gmail.com>
+ <1c8f748a-5c5d-4234-ae86-7bb12045a373@roeck-us.net> <CA+9S74i+BC3=E0opOPMff0cuC1OPYSecii0C8fVZ+NM7bptNcQ@mail.gmail.com>
+ <fee01c19-2711-487e-91e9-d57f9be04b98@roeck-us.net> <CA+9S74jR9jRRE-DNMxNg=6Uv2uDAUar2n-RkVDJqzkDfNu3eog@mail.gmail.com>
+ <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net> <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
+ <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
+In-Reply-To: <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 6 Feb 2026 13:08:56 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0i_BmeGROzQFpUCyF5MkA7sFkP3y8jjqH0mD2r2Wqj_xA@mail.gmail.com>
+X-Gm-Features: AZwV_Qi1z9oFoRF9DTyjg8MChUsKPf90ghSceMYHLJww31ZKI2B7idUzdkUm9ac
+Message-ID: <CAJZ5v0i_BmeGROzQFpUCyF5MkA7sFkP3y8jjqH0mD2r2Wqj_xA@mail.gmail.com>
+Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average sysfs
+ read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Igor Raits <igor@gooddata.com>, 
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, linux-acpi@vger.kernel.org, 
+	linux-hwmon@vger.kernel.org, Daniel Secik <daniel.secik@gooddata.com>, 
+	Zdenek Pesek <zdenek.pesek@gooddata.com>, Jiri Jurica <jiri.jurica@gooddata.com>, 
+	Huisong Li <lihuisong@huawei.com>, Corey Minyard <corey@minyard.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemf200001.china.huawei.com (7.202.181.227)
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-20877-lists,linux-acpi=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
+	TAGGED_FROM(0.00)[bounces-20878-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhenglifeng1@huawei.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,huawei.com:dkim,huawei.com:mid]
-X-Rspamd-Queue-Id: CB29BFC589
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 6C34CFD7A2
 X-Rspamd-Action: no action
 
-On 2026/1/29 20:45, zhenglifeng (A) wrote:
-> 
-> 
-> On 2026/1/28 2:00, Rafael J. Wysocki wrote:
->> +linux-pm and Viresh
->>
->> On Tue, Jan 27, 2026 at 5:58 PM Jonathan Cameron
->> <jonathan.cameron@huawei.com> wrote:
->>>
->>> On Tue, 27 Jan 2026 15:42:16 +0100
->>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->>>
->>>> On Tue, Jan 20, 2026 at 12:33 PM Lifeng Zheng <zhenglifeng1@huawei.com> wrote:
->>>>>
->>>>> Currently, if boot with maxcpus less than NR_CPUS, the cppc_cpufreq driver
->>>>> will fail to register. Because it requires the domain information of all
->>>>> possible CPUs to construct shared_cpu_map, which shows the CPUs that share
->>>>> the same domain.
->>>>>
->>>>> Commit c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use
->>>>> same path for cold and hotplug") removes probe() of acpi_processor_driver
->>>>> and makes acpi_cppc_processor_probe() only being called the first time CPU
->>>>> goes online. This means that CPUs that haven't yet gone online will not
->>>>> have pre-parsed _CPC objects and causes cppc_cpufreq driver register fail.
->>>>>
->>>>> Add acpi_processor_start() back as the probe() callback of
->>>>> acpi_processor_driver and call acpi_cppc_processor_probe() in it to make
->>>>> sure all _CPC tables will be parsed when acpi_processor_driver registered.
->>>>>
->>>>> Fixes: c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use same path for cold and hotplug")
->>>>> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
->>>>> ---
->>>>>  drivers/acpi/processor_driver.c | 30 ++++++++++++++++++++++++++----
->>>>>  1 file changed, 26 insertions(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
->>>>> index 65e779be64ff..c8b4daf580b0 100644
->>>>> --- a/drivers/acpi/processor_driver.c
->>>>> +++ b/drivers/acpi/processor_driver.c
->>>>> @@ -33,6 +33,7 @@ MODULE_AUTHOR("Paul Diefenbaugh");
->>>>>  MODULE_DESCRIPTION("ACPI Processor Driver");
->>>>>  MODULE_LICENSE("GPL");
->>>>>
->>>>> +static int acpi_processor_start(struct device *dev);
->>>>>  static int acpi_processor_stop(struct device *dev);
->>>>>
->>>>>  static const struct acpi_device_id processor_device_ids[] = {
->>>>> @@ -46,6 +47,7 @@ static struct device_driver acpi_processor_driver = {
->>>>>         .name = "processor",
->>>>>         .bus = &cpu_subsys,
->>>>>         .acpi_match_table = processor_device_ids,
->>>>> +       .probe = acpi_processor_start,
->>>>>         .remove = acpi_processor_stop,
->>>>>  };
->>>>>
->>>>> @@ -162,10 +164,6 @@ static int __acpi_processor_start(struct acpi_device *device)
->>>>>         if (!pr)
->>>>>                 return -ENODEV;
->>>>>
->>>>> -       result = acpi_cppc_processor_probe(pr);
->>>>> -       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
->>>>> -               dev_dbg(&device->dev, "CPPC data invalid or not present\n");
->>>>> -
->>>>>         if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
->>>>>                 acpi_processor_power_init(pr);
->>>>>
->>>>> @@ -192,6 +190,30 @@ static int __acpi_processor_start(struct acpi_device *device)
->>>>>         return result;
->>>>>  }
->>>>>
->>>>> +static int acpi_processor_start(struct device *dev)
->>>>> +{
->>>>> +       struct acpi_device *device = ACPI_COMPANION(dev);
->>>>> +       struct acpi_processor *pr;
->>>>> +       int result;
->>>>> +
->>>>> +       if (!device)
->>>>> +               return -ENODEV;
->>>>> +
->>>>> +       pr = acpi_driver_data(device);
->>>>> +       if (!pr)
->>>>> +               return -ENODEV;
->>>>> +
->>>>> +       /* Protect against concurrent CPU hotplug operations */
->>>>> +       cpu_hotplug_disable();
->>>>> +       result = acpi_cppc_processor_probe(pr);
->>>>> +       cpu_hotplug_enable();
->>>>
->>>> This means that CPPC will be initialized for vCPUs that are not
->>>> enabled on ARM if I'm not mistaken.
->>>
->>> If we are just talking powered down at boot it used to do that
->>> so I assume it was fine. The corner case is ones we are explicitly
->>> saying are not onlineable yet but marked online capable and will
->>> turn up later.
->>>
->>>>
->>>> I'm not sure if it is valid to do so.
->>>
->>> The conclusion of the following is I think this is fine but I'm not
->>> entirely confident about it.
->>>
->>> I'm struggling to figure out the right answer to this and
->>> it's not easy to test. I vaguely recall having some nasty emulation
->>> hacks to poke some x86 related _CPC stuff a while back.
->>> I might be able to hack something up for this as well and try to
->>> create pathological corner cases.
->>>
->>> The short answer is CPPC + hotplug isn't a thing today in KVM + QEMU,
->>> but that's not to say it never will be if someone virtualizes CPC for
->>> a guest.  Let's consider that hypothetical virtualization / emulation.
->>>
->>> So the questions:
->>> 1) Does simply making this acpi_cppc_processor_probe() result in any
->>>    register accesses to the registers that might be found in _CPC or
->>>    used via other ACPI methods?
->>> 2) Can we rely on a a VMM not do something nasty if those are accessed
->>>    on CPUs that haven't been instantiated yet?  e.g. Bus error.
->>>    A related useful question is: Can we assume these registers are
->>>    accessible on offlined CPUs?  If they can be unsafe to access from
->>>    CPUs that are temporary powered down / offline then I think we are fine because
->>>    the CPPC code must guarantee not to access them. (I'm relying on this!)
->>>
->>> For the particular case Lifeng has run into, I think the code that matters
->>> (beyond instantiation of the infrastructure) is the creation of the
->>> domain info in acpi_get_psd(). I think _PSD can only be static data so
->>> shouldn't cause any register accesses to the powered down CPUs.
->>>
->>> So 'probably' fine + we'll not really know unless we get CPU HP and
->>> CPC.
->>>
->>> Alternative much more complex change would be to separate the grabbing of
->>> static data (done here) from setting up anything dynamic which would remain
->>> in the hotplug handler.  If those registers haven't been discovered we definitely
->>> can't access them from the cpu freq driver.
->>
->> I'm thinking that maybe cppc_cpufreq should be updated instead.
->>
->> I'm not really sure why it needs to collect information on offline
->> CPUs.  Surely, they don't matter until they are brought online.
-> 
-> This information is collected in order to generate related_cpus. Without
-> doing so, a new policy will be created when the second CPU in the same
-> domain comes online, instead of reusing the existing policy. And this will
-> make a mess.
-> 
-> I can't find a good way to solve this problem in cppc_cpufreq or cpufreq.
+On Thu, Feb 5, 2026 at 11:34=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki wrote:
+> > Cc: Corey
+> >
+> > On Thu, Feb 5, 2026 at 6:51=E2=80=AFPM Guenter Roeck <linux@roeck-us.ne=
+t> wrote:
+> > >
+> > > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
+> > > > On Wed, Feb 4, 2026 at 11:49=E2=80=AFPM Guenter Roeck <linux@roeck-=
+us.net> wrote:
+> > > > >
+> > > > > On 2/4/26 11:54, Igor Raits wrote:
+> > > > > > I have written a patch with the help of AI and it fixes the pro=
+blem. Attached.
+> > > > > >
+> > > > >
+> > > > > "No MIME, no links, no compression, no attachments.  Just plain t=
+ext"
+> > > >
+> > > > Sorry for that, I had assumed that attaching the file would make it=
+ in-line.
+> > > >
+> > > > > ... which means I can not provide inline feedback, which is the w=
+hole
+> > > > > point of the above.
+> > > > >
+> > > > > Your patch crosses subsystems, so it will need to be split in two
+> > > > > (assuming the ACPI side is even needed). Also, references to iDRA=
+C
+> > > > > in common code seem inappropriate.
+> > > >
+> > > > Yes, this I believe was the essential part (it was the last piece i=
+n
+> > > > my testing which fixed the hanging):
+> > > >
+> > >
+> > > Then I'll need to ask differently: What happens if you drop the IPMI =
+code,
+> > > and just keep the wait_for_completion -> wait_for_completion_timeout
+> > > change ? Would that be sufficient to solve the problem ?
+> >
+> > I'd rather say "Would that be sufficient to make the symptoms go
+> > away?" as it most likely papers over the real problem.
+> >
+>
+> Good point. Worse, it may result in UAF or memory leaks.
+>
+> > > Either case, the need for this change suggests that the ipmi change
+> > > may not be complete, since it should send a completion with an error.
+> >
+> > I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
+> > handle if the BMC is non-functional") should also be considered as a
+> > possible way forward because it clearly did not improve things as
+> > expected, at least in this particular case.
+> >
+>
+> I tend to agree. I ran a number of AI code reviews over the patch, and
+> each time it finds new (and different) problems. The fact that the acpi
+> patch is still needed even after applying the ipmi changes suggests that
+> something is still missing in the ipmi code.
+>
+> > It evidently did something that confuses things quite a bit.  Either
+> > it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
+> > the "hosed" state and refusing to accept messages.
+> >
+>
+> More than that. My latest AI results are below, just for reference
+> (using Gemini 3 with Chris Mason's debug prompts). The prompt I used
+> for this run is:
 
-Hi Rafael,
+Well, I guess it's time to send a revert patch then.
 
-If we have to make sure not to use the information on offline CPUs, there
-will be many things that need to be modified:
+> "
+> The top commit in the linux/ directory results in hung tasks if the BMC
+> stops responding. Using @review-prompts/kernel/debugging.md analyze the
+> patch, identify the reason for the hung task problem, suggest and impleme=
+nt
+> a fix. Note that there may be more than one problem in the patch, so anal=
+yze
+> the complete patch and do not stop after fiding the first regression.
+> "
+>
+> I think that catches most of the problem, but not all of it.
+>
+> Guenter
+>
+> ---
+>
+> Summary of crash or warning:
+> Hung task detected in ipmi_si driver when BMC becomes non-functional.
+> Processes waiting for IPMI responses (e.g. ipmitool, monitoring agents) e=
+nter D state and never recover.
+>
+> Kernel version if available:
+> Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
+>
+> Machine type if available:
+> Generic Server with BMC
+>
+> Cleaned up copy of oops or stack trace:
+> [  120.123456] INFO: task ipmitool:1234 blocked for more than 120 seconds=
+.
+> [  120.123457]       Not tainted 6.14.0-rc1 #1
+> [  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disable=
+s this message.
+> [  120.123459] task:ipmitool        state:D stack:    0 pid: 1234 ppid:  =
+100 flags:0x00000000
+> [  120.123460] Call Trace:
+> [  120.123461]  <TASK>
+> [  120.123462]  __schedule+0x123/0x456
+> [  120.123463]  schedule+0x45/0x78
+> [  120.123464]  schedule_timeout+0x9a/0xbc
+> [  120.123465]  wait_for_completion+0xde/0xf0
+> [  120.123466]  ipmi_request_settime+0x123/0x145
+> [  120.123467]  ...
+> [  120.123468]  </TASK>
+>
+> Any other kernel messages you found relevant:
+> N/A
+>
+> Explanation of the problem:
+> 1. Hung Task:
+> The patch "ipmi:si: Gracefully handle if the BMC is non-functional" intro=
+duces a new state `SI_HOSED` to handle BMC failures. When the driver detect=
+s that the BMC is not responding, it transitions to `SI_HOSED` and fails th=
+e currently processing message (`curr_msg`). However, if a new message is q=
+ueued via `sender()` (populating `waiting_msg`) during a recovery probe (st=
+ate `SI_GETTING_FLAGS`), and that probe subsequently fails, the state machi=
+ne transitions back to `SI_HOSED`. In this transition, the driver checks an=
+d fails `curr_msg`, but it neglects to check or fail `waiting_msg`. As a re=
+sult, the `waiting_msg` remains in the queue indefinitely, causing the wait=
+ing process to hang.
 
-1. acpi_get_psd_map() in cppc_acpi.c: only use the information on online
-CPUs, and update shared_cpu_map when a new CPU in the same domain goes
-online.
+That's quite convincing and it would explain the observed symptoms.
 
-2. cpufreq_online() in cpufreq.c: create a new policy and decide whether it
-should be kept because it may turns out that the CPU should share an
-already exist policy with other CPUs.
+> 2. Excessive Polling (Timer Overwrite):
+> In `smi_timeout()`, the timer is unconditionally reset to a short timeout=
+ (e.g., 10ms) at the end of the function, unless the state machine is IDLE.=
+ When the state machine returns `SI_SM_HOSED`, `smi_event_handler()` correc=
+tly sets the timer to a long backoff (1 second). However, `smi_timeout()` s=
+ubsequently overwrites this with the short timeout. This causes the driver =
+to poll the hosed BMC every 10ms instead of backing off for 1 second, resul=
+ting in unnecessary CPU overhead.
 
-3. The init() callbacks in cppc_cpufreq, acpi-cpufreq and maybe other
-drivers: verify whether the newly generated policy is necessary and return
-the result.
+Well, that's not nice, but it doesn't seem to be related to the
+observed symptoms.
 
-...
+> Functions, snippets and call traces of code related to the problem:
+>
+> drivers/char/ipmi/ipmi_si_intf.c: smi_event_handler()
+>
+>         } else if (si_sm_result =3D=3D SI_SM_HOSED) {
+>                 /* ... */
+>                 smi_info->si_state =3D SI_HOSED;
+>                 if (smi_info->curr_msg !=3D NULL) {
+>                         return_hosed_msg(smi_info, IPMI_BUS_ERR);
+>                 }
+>                 /* BUG 1: waiting_msg is NOT checked here! */
+>
+>                 smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED); /* S=
+ets 1s timeout */
+>                 goto out;
+>         }
+>
+> drivers/char/ipmi/ipmi_si_intf.c: smi_timeout()
+>
+>         smi_result =3D smi_event_handler(smi_info, time_diff);
+>         /* ... */
+>         if (smi_result !=3D SI_SM_IDLE)
+>                 smi_mod_timer(smi_info, timeout); /* BUG 2: Overwrites 1s=
+ timeout with ~10ms */
+>
+> List of potential commits related to the problem:
+> bc3a9d217755f65c137f145600f23bf1d6c31ea9 ipmi:si: Gracefully handle if th=
+e BMC is non-functional
+>
+> Suggested fix:
+> 1. When entering `SI_HOSED` state in `smi_event_handler`, check for and f=
+ail any pending `waiting_msg` in addition to `curr_msg`.
+> 2. In `smi_timeout`, do not reset the timer if the state is `SI_HOSED`, p=
+reserving the backoff timeout set by `smi_event_handler`.
+>
+> ---
+> Suggested diffs from that run:
+>
+> diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si=
+_intf.c
+> index 1c65275906b4..023b0e819f91 100644
+> --- a/drivers/char/ipmi/ipmi_si_intf.c
+> +++ b/drivers/char/ipmi/ipmi_si_intf.c
+> @@ -810,6 +810,11 @@ static enum si_sm_result smi_event_handler(struct sm=
+i_info *smi_info,
+>                          */
+>                         return_hosed_msg(smi_info, IPMI_BUS_ERR);
+>                 }
+> +               if (smi_info->waiting_msg !=3D NULL) {
+> +                       smi_info->curr_msg =3D smi_info->waiting_msg;
+> +                       smi_info->waiting_msg =3D NULL;
+> +                       return_hosed_msg(smi_info, IPMI_BUS_ERR);
+> +               }
+>                 smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
+>                 goto out;
+>         }
+> @@ -1130,10 +1135,12 @@ static void smi_timeout(struct timer_list *t)
+>                 timeout =3D jiffies + SI_TIMEOUT_JIFFIES;
+>         }
+>
+> -       if (smi_result !=3D SI_SM_IDLE)
+> -               smi_mod_timer(smi_info, timeout);
+> -       else
+> +       if (smi_result !=3D SI_SM_IDLE) {
+> +               if (smi_info->si_state !=3D SI_HOSED)
+> +                       smi_mod_timer(smi_info, timeout);
+> +       } else {
+>                 smi_info->timer_running =3D false;
+> +       }
+>         spin_unlock_irqrestore(&(smi_info->si_lock), flags);
+>  }
 
-Is it necessary to make such a big change for solving this problem? It
-seems to me that it is reasonable and fewer changes to parse the _CPC table
-for all CPUs in advance because it never change, isn't it?
-
+Well, I'd leave fixing the IPMI handling to somebody familiar with that cod=
+e.
 
