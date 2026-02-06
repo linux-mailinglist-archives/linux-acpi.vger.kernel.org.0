@@ -1,275 +1,284 @@
-Return-Path: <linux-acpi+bounces-20876-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20877-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANPYJmqjhWmSEQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-20876-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 09:16:42 +0100
+	id iASTHH67hWmOFgQAu9opvQ
+	(envelope-from <linux-acpi+bounces-20877-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 10:59:26 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2202BFB58D
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 09:16:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB29BFC589
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Feb 2026 10:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C986300337D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Feb 2026 08:16:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA9CD3008D32
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Feb 2026 09:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FFA33C50F;
-	Fri,  6 Feb 2026 08:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E282A361DAD;
+	Fri,  6 Feb 2026 09:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6LtHyeTA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA09530AD1A;
-	Fri,  6 Feb 2026 08:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E0530FC16;
+	Fri,  6 Feb 2026 09:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770365799; cv=none; b=DT978/BD+/oaQ9Q16kVouucJlQR55PaiNL68Zm4lPDxHt7s2oQ/3MHgOGOAOcdof5W+HijVEeNer6f5YiWjidn+KkZevuMGZlwaq+DiP/ojn2+M/7c2Lkw4+qPoDSauuG4RD7ng4m9m5vxQJRi+YXSbVgl6AH26hU/MQaVjUdHM=
+	t=1770371882; cv=none; b=CydjDvbYxBVN5oLf7trU8ppFjYqoZN1qf3iP2CgC/QGrgG0Z4JeJMKA8LL+SdJvVXlkTR/EdtF+/IiM8I21Eyn8S3u0hsXOxBXM60Ptu9REaw1h7dWLYtcubJlVmVqSibuVM3Zkq6WznC3gZsqvikl0iaiSez8g17O53QqvyqdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770365799; c=relaxed/simple;
-	bh=KRkLOZUXlOqN2/vUjxLJO6GBbTG8MnsLEcsCHoaqOO8=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=W4oHLmmkBjdnT37czpFE2YKIgjO6JtU4qgtv8ljabWajNf3qZ75DQZ7rltNPqhwM+zspcQSaH709Kr8Lu7DIJ2lLdB2CUdzWehiYewfW+kvSWYovppxsxwCHM6IazYByIOvBCLpZwxJji6zpp6w4ZSzJM4wsgEg0aUgFRF7O8Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas6t1770365740t249t53373
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.20.47.234])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 8297871022067864192
-To: "'Bjorn Helgaas'" <helgaas@kernel.org>
-Cc: "'Rafael J. Wysocki'" <rafael@kernel.org>,
-	"'Tony Luck'" <tony.luck@intel.com>,
-	"'Borislav Petkov'" <bp@alien8.de>,
-	"'Hanjun Guo'" <guohanjun@huawei.com>,
-	"'Mauro Carvalho Chehab'" <mchehab@kernel.org>,
-	"'Shuai Xue'" <xueshuai@linux.alibaba.com>,
-	"'Len Brown'" <lenb@kernel.org>,
-	"'Shiju Jose'" <shiju.jose@huawei.com>,
-	"'Bjorn Helgaas'" <bhelgaas@google.com>,
-	<linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	"'Rafael J. Wysocki'" <rafael@kernel.org>,
-	"'Tony Luck'" <tony.luck@intel.com>,
-	"'Borislav Petkov'" <bp@alien8.de>,
-	"'Hanjun Guo'" <guohanjun@huawei.com>,
-	"'Mauro Carvalho Chehab'" <mchehab@kernel.org>,
-	"'Shuai Xue'" <xueshuai@linux.alibaba.com>,
-	"'Len Brown'" <lenb@kernel.org>,
-	"'Shiju Jose'" <shiju.jose@huawei.com>,
-	"'Bjorn Helgaas'" <bhelgaas@google.com>,
-	<linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <07a701dc964d$0f0c1310$2d243930$@trustnetic.com> <20260205153929.GA39360@bhelgaas>
-In-Reply-To: <20260205153929.GA39360@bhelgaas>
-Subject: RE: [PATCH] ACPI: APEI: Avoid NULL pointer dereference in ghes_estatus_pool_region_free
-Date: Fri, 6 Feb 2026 16:15:39 +0800
-Message-ID: <001c01dc9740$c7722540$56566fc0$@trustnetic.com>
+	s=arc-20240116; t=1770371882; c=relaxed/simple;
+	bh=BEmwiq72zBE0klGcj6xELmKJtHUh+w9CgjynqQrpcJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R518WxZby8a6UMU5IqKjq6PCwVD00aUJCnmDCK5tyBidcg9EWUpt75+Y+g3ooHkNM7Fbjz+NUkNQaoyqDPB2uqXAql2gBMJS5ykUMVEJk8orcgxvGmkVfK5CzSGknc5HgN6L6/YwJ0kV10bIk3WQyjRZESsNcOTdmFEv/7sJzGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6LtHyeTA; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=QCCxSwUSjYSX6lhaYzgvb5EaDtE7CqfWMfyMf84FJNA=;
+	b=6LtHyeTA6DD2NB/13hvsqOLfqozq0nLg2zRfP1/b4UhTIRnxAZKImRSTFsM3qpikG5DB1YmKs
+	JLpQexxO7s7kPLeJAxjNUJs3Ni1wRd3utecQk6wWBHPqIn/EfQMInLl19xkSPdETc0qjOrUnNep
+	MTYPp+iT7VR4CK6g7u9D/6Y=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4f6qCf16PPzLlSX;
+	Fri,  6 Feb 2026 17:53:18 +0800 (CST)
+Received: from kwepemf200001.china.huawei.com (unknown [7.202.181.227])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5657440568;
+	Fri,  6 Feb 2026 17:57:53 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemf200001.china.huawei.com
+ (7.202.181.227) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Feb
+ 2026 17:57:52 +0800
+Message-ID: <4257cdb1-c18b-4274-95b4-617f1da76518@huawei.com>
+Date: Fri, 6 Feb 2026 17:57:52 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQK/Rwp0xf4/4skqrjcqwFfAPkG5irOvnocw
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MXZrlka9y5vPAHdxJUHfps/DMxgikmh0USDVwX+v57V5/cTbMnSpRAyT
-	6C6c3yDt0X/KpaISBwz6zXXR0Wat1rcZ0ACFvqzg89OL7ve/v1iNmn1e8mVOm5hTLpOI6JS
-	YnwjyY98TT8R3+C1i+1aO7m2SFVpREM6YOb48gnrOavBD40iPtAKPP6jUt3dlaizpc14fTl
-	kuP2JG7u+UlwcNLnZn0hS28rrvV5PABLuZLeljWAnQO+/v2r+X1L6EVPuTf9jumpZfN33Li
-	vBetzzKu/ujULjz2Gx+8qT/mra9zEnTaD3fPA7K+qdHI3uV+o9YvFZ46N1oKG5C8j9yCmtb
-	7kgPO5LdG396NtzdEz+HLX5ELF7L8pIbm8d2IVvuXKLN9XEuDTuHP0ZSkaFBC4U2YPOQ7uG
-	56uR595/JVA8OzwcG9nVfkNiZ/vE8uNcOiKcttZ0WF9NoRIbXqgmNB3KkjPRHCb8JU33POD
-	ZA9lrIXCM42+Dstf/Cnys2xJiOFMV0SnELeXXfc/6eGYkvT3MIax91jGfXz5NVKjS4J68lE
-	j98XqVycQoyhLleFfKjqcAQeyCO/IVxLySQZrIAZ8Jgh2MLQr+JjRsfiKVCq7yCe1uIAToR
-	ItWzBsbhF/GnqFJAcKyGnl/cTEL7VTPr+ySKtffO3vGZIxXYid/d8H5sanesEp7AI+4hZFe
-	xYFk61/M7IfL7cxBWNgD70A0SpDQ6Mcg7ohLCh3ks/XyuqEGXKLtYERjrI1YTOzoe8JReDa
-	kaxX0/Mk3A7FfB/k+P8oWXHykLj/5iRRTGubtmNRQZsO1KDWDzd0HcHaaN+nsTP3VLH4hu5
-	k/3X3WeBMGqMcVOp1eCfkKIvjg6mbbp2Son6s+ZuwlJTF+H3gYgrNDUVDthqNZkaQPDrubk
-	UJhjbBG+uowm44noRR8CANFH074yoMJyl7KECNfrE4145AOiJNutE7DH3S6TVgYQ2Q4V4U2
-	Uws4V8HGM+yTpoIaVVer9w3vxsb1UElKZlMAilyePhlcRcpjL4/NHG74XEYMHHsFRgxc27p
-	9TFpPv/9/HrxIuU3V00rvKQv/nm79rwWAvTLwG075uabAJ4/ds
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: processor: Add acpi_processor_start() back to parse
+ _CPC tables before CPU online
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Jonathan Cameron <jonathan.cameron@huawei.com>, <catalin.marinas@arm.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxarm@huawei.com>, <gshan@redhat.com>, <miguel.luis@oracle.com>,
+	<guohanjun@huawei.com>, <zhanjie9@hisilicon.com>, <lihuisong@huawei.com>,
+	<yubowen8@huawei.com>, <zhangpengjie2@huawei.com>, <wangzhi12@huawei.com>,
+	<linhongye@h-partners.com>, <salil.mehta@huawei.com>, Viresh Kumar
+	<viresh.kumar@linaro.org>, Linux PM <linux-pm@vger.kernel.org>
+References: <20260120113242.3843463-1-zhenglifeng1@huawei.com>
+ <CAJZ5v0hX839+J-MdKUwpRv0D9HSj-sbtMN0o-OOYatu9dU+bFQ@mail.gmail.com>
+ <20260127165824.0000247f@huawei.com>
+ <CAJZ5v0irPpqEZkCLPmdMU4CxR6ma_j11Z6Nxx8c5fd0aFq9dBw@mail.gmail.com>
+ <762300a5-acd8-476d-bc6c-494b912995d3@huawei.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <762300a5-acd8-476d-bc6c-494b912995d3@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemf200001.china.huawei.com (7.202.181.227)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	FROM_EXCESS_BASE64(1.50)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20876-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[trustnetic.com];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-20877-lists,linux-acpi=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.992];
+	FROM_NEQ_ENVFROM(0.00)[zhenglifeng1@huawei.com,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 2202BFB58D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,huawei.com:dkim,huawei.com:mid]
+X-Rspamd-Queue-Id: CB29BFC589
 X-Rspamd-Action: no action
 
-On Thu, Feb 5, 2026 11:39 PM, Bjorn Helgaas wrote:
-> On Thu, Feb 05, 2026 at 11:11:02AM +0800, Jiawen Wu wrote:
-> > On Thu, Feb 5, 2026 5:46 AM, Bjorn Helgaas wrote:
-> > > On Wed, Feb 04, 2026 at 10:03:34AM +0800, Jiawen Wu wrote:
-> > > > On Wed, Feb 4, 2026 6:55 AM, Bjorn Helgaas wrote:
-> > > > > On Tue, Feb 03, 2026 at 10:12:32AM +0800, Jiawen Wu wrote:
-> > > > > > The function ghes_estatus_pool_region_free() is exported and
-> > > > > > be called by the PCIe AER recovery path, which
-> > > > > > unconditionally invokes it to free aer_capability_regs
-> > > > > > memory.
-> > > > > >
-> > > > > > Although current AER usage assumes memory comes from the
-> > > > > > GHES pool, robustness requires guarding against pool
-> > > > > > unavailability. Add a NULL check before calling
-> > > > > > gen_pool_free() to prevent crashes when the pool is not
-> > > > > > initialized. This also makes the API safer for potential
-> > > > > > future use by non-GHES callers.
-> > > > >
-> > > > > I'm not sure what you mean by "pool unavailability."  I think
-> > > > > getting here with ghes_estatus_pool==NULL means we have a
-> > > > > logic error somewhere, and I don't think we should silently
-> > > > > hide that error.
-> > > > >
-> > > > > I'm generally in favor of *not* checking so we find out if the
-> > > > > caller forgot to keep track of the pointer correctly.
-> > > >
-> > > > "pool unavailability" means that when I attempt to call
-> > > > aer_recover_queue() in a ethernet driver, which does not create
-> > > > ghes_estatus_pool, it leads to a NULL pointer dereference.
-> > >
-> > > I guess that means you contemplate having an ethernet driver
-> > > allocate and manage its own struct aer_capability_regs to pass to
-> > > aer_recover_queue().  But I don't understand why such a driver
-> > > would be involved in this part of the AER processing.
-> > >
-> > > Normally a device like a NIC that detects an error logs something
-> > > in its local AER Capability, then sends an ERR_* message upstream.
-> > > The Root Port that receives that ERR_* message generates an
-> > > interrupt.  In the native AER case, the Linux AER driver handles
-> > > that interrupt, reads the error logs from the AER Capability of
-> > > the device that sent the ERR_* message, and logs it.  In the
-> > > firmware-first case used by GHES, platform firmware handles the
-> > > interrupt, reads the error logs, packages them up, and sends them
-> > > to the Linux AER driver via GHES and aer_recover_queue().
-> > >
-> > > What's the PCIe hardware flow that would lead to an ethernet
-> > > driver calling aer_recover_queue()?  An Endpoint driver wouldn't
-> > > receive the AER interrupt generated by the Root Port.
-> > >
-> > > I suppose a NIC could generate its own device-specific interrupt
-> > > when it logs an error in its local AER Capability, but if it
-> > > conforms to the PCIe spec, it should also send an ERR_* message,
-> > > which would feed into the existing AER path.  I don't think we'd
-> > > want the existing AER path racing with a parallel AER path in the
-> > > Endpoint driver.
-> >
-> > Thank you for your detailed explanation.
-> >
-> > I fully agree that aer_recover_queue() is intended for
-> > firmware-first error reporting via GHES, and an endpoint driver
-> > should not normally invoke it directly.
-> >
-> > However, in practice, we've encountered platforms where AER
-> > interrupts are not delivered reliably. For example, due to BIOS
-> > misconfiguration, disabled AER in firmware, or hardware that fails
-> > to generate ERR_* messages correctly. On such systems, when a PCIe
-> > error occurs, the standard AER path is never triggered, and the
-> > device remains in a stuck state.
-> >
-> > To verify this, I simulated a PCIE error by injecting it into the
-> > NIC register.  But the Linux AER driver didn't respond at all, on
-> > many platforms.
-> >
-> > As a device driver, we'd like to ensure best-effort recovery
-> > regardless of platform AER support. Since pcie_do_recovery()
-> > encapsulates the complete and correct recovery sequence, it's
-> > exactly what we need-but it's not exported.
-> >
-> > Given this, could you advise on the proper way for an endpoint
-> > driver to initiate full PCIe error recovery when AER is unavailable?
-> > Is there a recommended pattern that safely achieves the same effect
-> > as pcie_do_recovery() without duplicating its logic?
+On 2026/1/29 20:45, zhenglifeng (A) wrote:
 > 
-> It makes sense to try to work around broken hardware, and I think we
-> should try to identify exactly what is broken and address it directly.
 > 
-> If the NIC itself is broken, the problem should happen on every
-> platform, and a quirk or the driver might be the best place to deal
-> with it.
->
-> If the platform is broken, we should see problems with many devices,
-> and it would be better to deal with it more centrally instead of a
-> single endpoint driver.
-
-Thank you for the thoughtful response.
-
-We are the NIC vendor, and our hardware (like many high-speed PCIe devices)
-can occasionally encounter PCIe errors due to real-world factors such as signal
-integrity issues, or marginal link training. These are not necessarily design
-flaws in the NIC itself, but rather transient conditions that can occur in
-field deployments.
-
-While we agree that platforms should properly deliver AER interrupts, in
-practice we see many customer environments (especially in embedded or custom
-server platforms) where:
-* AER is disabled in BIOS
-* The root port does not generate the architected interrupt
-* Firmware simply fails to report the error via GHES
-
-As a driver vendor, we have no ability to fix or even influence these
-platform-level issues. Yet from the user's perspective, the result is the same:
-the NIC becomes unusable (config space reads return 0xFFFFFFFF), and the
-network interface hangs indefinitely.
-
-Our goal is not to bypass the AER architecture, but to provide a last-resort
-recovery mechanism when the standard path is broken through no fault of our
-own. Since pcie_do_recovery() already implements the correct sequence, it would
-be ideal if endpoint drivers could safely invoke a similar flow when they
-detect a local failure (e.g., via MMIO timeout or Tx stall). I understand the
-concern about layering, but without any way to trigger recovery, the device
-remains dead. I think the driver only can do is copy the code of
-pcie_do_recovery() to restore the device. Would it be reasonable to consider
-exporting a recovery helper for use by endpoint drivers?
-
-> I know about several platforms that don't support the architected AER
-> interrupt, e.g.,
-> https://lore.kernel.org/all/20250702223841.GA1905230@bhelgaas/t/#u
-> There is some work in progress to address this particular problem.
+> On 2026/1/28 2:00, Rafael J. Wysocki wrote:
+>> +linux-pm and Viresh
+>>
+>> On Tue, Jan 27, 2026 at 5:58 PM Jonathan Cameron
+>> <jonathan.cameron@huawei.com> wrote:
+>>>
+>>> On Tue, 27 Jan 2026 15:42:16 +0100
+>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>>>
+>>>> On Tue, Jan 20, 2026 at 12:33 PM Lifeng Zheng <zhenglifeng1@huawei.com> wrote:
+>>>>>
+>>>>> Currently, if boot with maxcpus less than NR_CPUS, the cppc_cpufreq driver
+>>>>> will fail to register. Because it requires the domain information of all
+>>>>> possible CPUs to construct shared_cpu_map, which shows the CPUs that share
+>>>>> the same domain.
+>>>>>
+>>>>> Commit c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use
+>>>>> same path for cold and hotplug") removes probe() of acpi_processor_driver
+>>>>> and makes acpi_cppc_processor_probe() only being called the first time CPU
+>>>>> goes online. This means that CPUs that haven't yet gone online will not
+>>>>> have pre-parsed _CPC objects and causes cppc_cpufreq driver register fail.
+>>>>>
+>>>>> Add acpi_processor_start() back as the probe() callback of
+>>>>> acpi_processor_driver and call acpi_cppc_processor_probe() in it to make
+>>>>> sure all _CPC tables will be parsed when acpi_processor_driver registered.
+>>>>>
+>>>>> Fixes: c1385c1f0ba3 ("ACPI: processor: Simplify initial onlining to use same path for cold and hotplug")
+>>>>> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+>>>>> ---
+>>>>>  drivers/acpi/processor_driver.c | 30 ++++++++++++++++++++++++++----
+>>>>>  1 file changed, 26 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+>>>>> index 65e779be64ff..c8b4daf580b0 100644
+>>>>> --- a/drivers/acpi/processor_driver.c
+>>>>> +++ b/drivers/acpi/processor_driver.c
+>>>>> @@ -33,6 +33,7 @@ MODULE_AUTHOR("Paul Diefenbaugh");
+>>>>>  MODULE_DESCRIPTION("ACPI Processor Driver");
+>>>>>  MODULE_LICENSE("GPL");
+>>>>>
+>>>>> +static int acpi_processor_start(struct device *dev);
+>>>>>  static int acpi_processor_stop(struct device *dev);
+>>>>>
+>>>>>  static const struct acpi_device_id processor_device_ids[] = {
+>>>>> @@ -46,6 +47,7 @@ static struct device_driver acpi_processor_driver = {
+>>>>>         .name = "processor",
+>>>>>         .bus = &cpu_subsys,
+>>>>>         .acpi_match_table = processor_device_ids,
+>>>>> +       .probe = acpi_processor_start,
+>>>>>         .remove = acpi_processor_stop,
+>>>>>  };
+>>>>>
+>>>>> @@ -162,10 +164,6 @@ static int __acpi_processor_start(struct acpi_device *device)
+>>>>>         if (!pr)
+>>>>>                 return -ENODEV;
+>>>>>
+>>>>> -       result = acpi_cppc_processor_probe(pr);
+>>>>> -       if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+>>>>> -               dev_dbg(&device->dev, "CPPC data invalid or not present\n");
+>>>>> -
+>>>>>         if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
+>>>>>                 acpi_processor_power_init(pr);
+>>>>>
+>>>>> @@ -192,6 +190,30 @@ static int __acpi_processor_start(struct acpi_device *device)
+>>>>>         return result;
+>>>>>  }
+>>>>>
+>>>>> +static int acpi_processor_start(struct device *dev)
+>>>>> +{
+>>>>> +       struct acpi_device *device = ACPI_COMPANION(dev);
+>>>>> +       struct acpi_processor *pr;
+>>>>> +       int result;
+>>>>> +
+>>>>> +       if (!device)
+>>>>> +               return -ENODEV;
+>>>>> +
+>>>>> +       pr = acpi_driver_data(device);
+>>>>> +       if (!pr)
+>>>>> +               return -ENODEV;
+>>>>> +
+>>>>> +       /* Protect against concurrent CPU hotplug operations */
+>>>>> +       cpu_hotplug_disable();
+>>>>> +       result = acpi_cppc_processor_probe(pr);
+>>>>> +       cpu_hotplug_enable();
+>>>>
+>>>> This means that CPPC will be initialized for vCPUs that are not
+>>>> enabled on ARM if I'm not mistaken.
+>>>
+>>> If we are just talking powered down at boot it used to do that
+>>> so I assume it was fine. The corner case is ones we are explicitly
+>>> saying are not onlineable yet but marked online capable and will
+>>> turn up later.
+>>>
+>>>>
+>>>> I'm not sure if it is valid to do so.
+>>>
+>>> The conclusion of the following is I think this is fine but I'm not
+>>> entirely confident about it.
+>>>
+>>> I'm struggling to figure out the right answer to this and
+>>> it's not easy to test. I vaguely recall having some nasty emulation
+>>> hacks to poke some x86 related _CPC stuff a while back.
+>>> I might be able to hack something up for this as well and try to
+>>> create pathological corner cases.
+>>>
+>>> The short answer is CPPC + hotplug isn't a thing today in KVM + QEMU,
+>>> but that's not to say it never will be if someone virtualizes CPC for
+>>> a guest.  Let's consider that hypothetical virtualization / emulation.
+>>>
+>>> So the questions:
+>>> 1) Does simply making this acpi_cppc_processor_probe() result in any
+>>>    register accesses to the registers that might be found in _CPC or
+>>>    used via other ACPI methods?
+>>> 2) Can we rely on a a VMM not do something nasty if those are accessed
+>>>    on CPUs that haven't been instantiated yet?  e.g. Bus error.
+>>>    A related useful question is: Can we assume these registers are
+>>>    accessible on offlined CPUs?  If they can be unsafe to access from
+>>>    CPUs that are temporary powered down / offline then I think we are fine because
+>>>    the CPPC code must guarantee not to access them. (I'm relying on this!)
+>>>
+>>> For the particular case Lifeng has run into, I think the code that matters
+>>> (beyond instantiation of the infrastructure) is the creation of the
+>>> domain info in acpi_get_psd(). I think _PSD can only be static data so
+>>> shouldn't cause any register accesses to the powered down CPUs.
+>>>
+>>> So 'probably' fine + we'll not really know unless we get CPU HP and
+>>> CPC.
+>>>
+>>> Alternative much more complex change would be to separate the grabbing of
+>>> static data (done here) from setting up anything dynamic which would remain
+>>> in the hotplug handler.  If those registers haven't been discovered we definitely
+>>> can't access them from the cpu freq driver.
+>>
+>> I'm thinking that maybe cppc_cpufreq should be updated instead.
+>>
+>> I'm not really sure why it needs to collect information on offline
+>> CPUs.  Surely, they don't matter until they are brought online.
 > 
-> Do you have any specifics about the devices and platforms where you're
-> seeing issues?
+> This information is collected in order to generate related_cpus. Without
+> doing so, a new policy will be created when the second CPU in the same
+> domain comes online, instead of reusing the existing policy. And this will
+> make a mess.
+> 
+> I can't find a good way to solve this problem in cppc_cpufreq or cpufreq.
 
-The test platform I'm currently using:
-* CPU: AMD Ryzen 9 7950X 16-Core Processor
-* BIOS version: E7E16AMS.190
-* OS: Ubuntu 25.04
-* Kernel: Linux 6.19.0-rc7+
+Hi Rafael,
 
-The device is our NIC, the driver is in the directory:
-drivers/net/ethernet/wangxun/
+If we have to make sure not to use the information on offline CPUs, there
+will be many things that need to be modified:
 
-If you need more detailed information, please let me know.
-Thanks again for your time and support.
+1. acpi_get_psd_map() in cppc_acpi.c: only use the information on online
+CPUs, and update shared_cpu_map when a new CPU in the same domain goes
+online.
 
+2. cpufreq_online() in cpufreq.c: create a new policy and decide whether it
+should be kept because it may turns out that the CPU should share an
+already exist policy with other CPUs.
 
+3. The init() callbacks in cppc_cpufreq, acpi-cpufreq and maybe other
+drivers: verify whether the newly generated policy is necessary and return
+the result.
+
+...
+
+Is it necessary to make such a big change for solving this problem? It
+seems to me that it is reasonable and fewer changes to parse the _CPC table
+for all CPUs in advance because it never change, isn't it?
 
 
