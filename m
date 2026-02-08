@@ -1,207 +1,222 @@
-Return-Path: <linux-acpi+bounces-20895-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20896-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIfmJXbnh2mRewQAu9opvQ
-	(envelope-from <linux-acpi+bounces-20895-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 08 Feb 2026 02:31:34 +0100
+	id GNvWJjcLiGmyhgQAu9opvQ
+	(envelope-from <linux-acpi+bounces-20896-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 08 Feb 2026 05:04:07 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370F71078F6
-	for <lists+linux-acpi@lfdr.de>; Sun, 08 Feb 2026 02:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF79107C8F
+	for <lists+linux-acpi@lfdr.de>; Sun, 08 Feb 2026 05:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49C35300D966
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Feb 2026 01:31:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F3283013260
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Feb 2026 04:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445902FFFA6;
-	Sun,  8 Feb 2026 01:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656E12C21D8;
+	Sun,  8 Feb 2026 04:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNvowwG9"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="P7qE1WmT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206DB156F20;
-	Sun,  8 Feb 2026 01:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E3A26461F
+	for <linux-acpi@vger.kernel.org>; Sun,  8 Feb 2026 04:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770514288; cv=none; b=RJFhBxr4l3aiu//pa2EBt+I2JmaVhnwttbTHU1zVKYsIMFu99PmaHU1TQraxw7rx1DqTHX9w0I3WuOmW+J0MOwLJO1+Saw7u+UUrhg0ZfqFhnzEHqK4BChUZ4JKy48xXHhHFtalzn4/k+qzbpLQZ5rSTq2FZZ+ZCGUcCYau9PiI=
+	t=1770523443; cv=none; b=k/5noL4CZfv1o90k7fKBqddGzLXCVNqooyp1WL5bRqmr5bVdHNmavxwIkI3o057pbJtEwQDcO5G8ITheD1YiaOIIvsAZ8pEq19ZrMAuMyEgQWixSXHW8uVNkrkjWtMf4ghln50mwhV9ywpp1Spi/bbi6+8QLbsl3uTyYOrV0U3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770514288; c=relaxed/simple;
-	bh=RylA3pGv8inVH/Bl08iuiJfbF8raWZhZT1pwh10HYkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KVUvDMrdkeNx7wZyRn6iFdFSTgXLdrghlK+4m/fM+LzKnT8PeGMDScWUxG2z2doDq8NsfylVL15sQgBnoohnCNP9TvVWB4eSZslKZVknKJaeOTJDvsQfwYc5/o9V/m0r/p4c1rxxOfI+/H2HO0paU2rnMifns5oWuW0WNlkrqyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNvowwG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5FFC116D0;
-	Sun,  8 Feb 2026 01:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770514287;
-	bh=RylA3pGv8inVH/Bl08iuiJfbF8raWZhZT1pwh10HYkE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aNvowwG9YhSNrhXyOQ+sw+jn8QnzzIuXXbwoddP8uOcEJnnXbhDuQ2v8RNLRaZM3o
-	 HkZQT/djWZF28qNC54+FfsiCIBhB2zcB//AQYlYlkyNCZty5Salk2DWOmE2wlZW2Vd
-	 PM+619Tz/CvRd/b5iF5vADCAK1d46BcT3YlQ0+rdT4tdIYwXp+GVqzu7vtDPWnk+fQ
-	 vrFjjyv5S7hqoVP3X6XW6OVb3sJPH5/ZbJAIzSzO9FBAr+1hPvBW01FqPojUKtIRPH
-	 lABidUNG72UKryO3wyJtcTGSuQNgZ87p8/unIgVWBVcjy+YkzAFzo3oMW1J/Mik+Ca
-	 8Tb0c6GwA87dQ==
-Date: Sat, 7 Feb 2026 17:31:25 -0800
-From: Drew Fustini <fustini@kernel.org>
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Adrien Ricciardi <aricciardi@baylibre.com>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	Kornel =?utf-8?Q?Dul=C4=99ba?= <mindal@semihalf.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Vasudevan Srinivasan <vasu@rivosinc.com>,
-	Ved Shanbhogue <ved@rivosinc.com>,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-	Weiwei Li <liwei1518@gmail.com>, guo.wenjia23@zte.com.cn,
-	liu.qingtao2@zte.com.cn,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Tony Luck <tony.luck@intel.com>, Babu Moger <babu.moger@amd.com>,
-	Peter Newman <peternewman@google.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	James Morse <james.morse@arm.com>, Ben Horgan <ben.horgan@arm.com>,
-	Dave Martin <Dave.Martin@arm.com>, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, x86@kernel.org,
-	Rob Herring <robh@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [External] [PATCH RFC v2 03/17] RISC-V: Add support for srmcfg
- CSR from Ssqosid ext
-Message-ID: <aYfnbc3T81RRxz5r@gen8>
-References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
- <20260128-ssqosid-cbqri-v2-3-dca586b091b9@kernel.org>
- <CAEEQ3wkqC4jFf1LGgh2c6dgGwT=tuvpFV+D4fiw40P3LZ7_8hg@mail.gmail.com>
+	s=arc-20240116; t=1770523443; c=relaxed/simple;
+	bh=gVLYpM9coDM1ziPBdzZCYGdJwdE7dELsKzKbZ2xsotU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ibZKX1Eo/63syKK1FnxVjTcF5d5d+pSq8B1HnaryCjTDsdQEVmqDTWkqnOupf2VSDhGfDbKKM+/qxAmbbU1uvneEvQKLtbiU8Qd5L8qUYq6LlPht2ikODqvacqdbXSEy/U6P7RusHjz9rBRpKs90pbEcGWDURuyoAxcu6seI8sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=P7qE1WmT; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1270adc5121so1642066c88.0
+        for <linux-acpi@vger.kernel.org>; Sat, 07 Feb 2026 20:04:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1770523442; x=1771128242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUKaI1Jl6BOBoZBMk5DmhJ8i+x4ONVWqzInJUK5fe+o=;
+        b=P7qE1WmTEd5I37fInOyQx1w45mjLTo3qys+INfnu8t5IC9k+n6eN+ZAZ3b87UDXN2R
+         v1vJuuW32wtajMDyRxLYu5uO5V3+NEqo2KKby93w25FfGf47VyoRpWyBNa5sxkx60LU+
+         stMtq3lODGpYytxQofsfgc5yc+ToC+xJyk3qI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770523442; x=1771128242;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oUKaI1Jl6BOBoZBMk5DmhJ8i+x4ONVWqzInJUK5fe+o=;
+        b=L+ZB9/m3jaFVtiz8eXSgrAkaSgEsVNldWiXbGfg2bym2/YO72uCR4yS64zhCS66PEq
+         LdT4VhgWJxEPFzPBucu+LEp2hulQEQvHkSL59I+evDgNa5PWOvDXKPbxw22CoP9HKkun
+         4eK0DcqiGEwhHAuwTxQUouSJKvocKB8Q8OcXbf7Eyvx+2Hg1L4YsgXB5hCmmWNAI/PME
+         3cBNL3D5ace5yToOt42lIay5ohFDtkkkJJ5f0sgoSyquck7P9l+KBGrhj+WtsfxtYB62
+         xo4DezIPypVVF3BFAAgjKsjwfI2FzTCCoPUUyNuuJnqe/+T8GvPoLdllwHehk2cjy4Cl
+         ZAHw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9eaCwPGH/n9jXlftv3FGgjGiUBT8IlD5ZzKYH8FjdNys0vip5Pn2FuzCdkILQoCyQuRGY3UvWhoRT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+eVXEkKfEQRVyCq/oi/Juz8nPW3RN+bEhyMeCMJI7I5xfdaIE
+	wtDcbQ7Yk5THA13xbz72bTwH2sojHdJXfGRY8x5nKcU+DUlZRIb2up6/MF5pYB/8mg==
+X-Gm-Gg: AZuq6aJtgdr5XxgvOClLQRGnlFshPPZ2oJnMo2BQnERO3uqaTifwZcu4ZrgKIqYg0fi
+	iFibUaBTIVpsor1bMBGqKZlzQFpww2JEX5dgB/MI+9+3ygBBQPV0cvBo5ZKI1SuMTTdZiIOyKkq
+	wsOf5PPB0OphHJnQ1cpBbmFx2p8ZnjBoesM78mt2FPyAV6R6u/Aikpaypen2amC+qJab6nR/dSL
+	BfjgRfoOu8iyDaVEv4OVq6RMUeH7BmrnGJt2GfhytQRt+jKqodc5iGGLQ9QwOhvbEqMpcqAxz2O
+	TZLPb5/93LBj7u7memhfDR/zOIqBnbMQOcmtC8mwn7c/1Z3a45Za6eSwrXDGFNM0geb+0Q2CnxA
+	mbr8PTdSCwATnZ72mkveneDNKtY5nR3TvdJXiOQEAELvuDsxkxaN0i8eaqGA37uMGVU2lQBATxM
+	YZFLjCg6F5jHEy0Acf11V75xRP/g36NxlIB79HBXopKRaJpJ89QgPrQm/orAbz/qmsxejzaTk=
+X-Received: by 2002:a05:7022:6184:b0:123:2d38:928d with SMTP id a92af1059eb24-1270405aa72mr3860925c88.36.1770523442099;
+        Sat, 07 Feb 2026 20:04:02 -0800 (PST)
+Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:6d43:22d7:40eb:81e6])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127041e61b9sm7085064c88.8.2026.02.07.20.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Feb 2026 20:03:59 -0800 (PST)
+From: Douglas Anderson <dianders@chromium.org>
+To: jassisinghbrar@gmail.com
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Frank.Li@nxp.com,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	andersson@kernel.org,
+	arm-scmi@vger.kernel.org,
+	cristian.marussi@arm.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	jay.buddhabhatti@amd.com,
+	jonathanh@nvidia.com,
+	kernel@pengutronix.de,
+	konradybcio@kernel.org,
+	krzk@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	mathieu.poirier@linaro.org,
+	michal.simek@amd.com,
+	nm@ti.com,
+	rafael@kernel.org,
+	robh@kernel.org,
+	shawn.guo@linaro.org,
+	sudeep.holla@kernel.org,
+	tglx@kernel.org,
+	thierry.reding@gmail.com
+Subject: [PATCH v2 00/15] mailbox: Stop sending NULL mailbox messages
+Date: Sat,  7 Feb 2026 20:01:22 -0800
+Message-ID: <20260208040240.1971442-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wkqC4jFf1LGgh2c6dgGwT=tuvpFV+D4fiw40P3LZ7_8hg@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20895-lists,linux-acpi=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[chromium.org,nxp.com,kernel.org,pengutronix.de,vger.kernel.org,arm.com,gmail.com,lists.linux.dev,amd.com,nvidia.com,lists.infradead.org,linaro.org,ti.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[31];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[41];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-20896-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fustini@kernel.org,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:url,semihalf.com:email]
-X-Rspamd-Queue-Id: 370F71078F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:mid,chromium.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CF79107C8F
 X-Rspamd-Action: no action
 
-On Mon, Feb 02, 2026 at 11:17:52AM +0800, yunhui cui wrote:
-> Hi Drew,
-> 
-> On Thu, Jan 29, 2026 at 4:28 AM Drew Fustini <fustini@kernel.org> wrote:
-> >
-> > Add support for the srmcfg CSR defined in the Ssqosid ISA extension
-> > (Supervisor-mode Quality of Service ID). The CSR contains two fields:
-> >
-> >   - Resource Control ID (RCID) used determine resource allocation
-> >   - Monitoring Counter ID (MCID) used to track resource usage
-> >
-> > Requests from a hart to shared resources like cache will be tagged with
-> > these IDs. This allows the usage of shared resources to be associated
-> > with the task currently running on the hart.
-> >
-> > A srmcfg field is added to thread_struct and has the same format as the
-> > srmcfg CSR. This allows the scheduler to set the hart's srmcfg CSR to
-> > contain the RCID and MCID for the task that is being scheduled in. The
-> > srmcfg CSR is only written to if the thread_struct.srmcfg is different
-> > than the current value of the CSR.
-> >
-> > A per-cpu variable cpu_srmcfg is used to mirror that state of the CSR.
-> > This is because access to L1D hot memory should be several times faster
-> > than a CSR read. Also, in the case of virtualization, accesses to this
-> > CSR are trapped in the hypervisor.
-> >
-> > Link: https://github.com/riscv/riscv-ssqosid/releases/tag/v1.0
-> > Co-developed-by: Kornel Dulęba <mindal@semihalf.com>
-> > Signed-off-by: Kornel Dulęba <mindal@semihalf.com>
-> > [fustini: rename csr, refactor switch_to, rebase on upstream]
-> > Signed-off-by: Drew Fustini <fustini@kernel.org>
-[..]
-> > diff --git a/arch/riscv/include/asm/qos.h b/arch/riscv/include/asm/qos.h
-> > new file mode 100644
-> > index 000000000000..84830d7c6dc4
-> > --- /dev/null
-> > +++ b/arch/riscv/include/asm/qos.h
-> > @@ -0,0 +1,41 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef _ASM_RISCV_QOS_H
-> > +#define _ASM_RISCV_QOS_H
-> > +
-> > +#ifdef CONFIG_RISCV_ISA_SSQOSID
-> > +
-> > +#include <linux/sched.h>
-> > +#include <linux/jump_label.h>
-> > +
-> > +#include <asm/barrier.h>
-> > +#include <asm/csr.h>
-> > +#include <asm/hwcap.h>
-> > +
-> > +/* cached value of srmcfg csr for each cpu */
-> > +DECLARE_PER_CPU(u32, cpu_srmcfg);
-> > +
-> > +static inline void __switch_to_srmcfg(struct task_struct *next)
-> > +{
-> > +       u32 *cpu_srmcfg_ptr = this_cpu_ptr(&cpu_srmcfg);
-> > +       u32 thread_srmcfg;
-> > +
-> > +       thread_srmcfg = READ_ONCE(next->thread.srmcfg);
-> 
-> 
-> First set the cpu_list, and then the condition thread_srmcfg !=
-> *cpu_srmcfg_ptr will not be satisfied. Is a default value required
-> here? Both code paths for cpu_list and tasks are compared against the
-> default value; you may refer to the implementation of mpam.
+As talked about in the first patch in this series, passing NULL as the
+'mssg' argument to mbox_send_message() ends up causing confusion and
+quirky behavior inside the mailbox core. Despite this, there are a
+number of drivers that pass NULL.
 
-I'm having trouble finding cpu_list but I think that it does make sense
-to set the initial value.
+It is plausible that some of the drivers passing NULL may have been
+taking advantage of the quirks of the mailbox core. Specifically, they
+may have been taking advantage that calling "tx_done" wasn't truly
+necessary for NULL messages (it was a noop) or that NULL messages were
+passed onto the mailbox controller right away without queuing.
 
-Were you thinking I should look at mpam_set_cpu_defaults() in
-the mpam_resctrl_glue_v4 [1] branch?
+This series introduces a new API call: mbox_ring_doorbell(). The new
+API call tries to mimic the specific quirks that were helpful in the
+old behavior and it's expected to be a nearly drop-in replacement.
 
-Thanks,
-Drew
+There are some subtle differences between the new call and the old
+behavior, but it's expected that all of these differences are only for
+cases where the old behavior made little sense. The description of the
+first patch details these differences.
 
-[1] https://gitlab.arm.com/linux-arm/linux-bh.git
+The series attempts to convert all in-tree users to stop passing NULL
+for mssg. As per above, there are some slight differences in behavior.
+If any of the patches are causing problems, they can safely be
+reverted while debugging the problems. Eventually, all code should be
+converted over to stop passing NULL mssg.
+
+Changes in v2:
+- Instead of just documenting NULL, introduce a new function
+
+Douglas Anderson (15):
+  mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
+  ACPI: PCC: Use mbox_ring_doorbell() instead of NULL message
+  firmware: arm_scmi: Use mbox_ring_doorbell() instead of NULL message
+  firmware: imx-dsp: Use mbox_ring_doorbell() instead of NULL message
+  firmware: tegra: bpmp: Use mbox_ring_doorbell() instead of NULL
+    message
+  irqchip/qcom-mpm: Use mbox_ring_doorbell() instead of NULL message
+  remoteproc: xlnx: Use mbox_ring_doorbell() instead of NULL message
+  rpmsg: qcom_glink_rpm: Use mbox_ring_doorbell() instead of NULL
+    message
+  rpmsg: glink: smem: Use mbox_ring_doorbell() instead of NULL message
+  rpmsg: qcom_smd: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: aoss: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: smp2p: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: smsm: Use mbox_ring_doorbell() instead of NULL message
+  soc: ti: wkup_m3_ipc: Use mbox_ring_doorbell() instead of NULL message
+  drivers: firmware: xilinx: Use mbox_ring_doorbell() instead of NULL
+    message
+
+ drivers/acpi/acpi_pcc.c                       |  4 +-
+ .../firmware/arm_scmi/transports/mailbox.c    |  8 +-
+ drivers/firmware/imx/imx-dsp.c                |  2 +-
+ drivers/firmware/tegra/bpmp-tegra186.c        |  4 +-
+ drivers/irqchip/irq-qcom-mpm.c                |  2 +-
+ drivers/mailbox/mailbox.c                     | 82 ++++++++++++++++++-
+ drivers/remoteproc/xlnx_r5_remoteproc.c       |  2 +-
+ drivers/rpmsg/qcom_glink_rpm.c                |  3 +-
+ drivers/rpmsg/qcom_glink_smem.c               |  3 +-
+ drivers/rpmsg/qcom_smd.c                      | 13 +--
+ drivers/soc/qcom/qcom_aoss.c                  |  3 +-
+ drivers/soc/qcom/smp2p.c                      |  8 +-
+ drivers/soc/qcom/smsm.c                       |  8 +-
+ drivers/soc/ti/wkup_m3_ipc.c                  | 10 +--
+ drivers/soc/xilinx/zynqmp_power.c             |  2 +-
+ include/linux/mailbox_client.h                |  1 +
+ include/linux/mailbox_controller.h            |  4 +-
+ 17 files changed, 108 insertions(+), 51 deletions(-)
+
+-- 
+2.53.0.rc2.204.g2597b5adb4-goog
+
 
