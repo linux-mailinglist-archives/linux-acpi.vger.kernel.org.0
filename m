@@ -1,56 +1,62 @@
-Return-Path: <linux-acpi+bounces-20903-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20904-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJSvDyKNiWnP+gQAu9opvQ
-	(envelope-from <linux-acpi+bounces-20903-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 08:30:42 +0100
+	id cISLDJyziWkUBAUAu9opvQ
+	(envelope-from <linux-acpi+bounces-20904-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 11:14:52 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8672E10C73C
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 08:30:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE51E10E0A6
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 11:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A381D3001A71
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 07:30:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AC3C3006101
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 10:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5B8328603;
-	Mon,  9 Feb 2026 07:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7EB366075;
+	Mon,  9 Feb 2026 10:14:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D0725C80E;
-	Mon,  9 Feb 2026 07:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2EE308F05;
+	Mon,  9 Feb 2026 10:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770622238; cv=none; b=UP7ZvqCEflYlIpTjU89fWovMJGrsrnaeoE1I9ycU2I4ZrbQ7poAV4WEUvOulrS9fModEr8Jv2ACcZJOEsVOvm2799uwKpfP96sgGtAzBcgDZLPaWaGC75ygmJERNrOpTT9+uDCZuUCkVycXQEvaBICajMCz29WUAtItp7dVWRvA=
+	t=1770632090; cv=none; b=W1LV5PJ23XX4AbQOHOJVk+DJmFa6i7cudZSJV/GvSgkf2ajcs3XtRmHCD+9T1w8cFJmKT6bUADqaLaBK4/E7fQaHBBx7Gp22f0vXa8txgODGDX+H8qKYEpbhdflqzF33g2KxiD2sQ+uwO2JRnb0BMSCFQ0RnziVheFptqJCSUe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770622238; c=relaxed/simple;
+	s=arc-20240116; t=1770632090; c=relaxed/simple;
 	bh=Ta/VVUsj0jlGYnAYKXVuMgm27SvKAKIxZN6Ip4o2U+M=;
 	h=Message-Id:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LcPW7t6u3ZeB+R5CMHrEznaaf5oyI37w3haWDLMVFEujvZcCkGW0dWg1YeN3iIS+OejA2xFBqzpgopAdAeorlsVD51Sq1ayzPe8zkt9hGGA8sEcarmoElN6S0Fp6RufwovYbxqFoJsEbvjUTfuPcLj2yNQBvGLPv4/Ct3SVy2dk=
+	 MIME-Version:Content-Type; b=mJFDksZMpyS10eAND3+/4rM1ebTdJN+wiJ9saIxe5+gN8P9CqjcdMT9iEoh7g7M7drSCRHvLSUdk1PvhLzs8nbr/KtiEwHDbzIZgb4MqvqOCcxNu+P/pXsz/4iugVEj9xY6YubmJcguRwt1XhXROm64kJc3ZDVPORTO1CyRtRYE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn; spf=pass smtp.mailfrom=sanechips.com.cn; arc=none smtp.client-ip=160.30.148.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+Received: from mxct.zte.com.cn (unknown [192.168.251.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4f8bvT0MTrz8Xs7J;
-	Mon, 09 Feb 2026 15:30:29 +0800 (CST)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4f8gY26qY6z8Xs71;
+	Mon, 09 Feb 2026 18:14:46 +0800 (CST)
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4f8gXq59RBz4xQXF;
+	Mon, 09 Feb 2026 18:14:35 +0800 (CST)
 Received: (from root@localhost)
-	by mse-fl2.zte.com.cn id 6197TrBX088760;
-	Mon, 9 Feb 2026 15:29:53 +0800 (+08)
+	by mse-fl1.zte.com.cn id 619AEZcC084692;
+	Mon, 9 Feb 2026 18:14:35 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
-Message-Id: <202602090729.6197TrBX088760@mse-fl2.zte.com.cn>
-Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
-	by mse-fl2.zte.com.cn with SMTP id 6197K76g070452;
-	Mon, 9 Feb 2026 15:20:07 +0800 (+08)
+Message-Id: <202602091014.619AEZcC084692@mse-fl1.zte.com.cn>
+Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
+	by mse-fl1.zte.com.cn with SMTP id 619A7uLN077329;
+	Mon, 9 Feb 2026 18:07:56 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from localhost.localdomain (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Mon, 9 Feb 2026 15:20:09 +0800
-X-Zmail-TransId: 3e8169898aa1001-f0551
+	Mon, 9 Feb 2026 18:07:59 +0800
+X-Zmail-TransId: 3e816989b1d3001-f75c0
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -72,7 +78,7 @@ Cc: gong.shuai@sanechips.com.cn, Dave.Martin@arm.com,
         sunilvl@ventanamicro.com, tony.luck@intel.com, vasu@rivosinc.com,
         ved@rivosinc.com, x86@kernel.org, zhiwei_liu@linux.alibaba.com
 Subject: Re: [PATCH RFC v2 08/17] RISC-V: QoS: add resctrl interface for CBQRI controllers
-Date: Mon,  9 Feb 2026 15:20:00 +0800
+Date: Mon,  9 Feb 2026 18:07:15 +0800
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260128-ssqosid-cbqri-v2-8-dca586b091b9@kernel.org>
 References: <20260128-ssqosid-cbqri-v2-8-dca586b091b9@kernel.org>
@@ -82,37 +88,38 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: true
 Content-Transfer-Encoding: 8bit
 Content-Type: multipart/mixed;
 	boundary="=====_001_next====="
-X-MAIL:mse-fl2.zte.com.cn 6197TrBX088760
-X-MSS: AUDITRELEASE@mse-fl2.zte.com.cn
+X-MAIL:mse-fl1.zte.com.cn 619AEZcC084692
+X-MSS: AUDITRELEASE@mse-fl1.zte.com.cn
 X-TLS: YES
 X-SPF-DOMAIN: sanechips.com.cn
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 09 Feb 2026 15:30:29 +0800
+X-SOURCE-IP: 192.168.251.13 unknown Mon, 09 Feb 2026 18:14:46 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69898D14.002/4f8bvT0MTrz8Xs7J
+X-Fangmail-MID-QID: 6989B396.002/4f8gY26qY6z8Xs71
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[multipart/mixed,multipart/related,multipart/alternative,text/plain];
 	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20903-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_SEVEN(0.00)[7];
+	TAGGED_FROM(0.00)[bounces-20904-lists,linux-acpi=lfdr.de];
+	RCVD_COUNT_SEVEN(0.00)[8];
 	DMARC_NA(0.00)[sanechips.com.cn];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[sanechips.com.cn,arm.com,lists.linux.dev,ghiti.fr,eecs.berkeley.edu,baylibre.com,linux.dev,rivosinc.com,amd.com,kernel.org,linux.alibaba.com,bytedance.com,vger.kernel.org,intel.com,zte.com.cn,lists.infradead.org,gmail.com,semihalf.com,dabbelt.com,sifive.com,google.com,ventanamicro.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[43];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gong.shuai@sanechips.com.cn,linux-acpi@vger.kernel.org];
@@ -120,10 +127,10 @@ X-Spamd-Result: default: False [2.14 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8672E10C73C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE51E10E0A6
 X-Rspamd-Action: no action
 
 
