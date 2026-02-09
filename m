@@ -1,237 +1,224 @@
-Return-Path: <linux-acpi+bounces-20907-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20908-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KA/9B+/giWkKDQAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20907-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 14:28:15 +0100
+	id QFbmKGTsiWlpEQAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20908-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 15:17:08 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F86B10FB04
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 14:28:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE22110244
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 15:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A4AD301D339
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 13:25:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EADA53019811
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 14:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D05A37882B;
-	Mon,  9 Feb 2026 13:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2556E366064;
+	Mon,  9 Feb 2026 14:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QBOIE+S+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXuaLcyb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED928378815
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Feb 2026 13:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770643516; cv=pass; b=Ly9FQggydsIVovs0+RVaOUNsEl4+WsWt2D4aFCFmvLdYG8LkQqgLGj9JK8WO4FEJoKXiBvSlEI78Qkz9ccNxsMQGXPeE5mQQHeylS4T54F2BeqUaSGlJnioJlshNFudEbTlTqtXDjnu2rX1lt9KKtckmxENN6mUZqMd6ZXI9nOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770643516; c=relaxed/simple;
-	bh=I0kT/5gQP7hegeGg5e5RlenRbFh1Bxpc+bwQQS5s/UM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BNBAthG5sfzsfxFzbYvKk+u2eNUOpF8a/JW2u4msFs7YkegXV1nQF982dyYXio63lXWCgf2/8OVRR1TmFOu2eBo1HA91X3KlK8wy842uIoUszocmkE8VjwOB1kZEn565DRvIp+BZPvsyoX/6rJ1sviOCqihJjG1G2kmxl4cNrno=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QBOIE+S+; arc=pass smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C828312D
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Feb 2026 14:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770646624; cv=none; b=qR0lVqK5Yffuaj43N1s4caXk6Xi4weMr2e+ZbTkQFANMWS5KFzIVn4W1NaHQEzo+dnyhIYGza1M7kpXFEm562DjZpsrRla8QwSovdZHoj57OMHibFirJyUXTmORIrqg+yZsHqdQHvfHS5eUUSS9RPiVdThhGZs5yJLkfAr3yu4k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770646624; c=relaxed/simple;
+	bh=gfTEdIsMmUOuJYpGHiGGK9+1z6kQlfXxsYz33NHV2IE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ng84eB261rAg9U43Wy8J/hMemLMOY08pI5x6/TqtravoLDZ2LewIX4g1QnjLbW+1MMruW/tyHTbAjI3xxCGZlp+ZwYgiVTKa7vaM1zs/TlL7n1/4vXLRb8CTG3kmYzn84N6ihnsD3bPS5BKqFPsn+dMl+Weg3UsGldWoFY8kpag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXuaLcyb; arc=none smtp.client-ip=209.85.216.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b885e8c6727so443257666b.1
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Feb 2026 05:25:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770643514; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lg/3S3vsiRFiIqXLBXleQTfcfqlRe/mnUxj16+JDpZ9l8hvGozZ2/Etn7TOdNBBKHj
-         b+3aL3UoJeTFiEWfjAMIHQgN+9MtVNygt21eBaCwQA1wlJhyVugKPB/yvBpBhSKPkcSp
-         H6VQSZXcMX6gVi3WjaVqlpmbwLCTVkxNwkVq1ySI3lLrV+ImyK8d+06VLXWp103c40SP
-         qwpFXqPJpJDtKZOgzc8gHPvmRQ62TwmRY8/l8JaZogfcolotdgaShLElL1hsrVzOtN82
-         30sRIjR7zJw1t/mR8z6cYrEvy0117Q/81xfeiY/67hMz68aZ/CeP0qZ96p2XLlev5APO
-         pe5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I0kT/5gQP7hegeGg5e5RlenRbFh1Bxpc+bwQQS5s/UM=;
-        fh=spVY/wElbvMvdBcYyKOv2rpXNkNmnCtW3Z114sir+qE=;
-        b=Ljc9BgP64EF946fPLHDffOo6PYeS029BSzPaxIsfQNu3FGQfFnHOpG26/hlh4W4DhS
-         QAMKR23nrLrIrCqLqbnjS9tpT+KiJoxcNOvSeL0HOPfhRw7nMEZobjURt9xEYC/tJ4+F
-         H0oCBm1rQlfnUQM33ctJ4qUZFk+0w8TJMLPc2/tCEbsoPT7AJyFmQ5MoEIAhz+vs0vGY
-         hRVp7wKzvPzy5NMAg3f6pY6gvRIxBVsul0Q+zlhteFfv+Q2OI5m2UCzdgUt1q6X5mBbC
-         rkTIwk2Mv0ZyUPHGGDDAn3J5jMCVw6Z7cqmA75VvmlOy4Qoo7UFebCUc+oLtHB/bXgUb
-         BMTw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-35305538592so2684930a91.0
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Feb 2026 06:17:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770643514; x=1771248314; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770646623; x=1771251423; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I0kT/5gQP7hegeGg5e5RlenRbFh1Bxpc+bwQQS5s/UM=;
-        b=QBOIE+S+s1+sWKDWzOHhHkg9e3xrmsYj7FJOP+KUgqbVr8CRu45AmiXcOXqvqyDuQm
-         3RBNsmN+d5RdWyILA4+UQ0MLmIumDsobyc0s7AzikNJBAbe8jDvuxpuA8hjXqJJ9gDjp
-         3tVOo9085E2/lAR9bo3krK679EgG+hkh2xUBzIUV/feNUCrf/4hzLQ/psv0+ry4ybGSU
-         hZp5mI7Gx7e/HKrzFFGU0Q1hDzUFtn7azlhpDOrsfJazaKFBP7yJ0iLOKRYANIIHejNW
-         2QF8BBHkxM1/2ANEZzXoUhX5cOHg0Jj70hRPQPbeg6g3uTn9rTwfaxdAbb3bVZ8gJgZk
-         CAAQ==
+        bh=J+vhAUWptZLQYZPG8ROuiqprar1JCQQK4npIFBepuBs=;
+        b=NXuaLcybPND+YIJKqPMSsPeiW37EzhCfaQj15wY8pfGeaGvszvtcq71+oppya71E9d
+         ri0RdB4PkvT1LGDizv+jwr+hTD2Y5cEeu2IJ0faCAIx5WOAPTIXuDxwA55jGmn3lCswx
+         XK3Yv/ujCgDzGDdXCj8TQ4O4gFy03eENmJ8jM84lCWR8k4dZeNE8QjAQX3KKPbDpbNXv
+         tsxhTNXY7drgHdDBHwowCOgDfZIC87d4y1orPdEWhyEaxdAPKa5ii7FlHpxp5XCOOdwM
+         NGZ0mtBYO7LCR/7CeBUWkt6GK5yFngUiYAe/olwZek9WAgSbIUUBwWJE96jQ1y8Izg7A
+         Qnmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770643514; x=1771248314;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770646623; x=1771251423;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=I0kT/5gQP7hegeGg5e5RlenRbFh1Bxpc+bwQQS5s/UM=;
-        b=t1e7PuAJzgP5UMBHOx6oL84DHcrf+ERkuyIMx3tmKXm2h23hZ6w4f3WSgRE3MwgsFA
-         QIhosOs2R9resRTeh9YTOV7Rw7zEkV+ehw4XRBzbkRRmXE2hIDWF4SbxgQ0XGN+FwJRK
-         7zIqonsRdv6hmGBSdmT6uS/Jf1L46b6waKPMIczSs0CMMtRIN2/MqCS4RjQlO7NRrYs/
-         U6CSNZ2Zpw6mIZk+6c/DZFDFe4gipeKgLYK/EZLTpkQoRx8sRi9GCBuHEBokDPZINM7d
-         Q946j7NR4BMJ+VJEmFtXTH8VcQJZMrVDGqKceziV5a+JmzfMUFOI9ao/gSkn86hd6j/w
-         cknw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfQ8pqi34ZukAoxuPIgPpYw6iR+USa31e1BK1c0BGqamkF4uTGWGrP/BDTd7MQy+3zcsQCfN0Zow8A@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk1WhTBmx/IRSkRzJgFHECPfIycy2PA0bLPcpj053T42gphdHP
-	FnGog0VEZwEEMnoZj6LrjqfIHLiuDuz2WYYqqyvPipf8ddUqn+v8gn2UL8armV1fXpNesfejBVU
-	ONdjyD+k36ALwVbYp0VuAZNi8RpJRr0s=
-X-Gm-Gg: AZuq6aLboHvCOBBZMD0AHEHAFi0KaXYrGzhw/P06Pq8OWr30Ufx92ek+897JdqoKr47
-	SReKb5t4+sL8+JkeMsR39JW69Wpo4D7GzB8dE2sm7x8wHDI28aTEPjFE/UZAzUr4OeBoyp1mc73
-	qZmsoxIPrZHzZosy2m5EoC2xBVQFtSFNIoQx9dWKlvGNtdjch+RboTjX+2NE0kUlD28HOqthosw
-	2i+V5OzRyfmEqakl7vTMvhOJqXzGQEQrkOY2LrPA5TwLMBR4q4TeKbL5B/Qy+wNPRltA/CXTeTT
-	z4dJ9Uo=
-X-Received: by 2002:a17:907:3cc2:b0:b8e:d4ed:5ed8 with SMTP id
- a640c23a62f3a-b8edb9adc12mr649043966b.19.1770643514004; Mon, 09 Feb 2026
- 05:25:14 -0800 (PST)
+        bh=J+vhAUWptZLQYZPG8ROuiqprar1JCQQK4npIFBepuBs=;
+        b=cInDCvzt1CSRW7If00pSE6qNjYltX3EYZ+Nc47te3UzmyVbeAgBdnqs7/5/KLbvrgP
+         k5G/egp241eaRoiB2cBf8RDlc5crGPzrZydCQIxA9jp7YEFmyQ14UlfZjOvxPvz1ETUQ
+         9gTxGJwH+Wh0NASsmraSDwEEcbhU37gG62tV9aJsePtuXrWykiICCPRyMXD2bXf5vn+G
+         WNy/ld7QoRKzCQjiNg5kprMcFGKNgUKU5hvU3++sJ79sCIWAu6VRmln80qqW0AirtavW
+         CPDJHJBPCXduHul2O7g6VDBL7zUBMoqPVVbZtFzINqQPVbCRqal3fNIKybA1GWEJKe/x
+         qmuw==
+X-Forwarded-Encrypted: i=1; AJvYcCWO0bqJ3e8L0Vt3ktCDwxC5+n6e1+BJL33XDj4b0kWU5Hps/gm3ibrwhc1Aifk0z4P/coxzfPA8Mzyn@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfjgNafa2SWaX5vc6soWcm5AWqEV7MmNd82KIROK0sxuUB8hXP
+	2e+f6sHw6LHN9wowBd5JFN9r0qS9v8Ir6hKVm4YgDQ0rizHBfzme9riW
+X-Gm-Gg: AZuq6aLkqPUzh4TEFvAIxN3XDEzeXJn9luGATon97mpoVtrdU7V+276JZ0lMl/+ogiT
+	w57jtIibXKz2nQ2CZucN04MoRb9EhLQg/kFQ/BoIIZksTJIxEff3g540uY/eNr45qfN5FUElph2
+	7G3tfGrWaY9aB2cG6bQb42H1Wnr6cqDapsowHoFpslKFq9V+9REC/CMnUZHOO5X5Idrzziwjn1D
+	oY8ROB+AwmPaNS7SaIpogeWXb2h1YsdwEshiYXN7LE921S4aG91ATPtlnNoCGJVPMWdvsvJ9bfK
+	CXfOleNaQHBnohIOK2tZB//tqf2XKsASR04gxVbw69zHAQljXZWOeIJUm0GtXd3BdouLI9pMED2
+	a+JCrSsqQrB50W0KHFM0+ksjOPGtM3oMMmfKtp9siphBJHU0u/SGltqLvgXDYbI2MOFOLEATRhG
+	Ns1JCSRCuKHMe+lYtp11gnIE/7STstX7S48A==
+X-Received: by 2002:a17:90a:d010:b0:356:2eac:b650 with SMTP id 98e67ed59e1d1-3562eacbbccmr4038749a91.3.1770646623298;
+        Mon, 09 Feb 2026 06:17:03 -0800 (PST)
+Received: from localhost.localdomain ([106.38.154.106])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3549c5955a7sm14852844a91.17.2026.02.09.06.16.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 06:17:02 -0800 (PST)
+From: Gong Shuai <gsh517025@gmail.com>
+X-Google-Original-From: Gong Shuai <gong.shuai@sanechips.com.cn>
+To: fustini@kernel.org
+Cc: Dave.Martin@arm.com,
+	acpica-devel@lists.linux.dev,
+	alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	aricciardi@baylibre.com,
+	atish.patra@linux.dev,
+	atishp@rivosinc.com,
+	babu.moger@amd.com,
+	ben.horgan@arm.com,
+	conor+dt@kernel.org,
+	cp0613@linux.alibaba.com,
+	cuiyunhui@bytedance.com,
+	devicetree@vger.kernel.org,
+	fenghua.yu@intel.com,
+	guo.wenjia23@zte.com.cn,
+	james.morse@arm.com,
+	krzk+dt@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	liu.qingtao2@zte.com.cn,
+	liwei1518@gmail.com,
+	mindal@semihalf.com,
+	npitre@baylibre.com,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	peternewman@google.com,
+	pjw@kernel.org,
+	rafael@kernel.org,
+	reinette.chatre@intel.com,
+	rkrcmar@ventanamicro.com,
+	robert.moore@intel.com,
+	robh@kernel.org,
+	samuel.holland@sifive.com,
+	sunilvl@ventanamicro.com,
+	tony.luck@intel.com,
+	vasu@rivosinc.com,
+	ved@rivosinc.com,
+	x86@kernel.org,
+	zhiwei_liu@linux.alibaba.com,
+	gong.shuai@sanechips.com.cn
+Subject: Re: [PATCH RFC v2 08/17] RISC-V: QoS: add resctrl interface for CBQRI controllers
+Date: Mon,  9 Feb 2026 22:16:49 +0800
+Message-ID: <20260209141649.330184-1-gong.shuai@sanechips.com.cn>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260128-ssqosid-cbqri-v2-8-dca586b091b9@kernel.org>
+References: <20260128-ssqosid-cbqri-v2-8-dca586b091b9@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103-reset-gpios-swnodes-v4-0-6461800b6775@linaro.org>
- <20251103-reset-gpios-swnodes-v4-4-6461800b6775@linaro.org>
- <aRyf7qDdHKABppP8@opensource.cirrus.com> <CAMRc=MfD7ZbwU4akkCJNgmRPwgSOqSVi2-L2dJDOBHrfdD-yZw@mail.gmail.com>
- <aRy31U8EQA1DO/R6@opensource.cirrus.com> <CAMRc=MfNf+WMtSW=Wag0QHAaYzcRe9igrbOeRZiY92KmOH70oQ@mail.gmail.com>
- <CAMRc=MdKN4Uj4RZk=3L82c0-0Z0CihbAfzVK0zMBb9Tsjh3BqQ@mail.gmail.com>
- <CAMRc=MeYEoiXWCdYNSmmbquMwmt99vPgzW+0gmX22Of9o127+A@mail.gmail.com>
- <aYmBYlEcbVJ2ELZ_@google.com> <CAMRc=McVrhxA2WuUDxn+dWziug-GyJkazYZyDJ6qFkj7o9xdEQ@mail.gmail.com>
-In-Reply-To: <CAMRc=McVrhxA2WuUDxn+dWziug-GyJkazYZyDJ6qFkj7o9xdEQ@mail.gmail.com>
-From: Yauhen Kharuzhy <jekhor@gmail.com>
-Date: Mon, 9 Feb 2026 15:25:02 +0200
-X-Gm-Features: AZwV_Qi65eUt9PrDI6DGksyux3YxGvBaXIykhTNQbqZXW_sIubyYDEhQoM67reY
-Message-ID: <CAKWEGV5_u-kysd0S+CN_TtwHg_Ekp+jue87d4R+QuYzJKssTxw@mail.gmail.com>
-Subject: Re: [PATCH v4 04/10] gpio: swnode: don't use the swnode's name as the
- key for GPIO lookup
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, patches@opensource.cirrus.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20907-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[43];
+	FREEMAIL_CC(0.00)[arm.com,lists.linux.dev,ghiti.fr,eecs.berkeley.edu,baylibre.com,linux.dev,rivosinc.com,amd.com,kernel.org,linux.alibaba.com,bytedance.com,vger.kernel.org,intel.com,zte.com.cn,lists.infradead.org,gmail.com,semihalf.com,dabbelt.com,sifive.com,google.com,ventanamicro.com,sanechips.com.cn];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20908-lists,linux-acpi=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jekhor@gmail.com,linux-acpi@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,opensource.cirrus.com,linaro.org,linux.intel.com,linuxfoundation.org,kernel.org,pengutronix.de,vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gsh517025@gmail.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 6F86B10FB04
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi,dt];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,baylibre.com:email]
+X-Rspamd-Queue-Id: 1DE22110244
 X-Rspamd-Action: no action
 
-=D0=BF=D0=BD, 9 =D1=84=D0=B5=D0=B2=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 14:38=
-, Bartosz Golaszewski <brgl@kernel.org>:
->
-> On Mon, Feb 9, 2026 at 7:44=E2=80=AFAM Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
-> >
-> > On Wed, Nov 19, 2025 at 10:13:30AM +0100, Bartosz Golaszewski wrote:
-> > > On Wed, Nov 19, 2025 at 9:41=E2=80=AFAM Bartosz Golaszewski <brgl@bgd=
-ev.pl> wrote:
-> > > >
-> > > > On Wed, Nov 19, 2025 at 9:35=E2=80=AFAM Bartosz Golaszewski <brgl@b=
-gdev.pl> wrote:
-> > > > >
-> > > > > I have an idea for fixing it, let me cook up a patch. It'll still=
- be a
-> > > > > bit hacky but will at least create a true link.
-> > > > >
-> > > >
-> > > > Scratch that, I didn't notice before but we register both devices f=
-rom
-> > > > MFD core. We can just set up software nodes there.
-> > > >
-> > >
-> > > Here you go: https://lore.kernel.org/all/20251119-cs42l43-gpio-swnode=
-s-v1-1-25996afebd97@linaro.org/
-> > >
-> > > Please give it a try. This is independent from this series and should
-> > > probably be backported to stable.
-> >
-> > So think breaks more drivers:
-> >
-> > https://lore.kernel.org/all/aYkdKfP5fg6iywgr@jekhomev/
-> >
-> > I think it may also break:
-> >
-> > arch/arm/mach-omap1/board-nokia770.c
-> > arch/arm/mach-pxa/devices.c
-> > arch/arm/mach-pxa/devices.h
-> > arch/arm/mach-pxa/gumstix.c
-> > arch/arm/mach-pxa/pxa25x.c
-> > arch/arm/mach-pxa/pxa27x.c
-> > arch/arm/mach-pxa/spitz.c
-> > arch/arm/mach-tegra/board-paz00.c
->
-> Most of them seem to use software nodes correctly. Nokia 770 could
-> potentially break depending on the timing but the lookup uses the
-> right string.
->
-> > arch/x86/platform/geode/geode-common.c
->
-> Looks like a correct case of referencing the software node to me.
->
-> > drivers/platform/x86/barco-p50-gpio.c
-> > drivers/platform/x86/pcengines-apuv2.c
-> >
->
-> Same here. Nothing here seems to depend on a label and there are real
-> links between the GPIO chip's and consumer's software nodes.
->
-> The problem we triggered here was caused by a GPIO consumer who would
-> create a bogus software node locally without any real link to the
-> provider. It would then depend on the provider being named a certain
-> way to look up its GPIO. That doesn't seem to be the case in the above
-> files.
+Hi, Drew
 
-The driver drivers/platform/x86/x86-android-tablets/core.c also
-creates fake gpiochip software nodes
-to use them in PROPERTY_ENTRY_GPIO definitions (see
-drivers/platform/x86/x86-android-tablets/lenovo.c for examples).
+> Add interface for CBQRI controller drivers to make use of the resctrl
+> filesystem.
+> 
+> Co-developed-by: Adrien Ricciardi <aricciardi@baylibre.com>
+> Signed-off-by: Adrien Ricciardi <aricciardi@baylibre.com>
+> Signed-off-by: Drew Fustini <fustini@kernel.org>
+>
+> ...
+>
+> +u32 resctrl_arch_get_config(struct rdt_resource *r, struct rdt_ctrl_domain *d,
+> +			    u32 closid, enum resctrl_conf_type type)
+> +{
+> +	struct cbqri_resctrl_dom *hw_dom;
+> +	struct cbqri_controller *ctrl;
+> +	int reg_offset;
+> +	u32 percent;
+> +	u32 rbwb;
+> +	u64 reg;
+> +	int err;
+> +
+> +	hw_dom = container_of(d, struct cbqri_resctrl_dom, resctrl_ctrl_dom);
+> +
+> +	ctrl = hw_dom->hw_ctrl;
+> +
+> +	if (!r->alloc_capable)
+> +		return resctrl_get_default_ctrl(r);
+> +
+> +	switch (r->rid) {
+> +	case RDT_RESOURCE_L2:
+> +	case RDT_RESOURCE_L3:
+> +		/* Clear cc_block_mask before read limit operation */
+> +		cbqri_set_cbm(ctrl, 0);
+> +
+> +		/* Capacity read limit operation for RCID (closid) */
+> +		err = cbqri_cc_alloc_op(ctrl, CBQRI_CC_ALLOC_CTL_OP_READ_LIMIT, type, closid);
 
-I use the same approach for rt5677 gpiochip in my changes for Lenovo
-YB1-X90 tablet (not mainlined yet) and this is broken also now.
+It looks like the parameter order might be incorrect. I believe it
+should be:
+cbqri_cc_alloc_op(ctrl, CBQRI_CC_ALLOC_CTL_OP_READ_LIMIT, closid, type);
 
+> +		if (err < 0) {
+> +			pr_err("%s(): operation failed: err = %d", __func__, err);
+> +			return resctrl_get_default_ctrl(r);
+> +		}
+> ...
 
---=20
-Yauhen Kharuzhy
+Sorry for the resend, my company email had some formatting issues,
+so I'm sending this from my personal address.
+
+Hope it doesn't cause any trouble!
+
+Thanks,
+Shuai
 
