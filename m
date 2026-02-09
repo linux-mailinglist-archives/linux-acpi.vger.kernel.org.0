@@ -1,168 +1,184 @@
-Return-Path: <linux-acpi+bounces-20905-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20906-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ/9EfDUiWmCCAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20905-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 13:37:04 +0100
+	id WJVgOWjViWklCAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20906-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 13:39:04 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD62B10EBED
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 13:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9219610ED15
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Feb 2026 13:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 218C13024164
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 12:27:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3435F300BD8A
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Feb 2026 12:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022CE37646B;
-	Mon,  9 Feb 2026 12:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED86376475;
+	Mon,  9 Feb 2026 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPu+hEpd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NItwjxEI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30ED3019CB;
-	Mon,  9 Feb 2026 12:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C488371074
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Feb 2026 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770640059; cv=none; b=edswYl7B3IBjpEDzLclzIbeChmmZvBBrqyTWzf0OA2fAJOvunL5jljF+UGKWn0DZbbG1oA2bxDzxJHBf9LR4eA4lGi7Fariu4WHC4OM4xaH12v4IGNYfXlH8hHToBrUqq46ItPDO9aMPksMbuZxityGwTSfHJCu7gFpAhZibR4Y=
+	t=1770640736; cv=none; b=oLPPF7RqrRzV9/iFqX5SfwaSeT2tdaBesY3KMMrHAdfTYSityWV0ecZ3J1M4hiPG/CIz50jLEgzL0dDRI89aVJ8Mabp4lugUNqtMth+O43jTEc68ezk18BhvFgdFD/pTC19ixv+pk8B79i1ZDyU17HzUb19kOiz/3HXyb0Nb/30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770640059; c=relaxed/simple;
-	bh=wMhQZqLjwM1T+1hINqzNCY03T81jmm8Tl1VlJSahJnk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MB4Ba6G3npnoTstxxKpVOzT8eJOP8WP1ggDs+3J5Qz2fFRqCWPzjjOEbrLh8x1ucBVTzL4KiUyj53b3LsUaWnKnm88iUY64S1vabZcEa0SI6JLLeaGItArnjCRZd0fM9sSl7qifWX7IEvfxFsAaFy/J2byT/QCx4rcnTo0BZ8yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPu+hEpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBD2C19423;
-	Mon,  9 Feb 2026 12:27:38 +0000 (UTC)
+	s=arc-20240116; t=1770640736; c=relaxed/simple;
+	bh=9pCCU5WsSbvzWudbbglgjxAmo0Z0Om2N/Zc5dAaXgWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XIjPGeWcWcBqTaPAkUP8kbl767cjOMrISzVG7jMVlKMr335GZ4CqCq7qiciRugn0lxktgksjPtrWDOuxah2So4Vqn1uwqvp+W+0ViobJrQXkmASya30ewVjLRkY6OocAjHjqmewTnHBoQa77Tn7xjY+xJD1s/Mckcf8M8KOIGqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NItwjxEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4301AC116C6
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Feb 2026 12:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770640059;
-	bh=wMhQZqLjwM1T+1hINqzNCY03T81jmm8Tl1VlJSahJnk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPu+hEpdJT1jYFx6fUGxiEMlNSSZRKOolVXpHU+XIatXNUrZui8os6Gc+GGUZAAkz
-	 u+fWjfH9+z2lfpUvyyxU6ERCwegbLaWZX7Eey/t/vuY3tlnTZCCk4deto5HM1mecyN
-	 XjIMo3XxP1XqeZXbxJzPI7Og4vwNYJ6gLUJVEaCI2BPKdqmR0VesvnvhGfRuT4z4iv
-	 CLk18jcj16ct/r8wAf1hfm9GdKYm33WOx6MJjTkfcuDaHXCuGHDTbZnaTl8Gn0hhvq
-	 m6qEdJa32XUxa7ieXhH1b2OawV6DlXHW0alv2xGb5I2pZFkm0H5XEDQxkUD9W2UWNJ
-	 hTOuhev5d0jkQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Alban Bedel <alban.bedel@lht.dlh.de>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	westeri@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linusw@kernel.org,
-	brgl@kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] gpiolib: acpi: Fix gpio count with string references
-Date: Mon,  9 Feb 2026 07:26:52 -0500
-Message-ID: <20260209122714.1037915-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260209122714.1037915-1-sashal@kernel.org>
-References: <20260209122714.1037915-1-sashal@kernel.org>
+	s=k20201202; t=1770640736;
+	bh=9pCCU5WsSbvzWudbbglgjxAmo0Z0Om2N/Zc5dAaXgWk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NItwjxEIgKYHOvVfu4g2BPHMVijRaBPiwA8duVZz8soQ/3XCsKrg9gqdi88eGixpC
+	 l8X8MOSOCBEIC5JOo90oA1LC4bDkp4uLeoQJhliyXiYktB9FQlXky+Na5T9MjhciHc
+	 uEN04GEQ42yA1d345lp7s7CvT1YW9hwIIQOdiWZAv7hME8xYyrtP7peFfl0uKSB3HC
+	 /b25xT0R6MO0bwSmc1Kd8TRNgB0Myh44bUxFSDRwbEeTT2LqaA0ZtxmvwKFGZo2isz
+	 TrdlZpjJXE/PZ4LTSrgBnV7PkDt8DJlaaThj06KWHbYGdOAwT0k7BS1uD5RwgmKwFM
+	 E77Mf49hFsGPA==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-382f9930e54so37478831fa.1
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Feb 2026 04:38:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVoFDbUflPtem4udBJpYqF5YQi0G/951c9vvPuGPKDx8/nCcfGCHlWJ5NiRp4MJDAOKUofBS78UxglF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2IACjgfGTgvm+exKevsMTcVHKQDEj4v0NibU8A2pBxVKQWGWN
+	qQpdlW4WeGjjdNj0BChsR53xc8jN5OLgGfVQTlV8pgeRN2+2XFUbHYzR859/F2IaJX87cFXVxgb
+	z2uxjZu6oGeaUyCuH8KpDbxEtGotO6xgtWR77f0lIxQ==
+X-Received: by 2002:a2e:a816:0:b0:383:55ad:58e1 with SMTP id
+ 38308e7fff4ca-386b569675bmr34779211fa.16.1770640734921; Mon, 09 Feb 2026
+ 04:38:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.9
-Content-Transfer-Encoding: 8bit
+References: <20251103-reset-gpios-swnodes-v4-0-6461800b6775@linaro.org>
+ <20251103-reset-gpios-swnodes-v4-4-6461800b6775@linaro.org>
+ <aRyf7qDdHKABppP8@opensource.cirrus.com> <CAMRc=MfD7ZbwU4akkCJNgmRPwgSOqSVi2-L2dJDOBHrfdD-yZw@mail.gmail.com>
+ <aRy31U8EQA1DO/R6@opensource.cirrus.com> <CAMRc=MfNf+WMtSW=Wag0QHAaYzcRe9igrbOeRZiY92KmOH70oQ@mail.gmail.com>
+ <CAMRc=MdKN4Uj4RZk=3L82c0-0Z0CihbAfzVK0zMBb9Tsjh3BqQ@mail.gmail.com>
+ <CAMRc=MeYEoiXWCdYNSmmbquMwmt99vPgzW+0gmX22Of9o127+A@mail.gmail.com> <aYmBYlEcbVJ2ELZ_@google.com>
+In-Reply-To: <aYmBYlEcbVJ2ELZ_@google.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 9 Feb 2026 13:38:41 +0100
+X-Gmail-Original-Message-ID: <CAMRc=McVrhxA2WuUDxn+dWziug-GyJkazYZyDJ6qFkj7o9xdEQ@mail.gmail.com>
+X-Gm-Features: AZwV_QhWrKnBVp75GDOvtMEizdhSMAaSxccMve2e83_gjIHMdK9qE4sfEseL-P8
+Message-ID: <CAMRc=McVrhxA2WuUDxn+dWziug-GyJkazYZyDJ6qFkj7o9xdEQ@mail.gmail.com>
+Subject: Re: [PATCH v4 04/10] gpio: swnode: don't use the swnode's name as the
+ key for GPIO lookup
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, patches@opensource.cirrus.com, 
+	Yauhen Kharuzhy <jekhor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20905-lists,linux-acpi=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20906-lists,linux-acpi=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[opensource.cirrus.com,linaro.org,linux.intel.com,gmail.com,linuxfoundation.org,kernel.org,pengutronix.de,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dlh.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: AD62B10EBED
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9219610ED15
 X-Rspamd-Action: no action
 
-From: Alban Bedel <alban.bedel@lht.dlh.de>
+On Mon, Feb 9, 2026 at 7:44=E2=80=AFAM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+>
+> On Wed, Nov 19, 2025 at 10:13:30AM +0100, Bartosz Golaszewski wrote:
+> > On Wed, Nov 19, 2025 at 9:41=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev=
+.pl> wrote:
+> > >
+> > > On Wed, Nov 19, 2025 at 9:35=E2=80=AFAM Bartosz Golaszewski <brgl@bgd=
+ev.pl> wrote:
+> > > >
+> > > > I have an idea for fixing it, let me cook up a patch. It'll still b=
+e a
+> > > > bit hacky but will at least create a true link.
+> > > >
+> > >
+> > > Scratch that, I didn't notice before but we register both devices fro=
+m
+> > > MFD core. We can just set up software nodes there.
+> > >
+> >
+> > Here you go: https://lore.kernel.org/all/20251119-cs42l43-gpio-swnodes-=
+v1-1-25996afebd97@linaro.org/
+> >
+> > Please give it a try. This is independent from this series and should
+> > probably be backported to stable.
+>
+> So think breaks more drivers:
+>
+> https://lore.kernel.org/all/aYkdKfP5fg6iywgr@jekhomev/
+>
+> I think it may also break:
+>
+> arch/arm/mach-omap1/board-nokia770.c
+> arch/arm/mach-pxa/devices.c
+> arch/arm/mach-pxa/devices.h
+> arch/arm/mach-pxa/gumstix.c
+> arch/arm/mach-pxa/pxa25x.c
+> arch/arm/mach-pxa/pxa27x.c
+> arch/arm/mach-pxa/spitz.c
+> arch/arm/mach-tegra/board-paz00.c
 
-[ Upstream commit c62e0658d458d8f100445445c3ddb106f3824a45 ]
+Most of them seem to use software nodes correctly. Nokia 770 could
+potentially break depending on the timing but the lookup uses the
+right string.
 
-Since commit 9880702d123f2 ("ACPI: property: Support using strings in
-reference properties") it is possible to use strings instead of local
-references. This work fine with single GPIO but not with arrays as
-acpi_gpio_package_count() didn't handle this case. Update it to handle
-strings like local references to cover this case as well.
+> arch/x86/platform/geode/geode-common.c
 
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260129145944.3372777-1-alban.bedel@lht.dlh.de
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Looks like a correct case of referencing the software node to me.
 
-LLM Generated explanations, may be completely bogus:
+> drivers/platform/x86/barco-p50-gpio.c
+> drivers/platform/x86/pcengines-apuv2.c
+>
 
-The prerequisite commit appeared in v6.10+. So the bug affects stable
-trees from 6.10 onward (6.10.y, 6.11.y, 6.12.y, etc.).
+Same here. Nothing here seems to depend on a label and there are real
+links between the GPIO chip's and consumer's software nodes.
 
-### 7. CONCLUSION
+The problem we triggered here was caused by a GPIO consumer who would
+create a bogus software node locally without any real link to the
+provider. It would then depend on the provider being named a certain
+way to look up its GPIO. That doesn't seem to be the case in the above
+files.
 
-This commit:
-- **Fixes a real bug**: GPIO array counting fails when ACPI firmware
-  uses string references
-- **Is obviously correct**: Adding a switch case for strings to match
-  the same handling as local references
-- **Is minimal**: One line addition
-- **Has zero risk**: Cannot affect existing code paths; only enables a
-  new case in a switch statement
-- **Has been reviewed** by the ACPI/GPIO maintainer (Mika Westerberg)
-  and merged by the GPIO maintainer (Bartosz Golaszewski)
-- **Has a clear dependency**: Only applies to trees with commit
-  `9880702d123f2` (v6.10+)
-- **Fixes real hardware support**: Users with firmware using string
-  references for GPIO arrays would have broken device functionality
-
-This is a textbook stable backport candidate: small, surgical, correct,
-and fixes real user-impacting functionality.
-
-**YES**
-
- drivers/gpio/gpiolib-acpi-core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index e64e21fd6bbaa..8110690ea69d0 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1359,6 +1359,7 @@ static int acpi_gpio_package_count(const union acpi_object *obj)
- 	while (element < end) {
- 		switch (element->type) {
- 		case ACPI_TYPE_LOCAL_REFERENCE:
-+		case ACPI_TYPE_STRING:
- 			element += 3;
- 			fallthrough;
- 		case ACPI_TYPE_INTEGER:
--- 
-2.51.0
-
+Bartosz
 
