@@ -1,199 +1,111 @@
-Return-Path: <linux-acpi+bounces-20914-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20915-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AFiADV+imnVLAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20914-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 01:39:17 +0100
+	id cAw+McOoimlBMwAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20915-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 04:40:51 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F91115B10
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 01:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642C1116C6C
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 04:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E175301B736
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 00:39:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A579A303CE37
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Feb 2026 03:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F91624468B;
-	Tue, 10 Feb 2026 00:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B53430ACE3;
+	Tue, 10 Feb 2026 03:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCSuMGfE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pmvgx6pe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4AC23EA8A
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Feb 2026 00:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770683952; cv=pass; b=IWA0qlZ9GCa3ucSvQ00KlbsLeK57wyrxT32iwYLreOVzad6YIYMwkIwb+BAhtACgqOdaYoYl+H4MKj/5ed8v9Ep8PmSVDDqGTwxepOnwB2sFPYyS0SDP3FGOao1DUr/6ohruCThUFtYmPYSxyGv6nRs1fvCCQY1mkkNYKKEJyD8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770683952; c=relaxed/simple;
-	bh=CRHDCY+aNL8cCuJ5x1LKl4BcDxts38ZAFNhckqdTfRA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fg8SOYv9Q1TjOTUynb/3FYBagk+IzG8IrcJh4PeZamNg2FMnhYKjJvB0sO2Ia/+ErDT3I0DcOYJ/VEXA7zNxjSVqqu8w8xwNwBPZKqKk1bvjxumLElsJJuHPpzNit+ABipRP6VGZkA9KXIcSZkMgbBiOAkMii1RVKMcbZJbsk9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCSuMGfE; arc=pass smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-66307e10d1dso2685104eaf.0
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Feb 2026 16:39:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770683949; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Uh1KHvzAuxcRry+x5D7HggcNzLt3gXqwHImkhpU9uX/MH1dohJbINBuB6eb0VxWfd5
-         Rsug3d7Yk7lyORJoo9qSIeuP04qGsLyNWBxYUadjkcd+jR0+83Hr0RxgL3437XF+I1Xf
-         bc5n524ogci+e8BVv5WKby5CTuRPebtQX2vi5Dwz3N3BnlbAldWUhqX8nWb50iwl3lFL
-         +ICCVivfeh2xPCYvpGVUqFG0weNg8zDPNqXqB2L30NBNZOsiwaYsKw/mLjSCNSvhg8xW
-         YCqpSx6GP4HC34vaRgdfubYnzsRniznZEZKdmB+ZF/DJOnE0YB8OYcdpeXy/rQAXE7/B
-         QprQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bf5IdcegF6twrrNNR7clze4xkdFwkIRE6sG++xaVg4U=;
-        fh=kxXvPB6rwbUb/2NDTxy6jt/ukSWR9sjLklPFZLX8zEI=;
-        b=kOalDiSfLwzknO8X6/wdiw1SuwLhGSe4TlD4+1sfrrui8FAOd3K/hN+s9fhNj8ZreO
-         C2EgGzk9neCc2JDM/6czSQjC44jnkFWkKpxCO6J9h+y9HF2ANLiGHmOdAPx1e7ol1COr
-         /MpX37mfPtrQhMrAKUfhGWpguFBKIvLB+SkF1nZSVjYuOf67VS/Q+6m9bZp8MPQ3I2XK
-         wQe9l3tPVzRZy5seDkEAley10Cqd8ePOcotl5Ykq2UK8oCNn3NvJvUSHQcwx9txfezqs
-         LMjEAJJzd/OXTUXaMJ5kzsa0XeIFLILejKY6e9hs/r8IgZaW4ckfvS2/gqOvj57GmH9y
-         OEmQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770683949; x=1771288749; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bf5IdcegF6twrrNNR7clze4xkdFwkIRE6sG++xaVg4U=;
-        b=GCSuMGfEPfzMl3he42tzkuKrehHOEwSPbWg9z90dF81Afyi3sPX6nHguyl9DXmTk4e
-         6I4gIyihsEb7ZViL/AxrsB3qEzoyeA18VCG/n5Dy7EsyjJHpAxbKkbv5kouxorw9CtSY
-         ErTcKZAIcy3Ck62Eg3V5O21E360Cg5+rXaqKmHKe3Ecv1aNdGvtcCfyNZzVJEEddoNDv
-         JRtyUaMb9DMW2gKJjKDCu2T3OnxM4xcAEhRlVGVsVu+/IUJ3+AUuriZmgpVGoIg8stGp
-         PfG5iXK6qZQFyuDRY7Qx0LItXki1cH4fE3AjOoiegYwEYQywG2RTCdmaOzOAFkzmXgzb
-         Zlew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770683949; x=1771288749;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Bf5IdcegF6twrrNNR7clze4xkdFwkIRE6sG++xaVg4U=;
-        b=VRcIy3JTw6LgVwNfJJzR55tgwipWC9zPUMtMFdxywT5+maTaWAPjej2iq8Z8e2ff3E
-         U1IZkTk1AqYgEFmZoq1gzqtGosLhFzAGyDBXIFJyoJyuTtTVvIu478DDAXrsRt31AIWA
-         obd/Ro8K0YTCiIl69FQmaApmlxc8ZUqgze1YMf2RoDclSNfi2dZRlEw1xFPLiVPZuovn
-         SJYOeQsnTMDt2QY24aXAQDS6ksx5fap+BQRuLR9+9SiPR+wsvY4zCYrg5CU6ttBhkCTz
-         ERJbH5DDjYxaZuqbuCSPPxV0kWpOdRoBvFTVnvloVprCVX1CtZ2IFpPVMVwdNFla4ieE
-         fnCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXyKEYlAeCMMinXuiZgvKSjD5LEKMUylqk4YvdmZKN3gE32gg5YRNgEGRIiFk7b5pGcrWlImm+fSc33@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7DkvQekw4wGHR9v8vNehzmkpv0SF6gQTViH+CnSOkPnUW6Gav
-	aX6wNKRvTTagFQlT2rPwQCXJzzLcs7Fsoj4F4+rzIEjmgsQtMbUmBlfvKqwsJdGDpa+aW8kIS3e
-	x5iuaCwN3+c68JoVwOhksNxkzsMd5c8Q=
-X-Gm-Gg: AZuq6aKeCQRIHNaf/TU4rBld0OWaN+/fgvkAOdq3V/FwzIcZ3vOuMBYN8I+m+dfridu
-	xonv2TwhQJ0AvwQyUigSdRdt0HVGf3LtCDo0bq3Xxy2R5zhJOHwzHFt2QETriQKdcYRPHjwh68J
-	3YshkDncziqQA/loxoaGngB+ZWGitODtuZsRRbjuQWSPNfPGDwvE0Ue+5ctNFBhBJY0+frSkmju
-	ChX/ymocR2ZcosDiocFJHh3JILuDh6BKeeA9yh+sfh9R5w0CF5YTFj72Q6SvvJR5XilvzQxHQxm
-	qVuVMyHp
-X-Received: by 2002:a4a:e908:0:b0:65b:257b:a898 with SMTP id
- 006d021491bc7-66d32fdac10mr3465078eaf.29.1770683949518; Mon, 09 Feb 2026
- 16:39:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0799E3074BA;
+	Tue, 10 Feb 2026 03:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770694808; cv=none; b=I6KcVUppcYw3gxE0Zux0FMxaYC8icndh2jfz4noaCgeXBF5Nlj9sgtBXuRG4NGEW7XrWKqhnUBb65RtswDLdC9vMH7YcTX65zx95ExwhgHUvgtkfL6rZriiSvwZVTU2sWwUcfCfSHa+DEWRAqSjk9WjqMbXHaqDvhxIPTZ4Oamg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770694808; c=relaxed/simple;
+	bh=TWM2RCunXch5XPS8I5jXkjxIt+1qhYOtUSGFlY+w8zs=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=SxFKIPfUkySrV82Kg3aE18Lcv+JarkQhrCUx86Z9zu3Y6eygS8Ywbv9k891ADtQn3Mfr6po3KFtZy1PdzTX94jI9VgD+U9heuOpJYNuf+tTUsCIpcUQ/wlxPCsWIQXQ/SPIPQp3DKJPtIjLNTjLVZFKRsMtj/MTEf2FFCe9OdRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pmvgx6pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E34C19421;
+	Tue, 10 Feb 2026 03:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770694807;
+	bh=TWM2RCunXch5XPS8I5jXkjxIt+1qhYOtUSGFlY+w8zs=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Pmvgx6pe5E9c8Is517OPEDYqR+jw7X3DPGRCpZ4PAJl0P36UaoFGiRTlOitWMYzbd
+	 9VwhdPhwwkZAbUo7M6x42ZlnpYbZXUkqj4yaJBHk3CTpOZlCmY7pFf3NjpozutzrKP
+	 T5QF6wW4ZkrYHhttNUhUo0++bWFAWLwiH3Lhq1IJN7Yydf6kfbsoylRWBPSaWZ3tP7
+	 l0JcSs0qagjEsCs7dQwkaMlbt1WDekATsowrIqZ1TVLSHLiQPPxVdp1AuN1Q5rDicE
+	 sR8eOpFLkK5O6O9Di0Nw2FT2PUNb/mAwtZ0+y2rIVGbOF7R6nNSUpUdtrNVaeX1Sdv
+	 cWYuyaNJUKSgQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C654B380AA58;
+	Tue, 10 Feb 2026 03:40:04 +0000 (UTC)
+Subject: Re: [GIT PULL] Power management updates for v6.20-rc1/v7.0-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0j8M0=M3hO3kJKRPA4Q99TgQODRxPoSu5RFe6qV4Cv_-w@mail.gmail.com>
+References: <CAJZ5v0j8M0=M3hO3kJKRPA4Q99TgQODRxPoSu5RFe6qV4Cv_-w@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0j8M0=M3hO3kJKRPA4Q99TgQODRxPoSu5RFe6qV4Cv_-w@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.20-rc1
+X-PR-Tracked-Commit-Id: 0f64b6acb0e14559daf1de7be5dbcee3874512aa
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 9b1b3dcd28c271fc8c4a87e81860f3a34b6d29b7
+Message-Id: <177069480370.3327783.15372023603319174326.pr-tracker-bot@kernel.org>
+Date: Tue, 10 Feb 2026 03:40:03 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Linux PM <linux-pm@vger.kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Shuah Khan <shuah@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260208040240.1971442-1-dianders@chromium.org> <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
-In-Reply-To: <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Mon, 9 Feb 2026 18:38:58 -0600
-X-Gm-Features: AZwV_QhZe5s2jbJJnfFS4JALRsv_5-7Jio6ijB129QGrcufx887IYcSq_3ToyAU
-Message-ID: <CABb+yY2GbPcuPiVsE_-HCS8MbpBqvjgjDkoVLNSBDZq1bnfpEw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/15] mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Frank.Li@nxp.com, andersson@kernel.org, arm-scmi@vger.kernel.org, 
-	cristian.marussi@arm.com, festevam@gmail.com, imx@lists.linux.dev, 
-	jay.buddhabhatti@amd.com, jonathanh@nvidia.com, kernel@pengutronix.de, 
-	konradybcio@kernel.org, krzk@kernel.org, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	mathieu.poirier@linaro.org, michal.simek@amd.com, nm@ti.com, 
-	rafael@kernel.org, robh@kernel.org, s.hauer@pengutronix.de, 
-	shawn.guo@linaro.org, ssantosh@kernel.org, sudeep.holla@kernel.org, 
-	tglx@kernel.org, thierry.reding@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20914-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-20915-lists,linux-acpi=lfdr.de];
+	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jassisinghbrar@gmail.com,linux-acpi@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nxp.com,kernel.org,vger.kernel.org,arm.com,gmail.com,lists.linux.dev,amd.com,nvidia.com,pengutronix.de,lists.infradead.org,linaro.org,ti.com];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 60F91115B10
+	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pr-tracker-bot@kernel.org,linux-acpi@vger.kernel.org]
+X-Rspamd-Queue-Id: 642C1116C6C
 X-Rspamd-Action: no action
 
-Hi Douglas,
+The pull request you sent on Thu, 5 Feb 2026 20:37:01 +0100:
 
-On Sat, Feb 7, 2026 at 10:04=E2=80=AFPM Douglas Anderson <dianders@chromium=
-.org> wrote:
-> @@ -249,6 +255,28 @@ int mbox_send_message(struct mbox_chan *chan, void *=
-mssg)
->         if (!chan || !chan->cl)
->                 return -EINVAL;
->
-> +       /*
-> +        * The mailbox core gets confused when mbox_send_message() is cal=
-led
-> +        * with NULL messages since the code directly stores messages in
-> +        * `active_req` and assumes that a NULL `active_req` means no req=
-uest
-> +        * is active. This causes the core to call the mailbox controller=
- a
-> +        * second time even if the previous message hasn't finished and a=
-lso
-> +        * means the client's tx_done() callback will never be called. Ho=
-wever,
-> +        * clients historically passed NULL anyway. Deprecate passing NUL=
-L
-> +        * here by adding a warning.
-> +        *
-> +        * Clients who don't have a message should switch to using
-> +        * mbox_ring_doorbell(), which explicitly documents the immediate
-> +        * sending of doorbells, the lack of txdone, and what happens if =
-you
-> +        * mix doorbells and normal messages.
-> +        *
-> +        * TODO: when it's certain that all clients have transitioned, co=
-nsider
-> +        * changing this to return -EINVAL.
-> +        */
-> +       if (!mssg)
-> +               dev_warn_once(chan->mbox->dev,
-> +                             "NULL mailbox messages are deprecated\n");
->
-Nit: maybe  "NULL mailbox messages are deprecated, use
-mbox_ring_doorbell instead" ?
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.20-rc1
 
-Thanks,
-Jassi
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/9b1b3dcd28c271fc8c4a87e81860f3a34b6d29b7
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
