@@ -1,60 +1,71 @@
-Return-Path: <linux-acpi+bounces-20938-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20939-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCaIOeR2jGk6ogAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20938-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:36 +0100
+	id qA6TEOx2jGk6ogAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20939-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:44 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E3F12449B
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEBB1244AA
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 71DAF300B8D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:32:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0F3B3020FF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047581D7995;
-	Wed, 11 Feb 2026 12:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761B1D61A3;
+	Wed, 11 Feb 2026 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9m2NnXz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjiEXrBH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E341A9FA4;
-	Wed, 11 Feb 2026 12:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E81194AD7;
+	Wed, 11 Feb 2026 12:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813135; cv=none; b=Iqm4aSjMup+zRMvtB4Jd0Z774ldLvqnnqG8m7MtdEw4qqrJkccWqe0/VUfoaqzdCLz5mbUl2Kk9F8fx0gIJtFIUWl5L0fckAPD0gJSIGHbw1Pw0UduJ/Vsgwpyf1rm5KceocTGTPbQBMcE5Sq5H3wgqKyt8jxyIktFkhXGXuw0c=
+	t=1770813142; cv=none; b=ewk8vxKKkWWoPOVwqdDqT+cQ+mnK5okCpzXE97GCnYHwMjOejTc332TmJ0RGu/Qgaq6SxkqPETk7B68qJcdrvIZMf//sXLYxg5EiW2uFiM/qn34I7a14PXGhyOsHUNO7aLJL38Hu4MlBJPKiSyFpja6DKRc6lIYQZneyftLCkpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813135; c=relaxed/simple;
-	bh=moKzAeFYlDBqh8t7VEdTHwMMA7bKkJkb3RAr0qipkoc=;
+	s=arc-20240116; t=1770813142; c=relaxed/simple;
+	bh=DBeVNlzXfRxtvVmrxI5j3vQHOnW4Pk7f8C0h15ZA1hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilSNL38xj6QF5ABT6YAb8hzA26OcYPMGVZWkujYv91NbgBAaHk2MMrODyNdBZND4+z2dOlEmribzY5Xc+igtl0zUYv9PGBCJ/F4QRA5D50EpMhN1KRgtr+ZYYabNpc0JMMLmv3uv2VTt70CcelyFKZdfQLI42r+IbKQ8UkB+r0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9m2NnXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01568C19425;
-	Wed, 11 Feb 2026 12:32:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X0/uqj4wtgu/X7GwRjyU4cEF9ZIFVRtACACB3TUXOoPIMrS8GfUcToFIrttum9ATjcJlQA7FA07IKYW3+RjDCY5+1J7fjZYQAknJiTQ1te1wLx7Xmie8T7b9XSNm6VVZhUgSvcH3dBaxB9nthIuK3W8N6yguYl++ZiYXaLMMXd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjiEXrBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162E3C19424;
+	Wed, 11 Feb 2026 12:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770813135;
-	bh=moKzAeFYlDBqh8t7VEdTHwMMA7bKkJkb3RAr0qipkoc=;
+	s=k20201202; t=1770813141;
+	bh=DBeVNlzXfRxtvVmrxI5j3vQHOnW4Pk7f8C0h15ZA1hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9m2NnXzmq7E4dt6hMQJxMDtrIycioYeCGe+FpmdNuTQ8bfaDpTjgKJ1yZOr0487c
-	 zH6wDai9ypX2vvDO59+Q2YAoEzhBmhBAR6lrIrRbBJolnz/WUnYGKLTC32aUdOjxem
-	 yAvgnC4nWArBOjL5p3teLmm0BVKYCNioBH5NzJtW9mBYxoLcegk00ikZEL1oZpEZik
-	 02pZCXb4TgxLHWjYGuNvtuITBadjQrH1NGsooyRASywVepBjmEIQNPMpkcw1ZDKumH
-	 8Cb1LCKbeq/uUxOcHBAXMlFCPKvf6DABYjcYzFow8rsFw81nh6ghG69F1MjkTxoRtq
-	 g8b+CF9qHEGig==
+	b=EjiEXrBHku0LHO2JvW5xzRNAsyxJYwzWgWSINYYUKJIQwgTxP0LvkeEooPHcYlP8R
+	 +Jy+h4AD+h9tibiZJw/MmpTKagl1v8w6GSs6E1P9kBtGJBeMIpDFP8XXqTYA6fyZ3M
+	 IaQ7aS2Os0qdbDvElVIZTIv24YYUhRy0nMZ9+V8ljs+THUIwds55Z5Y7V9CQ92pCyC
+	 pXbDapTPVrhT2t7L+MaXjv14F2sEC+bAeMcLSxO483jEDlCBYNfSuD98SHTuPpKJFm
+	 yRvEwHGRCyfLt8WxURU62wnSAxSkj17HUoDBOYNxSCZa0xktTkOt1/oxt830E8Ujh7
+	 HNcObfNfxNFdw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ai Chao <aichao@kylinos.cn>,
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.12] ACPI: resource: Add JWIPC JVC9100 to irq1_level_low_skip_override[]
-Date: Wed, 11 Feb 2026 07:30:40 -0500
-Message-ID: <20260211123112.1330287-30-sashal@kernel.org>
+	robert.moore@intel.com,
+	xueshuai@linux.alibaba.com,
+	tony.luck@intel.com,
+	fabio.m.de.francesco@linux.intel.com,
+	leitao@debian.org,
+	Smita.KoralahalliChannabasappa@amd.com,
+	jason@os.amperecomputing.com,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.19-5.10] APEI/GHES: ensure that won't go past CPER allocated record
+Date: Wed, 11 Feb 2026 07:30:43 -0500
+Message-ID: <20260211123112.1330287-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211123112.1330287-1-sashal@kernel.org>
 References: <20260211123112.1330287-1-sashal@kernel.org>
@@ -67,251 +78,390 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-20939-lists,linux-acpi=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-20938-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 35E3F12449B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: AAEBB1244AA
 X-Rspamd-Action: no action
 
-From: Ai Chao <aichao@kylinos.cn>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit ba6ded26dffe511b862a98a25955955e7154bfa8 ]
+[ Upstream commit fa2408a24f8f0db14d9cfc613ef162dc267d7ad4 ]
 
-Like the JWIPC JVC9100 has its serial IRQ (10 and 11) described
-as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
-breaks the serial.
+The logic at ghes_new() prevents allocating too large records, by
+checking if they're bigger than GHES_ESTATUS_MAX_SIZE (currently, 64KB).
+Yet, the allocation is done with the actual number of pages from the
+CPER bios table location, which can be smaller.
 
-irq 10, level, active-low, shared, skip-override
-irq 11, level, active-low, shared, skip-override
+Yet, a bad firmware could send data with a different size, which might
+be bigger than the allocated memory, causing an OOPS:
 
-Add the JVC9100 to the irq1_level_low_skip_override[] quirk table to fix
-this.
+    Unable to handle kernel paging request at virtual address fff00000f9b40000
+    Mem abort info:
+      ESR = 0x0000000096000007
+      EC = 0x25: DABT (current EL), IL = 32 bits
+      SET = 0, FnV = 0
+      EA = 0, S1PTW = 0
+      FSC = 0x07: level 3 translation fault
+    Data abort info:
+      ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+    swapper pgtable: 4k pages, 52-bit VAs, pgdp=000000008ba16000
+    [fff00000f9b40000] pgd=180000013ffff403, p4d=180000013fffe403, pud=180000013f85b403, pmd=180000013f68d403, pte=0000000000000000
+    Internal error: Oops: 0000000096000007 [#1]  SMP
+    Modules linked in:
+    CPU: 0 UID: 0 PID: 303 Comm: kworker/0:1 Not tainted 6.19.0-rc1-00002-gda407d200220 #34 PREEMPT
+    Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
+    Workqueue: kacpi_notify acpi_os_execute_deferred
+    pstate: 214020c5 (nzCv daIF +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+    pc : hex_dump_to_buffer+0x30c/0x4a0
+    lr : hex_dump_to_buffer+0x328/0x4a0
+    sp : ffff800080e13880
+    x29: ffff800080e13880 x28: ffffac9aba86f6a8 x27: 0000000000000083
+    x26: fff00000f9b3fffc x25: 0000000000000004 x24: 0000000000000004
+    x23: ffff800080e13905 x22: 0000000000000010 x21: 0000000000000083
+    x20: 0000000000000001 x19: 0000000000000008 x18: 0000000000000010
+    x17: 0000000000000001 x16: 00000007c7f20fec x15: 0000000000000020
+    x14: 0000000000000008 x13: 0000000000081020 x12: 0000000000000008
+    x11: ffff800080e13905 x10: ffff800080e13988 x9 : 0000000000000000
+    x8 : 0000000000000000 x7 : 0000000000000001 x6 : 0000000000000020
+    x5 : 0000000000000030 x4 : 00000000fffffffe x3 : 0000000000000000
+    x2 : ffffac9aba78c1c8 x1 : ffffac9aba76d0a8 x0 : 0000000000000008
+    Call trace:
+     hex_dump_to_buffer+0x30c/0x4a0 (P)
+     print_hex_dump+0xac/0x170
+     cper_estatus_print_section+0x90c/0x968
+     cper_estatus_print+0xf0/0x158
+     __ghes_print_estatus+0xa0/0x148
+     ghes_proc+0x1bc/0x220
+     ghes_notify_hed+0x5c/0xb8
+     notifier_call_chain+0x78/0x148
+     blocking_notifier_call_chain+0x4c/0x80
+     acpi_hed_notify+0x28/0x40
+     acpi_ev_notify_dispatch+0x50/0x80
+     acpi_os_execute_deferred+0x24/0x48
+     process_one_work+0x15c/0x3b0
+     worker_thread+0x2d0/0x400
+     kthread+0x148/0x228
+     ret_from_fork+0x10/0x20
+    Code: 6b14033f 540001ad a94707e2 f100029f (b8747b44)
+    ---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Ai Chao <aichao@kylinos.cn>
-Link: https://patch.msgid.link/20260113072719.4154485-1-aichao@kylinos.cn
+Prevent that by taking the actual allocated are into account when
+checking for CPER length.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+[ rjw: Subject tweaks ]
+Link: https://patch.msgid.link/4e70310a816577fabf37d94ed36cde4ad62b1e0a.1767871950.git.mchehab+huawei@kernel.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture. Let me compile the full analysis.
+Now I have a complete picture. Let me compile this detailed analysis.
 
 ---
 
-## Detailed Analysis
+## Detailed Analysis of APEI/GHES CPER Buffer Overflow Fix
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit adds the JWIPC JVC9100 industrial PC board to the
-`irq1_level_low_skip_override[]` DMI quirk table in
-`drivers/acpi/resource.c`. The commit message clearly states the
-problem: serial IRQs 10 and 11 are described as ActiveLow in the DSDT,
-but the kernel incorrectly overrides them to EdgeHigh, which **breaks
-serial communication** on the device. This is a classic ACPI IRQ
-override quirk - a well-established pattern in the stable kernel tree.
+The commit message clearly describes a **buffer overflow bug** in the
+ACPI APEI/GHES subsystem. Key indicators:
 
-The commit was authored by Ai Chao (Kylin OS engineer) and signed off by
-Rafael J. Wysocki, the ACPI subsystem maintainer, indicating proper
-review and acceptance.
+- **Concrete crash trace**: A full kernel OOPS with call trace is
+  included, proving this is a real, reproducible crash
+- **Clear root cause explanation**: The commit explains the discrepancy
+  between the allocated buffer size and the validation check limit
+- **Crash path**: `ghes_proc` -> `__ghes_print_estatus` ->
+  `cper_estatus_print_section` -> `print_hex_dump` ->
+  `hex_dump_to_buffer` — a pagefault when reading past the allocated
+  buffer
+- **Multiple reviewers**: Reviewed-by Jonathan Cameron, Acked-by Ard
+  Biesheuvel (prominent EFI/ACPI maintainer), Reviewed-by Hanjun Guo —
+  strong confidence signals
 
-### 2. CODE CHANGE ANALYSIS
+### 2. CODE CHANGE ANALYSIS — The Bug
 
-The patch makes two types of changes, both to data tables in
-`drivers/acpi/resource.c`:
+The vulnerability exists in the interaction between two functions:
 
-**Part 1 - DMI table addition** (lines 535-540 in the patch):
-A new DMI entry for the JWIPC JVC9100 board is added to
-`irq1_level_low_skip_override[]`:
+**`ghes_new()` (allocation)**:
 
-```c
+```288:296:drivers/acpi/apei/ghes.c
+        error_block_length = generic->error_block_length;
+        if (error_block_length > GHES_ESTATUS_MAX_SIZE) {
+                pr_warn(FW_WARN GHES_PFX
+                        "Error status block length is too long: %u for "
+                        "generic hardware error source: %d.\n",
+                        error_block_length, generic->header.source_id);
+                error_block_length = GHES_ESTATUS_MAX_SIZE;
+        }
+        ghes->estatus = kmalloc(error_block_length, GFP_KERNEL);
+```
+
+Here, if the BIOS HEST table declares `generic->error_block_length =
+128KB`, the local variable `error_block_length` is capped to
+`GHES_ESTATUS_MAX_SIZE` (64KB), and only 64KB is allocated for
+`ghes->estatus`. Critically, `ghes->generic->error_block_length` retains
+the original uncapped value of 128KB.
+
+**`__ghes_check_estatus()` (validation)**:
+
+```364:385:drivers/acpi/apei/ghes.c
+static int __ghes_check_estatus(struct ghes *ghes,
+                                struct acpi_hest_generic_status
+*estatus)
 {
-    /* JWIPC JVC9100 */
-    .matches = {
-        DMI_MATCH(DMI_BOARD_NAME, "JVC9100"),
-    },
-},
+        u32 len = cper_estatus_len(estatus);
+
+        if (len < sizeof(*estatus)) {
+                pr_warn_ratelimited(FW_WARN GHES_PFX "Truncated error
+status block!\n");
+                return -EIO;
+        }
+
+        if (len > ghes->generic->error_block_length) {
+                pr_warn_ratelimited(FW_WARN GHES_PFX "Invalid error
+status block length!\n");
+                return -EIO;
+        }
+        // ...
+}
 ```
 
-**Part 2 - Override table entries** (new lines in `override_table[]`):
+The validation at line 374 checks `len >
+ghes->generic->error_block_length` — comparing against the **uncapped
+BIOS-declared value** (128KB in our example), NOT the actual allocated
+buffer size (64KB).
 
-```c
-{ irq1_level_low_skip_override, 10, ACPI_LEVEL_SENSITIVE,
-ACPI_ACTIVE_LOW, 1, false },
-{ irq1_level_low_skip_override, 11, ACPI_LEVEL_SENSITIVE,
-ACPI_ACTIVE_LOW, 1, false },
-```
+**`ghes_read_estatus()` (the dangerous read)**:
 
-These entries tell `acpi_dev_irq_override()` to return `false` (skip the
-override) for IRQ 10 and 11 when they match level-sensitive, active-low,
-shared parameters on systems in the DMI table.
-
-**Why the override_table entries are needed**: Looking at the
-`acpi_dev_irq_override()` function:
-
-```712:751:/home/sasha/linux-autosel/drivers/acpi/resource.c
-static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-                                  u8 shareable)
+```430:446:drivers/acpi/apei/ghes.c
+static int ghes_read_estatus(struct ghes *ghes,
+                             struct acpi_hest_generic_status *estatus,
+                             u64 *buf_paddr, enum fixed_addresses
+fixmap_idx)
 {
-        // ... iterates override_table ...
-        // If no match found:
-        if (gsi != 1 && gsi != 12)
-                return true;  // <-- IRQ 10/11 always gets overridden!
+        int rc;
+        rc = __ghes_peek_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+        if (rc) return rc;
+        rc = __ghes_check_estatus(ghes, estatus);
+        if (rc) return rc;
+        return __ghes_read_estatus(estatus, *buf_paddr, fixmap_idx,
+                                   cper_estatus_len(estatus));
+}
 ```
 
-Without an `override_table` entry, IRQ 10 and 11 (not being 1 or 12)
-always fall through to `return true`, meaning the kernel **always**
-overrides the DSDT-specified IRQ configuration. The only way to prevent
-this for specific systems is to add explicit entries to
-`override_table[]`.
+After `__ghes_check_estatus()` erroneously allows a 70KB CPER record
+(because 70KB < 128KB), `__ghes_read_estatus()` copies 70KB from
+firmware into the 64KB `ghes->estatus` buffer — **a 6KB buffer
+overflow**.
 
-### 3. CLASSIFICATION
+**`ghes_proc()`** is the main caller, passing `ghes->estatus` (the
+undersized buffer) directly:
 
-This is a **hardware quirk / workaround** - one of the explicit
-exception categories that is appropriate for stable backporting. It
-follows the identical pattern of dozens of other IRQ override quirk
-additions that have been backported to stable trees. Checking the 6.12
-stable branch confirms that numerous similar quirk additions (`Skip IRQ
-override on ASUS Vivobook`, `Add LG 16T90SP`, `Add Asus Vivobook
-X1504VAP`, etc.) have already been backported.
+```1166:1172:drivers/acpi/apei/ghes.c
+static int ghes_proc(struct ghes *ghes)
+{
+        struct acpi_hest_generic_status *estatus = ghes->estatus;
+        u64 buf_paddr;
+        int rc;
+        rc = ghes_read_estatus(ghes, estatus, &buf_paddr,
+FIX_APEI_GHES_IRQ);
+```
 
-### 4. SCOPE AND RISK ASSESSMENT
+### 3. THE FIX
 
-**Size**: 8 lines added, 1 file changed. Purely data table additions.
+The fix is minimal and surgical — 3 logical changes:
 
-**Nuance about `override_table` scope**: The new `override_table`
-entries for IRQ 10/11 reference `irq1_level_low_skip_override`, which
-contains ~20 other systems (Asus Vivobooks, Medion, LG laptops). This
-means if ANY of those systems also have IRQ 10/11 described as
-`ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, shareable=1` in their DSDT, the
-override would be skipped for those too. However:
-- Those are consumer laptops that typically don't have serial ports (IRQ
-  10/11 are serial controller IRQs)
-- Even if they matched, skipping the override is the correct behavior
-  for these AMD Zen-based systems where the DSDT is authoritative
-- The match requires a 4-way parameter match (IRQ number + triggering +
-  polarity + shareable), making false positives essentially impossible
+1. **New field in `struct ghes`**: `unsigned int estatus_length` to
+   track the actual allocated size
+2. **Store actual allocation size**: `ghes->estatus_length =
+   error_block_length` right after `kmalloc`
+3. **Fix the validation check**: Change `len >
+   ghes->generic->error_block_length` to `!len || len >
+   min(ghes->generic->error_block_length, ghes->estatus_length)` — now
+   validates against the **minimum** of the declared and allocated sizes
 
-**Risk**: Very LOW. The change is purely additive to data tables.
+The fix also adds a `!len` zero-length check, preventing issues with
+zero-length CPER records that previously weren't caught.
 
-### 5. USER IMPACT
+### 4. CLASSIFICATION
 
-JWIPC is a Chinese industrial PC manufacturer. The JVC9100 is an
-industrial/embedded computing platform where serial ports
-(RS-232/RS-485) are critical for connecting to industrial equipment,
-sensors, PLCs, and other peripherals. Broken serial communication on an
-industrial PC renders the device significantly less useful or completely
-non-functional for its intended purpose.
+- **Bug type**: Out-of-bounds write / buffer overflow
+- **Trigger**: Bad firmware (BIOS declares `error_block_length >
+  GHES_ESTATUS_MAX_SIZE`, then sends CPER record between the allocation
+  size and the declared size)
+- **This is NOT theoretical**: The commit includes a real OOPS trace on
+  QEMU demonstrating the crash
+- **Security relevance**: Firmware-controlled data causes kernel memory
+  corruption. While firmware is generally trusted, this is still a
+  defense-in-depth issue, and buggy firmware is common in practice
 
-### 6. STABILITY INDICATORS
+### 5. SCOPE AND RISK ASSESSMENT
 
-- Accepted by the ACPI subsystem maintainer (Rafael J. Wysocki)
-- Follows an extremely well-established quirk pattern with dozens of
-  precedents
-- Author from Kylin OS (a widely-used Chinese enterprise Linux
-  distribution), suggesting real-world testing
+- **Files changed**: 2 (`drivers/acpi/apei/ghes.c`,
+  `include/acpi/ghes.h`)
+- **Lines changed**: ~10 meaningful lines (adding a struct field,
+  storing it, and a `min()` check)
+- **Risk of regression**: **Extremely low**. The fix only makes the
+  validation check more restrictive — it can only reject records that
+  would have previously been accepted. No record that was correctly
+  handled before will be rejected now.
+- **Subsystem**: ACPI APEI/GHES — critical hardware error reporting used
+  on servers, enterprise systems, and ARM platforms. This is important
+  infrastructure.
+
+### 6. BUG AGE AND AFFECTED VERSIONS
+
+The vulnerable pattern has existed since the original GHES code was
+introduced in commit `d334a49113a4a` from **2010** (Linux v2.6.35). The
+`error_block_length` capping in `ghes_new()` and the check against the
+uncapped value in the validation function have coexisted since the
+beginning. This means **every stable kernel tree** with GHES support is
+affected.
 
 ### 7. DEPENDENCY CHECK
 
-- **6.12 stable** (p-6.12): `irq1_level_low_skip_override[]` and the
-  consolidated `override_table[]` structure exist. The patch should
-  apply cleanly or with trivial context adjustments.
-- **6.6 stable** (p-6.6): Uses the **pre-consolidation** structure with
-  separate per-vendor DMI tables (`medion_laptop[]`, `asus_laptop[]`,
-  etc.) and 6 `override_table[]` entries. This patch would need rework -
-  a new DMI table for the JVC9100 would be needed.
-- **6.1 stable and older**: Similar rework needed, plus the
-  consolidation commit `d37273af0e428` introduced
-  `irq1_level_low_skip_override` in v6.6-rc2.
+The fix is **fully self-contained**. It:
+- Adds a new `unsigned int` field to `struct ghes` (header change)
+- Stores the allocation size in `ghes_new()` (initialization)
+- Uses `min()` in `__ghes_check_estatus()` (validation fix)
+- Includes `<linux/minmax.h>` for the `min()` macro (though this is
+  likely already available through other includes in older kernels)
 
-The essential infrastructure (`override_table[]`, `irq_override_cmp`
-struct with `override` bool, `acpi_dev_irq_override()` function) exists
-since v6.0, so backporting is feasible to all current stable trees with
-appropriate adjustments.
+No other patches are needed for this fix to work. The fix applies to the
+GHES code that has been stable for many years.
 
-### 8. PRECEDENT
+### 8. USER IMPACT
 
-Looking at both `p-6.12` and `p-6.6` branches, numerous virtually
-identical commits have been backported:
-- "Skip IRQ override on ASUS Vivobook Pro N6506CU" (6bb7489f38d9e in
-  6.12)
-- "Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]"
-  (df8d1c8e67204 in 6.12)
-- "Add LG 16T90SP to irq1_level_low_skip_override[]" (53f1a907d36fb in
-  6.12, bdaab141edb6f in 6.6)
-- And many more
+- **Who is affected**: Anyone with ACPI GHES hardware error reporting,
+  primarily:
+  - Enterprise servers (HP, Dell, Lenovo)
+  - ARM platforms with SDEI/GHES
+  - Systems with buggy firmware that declares large error blocks
+- **Severity**: **Kernel OOPS/crash** — system becomes unstable or
+  crashes entirely
+- **Trigger likelihood**: Requires firmware with `error_block_length >
+  64KB` AND a CPER record larger than 64KB. While not every system will
+  trigger this, the crash trace proves it happens in the real world
+  (tested on QEMU with specific firmware).
 
-This is one of the most commonly backported categories of changes in the
-ACPI subsystem.
+### 9. REVIEW QUALITY
 
-### Summary
+- **Reviewed-by: Jonathan Cameron** — experienced APEI contributor
+- **Acked-by: Ard Biesheuvel** — prominent EFI/ACPI/ARM maintainer
+- **Reviewed-by: Hanjun Guo** — ACPI subsystem reviewer
+- **Committed by: Rafael J. Wysocki** — ACPI subsystem maintainer
 
-This commit is a textbook stable-worthy hardware quirk. It adds a DMI
-match for a specific industrial PC board and corresponding
-`override_table` entries to prevent the kernel from incorrectly
-overriding serial IRQ configuration, which breaks serial ports. It is
-small (8 lines), contained (data-only), obviously correct (follows
-established patterns), fixes a real user-visible bug (broken serial
-ports on industrial hardware), and has zero risk of regression for other
-systems. The ACPI subsystem maintainer approved it. Dozens of virtually
-identical changes have been successfully backported to stable trees.
+This is an exceptionally well-reviewed patch.
+
+### 10. SUMMARY
+
+| Criterion | Assessment |
+|-----------|------------|
+| Fixes real bug | YES — buffer overflow causing kernel OOPS |
+| Obviously correct | YES — adds allocation tracking and min()
+validation |
+| Small and contained | YES — ~10 lines of meaningful change |
+| Tested | YES — crash trace demonstrates the bug; multiple reviews
+confirm the fix |
+| No new features | YES — pure bug fix |
+| Risk of regression | VERY LOW — only makes validation stricter |
+| Affects stable users | YES — long-standing bug in all stable trees |
+| Self-contained | YES — no dependencies on other patches |
+
+This is a textbook stable kernel backport candidate: a small, surgical,
+well-reviewed fix for a real buffer overflow that causes kernel crashes,
+with no risk of regression. The bug has existed since 2010 and affects
+all stable kernel trees.
 
 **YES**
 
- drivers/acpi/resource.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/apei/ghes.c | 6 +++++-
+ include/acpi/ghes.h      | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index d16906f46484d..bc8050d8a6f51 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -532,6 +532,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
- 		},
- 	},
-+	{
-+		/* JWIPC JVC9100 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "JVC9100"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 0dc767392a6c6..a37c8fb574832 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -29,6 +29,7 @@
+ #include <linux/cper.h>
+ #include <linux/cleanup.h>
+ #include <linux/platform_device.h>
++#include <linux/minmax.h>
+ #include <linux/mutex.h>
+ #include <linux/ratelimit.h>
+ #include <linux/vmalloc.h>
+@@ -294,6 +295,7 @@ static struct ghes *ghes_new(struct acpi_hest_generic *generic)
+ 		error_block_length = GHES_ESTATUS_MAX_SIZE;
+ 	}
+ 	ghes->estatus = kmalloc(error_block_length, GFP_KERNEL);
++	ghes->estatus_length = error_block_length;
+ 	if (!ghes->estatus) {
+ 		rc = -ENOMEM;
+ 		goto err_unmap_status_addr;
+@@ -365,13 +367,15 @@ static int __ghes_check_estatus(struct ghes *ghes,
+ 				struct acpi_hest_generic_status *estatus)
+ {
+ 	u32 len = cper_estatus_len(estatus);
++	u32 max_len = min(ghes->generic->error_block_length,
++			  ghes->estatus_length);
  
-@@ -706,6 +712,8 @@ struct irq_override_cmp {
+ 	if (len < sizeof(*estatus)) {
+ 		pr_warn_ratelimited(FW_WARN GHES_PFX "Truncated error status block!\n");
+ 		return -EIO;
+ 	}
  
- static const struct irq_override_cmp override_table[] = {
- 	{ irq1_level_low_skip_override, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-+	{ irq1_level_low_skip_override, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 1, false },
-+	{ irq1_level_low_skip_override, 11, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 1, false },
- 	{ irq1_edge_low_force_override, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
- };
- 
+-	if (len > ghes->generic->error_block_length) {
++	if (!len || len > max_len) {
+ 		pr_warn_ratelimited(FW_WARN GHES_PFX "Invalid error status block length!\n");
+ 		return -EIO;
+ 	}
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index ebd21b05fe6ed..93db60da5934e 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -21,6 +21,7 @@ struct ghes {
+ 		struct acpi_hest_generic_v2 *generic_v2;
+ 	};
+ 	struct acpi_hest_generic_status *estatus;
++	unsigned int estatus_length;
+ 	unsigned long flags;
+ 	union {
+ 		struct list_head list;
 -- 
 2.51.0
 
