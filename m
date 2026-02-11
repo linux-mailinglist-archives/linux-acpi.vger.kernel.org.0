@@ -1,66 +1,64 @@
-Return-Path: <linux-acpi+bounces-20931-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20932-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPHXJdl2jGk6ogAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20931-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:25 +0100
+	id WF0vIK52jGk6ogAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20932-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:31:42 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FDA12445E
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178321243C7
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 533EE3011F20
+	by tor.lore.kernel.org (Postfix) with ESMTP id D43CC30162A2
 	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305DC1917FB;
-	Wed, 11 Feb 2026 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B234219FC;
+	Wed, 11 Feb 2026 12:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cH+qQUI9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFlFwU/i"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB75219FC;
-	Wed, 11 Feb 2026 12:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F7D3207;
+	Wed, 11 Feb 2026 12:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813098; cv=none; b=uJ40wiO5QZuOS2I8kIXPzy5Ho6Lwijt1Qnnde1FuT+WkbI99I5UAc87Ry819Ovqgdlz3MuSV7rjvQTHtcUzISUXuiYF1aiCAr0AOerzt5vTPQQWJ6E+ke5yXjAAys7IY4e3YhNlD41vlxnkq/7PkN+j2O2GCfdDudi13q/XvPJE=
+	t=1770813099; cv=none; b=dWlU5GNUK06Gqgh4tzcyOXjnbkof47oP77gtCCme3rmZXVYBq7NzuxGtEu5qgBBOLsCpDMHq4UrFKghr8r2uYah6Dh4pmARyqH9ygB4J+od173Bmx9QeKQEakR0TSgTuxLUQnpEVX82jWb3UiYV+Do0la5d+D4DnEXbfYpz5lbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813098; c=relaxed/simple;
-	bh=AKmn+x7+9jSRIAMop/lI7X3hUMmGJY4xfeP9EXGj6Vs=;
+	s=arc-20240116; t=1770813099; c=relaxed/simple;
+	bh=SDCjvHPoW3LHwRCJAqQbBv25bM9dKzNqDYoB9f0uios=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jmZYqz1rI83RWRFhMFBABbnU+NnyS5ZT7F8EHPfIrtbw9XS2bmWQVqa9/h2sx9tN4GyBTII9SS/kCjyNuQMVW/CRxe14sUgyZF0MqokzfPviH3c/SdUEu2ItdHn/s4UR+sqmb+eAu2GDNoBXFKF7DWpIkGUrsTvPXjJ33HS9pzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cH+qQUI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78044C19421;
-	Wed, 11 Feb 2026 12:31:36 +0000 (UTC)
+	 MIME-Version; b=tE/mJh+en48L8VhCrhwsvR1dbREYlibAjMi5IzwGayZH2/EG0h1BTG0ethKbul085t2kQwiHSgA2WEwIqzlY38JPCtGDv2i5EXjB8c5ieLecrN3GhzskwHQNrk0db7bDeQH58zNB2gKtgzaqhUYiPcNne4MwdVhuQGrYSJsBpCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFlFwU/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F872C19421;
+	Wed, 11 Feb 2026 12:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770813097;
-	bh=AKmn+x7+9jSRIAMop/lI7X3hUMmGJY4xfeP9EXGj6Vs=;
+	s=k20201202; t=1770813099;
+	bh=SDCjvHPoW3LHwRCJAqQbBv25bM9dKzNqDYoB9f0uios=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cH+qQUI9Fs5Y/2hV1TmzhH1S7njSPwHas0VL6ZJEKMw76cgE6R2/wYzuL+yh12x/X
-	 FG5bFG79H2pII2TZtPypAKEhrtncdGvtcXRIoUYCBMcLk1RzyCMr2pcQ8rudO6uwk9
-	 1zp/T54g+CYF0U8sW7Vgy3xWs1I884DQGa6BqE6QFBpsNd+m3r2aFLXV2G4btlp+Tv
-	 e86ZZT8VIoESOtNhwBCG8EwB5iCHQAzD0LqODYm9xmIE5OBvNATXIece0YP5zkCsQt
-	 sfnX1d1tPg46E+VZuvsos3Bqx8k2DGEMGuaZe/BcrW7swzJGKqUhBuxebWnwt4Qit7
-	 AzrFIrt/eoz6w==
+	b=aFlFwU/iay7eRagnXJsmaiFy5mdqvcWf9lDpxNsm20SOoYItb1Mqr5M7KE0mPVy+7
+	 GPEPV6GmO12dCjva6mg0tppV++ABLXt1vMiXW/hoaqpLwQ7hRvxGipCrI60eJ/cfN7
+	 S0KW4kMXxlHh9iSnU33xV2xnhJz3n0mruPMHLmbDjDe674vLOV4Kx6qqsMV7KOOI4n
+	 vnG10GHbB7MD1JsqhG+Y3OyW3Df8qXgk/n876FqeHUN0JtkLQwsDQa0lFWp5izyAqB
+	 jRluzgZkmAPo/aT/zhY2avx1SUEGDMM7uYZW5QnXwicrYm1uew7VxaUgmG4vNwt4WC
+	 G0tZlKrEbZ85A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
+Cc: Yicong Yang <yang.yicong@picoheart.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	bp@alien8.de,
-	patrick.rudolph@9elements.com,
-	zhangdandan@uniontech.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] EFI/CPER: don't go past the ARM processor CPER record buffer
-Date: Wed, 11 Feb 2026 07:30:21 -0500
-Message-ID: <20260211123112.1330287-11-sashal@kernel.org>
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19] ACPI: scan: Use async schedule function in acpi_scan_clear_dep_fn()
+Date: Wed, 11 Feb 2026 07:30:22 -0500
+Message-ID: <20260211123112.1330287-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211123112.1330287-1-sashal@kernel.org>
 References: <20260211123112.1330287-1-sashal@kernel.org>
@@ -73,335 +71,342 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-20931-lists,linux-acpi=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-20932-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi,huawei];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 28FDA12445E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 178321243C7
 X-Rspamd-Action: no action
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Yicong Yang <yang.yicong@picoheart.com>
 
-[ Upstream commit eae21beecb95a3b69ee5c38a659f774e171d730e ]
+[ Upstream commit 7cf28b3797a81b616bb7eb3e90cf131afc452919 ]
 
-There's a logic inside GHES/CPER to detect if the section_length
-is too small, but it doesn't detect if it is too big.
+The device object rescan in acpi_scan_clear_dep_fn() is scheduled on a
+system workqueue which is not guaranteed to be finished before entering
+userspace. This may cause some key devices to be missing when userspace
+init task tries to find them. Two issues observed on RISCV platforms:
 
-Currently, if the firmware receives an ARM processor CPER record
-stating that a section length is big, kernel will blindly trust
-section_length, producing a very long dump. For instance, a 67
-bytes record with ERR_INFO_NUM set 46198 and section length
-set to 854918320 would dump a lot of data going a way past the
-firmware memory-mapped area.
+ - Kernel panic due to userspace init cannot have an opened
+   console.
 
-Fix it by adding a logic to prevent it to go past the buffer
-if ERR_INFO_NUM is too big, making it report instead:
+   The console device scanning is queued by acpi_scan_clear_dep_queue()
+   and not finished by the time userspace init process running, thus by
+   the time userspace init runs, no console is present.
 
-	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-	[Hardware Error]: event severity: recoverable
-	[Hardware Error]:  Error 0, type: recoverable
-	[Hardware Error]:   section_type: ARM processor error
-	[Hardware Error]:   MIDR: 0xff304b2f8476870a
-	[Hardware Error]:   section length: 854918320, CPER size: 67
-	[Hardware Error]:   section length is too big
-	[Hardware Error]:   firmware-generated error record is incorrect
-	[Hardware Error]:   ERR_INFO_NUM is 46198
+ - Entering rescue shell due to the lack of root devices (PCIe nvme in
+   our case).
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-[ rjw: Subject and changelog tweaks ]
-Link: https://patch.msgid.link/41cd9f6b3ace3cdff7a5e864890849e4b1c58b63.1767871950.git.mchehab+huawei@kernel.org
+   Same reason as above, the PCIe host bridge scanning is queued on
+   a system workqueue and finished after init process runs.
+
+The reason is because both devices (console, PCIe host bridge) depend on
+riscv-aplic irqchip to serve their interrupts (console's wired interrupt
+and PCI's INTx interrupts). In order to keep the dependency, these
+devices are scanned and created after initializing riscv-aplic. The
+riscv-aplic is initialized in device_initcall() and a device scan work
+is queued via acpi_scan_clear_dep_queue(), which is close to the time
+userspace init process is run. Since system_dfl_wq is used in
+acpi_scan_clear_dep_queue() with no synchronization, the issues will
+happen if userspace init runs before these devices are ready.
+
+The solution is to wait for the queued work to complete before entering
+userspace init. One possible way would be to use a dedicated workqueue
+instead of system_dfl_wq, and explicitly flush it somewhere in the
+initcall stage before entering userspace. Another way is to use
+async_schedule_dev_nocall() for scanning these devices. It's designed
+for asynchronous initialization and will work in the same way as before
+because it's using a dedicated unbound workqueue as well, but the kernel
+init code calls async_synchronize_full() right before entering userspace
+init which will wait for the work to complete.
+
+Compared to a dedicated workqueue, the second approach is simpler
+because the async schedule framework takes care of all of the details.
+The ACPI code only needs to focus on its job. A dedicated workqueue for
+this could also be redundant because some platforms don't need
+acpi_scan_clear_dep_queue() for their device scanning.
+
+Signed-off-by: Yicong Yang <yang.yicong@picoheart.com>
+[ rjw: Subject adjustment, changelog edits ]
+Link: https://patch.msgid.link/20260128132848.93638-1-yang.yicong@picoheart.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Here's the complete, thorough analysis:
-
----
-
-## Comprehensive Analysis
+## Detailed Analysis
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message clearly describes a **buffer overread vulnerability**
-in the ARM processor CPER (Common Platform Error Record) parser. It
-explains:
+The commit fixes two concrete, severe boot failures on RISC-V platforms
+with ACPI:
 
-- **Root cause**: The existing code only validated if `section_length`
-  was too *small*, but never checked if it was too *big* relative to the
-  actual buffer size.
-- **Concrete exploit scenario**: A 67-byte CPER record with
-  `ERR_INFO_NUM=46198` and `section_length=854918320` would cause the
-  kernel to read far past the firmware memory-mapped area.
-- **Impact**: "Would dump a lot of data going a way past the firmware
-  memory-mapped area" — this is an **out-of-bounds memory read**.
-- **Quality indicators**: Reviewed-by Jonathan Cameron, Acked-by Ard
-  Biesheuvel (the EFI subsystem maintainer), Reviewed-by Hanjun Guo.
-  Multiple expert reviewers agreed this is needed.
+1. **Kernel panic** - userspace init cannot open a console because the
+   console device hasn't been scanned yet. The device scan work was
+   queued via `acpi_scan_clear_dep_queue()` to `system_dfl_wq` (or
+   `system_unbound_wq` in stable) and hasn't completed by the time
+   userspace init runs.
+
+2. **Boot failure into rescue shell** - root device (PCIe NVMe via PCIe
+   host bridge) is missing for the same reason: the scan work is still
+   queued and not completed.
+
+Both are caused by a race: the deferred device scan (queued by
+`acpi_scan_clear_dep_queue()`) is scheduled on a system workqueue with
+**no synchronization barrier** before userspace init starts. Devices
+that depend on RISC-V APLIC (interrupt controller) are scanned
+asynchronously after APLIC initialization in `device_initcall()`, and if
+init runs before the workqueue work completes, critical devices are
+missing.
+
+The commit message is well-written by both the author (Yicong Yang) and
+was reviewed/edited by the ACPI maintainer (Rafael J. Wysocki), who
+signed it off.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The vulnerability is in `cper_print_proc_arm()` in
-`drivers/firmware/efi/cper-arm.c`. Here's the precise mechanism:
+The change is **small and surgical** (~30 net lines removed):
 
-**Before the fix** (current code at lines 228-247 of cper-arm.c):
+**Before (old code):**
+- A `struct acpi_scan_clear_dep_work` wraps `work_struct` + `acpi_device
+  *`
+- `acpi_scan_clear_dep_fn()` is a `work_struct` callback that calls
+  `acpi_bus_attach()` under `acpi_scan_lock`, then releases the device
+  reference and frees the wrapper
+- `acpi_scan_clear_dep_queue()` allocates the wrapper via `kmalloc()`,
+  initializes the work, and queues it on
+  `system_dfl_wq`/`system_unbound_wq`
 
-```228:247:drivers/firmware/efi/cper-arm.c
-void cper_print_proc_arm(const char *pfx,
-                         const struct cper_sec_proc_arm *proc)
+**After (new code):**
+- `acpi_scan_clear_dep_fn()` signature changes to `(void *dev,
+  async_cookie_t cookie)` - an `async_func_t` callback
+- It uses `to_acpi_device(dev)` directly instead of `container_of` on a
+  wrapper struct
+- `acpi_scan_clear_dep_queue()` calls `async_schedule_dev_nocall()`
+  instead of `queue_work()`
+- The `struct acpi_scan_clear_dep_work` wrapper is removed entirely
+- No more `kmalloc()` for the wrapper (the async framework handles its
+  own allocation internally)
+
+**Why this fixes the bug:** `async_schedule_dev_nocall()` schedules work
+on the async framework's dedicated domain (`async_dfl_domain`). The
+critical property is that `kernel_init()` in `init/main.c` calls
+`async_synchronize_full()` **before** entering userspace (before
+`run_init_process()`):
+
+```1569:1642:init/main.c
+static int __ref kernel_init(void *unused)
 {
-        int i, len, max_ctx_type;
-        struct cper_arm_err_info *err_info;
-        struct cper_arm_ctx_info *ctx_info;
-        char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-        char error_type[120];
-
-        printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
-
-        len = proc->section_length - (sizeof(*proc) +
-                proc->err_info_num * (sizeof(*err_info)));
-        if (len < 0) {
-                printk("%ssection length: %d\n", pfx,
-proc->section_length);
-                printk("%ssection length is too small\n", pfx);
-                printk("%sfirmware-generated error record is
-incorrect\n", pfx);
-                printk("%sERR_INFO_NUM is %d\n", pfx,
-proc->err_info_num);
-                return;
-        }
+        // ...
+        kernel_init_freeable();
+        /* need to finish all async __init code before freeing the
+memory */
+        async_synchronize_full();
+        // ...
+        // <userspace init happens after this point>
 ```
 
-The problem:
-- `proc->section_length` comes from firmware (untrusted data)
-- `proc->err_info_num` also comes from firmware (untrusted data)
-- The code checks `len < 0` — this catches the case where
-  `section_length` is too small to hold the claimed `err_info_num`
-  entries
-- **But it never compares `section_length` against the actual buffer
-  size** passed from GHES as `gdata->error_data_length`
+This guarantees all async-scheduled work (including the device scans)
+completes before userspace init starts. The old
+`queue_work(system_unbound_wq, ...)` had no such synchronization
+barrier.
 
-When `section_length` is absurdly large (e.g. 854918320), `len` becomes
-a huge positive number, passing the `len < 0` check. Then:
-
-1. The `for (i = 0; i < proc->err_info_num; i++)` loop at line 266
-   iterates `err_info_num` times (e.g. 46198 times), reading `struct
-   cper_arm_err_info` entries at `proc + 1` and beyond — **far past the
-   actual 67-byte buffer**.
-
-2. The `ctx_info` loop at line 311 uses `ctx_info->size` (read from
-   garbage memory) for `print_hex_dump()`, dumping arbitrary memory to
-   the kernel log.
-
-3. The vendor-specific data section at line 333 dumps `len` bytes — up
-   to 854 million bytes of arbitrary memory.
-
-**The fix** makes three surgical changes:
-
-1. **Adds a `u32 length` parameter** to `cper_print_proc_arm()` — this
-   is the true buffer size from GHES (`gdata->error_data_length`)
-
-2. **Extends the validation** from `if (len < 0)` to `if (len < 0 ||
-   proc->section_length > length)` — catches both "too small" AND "too
-   big"
-
-3. **Updates the caller** in `cper.c` to pass `gdata->error_data_length`
+**Reference counting correctness:** The reference counting is preserved
+identically:
+- On success: `acpi_scan_clear_dep_fn()` releases the reference via
+  `acpi_dev_put(adev)`
+- On failure: `acpi_scan_clear_dep_queue()` returns `false`, and the
+  caller `acpi_scan_clear_dep()` releases the reference via
+  `acpi_dev_put(adev)`
 
 ### 3. CLASSIFICATION
 
-This is an **out-of-bounds read / buffer overread bug fix**.
-Specifically:
-- **Security vulnerability**: Kernel reads past buffer bounds based on
-  untrusted firmware input
-- **Information disclosure**: Arbitrary kernel memory dumped to kernel
-  log via `print_hex_dump()`
-- **Potential crash**: If the read crosses into unmapped pages, a kernel
-  oops/panic results
-- The data source (firmware CPER records) is effectively **untrusted
-  input** that can be malformed due to firmware bugs or potentially
-  malicious firmware
+This is a **real bug fix** for a **race condition** that causes **kernel
+panics and boot failures**. It is not a feature, cleanup, or
+optimization.
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-**Size**: ~20 lines changed across 3 files. Extremely small and focused.
-
-**Files touched**:
-- `drivers/firmware/efi/cper-arm.c` — the fix itself (adds parameter +
-  check)
-- `drivers/firmware/efi/cper.c` — call site update (passes buffer
-  length)
-- `include/linux/cper.h` — declaration update
-
-**Risk of regression**: Essentially zero.
-- For **correct firmware** data where `section_length <=
-  error_data_length`, behavior is completely unchanged
-- For **incorrect firmware** data where `section_length >
-  error_data_length`, the function now safely returns early with a
-  diagnostic message instead of overreading memory
-- The only caller (`cper_estatus_print_section`) is updated in this same
-  commit
-
-**Dependency check**: The function `cper_print_proc_arm` has existed
-since 2018 (commit c6d8c8ef1d0d). The two-parameter signature has been
-stable. The core fix (adding a `length` parameter and a bounds check) is
-independent of recent changes like the FIELD_GET refactoring
-(96b010536ee02) or the infopfx size fix (8ad2c72e21efb). For older
-stable trees, a minor context adjustment may be needed but the actual
-fix lines will apply cleanly.
+- **Files changed:** 1 (`drivers/acpi/scan.c`)
+- **Net lines:** Reduced - removes the wrapper struct, simplifies both
+  functions
+- **Subsystem:** ACPI scan, a core subsystem
+- **Risk:** LOW. The change replaces one deferred scheduling mechanism
+  (workqueue) with another (async framework) that has the specific
+  property of being synchronized before userspace init. The functional
+  behavior of the callback is identical. The async framework is well-
+  established and already used extensively in the kernel for device
+  probing.
+- **Could this break something?** Very unlikely. The
+  `async_schedule_dev_nocall()` function uses an unbound workqueue
+  internally just like the old code, with the added benefit of the
+  synchronization barrier. The only behavior change is that work is
+  guaranteed to complete before userspace init, which is strictly
+  desirable.
 
 ### 5. USER IMPACT
 
-- **Affected platforms**: ARM64/ARM systems with GHES hardware error
-  reporting — primarily ARM servers (e.g., Ampere, HiSilicon Kunpeng,
-  Qualcomm Centriq) used in data centers
-- **Trigger**: Firmware sends a malformed CPER record with a bogus
-  `section_length`. This can happen due to:
-  - Firmware bugs (the commit message gives a concrete real-world
-    example)
-  - Corrupt error records in BIOS/UEFI memory
-  - Potentially adversarial firmware in a compromised system
-- **Severity when triggered**: Information disclosure (kernel memory in
-  dmesg), potential kernel crash, massive log flood (millions of lines)
-- **Impact on enterprise systems**: ARM servers running in production
-  with RAS features are the primary users of this code path
+- **Severity:** CRITICAL - kernel panics and inability to boot
+- **Affected platforms:** Primarily RISC-V ACPI platforms right now, but
+  the underlying race could affect any platform using
+  `acpi_dev_clear_dependencies()` (Intel camera IVSC, INT3472, Surface
+  devices, ACPI EC, PCI link, GPIO, I2C - 18 different callers)
+- **Who benefits:** RISC-V ACPI users are the primary beneficiaries.
+  Other platforms could theoretically hit this race too under heavy load
+  at boot time, though it's most likely on RISC-V where interrupt
+  controller dependency chains are deeper.
 
-### 6. STABILITY INDICATORS
+### 6. DEPENDENCY CHECK
 
-- **Reviewed-by**: Jonathan Cameron (experienced kernel developer)
-- **Acked-by**: Ard Biesheuvel (EFI subsystem maintainer)
-- **Reviewed-by**: Hanjun Guo (ARM/ACPI maintainer)
-- **Merged by**: Rafael J. Wysocki (ACPI/PM maintainer)
-- Multiple expert reviewers agreed on the fix — high confidence in
-  correctness
+- **`async_schedule_dev_nocall()`:** Already backported to all active
+  stable trees (6.1.y, 6.6.y, 6.12.y) - verified by checking commit
+  history
+- **`acpi_scan_clear_dep_queue()` / `acpi_scan_clear_dep_fn()`:**
+  Present in all active stable trees (introduced before v5.17)
+- **`#include <linux/async.h>`:** The new header include is the only
+  other change needed
+- **Backport adjustment:** Stable trees (6.1.y through 6.14.y) use
+  `system_unbound_wq` instead of `system_dfl_wq`, but since the commit
+  removes the `queue_work()` call entirely, the diff will need a trivial
+  context adjustment (the old `queue_work(system_unbound_wq, ...)` line
+  vs `queue_work(system_dfl_wq, ...)`)
+- **RISC-V ACPI dependency IDs:** The RSCV0001/RSCV0002 entries are in
+  6.12.y but not in 6.6.y or 6.1.y. However, the fix is still valid for
+  older trees because the same race exists for Intel camera/IVSC/PCI-
+  link devices that use this code path
 
-### 7. DEPENDENCY CHECK
+### 7. STABILITY INDICATORS
 
-Confirmed via `semcode-find_callers` that there is exactly **one
-caller** of `cper_print_proc_arm()`: `cper_estatus_print_section()` in
-`cper.c`. Both the caller and the callee are updated in this single
-commit. The fix is completely self-contained with no external
-dependencies.
+- Authored by Yicong Yang (kernel contributor)
+- Reviewed and edited by Rafael J. Wysocki (ACPI maintainer, signed off)
+- The approach was explicitly chosen over a dedicated workqueue because
+  it leverages the existing async synchronization framework which "takes
+  care of all the details"
+- Real-world tested (the bug was observed on actual RISC-V hardware)
 
-The code this fixes has existed since Linux 4.16 (when `cper-arm.c` was
-split out), and the vulnerable pattern (only checking for "too small"
-section_length) has been present since the original ARM CPER parsing
-code was added. All stable trees with ARM CPER support are affected.
+### CONCLUSION
 
-### Summary
+This commit fixes a **critical race condition** causing **kernel panics
+and boot failures**. The fix is:
+- **Small and surgical** (single file, removes complexity)
+- **Obviously correct** (leverages the well-established async
+  synchronization barrier before userspace init)
+- **Self-contained** (no dependencies beyond `async_schedule_dev_nocall`
+  which already exists in all stable trees)
+- **Low risk** (functionally equivalent deferred execution, just with
+  proper synchronization)
+- **High impact** (prevents kernel panics and boot failures on RISC-V
+  ACPI platforms; potentially prevents similar races on other platforms
+  using the same code path)
 
-This commit fixes a clear **out-of-bounds memory read vulnerability** in
-the ARM CPER error record parser. Firmware-provided `section_length`
-values are blindly trusted, allowing a malformed record to cause the
-kernel to read (and dump to dmesg) vast amounts of memory beyond the
-actual buffer. The fix adds a single bounds check comparing the
-firmware-claimed length against the actual buffer size. It is:
-
-- **Small and surgical** (~20 lines, 3 files)
-- **Obviously correct** (just adding a missing bounds check)
-- **Zero regression risk** (only changes behavior for malformed data)
-- **Security-relevant** (information disclosure, potential crash)
-- **Well-reviewed** (4 expert reviewers/ackers)
-- **Self-contained** (no dependencies on other patches)
-- **Affects real hardware** (ARM servers with GHES)
-- **Long-standing bug** (present since 2018, affects all stable trees)
-
-This is a textbook stable backport candidate that meets every stable
-kernel rule.
+The only minor concern is the trivial context difference
+(`system_unbound_wq` vs `system_dfl_wq`) for backport to pre-6.19 stable
+trees, which requires a trivial adaptation of the diff context but does
+not affect the logic (the line is removed, not modified).
 
 **YES**
 
- drivers/firmware/efi/cper-arm.c | 12 ++++++++----
- drivers/firmware/efi/cper.c     |  3 ++-
- include/linux/cper.h            |  3 ++-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/acpi/scan.c | 41 +++++++++++++++--------------------------
+ 1 file changed, 15 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 76542a53e2027..b21cb1232d820 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -226,7 +226,8 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 416d87f9bd107..b78f6be2f9468 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -5,6 +5,7 @@
+ 
+ #define pr_fmt(fmt) "ACPI: " fmt
+ 
++#include <linux/async.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -2360,46 +2361,34 @@ static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *da
+ 	return 0;
  }
  
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc)
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length)
+-struct acpi_scan_clear_dep_work {
+-	struct work_struct work;
+-	struct acpi_device *adev;
+-};
+-
+-static void acpi_scan_clear_dep_fn(struct work_struct *work)
++static void acpi_scan_clear_dep_fn(void *dev, async_cookie_t cookie)
  {
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
-@@ -238,9 +239,12 @@ void cper_print_proc_arm(const char *pfx,
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+-	cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
++	struct acpi_device *adev = to_acpi_device(dev);
  
- 	len = proc->section_length - (sizeof(*proc) +
- 		proc->err_info_num * (sizeof(*err_info)));
--	if (len < 0) {
--		printk("%ssection length: %d\n", pfx, proc->section_length);
--		printk("%ssection length is too small\n", pfx);
-+
-+	if (len < 0 || proc->section_length > length) {
-+		printk("%ssection length: %d, CPER size: %d\n",
-+		       pfx, proc->section_length, length);
-+		printk("%ssection length is too %s\n", pfx,
-+		       (len < 0) ? "small" : "big");
- 		printk("%sfirmware-generated error record is incorrect\n", pfx);
- 		printk("%sERR_INFO_NUM is %d\n", pfx, proc->err_info_num);
- 		return;
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 09a4f0168df80..06b4fdb59917a 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -664,7 +664,8 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
+ 	acpi_scan_lock_acquire();
+-	acpi_bus_attach(cdw->adev, (void *)true);
++	acpi_bus_attach(adev, (void *)true);
+ 	acpi_scan_lock_release();
  
- 		printk("%ssection_type: ARM processor error\n", newpfx);
- 		if (gdata->error_data_length >= sizeof(*arm_err))
--			cper_print_proc_arm(newpfx, arm_err);
-+			cper_print_proc_arm(newpfx, arm_err,
-+					    gdata->error_data_length);
- 		else
- 			goto err_section_too_small;
- #endif
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 5b1236d8c65bb..440b35e459e53 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -595,7 +595,8 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *,
- const char *cper_mem_err_unpack(struct trace_seq *,
- 				struct cper_mem_err_compact *);
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc);
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length);
- void cper_print_proc_ia(const char *pfx,
- 			const struct cper_sec_proc_ia *proc);
- int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
+-	acpi_dev_put(cdw->adev);
+-	kfree(cdw);
++	acpi_dev_put(adev);
+ }
+ 
+ static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
+ {
+-	struct acpi_scan_clear_dep_work *cdw;
+-
+ 	if (adev->dep_unmet)
+ 		return false;
+ 
+-	cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
+-	if (!cdw)
+-		return false;
+-
+-	cdw->adev = adev;
+-	INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
+ 	/*
+-	 * Since the work function may block on the lock until the entire
+-	 * initial enumeration of devices is complete, put it into the unbound
+-	 * workqueue.
++	 * Async schedule the deferred acpi_scan_clear_dep_fn() since:
++	 * - acpi_bus_attach() needs to hold acpi_scan_lock which cannot
++	 *   be acquired under acpi_dep_list_lock (held here)
++	 * - the deferred work at boot stage is ensured to be finished
++	 *   before userspace init task by the async_synchronize_full()
++	 *   barrier
++	 *
++	 * Use _nocall variant since it'll return on failure instead of
++	 * run the function synchronously.
+ 	 */
+-	queue_work(system_dfl_wq, &cdw->work);
+-
+-	return true;
++	return async_schedule_dev_nocall(acpi_scan_clear_dep_fn, &adev->dev);
+ }
+ 
+ static void acpi_scan_delete_dep_data(struct acpi_dep_data *dep)
 -- 
 2.51.0
 
