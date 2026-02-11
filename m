@@ -1,62 +1,60 @@
-Return-Path: <linux-acpi+bounces-20936-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20937-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGjhNtp2jGk6ogAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20936-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:26 +0100
+	id IDrjNeB2jGk6ogAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20937-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:32 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A31C124466
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915CD124484
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FEF2301706A
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B444E301C106
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EDC1A9FA4;
-	Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D738A1C84BD;
+	Wed, 11 Feb 2026 12:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDP6A3Z2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVjHm1AJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3489E194AD7;
-	Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41331BCA1C;
+	Wed, 11 Feb 2026 12:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813129; cv=none; b=sQ7iTEONIU7i4Z2EtgjeJlcuKFM9odrdxAv29PDgIiqgsfraCg/7Ial8753vimXNwwMj3ln9qM6ECTmfn+1H1f9RMt9XDlx0GmTG8UwyJn7R0cnngxJhYeCC+ACuI2DUEOmZNWDCoIHSdQn45fKVV60O74LUTF2Zi9d7SXFG6e0=
+	t=1770813134; cv=none; b=ubGZo+O966GsggevRSvcvLJS0ym4Jeo7QLwWakO73O6vKB98PvzfDr7D5MKvxGdbTJ27UgDA29K1ZxIyVzDGMSeAlmw81tZbs55Q696rgKs3nnrdTHQIoVNFiPY+LreQAeCQEeOqWjlmGckxSC4LiHFf96pYZKbwBD68iKfh/YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813129; c=relaxed/simple;
-	bh=Uk510mEDj+GY7I1ongoJg5xxsKqWMBWmEKzcmdm94jw=;
+	s=arc-20240116; t=1770813134; c=relaxed/simple;
+	bh=KmWpsL7YEzJCn/fYCpLilJVC1KaJwKdJsUjebXGoJG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJhAIGwFw+yiwkn1azrXBMMg8ch2l0buaVvJrQQf2nxNSM7KFXtHcv84WFGW69Uc6cFIrEtkFrlWKQTF/fWPgutxRvHhXVTIxGCTDNinpRYH4moBBg/Lj3/zu8F0nB8wKBobnGNs1RteTKATBzyCT3R1bRNsbHLNUv4XipCKIls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDP6A3Z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D4C4CEF7;
-	Wed, 11 Feb 2026 12:32:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SAEuG0dvNahBXDEaLOO6a143uLqYLlw9Wqzfjsx+lA4JL2Z/i7q0uovqjiNhuKoBi+M1bsGHSo3l/wR3CWvvjsG2J2kfc9YUPli8H/gOHAUoi3mVnIm66ww0jodAHUSI4RC4otbLg/VRglShYRXq6n/AJAvikTJ0y1bVu9RFcX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVjHm1AJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71AAC19421;
+	Wed, 11 Feb 2026 12:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770813129;
-	bh=Uk510mEDj+GY7I1ongoJg5xxsKqWMBWmEKzcmdm94jw=;
+	s=k20201202; t=1770813134;
+	bh=KmWpsL7YEzJCn/fYCpLilJVC1KaJwKdJsUjebXGoJG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDP6A3Z2mv5M0jIyxTPUE+gRyWZnPq6Oz0YjBMd/obiYqwztnSSAO0E23QyEzaHtR
-	 dQBEl9Ru+s+GOUZmSVs8CizLYmN4N9FMCLWWap5VDP112DK+G3BYkwusN1Vf61HntI
-	 UmkFD14BPlFaqWv8jnhR9xai4f9Xj5W5Vh1gESsf2PphJsGOUqaWrLoQVImNE9yKyc
-	 Qp5JBahZB+1o13JmSkJzpNHXG05Kv19mKbGtK8Ei8cIcF9ArhMB9Cwf+B1v7s2ZQiY
-	 1ZrlUA38votD+8p+S5+P4HkmGXIECvkuSJh3+cwa/zAs6wZrTvCDMg/CBLk2eUjDwH
-	 W0rN2s0ML0BxA==
+	b=GVjHm1AJx2yZ5r+agmLqLnJLMa2LxLFNLlCkz5hc+o1C/dWfW0jaNxNeqVtsfZ+y3
+	 kRks0ky603HOVr8+V8CzqDpZzx8FY+znOe80eQEHQE4OybOgBISJImFMRh8zzFwqvy
+	 UFzQGBaeIGgXuKEm/v8oraHQ14iDMAcrNxTac3v/1Yp38+MgtkJV9UE9VmHf/HqRT7
+	 vVlUOY5iu1noq7XhMQ5KcwA+vDYGa9fTShcf8YZaERotZ8zizDE6y7OJ6tXutXiThm
+	 lbTjeQRXTazHgMxxfRAYFhDw3J19SR1uR2Bh5OIJKRA9uaN203eHPPkKuskRdLwXs8
+	 MEXyuEZ8H/Adw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
+Cc: Tuo Li <islituo@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.19-5.10] ACPICA: Abort AML bytecode execution when executing AML_FATAL_OP
-Date: Wed, 11 Feb 2026 07:30:36 -0500
-Message-ID: <20260211123112.1330287-26-sashal@kernel.org>
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.15] ACPI: processor: Fix NULL-pointer dereference in acpi_processor_errata_piix4()
+Date: Wed, 11 Feb 2026 07:30:39 -0500
+Message-ID: <20260211123112.1330287-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211123112.1330287-1-sashal@kernel.org>
 References: <20260211123112.1330287-1-sashal@kernel.org>
@@ -69,319 +67,273 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmx.de,intel.com,kernel.org,vger.kernel.org,lists.linux.dev];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20937-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20936-lists,linux-acpi=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gmx.de:email]
-X-Rspamd-Queue-Id: 9A31C124466
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 915CD124484
 X-Rspamd-Action: no action
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit 026ad376a6a48538b576f3589331daa94daae6f0 ]
+[ Upstream commit f132e089fe89cadc2098991f0a3cb05c3f824ac6 ]
 
-The ACPI specification states that when executing AML_FATAL_OP,
-the OS should log the fatal error event and shutdown in a timely
-fashion.
+In acpi_processor_errata_piix4(), the pointer dev is first assigned an IDE
+device and then reassigned an ISA device:
 
-Windows complies with this requirement by immediatly entering a
-Bso_d, effectively aborting the execution of the AML bytecode in
-question.
+  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB, ...);
+  dev = pci_get_subsys(..., PCI_DEVICE_ID_INTEL_82371AB_0, ...);
 
-ACPICA however might continue with the AML bytecode execution
-should acpi_os_signal() simply return AE_OK. This will cause issues
-because ACPI BIOS implementations might assume that the Fatal()
-operator does not return.
+If the first lookup succeeds but the second fails, dev becomes NULL. This
+leads to a potential null-pointer dereference when dev_dbg() is called:
 
-Fix this by aborting the AML bytecode execution in such a case
-by returning AE_ERROR. Also turn struct acpi_signal_fatal_info into a
-local variable because of its small size (12 bytes) and to ensure
-that acpi_os_signal() always receives valid information about the
-fatal ACPI BIOS error.
+  if (errata.piix4.bmisx)
+    dev_dbg(&dev->dev, ...);
 
-Link: https://github.com/acpica/acpica/commit/d516c7758ba6
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+To prevent this, use two temporary pointers and retrieve each device
+independently, avoiding overwriting dev with a possible NULL value.
+
+Signed-off-by: Tuo Li <islituo@gmail.com>
+[ rjw: Subject adjustment, added an empty code line ]
+Link: https://patch.msgid.link/20260111163214.202262-1-islituo@gmail.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3325491.5fSG56mABF@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a thorough analysis.
+Now I have a complete picture. Let me write the final analysis.
 
 ---
 
-## Complete Analysis
+## Detailed Analysis
 
-### 1. COMMIT MESSAGE ANALYSIS
+### 1. Commit Message Analysis
 
-The commit addresses a clear specification violation in ACPICA's
-handling of the AML `Fatal()` operator. The ACPI specification states
-that when `AML_FATAL_OP` is executed, the OS should log the fatal error
-and shut down. Windows complies by entering a BSoD (Blue Screen of
-Death), which effectively halts AML execution. However, ACPICA's Linux
-implementation of `acpi_os_signal()` merely prints `"Fatal opcode
-executed\n"` and returns `AE_OK`, after which the AML interpreter
-continues executing subsequent bytecode.
+The commit explicitly says "Fix NULL-pointer dereference" - a well-
+documented, clearly understood bug. The commit message includes:
+- The exact code path that triggers the bug
+- The specific variable (`dev`) that becomes NULL
+- The mechanism: overwriting a pointer with two sequential PCI lookups
+- Accepted and adjusted by the ACPI subsystem maintainer Rafael J.
+  Wysocki
 
-The commit author (Armin Wolf) explicitly states that BIOS
-implementations may assume `Fatal()` does not return - this is a
-reasonable assumption based on the spec and Windows behavior. Continuing
-to execute AML code after a Fatal() is a real correctness bug.
+### 2. Code Change Analysis - The Bug
 
-### 2. CODE CHANGE ANALYSIS
+Looking at the pre-patch code in `acpi_processor_errata_piix4()`:
 
-The change is in a single file `drivers/acpi/acpica/exoparg3.c` and
-touches only the `acpi_ex_opcode_3A_0T_0R` function. The diff has three
-substantive changes:
-
-**a) Stack allocation instead of heap allocation (minor fix +
-cleanup):**
-
-Old code:
-
-```51:84:drivers/acpi/acpica/exoparg3.c
-        struct acpi_signal_fatal_info *fatal;
+```49:147:drivers/acpi/acpi_processor.c
+static int acpi_processor_errata_piix4(struct pci_dev *dev)
+{
+        u8 value1 = 0;
+        u8 value2 = 0;
         // ...
-        fatal = ACPI_ALLOCATE(sizeof(struct acpi_signal_fatal_info));
-        if (fatal) {
-                fatal->type = (u32) operand[0]->integer.value;
-                fatal->code = (u32) operand[1]->integer.value;
-                fatal->argument = (u32) operand[2]->integer.value;
+        // Inside switch cases 0-3:
+                dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+                                     PCI_DEVICE_ID_INTEL_82371AB,
+// IDE controller
+                                     PCI_ANY_ID, PCI_ANY_ID, NULL);
+                if (dev) {
+                        errata.piix4.bmisx = pci_resource_start(dev, 4);
+                        pci_dev_put(dev);   // drops ref, dev is now
+dangling
+                }
+
+                dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+                                     PCI_DEVICE_ID_INTEL_82371AB_0,
+// ISA controller
+                                     PCI_ANY_ID, PCI_ANY_ID, NULL);
+// dev may become NULL!
+                if (dev) {
+                        // ...
+                        pci_dev_put(dev);
+                }
+                break;
         }
-        /* Always signal the OS! */
-        status = acpi_os_signal(ACPI_SIGNAL_FATAL, fatal);
+
+        if (errata.piix4.bmisx)
+                dev_dbg(&dev->dev, "Bus master activity detection...");
+// NULL DEREF HERE
+        if (errata.piix4.fdma)
+                dev_dbg(&dev->dev, "Type-F DMA livelock erratum...");
+// NULL DEREF HERE
 ```
 
-The old code had a subtle bug: if `ACPI_ALLOCATE` fails, `fatal` is
-NULL, but the code still calls `acpi_os_signal(ACPI_SIGNAL_FATAL, NULL)`
-because the comment says "Always signal the OS!" The current Linux
-`acpi_os_signal()` doesn't dereference `info` for the FATAL case, so it
-doesn't crash, but it's incorrect. The new code uses a stack variable
-(12 bytes), eliminating both the allocation failure path and the
-unnecessary heap allocation.
+**The bug**: The function parameter `dev` (the PIIX4 ACPI Controller,
+`PCI_DEVICE_ID_INTEL_82371AB_3`) is overwritten by the two
+`pci_get_subsys()` calls inside the switch. If the first lookup (IDE,
+`82371AB`) succeeds and sets `errata.piix4.bmisx`, but the second lookup
+(ISA, `82371AB_0`) fails, `dev` becomes NULL. Then `dev_dbg(&dev->dev,
+...)` dereferences NULL, causing a kernel oops.
 
-**b) Return AE_ERROR instead of AE_OK (the core fix):**
+### 3. Bug Origin
 
-Old code: returns whatever `acpi_os_signal()` returns, which is `AE_OK`
-on Linux (confirmed by reading `drivers/acpi/osl.c:1402`). This means
-execution continues.
+From `git blame`, the NULL dereference was **introduced by commit
+52af99c3f55ff0** ("ACPI: processor: Get rid of ACPICA message printing",
+2021-02-22, first in v5.13-rc1). Before that commit, the debug messages
+used `ACPI_DEBUG_PRINT()` which did not reference `dev`:
 
-New code: always returns `AE_ERROR` via `return_ACPI_STATUS(AE_ERROR)`.
+```c
+// BEFORE 52af99c3f55ff0 - safe, no dev reference:
+if (errata.piix4.bmisx)
+    ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Bus master activity
+detection..."));
+```
 
-When `AE_ERROR` is returned, the dispatch in `acpi_ds_exec_end_op`
-propagates the error to `acpi_ds_method_error()`, which will abort the
-AML method execution. This correctly stops the interpreter from
-executing AML bytecode that the BIOS developer assumed would be
-unreachable.
+When converted to `dev_dbg(&dev->dev, ...)`, the code now dereferences a
+pointer that could be NULL.
 
-**c) Better error logging:**
+### 4. Trigger Conditions
 
-Changed from `ACPI_DEBUG_PRINT` (which only prints at debug level) to
-`ACPI_BIOS_ERROR` (which always prints as a BIOS error). This ensures
-the fatal error is always visible in kernel logs, which is important for
-diagnosing BIOS issues.
+The NULL dereference triggers when:
+1. System has a PIIX4 ACPI controller (revision 0-3)
+2. The PIIX4 IDE function (`82371AB`) exists on PCI bus
+3. The PIIX4 ISA function (`82371AB_0`) does NOT exist on PCI bus
+4. With `CONFIG_DYNAMIC_DEBUG` and dynamic debug enabled for this
+   callsite, OR with `DEBUG` defined at compile time
 
-**d) Removal of cleanup label (pure cleanup):**
+With `CONFIG_DYNAMIC_DEBUG` (default in most distro kernels), the
+dereference is behind a runtime branch that defaults to off. However,
+anyone debugging ACPI on a PIIX4 system (e.g., `echo 'file
+acpi_processor.c +p' > /sys/kernel/debug/dynamic_debug/control`) would
+trigger a kernel crash.
 
-The `cleanup:` label and `status` variable are removed in favor of
-direct returns from each case. This is a mechanical cleanup with no
-behavioral impact.
+### 5. The Fix
 
-### 3. BUG MECHANISM AND IMPACT
+The fix is clean and minimal: introduce two separate local pointers
+(`ide_dev` and `isa_dev`) instead of overwriting the function parameter
+`dev`. Each PCI device is looked up independently, and the final debug
+messages check the appropriate device pointer.
 
-The bug mechanism is clear: when ACPI BIOS code calls `Fatal()`, the AML
-interpreter on Linux continues executing subsequent bytecode. This is
-dangerous because:
+The diff is +2/-1 new lines (one variable declaration), and changes
+existing lines only to rename `dev` → `ide_dev`/`isa_dev`. The logic
+also changes the condition from `if (errata.piix4.bmisx)` to `if
+(ide_dev)`, which is semantically equivalent (bmisx is only set when
+ide_dev was found).
 
-1. **BIOS developers may write code assuming Fatal() never returns**
-   (just like Windows BSoDs). Code after `Fatal()` may be uninitialized,
-   nonsensical, or rely on undefined state. Executing such code could
-   cause:
-   - Writes to arbitrary ACPI registers
-   - Undefined behavior in the AML interpreter
-   - System instability, hangs, or crashes
+### 6. Scope and Risk Assessment
 
-2. **The Fatal() operator exists to signal critical BIOS errors.**
-   Ignoring this signal and continuing is fundamentally wrong behavior.
+- **Files changed**: 1 (`drivers/acpi/acpi_processor.c`)
+- **Lines changed**: ~30, mostly variable name renames
+- **Risk**: Very low - purely local changes within one function, no
+  changes to function signatures or external interfaces
+- **Call chain**: Only called via `acpi_processor_errata()` →
+  `acpi_processor_get_info()` → `acpi_processor_add()`
 
-3. The Linux `acpi_os_signal()` implementation at
-   `drivers/acpi/osl.c:1382-1403` is a no-op that just prints a message
-   and returns `AE_OK`. This makes the bug always trigger on Linux when
-   Fatal() is encountered.
+### 7. Stable Tree Applicability
 
-### 4. SCOPE AND RISK ASSESSMENT
+The bug was introduced in v5.13-rc1 via commit 52af99c3f55ff0. All
+current stable/LTS trees (5.15.y, 6.1.y, 6.6.y, 6.12.y) contain this
+buggy code. The fix should apply cleanly to all of them since the
+surrounding code has been stable since 2013.
 
-- **Lines changed:** Net reduction of ~11 lines (the diff shows -29/+17
-  in the ACPICA upstream). Very small.
-- **Files touched:** 1 file (`drivers/acpi/acpica/exoparg3.c`)
-- **Complexity:** Very low - straightforward change from `AE_OK` to
-  `AE_ERROR` return, plus stack variable.
-- **Subsystem:** ACPICA - the core ACPI interpreter. This is widely used
-  on all x86 systems and increasingly on ARM.
-- **Regression risk:** Very low. The `Fatal()` operator is extremely
-  rarely used in real-world BIOS code - it's the nuclear option for BIOS
-  developers. The change only affects behavior when a BIOS explicitly
-  invokes `Fatal()`, and in that case, aborting execution is the correct
-  behavior per spec. No correctly written BIOS should rely on code
-  executing after `Fatal()`.
+### 8. Summary
 
-### 5. UPSTREAM PROVENANCE
-
-The commit originates from the ACPICA project itself (link to
-`github.com/acpica/acpica/commit/d516c7758ba6`) and is signed off by
-Rafael J. Wysocki, the Linux ACPI maintainer. This is a well-reviewed,
-authoritative fix from the component's upstream project.
-
-### 6. DEPENDENCIES
-
-The only new include is `#include <acpi/acoutput.h>` for the
-`ACPI_BIOS_ERROR` macro. This header file exists in all stable kernel
-trees (it's a core ACPICA header). The `ACPI_BIOS_ERROR` macro has been
-available since at least Linux 3.x. No other dependencies exist.
-
-### 7. SUMMARY
-
-| Criterion | Assessment |
-|-----------|------------|
-| Fixes a real bug | Yes - continued execution after Fatal() violates
-ACPI spec |
-| Obviously correct | Yes - returning error to abort after Fatal() is
-clearly correct |
-| Small and contained | Yes - single file, ~20 net line changes |
-| No new features | Correct - pure behavior fix |
-| Risk of regression | Very low - only affects Fatal() path, which is
-very rare |
-| Applies to stable | Yes - the affected code exists unchanged in all
-stable trees |
-| Dependencies | None beyond existing ACPICA headers |
-
-The fix addresses a real correctness bug that could cause unpredictable
-system behavior when BIOS firmware triggers a Fatal() operator. It's
-small, self-contained, comes from upstream ACPICA, and carries minimal
-regression risk. The secondary fixes (NULL pointer to `acpi_os_signal`,
-better logging) are also valuable.
+This is a textbook NULL-pointer dereference fix:
+- **Obviously correct**: The fix separates two PCI device lookups into
+  independent variables
+- **Fixes a real bug**: NULL dereference that can crash the kernel
+- **Small and contained**: Changes are local to one function, ~30 lines
+  of mostly renames
+- **No new features**: No API changes, no behavioral changes
+- **Accepted by maintainer**: Rafael J. Wysocki reviewed and merged it
+- **Applies to stable trees**: The bug exists in 5.15+, patch should
+  apply cleanly
 
 **YES**
 
- drivers/acpi/acpica/exoparg3.c | 46 +++++++++++++---------------------
- 1 file changed, 18 insertions(+), 28 deletions(-)
+ drivers/acpi/acpi_processor.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/acpi/acpica/exoparg3.c b/drivers/acpi/acpica/exoparg3.c
-index bf08110ed6d25..c8c8c4e49563e 100644
---- a/drivers/acpi/acpica/exoparg3.c
-+++ b/drivers/acpi/acpica/exoparg3.c
-@@ -10,6 +10,7 @@
- #include <acpi/acpi.h>
- #include "accommon.h"
- #include "acinterp.h"
-+#include <acpi/acoutput.h>
- #include "acparser.h"
- #include "amlcode.h"
- 
-@@ -51,8 +52,7 @@ ACPI_MODULE_NAME("exoparg3")
- acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 7ec1dc04fd11b..85096ce7b658b 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -50,6 +50,7 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
  {
- 	union acpi_operand_object **operand = &walk_state->operands[0];
--	struct acpi_signal_fatal_info *fatal;
--	acpi_status status = AE_OK;
-+	struct acpi_signal_fatal_info fatal;
+ 	u8 value1 = 0;
+ 	u8 value2 = 0;
++	struct pci_dev *ide_dev = NULL, *isa_dev = NULL;
  
- 	ACPI_FUNCTION_TRACE_STR(ex_opcode_3A_0T_0R,
- 				acpi_ps_get_opcode_name(walk_state->opcode));
-@@ -60,28 +60,23 @@ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
- 	switch (walk_state->opcode) {
- 	case AML_FATAL_OP:	/* Fatal (fatal_type fatal_code fatal_arg) */
  
--		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
--				  "FatalOp: Type %X Code %X Arg %X "
--				  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n",
--				  (u32)operand[0]->integer.value,
--				  (u32)operand[1]->integer.value,
--				  (u32)operand[2]->integer.value));
--
--		fatal = ACPI_ALLOCATE(sizeof(struct acpi_signal_fatal_info));
--		if (fatal) {
--			fatal->type = (u32) operand[0]->integer.value;
--			fatal->code = (u32) operand[1]->integer.value;
--			fatal->argument = (u32) operand[2]->integer.value;
--		}
-+		fatal.type = (u32)operand[0]->integer.value;
-+		fatal.code = (u32)operand[1]->integer.value;
-+		fatal.argument = (u32)operand[2]->integer.value;
- 
--		/* Always signal the OS! */
-+		ACPI_BIOS_ERROR((AE_INFO,
-+				 "Fatal ACPI BIOS error (Type 0x%X Code 0x%X Arg 0x%X)\n",
-+				 fatal.type, fatal.code, fatal.argument));
- 
--		status = acpi_os_signal(ACPI_SIGNAL_FATAL, fatal);
-+		/* Always signal the OS! */
- 
--		/* Might return while OS is shutting down, just continue */
-+		acpi_os_signal(ACPI_SIGNAL_FATAL, &fatal);
- 
--		ACPI_FREE(fatal);
--		goto cleanup;
-+		/*
-+		 * Might return while OS is shutting down, so abort the AML execution
-+		 * by returning an error.
-+		 */
-+		return_ACPI_STATUS(AE_ERROR);
- 
- 	case AML_EXTERNAL_OP:
- 		/*
-@@ -93,21 +88,16 @@ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
- 		 * wrong if an external opcode ever gets here.
+ 	if (!dev)
+@@ -107,12 +108,12 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		 * each IDE controller's DMA status to make sure we catch all
+ 		 * DMA activity.
  		 */
- 		ACPI_ERROR((AE_INFO, "Executed External Op"));
--		status = AE_OK;
--		goto cleanup;
-+
-+		return_ACPI_STATUS(AE_OK);
+-		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
++		ide_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+ 				     PCI_DEVICE_ID_INTEL_82371AB,
+ 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
+-		if (dev) {
+-			errata.piix4.bmisx = pci_resource_start(dev, 4);
+-			pci_dev_put(dev);
++		if (ide_dev) {
++			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
++			pci_dev_put(ide_dev);
+ 		}
  
- 	default:
+ 		/*
+@@ -124,24 +125,25 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		 * disable C3 support if this is enabled, as some legacy
+ 		 * devices won't operate well if fast DMA is disabled.
+ 		 */
+-		dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
++		isa_dev = pci_get_subsys(PCI_VENDOR_ID_INTEL,
+ 				     PCI_DEVICE_ID_INTEL_82371AB_0,
+ 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
+-		if (dev) {
+-			pci_read_config_byte(dev, 0x76, &value1);
+-			pci_read_config_byte(dev, 0x77, &value2);
++		if (isa_dev) {
++			pci_read_config_byte(isa_dev, 0x76, &value1);
++			pci_read_config_byte(isa_dev, 0x77, &value2);
+ 			if ((value1 & 0x80) || (value2 & 0x80))
+ 				errata.piix4.fdma = 1;
+-			pci_dev_put(dev);
++			pci_dev_put(isa_dev);
+ 		}
  
- 		ACPI_ERROR((AE_INFO, "Unknown AML opcode 0x%X",
- 			    walk_state->opcode));
- 
--		status = AE_AML_BAD_OPCODE;
--		goto cleanup;
-+		return_ACPI_STATUS(AE_AML_BAD_OPCODE);
+ 		break;
  	}
--
--cleanup:
--
--	return_ACPI_STATUS(status);
- }
  
- /*******************************************************************************
+-	if (errata.piix4.bmisx)
+-		dev_dbg(&dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
+-	if (errata.piix4.fdma)
+-		dev_dbg(&dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
++	if (ide_dev)
++		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
++
++	if (isa_dev)
++		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
