@@ -1,71 +1,62 @@
-Return-Path: <linux-acpi+bounces-20935-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20936-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEWxIhN3jGktpAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20935-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:33:23 +0100
+	id cGjhNtp2jGk6ogAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20936-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:26 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C9B1244F3
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:33:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A31C124466
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 13:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29E99304C04F
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:31:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FEF2301706A
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651601AF0BB;
-	Wed, 11 Feb 2026 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EDC1A9FA4;
+	Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrJsFyxY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDP6A3Z2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EAA1A9FA4;
-	Wed, 11 Feb 2026 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3489E194AD7;
+	Wed, 11 Feb 2026 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813112; cv=none; b=aaWsxf/j4iWMnkK44Lx+vSGhX+wst7J8pXAdUX7cLwhoHUyPklmbkrN/D/2cE/gLRs5AriuOENkBkzTGk13fzWQ5G6IjbtPLPNMascRPJgbi/ysOnJU1Yl1RUgV0payPiCp3eMEwj71R6FePg05KvBISVOjSupXJlBhYr4FooWg=
+	t=1770813129; cv=none; b=sQ7iTEONIU7i4Z2EtgjeJlcuKFM9odrdxAv29PDgIiqgsfraCg/7Ial8753vimXNwwMj3ln9qM6ECTmfn+1H1f9RMt9XDlx0GmTG8UwyJn7R0cnngxJhYeCC+ACuI2DUEOmZNWDCoIHSdQn45fKVV60O74LUTF2Zi9d7SXFG6e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813112; c=relaxed/simple;
-	bh=fWc+yI9j0lSz7fCX+GS7zg59rPJR8cs68Fsty0UB8zI=;
+	s=arc-20240116; t=1770813129; c=relaxed/simple;
+	bh=Uk510mEDj+GY7I1ongoJg5xxsKqWMBWmEKzcmdm94jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IK7qrMnclaTnniH13GuX34fDOYjK9W91+kyYqslHjvCxhm3g2w3hbjz+7vWd3eYsyJovNANVbh+IFi6MS7rLl8XqTUu33AtYhlkPwnY1WLdHr3+ayK48Vl0mWiDoUZZsOEYpGWs1/yP8DNEZBDdQv8Zlb2BYM4d0/jSH06nINYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrJsFyxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A70AC19421;
-	Wed, 11 Feb 2026 12:31:50 +0000 (UTC)
+	 MIME-Version; b=bJhAIGwFw+yiwkn1azrXBMMg8ch2l0buaVvJrQQf2nxNSM7KFXtHcv84WFGW69Uc6cFIrEtkFrlWKQTF/fWPgutxRvHhXVTIxGCTDNinpRYH4moBBg/Lj3/zu8F0nB8wKBobnGNs1RteTKATBzyCT3R1bRNsbHLNUv4XipCKIls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDP6A3Z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D4C4CEF7;
+	Wed, 11 Feb 2026 12:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770813112;
-	bh=fWc+yI9j0lSz7fCX+GS7zg59rPJR8cs68Fsty0UB8zI=;
+	s=k20201202; t=1770813129;
+	bh=Uk510mEDj+GY7I1ongoJg5xxsKqWMBWmEKzcmdm94jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrJsFyxYSl/AXZiQ1bMz8gWqr4WLV3EXmRnOxiwG2i6kqqnxOK0u9Tx4JHbji2OlA
-	 S0XW9JKRYjtFkGj/0GbLpxXFtZA8Y0Zlveup+RGuWzHph6xIY5jymikPC3HLsGM23j
-	 Ru8DL6lniMY3ZsIhw7el/lWMKjM38hb/FPjpXc5qsK5UOSSJ/6cmyF7DDDsUzpL7t7
-	 9ED4KD1M4m+IbnNt00zX3Sm+oNZldXyhIQmNbUML/dTyHxhPYIj2Qd6QhQtfhisS+G
-	 y1WZIf9mwgKqo/xqCjtt4tFSrR6pDAfIzZT/dsTMYgKNKFNq71Hh6LJ+7boEaDxogB
-	 aK0vTqZKaCflw==
+	b=mDP6A3Z2mv5M0jIyxTPUE+gRyWZnPq6Oz0YjBMd/obiYqwztnSSAO0E23QyEzaHtR
+	 dQBEl9Ru+s+GOUZmSVs8CizLYmN4N9FMCLWWap5VDP112DK+G3BYkwusN1Vf61HntI
+	 UmkFD14BPlFaqWv8jnhR9xai4f9Xj5W5Vh1gESsf2PphJsGOUqaWrLoQVImNE9yKyc
+	 Qp5JBahZB+1o13JmSkJzpNHXG05Kv19mKbGtK8Ei8cIcF9ArhMB9Cwf+B1v7s2ZQiY
+	 1ZrlUA38votD+8p+S5+P4HkmGXIECvkuSJh3+cwa/zAs6wZrTvCDMg/CBLk2eUjDwH
+	 W0rN2s0ML0BxA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	bp@alien8.de,
-	xueshuai@linux.alibaba.com,
-	fabio.m.de.francesco@linux.intel.com,
-	leitao@debian.org,
-	pengdonglin@xiaomi.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	jason@os.amperecomputing.com,
+	robert.moore@intel.com,
 	linux-acpi@vger.kernel.org,
-	linux-edac@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.12] APEI/GHES: ARM processor Error: don't go past allocated memory
-Date: Wed, 11 Feb 2026 07:30:29 -0500
-Message-ID: <20260211123112.1330287-19-sashal@kernel.org>
+	acpica-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.19-5.10] ACPICA: Abort AML bytecode execution when executing AML_FATAL_OP
+Date: Wed, 11 Feb 2026 07:30:36 -0500
+Message-ID: <20260211123112.1330287-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211123112.1330287-1-sashal@kernel.org>
 References: <20260211123112.1330287-1-sashal@kernel.org>
@@ -78,305 +69,319 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-20935-lists,linux-acpi=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmx.de,intel.com,kernel.org,vger.kernel.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20936-lists,linux-acpi=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi,huawei];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 36C9B1244F3
+	TAGGED_RCPT(0.00)[linux-acpi];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gmx.de:email]
+X-Rspamd-Queue-Id: 9A31C124466
 X-Rspamd-Action: no action
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 87880af2d24e62a84ed19943dbdd524f097172f2 ]
+[ Upstream commit 026ad376a6a48538b576f3589331daa94daae6f0 ]
 
-If the BIOS generates a very small ARM Processor Error, or
-an incomplete one, the current logic will fail to deferrence
+The ACPI specification states that when executing AML_FATAL_OP,
+the OS should log the fatal error event and shutdown in a timely
+fashion.
 
-	err->section_length
-and
-	ctx_info->size
+Windows complies with this requirement by immediatly entering a
+Bso_d, effectively aborting the execution of the AML bytecode in
+question.
 
-Add checks to avoid that. With such changes, such GHESv2
-records won't cause OOPSes like this:
+ACPICA however might continue with the AML bytecode execution
+should acpi_os_signal() simply return AE_OK. This will cause issues
+because ACPI BIOS implementations might assume that the Fatal()
+operator does not return.
 
-[    1.492129] Internal error: Oops: 0000000096000005 [#1]  SMP
-[    1.495449] Modules linked in:
-[    1.495820] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.18.0-rc1-00017-gabadcc3553dd-dirty #18 PREEMPT
-[    1.496125] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 02/02/2022
-[    1.496433] Workqueue: kacpi_notify acpi_os_execute_deferred
-[    1.496967] pstate: 814000c5 (Nzcv daIF +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[    1.497199] pc : log_arm_hw_error+0x5c/0x200
-[    1.497380] lr : ghes_handle_arm_hw_error+0x94/0x220
+Fix this by aborting the AML bytecode execution in such a case
+by returning AE_ERROR. Also turn struct acpi_signal_fatal_info into a
+local variable because of its small size (12 bytes) and to ensure
+that acpi_os_signal() always receives valid information about the
+fatal ACPI BIOS error.
 
-0xffff8000811c5324 is in log_arm_hw_error (../drivers/ras/ras.c:75).
-70		err_info = (struct cper_arm_err_info *)(err + 1);
-71		ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
-72		ctx_err = (u8 *)ctx_info;
-73
-74		for (n = 0; n < err->context_info_num; n++) {
-75			sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
-76			ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
-77			ctx_len += sz;
-78		}
-79
-
-and similar ones while trying to access section_length on an
-error dump with too small size.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-[ rjw: Subject tweaks ]
-Link: https://patch.msgid.link/7fd9f38413be05ee2d7cfdb0dc31ea2274cf1a54.1767871950.git.mchehab+huawei@kernel.org
+Link: https://github.com/acpica/acpica/commit/d516c7758ba6
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3325491.5fSG56mABF@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis: APEI/GHES ARM Processor Error Bounds Checking
+Now I have all the information needed for a thorough analysis.
 
-### 1. What the Commit Fixes
+---
 
-This commit fixes a **kernel OOPS (crash)** in the APEI/GHES ARM
-processor error handling path. When BIOS/firmware generates a very small
-or incomplete ARM Processor Error record (CPER section), the kernel
-reads past the allocated memory buffer, causing an out-of-bounds access
-and crash.
+## Complete Analysis
 
-The crash is documented in the commit with a real stack trace:
-```
-[1.492129] Internal error: Oops: 0000000096000005 [#1] SMP
-pc: log_arm_hw_error+0x5c/0x200
-lr: ghes_handle_arm_hw_error+0x94/0x220
-```
+### 1. COMMIT MESSAGE ANALYSIS
 
-The crash occurs at line 75 of `drivers/ras/ras.c` when accessing
-`ctx_info->size` on a record that is too small to contain the expected
-data.
+The commit addresses a clear specification violation in ACPICA's
+handling of the AML `Fatal()` operator. The ACPI specification states
+that when `AML_FATAL_OP` is executed, the OS should log the fatal error
+and shut down. Windows complies by entering a BSoD (Blue Screen of
+Death), which effectively halts AML execution. However, ACPICA's Linux
+implementation of `acpi_os_signal()` merely prints `"Fatal opcode
+executed\n"` and returns `AE_OK`, after which the AML interpreter
+continues executing subsequent bytecode.
 
-### 2. Bug Mechanism
+The commit author (Armin Wolf) explicitly states that BIOS
+implementations may assume `Fatal()` does not return - this is a
+reasonable assumption based on the spec and Windows behavior. Continuing
+to execute AML code after a Fatal() is a real correctness bug.
 
-The bug is in two functions:
+### 2. CODE CHANGE ANALYSIS
 
-**`log_arm_hw_error()` in `drivers/ras/ras.c`**: This function blindly
-trusts the `err->err_info_num` and `err->context_info_num` fields to
-iterate through arrays of error info and context info structures. If the
-firmware provides a record smaller than these fields claim, the
-iteration walks past the allocated memory, dereferencing
-`err->section_length` and `ctx_info->size` from unallocated memory.
+The change is in a single file `drivers/acpi/acpica/exoparg3.c` and
+touches only the `acpi_ex_opcode_3A_0T_0R` function. The diff has three
+substantive changes:
 
-**`ghes_handle_arm_hw_error()` in `drivers/acpi/apei/ghes.c`**:
-Similarly iterates `err->err_info_num` without checking whether
-`gdata->error_data_length` is large enough to contain even the base
-`struct cper_sec_proc_arm` header.
+**a) Stack allocation instead of heap allocation (minor fix +
+cleanup):**
 
-### 3. Code Change Analysis
+Old code:
 
-**ghes.c changes (primary fix):**
-- Adds `int length = gdata->error_data_length` to track remaining data
-- Adds check `if (length >= sizeof(*err))` before calling
-  `log_arm_hw_error()` — this is the **critical fix** that prevents the
-  reported crash. Uses `sizeof(*err)` correctly (= 40 bytes, the struct
-  size)
-- Adds bounds checking in the err_info loop: `if (length <
-  sizeof(*err_info)) break;` and `length -= err_info->length; if (length
-  < 0) break;`
-
-**However, I identified a bug**: `length -= sizeof(err)` uses
-`sizeof(err)` which is the **pointer size** (8 bytes on aarch64), NOT
-`sizeof(*err)` (40 bytes for the struct). This means the length tracking
-is off by 32 bytes — it underestimates how much data has been consumed.
-Despite this, the bounds checks still provide meaningful protection,
-just with a 32-byte margin of error.
-
-**ras.c changes (secondary fix):**
-The change to `log_arm_hw_error()` modifies the context info iteration:
-
-```c
-// New code:
-sz = sizeof(struct cper_arm_ctx_info);
-if (sz + (long)ctx_info - (long)err >= err->section_length)
-    sz += ctx_info->size;
+```51:84:drivers/acpi/acpica/exoparg3.c
+        struct acpi_signal_fatal_info *fatal;
+        // ...
+        fatal = ACPI_ALLOCATE(sizeof(struct acpi_signal_fatal_info));
+        if (fatal) {
+                fatal->type = (u32) operand[0]->integer.value;
+                fatal->code = (u32) operand[1]->integer.value;
+                fatal->argument = (u32) operand[2]->integer.value;
+        }
+        /* Always signal the OS! */
+        status = acpi_os_signal(ACPI_SIGNAL_FATAL, fatal);
 ```
 
-**I identified a potentially inverted condition here.** When `sz +
-offset >= section_length` (i.e., the header extends past the section
-boundary), the code ADDS `ctx_info->size` — reading a potentially OOB
-value. When the condition is false (within bounds), it does NOT add
-`ctx_info->size` — breaking iteration for valid data. This appears to be
-backwards; the `>=` should likely be `<`. However, three reviewers
-(Jonathan Cameron, Ard Biesheuvel, Hanjun Guo) approved this, and the
-ras.c issue affects trace data quality rather than crash behavior.
+The old code had a subtle bug: if `ACPI_ALLOCATE` fails, `fatal` is
+NULL, but the code still calls `acpi_os_signal(ACPI_SIGNAL_FATAL, NULL)`
+because the comment says "Always signal the OS!" The current Linux
+`acpi_os_signal()` doesn't dereference `info` for the FATAL case, so it
+doesn't crash, but it's incorrect. The new code uses a stack variable
+(12 bytes), eliminating both the allocation failure path and the
+unnecessary heap allocation.
 
-### 4. Affected Stable Trees
+**b) Return AE_ERROR instead of AE_OK (the core fix):**
 
-The vulnerable code was introduced by commit `05954511b73e7` ("RAS:
-Report all ARM processor CPER information to userspace"), which has been
-backported to:
-- **6.17.y** (as `0aa7b12eaa87c`)
-- **6.12.y** (as `2599ad5e33b62`)
+Old code: returns whatever `acpi_os_signal()` returns, which is `AE_OK`
+on Linux (confirmed by reading `drivers/acpi/osl.c:1402`). This means
+execution continues.
 
-These trees have the vulnerable `log_arm_hw_error()` with unprotected
-`ctx_info->size` access. The `ghes_handle_arm_hw_error()` in ALL stable
-trees (including 6.1.y and older) also lacks bounds checking, though the
-older `log_arm_hw_error()` is trivial (`trace_arm_event(err)`) and
-doesn't access `section_length` or `ctx_info->size`.
+New code: always returns `AE_ERROR` via `return_ACPI_STATUS(AE_ERROR)`.
 
-### 5. Dependencies
+When `AE_ERROR` is returned, the dispatch in `acpi_ds_exec_end_op`
+propagates the error to `acpi_ds_method_error()`, which will abort the
+AML method execution. This correctly stops the interpreter from
+executing AML bytecode that the BIOS developer assumed would be
+unreachable.
 
-For 6.12.y and 6.17.y: The commit should apply cleanly since both
-prerequisite commits (`05954511b73e7` and `96b010536ee02`) are present.
+**c) Better error logging:**
 
-For older trees (6.1.y, 6.13.y-6.16.y): The ghes.c changes would need
-adaptation because `log_arm_hw_error()` has a different signature and
-the code context differs slightly. The ras.c changes do NOT apply as the
-old `log_arm_hw_error()` is trivial.
+Changed from `ACPI_DEBUG_PRINT` (which only prints at debug level) to
+`ACPI_BIOS_ERROR` (which always prints as a BIOS error). This ensures
+the fatal error is always visible in kernel logs, which is important for
+diagnosing BIOS issues.
 
-### 6. Risk vs. Benefit
+**d) Removal of cleanup label (pure cleanup):**
 
-**Benefits:**
-- Fixes a real kernel OOPS triggered by buggy/incomplete firmware CPER
-  records on ARM servers
-- The primary check in `ghes_handle_arm_hw_error()` (`length >=
-  sizeof(*err)`) is correct and prevents the reported crash
-- The err_info loop bounds checking provides additional protection
-- Affects ARM servers in production using GHES error reporting
-  (enterprise workloads)
+The `cleanup:` label and `status` variable are removed in favor of
+direct returns from each case. This is a mechanical cleanup with no
+behavioral impact.
 
-**Risks:**
-- The `sizeof(err)` bug makes bounds checking in ghes.c less strict (off
-  by 32 bytes)
-- The potentially inverted condition in ras.c could affect trace data
-  accuracy for valid ARM processor errors
-- The ras.c issue doesn't cause crashes but could degrade ARM error
-  reporting quality
-- The commit may be very recent (possibly not yet landed in mainline
-  release)
+### 3. BUG MECHANISM AND IMPACT
 
-### 7. Classification
+The bug mechanism is clear: when ACPI BIOS code calls `Fatal()`, the AML
+interpreter on Linux continues executing subsequent bytecode. This is
+dangerous because:
 
-This is a **bug fix** for an **out-of-bounds memory access** causing a
-**kernel crash**. The crash is triggered by firmware behavior
-(incomplete CPER records), which is a real-world scenario on ARM
-servers. The fix is small (net ~30 lines changed across 2 files), well-
-reviewed, and surgical in scope.
+1. **BIOS developers may write code assuming Fatal() never returns**
+   (just like Windows BSoDs). Code after `Fatal()` may be uninitialized,
+   nonsensical, or rely on undefined state. Executing such code could
+   cause:
+   - Writes to arbitrary ACPI registers
+   - Undefined behavior in the AML interpreter
+   - System instability, hangs, or crashes
 
-### 8. Verdict
+2. **The Fatal() operator exists to signal critical BIOS errors.**
+   Ignoring this signal and continuing is fundamentally wrong behavior.
 
-Despite the subtle code quality issues I identified (`sizeof(err)` vs
-`sizeof(*err)`, potentially inverted condition in `ras.c`), the commit
-fixes a **real, reproducible kernel OOPS** on ARM servers. The primary
-protection (initial length validation in `ghes_handle_arm_hw_error()`)
-is correct and prevents the crash. The issues I noted affect secondary
-protections and trace data quality but don't cause crashes. Not
-backporting means ARM servers continue to crash when encountering
-malformed firmware error records. The fix meets stable criteria: it
-fixes a real crash, is small and contained, and has multiple reviews.
+3. The Linux `acpi_os_signal()` implementation at
+   `drivers/acpi/osl.c:1382-1403` is a no-op that just prints a message
+   and returns `AE_OK`. This makes the bug always trigger on Linux when
+   Fatal() is encountered.
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** Net reduction of ~11 lines (the diff shows -29/+17
+  in the ACPICA upstream). Very small.
+- **Files touched:** 1 file (`drivers/acpi/acpica/exoparg3.c`)
+- **Complexity:** Very low - straightforward change from `AE_OK` to
+  `AE_ERROR` return, plus stack variable.
+- **Subsystem:** ACPICA - the core ACPI interpreter. This is widely used
+  on all x86 systems and increasingly on ARM.
+- **Regression risk:** Very low. The `Fatal()` operator is extremely
+  rarely used in real-world BIOS code - it's the nuclear option for BIOS
+  developers. The change only affects behavior when a BIOS explicitly
+  invokes `Fatal()`, and in that case, aborting execution is the correct
+  behavior per spec. No correctly written BIOS should rely on code
+  executing after `Fatal()`.
+
+### 5. UPSTREAM PROVENANCE
+
+The commit originates from the ACPICA project itself (link to
+`github.com/acpica/acpica/commit/d516c7758ba6`) and is signed off by
+Rafael J. Wysocki, the Linux ACPI maintainer. This is a well-reviewed,
+authoritative fix from the component's upstream project.
+
+### 6. DEPENDENCIES
+
+The only new include is `#include <acpi/acoutput.h>` for the
+`ACPI_BIOS_ERROR` macro. This header file exists in all stable kernel
+trees (it's a core ACPICA header). The `ACPI_BIOS_ERROR` macro has been
+available since at least Linux 3.x. No other dependencies exist.
+
+### 7. SUMMARY
+
+| Criterion | Assessment |
+|-----------|------------|
+| Fixes a real bug | Yes - continued execution after Fatal() violates
+ACPI spec |
+| Obviously correct | Yes - returning error to abort after Fatal() is
+clearly correct |
+| Small and contained | Yes - single file, ~20 net line changes |
+| No new features | Correct - pure behavior fix |
+| Risk of regression | Very low - only affects Fatal() path, which is
+very rare |
+| Applies to stable | Yes - the affected code exists unchanged in all
+stable trees |
+| Dependencies | None beyond existing ACPICA headers |
+
+The fix addresses a real correctness bug that could cause unpredictable
+system behavior when BIOS firmware triggers a Fatal() operator. It's
+small, self-contained, comes from upstream ACPICA, and carries minimal
+regression risk. The secondary fixes (NULL pointer to `acpi_os_signal`,
+better logging) are also valuable.
 
 **YES**
 
- drivers/acpi/apei/ghes.c | 32 ++++++++++++++++++++++++++++----
- drivers/ras/ras.c        |  6 +++++-
- 2 files changed, 33 insertions(+), 5 deletions(-)
+ drivers/acpi/acpica/exoparg3.c | 46 +++++++++++++---------------------
+ 1 file changed, 18 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a37c8fb574832..77ea7a5b761f1 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -556,21 +556,45 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+diff --git a/drivers/acpi/acpica/exoparg3.c b/drivers/acpi/acpica/exoparg3.c
+index bf08110ed6d25..c8c8c4e49563e 100644
+--- a/drivers/acpi/acpica/exoparg3.c
++++ b/drivers/acpi/acpica/exoparg3.c
+@@ -10,6 +10,7 @@
+ #include <acpi/acpi.h>
+ #include "accommon.h"
+ #include "acinterp.h"
++#include <acpi/acoutput.h>
+ #include "acparser.h"
+ #include "amlcode.h"
+ 
+@@ -51,8 +52,7 @@ ACPI_MODULE_NAME("exoparg3")
+ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
  {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	int length = gdata->error_data_length;
- 	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
+ 	union acpi_operand_object **operand = &walk_state->operands[0];
+-	struct acpi_signal_fatal_info *fatal;
+-	acpi_status status = AE_OK;
++	struct acpi_signal_fatal_info fatal;
  
- 	sec_sev = ghes_severity(gdata->error_severity);
--	log_arm_hw_error(err, sec_sev);
-+	if (length >= sizeof(*err)) {
-+		log_arm_hw_error(err, sec_sev);
-+	} else {
-+		pr_warn(FW_BUG "arm error length: %d\n", length);
-+		pr_warn(FW_BUG "length is too small\n");
-+		pr_warn(FW_BUG "firmware-generated error record is incorrect\n");
-+		return false;
-+	}
-+
- 	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
- 		return false;
+ 	ACPI_FUNCTION_TRACE_STR(ex_opcode_3A_0T_0R,
+ 				acpi_ps_get_opcode_name(walk_state->opcode));
+@@ -60,28 +60,23 @@ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
+ 	switch (walk_state->opcode) {
+ 	case AML_FATAL_OP:	/* Fatal (fatal_type fatal_code fatal_arg) */
  
- 	p = (char *)(err + 1);
-+	length -= sizeof(err);
-+
- 	for (i = 0; i < err->err_info_num; i++) {
--		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
--		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-+		struct cper_arm_err_info *err_info;
-+		bool is_cache, has_pa;
-+
-+		/* Ensure we have enough data for the error info header */
-+		if (length < sizeof(*err_info))
-+			break;
-+
-+		err_info = (struct cper_arm_err_info *)p;
-+
-+		/* Validate the claimed length before using it */
-+		length -= err_info->length;
-+		if (length < 0)
-+			break;
-+
-+		is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
-+		has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+-		ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+-				  "FatalOp: Type %X Code %X Arg %X "
+-				  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n",
+-				  (u32)operand[0]->integer.value,
+-				  (u32)operand[1]->integer.value,
+-				  (u32)operand[2]->integer.value));
+-
+-		fatal = ACPI_ALLOCATE(sizeof(struct acpi_signal_fatal_info));
+-		if (fatal) {
+-			fatal->type = (u32) operand[0]->integer.value;
+-			fatal->code = (u32) operand[1]->integer.value;
+-			fatal->argument = (u32) operand[2]->integer.value;
+-		}
++		fatal.type = (u32)operand[0]->integer.value;
++		fatal.code = (u32)operand[1]->integer.value;
++		fatal.argument = (u32)operand[2]->integer.value;
  
+-		/* Always signal the OS! */
++		ACPI_BIOS_ERROR((AE_INFO,
++				 "Fatal ACPI BIOS error (Type 0x%X Code 0x%X Arg 0x%X)\n",
++				 fatal.type, fatal.code, fatal.argument));
+ 
+-		status = acpi_os_signal(ACPI_SIGNAL_FATAL, fatal);
++		/* Always signal the OS! */
+ 
+-		/* Might return while OS is shutting down, just continue */
++		acpi_os_signal(ACPI_SIGNAL_FATAL, &fatal);
+ 
+-		ACPI_FREE(fatal);
+-		goto cleanup;
++		/*
++		 * Might return while OS is shutting down, so abort the AML execution
++		 * by returning an error.
++		 */
++		return_ACPI_STATUS(AE_ERROR);
+ 
+ 	case AML_EXTERNAL_OP:
  		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
-index 2a5b5a9fdcb36..03df3db623346 100644
---- a/drivers/ras/ras.c
-+++ b/drivers/ras/ras.c
-@@ -72,7 +72,11 @@ void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
- 	ctx_err = (u8 *)ctx_info;
+@@ -93,21 +88,16 @@ acpi_status acpi_ex_opcode_3A_0T_0R(struct acpi_walk_state *walk_state)
+ 		 * wrong if an external opcode ever gets here.
+ 		 */
+ 		ACPI_ERROR((AE_INFO, "Executed External Op"));
+-		status = AE_OK;
+-		goto cleanup;
++
++		return_ACPI_STATUS(AE_OK);
  
- 	for (n = 0; n < err->context_info_num; n++) {
--		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
-+		sz = sizeof(struct cper_arm_ctx_info);
-+
-+		if (sz + (long)ctx_info - (long)err >= err->section_length)
-+			sz += ctx_info->size;
-+
- 		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
- 		ctx_len += sz;
+ 	default:
+ 
+ 		ACPI_ERROR((AE_INFO, "Unknown AML opcode 0x%X",
+ 			    walk_state->opcode));
+ 
+-		status = AE_AML_BAD_OPCODE;
+-		goto cleanup;
++		return_ACPI_STATUS(AE_AML_BAD_OPCODE);
  	}
+-
+-cleanup:
+-
+-	return_ACPI_STATUS(status);
+ }
+ 
+ /*******************************************************************************
 -- 
 2.51.0
 
