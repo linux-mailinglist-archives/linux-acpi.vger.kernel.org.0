@@ -1,342 +1,325 @@
-Return-Path: <linux-acpi+bounces-20960-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20961-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEukElEMjmmS+wAAu9opvQ
-	(envelope-from <linux-acpi+bounces-20960-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 18:22:25 +0100
+	id GOwfCYkXjmlF/QAAu9opvQ
+	(envelope-from <linux-acpi+bounces-20961-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 19:10:17 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E4E12FDC5
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 18:22:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3E21302C0
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 19:10:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83DD3303A937
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 17:22:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B5DF301739E
+	for <lists+linux-acpi@lfdr.de>; Thu, 12 Feb 2026 18:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C870424503C;
-	Thu, 12 Feb 2026 17:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1D4274B44;
+	Thu, 12 Feb 2026 18:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZ7CmjZa"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="C+aXdZEl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11021103.outbound.protection.outlook.com [40.107.208.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5614224D6
-	for <linux-acpi@vger.kernel.org>; Thu, 12 Feb 2026 17:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770916941; cv=none; b=IWqXOdU2IKQSN9RA3GJOMn6QppDVsRsq2z05dRRN9b4dSITQMzB31We3N0fK1p6PRdC3q+88otUnpCx+ZrIfQHDRTYku9YaBj3zsgOc6f0T/AsvVmujMKqLxq84y45t8CDITMQC8u2sQ4gMKaIksZ616OTS1kh8cYnQjY41ykLM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770916941; c=relaxed/simple;
-	bh=TIaMzeDrs9/pKeig2XHOTaelc3orvYOlUigF9xQqaKM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CzOQTUp7SJK+mr4B04GLt5QTaUS4FaXww/H7gJjWWMn/ozZ9nSvjchItWRIorHoeu9zSYaHKdIOzaKavVgyBPF9IcsVoqvk+aVY/ZAVgpgU+hMfxWTzrA41HGLShacHKqCYMMgV2R7YSJTKbu+N3WzgVbx3n8AlvcSjabYiqQ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZ7CmjZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDC9C2BCAF
-	for <linux-acpi@vger.kernel.org>; Thu, 12 Feb 2026 17:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770916941;
-	bh=TIaMzeDrs9/pKeig2XHOTaelc3orvYOlUigF9xQqaKM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hZ7CmjZao5ZMQc3MoFifi90HaXyt/KCEDck1SskQQwcWSHNE38530m6Rk/UamPNZB
-	 tepXyeiQQh41TAgTnJYDqKVKBbjaVcDJCC3iGCY4Rg98tv9Hfy5HrXb91kpji9EH+G
-	 bEWOV0madGbOLCE9HSq5q2XXS4whEbwiCABOfjJ3PQtE/JXLKfBLtP9j6harcsEbN9
-	 VJNAtcsM7rYaIpkxZsYmcuhj5LCkeLxAD9C3jjfbQBZKHr5AuRhSDG0hwKhn5h4ejC
-	 lGTBq8lhroVKp0IdtP1ARqhaoM4Lv8Q3mLeIMQqb7yEjNSxC8Ju7JS7jHRBrJciOgs
-	 exjTsahq8ZdyA==
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40a62601731so28657fac.0
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Feb 2026 09:22:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCULV+wu2YAb58THsE9Lw+ENEhJ94IwAEBTOyAOqEvvPugBVhqyr4tRYuU9KXLPa04VjmhgC8s3GpRuB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIFEoCGsAXKIEP/K+0oQO24moQn52Fnh1wOKNLzIMM+cJ+SNQK
-	9r+17zEttv+oZIJkkAmIL2xKbInZKh9nH2xdoSuTsIYEDMd6y5a/LYPjVBLlTbD5CjEO8cAnP5J
-	IzUFJ6pOESncgtfWsYP3NnwPfH5COF2w=
-X-Received: by 2002:a05:6871:a10c:b0:3f5:694f:9366 with SMTP id
- 586e51a60fabf-40ec717b509mr2159223fac.30.1770916940185; Thu, 12 Feb 2026
- 09:22:20 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5372701CB;
+	Thu, 12 Feb 2026 18:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770919814; cv=fail; b=vGlCQ2GTKlpv6HJnGtVsXdMiUb7WIdbhdpigYNPRpb11hOcIKMLcZHxl2HuvILv2g4INURe+yWTNwgNDB8Gun4/PaeiSBEm8MnORTEkpa4dvsNWtVXYHJE2bZgrMVbWCXdvEMKwYbeVcNkVpPnhPYvadYZwCqLwthqJHC9lSoUg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770919814; c=relaxed/simple;
+	bh=a3VD4kSNoYcCc+fOg83N8QBamA3VIIs3UcG6z9Fvoqg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IsbGFrByU6FUglYS6AdDa/sSwmQqkHocCWTBg+OdsQ+mbryVvbZKM+BYH1MpHZ5irqHmWpzPHrd+Msw1NtlCe0Q67ts6ra87Gl9Gg9mckmBFO+MZFN8oCB94VHDFDNGaiIsoHwtGlJEXBLW6mD4oeYQ8k4FAo7fQp9abcL5QGiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=C+aXdZEl; arc=fail smtp.client-ip=40.107.208.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BwSnpRrlZXa28F7BTeQ5WGA+uyYiCiOQT4RV4fXo4ni1lsiJIwuHoUALbE4RlmR5WDfDbrGfosj9aBb/9ijTc1BczRKl+qJhJzuUS2qBMExxTAkAro5JFkoO4JCdVa5GdUSvBn3SX0SLr44uloUyt49gWqKDlq1BRMjoPSDed4CrdU+l+GhIejHbLH+umDO4ZfrnlS6wIDmYh8hixzMYhC6j14Oy4CeaGgJfgIwrxEOpEiWJhGi/ohSqTPLFmrPwtQYaFLw8mUeM/LKMoXBEAzImzwJ1uONqD/4+1Tp1AIOmrRQOerG/eHrXfcEAxSdFS3s/KViX1kOglO440HvwDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZEkPyEZ2BoB5f2ZQ+/Ajm5N8omwcM+K28wpo9uW5HXc=;
+ b=aE1vhdHA2iSgh/Nm+NavFAUqOGqsJ7UsLwa/RHPJOlo0T2Hh6jO3T+ctRW5bcWI/6fbRSxpGGlNzwygADMpwJKR39VkxC2iPTtzdnMpuM2qG5V1O1xGZs0ERiPqoP5lWXqiyE8YxSJJewfzpSNeo+tPQPKDHG8qvtAQbj/Ly0vMEwETcQjrtAu7aP9kEU6u9svhy8jOX7zYPUV9q6V6cz+gELLjpeP2t7Z8zMwYOnilupY5fAUjvKmyXTAhZBlXb4pfXlRdDHepDTYJHrxkWjjN0VnZmxxyutd5Ulbmij3+3sSYCHYasNowAQx3PiYfVCAzr3HWQMnHk9bhgKWwQjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZEkPyEZ2BoB5f2ZQ+/Ajm5N8omwcM+K28wpo9uW5HXc=;
+ b=C+aXdZEltjBW3Ic+F+WMtBzVl4NmBrSOt6KCKuEx4VctnrZEYiiDxhsW11SIadFEQk3A/7L1Wo3URkXRvC01/ekedCMq2G5q52CFuj5soaitGpirjsO5+/qLKxrRzdI6twZSWi+VbV9PZjE/Ka0TxzY2WkJgGrcq209f5OhXdC4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SA3PR01MB8473.prod.exchangelabs.com (2603:10b6:806:397::12) by
+ IA3PR01MB8750.prod.exchangelabs.com (2603:10b6:208:532::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9611.11; Thu, 12 Feb 2026 18:10:06 +0000
+Received: from SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::4b21:87c0:adfb:1047]) by SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::4b21:87c0:adfb:1047%6]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
+ 18:10:06 +0000
+Message-ID: <df5fe0ed-3483-4ac5-8096-447e4e560816@os.amperecomputing.com>
+Date: Thu, 12 Feb 2026 10:09:59 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 0/2] ACPI: Add support for ACPI RAS2 feature table
+To: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
+ akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com,
+ linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+ leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org
+Cc: jonathan.cameron@huawei.com, linuxarm@huawei.com, rientjes@google.com,
+ jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+ somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+ duenwen@google.com, gthelen@google.com, wschwartz@amperecomputing.com,
+ wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+ prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+ kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+ vanshikonda@os.amperecomputing.com
+References: <20260123175512.2066-1-shiju.jose@huawei.com>
+Content-Language: en-US
+From: Daniel Ferguson <danielf@os.amperecomputing.com>
+In-Reply-To: <20260123175512.2066-1-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4P222CA0008.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::13) To SA3PR01MB8473.prod.exchangelabs.com
+ (2603:10b6:806:397::12)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <fee01c19-2711-487e-91e9-d57f9be04b98@roeck-us.net>
- <CA+9S74jR9jRRE-DNMxNg=6Uv2uDAUar2n-RkVDJqzkDfNu3eog@mail.gmail.com>
- <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net> <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
- <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net> <CAJZ5v0i_BmeGROzQFpUCyF5MkA7sFkP3y8jjqH0mD2r2Wqj_xA@mail.gmail.com>
- <aYYPnATz1JakV3m7@mail.minyard.net> <CAJZ5v0h1irjy_ovyQw9ObGOTAUWajT_BK6u=rWQqR9awQBrY3A@mail.gmail.com>
- <CAK8fFZ4Ut6K-QGpy769_1N1K-GKpReo2wQgA=uXyXdGZ+QgGxA@mail.gmail.com>
- <CAJZ5v0hCEECyuAJZ4GAn=DeJR-UgtUXOMYYN9JQgEyghVnCYsw@mail.gmail.com> <aY4EUQcGbmT3Rexz@mail.minyard.net>
-In-Reply-To: <aY4EUQcGbmT3Rexz@mail.minyard.net>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 12 Feb 2026 18:22:08 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0ip-Ke9p-2Qd9EQpp-J4Te53S4WsrJDeJPi_5o+U2_wNA@mail.gmail.com>
-X-Gm-Features: AZwV_Qh0UmHRmkEvLuydH78UdsaUws0mud-joDn_yBBS4fNjMAV0T8aEiVFRK54
-Message-ID: <CAJZ5v0ip-Ke9p-2Qd9EQpp-J4Te53S4WsrJDeJPi_5o+U2_wNA@mail.gmail.com>
-Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average sysfs
- read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
-To: corey@minyard.net
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Igor Raits <igor@gooddata.com>, linux-acpi@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, Daniel Secik <daniel.secik@gooddata.com>, 
-	Zdenek Pesek <zdenek.pesek@gooddata.com>, Jiri Jurica <jiri.jurica@gooddata.com>, 
-	Huisong Li <lihuisong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR01MB8473:EE_|IA3PR01MB8750:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8dbf4a3-9a4c-499b-9f25-08de6a61f2fb
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|52116014|376014|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TGxjSWhyb01pcmppMWpXclM0M3pyK2tKK0tvTXJXYTlSUkc4cGE5bG5yTGh3?=
+ =?utf-8?B?Qzd5UnJIY09HeHNqZ3BEUXcweGxWQVpJS1VicHlQTHFlTGZYYWFWTGxLMUtk?=
+ =?utf-8?B?cU91ditvd3ZIQjArL2NPTEJjc3hJNzVYZitMUWlOQVF3NThGaTFYN04rbnpE?=
+ =?utf-8?B?T1RyVnVqTG1QWkxXOFhmMjl3MDNLaC9VMDBxR1ZBbjFFSGhPZlY2bzVvQXRq?=
+ =?utf-8?B?TnVuSGloRmpLV2NzVDlwN0lFL1RSa2tpRnBBQ3RlSGlrcEowNURjTi9uS3Fh?=
+ =?utf-8?B?S0hGYXZWcWFBTGVScEpEWkx3RXR5emlQaVgzSitLbEx3TkJWdENXOTE0T1pW?=
+ =?utf-8?B?ekxMN2VkN0h5OU9wMy91VFYveDFmNjNORjVGbzJrbDhVRXNMMk1mSG5OUHFC?=
+ =?utf-8?B?dkZLSWZKUGZzRmx6REI2RWkyREpXMThvNm82YUVMKzZXWnBqUjgzdzg0Wnl4?=
+ =?utf-8?B?SXQwTEM3NVM3TnJGWmhFbWNTQzJXZC9XMXRMYUZRVTBQVFNacU9USTZ5bEw0?=
+ =?utf-8?B?YUZJVzN2bTc5T0hSelJ6ZXZreTZIdFREaDFvVW8yN1MvcXZ2NkhTdm5GamJG?=
+ =?utf-8?B?a1JNUjhqQXN2dkhCSzZlQ0FGTXVJZVMxUzRuSEVJSStOMVpSQ2lYVWc4K0Vx?=
+ =?utf-8?B?UkE3eWsxeEVBZFpYRnBzOWhpR1lwZERZVG91S3MwQ1N6aEtQbHcwdGV3U0k4?=
+ =?utf-8?B?Q3RuR2U2M0c5c3BQS0VDTnBvS1QzYzg5OUFJSGRudnIyOVM5cDlDM2FicWJI?=
+ =?utf-8?B?SnZzRHpmczFhNlh3ZlJOSi8xSmlhMm1KWjRWdkwzZE1RTVJoMkhmWDZkODdz?=
+ =?utf-8?B?NTZFcEVzaGZxektHZUlIOG16Q2g2bnBNRUFnQVRWM2tBY0s4dUtIcG1VSENa?=
+ =?utf-8?B?d0cwdTArZFF0VTVXNEU5bTNzTnZZUis4QUpVT3k5Wk11MTlsdDZZODdDalox?=
+ =?utf-8?B?b05mdW9JalFOVEtwMU5Wb0R4ZW9VcUU4TUlTR0s3eVhxdEc4cWtwUEh0MnhT?=
+ =?utf-8?B?c2pKVGpOTTV5Vjl1SkZLZHliRVo4V05LdEdURzdDNmdCT2pxRTd4a3ZUdE5H?=
+ =?utf-8?B?cVBsb3dVMTVQaHFtMnhWM1h2Uzc5TzN4YnFMbC9zTU91T0JPemN0bDBNcFlC?=
+ =?utf-8?B?RURxVGZhdGRjOUFFTXE3MERSdy9pRDQ1R2RsZllYTlc0TFlnY0IwSS9uRXcv?=
+ =?utf-8?B?ZXZDMmRqcU5uVGVKRDdUb2dtcmpjQzJOcTdXeEUrQWdkOXlCWU5KbG1BR01F?=
+ =?utf-8?B?MVVIeG5ISmZOdDkya0RWMUZaTGhpR2s3Y1RtUm1JVGFhZjd0blhhRDZkY1lH?=
+ =?utf-8?B?MERBbkpCYm81dVhsYllYTGdHbEp1Z3k1UnIwRjQ0VVIwVDVoZW8vVVMrSXli?=
+ =?utf-8?B?NHJBNzFqOVRrNDdPVEZ1ZFJJMjRhVTF4L2dEN2pqT0l5QVBuVmIzT0s1ZTVl?=
+ =?utf-8?B?ejNaNzRyRmJOeUNlTG05VFp2b1h6enIxWHhvNE93eW5yRy9mckxXMEZZQlhG?=
+ =?utf-8?B?L01STG85RzBHU0tCTnAzNTVzdEZQTDVDUkFGUTNQai9VRWU2UDFiMzdNb1RI?=
+ =?utf-8?B?cVNtKzhOWnRCbXFZYWMyb2tudWc4Y1h4ZUxYT0hKK1F5QzBidk5CMitxQjY1?=
+ =?utf-8?B?a0FaZnduV1BnSVhheXByaktVS3dkcHFPTXpyUjJzcFJaNVlEYjB4LzVCVDEv?=
+ =?utf-8?B?cDZmMDBZRFh0Wm9tb0tWajBPbWcxeENXendaOFYrZVc2cDVlbGpicEw1N3pl?=
+ =?utf-8?B?OVNYV3FVekJsVm5rcHlOSU9JMitVWktrazZhUXFYcFdGakJEMXh4YzFmREVY?=
+ =?utf-8?B?VlN3aXE4dGtvanlvcFkrQktRQVhVeElReXRqQXBTOVFDNSt5UjdPY2RLMjVT?=
+ =?utf-8?B?elZUWDlXWStRSzgwNXBRcy9RNzYyb1g0NFJTbkZ5a1AveC9NVWhPWnIrdDYx?=
+ =?utf-8?B?SEVGeXdrVytaLzJUMmowNS81YWdGVWtDbjZXRFVGdGQ0L3cveFZ6MU5PWlh4?=
+ =?utf-8?B?U2VzeVJJY0JGSHF6aDdpMDNmSjl6UDE2OFE4T2xlRUU5QzFBOFRwNUZIN2ZH?=
+ =?utf-8?B?bzF5TUtWbEpodmtnNk1pMW0xMHkrWHhRWnk2c2RDcVh1OUdpam5YYUEzZ3B3?=
+ =?utf-8?B?UXlBQzR6WmdwbGNKalBES2lSUEx3aVlpREdVME4zeXp5c1pCVXpBckpMelQz?=
+ =?utf-8?Q?gFUDmYY3MmFkWoE7dg0zYMWD5Tj/hoZ1P529uRvS/Kya?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR01MB8473.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(376014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V0tuZUI3ZlFMQmpaTEwrZWNlMGFXUjZEVEJWajQvWFZIem15ZUZ3bzNkMk1l?=
+ =?utf-8?B?SnpvUmRmMUlrVUU2OFJNbEl4aW1DdTFMejhndmhvTUM1YUZVRmhMSWtKNzJM?=
+ =?utf-8?B?TnRxNFZzd1NxdFZXaENBVmRHN0h0R2s1RzlKb3dnYjZCZlVRNHVEYW5IR3Zy?=
+ =?utf-8?B?MFMzSEUrVDR2dXhTY05ORjFqK2taeE14N3VKWFk3cGt3b3FVdTdhb3NmdkFC?=
+ =?utf-8?B?aG1ROU5YNWtnTmlxUEU4QmZqUXk1MzdvbmRMbnVCenRpaE5hdEZRTnlFcUVj?=
+ =?utf-8?B?d3Fxb2gwZmYyMm5ZbktBK3VFQVZqVzNOK05LUTN3SGpoTkExOEwxLzF2ZGd1?=
+ =?utf-8?B?WVdqd3IrclprSnJJK3JHR0Mza2NZa2RicW55K09UNjUrWEZYV1hmdzNVaDlP?=
+ =?utf-8?B?OERJOUdJOFYvb25pa091YmQyemtWUCt0a1o1VHYxeGs5U0dVQlRpMkxOTnJa?=
+ =?utf-8?B?eVFmQ0liN2RFSS95MGVZTDRmSCs3eHgyOGI2TGhDU1M1cm1JaVN1a0xZVmY5?=
+ =?utf-8?B?ejUybTJOakw5REtlcFJDVWYxM0lsb3dTYmNrZ0JtQ1U4Z3oyMU8ra1NTY2FG?=
+ =?utf-8?B?UkQ4blB1TTBwb3BnVXhDTzZOY1RPZkdNbFFETnZGQUNrajdoRHdRT0hOVUVB?=
+ =?utf-8?B?QkEzNGwyVG8zbkZKYjVtUkdQQVkxN1ZtTkVLUzM5YWZ3VEd2UUxUSFR6Vm5o?=
+ =?utf-8?B?NDBLdEpsVmJ2K1N4aXd0MHpEQ1dTTUYyQ2xuTERWVWNHbCt5RFpMZzlaMHo3?=
+ =?utf-8?B?SEVTRmxRSEo0M0M3Q3lnTGpYQkQ3eTBwRmJ5YUpidlc3aDVKSVJtcnVDTFhK?=
+ =?utf-8?B?cFh5aGdlcHNhTDNFQ3BBbDR2eTJraHRaUlB5dGptYmVOalBiWnd0VXNRRE54?=
+ =?utf-8?B?bWdNT0MyUGpYeHd5VEhkWEszdjV6NUNqQ3NRVzU0RWRBRFdMZmlKS3RFQUx0?=
+ =?utf-8?B?YmJwRXd1N3g0Umo1VWNodU9aWGIyRFBIVnBDQ2txV25vQ2NSQnpOMnB6eThv?=
+ =?utf-8?B?T3Z5RVlGNCtMcno5OFd1bnJQT0hzNG1RempOc0lYUjMxbERSYU9ocE8yc0kv?=
+ =?utf-8?B?YUJScFpVbGRaZlJOSWtIRy9qUFpBaWUyWTNEbnEzZTY0akd3VEF1bU50SGZq?=
+ =?utf-8?B?MW9PNG9CbUg4TEw0eVZVcHdKNmpUNHRaM3ZZQWh2d2pSeWMrUVB2OGhzZWRh?=
+ =?utf-8?B?Wk5MbEdqMEc5TlNGWjluV2tQVTJ1ZjZ3RWRsUFY4djEvS2J2SEl4Ym1PMHpq?=
+ =?utf-8?B?MzhDWWo2ZkRsdzFGSWxlNVliUUdpUlVwb3VLdUV5aTkyV0ZLRENHd2d5VkN0?=
+ =?utf-8?B?VXdreUNSaHhHd1ZCRk5iRlNmQWJySHZoQzR0d2hkbE96WUxaTGVsRlJMbDdO?=
+ =?utf-8?B?LzZrS3FlRTcyeHdSUjlkSHVUOHlicGJVS0dYaEtDRUJMczIzWHNaTG5LVXV3?=
+ =?utf-8?B?QXRYU0lqaWRkSVVrUnovQmkrdTJhbDc2R2ZoVUFFd29URGJrYnlqd3ViZ2gx?=
+ =?utf-8?B?RDYreDc1N2t3ejkvSUh1VEV6RGJMaHBJY0dmTFora2NIQURCemxib29WKzVl?=
+ =?utf-8?B?czRadzVOazVwKzNZakhVdlZXOUt5MlBaYW1NWXJUL3VZejdrRTd2Tm51eFB5?=
+ =?utf-8?B?SVZQU29TNG1YU3Z5TUJTZXltSWFVZDI1Z2hVKzAvN3lMd3A0UkJBMG14a3N4?=
+ =?utf-8?B?RjFwNHhhait4RVlIeTdhSVMwb3NZUEJ3c1J0L1pwRTVzUDVGTytsNWdTczJr?=
+ =?utf-8?B?ZVQ2SFhsYTEwNGJ1cTlwUXhDUTFpZnRKTlNGVDBlbExVbndCaFZUWWNHemVY?=
+ =?utf-8?B?c2pBY01RZTBhblp2KzZibW1sUEVVOVBGMlE4UDhMVUszWGdvQ0xzVHdnWGNB?=
+ =?utf-8?B?cC9lRTBhUGlJRWZHL0tRaHNhMUtXWjhROWxTSG40aGIrZXFqaVhlNnhNbE5m?=
+ =?utf-8?B?Mm4zcUhZYXI1OGRreU4wcFRqNUFUcmF0UDdpVnJPQmovV1RhdjM0S1dhQ3ps?=
+ =?utf-8?B?eU1SZ1I1Q0krSmVjaXNSZjZ0bXBIaVdmK2hGRG9GOUZXNjFKTjlKZk4rblhi?=
+ =?utf-8?B?dllkRTF3ZDJtU24vSnVQKzNRVmNqVWd0UDVEaTIwdFZ1V0M3REtLNGt0bVhN?=
+ =?utf-8?B?Nmo3Ri9TVmZsWTN2ZUFHamdlb25iT2EvQTgrWk9NSnZYM0ZMV2tGaVhsY1kx?=
+ =?utf-8?B?TlhFWVBYZ1U0ZnpucHdFVnY1RGtRY1BxZFFSdlpobDlpMjlMdUZNMzJWa2VT?=
+ =?utf-8?B?aFNWV2cyWHVLanNxRzNGVmw2YnFSSmo0S1VWQzlJVEYzNkxQM1VuUGFJNDRu?=
+ =?utf-8?B?VHA0T3VMOXM0aFJaQnNtK1Y0dzY4SlNzL0RYbkl0WUF4TlcxWDI2KzNveUNt?=
+ =?utf-8?Q?X0v+C9D4yMLWNyORLG20Bd0K+MbGIdqLVD7s5?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8dbf4a3-9a4c-499b-9f25-08de6a61f2fb
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR01MB8473.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 18:10:05.8660
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5H6gTYDjbNVjQDE22zXzsvE7lS1zvOZOSMynxEXAbrpT1jZLPayn3piFzApejItfSznzc9LytZZFdRimMVUpDCXUkiRRIwvzyIzDtHKqQWBNDRWxlkV0z0+FLn8bZWjN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR01MB8750
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amperecomputing.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[os.amperecomputing.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[huawei.com,google.com,amd.com,linux.intel.com,nec.com,arm.com,hpe.com,amperecomputing.com,os.amperecomputing.com,gmail.com,hisilicon.com,futurewei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20961-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20960-lists,linux-acpi=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[38];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[danielf@os.amperecomputing.com,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[os.amperecomputing.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,minyard.net:email,gooddata.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B5E4E12FDC5
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,os.amperecomputing.com:mid,os.amperecomputing.com:dkim]
+X-Rspamd-Queue-Id: 8B3E21302C0
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 5:48=E2=80=AFPM Corey Minyard <corey@minyard.net> w=
-rote:
->
-> On Thu, Feb 12, 2026 at 01:27:41PM +0100, Rafael J. Wysocki wrote:
-> > On Thu, Feb 12, 2026 at 10:11???AM Jaroslav Pulchart
-> > <jaroslav.pulchart@gooddata.com> wrote:
-> > >
-> > > >
-> > > > On Fri, Feb 6, 2026 at 4:58???PM Corey Minyard <corey@minyard.net> =
-wrote:
-> > > > >
-> > > > > On Fri, Feb 06, 2026 at 01:08:56PM +0100, Rafael J. Wysocki wrote=
-:
-> > > > > > On Thu, Feb 5, 2026 at 11:34???PM Guenter Roeck <linux@roeck-us=
-.net> wrote:
-> > > > > > >
-> > > > > > > On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki w=
-rote:
-> > > > > > > > Cc: Corey
-> > > > > > > >
-> > > > > > > > On Thu, Feb 5, 2026 at 6:51???PM Guenter Roeck <linux@roeck=
--us.net> wrote:
-> > > > > > > > >
-> > > > > > > > > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrot=
-e:
-> > > > > > > > > > On Wed, Feb 4, 2026 at 11:49???PM Guenter Roeck <linux@=
-roeck-us.net> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On 2/4/26 11:54, Igor Raits wrote:
-> > > > > > > > > > > > I have written a patch with the help of AI and it f=
-ixes the problem. Attached.
-> > > > > > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > > > "No MIME, no links, no compression, no attachments.  =
-Just plain text"
-> > > > > > > > > >
-> > > > > > > > > > Sorry for that, I had assumed that attaching the file w=
-ould make it in-line.
-> > > > > > > > > >
-> > > > > > > > > > > ... which means I can not provide inline feedback, wh=
-ich is the whole
-> > > > > > > > > > > point of the above.
-> > > > > > > > > > >
-> > > > > > > > > > > Your patch crosses subsystems, so it will need to be =
-split in two
-> > > > > > > > > > > (assuming the ACPI side is even needed). Also, refere=
-nces to iDRAC
-> > > > > > > > > > > in common code seem inappropriate.
-> > > > > > > > > >
-> > > > > > > > > > Yes, this I believe was the essential part (it was the =
-last piece in
-> > > > > > > > > > my testing which fixed the hanging):
-> > > > > > > > > >
-> > > > > > > > >
-> > > > > > > > > Then I'll need to ask differently: What happens if you dr=
-op the IPMI code,
-> > > > > > > > > and just keep the wait_for_completion -> wait_for_complet=
-ion_timeout
-> > > > > > > > > change ? Would that be sufficient to solve the problem ?
-> > > > > > > >
-> > > > > > > > I'd rather say "Would that be sufficient to make the sympto=
-ms go
-> > > > > > > > away?" as it most likely papers over the real problem.
-> > > > > > > >
-> > > > > > >
-> > > > > > > Good point. Worse, it may result in UAF or memory leaks.
-> > > > > > >
-> > > > > > > > > Either case, the need for this change suggests that the i=
-pmi change
-> > > > > > > > > may not be complete, since it should send a completion wi=
-th an error.
-> > > > > > > >
-> > > > > > > > I think that reverting commit bc3a9d217755 ("ipmi:si: Grace=
-fully
-> > > > > > > > handle if the BMC is non-functional") should also be consid=
-ered as a
-> > > > > > > > possible way forward because it clearly did not improve thi=
-ngs as
-> > > > > > > > expected, at least in this particular case.
-> > > > > > > >
-> > > > > > >
-> > > > > > > I tend to agree. I ran a number of AI code reviews over the p=
-atch, and
-> > > > > > > each time it finds new (and different) problems. The fact tha=
-t the acpi
-> > > > > > > patch is still needed even after applying the ipmi changes su=
-ggests that
-> > > > > > > something is still missing in the ipmi code.
-> > > > > > >
-> > > > > > > > It evidently did something that confuses things quite a bit=
-.  Either
-> > > > > > > > it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIE=
-D, or it is
-> > > > > > > > the "hosed" state and refusing to accept messages.
-> > > > > > > >
-> > > > > > >
-> > > > > > > More than that. My latest AI results are below, just for refe=
-rence
-> > > > > > > (using Gemini 3 with Chris Mason's debug prompts). The prompt=
- I used
-> > > > > > > for this run is:
-> > > > > >
-> > > > > > Well, I guess it's time to send a revert patch then.
-> > > > >
-> > > > > Thanks for the CC.
-> > > > >
-> > > > > Let's fix it right in the IPMI driver.
-> > > > >
-> > > > > >
-> > > > > > > "
-> > > > > > > The top commit in the linux/ directory results in hung tasks =
-if the BMC
-> > > > > > > stops responding. Using @review-prompts/kernel/debugging.md a=
-nalyze the
-> > > > > > > patch, identify the reason for the hung task problem, suggest=
- and implement
-> > > > > > > a fix. Note that there may be more than one problem in the pa=
-tch, so analyze
-> > > > > > > the complete patch and do not stop after fiding the first reg=
-ression.
-> > > > > > > "
-> > > > > > >
-> > > > > > > I think that catches most of the problem, but not all of it.
-> > > > > > >
-> > > > > > > Guenter
-> > > > > > >
-> > > > > > > ---
-> > > > > > >
-> > > > > > > Summary of crash or warning:
-> > > > > > > Hung task detected in ipmi_si driver when BMC becomes non-fun=
-ctional.
-> > > > > > > Processes waiting for IPMI responses (e.g. ipmitool, monitori=
-ng agents) enter D state and never recover.
-> > > > > > >
-> > > > > > > Kernel version if available:
-> > > > > > > Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
-> > > > > > >
-> > > > > > > Machine type if available:
-> > > > > > > Generic Server with BMC
-> > > > > > >
-> > > > > > > Cleaned up copy of oops or stack trace:
-> > > > > > > [  120.123456] INFO: task ipmitool:1234 blocked for more than=
- 120 seconds.
-> > > > > > > [  120.123457]       Not tainted 6.14.0-rc1 #1
-> > > > > > > [  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_s=
-ecs" disables this message.
-> > > > > > > [  120.123459] task:ipmitool        state:D stack:    0 pid: =
-1234 ppid:  100 flags:0x00000000
-> > > > > > > [  120.123460] Call Trace:
-> > > > > > > [  120.123461]  <TASK>
-> > > > > > > [  120.123462]  __schedule+0x123/0x456
-> > > > > > > [  120.123463]  schedule+0x45/0x78
-> > > > > > > [  120.123464]  schedule_timeout+0x9a/0xbc
-> > > > > > > [  120.123465]  wait_for_completion+0xde/0xf0
-> > > > > > > [  120.123466]  ipmi_request_settime+0x123/0x145
-> > > > > > > [  120.123467]  ...
-> > > > > > > [  120.123468]  </TASK>
-> > > > > > >
-> > > > > > > Any other kernel messages you found relevant:
-> > > > > > > N/A
-> > > > > > >
-> > > > > > > Explanation of the problem:
-> > > > > > > 1. Hung Task:
-> > > > > > > The patch "ipmi:si: Gracefully handle if the BMC is non-funct=
-ional" introduces a new state `SI_HOSED` to handle BMC failures. When the d=
-river detects that the BMC is not responding, it transitions to `SI_HOSED` =
-and fails the currently processing message (`curr_msg`). However, if a new =
-message is queued via `sender()` (populating `waiting_msg`) during a recove=
-ry probe (state `SI_GETTING_FLAGS`), and that probe subsequently fails, the=
- state machine transitions back to `SI_HOSED`. In this transition, the driv=
-er checks and fails `curr_msg`, but it neglects to check or fail `waiting_m=
-sg`. As a result, the `waiting_msg` remains in the queue indefinitely, caus=
-ing the waiting process to hang.
-> > > > > >
-> > > > > > That's quite convincing and it would explain the observed sympt=
-oms.
-> > > > >
-> > > > > Yes, and it's a fairly easy fix, I think.  The waiting message ju=
-st
-> > > > > needs to be returned in that case.  The following patch should do=
- it:
-> > > >
-> > > > Jaroslav, it would be good to test the patch below on top of 6.19. =
- I
-> > > > can put it on a test git branch if need be, so please let me know.
-> > > >
-> > > > > diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi=
-/ipmi_si_intf.c
-> > > > > index 5459ffdde8dc..ff159b1162b9 100644
-> > > > > --- a/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > +++ b/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > @@ -809,6 +809,12 @@ static enum si_sm_result smi_event_handler(s=
-truct smi_info *smi_info,
-> > > > >                          */
-> > > > >                         return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > >                 }
-> > > > > +               if (smi_info->waiting_msg !=3D NULL) {
-> > > > > +                       /* Also handle if there was a message wai=
-ting. */
-> > > > > +                       smi_info->curr_msg =3D smi_info->waiting_=
-msg;
-> > > > > +                       smi_info->waiting_msg =3D NULL;
-> > > > > +                       return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > > +               }
-> > > > >                 smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSE=
-D);
-> > > > >                 goto out;
-> > > > >         }
-> > >
-> > > I apply ^ patch to both 6.18.10 and 6.19 and reproduced the issue on
-> > > both, so it does not fix the problem.
-> >
-> > Thanks!
-> >
-> > With all due respect to everyone involved (including the AI), this
-> > means that we are not anywhere close to fixing the problem and it
-> > would be a shame to ship 7.0 with it.
-> >
-> > I'm sending a revert patch shortly.
->
-> Unfortunately, that patch fixed an issue others were having.
+> v12 -> v13:
+> 1. Fixed some bugs reported and changes wanted by Borislav.
+>    https://lore.kernel.org/all/20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local/ 
+> 
+> 2. Tried modifying the patch header as commented by Borislav.
+> 
+> 3. Fixed a bug reported by Yazen.
+>    https://lore.kernel.org/all/20250909162434.GB11602@yaz-khff2.amd.com/
+> 
+> 4. Changed setting 'Requested Address Range' for GET_PATROL_PARAMETERS
+>    command to meet the requirements from Daniel for Ampere Computing
+>    platform. 
+>    https://lore.kernel.org/all/7a211c5c-174c-438b-9a98-fd47b057ea4a@os.amperecomputing.com/
+> 
+> 5. In RAS2 driver, removed support for scrub control attributes 'addr' and
+>    'size' for the time being with the expectation that a firmware will do
+>    the full node demand scrubbing and may enable these attributes in the
+>    future.
+>    
+> 6. Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+>    the demand scrub, which is used for the RAS2 demand scrub control.
+> 
 
-Granted, it broke something else, so it needs to be fixed or reverted.
+I have tested v16 of the driver, and it works as intended.
 
-Maybe there is a way to address the original problem fixed by it differentl=
-y?
 
-Do you have any pointers to any problem reports regarding that one?
+However, we have some concerns with the limitation that memory scrubbing can
+only be invoked at the NUMA node level without specifying the address range. On
+a server system with high core count and multi-terabyte DDR capacity, there are
+several workloads that are limited by the total DRAM memory bandwidth available
+on the system. Triggering an on-demand scrub while one of these workloads is
+running on the system results in a measurable drop in workload performance if
+the scrub rate is configured to be high. Triggering an on-demand scrub with low
+scrub rate would be a very high latency operation due to the large amount of
+memory that needs to be scrubbed.
+
+Triggering a scrub on a NUMA node with large capacity, like multiple terabytes,
+could have:
+
+* high latency to completion of the on-demand scrub operation if configured for
+low scrub rate
+
+* high performance impact to applications that require memory bandwidth if
+on-demand scrub operation is configured for high scrub rate
+
+Additionally, there are multiple use cases we have in mind on data center
+systems for being able to specify the address range to scrub from the OS. These
+scenarios are primarily related to understanding the health of memory modules by
+triggering on-demand memory scrub operations to single page regions.
+
+
+
+Scenario 1:
+
+A memory device on the server encounters CE errors; due to some failed DRAM
+cells.  Over time enough errors are reported to a user-mode RAS error service,
+like RASDaemon, that trigger a policy to inspect the “health” of the memory
+associated with that page address. The policy triggers the inspection using an
+on-demand scrub of the page to see how many errors are reported. It then
+triggers the same scrub to see if the same errors are reported again. This
+inspection would indicate to the RASDaemon that there is a failed DRAM cell in
+this range. The policy manager decides to offline the page till the module can
+be replaced when the system is serviced.
+
+Scenario 2:
+
+The OS has offlined a collection of pages due to UE(s) being reported on this
+region due to a transient environmental issue; any reference to these pages is
+poisoned by the hardware. Newer ARM ISA extensions have provisions for removal
+of poison from a page. The RAS policy manager can test these pages for
+functionality by triggering an on-demand memory scrub, potentially multiple
+times, before adding them back into the normal memory pool.
+
+While triggering a NUMA node level scrub would allow us to support these use
+cases, the cost of doing so multiple times with a high scrub rate would be
+prohibitive. At the same time, an on-demand scrub with low scrub rate may not be
+fast enough to allow the policy manager to make a timely decision about the
+health of the memory module.
+
+
+
+Being able to specify the address range would allow us to contain the issue to a
+smaller part of the memory with minimal impact to other users on the system.
+
+So basically, if we can't specify the address range with on-demand scrubbing, we
+might as well just use the background scrubber.
+
+Side note about our platform: We do not allow the user to turn off both
+background scrubber and on-demand scrubber. We automatically turn background
+scrubber on when on-demand finishes. So, if on-demand is not running, then
+background is.
+That bypasses a lot of code state in the driver around whether or not background
+scrubber is currently running, because you cannot turn our background scrubber
+on through the driver interfaces.
+
+Regards,
+~Daniel
+
 
