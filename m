@@ -1,157 +1,123 @@
-Return-Path: <linux-acpi+bounces-20978-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20979-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDxvANIpj2kPKwEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20978-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 14:40:34 +0100
+	id zISGIa9sj2mNQwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20979-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 19:25:51 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE031366EA
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 14:40:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06656138E8A
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 19:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5C6D30459E8
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 13:40:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67555301546C
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 18:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC2235F8D0;
-	Fri, 13 Feb 2026 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4358A275AF0;
+	Fri, 13 Feb 2026 18:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qK0SxqN7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBWIjTJp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0972B35E553
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Feb 2026 13:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F7F21B9DA;
+	Fri, 13 Feb 2026 18:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990023; cv=none; b=Dp6s1pQuSpmRPTtOi12lIP1yavH7vl3T/KODbs/VIOz4poIKRrobc5ALr+3xOTjEH+I2NzMCXvp4zTgmZdfFLfIZhpcNi1E/YtlNIzp24BbcVCYuaIMkZX2d3s96ENqcZqbW/HKS/tGpOYjfwFgBHnquaBQj/Nmne+XMV04Zfjk=
+	t=1771007147; cv=none; b=jkRuLXDxvM1IhjlPfUZWp5FLqX/e0H2fwtxkZeyyDynT/mWhWYzYLGsnuARZgVMA/+iVDCFO+DKafQsac5yG7DT5EHKsoQXeeQF0+/OOHEbSsfgkMs8/Qmn0EnqFgmx/wtBwnx3n7lZ849HuOI1L34D8NbT2AX+mH8wD2mdIM5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990023; c=relaxed/simple;
-	bh=7MY1B1UvCrSA3CucaXSszMAkbqV8VVdnJQLaeVMJJEc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BruOpg0JkBZnZazaW2FxOPYeLzsH8cTzRq3eOTYqISeUBdKDXHWMwgUMzGJfzdKvVxofeKqaaJS2IotQGdH8BGyd5O0RzC5Wi2Qkpg2HEtYJAIWyPUn5oVLf8jxdn27vrdPjPwh2Xu5/mE4VdkEwu2YLrVCt21XGbDxssTeXMEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qK0SxqN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D1EC2BCB2
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Feb 2026 13:40:22 +0000 (UTC)
+	s=arc-20240116; t=1771007147; c=relaxed/simple;
+	bh=jwX9Lvz055na9QcVYDpA9G3IVm4kPPp0U1fKYtwF1Zo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K07/x1Anj35XIyP3pCtMTgw/xdEQmT7deR7NSvm3ODSK6rDU9THyF0a1LVZkXmpRgVfUx0pmPGuOZ3GSQ4tUW8eMpEpDox0r6EPzB/YznXvCVk3lKDwip32Xg9LnQmMeBV6gBhBrULJ4lmDLeTTiiBVsddr3Qv+qMAEB++Qn02A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBWIjTJp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851DFC116C6;
+	Fri, 13 Feb 2026 18:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770990022;
-	bh=7MY1B1UvCrSA3CucaXSszMAkbqV8VVdnJQLaeVMJJEc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qK0SxqN7uhf6x0JWJsEoOs4rWCTmI3MSohJVdIJQaNQaAtP9+oOLBvwtelIlchnBj
-	 gsXzcF/AAL9og+tMuh3oyG3e/+05SakJDwvhF0Q37tjUybIkL3ngNt/PVrPIkKpZ+y
-	 gUm9ahQBKcGKGMHrxF5+xUmBKu6ioNt7k1ZAFKg+WuP/yf44d+5Ic1hugfTcZVZ6Zg
-	 FbLpfXysqXNgEfx80pcnfyF25Hvk7Ji68BHhjYS2PFInzmilBo1uks2HMRnB9c1B8t
-	 wWiWktQpVjZHXOTOHMbgocbwnrOHkJbwwD1wYkIDuZ7RqRpA3hmt6Zjb8mQdrGCDCJ
-	 +UHfYmrXOM3tw==
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-45c8e85deffso311677b6e.1
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Feb 2026 05:40:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUee6fe1o4zHtExtSarALC3nUGfFZOj1L6S79XFGK8uBBYfNEc6GtFcKKlIsZVT7fj4l2fFn2B8+maX@vger.kernel.org
-X-Gm-Message-State: AOJu0YwySGviyPG0dTVQl23OhmQ9o4eIONWrUU2r6xCn5MterMT/jwU4
-	mqYAvPpbHLXxzc1n9qwDd7qtRPu0Nr9wDu3BMmZ8gH+CVTyDZvqCI6KHuXiknxEI7wDnaxqzWYz
-	KQLe8BF4XG3Ft59ONkJv+EI3zTHnLuqQ=
-X-Received: by 2002:a05:6808:3507:b0:45e:d128:168d with SMTP id
- 5614622812f47-4639f254eccmr771419b6e.57.1770990021866; Fri, 13 Feb 2026
- 05:40:21 -0800 (PST)
+	s=k20201202; t=1771007146;
+	bh=jwX9Lvz055na9QcVYDpA9G3IVm4kPPp0U1fKYtwF1Zo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YBWIjTJp+N3Ib7PJq6aMUyXcj2pmqrQSp5DsSz1qoX6/LQxXNEobPaZWtAC/2dFS4
+	 hI0R0g/+/EIT//6oHcLVp6EniKG7l/QcGIgzDk1+Uu7snmA7iMFw3rfBTIi6+NOW7s
+	 6q56If+nX0IAFJkRLAT89xZ1v21tp72WrlY2r7zTQ3Hu51swctOd4+RnVy+4gyskkD
+	 wr4PVSRXZayGww/NKS/pYsQYBglVVdffpirKauq9K/hgpeMV2WigNWkbHdrGwwj+Lp
+	 qhtGwRycxasXkZw7CWTjZxgHH+MAOPFS680TD4BzU2q6q5880FTWDAK8+5GVn0N3E3
+	 EUkDj8XVXhx2Q==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Armin Wolf <w_armin@gmx.de>
+Subject: [PATCH v1] ACPI: video: Clear driver_data pointer on remove
+Date: Fri, 13 Feb 2026 19:25:43 +0100
+Message-ID: <12840288.O9o76ZdvQC@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260201130334.3107-1-sef1548@gmail.com>
-In-Reply-To: <20260201130334.3107-1-sef1548@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 13 Feb 2026 14:40:11 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jtroqWSwjF3KQsmVLPYEE4a59-cxg5ZV1BAGmJtf-Q_Q@mail.gmail.com>
-X-Gm-Features: AZwV_QjRfNwroLEpmaWTExdQL-bTxgB5i4BtjRUWwxg2WPTNiln1lUbMSVduiKc
-Message-ID: <CAJZ5v0jtroqWSwjF3KQsmVLPYEE4a59-cxg5ZV1BAGmJtf-Q_Q@mail.gmail.com>
-Subject: Re: [PATCH 0/2] nsrepair2: Improve sorting performance and add tests
-To: Nick Huang <sef1548@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, paladin@ntub.edu.tw, kusogame68@gmail.com, 
-	ceyanglab@gmail.com, n1136402@ntub.edu.tw
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	CTE_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-20978-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,intel.com,vger.kernel.org,lists.linux.dev,ntub.edu.tw,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20979-lists,linux-acpi=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmx.de];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 6EE031366EA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 06656138E8A
 X-Rspamd-Action: no action
 
-On Sun, Feb 1, 2026 at 2:03=E2=80=AFPM Nick Huang <sef1548@gmail.com> wrote=
-:
->
->    This patch series improves the ACPI nsrepair2 sorting implementation
->    and adds comprehensive KUnit tests.
->
->    Patch 1 replaces the O(n=C2=B2) bubble sort algorithm in acpi_ns_sort_=
-list()
->    with the kernel's sort_r() function, which uses heapsort to achieve
->    O(n log n) time complexity. This improves performance when sorting
->    large ACPI package lists (e.g., _PSS, _TSS) while reducing code
->    complexity by leveraging the existing kernel sort API.
->
->    Patch 2 adds KUnit tests to verify the repair functions in nsrepair2.c=
-,
->    covering:
->      - ACPI operand object creation (integer, string, buffer, package)
->      - Namespace node creation and NAMESEG comparison
->      - Package structures for _PSS, _CST, _ALR, _PRT methods
->      - _HID string format verification
->      - _FDE buffer expansion
->      - Sorting logic with ascending/descending order
->
->
->
-> Nick Huang (2):
->   ACPI: nsrepair2: Replace O(n=C2=B2) bubble sort with O(n log n) sort_r(=
-)
->   ACPI: acpica: Add KUnit tests for nsrepair2 repair functions
->
->  drivers/acpi/acpica/nsrepair2.c      |  87 ++-
->  drivers/acpi/acpica/nsrepair2_test.c | 854 +++++++++++++++++++++++++++
->  2 files changed, 916 insertions(+), 25 deletions(-)
->  create mode 100644 drivers/acpi/acpica/nsrepair2_test.c
->
-> --
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The ACPICA code in the kernel comes from the upstream ACPICA project
-(hosted on GitHub) as described in
-Documentation/driver-api/acpi/linuxized-acpica.rst.
+After commit 02c057ddefef ("ACPI: video: Convert the driver to a
+platform one") the driver_data pointer in the ACPI companion device
+object is not cleared automatically on driver remove any more, so
+clear it directly in acpi_video_bus_remove().
 
-Changes to that code need to be made upstream from where they are
-picked up automatically after every upstream ACPICA release (or you
-can speed that up if need be by sending a Linux patch based on an
-upstream ACPICA commit).
+Fixes: 02c057ddefef ("ACPI: video: Convert the driver to a platform one")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-As for the test part, I'm not sure how useful it would be given the above.
+Applies on top of the current mainline.
 
-Thanks!
+---
+ drivers/acpi/acpi_video.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -2116,6 +2116,7 @@ static void acpi_video_bus_remove(struct
+ 
+ 	kfree(video->attached_array);
+ 	kfree(video);
++	device->driver_data = NULL;
+ }
+ 
+ static int __init is_i740(struct pci_dev *dev)
+
+
+
 
