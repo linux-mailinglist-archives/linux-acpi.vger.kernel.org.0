@@ -1,352 +1,379 @@
-Return-Path: <linux-acpi+bounces-20970-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20971-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOyyOPH2jmnbGAEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20970-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 11:03:29 +0100
+	id sNe2NJj4jmnbGAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20971-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 11:10:32 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878D2134D3C
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 11:03:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC0C134E5A
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 11:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ED91D30117C1
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 10:03:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F188130138D6
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 10:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAD4319601;
-	Fri, 13 Feb 2026 10:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749D034FF59;
+	Fri, 13 Feb 2026 10:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jjXzC+X4"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="j9g1yxWj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B973128C0;
-	Fri, 13 Feb 2026 10:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EA6EEAB;
+	Fri, 13 Feb 2026 10:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770977007; cv=none; b=o2BV14CODBs51/jZ7GOx8uBzBUvPubLlNev+ngHcMMpAmywpHAKjp7Gqow/ijDGbbTiU9nZVJ2GHWT78gT/J6siz0PmKAj1BTf3b2xMwPBDTpxzurzA5989MbJr2XAyzL2smlEcJqKr3GcXvxYRdNxEa4c4zeifZUm9pQPcXw74=
+	t=1770977387; cv=none; b=uJWum1aUOZ2+NRIfHV/bIphfdhfIwF+uawOML/vljdngI6ACIC/FI2w7oPWFI12GTVq93ZEJzf1vt5Yv4427M5BDxcSzbGqK1712t4VuOEDZOXfwJwWhlh12GZhqgGiSUcBPCxwNx2g/XW0ksN45VscRGbJGZ8Z4Np3NAsKtdrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770977007; c=relaxed/simple;
-	bh=yhvrpL7Kle0Q3tvVSV5470YlfHzm8tO16cLAJn7SiVo=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Eu8F2kx+bSRsfzjrwDD5GuEBReJs5ahzjtdo4KvWieNyd/n2jauUz+3Do0WMBlpsddYd/GfX4OebWpMmQ0T88LXpnBFtnjUornTT9Gu0QAdGCIaKpPB36FdqAvt+bCQ0oUZ8oVcuJY39c9nZLOw/q/4XPStI0IMcDiuLkCktDYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jjXzC+X4; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770977006; x=1802513006;
-  h=date:from:to:cc:subject:message-id;
-  bh=yhvrpL7Kle0Q3tvVSV5470YlfHzm8tO16cLAJn7SiVo=;
-  b=jjXzC+X4w922uzLSn9mr86/ZnDqZTUBGQf+VsvG3z5BXkiq4bmMSkSpl
-   UJGRCU/syCXKLu0PafVcpo8pRkxQ/Mut9nFVt6gct4oOtwVrnQ7650ld/
-   lou0RwHuUkrZMoGQ6DmoSKN7j2qeffk2zS3UoF+z46QtZ2x8slqd5/OMm
-   yvK/HVy63FLFcuT8xOK20XZJINUVJo79djZ6orWwy3w2cakhDJXS52aog
-   Q/DwsQOm/MIPMVwFYouNuXbKucNYPKGjjAIyOYDyExLmP8fbEWkzQs65B
-   UeelnWrCl9WGXElywkxIaX2FINOJzuImdFzrkVQYpesVv7NS4d6G3ltce
-   A==;
-X-CSE-ConnectionGUID: HQWe3U9lQFeS2hBqSxYk3A==
-X-CSE-MsgGUID: B/zVt+LeSN2ZzLJmwVYIWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="71359297"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="71359297"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 02:03:25 -0800
-X-CSE-ConnectionGUID: quvtwC0ZS4+avrSKJtiIkA==
-X-CSE-MsgGUID: FXQzoG2JSSuwbvs0A8nwSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="250548349"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 13 Feb 2026 02:03:23 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vqq1B-00000000vHw-3LAt;
-	Fri, 13 Feb 2026 10:03:21 +0000
-Date: Fri, 13 Feb 2026 18:03:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 9e046413910681463c51b1a7940e1536e38a12ae
-Message-ID: <202602131801.9ut3wLJh-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1770977387; c=relaxed/simple;
+	bh=Nn7mpqy84j7r4o94j+tLNNLq6ei9856SBxkLdcCAOOs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RCjcGplstKNUCsdrbMRVl1cFznQm5SMdF49xxzyyL1KoYHLUuAWkWgiLzlkfXVHS1ka+i/aPz6V7APInf8H3Y99CBBjpVAo6m54jGQjoGWQzIOhwFv93OtYp9XmC0c8c6svJeodskpKUkYZW0eEzLjKgPdA77x+uxJGUba14W3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=j9g1yxWj; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=SZ6Z3f33YNTvJD8jc9k97ue8D159LKUqhh9nY7ZJwWQ=;
+	b=j9g1yxWjicYH0bdn/pD6A5aVpsOZbtyZpCRndIRNFC3gSQyblZ9L2XyvKvKWKhgMCbeL3Nequ
+	eOkeP7aUfEUoVfG8ZnxOvsqyv22CZE29O6TRfbwYRe5/Jzl4DnI68WYdEyHz+K2/bruaf2JClxw
+	V/rFI5P0erXMl83ZdecNiV4=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4fC77q6p9tzmV74;
+	Fri, 13 Feb 2026 18:04:55 +0800 (CST)
+Received: from kwepemr200004.china.huawei.com (unknown [7.202.195.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 700BA4048B;
+	Fri, 13 Feb 2026 18:09:36 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by kwepemr200004.china.huawei.com
+ (7.202.195.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 13 Feb
+ 2026 18:09:35 +0800
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <viresh.kumar@linaro.org>,
+	<robert.moore@intel.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <lihuisong@huawei.com>,
+	<yubowen8@huawei.com>, <linhongye@h-partners.com>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhangpengjie2@huawei.com>,
+	<wangzhi12@huawei.com>
+Subject: [PATCH v2] ACPI: CPPC: Move reference performance to capabilities
+Date: Fri, 13 Feb 2026 18:09:35 +0800
+Message-ID: <20260213100935.19111-1-zhangpengjie2@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr200004.china.huawei.com (7.202.195.241)
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhangpengjie2@huawei.com,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20970-lists,linux-acpi=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20971-lists,linux-acpi=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: 878D2134D3C
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+]
+X-Rspamd-Queue-Id: 0BC0C134E5A
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 9e046413910681463c51b1a7940e1536e38a12ae  Merge branch 'pm-powercap' into bleeding-edge
+Currently, the `Reference Performance` register is read every time
+the CPU frequency is sampled in `cppc_get_perf_ctrs()`. This function
+is on the hot path of the cpufreq driver.
 
-elapsed time: 1190m
+Reference Performance indicates the performance level that corresponds
+to the Reference Counter incrementing and is not expected to change
+dynamically during runtime (unlike the Delivered and Reference counters).
 
-configs tested: 229
-configs skipped: 6
+Reading this register in the hot path incurs unnecessary overhead,
+particularly on platforms where CPC registers are located in the PCC
+(Platform Communication Channel) subspace. This patch moves
+`reference_perf` from the dynamic feedback counters structure
+(`cppc_perf_fb_ctrs`) to the static capabilities structure
+(`cppc_perf_caps`).
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+---
+changes in v2:
+-Adapted the code to the new integration.
+Link to v1:https://lore.kernel.org/all/20260129112105.2511748-1-zhangpengjie2@huawei.com/
+---
+ drivers/acpi/cppc_acpi.c       | 55 +++++++++++++++-------------------
+ drivers/cpufreq/cppc_cpufreq.c | 21 +++++++------
+ include/acpi/cppc_acpi.h       |  2 +-
+ 3 files changed, 37 insertions(+), 41 deletions(-)
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-22
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260213    clang-22
-arc                   randconfig-002-20260213    clang-22
-arm                               allnoconfig    clang-22
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                       multi_v4t_defconfig    gcc-15.2.0
-arm                         orion5x_defconfig    clang-22
-arm                   randconfig-001-20260213    clang-22
-arm                   randconfig-002-20260213    clang-22
-arm                   randconfig-003-20260213    clang-22
-arm                   randconfig-004-20260213    clang-22
-arm                         s3c6400_defconfig    clang-22
-arm64                            allmodconfig    clang-19
-arm64                            allmodconfig    clang-22
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260213    clang-17
-arm64                 randconfig-001-20260213    clang-20
-arm64                 randconfig-002-20260213    clang-20
-arm64                 randconfig-003-20260213    clang-20
-arm64                 randconfig-003-20260213    clang-22
-arm64                 randconfig-004-20260213    clang-20
-arm64                 randconfig-004-20260213    gcc-9.5.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260213    clang-20
-csky                  randconfig-001-20260213    gcc-15.2.0
-csky                  randconfig-002-20260213    clang-20
-csky                  randconfig-002-20260213    gcc-15.2.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-22
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260213    clang-22
-hexagon               randconfig-002-20260213    clang-22
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260213    clang-20
-i386        buildonly-randconfig-002-20260213    clang-20
-i386        buildonly-randconfig-003-20260213    clang-20
-i386        buildonly-randconfig-004-20260213    clang-20
-i386        buildonly-randconfig-005-20260213    clang-20
-i386        buildonly-randconfig-006-20260213    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260213    gcc-14
-i386                  randconfig-002-20260213    gcc-14
-i386                  randconfig-003-20260213    gcc-14
-i386                  randconfig-004-20260213    gcc-14
-i386                  randconfig-005-20260213    gcc-14
-i386                  randconfig-006-20260213    gcc-14
-i386                  randconfig-007-20260213    gcc-14
-i386                  randconfig-011-20260213    gcc-14
-i386                  randconfig-012-20260213    gcc-14
-i386                  randconfig-013-20260213    gcc-14
-i386                  randconfig-014-20260213    gcc-14
-i386                  randconfig-015-20260213    gcc-14
-i386                  randconfig-016-20260213    gcc-14
-i386                  randconfig-017-20260213    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-22
-loongarch                         allnoconfig    clang-22
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260213    clang-22
-loongarch             randconfig-002-20260213    clang-22
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                        stmark2_defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                 decstation_r4k_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-22
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260213    gcc-11.5.0
-nios2                 randconfig-002-20260213    gcc-8.5.0
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260213    clang-20
-parisc                randconfig-001-20260213    gcc-15.2.0
-parisc                randconfig-002-20260213    clang-20
-parisc                randconfig-002-20260213    gcc-8.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                      chrp32_defconfig    clang-22
-powerpc                      pcm030_defconfig    gcc-15.2.0
-powerpc               randconfig-001-20260213    clang-20
-powerpc               randconfig-001-20260213    gcc-14.3.0
-powerpc               randconfig-002-20260213    clang-20
-powerpc                     taishan_defconfig    clang-22
-powerpc64             randconfig-001-20260213    clang-20
-powerpc64             randconfig-001-20260213    gcc-15.2.0
-powerpc64             randconfig-002-20260213    clang-20
-powerpc64             randconfig-002-20260213    gcc-8.5.0
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                    nommu_k210_defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260213    gcc-11.5.0
-riscv                 randconfig-002-20260213    gcc-11.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260213    gcc-11.5.0
-s390                  randconfig-002-20260213    clang-22
-s390                  randconfig-002-20260213    gcc-11.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                         ap325rxa_defconfig    clang-22
-sh                        apsh4ad0a_defconfig    clang-22
-sh                                  defconfig    gcc-14
-sh                               j2_defconfig    clang-22
-sh                    randconfig-001-20260213    gcc-11.5.0
-sh                    randconfig-001-20260213    gcc-14.3.0
-sh                    randconfig-002-20260213    gcc-11.5.0
-sh                    randconfig-002-20260213    gcc-15.2.0
-sh                           se7750_defconfig    clang-22
-sh                           se7750_defconfig    gcc-15.2.0
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260213    gcc-12.5.0
-sparc                 randconfig-001-20260213    gcc-13.4.0
-sparc                 randconfig-002-20260213    gcc-12.5.0
-sparc                 randconfig-002-20260213    gcc-13.4.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260213    gcc-12.5.0
-sparc64               randconfig-001-20260213    gcc-9.5.0
-sparc64               randconfig-002-20260213    clang-22
-sparc64               randconfig-002-20260213    gcc-12.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260213    gcc-12.5.0
-um                    randconfig-001-20260213    gcc-14
-um                    randconfig-002-20260213    clang-22
-um                    randconfig-002-20260213    gcc-12.5.0
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260213    gcc-14
-x86_64      buildonly-randconfig-002-20260213    gcc-14
-x86_64      buildonly-randconfig-003-20260213    gcc-14
-x86_64      buildonly-randconfig-004-20260213    gcc-14
-x86_64      buildonly-randconfig-005-20260213    gcc-14
-x86_64      buildonly-randconfig-006-20260213    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260213    gcc-14
-x86_64                randconfig-002-20260213    gcc-14
-x86_64                randconfig-003-20260213    gcc-14
-x86_64                randconfig-004-20260213    gcc-14
-x86_64                randconfig-005-20260213    gcc-14
-x86_64                randconfig-006-20260213    gcc-14
-x86_64                randconfig-011-20260213    gcc-12
-x86_64                randconfig-012-20260213    gcc-12
-x86_64                randconfig-013-20260213    gcc-12
-x86_64                randconfig-014-20260213    gcc-12
-x86_64                randconfig-015-20260213    gcc-12
-x86_64                randconfig-016-20260213    gcc-12
-x86_64                randconfig-071-20260213    clang-20
-x86_64                randconfig-072-20260213    clang-20
-x86_64                randconfig-073-20260213    clang-20
-x86_64                randconfig-074-20260213    clang-20
-x86_64                randconfig-075-20260213    clang-20
-x86_64                randconfig-076-20260213    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-22
-xtensa                  nommu_kc705_defconfig    gcc-15.2.0
-xtensa                randconfig-001-20260213    gcc-12.5.0
-xtensa                randconfig-001-20260213    gcc-8.5.0
-xtensa                randconfig-002-20260213    gcc-12.5.0
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index a09bdabaa804..db1da8717078 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -177,12 +177,12 @@ __ATTR(_name, 0444, show_##_name, NULL)
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, highest_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_perf);
++show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, reference_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_nonlinear_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, guaranteed_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_freq);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
+ 
+-show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+ 
+ /* Check for valid access_width, otherwise, fallback to using bit_width */
+@@ -1343,9 +1343,10 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ {
+ 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
+ 	struct cpc_register_resource *highest_reg, *lowest_reg,
+-		*lowest_non_linear_reg, *nominal_reg, *guaranteed_reg,
+-		*low_freq_reg = NULL, *nom_freq_reg = NULL;
+-	u64 high, low, guaranteed, nom, min_nonlinear, low_f = 0, nom_f = 0;
++		*lowest_non_linear_reg, *nominal_reg, *reference_reg,
++		*guaranteed_reg, *low_freq_reg = NULL, *nom_freq_reg = NULL;
++	u64 high, low, guaranteed, nom, ref, min_nonlinear,
++	    low_f = 0, nom_f = 0;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+ 	struct cppc_pcc_data *pcc_ss_data = NULL;
+ 	int ret = 0, regs_in_pcc = 0;
+@@ -1359,6 +1360,7 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ 	lowest_reg = &cpc_desc->cpc_regs[LOWEST_PERF];
+ 	lowest_non_linear_reg = &cpc_desc->cpc_regs[LOW_NON_LINEAR_PERF];
+ 	nominal_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
++	reference_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+ 	low_freq_reg = &cpc_desc->cpc_regs[LOWEST_FREQ];
+ 	nom_freq_reg = &cpc_desc->cpc_regs[NOMINAL_FREQ];
+ 	guaranteed_reg = &cpc_desc->cpc_regs[GUARANTEED_PERF];
+@@ -1366,6 +1368,7 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
+ 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
++		(CPC_SUPPORTED(reference_reg) && CPC_IN_PCC(reference_reg)) ||
+ 		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
+ 		CPC_IN_PCC(guaranteed_reg)) {
+ 		if (pcc_ss_id < 0) {
+@@ -1391,6 +1394,17 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ 	cpc_read(cpunum, nominal_reg, &nom);
+ 	perf_caps->nominal_perf = nom;
+ 
++	/*
++	 * If reference perf register is not supported then we should
++	 * use the nominal perf value
++	 */
++	if (CPC_SUPPORTED(reference_reg)) {
++		cpc_read(cpunum, reference_reg, &ref);
++		perf_caps->reference_perf = ref;
++	} else {
++		perf_caps->reference_perf = nom;
++	}
++
+ 	if (guaranteed_reg->type != ACPI_TYPE_BUFFER  ||
+ 	    IS_NULL_REG(&guaranteed_reg->cpc_entry.reg)) {
+ 		perf_caps->guaranteed_perf = 0;
+@@ -1402,7 +1416,7 @@ int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ 	cpc_read(cpunum, lowest_non_linear_reg, &min_nonlinear);
+ 	perf_caps->lowest_nonlinear_perf = min_nonlinear;
+ 
+-	if (!high || !low || !nom || !min_nonlinear)
++	if (!high || !low || !nom || !ref || !min_nonlinear)
+ 		ret = -EFAULT;
+ 
+ 	/* Read optional lowest and nominal frequencies if present */
+@@ -1432,20 +1446,10 @@ EXPORT_SYMBOL_GPL(cppc_get_perf_caps);
+ bool cppc_perf_ctrs_in_pcc_cpu(unsigned int cpu)
+ {
+ 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+-	struct cpc_register_resource *ref_perf_reg;
+-
+-	/*
+-	 * If reference perf register is not supported then we should use the
+-	 * nominal perf value
+-	 */
+-	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+-	if (!CPC_SUPPORTED(ref_perf_reg))
+-		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+ 
+ 	return CPC_IN_PCC(&cpc_desc->cpc_regs[DELIVERED_CTR]) ||
+ 		CPC_IN_PCC(&cpc_desc->cpc_regs[REFERENCE_CTR]) ||
+-		CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]) ||
+-		CPC_IN_PCC(ref_perf_reg);
++		CPC_IN_PCC(&cpc_desc->cpc_regs[CTR_WRAP_TIME]);
+ }
+ EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc_cpu);
+ 
+@@ -1482,10 +1486,10 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ {
+ 	struct cpc_desc *cpc_desc = per_cpu(cpc_desc_ptr, cpunum);
+ 	struct cpc_register_resource *delivered_reg, *reference_reg,
+-		*ref_perf_reg, *ctr_wrap_reg;
++		*ctr_wrap_reg;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+ 	struct cppc_pcc_data *pcc_ss_data = NULL;
+-	u64 delivered, reference, ref_perf, ctr_wrap_time;
++	u64 delivered, reference, ctr_wrap_time;
+ 	int ret = 0, regs_in_pcc = 0;
+ 
+ 	if (!cpc_desc) {
+@@ -1495,19 +1499,11 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ 
+ 	delivered_reg = &cpc_desc->cpc_regs[DELIVERED_CTR];
+ 	reference_reg = &cpc_desc->cpc_regs[REFERENCE_CTR];
+-	ref_perf_reg = &cpc_desc->cpc_regs[REFERENCE_PERF];
+ 	ctr_wrap_reg = &cpc_desc->cpc_regs[CTR_WRAP_TIME];
+ 
+-	/*
+-	 * If reference perf register is not supported then we should
+-	 * use the nominal perf value
+-	 */
+-	if (!CPC_SUPPORTED(ref_perf_reg))
+-		ref_perf_reg = &cpc_desc->cpc_regs[NOMINAL_PERF];
+-
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(delivered_reg) || CPC_IN_PCC(reference_reg) ||
+-		CPC_IN_PCC(ctr_wrap_reg) || CPC_IN_PCC(ref_perf_reg)) {
++		CPC_IN_PCC(ctr_wrap_reg)) {
+ 		if (pcc_ss_id < 0) {
+ 			pr_debug("Invalid pcc_ss_id\n");
+ 			return -ENODEV;
+@@ -1524,8 +1520,6 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ 
+ 	cpc_read(cpunum, delivered_reg, &delivered);
+ 	cpc_read(cpunum, reference_reg, &reference);
+-	cpc_read(cpunum, ref_perf_reg, &ref_perf);
+-
+ 	/*
+ 	 * Per spec, if ctr_wrap_time optional register is unsupported, then the
+ 	 * performance counters are assumed to never wrap during the lifetime of
+@@ -1535,14 +1529,13 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ 	if (CPC_SUPPORTED(ctr_wrap_reg))
+ 		cpc_read(cpunum, ctr_wrap_reg, &ctr_wrap_time);
+ 
+-	if (!delivered || !reference ||	!ref_perf) {
++	if (!delivered || !reference) {
+ 		ret = -EFAULT;
+ 		goto out_err;
+ 	}
+ 
+ 	perf_fb_ctrs->delivered = delivered;
+ 	perf_fb_ctrs->reference = reference;
+-	perf_fb_ctrs->reference_perf = ref_perf;
+ 	perf_fb_ctrs->wraparound_time = ctr_wrap_time;
+ out_err:
+ 	if (regs_in_pcc)
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 7e8042efedd1..befcbded126a 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -50,7 +50,8 @@ struct cppc_freq_invariance {
+ static DEFINE_PER_CPU(struct cppc_freq_invariance, cppc_freq_inv);
+ static struct kthread_worker *kworker_fie;
+ 
+-static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
++static int cppc_perf_from_fbctrs(u64 reference_perf,
++				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+ 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1);
+ 
+ /**
+@@ -70,7 +71,7 @@ static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
+ 	struct cppc_perf_fb_ctrs fb_ctrs = {0};
+ 	struct cppc_cpudata *cpu_data;
+ 	unsigned long local_freq_scale;
+-	u64 perf;
++	u64 perf, ref_perf;
+ 
+ 	cpu_data = cppc_fi->cpu_data;
+ 
+@@ -79,7 +80,9 @@ static void __cppc_scale_freq_tick(struct cppc_freq_invariance *cppc_fi)
+ 		return;
+ 	}
+ 
+-	perf = cppc_perf_from_fbctrs(&cppc_fi->prev_perf_fb_ctrs, &fb_ctrs);
++	ref_perf = cpu_data->perf_caps.reference_perf;
++	perf = cppc_perf_from_fbctrs(ref_perf,
++				     &cppc_fi->prev_perf_fb_ctrs, &fb_ctrs);
+ 	if (!perf)
+ 		return;
+ 
+@@ -723,13 +726,11 @@ static inline u64 get_delta(u64 t1, u64 t0)
+ 	return (u32)t1 - (u32)t0;
+ }
+ 
+-static int cppc_perf_from_fbctrs(struct cppc_perf_fb_ctrs *fb_ctrs_t0,
++static int cppc_perf_from_fbctrs(u64 reference_perf,
++				 struct cppc_perf_fb_ctrs *fb_ctrs_t0,
+ 				 struct cppc_perf_fb_ctrs *fb_ctrs_t1)
+ {
+ 	u64 delta_reference, delta_delivered;
+-	u64 reference_perf;
+-
+-	reference_perf = fb_ctrs_t0->reference_perf;
+ 
+ 	delta_reference = get_delta(fb_ctrs_t1->reference,
+ 				    fb_ctrs_t0->reference);
+@@ -766,7 +767,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+ 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+ 	struct cppc_cpudata *cpu_data;
+-	u64 delivered_perf;
++	u64 delivered_perf, reference_perf;
+ 	int ret;
+ 
+ 	if (!policy)
+@@ -783,7 +784,9 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 			return 0;
+ 	}
+ 
+-	delivered_perf = cppc_perf_from_fbctrs(&fb_ctrs_t0, &fb_ctrs_t1);
++	reference_perf = cpu_data->perf_caps.reference_perf;
++	delivered_perf = cppc_perf_from_fbctrs(reference_perf,
++					       &fb_ctrs_t0, &fb_ctrs_t1);
+ 	if (!delivered_perf)
+ 		goto out_invalid_counters;
+ 
+diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+index 4d644f03098e..d3c4999e3551 100644
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -116,6 +116,7 @@ struct cppc_perf_caps {
+ 	u32 guaranteed_perf;
+ 	u32 highest_perf;
+ 	u32 nominal_perf;
++	u32 reference_perf;
+ 	u32 lowest_perf;
+ 	u32 lowest_nonlinear_perf;
+ 	u32 lowest_freq;
+@@ -133,7 +134,6 @@ struct cppc_perf_ctrls {
+ struct cppc_perf_fb_ctrs {
+ 	u64 reference;
+ 	u64 delivered;
+-	u64 reference_perf;
+ 	u64 wraparound_time;
+ };
+ 
+-- 
+2.33.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
