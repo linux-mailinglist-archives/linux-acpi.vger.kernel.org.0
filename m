@@ -1,80 +1,82 @@
-Return-Path: <linux-acpi+bounces-20966-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20967-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNsmNe7Kjmm/EwEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20966-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 07:55:42 +0100
+	id 0B1IJPDKjmm/EwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20967-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 07:55:44 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1152E13351B
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 07:55:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325D0133522
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 07:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A49BE300BC64
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 06:55:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2EFF305263E
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Feb 2026 06:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856AF277037;
-	Fri, 13 Feb 2026 06:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE20B2773CA;
+	Fri, 13 Feb 2026 06:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="WS+JEqd6"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="anVFES7Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FDA272801
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Feb 2026 06:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C88274B5C
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Feb 2026 06:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770965737; cv=none; b=aChPrv81lVMlFnv6Jp47vN+bX66z8LTZmhkbscwmtlG0NPTZ21TQ132oDW/f+gFnWzN3C5Y3VH22jNpmgCGqSjzXm14o/yMAjqvc15e1obWGycW0NO7nOYWyf7Sza2wljh2F1n48Q9zcseEu0tK2MkBYilQR4ky/esjlBUL31As=
+	t=1770965740; cv=none; b=K6pLPGhMGIrOKAka6CH0SGjU7qxwfvsgRkUTvPOjCNDYyAsqDLcweahTj1oar1XymEHNEvyOs1ZAQOJpI4sXmPtgUUjwUMdthPImRFaHqhzBjy/7ffl8i5cnI5GQyMM1/6pTGuWpOwFyJG6lumQXIsoACpIEfcgMf3ujovQvXJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770965737; c=relaxed/simple;
-	bh=AVZCl4GZmpqjSi6R8hLihqG9KSmolznsgfA2qabbatk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M8gKLBZXfrWrlbCnp3XvdZMluVbbXrpicazPLTzUs2A1c0WboBgtJuILpohungsBoCRygQKbL3sPvknfyaY1Itg/DpbfnzTv1lCtfgmskC5IY03QWY0ON2f6kz5nFobKyTjPLkDXf2UaN30amViFTCWGEq17sd+Cqi8LIqgGwAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=WS+JEqd6; arc=none smtp.client-ip=209.85.167.176
+	s=arc-20240116; t=1770965740; c=relaxed/simple;
+	bh=sTMx8lEvcnLLY4zMCQI0Kt09CDIjF4lLt2+r+Wo/BiE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=acPRgD2oIKPoiRLcQU9jKdonsoryq7afiCavnqi29k6w9ZIXoPNHUMPgyMWiFQsxE0YWGJbtQ9CL9l5bowKIOkWJTeaW4Qu0Uq2exwvW0sIWFg8hraGMLCz0o6jl8bQ60NPC0HHFagKQ5z6rHwW9zBlQj3rmHuAViEmiXiw0dP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=anVFES7Z; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4638fe85a7eso160610b6e.2
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Feb 2026 22:55:36 -0800 (PST)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d19bfe1190so499503a34.1
+        for <linux-acpi@vger.kernel.org>; Thu, 12 Feb 2026 22:55:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1770965735; x=1771570535; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AVZCl4GZmpqjSi6R8hLihqG9KSmolznsgfA2qabbatk=;
-        b=WS+JEqd6Nla0TFp+blKDWajzhd0pnsnr+N42E+Cgf8RGMStl9KgSQhf8Z7I+y9R58l
-         aTvMB6jcuyIjHMdAqcmTIzsGcAeaVOWrMiat72Sz8yeorhY3Ortzp/shQwmEj+Bt/2mS
-         1SmyPQdxSLomcLwD3U5KqbTG9VPWLzUC52mT+/90mmoVqfINvTE2Uya9wD6pvuyNMVM9
-         C6dTx2jvm8WVIO7xzhirOQFj84j+6X8shukGgOaAV7tps6FhppUiZkrdQbAjn4YEkKdC
-         gZ0ENuoG5KocRSQ1Fi9yxX4MU6c52G8bi9gBmIO3uVwkYMo7qx0X+6n+7sV1SEAstkEn
-         YF0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770965735; x=1771570535;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=minyard.net; s=google; t=1770965738; x=1771570538; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AVZCl4GZmpqjSi6R8hLihqG9KSmolznsgfA2qabbatk=;
-        b=Z85e0FrUi1cF9+qd2oCECU2GMSgBj5bVQVFFznUJl30OR4QGGrMEqHrXclqoK7ers6
-         fRVVAnB91q6Ap1zPrTRFmLWsxNj1ZAiVv8hTezy9HRJ7k3dJSoxoLNnigAlN7HcieZvU
-         HbAa0OGa/5uxALLlFCg2rJOlOG84Lncn0/3pM7ZQTx+Mtl6o5gDdNv4JwF8GZcqqbgVw
-         9tH3IntofWUwDxV70Cc8nrV0iq/FHrZx+rcp1VsYYVb/PAJ++a1KzvkPj4/5m1EcTDy+
-         3zcBcPO2TbY7pK0724Eln0MujpW8oUBPuVScEpbangfOvbT5j/WbVuPZ45PhSD705TtI
-         SD4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWhKuQUIuvIDJ85J+1UzwTQOouClxVDwmrbV/zaNuWJ69g6kPxhSInkWHOzlPPuttxWlfnAt6QovRak@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbnE8Uml6HjFMcphRDCfwdMN3OWln2nFNm345TEDEu5jBDuiJM
-	j+wgu89CFv20W/waFWnM2gQUv0cAkEoLSWbsLeW/wR9ZJMQw5PiFGNsstdbnfS7fkdc=
-X-Gm-Gg: AZuq6aJ3Ub14wjJOnXbDjfEcG4vfhNoGr9/ZVxJZF21n1sxWH+3jiqNyw3tAsBZf9d7
-	EpCdVfxRAUsJCkwUKhYfWExTr3y8jIA9I6qUAR7tFEpHcoVvH/k3d+nIlZ8ukHAcSEVb/z6vxCq
-	UILrjiyP+QjfGM8oZ8b7tcmJSPojrxnPst85Ih5DBwvtZRW4LWDmytQNmgV3LNIFrlyuDWSmA1H
-	aiwNQqHQN/q20SJM0oqtJ13+ZZBH5i1q9EKBzAoqwxs29vjLYnJjvRqtwKtve7xKYFxS8uA564O
-	940Hjz67BTpPsK6o1S6MpTjGv5IAnNRwK9PIQOqSwbPsl10oKM07xlC7Sa7zNnFosFL0j4R8ayl
-	5TgETjXCHQ4wejUX80GV8xms8EpKQ5nJvz99MsEKZoQa3tZIZ87Rr/B++lr9ZJMRkZTZfpGMZrF
-	M30LTZBen8vUOxJfRh1TeHInVOucvb7vxMzeYdvrBsgZru/3UnIRrovppBmQ7gdC1e1z0W1BytB
-	0n7Ug==
-X-Received: by 2002:a05:6808:1b1e:b0:451:4be5:a90a with SMTP id 5614622812f47-4639f249f7amr423087b6e.51.1770965735267;
-        Thu, 12 Feb 2026 22:55:35 -0800 (PST)
+        bh=pfTgoVpApawEGawOItUes0+2N5MzHA5wDtH4Hi4KESQ=;
+        b=anVFES7ZbBbTHo9VfR43V0m9ZSwmiQBtgqFPQOr+n+VpV8a84SQjZJ15p7VkdoAfKa
+         XdC63Kb9IGhoDznxIBsxHKHbxOStMcztgZ2DRqhcLB1+xjb3WjHi7h+KBrYjXc2ncBnl
+         KcFnVJWKxS2uXizc4X7sXY7ATmuGAvNcC29EHEDYBkME0GxbprRBSEcxlh77g1ywr0ew
+         0VQrN5ZC7OrcoWZi08uXA51osHxQZri88riwPe9MlUVGsTwOxZatlYr6n7sn/yPTPsGs
+         2vAy+tTQvZpG8XQZG+F6EFvJ6cJVpNXBRbCW3fi/wv7C7nTIwuNohHxqO+pnlLnja+Lt
+         laUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770965738; x=1771570538;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pfTgoVpApawEGawOItUes0+2N5MzHA5wDtH4Hi4KESQ=;
+        b=VcBNqAHAUJbhi7gr6dm5HigAinxljFc47NvCVIHJSBNVYhnaZmpcKY8RWte/p3Xcp+
+         IwhwkGZUeXbzv9JZBIko7zCUXCCMsLzpGBjfyNVsjwsVLGUDD/b6Hd3J0HTgVWrtAUTV
+         aqQOjR6UowftAsULAQZlg1YtNMqy7o+S2m+YY6Eb3rYsG0g0StDs7SRY4sGE358Pd17L
+         VuBXqMfP+k5DOHjhcKuizjFCDt5OVr4GMyyzcKzUbr5zjmYBnDZA23N2NXScDHLOtRSR
+         VSMGR1ukrTknW9UMo4hWTDEmStf5hH7Ttg4vFCcMvMfXZWn858PlpOpfq10Ewl6VXvR7
+         2+0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXbPCB/v3jZQlgFDv9LzZEVWVQ5aU+EB7Wfv62xV6ykcwKgnf2P3kTg6ia9hQ9YPsGR4r4QpS73CWKY@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLi8EiDSBf4zUqlnQ10nCiQaHu24bD90kMUFh3MxrdCYKcvLRI
+	MtHt3e9bJOO8PbqkwIKH7dlbTxtG1UW2EV/E1qdcQFyLJMehZ6f5JiFC/loh3SxLuUo=
+X-Gm-Gg: AZuq6aLlaYpqNp65tjrRjpydpv/ghG4jA4fq6ZMKfvhEXLRqSdZs2I4jjqqkVk/EnAg
+	ua2+Yczsb7igkU2qLwwpvb0++26Rr81Wq8nsTvI5EkNeFh18C5ZE56zmiQzUyeVUbhq8Tx8Lyag
+	l6A6lYNcZ4+nu9OsTr8sGY0B4c75QE+wJMKfHm7Lf03k8ZuLFmaSFHXTJ7Cr9QrbWVdFU1Ieu9r
+	MFLOjX9Pdtsngmf7HBfkRsNfpQ8ZTFNro9LxKXaPgZINnuk2BSZWIDiOKfhqUagD1kVi1hWE5N1
+	HFt9kNAmfYAwDsB05aAL5//gEJDQ6zJIjBQMcn++tx4k++QnwS0Zn+VwPpurqGDFDWtAXr3o6Am
+	+kzl5gc9oGblfwkPGhTIDpmfbDfRZprQ8BLUFq/Qe/udhhUiodWqxf8WqHEKnVpjO8JujagoTxI
+	ryIlLtKFpgRwD99ypUWKaUtvT7KzGYFf8zLZZu5HfRV0cQaHNaYPCfcNR/1uaBeXyxJDaugZhRO
+	Jb+MA==
+X-Received: by 2002:a05:6830:6f49:b0:7bb:7a28:51ba with SMTP id 46e09a7af769-7d4c4acb069mr432548a34.26.1770965738665;
+        Thu, 12 Feb 2026 22:55:38 -0800 (PST)
 Received: from localhost ([2001:470:b8f6:1b:a3ab:7352:1dc1:6b46])
-        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-40eaee485b8sm6178906fac.4.2026.02.12.22.55.33
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7d4a754b4bbsm5380680a34.11.2026.02.12.22.55.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Feb 2026 22:55:34 -0800 (PST)
+        Thu, 12 Feb 2026 22:55:37 -0800 (PST)
 From: Corey Minyard <corey@minyard.net>
 To: "Rafael J . Wysocki" <rafael@kernel.org>
 Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
@@ -85,11 +87,14 @@ Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
 	Daniel Secik <daniel.secik@gooddata.com>,
 	Zdenek Pesek <zdenek.pesek@gooddata.com>,
 	Jiri Jurica <jiri.jurica@gooddata.com>,
-	Huisong Li <lihuisong@huawei.com>
-Subject: [PATCH 0/3] More fixes for BMC failure handling
-Date: Fri, 13 Feb 2026 00:52:12 -0600
-Message-ID: <20260213065351.915707-1-corey@minyard.net>
+	Huisong Li <lihuisong@huawei.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 1/3] ipmi:si: Don't block module unload if the BMC is messed up
+Date: Fri, 13 Feb 2026 00:52:13 -0600
+Message-ID: <20260213065351.915707-2-corey@minyard.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260213065351.915707-1-corey@minyard.net>
+References: <20260213065351.915707-1-corey@minyard.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -101,33 +106,58 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
 	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20966-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20967-lists,linux-acpi=lfdr.de];
+	DKIM_TRACE(0.00)[minyard.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	SINGLE_SHORT_PART(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1152E13351B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 325D0133522
 X-Rspamd-Action: no action
 
-These are in addition to the previous patches for this.
+If the BMC is in a bad state, don't bother waiting for queues messages
+since there can't be any.  Otherwise the unload is blocked until the
+BMC is back in a good state.
+
+Reported-by: Rafael J. Wysocki <rafael@kernel.org>
+Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
+Signed-off-by: Corey Minyard <corey@minyard.net>
+---
+ drivers/char/ipmi/ipmi_si_intf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
+index 0049e3792ba1..3667033fcc51 100644
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -2234,7 +2234,8 @@ static void wait_msg_processed(struct smi_info *smi_info)
+ 	unsigned long jiffies_now;
+ 	long time_diff;
+ 
+-	while (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL)) {
++	while (smi_info->si_state != SI_HOSED &&
++		    (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL))) {
+ 		jiffies_now = jiffies;
+ 		time_diff = (((long)jiffies_now - (long)smi_info->last_timeout_jiffies)
+ 		     * SI_USEC_PER_JIFFY);
+-- 
+2.43.0
 
 
