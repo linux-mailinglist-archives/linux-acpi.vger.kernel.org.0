@@ -1,156 +1,172 @@
-Return-Path: <linux-acpi+bounces-20988-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20989-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NAVK7SfkGnkbgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20988-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:15:48 +0100
+	id KA9WDtWhkGl3bwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20989-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:24:53 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4691813C6F9
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:15:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82E313C78B
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83A6A301D6BA
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 16:15:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6683301F328
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 16:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39322756A;
-	Sat, 14 Feb 2026 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C007830F52B;
+	Sat, 14 Feb 2026 16:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Xt2lzwkx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSuljZt0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A04D1548C;
-	Sat, 14 Feb 2026 16:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A022EBBAF;
+	Sat, 14 Feb 2026 16:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771085740; cv=none; b=Oyh5ka1GNT9vdOM8eBm6CRGYH0K2A+KrBsPkxZ1T7jy5EuOf7rhNuXIgsiuPlMERMg/mVZyS12qk66Q1aXXEsXeFRbt4q9/QX67qLFdbA3WBS/TXNWjstNGT8sOQsFsKfcqLhFN7SGzmBNojo7pWcI9d/4wI1r7hLSaEKa55Q+U=
+	t=1771086288; cv=none; b=hFILJdNRI+naXwH11lxZfAC+XeUrFYJdPph059cJPF/PkASX+HW5W7QVrKoxVK05BSlTbZ0UiqQ91ZrKBMEMw91Y21hgv1wX8PtlFzJehog2SWeVP9LyXirXGH6iZRsJ/G676Y4cp+2IvZUb0j3ZwwB2BSR3o0IttyvtiFrnO34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771085740; c=relaxed/simple;
-	bh=yXmVIuG2vtSrnsZnJEWSoxkWgYlWENfl+zfqoWvx+ls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+niZ3OMrU3ZeZML76UeM3gTcjjHVvhBEuL34VYxnmpTvuercT1MCYoSqMBdm0gNB9m3JjWzWas7T5xYIKtcKLwBpPdRPvYrQGXAoR30/42XFMJjc2JwVuyl1S3oZt6BK7yV7eYhi39YES9yVXt/eC8WDrARXG9JPU3L+eMnOkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Xt2lzwkx; arc=none smtp.client-ip=220.197.31.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=t1
-	Omtm7Z3WjifG8nSb5bwSmycGi+6thW/gXZ/+jKJLg=; b=Xt2lzwkxceyAza+Lnm
-	tKgpOmWUvwc6SX4XGUTcFb0i6VJ9UbxyT8wI056ADIQv8W4vi0dFmPr+b0PktpVi
-	ir9bf2BCS3bNLLD5TwX9HnmwIxMLOBFnNWXI6xxwPCvyQPK0+mNxd1V9Qhg39sJ4
-	S6wuKjqRePXidtXOM+rV7RhHA=
-Received: from bczhc-arch (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3Zw6dn5Bpd+65Ag--.13379S2;
-	Sun, 15 Feb 2026 00:15:25 +0800 (CST)
-From: Zhai Can <bczhc0@126.com>
-To: rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	bczhc0@126.com
-Subject: [PATCH] ACPI: PM: Add unused power resource quirk for THUNDEROBOT ZERO
-Date: Sun, 15 Feb 2026 00:14:52 +0800
-Message-ID: <20260214161452.2849346-1-bczhc0@126.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com>
-References: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com>
+	s=arc-20240116; t=1771086288; c=relaxed/simple;
+	bh=b2fAA/6LiIRnE5uC+fyY6XY1BAVSpPQMAo5szwC5qS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d0aaCjFRvW5wC8omoUNY7eVs5Mb7NgZ5zEXRLxepGrhRVEsW65ajfT2FUL0KbO2oxILiS/KeFW5X5p+UYJ5TdwMXpZpY2tiP3NswCR7UGdTHlOFjXrAPaTtQBbg57FmWPOzEObj36ih1Yh3j067uMxPhm7G82P67Z5Qi3Cs5b10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSuljZt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FEDC16AAE;
+	Sat, 14 Feb 2026 16:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771086288;
+	bh=b2fAA/6LiIRnE5uC+fyY6XY1BAVSpPQMAo5szwC5qS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lSuljZt07B+CaREOkzyeuVoDOVGRuiv8ypd6iBLKVG+gQRSOVdFo72/dlOAoX5Q8q
+	 y8kx1kuEZSLtIfmVo6RPrr68Jk5UXObQXEXY2Rnc33INnOp/SnY9TEZcmObRlTHrXW
+	 Nar/oSM3CsWXW+wSyyMfEsZy2hKnDgoj1TU0Xj7Uy2iCdkjWrpLPK1qbVRtRRo5iLW
+	 OzSqFr8wRvf6Fw1pfHGKuCqlTDdD5QT3xz1YTFw9tu7UCmbSmn8xkSLiRNUEEty4RF
+	 2kG4YNYTx/YvKPad++FCYm+7BcLi3BZQ2Ddf3naU+PFffzJG/GhFlgzEovIKnRAOZS
+	 USVUhvBHe+BGg==
+Date: Sat, 14 Feb 2026 08:25:00 -0800
+From: Drew Fustini <fustini@kernel.org>
+To: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Adrien Ricciardi <aricciardi@baylibre.com>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	Kornel =?utf-8?Q?Dul=C4=99ba?= <mindal@semihalf.com>,
+	Atish Patra <atish.patra@linux.dev>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Vasudevan Srinivasan <vasu@rivosinc.com>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	yunhui cui <cuiyunhui@bytedance.com>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Weiwei Li <liwei1518@gmail.com>, guo.wenjia23@zte.com.cn,
+	liu.qingtao2@zte.com.cn, Tony Luck <tony.luck@intel.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Peter Newman <peternewman@google.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	James Morse <james.morse@arm.com>, Ben Horgan <ben.horgan@arm.com>,
+	Dave Martin <Dave.Martin@arm.com>, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, x86@kernel.org,
+	Rob Herring <robh@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC v2 05/17] RISC-V: QoS: define CBQRI capacity and
+ bandwidth capabilities
+Message-ID: <aZCh3JaS2V0pLWXm@gen8>
+References: <20260128-ssqosid-cbqri-v2-0-dca586b091b9@kernel.org>
+ <20260128-ssqosid-cbqri-v2-5-dca586b091b9@kernel.org>
+ <3f53c823-74ab-46c3-9cf0-c28b062f2c89@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Zw6dn5Bpd+65Ag--.13379S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ury7JFy7AFWUKrykuF43GFg_yoW8ZFyUpr
-	s2qa98JwnrtF4UJFWYyw1jqF9xXw1vkr4aga9Ikrs3Xa4Y9F9Yyr1aqFZ5AFyYy3W2gF1F
-	vF1UZr1UCFnxWa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_PfHxUUUUU=
-X-CM-SenderInfo: xef2xuaq6rjloofrz/xtbBpB2NjGmQn534fAAA3H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3f53c823-74ab-46c3-9cf0-c28b062f2c89@intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[126.com,none];
-	R_DKIM_ALLOW(-0.20)[126.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,126.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20989-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20988-lists,linux-acpi=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[126.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bczhc0@126.com,linux-acpi@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[41];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[126.com:+];
-	RBL_VIRUSFREE_UNKNOWN_FAIL(0.00)[172.234.253.10:query timed out];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi,dt];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fustini@kernel.org,linux-acpi@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,ventanamicro.com,sifive.com,baylibre.com,semihalf.com,linux.dev,rivosinc.com,bytedance.com,linux.alibaba.com,gmail.com,zte.com.cn,intel.com,amd.com,google.com,arm.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4691813C6F9
+X-Rspamd-Queue-Id: D82E313C78B
 X-Rspamd-Action: no action
 
-On the THUNDEROBOT ZERO laptop, the second NVMe slot and the discrete
-NVIDIA GPU are both controlled by power-resource PXP. Due to the SSDT table
-bug (lack of reference), PXP will be shut dow as an "unused" power resource
-during initialization, making the NVMe slot #2 + NVIDIA both inaccessible.
+On Fri, Feb 13, 2026 at 03:13:42PM -0800, Reinette Chatre wrote:
+> Hi Drew,
 
-This issue was introduced by commit a1224f34d72a ("ACPI: PM: Check states of
-power resources during initialization"). Here are test results on
-the three consecutive commits:
+Hi! Thanks for your detailed feedback on this series.
 
-(bad again!) a1224f34d72a ACPI: PM: Check states of power resources during initialization
-(good) bc2836859643 ACPI: PM: Do not turn off power resources in unknown state
-(bad) 519d81956ee2 Linux 5.15-rc6
+> On 1/28/26 12:27 PM, Drew Fustini wrote:
+> > Define data structures to store the capacity and bandwidth capabilities
+> > that are discovered for a CBQRI-capable controller.
+> > 
+> > Co-developed-by: Adrien Ricciardi <aricciardi@baylibre.com>
+> > Signed-off-by: Adrien Ricciardi <aricciardi@baylibre.com>
+> > Signed-off-by: Drew Fustini <fustini@kernel.org>
+> > ---
+> >  arch/riscv/kernel/qos/internal.h | 128 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 128 insertions(+)
+> > 
+> > diff --git a/arch/riscv/kernel/qos/internal.h b/arch/riscv/kernel/qos/internal.h
+> > new file mode 100644
+> > index 000000000000..ff2c7eff50be
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/qos/internal.h
+> > @@ -0,0 +1,128 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +#ifndef _ASM_RISCV_QOS_INTERNAL_H
+> > +#define _ASM_RISCV_QOS_INTERNAL_H
+> > +
+> > +#include <linux/resctrl.h>
+> 
+> The include caught my eye but I did not notice any additions in this patch
+> refer to it.
+> 
+> Reinette
+> 
 
-On commit bc2836859643 ("ACPI: PM: Do not turn off power resources in unknown state")
-this was not an issue because the power resource state left UNKNOWN thus being ignored.
+I was using this to make resctrl structs available in the code that
+includdes this header:
 
-See also commit 9b04d99788cf ("ACPI: PM:
-Do not turn of unused power resources on the Toshiba Click Mini") which
-is another almost identical case to this one.
+arch/riscv/kernel/qos/qos.c
+arch/riscv/kernel/qos/qos_resctrl.c
 
-Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221087
-Signed-off-by: Zhai Can <bczhc0@126.com>
----
- drivers/acpi/power.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Should I rearrange to include resctrl.h directly where it is needed?
 
-diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-index 361a7721a6a8..7da5ae5594a7 100644
---- a/drivers/acpi/power.c
-+++ b/drivers/acpi/power.c
-@@ -1113,6 +1113,19 @@ static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
- 		},
- 	},
-+	{
-+		/*
-+		 * THUNDEROBOT ZERO laptop: Due to its SSDT table bug, power
-+		 * resource 'PXP' will be shut down on initialization, making
-+		 * the NVMe #2 and the NVIDIA dGPU both unavailable (they're
-+		 * both controlled by 'PXP').
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "THUNDEROBOT"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ZERO"),
-+		}
-+
-+	},
- 	{}
- };
- 
--- 
-2.53.0
-
+Thanks,
+Drew
 
