@@ -1,155 +1,156 @@
-Return-Path: <linux-acpi+bounces-20987-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20988-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MlbI3yfkGnkbgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20987-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:14:52 +0100
+	id 0NAVK7SfkGnkbgEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20988-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:15:48 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D2B13C6EA
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:14:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4691813C6F9
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 17:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63D6F300D621
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 16:14:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83A6A301D6BA
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Feb 2026 16:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC29275861;
-	Sat, 14 Feb 2026 16:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39322756A;
+	Sat, 14 Feb 2026 16:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Y1GAiBBN"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Xt2lzwkx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B550E257431;
-	Sat, 14 Feb 2026 16:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A04D1548C;
+	Sat, 14 Feb 2026 16:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771085687; cv=none; b=gKYmqxfv2v3PGj0o5Zn/fmply2H8Lbf+kw8dwbpzMWs+fFaTcGpdgOlbYwLiiO2Tjif2hONuNTtY9wuWVgMFoP2IDHPaRPc6l8T9yQ23Hmo1qx1vKxhoRYwjnX95zWEFxGkKI2oaW+zHAY/KmpsuBO5hf1DeVtGg7hQ5NXB5qEw=
+	t=1771085740; cv=none; b=Oyh5ka1GNT9vdOM8eBm6CRGYH0K2A+KrBsPkxZ1T7jy5EuOf7rhNuXIgsiuPlMERMg/mVZyS12qk66Q1aXXEsXeFRbt4q9/QX67qLFdbA3WBS/TXNWjstNGT8sOQsFsKfcqLhFN7SGzmBNojo7pWcI9d/4wI1r7hLSaEKa55Q+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771085687; c=relaxed/simple;
-	bh=2TBSiLve077Yk9gwpaWF6Sq6swx35/UlWSSt5RbGcEU=;
-	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=HlGbLCRli/lHzZEA+hPvEgGXNB9Z61zI1b9zfvJH1nMGkG3ItXB39EtbEaVlI3mQrff1/1chUA7/0YAtvWoijkY7IJR/bwVtPZC5lU2gaDF/fx1UP9gOvLrrVkhwKbvG/irBPwJ+HABlXeZIrO4CWN5GMnwGjBrRk2BnVxyRcho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Y1GAiBBN; arc=none smtp.client-ip=220.197.31.9
+	s=arc-20240116; t=1771085740; c=relaxed/simple;
+	bh=yXmVIuG2vtSrnsZnJEWSoxkWgYlWENfl+zfqoWvx+ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l+niZ3OMrU3ZeZML76UeM3gTcjjHVvhBEuL34VYxnmpTvuercT1MCYoSqMBdm0gNB9m3JjWzWas7T5xYIKtcKLwBpPdRPvYrQGXAoR30/42XFMJjc2JwVuyl1S3oZt6BK7yV7eYhi39YES9yVXt/eC8WDrARXG9JPU3L+eMnOkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Xt2lzwkx; arc=none smtp.client-ip=220.197.31.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:To:From:Subject:
-	Content-Type; bh=es+Jw6amFVZ84lXSThkwVU1vFUqF+EEP3BsfUcmzkHc=;
-	b=Y1GAiBBNBhwWz/1DcZ/XureluI3v/VXWum/biFzPchg8eyEVYKOUb9d6ZJxiPF
-	r4m6DoMneXH2C0KxLR3td3N0MBxN27NMUgW3KelvNZsyDXr4eJnIF3wVk9B4BWvo
-	lpGEeB8DGovtKbsBNk+C+RpAlsnzl2C7v/r6R97eQ9+LQ=
-Received: from [IPV6:240e:3a5:54be:1131:4873:9716:4d9a:3] (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnVw7ZnpBpFsq5Ag--.10328S2;
-	Sun, 15 Feb 2026 00:12:09 +0800 (CST)
-Message-ID: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com>
-Date: Sun, 15 Feb 2026 00:11:35 +0800
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=t1
+	Omtm7Z3WjifG8nSb5bwSmycGi+6thW/gXZ/+jKJLg=; b=Xt2lzwkxceyAza+Lnm
+	tKgpOmWUvwc6SX4XGUTcFb0i6VJ9UbxyT8wI056ADIQv8W4vi0dFmPr+b0PktpVi
+	ir9bf2BCS3bNLLD5TwX9HnmwIxMLOBFnNWXI6xxwPCvyQPK0+mNxd1V9Qhg39sJ4
+	S6wuKjqRePXidtXOM+rV7RhHA=
+Received: from bczhc-arch (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3Zw6dn5Bpd+65Ag--.13379S2;
+	Sun, 15 Feb 2026 00:15:25 +0800 (CST)
+From: Zhai Can <bczhc0@126.com>
+To: rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	bczhc0@126.com
+Subject: [PATCH] ACPI: PM: Add unused power resource quirk for THUNDEROBOT ZERO
+Date: Sun, 15 Feb 2026 00:14:52 +0800
+Message-ID: <20260214161452.2849346-1-bczhc0@126.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com>
+References: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-From: Zhai Can <bczhc0@126.com>
-Content-Language: en-US
-Cc: linux-kernel@vger.kernel.org
-Subject: ACPI: PM: Add acpi power resource quirk for THUNDEROBOT ZERO
-Autocrypt: addr=bczhc0@126.com; keydata=
- xjMEZ8kf3hYJKwYBBAHaRw8BAQdAfYv6FjQrbU06lNnLPvfMiD0SY6GA36LmS4KwI6NGpYzN
- F+e/n+eBvyA8YmN6aGMwQDEyNi5jb20+wpkEExYKAEEWIQRwMaNgGMPoLiWbYoZASF4q3tSX
- GAUCZ8kf3gIbAwUJA8JnAAULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRBASF4q3tSX
- GE7KAP9Gk1RLVISsuqFHd9Am73vVdDIjy73c2qzsIvH8SWTRHQD/fit0wHKx211uZLKGEuJ9
- JVOSZQ+Gx8mwp2ArrsQRigvOOARnyR/eEgorBgEEAZdVAQUBAQdAAk1VnZH+OvC03jDsZALX
- Rj1OrEkmqrCZPi1K4Qsr8woDAQgHwn4EGBYKACYWIQRwMaNgGMPoLiWbYoZASF4q3tSXGAUC
- Z8kf3gIbDAUJA8JnAAAKCRBASF4q3tSXGC8GAP9Ous9awMCN+2OG9Qu7c3tc19Tnh6AlmsQe
- bbAcJ9jYyAEA7m7JYfqMkavU4bt03XHPPsAyzo2By8wOfld8/AeqIgw=
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wDnVw7ZnpBpFsq5Ag--.10328S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CryxKF4xAF18tFyfZr1fJFb_yoW8CrWfpr
-	WSvwsxtryqqr18tFWDCa18KFy3u39IkFZ0gasrKrsxZ3W5JFZ2gr1ftry3Ary5Ar1Y9ws0
-	qr4Y9rnYkFWDAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jw4SOUUUUU=
-X-CM-SenderInfo: xef2xuaq6rjloofrz/xtbBpBtcW2mQntv1NwAA3G
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3Zw6dn5Bpd+65Ag--.13379S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ury7JFy7AFWUKrykuF43GFg_yoW8ZFyUpr
+	s2qa98JwnrtF4UJFWYyw1jqF9xXw1vkr4aga9Ikrs3Xa4Y9F9Yyr1aqFZ5AFyYy3W2gF1F
+	vF1UZr1UCFnxWa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_PfHxUUUUU=
+X-CM-SenderInfo: xef2xuaq6rjloofrz/xtbBpB2NjGmQn534fAAA3H
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[126.com,none];
 	R_DKIM_ALLOW(-0.20)[126.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20987-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[vger.kernel.org,126.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20988-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[126.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bczhc0@126.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[126.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RBL_VIRUSFREE_UNKNOWN_FAIL(0.00)[172.234.253.10:query timed out];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	FREEMAIL_FROM(0.00)[126.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 97D2B13C6EA
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4691813C6F9
 X-Rspamd-Action: no action
 
-Hello Rafael,
+On the THUNDEROBOT ZERO laptop, the second NVMe slot and the discrete
+NVIDIA GPU are both controlled by power-resource PXP. Due to the SSDT table
+bug (lack of reference), PXP will be shut dow as an "unused" power resource
+during initialization, making the NVMe slot #2 + NVIDIA both inaccessible.
 
-Since commit a1224f34d72a ("ACPI: PM: Check states of power resources 
-during initialization"),
-on laptop (Vendor "THUNDEROBOT", Model "ZERO, Board "NLZA"), when the 
-second NVMe slot
-is occupied, then during system boot, NVMe slot #2 plus the NVIDIA dGPU, 
-will both be turned
-off in `acpi_turn_off_unused_power_resources`.
+This issue was introduced by commit a1224f34d72a ("ACPI: PM: Check states of
+power resources during initialization"). Here are test results on
+the three consecutive commits:
 
-This is reported as an issue here: 
-https://bugzilla.kernel.org/show_bug.cgi?id=221087, for more
-context. Relevant attachments (acpidump, dmesg and lspci) stay there too.
+(bad again!) a1224f34d72a ACPI: PM: Check states of power resources during initialization
+(good) bc2836859643 ACPI: PM: Do not turn off power resources in unknown state
+(bad) 519d81956ee2 Linux 5.15-rc6
 
-SSDT Override that nullifies all `_OFF` functions will solve the issue. 
-However, I've found commit 9b04d99788cf
-("ACPI: PM: Do not turn of unused power resources on the Toshiba Click 
-Mini"), which I may
-believe my case is quite similar to it, or maybe? I'm not familiar with 
-ACPI so didn't dive into
-the dumped ssdt table too much. What I know is, the ZERO model laptop 
-has the `PXP` power
-resource which seems to control both NVMe #2 and the NVIDIA, and it gets 
-unexpectedly shut
-down in `acpi_turn_off_unused_power_resources`. Note this only happens 
-when NVMe #2 is
-occupied. Specifically, if NVMe #2 is not plugged in (NVMe #1 can be 
-plugged in and has
-nothing to do here), PXP won't be shut down, and the NVIDIA dGPU will 
-work as normal.
+On commit bc2836859643 ("ACPI: PM: Do not turn off power resources in unknown state")
+this was not an issue because the power resource state left UNKNOWN thus being ignored.
 
-The following patch adds THUNDEROBOT ZERO model as a quirk - do not turn 
-off any unused power
-resources for this model. During a test (based on v6.18), if no patch 
-applied, power resource
-TBT1, WRST, BTRT and PXP (yea, the "NVMe #2 + NVIDIA" one) will be 
-marked "unused" and be
-turned off.
+See also commit 9b04d99788cf ("ACPI: PM:
+Do not turn of unused power resources on the Toshiba Click Mini") which
+is another almost identical case to this one.
 
-If PXP is treated as a sole exception (that is, other three are getting 
-turned off),
-during my test, didn't see any impact. However this patch just leaves 
-all "unused" power
-resources on, which I'm not sure if this is the best approach.
+Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221087
+Signed-off-by: Zhai Can <bczhc0@126.com>
+---
+ drivers/acpi/power.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Please let me know if there's any thoughts and suggestions.
-
-Best,
-zc
+diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+index 361a7721a6a8..7da5ae5594a7 100644
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -1113,6 +1113,19 @@ static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
+ 		},
+ 	},
++	{
++		/*
++		 * THUNDEROBOT ZERO laptop: Due to its SSDT table bug, power
++		 * resource 'PXP' will be shut down on initialization, making
++		 * the NVMe #2 and the NVIDIA dGPU both unavailable (they're
++		 * both controlled by 'PXP').
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "THUNDEROBOT"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ZERO"),
++		}
++
++	},
+ 	{}
+ };
+ 
+-- 
+2.53.0
 
 
