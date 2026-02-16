@@ -1,175 +1,229 @@
-Return-Path: <linux-acpi+bounces-20996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-20997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI9nBbJSk2nA3QEAu9opvQ
-	(envelope-from <linux-acpi+bounces-20996-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 18:24:02 +0100
+	id KLQUCs9dk2kr4AEAu9opvQ
+	(envelope-from <linux-acpi+bounces-20997-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 19:11:27 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7F1146B0B
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 18:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7660146E27
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 19:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15F163007884
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 17:24:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 218D03009885
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Feb 2026 18:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220042DAFCA;
-	Mon, 16 Feb 2026 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552D12D5C74;
+	Mon, 16 Feb 2026 18:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZbXL59ov"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hb9r7TO9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22B92D8780
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Feb 2026 17:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E56298987
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Feb 2026 18:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771262639; cv=none; b=QDBNVJfxcgfLA9L59+GKgPAko8+IGtkscLWqzQ+Qqjue3KpUzpwe69iS+WSmvP4oQdp82kV+zJPCZ56RmUUrsVH6BY6a8da9G6HNCA6+2tApEulAJUwnkMng1F2QPj24QosKZqBkQ1onNYcZED4IE4GoLCOwckz2LuvsvsaXOQg=
+	t=1771265483; cv=none; b=BoIDOrguafFRlutBsxjeMRQiSU+xnslpYu4tUXukE3jzJd+1KaK8PGGr+4PlpD0Yxw4+PvH45cgtul1CAHwXmATZjzt9VVA/LWcRFPR1MnqPvclociOFdxFK9Ogza1YapBhWRT2LbPJ+JSH8wKPvFU2RqXrahrWt4VrLEkk2wqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771262639; c=relaxed/simple;
-	bh=RINJtXiPmmUwqsBlwCjLXIf10CuuhqNUna2flXP8Uqc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WMqYk19ITl/ZwxHDeKRwjwLsCFRnpAV8+fkon663AAU0elFc66p8Fsy5/paJAnDksYsBTUX6STkCTpf0Pv4dZx2F6iKLNiMgS49E87vSji+PsIX3bGNrtxA4UKisg7T1CeYnvIlPZ9JEqbynt8io3VwFabkzeAGF6XJp38OcTXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZbXL59ov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957C4C116C6
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Feb 2026 17:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771262638;
-	bh=RINJtXiPmmUwqsBlwCjLXIf10CuuhqNUna2flXP8Uqc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZbXL59ovSPS/DdOQFRIt1EehnZk4wsNRE0obRrJOoenTKAV4+wD+bp2m+P9daPXYL
-	 +tzttrt96is53R89qgySTXo0ZQYdA3ixiZKm95JhDFgpFkGx4Udoy2od51FKqni/0c
-	 E6UCvaA1T7PscnZEml3GK7+vkc6j2itvKZIQvnd6ZKctb8pMy/GgfHAf8joX/ReKZp
-	 89dRuEy5byPPtuWCgptPSjpWMh6y+DJWqMNrkZ2URVelySZQ7HzCze11507d2L7jwE
-	 RKrspltuPwU9SYU6HjVki/uZyFU8zJxyVWXlQajZZAcY4QOlRMl0kjr4bqcDGyu3lh
-	 cMkvx5/9uhy1w==
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d4c9537f90so1929303a34.0
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Feb 2026 09:23:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVWEeLJgEYzFrHGlRV71SyVVzJ8S4jAcGdwuvG7MWujuaAdjaZlz8UnSDB21eCIRK/1+7eLr46JnTru@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpXwLQNK4afmG+GdWVNl4l1zJ1mhTK/YNUFbfVydAETJ4z7BaE
-	haQM1+PIM/4fDss4chhAo9FiP1N/GYQKkLzg/D+7AlzAkrPasU08HDMCFptV0Ae2bOjafCMC7VF
-	H64mG9TtzltNHRxH0VLg6XflxgFIAZeM=
-X-Received: by 2002:a05:6830:40c5:b0:7cf:d2f3:af8a with SMTP id
- 46e09a7af769-7d4c4b0cd83mr6421985a34.28.1771262637703; Mon, 16 Feb 2026
- 09:23:57 -0800 (PST)
+	s=arc-20240116; t=1771265483; c=relaxed/simple;
+	bh=cSCEF3PytEUhtrqx1ZL9yZAsXNXSd/VJdHuArUNHrik=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iItUKWd8P+7wN9sCtzGXHpj6RIJ14sKcM9Rvf+pDU5xqPkjHvfUU1UC7kJkaT6187H3eQA520JGfurfCLIEysxfk7myzD+R2SzMltAq2m9yWyugPJ/dUQNPAwliKxX7YMIMWuS9h/AQo0tvu+3ACOVxvTUNwJ2+RXvjlUhfPaZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hb9r7TO9; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-124afd03fd1so5024753c88.0
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Feb 2026 10:11:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1771265481; x=1771870281; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7qPeoOZLMpDPHLvXRZ2UOWF72e8RnmNaQnfGaf4d8jU=;
+        b=hb9r7TO94koSoC4Z2JHCT70nWqtWkl9i4vVEr/uEjeyLhmmT+tNRlyKSZLmYrvZHhu
+         eDPKCqGVFhc3jrSCQkVj53fKUGEhSYivMP1qcHoBLVFhFAcxDLprPObeURgLzXlZKCNN
+         cBABQhOU9KyeBJuBjHIShwIvLUb/R3zbNlsuQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771265481; x=1771870281;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7qPeoOZLMpDPHLvXRZ2UOWF72e8RnmNaQnfGaf4d8jU=;
+        b=TzLuMBDN2e8mFgg/3n6NYqW0DYijXFnKL3eH7VW228uq+4D6PoiMd/hWeX5DhBflOL
+         OOLvwtznWP41KHd7RSw7uVis5L1IX0t2x5xhYatPQtqvY6reGdqJsmmSt3EvO2Ot7Wl0
+         tit5Bab8yXNM4nIedyBeg3qzB6m94IIWez1VTUq1zwhMbnc9/4wUG/zLWTq65Dku+MR1
+         eDgHCKSdrq5el0kESpjqcZ2Gs2hKQd2NpTKJ3nB/PUeOjd+LSTo9g1UMF4yXVrvPv1Xy
+         iCh1/jbQ1P0KDqPPOWhW0+JUjCPFRiX5DAv4pQ5/0P2haUAnELGt51OHAXimHHdmMXBs
+         6P2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVN8pXA8AHhX/mMeYqrNy2lqV2rh6WD04Kd4KGf1B+EkERUX1uIm8nZeTaZQgQzIV/V5iSO+Cpta7T0@vger.kernel.org
+X-Gm-Message-State: AOJu0YyywLIAkVFy1zqbdACdht8nM9jmfIJNO/zpUojoiQJTRynv4Vjb
+	VVCko6XN0XisF7TnupsGiY6pNeC7MsdRnmoyiuc8k3sSjcba3UKEWuElcj+AvIVbkg==
+X-Gm-Gg: AZuq6aLtcGBWxHNLnMnx/PG/e6Vgww4q7hfzqoIukpr8EHkk2VA7YuAZT75ePQ/w5FF
+	Wmzg8u1/lhjL3f2ERxmG7WP3/dkEb06jzZSj9qxQse8sz+SPgBLt38AjdrP5mh/8MSkKd5yAcwc
+	1U9ZTMR0EHkzZoqxOhn7GAjH2m69YGzy9kkA7BYZj47p6V7MWKLPQsnLX+pm0WhOz/NXbaGNGUn
+	IW5xIYywBgqh+FBVMsG5617IViObsMfJ+K/ix+9rQOFjp1Af56vGB3giSoz8EpW/yx5E10aVTb8
+	FT/6S3ldCuo7ErvcE1hEW6Dv67RQkWYNMhQ2SY8lDf8LYzV2pnVGjS80XPnvvuPOOXUkohT3fW+
+	3iZk4LmkDJYqUnrFFMlS9bTSymU8BJqeEPbQdfA7Ai/XUdYt97tnUAji1iZA3oySkXyiMgKUcg1
+	6Gxkw4NIP5hvtCYUjrvAoQ5oj3/3lUJwvG46RYfQEeHZ5Hs/Sw0MKP9d3AshZOjm3wSH1TfA8lI
+	8Fd+rCMhjM=
+X-Received: by 2002:a05:7022:aa1:b0:119:e56b:91f6 with SMTP id a92af1059eb24-12741bd1202mr3136852c88.39.1771265481071;
+        Mon, 16 Feb 2026 10:11:21 -0800 (PST)
+Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:2953:dae1:1e39:73b3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c64282sm13724326c88.5.2026.02.16.10.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Feb 2026 10:11:20 -0800 (PST)
+From: Douglas Anderson <dianders@chromium.org>
+To: jassisinghbrar@gmail.com
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Frank.Li@nxp.com,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	andersson@kernel.org,
+	arm-scmi@vger.kernel.org,
+	cristian.marussi@arm.com,
+	daniel.baluta@nxp.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	jay.buddhabhatti@amd.com,
+	jonathanh@nvidia.com,
+	kernel@pengutronix.de,
+	konradybcio@kernel.org,
+	krzk@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	lucaswei@google.com,
+	marco.crivellari@suse.com,
+	mathieu.poirier@linaro.org,
+	michal.simek@amd.com,
+	nm@ti.com,
+	rafael@kernel.org,
+	robh@kernel.org,
+	shawn.guo@linaro.org,
+	sudeep.holla@kernel.org,
+	tglx@kernel.org,
+	thierry.reding@gmail.com
+Subject: [PATCH v3 00/15] mailbox: Stop sending NULL mailbox messages
+Date: Mon, 16 Feb 2026 10:09:37 -0800
+Message-ID: <20260216181002.3475421-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d0785a7c-7e4c-434b-af31-4ec6f690ed89@126.com> <20260214161452.2849346-1-bczhc0@126.com>
-In-Reply-To: <20260214161452.2849346-1-bczhc0@126.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 16 Feb 2026 18:23:40 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jQiE35RibRUnze7563Q_7RsQ=i3mzBSs1hPR15de8boA@mail.gmail.com>
-X-Gm-Features: AaiRm51BAs5kVNc_Ik3zkjCNPSf-xV-CixVyraMuJyGiXz2VdBucG2puDG-aEaA
-Message-ID: <CAJZ5v0jQiE35RibRUnze7563Q_7RsQ=i3mzBSs1hPR15de8boA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Add unused power resource quirk for THUNDEROBOT ZERO
-To: Zhai Can <bczhc0@126.com>
-Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-20996-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[chromium.org,nxp.com,kernel.org,pengutronix.de,vger.kernel.org,arm.com,gmail.com,lists.linux.dev,amd.com,nvidia.com,lists.infradead.org,google.com,suse.com,linaro.org,ti.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[126.com];
+	RCPT_COUNT_TWELVE(0.00)[34];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-20997-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD7F1146B0B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:mid,chromium.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B7660146E27
 X-Rspamd-Action: no action
 
-On Sat, Feb 14, 2026 at 5:15=E2=80=AFPM Zhai Can <bczhc0@126.com> wrote:
->
-> On the THUNDEROBOT ZERO laptop, the second NVMe slot and the discrete
-> NVIDIA GPU are both controlled by power-resource PXP. Due to the SSDT tab=
-le
-> bug (lack of reference), PXP will be shut dow as an "unused" power resour=
-ce
-> during initialization, making the NVMe slot #2 + NVIDIA both inaccessible=
-.
->
-> This issue was introduced by commit a1224f34d72a ("ACPI: PM: Check states=
- of
-> power resources during initialization"). Here are test results on
-> the three consecutive commits:
->
-> (bad again!) a1224f34d72a ACPI: PM: Check states of power resources durin=
-g initialization
-> (good) bc2836859643 ACPI: PM: Do not turn off power resources in unknown =
-state
-> (bad) 519d81956ee2 Linux 5.15-rc6
->
-> On commit bc2836859643 ("ACPI: PM: Do not turn off power resources in unk=
-nown state")
-> this was not an issue because the power resource state left UNKNOWN thus =
-being ignored.
->
-> See also commit 9b04d99788cf ("ACPI: PM:
-> Do not turn of unused power resources on the Toshiba Click Mini") which
-> is another almost identical case to this one.
->
-> Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during in=
-itialization")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D221087
-> Signed-off-by: Zhai Can <bczhc0@126.com>
-> ---
->  drivers/acpi/power.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-> index 361a7721a6a8..7da5ae5594a7 100644
-> --- a/drivers/acpi/power.c
-> +++ b/drivers/acpi/power.c
-> @@ -1113,6 +1113,19 @@ static const struct dmi_system_id dmi_leave_unused=
-_power_resources_on[] =3D {
->                         DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini=
- L9W-B"),
->                 },
->         },
-> +       {
-> +               /*
-> +                * THUNDEROBOT ZERO laptop: Due to its SSDT table bug, po=
-wer
-> +                * resource 'PXP' will be shut down on initialization, ma=
-king
-> +                * the NVMe #2 and the NVIDIA dGPU both unavailable (they=
-'re
-> +                * both controlled by 'PXP').
-> +                */
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "THUNDEROBOT"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "ZERO"),
-> +               }
-> +
-> +       },
->         {}
->  };
->
-> --
+As talked about in the first patch in this series, passing NULL as the
+'mssg' argument to mbox_send_message() ends up causing confusion and
+quirky behavior inside the mailbox core. Despite this, there are a
+number of drivers that pass NULL.
 
-Applied as 7.0-rc material, thanks!
+It is plausible that some of the drivers passing NULL may have been
+taking advantage of the quirks of the mailbox core. Specifically, they
+may have been taking advantage that calling "tx_done" wasn't truly
+necessary for NULL messages (it was a noop) or that NULL messages were
+passed onto the mailbox controller right away without queuing.
+
+This series introduces a new API call: mbox_ring_doorbell(). The new
+API call tries to mimic the specific quirks that were helpful in the
+old behavior and it's expected to be a nearly drop-in replacement.
+
+There are some subtle differences between the new call and the old
+behavior, but it's expected that all of these differences are only for
+cases where the old behavior made little sense. The description of the
+first patch details these differences.
+
+The series attempts to convert all in-tree users to stop passing NULL
+for mssg. As per above, there are some slight differences in behavior.
+If any of the patches are causing problems, they can safely be
+reverted while debugging the problems. Eventually, all code should be
+converted over to stop passing NULL mssg.
+
+Changes in v3:
+- Suggest mbox_ring_doorbell in the warning message
+- Updated patch description based on Cristian's response.
+
+Changes in v2:
+- Instead of just documenting NULL, introduce a new function
+
+Douglas Anderson (15):
+  mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
+  ACPI: PCC: Use mbox_ring_doorbell() instead of NULL message
+  firmware: arm_scmi: Use mbox_ring_doorbell() instead of NULL message
+  firmware: imx-dsp: Use mbox_ring_doorbell() instead of NULL message
+  firmware: tegra: bpmp: Use mbox_ring_doorbell() instead of NULL
+    message
+  irqchip/qcom-mpm: Use mbox_ring_doorbell() instead of NULL message
+  remoteproc: xlnx: Use mbox_ring_doorbell() instead of NULL message
+  rpmsg: qcom_glink_rpm: Use mbox_ring_doorbell() instead of NULL
+    message
+  rpmsg: glink: smem: Use mbox_ring_doorbell() instead of NULL message
+  rpmsg: qcom_smd: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: aoss: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: smp2p: Use mbox_ring_doorbell() instead of NULL message
+  soc: qcom: smsm: Use mbox_ring_doorbell() instead of NULL message
+  soc: ti: wkup_m3_ipc: Use mbox_ring_doorbell() instead of NULL message
+  drivers: firmware: xilinx: Use mbox_ring_doorbell() instead of NULL
+    message
+
+ drivers/acpi/acpi_pcc.c                       |  4 +-
+ .../firmware/arm_scmi/transports/mailbox.c    |  8 +-
+ drivers/firmware/imx/imx-dsp.c                |  2 +-
+ drivers/firmware/tegra/bpmp-tegra186.c        |  4 +-
+ drivers/irqchip/irq-qcom-mpm.c                |  2 +-
+ drivers/mailbox/mailbox.c                     | 82 ++++++++++++++++++-
+ drivers/remoteproc/xlnx_r5_remoteproc.c       |  2 +-
+ drivers/rpmsg/qcom_glink_rpm.c                |  3 +-
+ drivers/rpmsg/qcom_glink_smem.c               |  3 +-
+ drivers/rpmsg/qcom_smd.c                      | 13 +--
+ drivers/soc/qcom/qcom_aoss.c                  |  3 +-
+ drivers/soc/qcom/smp2p.c                      |  8 +-
+ drivers/soc/qcom/smsm.c                       |  8 +-
+ drivers/soc/ti/wkup_m3_ipc.c                  | 10 +--
+ drivers/soc/xilinx/zynqmp_power.c             |  2 +-
+ include/linux/mailbox_client.h                |  1 +
+ include/linux/mailbox_controller.h            |  4 +-
+ 17 files changed, 108 insertions(+), 51 deletions(-)
+
+-- 
+2.53.0.273.g2a3d683680-goog
+
 
