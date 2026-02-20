@@ -1,314 +1,253 @@
-Return-Path: <linux-acpi+bounces-21017-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21018-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AERJxTQl2mM8wIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21017-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 04:08:04 +0100
+	id wOL4DklWmGncGQMAu9opvQ
+	(envelope-from <linux-acpi+bounces-21018-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 13:40:41 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8E4164580
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 04:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993611678CF
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 13:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0865A301919C
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 03:08:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E53A730A455D
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Feb 2026 12:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404E3278156;
-	Fri, 20 Feb 2026 03:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B290A3446CB;
+	Fri, 20 Feb 2026 12:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BP9dPQV7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muJ0LUUE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B7EEEC0;
-	Fri, 20 Feb 2026 03:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8653451A9;
+	Fri, 20 Feb 2026 12:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771556881; cv=none; b=tPUN3PQtXYyJGB9HxN+h7aY1BVl9z4+m39UBjrlML+/uRNfeBqyCGz5d6OyeawHcv/WxYyVLqH9EyCt1LYalVPPF3TUKboCUBiDAzw9mozrGpgNdQLBTuzTutlR7Ajqn3NEdnouvbUXyZL42Waudv+mdGi+HVNU/IGTK4H8u2k8=
+	t=1771591094; cv=none; b=GdSnUO64JgKi2uVsFvqeIqvQMLmy1ZDcWhrZCZ6sS/oTYvnZpCywOVtpxmsDnJCzw76PoP69QJ4cqyQOXsPAC1mGycGZ+6JO+419ZAVIg/BJTvLGR14vJxuqanvUdyJPJuyljSSjjTlA6p0C7LRQMrq+Wgh3q4U9qoU/CCZ+wSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771556881; c=relaxed/simple;
-	bh=ouxEWjRTMhcNt7SnzAhjGI3OepmurQ6wScRQrvcuAk8=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=d4rLp+SDz8BodPzzIhpqln47/Q+iKNlKIZm2A895tm6wyEHAAoUgNMHgcCv0yjiKqGAllcRzjd8zm1LGbSYmO/3x3foCT04ieumjrkVbqhk15sI5ZKhaX+7scb5rQFXfib06dJv4x/YGMYUXaT9mJOHSGAR9KjXlRmI1ycqeWRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BP9dPQV7; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771556880; x=1803092880;
-  h=date:from:to:cc:subject:message-id;
-  bh=ouxEWjRTMhcNt7SnzAhjGI3OepmurQ6wScRQrvcuAk8=;
-  b=BP9dPQV7GggLihDXLUm7xlqCZz2xotZmNRZwIv7tx0uzPiaFx+OZnGxE
-   r/FxbrNKfmQCH9ezhZrF79R6OfQOgloyI8GITJmp5AwIwgjla3BRAzShM
-   u0roCyf0GOxQqPI85HiLbHACn1etl5Vld+KcwFW7aK6rtlvzXdE9MMmz0
-   1fwEaZenmNDiM8CI5o9okUmMt0QqWu0Y715Nn03Go+cWQtIGTmazPcx7V
-   x3UZfbkTSyVQ8pCtGfCdV4zBNOUoXKAjkYpX1CcPEzVHn5DaiQce0fs//
-   RC0vORjaquvQJfr0tuGtMU0Mgcc5V4Dg1B8RAoKSQ01dYOSlQzbzvspVP
-   Q==;
-X-CSE-ConnectionGUID: QbimhD0IS3aoN4ZLa6Yq5g==
-X-CSE-MsgGUID: EoGn44zsTCGiiV3nlIReYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="76491174"
-X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; 
-   d="scan'208";a="76491174"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 19:07:59 -0800
-X-CSE-ConnectionGUID: CA/5VykVSXSV17b/K/vzVA==
-X-CSE-MsgGUID: OqDARE5vT46z7hzFVi7ubQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; 
-   d="scan'208";a="213840886"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 19 Feb 2026 19:07:58 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vtGrz-000000013mG-32tk;
-	Fri, 20 Feb 2026 03:07:55 +0000
-Date: Fri, 20 Feb 2026 11:07:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 1ad4461bd86b79fa43de9034f3d68e174003768e
-Message-ID: <202602201104.o9NqDyPq-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1771591094; c=relaxed/simple;
+	bh=ZjuULHlzQuAgtwtu1i/dIHEtQred4jaY0d+Ndi+RozY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UZxFLIbMtfrIc4bQBAGeUIu3VqhBx6JNIv4pQd/wHPF8SNaSJVTYcE6nPaelHzUI9E3uQlN9zCuxS6eVkrlyZ7kZzxznZuZPxdodYjEMDTjGun1crdGToc/wc0Fb77/0NoBglXiuH/hfRMP/8oSePFEOezWt9mDRHw0yTeQGtzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muJ0LUUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F42C116D0;
+	Fri, 20 Feb 2026 12:38:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771591094;
+	bh=ZjuULHlzQuAgtwtu1i/dIHEtQred4jaY0d+Ndi+RozY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=muJ0LUUEqLQHdGPw35/9F+Jonu++NHAWi9MChVKsQ1xGMI53iPPW0AybYzi5trjv7
+	 3E2pZmnsZy+GwM2fjsKW4/sKkmXGKErLTPZAoglnsbLDW/mRZORtibFl8OaNjvNPIZ
+	 fXUWSD9wCdKJmV2R8wzPYYscnZapEWxyCp+h5d69sVJrqVlOtA/yLsYMQyS7f/YlOL
+	 Ed2Hfs2hL6LcnzoyIAeYD6w/chwO4jZCRhbFwq07n7NpYRtXzNPpG8GYZht6QOUFLY
+	 RKMgEMoJH5EobRRDm9cQ+EEoJMl4/asUrU6uz/x4Jc/216oSmTIPYlEiem1j/+LwNO
+	 H4UefiXiOrA9Q==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Yauhen Kharuzhy <jekhor@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.12] ACPI: x86: Force enabling of PWM2 on the Yogabook YB1-X90
+Date: Fri, 20 Feb 2026 07:37:54 -0500
+Message-ID: <20260220123805.3371698-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260220123805.3371698-1-sashal@kernel.org>
+References: <20260220123805.3371698-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-21018-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21017-lists,linux-acpi=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: DE8E4164580
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 993611678CF
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 1ad4461bd86b79fa43de9034f3d68e174003768e  Merge branch 'pm-runtime' into bleeding-edge
+From: Yauhen Kharuzhy <jekhor@gmail.com>
 
-elapsed time: 762m
+[ Upstream commit a8c975302868c716afef0f50467bebbd069a35b8 ]
 
-configs tested: 189
-configs skipped: 2
+The PWM2 on YB1-X90 tablets is used for keyboard backlight control but
+it is disabled in the ACPI DSDT table. Add it to the override_status_ids
+list to allow keyboard function control driver
+(drivers/platform/x86/lenovo/yogabook.c) to use it.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+Link: https://patch.msgid.link/20260211222242.4101162-1-jekhor@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-23
-arc                   randconfig-001-20260220    gcc-8.5.0
-arc                   randconfig-002-20260220    gcc-8.5.0
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                       imx_v6_v7_defconfig    gcc-15.2.0
-arm                            mmp2_defconfig    gcc-15.2.0
-arm                   randconfig-001-20260220    gcc-8.5.0
-arm                   randconfig-002-20260220    gcc-8.5.0
-arm                   randconfig-003-20260220    gcc-8.5.0
-arm                   randconfig-004-20260220    gcc-8.5.0
-arm                        realview_defconfig    gcc-15.2.0
-arm                           sama5_defconfig    gcc-15.2.0
-arm                    vt8500_v6_v7_defconfig    gcc-15.2.0
-arm                         wpcm450_defconfig    gcc-15.2.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260220    gcc-8.5.0
-arm64                 randconfig-002-20260220    gcc-8.5.0
-arm64                 randconfig-003-20260220    gcc-8.5.0
-arm64                 randconfig-004-20260220    gcc-8.5.0
-arm64                           snd_defconfig    gcc-15.2.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                  randconfig-001-20260220    gcc-8.5.0
-csky                  randconfig-002-20260220    gcc-8.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon               randconfig-001-20260220    clang-23
-hexagon               randconfig-002-20260220    clang-23
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260220    clang-20
-i386        buildonly-randconfig-002-20260220    clang-20
-i386        buildonly-randconfig-003-20260220    clang-20
-i386        buildonly-randconfig-004-20260220    clang-20
-i386        buildonly-randconfig-005-20260220    clang-20
-i386        buildonly-randconfig-006-20260220    clang-20
-i386                  randconfig-001-20260220    clang-20
-i386                  randconfig-002-20260220    clang-20
-i386                  randconfig-003-20260220    clang-20
-i386                  randconfig-004-20260220    clang-20
-i386                  randconfig-005-20260220    clang-20
-i386                  randconfig-006-20260220    clang-20
-i386                  randconfig-007-20260220    clang-20
-i386                  randconfig-011-20260220    gcc-14
-i386                  randconfig-012-20260220    gcc-14
-i386                  randconfig-013-20260220    gcc-14
-i386                  randconfig-014-20260220    gcc-14
-i386                  randconfig-015-20260220    gcc-14
-i386                  randconfig-016-20260220    gcc-14
-i386                  randconfig-017-20260220    gcc-14
-loongarch                        allmodconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch                loongson32_defconfig    gcc-15.2.0
-loongarch             randconfig-001-20260220    clang-23
-loongarch             randconfig-002-20260220    clang-23
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                                defconfig    clang-19
-m68k                       m5249evb_defconfig    gcc-15.2.0
-m68k                            q40_defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                          ath25_defconfig    gcc-15.2.0
-mips                        bcm47xx_defconfig    gcc-15.2.0
-mips                         db1xxx_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-23
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260220    clang-23
-nios2                 randconfig-002-20260220    clang-23
-openrisc                         allmodconfig    clang-23
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-23
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260220    clang-23
-parisc                randconfig-002-20260220    clang-23
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                    amigaone_defconfig    gcc-15.2.0
-powerpc                    ge_imp3a_defconfig    gcc-15.2.0
-powerpc                        icon_defconfig    gcc-15.2.0
-powerpc                      mgcoge_defconfig    gcc-15.2.0
-powerpc                   motionpro_defconfig    gcc-15.2.0
-powerpc                    mvme5100_defconfig    gcc-15.2.0
-powerpc               randconfig-001-20260220    clang-23
-powerpc               randconfig-002-20260220    clang-23
-powerpc                    socrates_defconfig    gcc-15.2.0
-powerpc                  storcenter_defconfig    gcc-15.2.0
-powerpc64             randconfig-001-20260220    clang-23
-powerpc64             randconfig-002-20260220    clang-23
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv             nommu_k210_sdcard_defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260220    gcc-11.5.0
-riscv                 randconfig-002-20260220    gcc-11.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260220    gcc-11.5.0
-s390                  randconfig-002-20260220    gcc-11.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                         apsh4a3a_defconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                          lboxre2_defconfig    gcc-15.2.0
-sh                    randconfig-001-20260220    gcc-11.5.0
-sh                    randconfig-002-20260220    gcc-11.5.0
-sh                           se7780_defconfig    gcc-15.2.0
-sh                             shx3_defconfig    gcc-15.2.0
-sh                          urquell_defconfig    gcc-15.2.0
-sparc                             allnoconfig    clang-23
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260220    clang-20
-sparc                 randconfig-002-20260220    clang-20
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260220    clang-20
-sparc64               randconfig-002-20260220    clang-20
-um                               alldefconfig    gcc-15.2.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260220    clang-20
-um                    randconfig-002-20260220    clang-20
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260220    clang-20
-x86_64      buildonly-randconfig-002-20260220    clang-20
-x86_64      buildonly-randconfig-003-20260220    clang-20
-x86_64      buildonly-randconfig-004-20260220    clang-20
-x86_64      buildonly-randconfig-005-20260220    clang-20
-x86_64      buildonly-randconfig-006-20260220    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260220    gcc-14
-x86_64                randconfig-002-20260220    gcc-14
-x86_64                randconfig-003-20260220    gcc-14
-x86_64                randconfig-004-20260220    gcc-14
-x86_64                randconfig-005-20260220    gcc-14
-x86_64                randconfig-006-20260220    gcc-14
-x86_64                randconfig-071-20260220    gcc-14
-x86_64                randconfig-072-20260220    gcc-14
-x86_64                randconfig-073-20260220    gcc-14
-x86_64                randconfig-074-20260220    gcc-14
-x86_64                randconfig-075-20260220    gcc-14
-x86_64                randconfig-076-20260220    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                           allyesconfig    clang-23
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260220    clang-20
-xtensa                randconfig-002-20260220    clang-20
+LLM Generated explanations, may be completely bogus:
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Now I have a comprehensive picture. Let me analyze this commit.
+
+## Analysis
+
+### 1. Commit Message Analysis
+
+The commit adds an entry to the `override_status_ids` list in
+`drivers/acpi/x86/utils.c` to force-enable the PWM2 ACPI device on
+Lenovo Yoga Book YB1-X90 tablets. The PWM2 is used for keyboard
+backlight control but is disabled in the ACPI DSDT table. Without this
+override, the yogabook platform driver cannot control the keyboard
+backlight.
+
+### 2. Code Change Analysis
+
+The change is a straightforward addition of a `PRESENT_ENTRY_HID` entry
+to the existing quirk table. It:
+- Targets HID `"80862289"` (Intel Cherry Trail PWM), UID `"2"` (PWM2
+  specifically)
+- Scopes to `INTEL_ATOM_AIRMONT` CPU platform (Cherry Trail)
+- Narrows with 3 DMI_EXACT_MATCH entries specific to the Yoga Book
+  Android variant (YETI-11)
+- This is the exact same pattern as the existing Xiaomi Mi Pad 2 entry
+  (lines 78-82) which also enables PWM2 for touchkey backlight control
+
+The change is ~12 lines including the comment. It follows an
+established, well-understood pattern that's been used in this file for
+years.
+
+### 3. Classification: Hardware Quirk
+
+This is a **hardware quirk/workaround** — one of the explicitly allowed
+exception categories for stable backports. The device has broken ACPI
+firmware (DSDT disables a needed device), and this quirk works around it
+by forcing the device present.
+
+### 4. Scope and Risk Assessment
+
+- **Very small change**: ~12 lines added to a data table
+- **Zero risk to other hardware**: The DMI_EXACT_MATCH conditions ensure
+  this only triggers on the exact Lenovo Yoga Book YB1-X90 (YETI-11
+  variant)
+- **Well-tested pattern**: Identical to the Xiaomi Mi Pad 2 entry that's
+  been in the kernel since v4.18
+- **No code logic changes**: Only adds data to an existing table
+
+### 5. Dependencies
+
+The change depends on:
+- The `override_status_ids` mechanism — present since at least v4.x
+- The yogabook platform driver
+  (`drivers/platform/x86/lenovo/yogabook.c`) — added in v6.6 via commit
+  `6df1523fa0b79`
+- The keyboard backlight support in the platform driver — added in v6.6
+  via commit `fc4f1d88bc6b1`
+
+The prerequisite code exists in all current stable trees (6.6+). The
+file path changed recently (moved to `lenovo/` subdirectory in commit
+`651b57dd40871`), so older stable trees may need minor context
+adjustment, but the data-table addition itself is trivially portable.
+
+### 6. User Impact
+
+Without this quirk, the keyboard backlight on Lenovo Yoga Book YB1-X90
+tablets doesn't work under Linux. This is a real hardware enablement
+issue for a specific consumer tablet.
+
+### 7. Stable Suitability
+
+- **Obviously correct**: Follows the exact same pattern as existing
+  entries
+- **Fixes a real issue**: Keyboard backlight doesn't work without it
+- **Small and contained**: Data-only addition to a quirk table
+- **No new features**: Enables existing functionality on specific
+  hardware
+- **No new APIs**: Pure internal quirk
+
+### Verification
+
+- Verified `fc4f1d88bc6b1` (keyboard backlight platform driver) is in
+  v6.6 via `git merge-base --is-ancestor`
+- Verified `6df1523fa0b79` (platform driver support) is in v6.6 via `git
+  merge-base --is-ancestor`
+- Verified `1a1e7540cf501` (ACPI quirk for i2c clients) is in v6.6 via
+  `git merge-base --is-ancestor`
+- Verified the existing Xiaomi Mi Pad 2 PWM2 entry (`b72cd8e0fa34d`) is
+  in v6.6 via `git merge-base --is-ancestor`, confirming the
+  infrastructure exists
+- Read `drivers/acpi/x86/utils.c` lines 55-104 to confirm the existing
+  code structure and similar entries
+- Confirmed via git log that the commit `a8c975302868c` exists and
+  matches the described change
+- The agent exploration confirmed the yogabook platform driver at
+  `drivers/platform/x86/lenovo/yogabook.c` uses `devm_pwm_get(dev,
+  "pwm_soc_lpss_2")` at line 488, which is the PWM2 device being enabled
+  by this quirk
+
+This is a textbook hardware quirk addition — small, safe, DMI-scoped to
+one specific device, follows an established pattern, and enables real
+hardware functionality for users. It meets all stable kernel criteria.
+
+**YES**
+
+ drivers/acpi/x86/utils.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 4ee30c2897a2b..418951639f511 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -81,6 +81,18 @@ static const struct override_status_id override_status_ids[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
+ 	      }),
+ 
++	/*
++	 * Lenovo Yoga Book uses PWM2 for touch keyboard backlight control.
++	 * It needs to be enabled only for the Android device version (YB1-X90*
++	 * aka YETI-11); the Windows version (YB1-X91*) uses ACPI control
++	 * methods.
++	 */
++	PRESENT_ENTRY_HID("80862289", "2", INTEL_ATOM_AIRMONT, {
++		DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++		DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++		DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
++	      }),
++
+ 	/*
+ 	 * The INT0002 device is necessary to clear wakeup interrupt sources
+ 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
+-- 
+2.51.0
+
 
