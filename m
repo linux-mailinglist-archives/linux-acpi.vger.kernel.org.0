@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-21047-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21046-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNIABeoQm2lArgMAu9opvQ
-	(envelope-from <linux-acpi+bounces-21047-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 15:21:30 +0100
+	id 2FgBLToRm2lArgMAu9opvQ
+	(envelope-from <linux-acpi+bounces-21046-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 15:22:50 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E1716F56A
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 15:21:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7A516F589
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 15:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17591300AB39
-	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 14:21:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC9E2303CC39
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Feb 2026 14:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0860B350298;
-	Sun, 22 Feb 2026 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E85034FF5C;
+	Sun, 22 Feb 2026 14:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFE0iNbR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtl4Tf52"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90A0350282;
-	Sun, 22 Feb 2026 14:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD4E26ACC;
+	Sun, 22 Feb 2026 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771770086; cv=none; b=UQORnN8qyXlvWmj23rMcQdpOYfqgwtrE1YKmGbHtC8ocQu+m+4NheiHneGWTulML7rUX/Gx+d8jVAcXsn/fh6t9WEwJJQIhmaSn4Q/czbGNzLcbvzpSlAKCaLF+1UAJU/2Ofc1+KXVLpyjktVZwUhMjbooH5rkb1wEBsbgtWpvY=
+	t=1771770083; cv=none; b=o6X602T2r0D83STDRASI3M677F3NwyUlSk67Kj6ziE/e+6eFdcd7vEANSG8mZiWbl6tBWjIY8/DLhv3PgzpWQdUZ4EqUqdSU7QwASPZFoJa3nOX4D4kGn9q0C8zJRwVF74DSeuR6f8Md7HzoAN5R8MbdLf3AEQcK2tunvqIGrGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771770086; c=relaxed/simple;
-	bh=Z1GYpT7kRexzOKqSnvyNE61CrfrquC7xWfy+vlP+gwQ=;
+	s=arc-20240116; t=1771770083; c=relaxed/simple;
+	bh=9GoprUYSUZssZ1PQaBB39NYf3vii5X9keDoAbe8U6Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bTCDCwSbO4MoV36dSn6zcTaqMhkJzls3evwS2zfbSZYtxHt1gS6cWNCru5SSKAaHzOFUXcrqv3A68Kbloj9INfw8blyBvvadIdVLiVLkFKsAfEh6ZwjVQSkxb2ASHQo6UerdOo0DyEtCRuwSs5p3ZUprpqpBoPvo08X9rDIi7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFE0iNbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038D9C19424;
-	Sun, 22 Feb 2026 14:21:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LNceT4DEKiBwd4CKD2IvKmMrNuh6A81hzNyp4vQ4ycA6BdgGoZpgxt4Cl8Mc2zpYdOWuMbOYuBMjRN7KestRze6XUwRdTzDvq8VfNlhE7W758pIscN1UTMO0Q0HmsoMyj2DqyW6r/pjmwruDmf26E8OrOpgObX7LGXEIpqH3ONk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtl4Tf52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B253EC19424;
+	Sun, 22 Feb 2026 14:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771770086;
-	bh=Z1GYpT7kRexzOKqSnvyNE61CrfrquC7xWfy+vlP+gwQ=;
+	s=k20201202; t=1771770082;
+	bh=9GoprUYSUZssZ1PQaBB39NYf3vii5X9keDoAbe8U6Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFE0iNbRPEe3RyimAA/wkaResDZb2I7Ih1OzOoc7WW9Qqx+CLYJLFcwu75Rmu+T/S
-	 eSXiKdfzMZXZyW3bGb6dVyxMv3XuTjetS47Js7jvEcvuRkNuIKlG5sw34ueKORxYbv
-	 5OKzto1pg6XRO+3M17NK599NXBZ6qaDZ0qAi/NIV9iKFRFcp3Zwqi/JnzT/BaWy/SH
-	 9E51fZQE7Wtaxmzox8mtx/meTr0eBfEz2JTKeOLK0c5KZzxSeB79DcWaLXUJ6aNDtl
-	 lhI6X+sPCDUzaEZMAQfCtRU8+5dFvnpeDCYAOw7vK+H20hXs48+9+Bdpg0mZsLf76I
-	 4nqcMJp9RO12A==
+	b=jtl4Tf527xC1n+aF7rudJ27ftyA6r/s6nsH4R3D/yNeNWC212dD2sTFundLmEnjmx
+	 7a4p13hpgyPEnW2qDqHkDAJlJ0VEyDhzzodBaQGuXNUz3CoZKN/iWgeLT6AGT0DsJG
+	 ly7SuajhKvpM5JHYq+ohIsW3R6C06Dn0W62FyVHV2lbmruT2Vq34mJI/vK3KoKra/I
+	 PnDyBW2y513wa82oobhamp68K6+vb5PV/Ena6Q7tevQdH9PMwAoIFB8epxAClZRI8G
+	 c4pjZLHS/3zulvyr1PQBzL2ZVhnpvZG4jPDao+6kcb+1jH47sVaLsNNVfjWWjJrJIC
+	 CiXgE8/QhI//A==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
  Danilo Krummrich <dakr@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v0 1/6] ACPI: TAD: Create one attribute group
-Date: Sun, 22 Feb 2026 15:15:37 +0100
-Message-ID: <5063303.GXAFRqVoOG@rafael.j.wysocki>
+Subject: [PATCH v0 2/6] ACPI: TAD: Use __free() for cleanup in time_store()
+Date: Sun, 22 Feb 2026 15:16:19 +0100
+Message-ID: <2266821.irdbgypaU6@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <4727679.LvFx2qVVIh@rafael.j.wysocki>
 References: <4727679.LvFx2qVVIh@rafael.j.wysocki>
@@ -67,12 +67,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	CTE_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21047-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21046-lists,linux-acpi=lfdr.de];
 	TO_DN_ALL(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
@@ -87,162 +87,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rafael.j.wysocki:mid,intel.com:email]
-X-Rspamd-Queue-Id: E5E1716F56A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rafael.j.wysocki:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 0E7A516F589
 X-Rspamd-Action: no action
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Instead of creating three attribute groups, one for each supported
-subset of capabilities, create just one and use an .is_visible()
-callback in it to decide which attributes will be visible.
+Use __free() for the automatic freeing of memory pointed to by local
+variable str in time_store() which allows the code to become somewhat
+easier to follow.
 
-Also stop failing proble if the AC wakeup capability is not
-supported.
+No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpi_tad.c |   85 +++++++++++++++++++-----------------------------
- 1 file changed, 35 insertions(+), 50 deletions(-)
+ drivers/acpi/acpi_tad.c |   28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
 --- a/drivers/acpi/acpi_tad.c
 +++ b/drivers/acpi/acpi_tad.c
-@@ -249,14 +249,6 @@ static ssize_t time_show(struct device *
- 
- static DEVICE_ATTR_RW(time);
- 
--static struct attribute *acpi_tad_time_attrs[] = {
--	&dev_attr_time.attr,
--	NULL,
--};
--static const struct attribute_group acpi_tad_time_attr_group = {
--	.attrs	= acpi_tad_time_attrs,
--};
--
- static int acpi_tad_wake_set(struct device *dev, char *method, u32 timer_id,
- 			     u32 value)
+@@ -167,57 +167,57 @@ static ssize_t time_store(struct device
+ 			  const char *buf, size_t count)
  {
-@@ -486,17 +478,6 @@ static ssize_t ac_status_show(struct dev
+ 	struct acpi_tad_rt rt;
+-	char *str, *s;
+-	int val, ret = -ENODATA;
++	int val, ret;
++	char *s;
  
- static DEVICE_ATTR_RW(ac_status);
+-	str = kmemdup_nul(buf, count, GFP_KERNEL);
++	char *str __free(kfree) = kmemdup_nul(buf, count, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
  
--static struct attribute *acpi_tad_attrs[] = {
--	&dev_attr_caps.attr,
--	&dev_attr_ac_alarm.attr,
--	&dev_attr_ac_policy.attr,
--	&dev_attr_ac_status.attr,
--	NULL,
--};
--static const struct attribute_group acpi_tad_attr_group = {
--	.attrs	= acpi_tad_attrs,
--};
--
- static ssize_t dc_alarm_store(struct device *dev, struct device_attribute *attr,
- 			      const char *buf, size_t count)
- {
-@@ -545,14 +526,45 @@ static ssize_t dc_status_show(struct dev
+ 	s = acpi_tad_rt_next_field(str, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
  
- static DEVICE_ATTR_RW(dc_status);
+ 	rt.year = val;
  
--static struct attribute *acpi_tad_dc_attrs[] = {
-+static struct attribute *acpi_tad_attrs[] = {
-+	&dev_attr_caps.attr,
-+	&dev_attr_ac_alarm.attr,
-+	&dev_attr_ac_policy.attr,
-+	&dev_attr_ac_status.attr,
- 	&dev_attr_dc_alarm.attr,
- 	&dev_attr_dc_policy.attr,
- 	&dev_attr_dc_status.attr,
-+	&dev_attr_time.attr,
- 	NULL,
- };
--static const struct attribute_group acpi_tad_dc_attr_group = {
--	.attrs	= acpi_tad_dc_attrs,
-+
-+static umode_t acpi_tad_attr_is_visible(struct kobject *kobj,
-+					struct attribute *a, int n)
-+{
-+	struct acpi_tad_driver_data *dd = dev_get_drvdata(kobj_to_dev(kobj));
-+
-+	if (a == &dev_attr_caps.attr)
-+		return a->mode;
-+
-+	if ((dd->capabilities & ACPI_TAD_AC_WAKE) &&
-+	    (a == &dev_attr_ac_alarm.attr || a == &dev_attr_ac_policy.attr ||
-+	     a == &dev_attr_ac_status.attr))
-+		return a->mode;
-+
-+	if ((dd->capabilities & ACPI_TAD_DC_WAKE) &&
-+	    (a == &dev_attr_dc_alarm.attr || a == &dev_attr_dc_policy.attr ||
-+	     a == &dev_attr_dc_status.attr))
-+		return a->mode;
-+
-+	if ((dd->capabilities & ACPI_TAD_RT) && a == &dev_attr_time.attr)
-+		return a->mode;
-+
-+	return 0;
-+}
-+
-+static const struct attribute_group acpi_tad_attr_group = {
-+	.attrs	= acpi_tad_attrs,
-+	.is_visible = acpi_tad_attr_is_visible,
- };
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
  
- static int acpi_tad_disable_timer(struct device *dev, u32 timer_id)
-@@ -567,12 +579,6 @@ static void acpi_tad_remove(struct platf
+ 	rt.month = val;
  
- 	device_init_wakeup(dev, false);
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
  
--	if (dd->capabilities & ACPI_TAD_RT)
--		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
--
--	if (dd->capabilities & ACPI_TAD_DC_WAKE)
--		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
--
- 	sysfs_remove_group(&dev->kobj, &acpi_tad_attr_group);
+ 	rt.day = val;
  
- 	scoped_guard(pm_runtime_noresume, dev) {
-@@ -607,11 +613,6 @@ static int acpi_tad_probe(struct platfor
- 		return -ENODEV;
- 	}
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
  
--	if (!(caps & ACPI_TAD_AC_WAKE)) {
--		dev_info(dev, "Unsupported capabilities\n");
--		return -ENODEV;
--	}
--
- 	if (!acpi_has_method(handle, "_PRW")) {
- 		dev_info(dev, "Missing _PRW\n");
- 		return -ENODEV;
-@@ -643,24 +644,8 @@ static int acpi_tad_probe(struct platfor
+ 	rt.hour = val;
  
- 	ret = sysfs_create_group(&dev->kobj, &acpi_tad_attr_group);
- 	if (ret)
--		goto fail;
--
--	if (caps & ACPI_TAD_DC_WAKE) {
--		ret = sysfs_create_group(&dev->kobj, &acpi_tad_dc_attr_group);
--		if (ret)
--			goto fail;
--	}
--
--	if (caps & ACPI_TAD_RT) {
--		ret = sysfs_create_group(&dev->kobj, &acpi_tad_time_attr_group);
--		if (ret)
--			goto fail;
--	}
--
--	return 0;
-+		acpi_tad_remove(pdev);
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
  
--fail:
--	acpi_tad_remove(pdev);
- 	return ret;
+ 	rt.minute = val;
+ 
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
+ 
+ 	rt.second = val;
+ 
+ 	s = acpi_tad_rt_next_field(s, &val);
+ 	if (!s)
+-		goto out_free;
++		return -ENODATA;
+ 
+ 	rt.tz = val;
+ 
+ 	if (kstrtoint(s, 10, &val))
+-		goto out_free;
++		return -ENODATA;
+ 
+ 	rt.daylight = val;
+ 
+@@ -226,10 +226,10 @@ static ssize_t time_store(struct device
+ 	memset(rt.padding, 0, 3);
+ 
+ 	ret = acpi_tad_set_real_time(dev, &rt);
++	if (ret)
++		return ret;
+ 
+-out_free:
+-	kfree(str);
+-	return ret ? ret : count;
++	return count;
  }
  
+ static ssize_t time_show(struct device *dev, struct device_attribute *attr,
 
 
 
