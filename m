@@ -1,56 +1,57 @@
-Return-Path: <linux-acpi+bounces-21057-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21056-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOCpHMtznGnuHgQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21057-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:35:39 +0100
+	id kEBJIrpznGmcGAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21056-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:35:22 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98821178CD7
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C425C178CB7
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:35:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 202EE303E309
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:34:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D76AE302CC27
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54802F5321;
-	Mon, 23 Feb 2026 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1BC2F28E3;
+	Mon, 23 Feb 2026 15:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a831mw6W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNPA5X4v"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FD72EDD7D;
-	Mon, 23 Feb 2026 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6562EAB72;
+	Mon, 23 Feb 2026 15:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860844; cv=none; b=GJtM6yAeGQ+xDQZ3CJp/+NKoLou3VGznJobHVjbEfaXJzC+lTJk61alD2ijJ7yUdYe9uFgE+/kBZqUfC6THqwR3oGWWSJTGmHZCYcrpp3/oNbiEWPr1dung6JpId3q2EoI257fGkUhNyNqxpwD0ZAxg9djvX+3MJSayEJ9e75M0=
+	t=1771860841; cv=none; b=AQ8aVj26AkoXP4qfDNzutsMR+OCdUVixXqmw+Nrjwk4FnX/tt4sZpfc+q3c0riuVZ4rZDRkJBoh31plf36CxdnyXAvjKUTjjXXHCDSBvyaxjLZWGs+O5YN1RfjWSd8u77ZcW3fd8UTX6IIwaiTt0p5K+OWKwg8av5o9r1YTe59M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860844; c=relaxed/simple;
-	bh=1P6a0/lYu7VTCktfcaeO7oH0q+boqRyuVN3mhuLyv+s=;
+	s=arc-20240116; t=1771860841; c=relaxed/simple;
+	bh=PJVMTnYCsK7M4ZNWVcZ9K240qBRGEtoibgHHQw8BGpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kgBys7D1llGht0zoPp/HCSEpG9v+OjpIvDX8oFju4/nZN+uSKZ0Y2kQ89uSNr0K5ShjkdrUuZOTZXzy3QsFCwMsS78WF2PGX/xraee/Nyh22VVfAjrFx/VOFpLSKHE7HBI5QnF552d7bdz6Zg/44siRorXFAJkLbRfKOnpsvjU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a831mw6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EF5C116C6;
-	Mon, 23 Feb 2026 15:34:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qEYUyXyfWrh25nh6FRe/aUC3ioqurFsw18HGm3Fm8je839lh06I2fijmqyzNFP1NRFTL+haVuxgNh2jcL51RUZsCDxK4dcFuScCIKOB5ATPYfyyiD62Bbfk15radPVtpoImBpTZbH/ZHB7IZjEBImvc4maryHEmzl7U42O6h6rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNPA5X4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FE0C116D0;
+	Mon, 23 Feb 2026 15:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771860844;
-	bh=1P6a0/lYu7VTCktfcaeO7oH0q+boqRyuVN3mhuLyv+s=;
+	s=k20201202; t=1771860841;
+	bh=PJVMTnYCsK7M4ZNWVcZ9K240qBRGEtoibgHHQw8BGpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a831mw6WaD/pMWsKssEfBVdLc/R1uo593RErJsmy8AvGBcIUd4Bc4guKmGHu5JE3o
-	 gRhOXb9jOiBMvYNIwbbwD8t6//0xfoxPMr8PInGHbdOHG/bsHG7jrxiiwUJbaJPmKb
-	 fDcOcwD8bau0YVyBq6crCmGTMBjf8P6L1MtjttlNDH2uVqDeErq1tOPfzM13JTmcrl
-	 B9q/1qW3jn9LgJT52NpJ/qo5DYzDTSkkCx1MbyT5kyjWSlFftNnNOtKW5gpjIueYXS
-	 scOwmGqmTrx0evx3oY1mOt1zWyCYj9QkgDkfkKhz1g5q71j0CVMXgthbPg//OWBiOY
-	 CFzPxZ5fVtA5g==
+	b=tNPA5X4vDpDr7kJxf/auwK6iVSkzeoJ9CaIWppNW5jrols91b2ur8dVfBvN0yX2Hw
+	 QYD91KocQFsTrlhER2kt1PaVtw3fThHmdJN6WSXf7w3Dy5GGg7RyqIPOn00/XZgE5Q
+	 jheuImZVsXw2tjfbJnC90CuUtHw7DvMsPt27kxucCfTx7fSnhLW92LhR1KJ6X1p0nH
+	 DPxZt4/hnqeKt3UwHEDFwjt6Qu4hiptsybRuUxkDor9xNyp039EjytrqiAQZb1JtDC
+	 soZcBQO7FZ2kRsCVWFy4eyNgng29D+7tJOJs9qFYuFLXVPvR5QRaplCcycIkgCx9W1
+	 1T28WgdCOmQ4Q==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>,
  linux-rtc@vger.kernel.org, Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v1 3/8] ACPI: x86: cmos_rtc: Create a CMOS RTC platform device
-Date: Mon, 23 Feb 2026 16:29:37 +0100
-Message-ID: <1962427.tdWV9SEqCh@rafael.j.wysocki>
+Subject:
+ [PATCH v1 4/8] ACPI: x86/rtc-cmos: Use platform device for driver binding
+Date: Mon, 23 Feb 2026 16:30:21 +0100
+Message-ID: <13969123.uLZWGnKmhe@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <5983325.DvuYhMxLoT@rafael.j.wysocki>
 References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
@@ -76,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-21057-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21056-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -91,93 +92,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 98821178CD7
+X-Rspamd-Queue-Id: C425C178CB7
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Make the CMOS RTC ACPI scan handler create a platform device that will
-be used subsequently by rtc-cmos for driver binding on x86 systems with
-ACPI and update add_rtc_cmos() to skip registering a fallback platform
-device for the CMOS RTC when the above one has been registered.
+Modify the rtc-cmos driver to bind to a platform device on systems with
+ACPI via acpi_match_table and advertise the CMOST RTC ACPI device IDs
+for driver auto-loading.  Note that adding the requisite device IDs to
+it and exposing them via MODULE_DEVICE_TABLE() is sufficient for this
+purpose.
+
+Since the ACPI device IDs in question are the same as for the CMOS RTC
+ACPI scan handler, put them into a common header file and use the
+definition from there in both places.
+
+Additionally, to prevent a PNP device from being created for the CMOS
+RTC if a platform one is present already, make is_cmos_rtc_device()
+check cmos_rtc_platform_device_present introduced previously.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- arch/x86/kernel/rtc.c       | 4 ++++
- drivers/acpi/x86/cmos_rtc.c | 8 ++++++++
- include/linux/acpi.h        | 4 ++++
- 3 files changed, 16 insertions(+)
+ drivers/acpi/acpi_pnp.c     |  2 +-
+ drivers/acpi/x86/cmos_rtc.c |  5 +----
+ drivers/rtc/rtc-cmos.c      | 10 ++++++++++
+ include/linux/acpi.h        |  6 ++++++
+ 4 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/rtc.c b/arch/x86/kernel/rtc.c
-index 51a849a79c98..b112178e8185 100644
---- a/arch/x86/kernel/rtc.c
-+++ b/arch/x86/kernel/rtc.c
-@@ -2,6 +2,7 @@
- /*
-  * RTC related functions
-  */
-+#include <linux/acpi.h>
- #include <linux/platform_device.h>
- #include <linux/mc146818rtc.h>
- #include <linux/export.h>
-@@ -146,6 +147,9 @@ static __init int add_rtc_cmos(void)
- 		}
- 	}
- #endif
-+	if (cmos_rtc_platform_device_present)
-+		return 0;
-+
- 	if (!x86_platform.legacy.rtc)
- 		return -ENODEV;
- 
-diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
-index 45db7e51cbe6..bdd66dfd4a44 100644
---- a/drivers/acpi/x86/cmos_rtc.c
-+++ b/drivers/acpi/x86/cmos_rtc.c
-@@ -24,6 +24,8 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
- 	{}
- };
- 
-+bool cmos_rtc_platform_device_present;
-+
- static bool cmos_rtc_space_handler_present __read_mostly;
- 
- static acpi_status acpi_cmos_rtc_space_handler(u32 function,
-@@ -103,6 +105,12 @@ static int acpi_cmos_rtc_attach(struct acpi_device *adev,
- 	if (ret < 0)
- 		return ret;
- 
-+	if (IS_ERR_OR_NULL(acpi_create_platform_device(adev, NULL))) {
-+		pr_err("Failed to create CMOS-RTC platform device\n");
-+		return 0;
-+	} else {
-+		cmos_rtc_platform_device_present = true;
-+	}
- 	return 1;
+diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
+index 85d9f78619a2..4ad8f56d1a5d 100644
+--- a/drivers/acpi/acpi_pnp.c
++++ b/drivers/acpi/acpi_pnp.c
+@@ -368,7 +368,7 @@ static int is_cmos_rtc_device(struct acpi_device *adev)
+ 		{ "PNP0B02" },
+ 		{""},
+ 	};
+-	return !acpi_match_device_ids(adev, ids);
++	return !cmos_rtc_platform_device_present && !acpi_match_device_ids(adev, ids);
  }
  
+ bool acpi_is_pnp_device(struct acpi_device *adev)
+diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
+index bdd66dfd4a44..a6df5b991c96 100644
+--- a/drivers/acpi/x86/cmos_rtc.c
++++ b/drivers/acpi/x86/cmos_rtc.c
+@@ -18,10 +18,7 @@
+ #include "../internal.h"
+ 
+ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
+-	{ "PNP0B00" },
+-	{ "PNP0B01" },
+-	{ "PNP0B02" },
+-	{}
++	ACPI_CMOS_RTC_IDS
+ };
+ 
+ bool cmos_rtc_platform_device_present;
+diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+index 0743c6acd6e2..7457f42fd6f0 100644
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -27,6 +27,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/acpi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -1476,6 +1477,14 @@ static __init void cmos_of_init(struct platform_device *pdev)
+ #else
+ static inline void cmos_of_init(struct platform_device *pdev) {}
+ #endif
++
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
++	ACPI_CMOS_RTC_IDS
++};
++MODULE_DEVICE_TABLE(acpi, acpi_cmos_rtc_ids);
++#endif
++
+ /*----------------------------------------------------------------*/
+ 
+ /* Platform setup should have set up an RTC device, when PNP is
+@@ -1530,6 +1539,7 @@ static struct platform_driver cmos_platform_driver = {
+ 		.name		= driver_name,
+ 		.pm		= &cmos_pm_ops,
+ 		.of_match_table = of_match_ptr(of_cmos_match),
++		.acpi_match_table = ACPI_PTR(acpi_cmos_rtc_ids),
+ 	}
+ };
+ 
 diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 4d2f0bed7a06..2bdb801cee01 100644
+index 2bdb801cee01..5ecdcdaf31aa 100644
 --- a/include/linux/acpi.h
 +++ b/include/linux/acpi.h
-@@ -791,6 +791,8 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+@@ -791,6 +791,12 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
  int acpi_mrrm_max_mem_region(void);
  #endif
  
-+extern bool cmos_rtc_platform_device_present;
++#define ACPI_CMOS_RTC_IDS	\
++	{ "PNP0B00", },		\
++	{ "PNP0B01", },		\
++	{ "PNP0B02", },		\
++	{ "", }
 +
+ extern bool cmos_rtc_platform_device_present;
+ 
  #else	/* !CONFIG_ACPI */
- 
- #define acpi_disabled 1
-@@ -1116,6 +1118,8 @@ static inline int acpi_mrrm_max_mem_region(void)
- 	return 1;
- }
- 
-+#define cmos_rtc_platform_device_present	false
-+
- #endif	/* !CONFIG_ACPI */
- 
- #ifdef CONFIG_ACPI_HMAT
 -- 
 2.51.0
 
