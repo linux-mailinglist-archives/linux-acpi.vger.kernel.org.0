@@ -1,186 +1,139 @@
-Return-Path: <linux-acpi+bounces-21069-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLWOMAZ7nGlfIAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21069-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 17:06:30 +0100
+	id MGbnDnh6nGlfIAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21070-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 17:04:08 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865D5179580
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 17:06:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDE51794F9
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 17:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C193309EE36
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:59:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0921630741C4
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7A6303A35;
-	Mon, 23 Feb 2026 15:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31AB30F818;
+	Mon, 23 Feb 2026 16:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbykNgGu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGe54xrw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76FB1A9F8C;
-	Mon, 23 Feb 2026 15:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90729309EFA
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 16:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862357; cv=none; b=izDNT6oDVj8/wOzFqeyrXtHybkruxv0sKAkzQvnrznE/m+WlNXmoViKmxsNVyef2FfaBWpxpLBtHCl2a22VCj4ghW1aN0PGkwcz0PApbMTQGnRSsemggCCBbN9XDgh0XVqc1BsZFTJ0t4eda86Og8StM8bYn0GL5RxYsMo07FIg=
+	t=1771862434; cv=none; b=KsEd2YUTmiZ76cUvo9GSHgqSHxIRIXUgV9bCo7cLZxpoXM+IhdLg96xeaqm65GvqA1reLJ5EUP9/9x0XiAzPiOgb/2YHMCaBlPZgb/TqLqh+igvqiEX6BqiyLAlw25XrvzyUF8sk+NVJdQMqkWtqOMixdHMrcnlqEmYC3DmaNR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771862357; c=relaxed/simple;
-	bh=2N/FdQKEE3Szhdo+CUlbRkqeqFLbqMjU46LA0027/Gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SqDyJpFWuTgbNkFpuU8y+784TPC6iAJ7Tqad2BnJnewq6dOL5/qbjaHjGi27TGdkkJOM4SLeAcWZMCpYBP/QmeYzPIqqt3YpNlE9KnZ9KBrm11c0GLLIFZ/aK0nlbF5X6fosxauy2DzcIAS/3Vz4y5vgnZnY/mkTg5rdvcJtqQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbykNgGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB71C116C6;
-	Mon, 23 Feb 2026 15:59:15 +0000 (UTC)
+	s=arc-20240116; t=1771862434; c=relaxed/simple;
+	bh=EstmXOsompBSlyg7uWOQ8eWvFFkyH0qpqEJz+d2SKUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cm2ujT6udzAsU9sZSPaP8mwy8GSjDopibARwqpv3zUqCcvUA2Ud4p491fJmwY4fKvqRd4hg0QWEonS5iqeoVZyp+nzV82gLPMaS033NlEM9UHq0goIyMWEO4x5LStiis1g6WQNDUGfaSeEmDGEDolB0fQaOCl6ER6/qk9N09uM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGe54xrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667C1C4AF09
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 16:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771862357;
-	bh=2N/FdQKEE3Szhdo+CUlbRkqeqFLbqMjU46LA0027/Gc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NbykNgGuG73gCO6HKxWqufR7k7K6sdq9m5GUHyp9qfx71Bh1Lrlrt6lFhQiqb3H+R
-	 UjbczyuHKpUhjoU3ia0+L1xzrro+pDQzKWh494F+D+IpIYj254GVG80XhXHKJQ3H2T
-	 v6vbjiZRuNMd8O83QY4B/1ybB2HtNHCC65GkGeWXMH5EbjS5WXeBLIpt09o/51bM5/
-	 k0inMVmWDSbOHUnBrWg53MGIyftbROXVjO++zi+EhUOJKSglvHweMeKFtqPw3Vb5ub
-	 sN7hIo8975nixZtPJgsWn8fo0vb064ah5bgrWaG//0mf6EJT2YTrIgEOilpnZEGH6Y
-	 6a5AUAwU2mNcg==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Mattia Dongili <malattia@linux.it>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, platform-driver-x86@vger.kernel.org
-Subject: [PATCH v1] sonypi: Convert ACPI driver to a platform one
-Date: Mon, 23 Feb 2026 16:59:14 +0100
-Message-ID: <2277493.Mh6RI2rZIc@rafael.j.wysocki>
-Organization: Linux Kernel Development
+	s=k20201202; t=1771862434;
+	bh=EstmXOsompBSlyg7uWOQ8eWvFFkyH0qpqEJz+d2SKUU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nGe54xrw35oEsbsLputQfSHXX7wKHjNsbJAOL6IzBD4mF066MA6zEOV8kyjcVrijA
+	 ma0jETT4xEKUaMvqBC0A1fG1USw0MT5Id9oaJi9kTuJoeFycqxEfqvPXUhmGVUF8Mx
+	 UkB+hONE8Jf6ljY2SX5nZQpARy+ve55xJZ9bLS2Kx5mCDWSzhmilfg6X5gkKdAByeW
+	 xLNYaEwFRbqNnioypbvVhEJHJzzXWYorAg6sAxLiMa42Msx0SpTWGUA7ado/FnyVhn
+	 EM48QAdfEG/LUg7eREwPK9v5Si+4WpDIbKwCcCL7uRaIx8QSBu3atDiAFRRlYQZkJx
+	 HRoC633IgcxwQ==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-40974bf7781so3790900fac.0
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 08:00:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUIN7OiHkSa0zGam+jiL1F1xIgdC+ji9I/Mg6ROwhZN6YfLQLSix+7IkaWrlqQn/aMwNhgpMiE0+Ddj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyBEaNEkaaxQc/088X6qkFFpTiuZo918TGfFw/ovWmteWBsU4j
+	pINjHhS0PiaPtAqsQtPrEkRypMuKRWr/F1hpOi3GAWf3ZNBpa7CJjRTvGTRHBRNTOjplRR4SOuL
+	F7HeZU7w1G5ZU5MxyHR+dTLYSGRF2A5o=
+X-Received: by 2002:a05:6870:824c:b0:40e:f203:eb4d with SMTP id
+ 586e51a60fabf-4154539eb81mr7760671fac.2.1771862433404; Mon, 23 Feb 2026
+ 08:00:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20260223-device-match-secondary-fwnode-v2-0-966c00c9eeeb@oss.qualcomm.com>
+ <CAMRc=MeD6rMQ2dU2mjS36=i3eXSs2HVG+qgAL3rsuvpQL0nCsQ@mail.gmail.com>
+In-Reply-To: <CAMRc=MeD6rMQ2dU2mjS36=i3eXSs2HVG+qgAL3rsuvpQL0nCsQ@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 23 Feb 2026 17:00:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j+DuaDcZ7N2gh1mbrYvgNSBDtmhmSEsw8Y=yFvW16iow@mail.gmail.com>
+X-Gm-Features: AaiRm51Sk5zSDw10OTJvpIzbnWzryvjP6Hmt7k5VN_hzFAPM7iZFp8x-QaBqi10
+Message-ID: <CAJZ5v0j+DuaDcZ7N2gh1mbrYvgNSBDtmhmSEsw8Y=yFvW16iow@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] driver core: provide and use device_match_fwnode_ext()
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21069-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,gmail.com,linux.intel.com,lists.linux.dev,vger.kernel.org,oss.qualcomm.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21070-lists,linux-acpi=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 865D5179580
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: BBDE51794F9
 X-Rspamd-Action: no action
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Mon, Feb 23, 2026 at 4:46=E2=80=AFPM Bartosz Golaszewski <brgl@kernel.or=
+g> wrote:
+>
+> On Mon, Feb 23, 2026 at 4:41=E2=80=AFPM Bartosz Golaszewski
+> <bartosz.golaszewski@oss.qualcomm.com> wrote:
+> >
+> > In GPIOLIB, during fwnode lookup, after having resolved the consumer's
+> > reference to a specific fwnode, we only match it against the primary
+> > node of the controllers. Let's extend that to also the secondary node b=
+y
+> > exposing fwnode_is_primary() to drivers and reworking
+> > gpio_chip_match_by_fwnode().
+> >
+> > Link: https://lore.kernel.org/all/aZUIFiOYt6GOlDQx@google.com/
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
+m>
+> > ---
+>
+> Forgot to pick up Linus' R-b:
+>
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+>
+> Rafael: is it fine if I take it through the GPIO tree?
 
-In all cases in which a struct acpi_driver is used for binding a driver
-to an ACPI device object, a corresponding platform device is created by
-the ACPI core and that device is regarded as a proper representation of
-underlying hardware.  Accordingly, a struct platform_driver should be
-used by driver code to bind to that device.  There are multiple reasons
-why drivers should not bind directly to ACPI device objects [1].
-
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the sonypi ACPI driver to a platform one.
-
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
-
-Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/char/sonypi.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/char/sonypi.c b/drivers/char/sonypi.c
-index 677bb5ac950a..ccda997a9098 100644
---- a/drivers/char/sonypi.c
-+++ b/drivers/char/sonypi.c
-@@ -1115,15 +1115,17 @@ static int sonypi_disable(void)
- }
- 
- #ifdef CONFIG_ACPI
--static int sonypi_acpi_add(struct acpi_device *device)
-+static int sonypi_acpi_probe(struct platform_device *pdev)
- {
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+
- 	sonypi_acpi_device = device;
- 	strcpy(acpi_device_name(device), "Sony laptop hotkeys");
- 	strcpy(acpi_device_class(device), "sony/hotkey");
- 	return 0;
- }
- 
--static void sonypi_acpi_remove(struct acpi_device *device)
-+static void sonypi_acpi_remove(struct platform_device *pdev)
- {
- 	sonypi_acpi_device = NULL;
- }
-@@ -1133,13 +1135,12 @@ static const struct acpi_device_id sonypi_device_ids[] = {
- 	{"", 0},
- };
- 
--static struct acpi_driver sonypi_acpi_driver = {
--	.name           = "sonypi",
--	.class          = "hkey",
--	.ids            = sonypi_device_ids,
--	.ops            = {
--		           .add = sonypi_acpi_add,
--			   .remove = sonypi_acpi_remove,
-+static struct platform_driver sonypi_acpi_driver = {
-+	.probe = sonypi_acpi_probe,
-+	.remove = sonypi_acpi_remove,
-+	.driver = {
-+		.name = "sonypi_acpi",
-+		.acpi_match_table = sonypi_device_ids,
- 	},
- };
- #endif
-@@ -1518,8 +1519,8 @@ static int __init sonypi_init(void)
- 		goto err_free_device;
- 
- #ifdef CONFIG_ACPI
--	if (acpi_bus_register_driver(&sonypi_acpi_driver) >= 0)
--		acpi_driver_registered = 1;
-+	error = platform_driver_register(&sonypi_acpi_driver);
-+	acpi_driver_registered = !error;
- #endif
- 
- 	return 0;
-@@ -1535,7 +1536,7 @@ static void __exit sonypi_exit(void)
- {
- #ifdef CONFIG_ACPI
- 	if (acpi_driver_registered)
--		acpi_bus_unregister_driver(&sonypi_acpi_driver);
-+		platform_driver_unregister(&sonypi_acpi_driver);
- #endif
- 	platform_device_unregister(sonypi_platform_device);
- 	platform_driver_unregister(&sonypi_driver);
--- 
-2.51.0
-
-
-
-
+Sure, no problem.
 
