@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-21067-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21068-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAnHAGh4nGlfIAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21067-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:55:20 +0100
+	id IJK3LIN4nGlfIAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21068-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:55:47 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77222179270
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:55:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194C517928D
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6CAA3301B152
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:49:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9788A300B104
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07A53033C0;
-	Mon, 23 Feb 2026 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9EA3009C8;
+	Mon, 23 Feb 2026 15:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvC0B78D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JN3t+APY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCFC2FF153;
-	Mon, 23 Feb 2026 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ED32F363F;
+	Mon, 23 Feb 2026 15:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771861789; cv=none; b=txOUquwRj03E4oF+SMhwO83Lk+7PsIhOMU/YRL91KDa4NUmjS6lbNPlSnJYxYSyWrpAwZjJpuNDIvGt9kwKySrnHuLuVR6umWc80JqmJgRoCvV2BNDbIY7cePGmRNoP6VRg4ZNuJB1OAv3fZhWAQWz6LYzPx7x8HvQQFVjdw+7U=
+	t=1771862126; cv=none; b=qddIxgQrUEkoelAcmnz1JzKYo3UhpyWzvCdpDG63OWE2/dlL6yITb9c/0epz1GlWJJfeIjdfkBiqJYcHEPfWlfUtrzNgs+q4YX+7WGqtSqpNvLGlXcstZsDWP0E+lavLcSthQtxHsuwIsFX4ZkJPv9fyrC3bXgcGp8XgegWwiy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771861789; c=relaxed/simple;
-	bh=yZQknwqAJdmCVxpWiBb/WN0sIhB1BKMV5F8xZ0A4ucA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ET7BKbKfCOz1scoU41RITmCL/1J/Sl5YP1xL4CxQMbyCAFnIbWSswrsHD3X619WOSbe2svaEKWxOznzzofovW+vFaShtQxMeK93/9cXTHemSrdLgryk2JyiBXaWKxyeOqLdKwZJBb85lj3mySmPT7tfOdFpU3FC+Npvk3UseIxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvC0B78D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF85C116C6;
-	Mon, 23 Feb 2026 15:49:47 +0000 (UTC)
+	s=arc-20240116; t=1771862126; c=relaxed/simple;
+	bh=Ma/3uqBCY/oUPUsGcZ/PXNd8NktwdM+w2Ph3AWGp1Ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W1mzM/vEe+DuiajCqbAipBiKKYMzGeFQFJyUp5octf81ZybZNWvklqKQlg8DeY9DDbqoWHmLA9Mts2qluELJjY08Lc++TPIaPpre9wKY7O/sYnpnqsUTpexTQZ8cnM15A2FPtzWUjFR+yS3qrB/pyMaCOuM/llWK8alvzFI8FGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JN3t+APY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F312C116C6;
+	Mon, 23 Feb 2026 15:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771861789;
-	bh=yZQknwqAJdmCVxpWiBb/WN0sIhB1BKMV5F8xZ0A4ucA=;
+	s=k20201202; t=1771862126;
+	bh=Ma/3uqBCY/oUPUsGcZ/PXNd8NktwdM+w2Ph3AWGp1Ls=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fvC0B78DT33qFG+H3k6gzU+N/lyyEHD9VjhBdi6bYMQsEhJK6kFKCFJqs/fr146WE
-	 3tU6ted+Xxd0wNTDIYKezLf+ZfKb6011G4QvOoahYJAzZJb15c1oyL8MumdX4Dx6H8
-	 iHO6Ei1AlWHwBATaNxnla9XxYMX6j4xPfnZ/EbWWwSroT5YJOOidFqsy9tF1Yzxt08
-	 XSbdXDe7nNDw4x0L5IPlsi6a5gnlCVtnmT9MqLADfQgLO5D2xclDNUQGALSCX766xH
-	 Epl3eNhuDsG3yIFmcwDTlBcVAgTw6ckz3E3stBi1nYoePoe4jTE3H/JcA95g2p0g5/
-	 ngw09lyvN9vkg==
+	b=JN3t+APYYN1dJ7kEXNH1Qu1AB2XL5ZPUNPEj28cqzrOnwVArreAdUJYhXoCZUqsQW
+	 fP9Ta4gw21Shsp2DrRr8090B4bUstkKE2+AdZX+MBSd0f74+cOeUGBfPY8cHWyIArG
+	 6wfJHXyJsclJuqhHuq8eAVHHzejdaT5WPQCixQisAtSv4bRpcp5Gna7vzLR98+wv9t
+	 48U9obonP4vIowjistMzT/OM+XXRJ86WCrG1yPJhfEV10FefzO2DVlqCEx0r8wsqrR
+	 7ARmP3iGlXhi1wMzff+ouzAcRaoCh3PZJdP3bsZJRwek4CVJHoiDrCVFOlawFxBaTL
+	 f4Xh+3oIrW4GQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>,
- LKML <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v1] hpet: Convert ACPI driver to a platform one
-Date: Mon, 23 Feb 2026 16:49:45 +0100
-Message-ID: <3611505.QJadu78ljV@rafael.j.wysocki>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-integrity@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: [PATCH v1] tpm_crb: Convert ACPI driver to a platform one
+Date: Mon, 23 Feb 2026 16:55:21 +0100
+Message-ID: <2706178.Lt9SDvczpP@rafael.j.wysocki>
 Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -65,30 +65,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21067-lists,linux-acpi=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21068-lists,linux-acpi=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[gmx.de,ziepe.ca,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 77222179270
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 194C517928D
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -101,7 +102,7 @@ used by driver code to bind to that device.  There are multiple reasons
 why drivers should not bind directly to ACPI device objects [1].
 
 Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the HPET ACPI driver to a platform one.
+ACPI companions, so convert the tpm_crb ACPI driver to a platform one.
 
 While this is not expected to alter functionality, it changes sysfs
 layout and so it will be visible to user space.
@@ -109,60 +110,104 @@ layout and so it will be visible to user space.
 Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/char/hpet.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/char/tpm/tpm_crb.c | 35 ++++++++++++++++-------------------
+ 1 file changed, 16 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/char/hpet.c b/drivers/char/hpet.c
-index 60dd09a56f50..d396823e5e64 100644
---- a/drivers/char/hpet.c
-+++ b/drivers/char/hpet.c
-@@ -34,6 +34,7 @@
- #include <linux/io.h>
- #include <linux/acpi.h>
- #include <linux/hpet.h>
+diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+index 6c25305c256e..7d1377e8e616 100644
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -15,6 +15,7 @@
+ #include <linux/highmem.h>
+ #include <linux/rculist.h>
+ #include <linux/module.h>
 +#include <linux/platform_device.h>
- #include <asm/current.h>
- #include <asm/irq.h>
- #include <asm/div64.h>
-@@ -971,8 +972,9 @@ static acpi_status hpet_resources(struct acpi_resource *res, void *data)
- 	return AE_OK;
+ #include <linux/pm_runtime.h>
+ #ifdef CONFIG_ARM64
+ #include <linux/arm-smccc.h>
+@@ -602,13 +603,13 @@ static u64 crb_fixup_cmd_size(struct device *dev, struct resource *io_res,
+ 	return io_res->end - start + 1;
  }
  
--static int hpet_acpi_add(struct acpi_device *device)
-+static int hpet_acpi_probe(struct platform_device *pdev)
+-static int crb_map_io(struct acpi_device *device, struct crb_priv *priv,
++static int crb_map_io(struct device *dev, struct crb_priv *priv,
+ 		      struct acpi_table_tpm2 *buf)
  {
-+	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	acpi_status result;
- 	struct hpet_data data;
++	struct acpi_device *device = ACPI_COMPANION(dev);
+ 	struct list_head acpi_resource_list;
+ 	struct resource iores_array[TPM_CRB_MAX_RESOURCES + 1] = { {0} };
+ 	void __iomem *iobase_array[TPM_CRB_MAX_RESOURCES] = {NULL};
+-	struct device *dev = &device->dev;
+ 	struct resource *iores;
+ 	void __iomem **iobase_ptr;
+ 	int i;
+@@ -782,12 +783,13 @@ static int crb_map_pluton(struct device *dev, struct crb_priv *priv,
+ 	return 0;
+ }
  
-@@ -1000,12 +1002,12 @@ static const struct acpi_device_id hpet_device_ids[] = {
- 	{"", 0},
+-static int crb_acpi_add(struct acpi_device *device)
++static int crb_acpi_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
++	struct acpi_device *device = ACPI_COMPANION(dev);
+ 	struct acpi_table_tpm2 *buf;
+ 	struct crb_priv *priv;
+ 	struct tpm_chip *chip;
+-	struct device *dev = &device->dev;
+ 	struct tpm2_crb_smc *crb_smc;
+ 	struct tpm2_crb_ffa *crb_ffa;
+ 	struct tpm2_crb_pluton *crb_pluton;
+@@ -867,7 +869,7 @@ static int crb_acpi_add(struct acpi_device *device)
+ 	priv->sm = sm;
+ 	priv->hid = acpi_device_hid(device);
+ 
+-	rc = crb_map_io(device, priv, buf);
++	rc = crb_map_io(dev, priv, buf);
+ 	if (rc)
+ 		goto out;
+ 
+@@ -901,12 +903,9 @@ static int crb_acpi_add(struct acpi_device *device)
+ 	return rc;
+ }
+ 
+-static void crb_acpi_remove(struct acpi_device *device)
++static void crb_acpi_remove(struct platform_device *pdev)
+ {
+-	struct device *dev = &device->dev;
+-	struct tpm_chip *chip = dev_get_drvdata(dev);
+-
+-	tpm_chip_unregister(chip);
++	tpm_chip_unregister(platform_get_drvdata(pdev));
+ }
+ 
+ static const struct dev_pm_ops crb_pm = {
+@@ -919,19 +918,17 @@ static const struct acpi_device_id crb_device_ids[] = {
  };
+ MODULE_DEVICE_TABLE(acpi, crb_device_ids);
  
--static struct acpi_driver hpet_acpi_driver = {
--	.name = "hpet",
--	.ids = hpet_device_ids,
+-static struct acpi_driver crb_acpi_driver = {
+-	.name = "tpm_crb",
+-	.ids = crb_device_ids,
 -	.ops = {
--		.add = hpet_acpi_add,
--		},
-+static struct platform_driver hpet_acpi_driver = {
-+	.probe = hpet_acpi_probe,
+-		.add = crb_acpi_add,
+-		.remove = crb_acpi_remove,
+-	},
+-	.drv = {
++static struct platform_driver crb_acpi_driver = {
++	.probe = crb_acpi_probe,
++	.remove = crb_acpi_remove,
 +	.driver = {
-+		.name = "hpet_acpi",
-+		.acpi_match_table = hpet_device_ids,
-+	},
++		.name = "tpm_crb_acpi",
++		.acpi_match_table = crb_device_ids,
+ 		.pm = &crb_pm,
+ 	},
  };
  
- static struct miscdevice hpet_misc = { HPET_MINOR, "hpet", &hpet_fops };
-@@ -1020,7 +1022,7 @@ static int __init hpet_init(void)
- 
- 	sysctl_header = register_sysctl("dev/hpet", hpet_table);
- 
--	result = acpi_bus_register_driver(&hpet_acpi_driver);
-+	result = platform_driver_register(&hpet_acpi_driver);
- 	if (result < 0) {
- 		unregister_sysctl_table(sysctl_header);
- 		misc_deregister(&hpet_misc);
+-module_acpi_driver(crb_acpi_driver);
++module_platform_driver(crb_acpi_driver);
+ MODULE_AUTHOR("Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>");
+ MODULE_DESCRIPTION("TPM2 Driver");
+ MODULE_VERSION("0.1");
 -- 
 2.51.0
 
