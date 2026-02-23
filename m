@@ -1,149 +1,175 @@
-Return-Path: <linux-acpi+bounces-21086-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21091-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHoQJVm6nGlHKAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21086-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:36:41 +0100
+	id 4DyENm++nGlSKAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21091-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:54:07 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26F817CFC6
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:36:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A4B17D3E6
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4980D3171C33
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:33:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1AB1C30EA2A1
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AFD36B059;
-	Mon, 23 Feb 2026 20:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518537880A;
+	Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a+64DF2B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhoaT+ij"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9C7369979
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E8D378802
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771878814; cv=none; b=lhzOnXmZ7VRjGlsRrhB8lHd6hFE/OgnQRf/siPicArXrJ8uoClqiUMYYTvWPsCSG54ME9H/nWFZwnOzMt/1kzix54jVBi9qa26zmD+9AM+RciLoMepdWzjFX4ub2Z6SJ2LP9FlZvHJh0vAQIN7xKHwwITz8yJsdgLJCWapLUOjI=
+	t=1771879588; cv=none; b=ugCguSwlVv2EwHve4AJghcGS+/tCfU6gqk9pLi8SgRW/xhi6fLZJLebPgfon1pfbIL7YucYeaExqJoZyf6j4Vh/jRESOuHvrNZQcY2rsfMpFDzuKCmgfOSvrRkwTcoUT9sLojHzlsf9GORDuI7Zl+LvSR0qptV0P3zRKZ+7EzE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771878814; c=relaxed/simple;
-	bh=ESvyMVF+dYACKaZd3BgG8cX6TSnmtZvG/Oqd/0HHweU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEnsz5SWDRi0E+h8oc7krzKNBsngMv7p1x92Cvte0qQXW8ZhyNMjKUXUN9VfOXS87+BLuZ9arW7kLDP3EGeY4duCbntm6gjQNGr6sfLFwKtTxWx+NgHSfVA48LC9kqcB+fGxY1h5ZDuxokoBEMY6QIJvR6BpAhX3OitVdpCfdKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a+64DF2B; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771878813; x=1803414813;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ESvyMVF+dYACKaZd3BgG8cX6TSnmtZvG/Oqd/0HHweU=;
-  b=a+64DF2BDyUPXsJnJtEl+zhij6Vql9MIo36VgExlSm5K8YH8dENwL1vF
-   nkBZHMRGb0KtbNvQtfpOO56hHt486+uIF9xQK70Vxy4y/I7e9Mq7IcDvE
-   zlWuAPh2ESJymQ3i88d5XqHwLDA9CNUDo35xd3pz+vlIdcuEnwxiv0OsH
-   cpYGEWG2p9JGFvjV8y8NVKV0cwymFw+xoA83ODs6vq7jPX5t+eRh0b0HP
-   CUwCIR2Q+/bzAGXeg/U5YJ28xeuYTsrt3XsMP5AQ0krbrQb/ZVxjR4mbi
-   gwGeqJPfeIescXBuh/Z7TfT4lwH+sjBEoLnM0qBOA7MP2UqcktHJ1IQxv
-   A==;
-X-CSE-ConnectionGUID: sCP6a0eZSHaYdN/PdRHl/A==
-X-CSE-MsgGUID: fm9LaExhRR+pbNw1td0dVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="90467253"
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="90467253"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:33 -0800
-X-CSE-ConnectionGUID: dZSSgVerSTmU0I/oI/AvdA==
-X-CSE-MsgGUID: J3Ia0JU8T9+hgS/7mDMJgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="213988161"
-Received: from nldesimo-desk.amr.corp.intel.com ([10.53.80.57])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:32 -0800
-From: Nate DeSimone <nathaniel.l.desimone@intel.com>
-To: tony.luck@intel.com
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	nathaniel.l.desimone@intel.com,
-	rafael@kernel.org
-Subject: Re: [PATCH v1] ACPI: FPDT: expose FBPT and S3PT subtables via sysfs
-Date: Mon, 23 Feb 2026 12:32:58 -0800
-Message-ID: <20260223203258.2877-1-nathaniel.l.desimone@intel.com>
-X-Mailer: git-send-email 2.51.2.windows.1
-In-Reply-To: <SJ1PR11MB6083ECBFD999F240987EBDE1FC77A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <SJ1PR11MB6083ECBFD999F240987EBDE1FC77A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1771879588; c=relaxed/simple;
+	bh=jBLcyP02/sek7zk4NqxV5S1bZCQap/LZYHzTBfHrwTU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rjLAIG3k4tl/T5ol+NmZ2wLz2t43OFNe3CXu/AGAVXvUaAQs+HYgIopyorgqSV05MWZX2hoHZsHF/hBEs8jWhNvxf98pl9UDmxyRsmHOdC+LlCkbfLyMB95fMB8Fsv420lIFFfjLGhjofqUjnIL0WuqYfro04A/rvOFZ/wrDdFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhoaT+ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ACDC4AF09
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771879588;
+	bh=jBLcyP02/sek7zk4NqxV5S1bZCQap/LZYHzTBfHrwTU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fhoaT+ij5oMRcYXaq+w8wFWGRoQwgDZeg5WYEVYFm995Dz5HH5fJI5bK+H2hK7N0O
+	 P1rQhoYJqKAy0ya+CvvGpiSiqh+f91Yu1pZARCV5EHpmZDiOvpA7Xt3imYEeOSNbbL
+	 sOiggXe7+97uwPLnyAxVmncmWLNGL5g6zdk/5FdU6027it/YLoSIOi3j0vSf3YsHr4
+	 yJgTJuRCEJPUxBMBKINkpGpXAXN9B/2TNYLjji+JHPDA+l3ds0a+l5+AWwfNowMvCE
+	 EtPEeM3jsaKisuJHd1LTeDs6KQDjTQEWC90jTQ4K3NP419zYGPe2z0++ZhN8lI9aBw
+	 W3GiKZb3KsFNw==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-66ee7b9af94so1850251eaf.0
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 12:46:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXkWGL6u8D0R7AMipm7f8HwcLyjxbAwdowzOa8vgm7lWALiEw1sc3I4DufHR2+4zK0njp8JHTNC1we9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3ExG2AyEJS81QalCdTHiVHKIyAu9SJMnjksXSMxR27Zkq/tSx
+	EP2rke/HTwfe94ajKaLCaUn9gjd4VTpzUbzRKdW4Dpr3qC69IRtMQEAdT2Nwhtgy/ZuhmLsFdhu
+	qQHWPPNYL7NAnwaUHOiPj9SWCIchTet4=
+X-Received: by 2002:a05:6820:460a:b0:679:8b1d:ba00 with SMTP id
+ 006d021491bc7-679c470f3f0mr3886821eaf.55.1771879587668; Mon, 23 Feb 2026
+ 12:46:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260223-device-match-secondary-fwnode-v2-0-966c00c9eeeb@oss.qualcomm.com>
+ <20260223-device-match-secondary-fwnode-v2-2-966c00c9eeeb@oss.qualcomm.com>
+In-Reply-To: <20260223-device-match-secondary-fwnode-v2-2-966c00c9eeeb@oss.qualcomm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 23 Feb 2026 21:46:16 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hgjGinrM_SMTAv27No=b__HUQ-9W18rHzNNiM-TnpQmA@mail.gmail.com>
+X-Gm-Features: AaiRm51MQYy4860EILV63_T3N_-5AgKrlcj9pG9QN8uuwuEr3GzncbmkDDBN4X0
+Message-ID: <CAJZ5v0hgjGinrM_SMTAv27No=b__HUQ-9W18rHzNNiM-TnpQmA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] gpiolib: match secondary fwnode too in gpio_device_find_by_fwnode()
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21086-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-21091-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,linux.intel.com,lists.linux.dev,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathaniel.l.desimone@intel.com,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: F26F817CFC6
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: 88A4B17D3E6
 X-Rspamd-Action: no action
 
-> > Add sysfs attributes at /sys/firmware/acpi/fpdt/tables/FBPT and
-> > /sys/firmware/acpi/fpdt/tables/S3PT that expose the raw contents of the
-> > FPDT subtables. Note that /sys/firmware/acpi/tables/FPDT only provides
-> > the top level table, not the subtables. Adding access to the subtables
-> > enables a usage model similar to /sys/firmware/dmi/tables/DMI, allowing
-> > userspace tools to interpret newer record types (e.g. String Event
-> > Records, Microcontroller Boot Performance Data Records, etc.) defined
-> > in recent ACPI specifications[1] without requiring kernel changes.
+On Mon, Feb 23, 2026 at 4:41=E2=80=AFPM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
 >
-> Is the existing (for BERT) /sys/firmware/acpi/tables/data directory a more
-> appropriate spot for these? Naming the new subdirectory "tables" seems
-> misleading as there aren't a top-level ACPI "FBPT" or "S3PT" tables?
-
-I'm not experienced with the organizational semantics of sysfs. I made a
-best-guess when choosing /sys/firmware/acpi/fpdt/tables/FBPT. Should I do
-something like /sys/firmware/acpi/tables/data/fpdt/FBPT? That way the data
-source is explicit and there won't be name collisions with other data in the
-future?
-
-Wherever the kernel maintainers think is the best place to put these new sysfs
-attributes I'm completely on-board with. Please let me know where in the
-filesystem they should go and I'll get a v2 patch implemented!
-
-> Once naming is resolved, needs update to Documentation/ABI/testing/sysfs-fi=
-> rmware-acpi
-> for whatever names are chosed for the new files.
-
-I will happily add that as well in a v2 patch series.
-
+> In GPIOLIB, during fwnode lookup, after having resolved the consumer's
+> reference to a specific fwnode, we only match it against the primary
+> node of the controllers. Let's extend that to also the secondary node by
+> reworking gpio_chip_match_by_fwnode()
 >
-> Code looks good.
+> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>  drivers/gpio/gpiolib.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
 >
-> -Tony
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index c52200eaaaff82b12f22dd1ee8459bdd8ec10d81..7fe1d9ab1281d6c5022b9bdd8=
+909fef2cb74122e 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/errno.h>
+>  #include <linux/file.h>
+>  #include <linux/fs.h>
+> +#include <linux/fwnode.h>
+>  #include <linux/idr.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+> @@ -1395,7 +1396,16 @@ EXPORT_SYMBOL_GPL(gpio_device_find_by_label);
+>
+>  static int gpio_chip_match_by_fwnode(struct gpio_chip *gc, const void *f=
+wnode)
+>  {
+> -       return device_match_fwnode(&gc->gpiodev->dev, fwnode);
+> +       struct device *dev =3D &gc->gpiodev->dev;
+> +       struct fwnode_handle *node =3D dev_fwnode(dev);
+> +
+> +       if (IS_ERR(fwnode))
+> +               return 0;
+> +
+> +       if (device_match_fwnode(dev, fwnode))
+> +               return 1;
+> +
+> +       return fwnode_is_primary(node) && node->secondary =3D=3D fwnode;
 
-Thank You!
--Nate
+Actually, you can replace the above statement with
+
+      return node && node->secondary =3D=3D fwnode;
+
+because fwnode_is_primary(node) expands to (node &&
+!IS_ERR(node->secondary)), but since you compare node->secondary to
+fwnode, the IS_ERR() check on it is redundant (fwnode is known to be
+non-error already at this point).
+
+That would allow you to avoid exporting fwnode_is_primary() (which is
+kind of useful given the review comments).
+
+>  }
+>
+>  /**
+>
+> --
 
