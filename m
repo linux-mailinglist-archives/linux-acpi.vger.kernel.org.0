@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-21059-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21058-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFPnN9F0nGlrHwQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21059-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:40:01 +0100
+	id IKaiKLR0nGlrHwQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21058-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:39:32 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AA7178DF2
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0B0178DB4
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3916E309A2FB
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:34:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3792130970F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20822FE591;
-	Mon, 23 Feb 2026 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF672F12CF;
+	Mon, 23 Feb 2026 15:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhjYLr5e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOf/YELa"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9EA2EBBAF;
-	Mon, 23 Feb 2026 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA8218FDBD;
+	Mon, 23 Feb 2026 15:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860851; cv=none; b=dPia8X+OquMyXceLxDVDdr4ocG1g+ie6yWzu5mMLEzM6kmAEkjNlX12DRLqF5WZDVs84+V8XSvst9bMS7F2nKDAhpegJgdBFawHnyavbJOo5guOcN7O9EoVuQ48obRyPEWI+8XKjYOVNsQMHLrDG+OGa7apT67n8WsHSOCLFm4Q=
+	t=1771860848; cv=none; b=DMAjv+/TNdKLSBVAd3zM49O+8sahWRIwgLnWQxjcmBRL24JthJ27IroygnwfTlo6ZND67I0dby63qkdGBajAjgQAthR4lL2mAOeaGLNmp30N9aeo7/U/s9U6gM6DW4wtZbV4Bw9NBBSO/J/6BYlwb1Jhxvi5F9QC/KoCyI3sw1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860851; c=relaxed/simple;
-	bh=Rt5YZGru5ERpLmmQq9zPflnQZZel7uriPmrZZgtc/jo=;
+	s=arc-20240116; t=1771860848; c=relaxed/simple;
+	bh=ZA0boE6qtemyVmA9NXSmN2YpHL0KV9TUebxR3N6eSYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aNo3L26QRNdkLjiTVL7bark9VuQsHzV8Ywc+qscGCdl3lONIFJAwdvT8FGACOlOCl/zkUqo172xn/QVBmejNhsWT8UOzAWPmVFwGGcHEdjZFZmBLJXXhHcjFrH53qMQHFWZdI0sKauONtLADilA+KLYdPvotDC7kVUtuP4jKLuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhjYLr5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4416DC116D0;
-	Mon, 23 Feb 2026 15:34:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CID258+M2Bv58ZMJiHDGrf/G5ZnFebkxE03W+nlHJ4jDTRVWM6mVyKx7YzoAunt3Xw3nZGQT4ymQ8qkJgPGhEs7nGaJuJHg+AonOseTfnInS/CZcF/+LluFlEPjxmfsv2bkjwR4l1XpsqK+Z9osPElF+eF9nc/PlYj6kxJafv74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOf/YELa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91BAC116C6;
+	Mon, 23 Feb 2026 15:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771860851;
-	bh=Rt5YZGru5ERpLmmQq9zPflnQZZel7uriPmrZZgtc/jo=;
+	s=k20201202; t=1771860848;
+	bh=ZA0boE6qtemyVmA9NXSmN2YpHL0KV9TUebxR3N6eSYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhjYLr5ecKzBFxiQUIVqmbMUa3HRv1v/skP0qxGk6U6ok//sKXWPyAt1BDWYfc9L1
-	 DWkQ8IgkpDpdbysVC3cp90YSKRxykfNYBQk3EvOlhPGRhLUMEDp2f4Vqwuy13RzSkU
-	 33FKXNRlDAu9tBJzraMNIYB3u7We836v6hQkEMo2k4WX5MvhTu2b8WNa5y3pB3aly+
-	 Fm4YLBGu97WxdPlCCyUOOzROotuvYmMTxQtgEJl0QN5DaXXHi16QS+OgqeoGNxjFq9
-	 wetfcvFjLb+NsSAkeY4TNdHmwt1rdrH6Qy/S3Gw3craeWCJCWOlVSjs1e3xenZ969v
-	 +r2kMI1lhfiIw==
+	b=GOf/YELa6xisCZM1DqPSGYJKFCbqc/xhoTmtVinqFj5e5WzcoqsNnsIhcMfdy0rEh
+	 7ySu/ERMAWQnfkQ7Yd+Bmf/jsTsR/iFgyeYcZ3jBMmvxM3N9SIDksSDm466Wvafmrm
+	 kopP8+oiAA4dLOW+P2aB/eKmc/jBF0UBaKqIba3CT9qYccbtRZE5Fay4XUjV1Jbkfm
+	 WfQ1kOnvQ8sKM9n99ql3fG4mjzQweS6vr4kJG0K7hRF/Q1AyX6gJJCrHbnqHx0wdOJ
+	 nN5sJStOrYZBsTYcKS7VdpafUadzMguHxB6sPwhHwpEn/IUPW5jJnT0BDrxSZRAcsW
+	 nfeMjdbOG2XZw==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>,
  linux-rtc@vger.kernel.org, Alexandre Belloni <alexandre.belloni@bootlin.com>
 Subject:
- [PATCH v1 1/8] ACPI: x86: cmos_rtc: Clean up address space handler driver
-Date: Mon, 23 Feb 2026 16:28:15 +0100
-Message-ID: <5094429.31r3eYUQgx@rafael.j.wysocki>
+ [PATCH v1 2/8] ACPI: x86: cmos_rtc: Improve coordination with ACPI TAD driver
+Date: Mon, 23 Feb 2026 16:28:57 +0100
+Message-ID: <2415111.ElGaqSPkdT@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <5983325.DvuYhMxLoT@rafael.j.wysocki>
 References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21059-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21058-lists,linux-acpi=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
@@ -91,141 +91,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: A4AA7178DF2
+X-Rspamd-Queue-Id: 4E0B0178DB4
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Make multiple changes that do not alter functionality to the CMOS RTC
-ACPI address space handler driver, including the following:
+If a CMOS RTC (PNP0B00/PNP0B01/PNP0B02) device coexists with an ACPI
+TAD (timer and event alarm device, ACPI000E), the ACPI TAD driver will
+attempt to install the CMOS RTC address space hanlder that has been
+installed already and the TAD probing will fail.
 
- - Drop the unused .detach() callback from cmos_rtc_handler.
+Avoid that by changing acpi_install_cmos_rtc_space_handler() to return
+zero and acpi_remove_cmos_rtc_space_handler() to do nothing if the CMOS
+RTC address space handler has been installed already.
 
- - Rename acpi_cmos_rtc_attach_handler() to acpi_cmos_rtc_attach().
-
- - Rearrange acpi_cmos_rtc_space_handler() to reduce the number of
-   redundant checks and make white space follow the coding style.
-
- - Adjust an error message in acpi_install_cmos_rtc_space_handler()
-   and make the white space follow the coding style.
-
- - Rearrange acpi_remove_cmos_rtc_space_handler() and adjust an error
-   message in it.
-
-No intentional functional impact.
-
+Fixes: 596ca52a56da ("ACPI: TAD: Install SystemCMOS address space handler for ACPI000E")
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/x86/cmos_rtc.c | 61 +++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 29 deletions(-)
+ drivers/acpi/x86/cmos_rtc.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
-index 51643ff6fe5f..977234da9fc1 100644
+index 977234da9fc1..45db7e51cbe6 100644
 --- a/drivers/acpi/x86/cmos_rtc.c
 +++ b/drivers/acpi/x86/cmos_rtc.c
-@@ -24,31 +24,35 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
+@@ -24,6 +24,8 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
  	{}
  };
  
--static acpi_status
--acpi_cmos_rtc_space_handler(u32 function, acpi_physical_address address,
--		      u32 bits, u64 *value64,
--		      void *handler_context, void *region_context)
-+static acpi_status acpi_cmos_rtc_space_handler(u32 function,
-+					       acpi_physical_address address,
-+					       u32 bits, u64 *value64,
-+					       void *handler_context,
-+					       void *region_context)
- {
--	int i;
-+	unsigned int i, bytes = DIV_ROUND_UP(bits, 8);
- 	u8 *value = (u8 *)value64;
- 
- 	if (address > 0xff || !value64)
- 		return AE_BAD_PARAMETER;
- 
--	if (function != ACPI_WRITE && function != ACPI_READ)
--		return AE_BAD_PARAMETER;
-+	guard(spinlock_irq)(&rtc_lock);
++static bool cmos_rtc_space_handler_present __read_mostly;
 +
-+	if (function == ACPI_WRITE) {
-+		for (i = 0; i < bytes; i++, address++, value++)
-+			CMOS_WRITE(*value, address);
- 
--	spin_lock_irq(&rtc_lock);
-+		return AE_OK;
-+	}
- 
--	for (i = 0; i < DIV_ROUND_UP(bits, 8); ++i, ++address, ++value)
--		if (function == ACPI_READ)
-+	if (function == ACPI_READ) {
-+		for (i = 0; i < bytes; i++, address++, value++)
- 			*value = CMOS_READ(address);
--		else
--			CMOS_WRITE(*value, address);
- 
--	spin_unlock_irq(&rtc_lock);
-+		return AE_OK;
-+	}
- 
--	return AE_OK;
-+	return AE_BAD_PARAMETER;
- }
- 
- int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
-@@ -56,11 +60,11 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+ static acpi_status acpi_cmos_rtc_space_handler(u32 function,
+ 					       acpi_physical_address address,
+ 					       u32 bits, u64 *value64,
+@@ -59,6 +61,9 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+ {
  	acpi_status status;
  
++	if (cmos_rtc_space_handler_present)
++		return 0;
++
  	status = acpi_install_address_space_handler(handle,
--			ACPI_ADR_SPACE_CMOS,
--			&acpi_cmos_rtc_space_handler,
--			NULL, NULL);
-+						    ACPI_ADR_SPACE_CMOS,
-+						    acpi_cmos_rtc_space_handler,
-+						    NULL, NULL);
- 	if (ACPI_FAILURE(status)) {
--		pr_err("Error installing CMOS-RTC region handler\n");
-+		pr_err("Failed to install CMOS-RTC address space handler\n");
+ 						    ACPI_ADR_SPACE_CMOS,
+ 						    acpi_cmos_rtc_space_handler,
+@@ -68,6 +73,8 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
  		return -ENODEV;
  	}
  
-@@ -70,26 +74,25 @@ EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
- 
- void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
- {
--	if (ACPI_FAILURE(acpi_remove_address_space_handler(handle,
--			ACPI_ADR_SPACE_CMOS, &acpi_cmos_rtc_space_handler)))
--		pr_err("Error removing CMOS-RTC region handler\n");
-+	acpi_status status;
++	cmos_rtc_space_handler_present = true;
 +
-+	status = acpi_remove_address_space_handler(handle,
-+						   ACPI_ADR_SPACE_CMOS,
-+						   acpi_cmos_rtc_space_handler);
-+	if (ACPI_FAILURE(status))
-+		pr_err("Failed to remove CMOS-RTC address space handler\n");
+ 	return 1;
  }
- EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
- 
--static int acpi_cmos_rtc_attach_handler(struct acpi_device *adev, const struct acpi_device_id *id)
-+static int acpi_cmos_rtc_attach(struct acpi_device *adev,
-+				const struct acpi_device_id *id)
+ EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
+@@ -76,6 +83,9 @@ void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
  {
- 	return acpi_install_cmos_rtc_space_handler(adev->handle);
+ 	acpi_status status;
+ 
++	if (cmos_rtc_space_handler_present)
++		return;
++
+ 	status = acpi_remove_address_space_handler(handle,
+ 						   ACPI_ADR_SPACE_CMOS,
+ 						   acpi_cmos_rtc_space_handler);
+@@ -87,7 +97,13 @@ EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
+ static int acpi_cmos_rtc_attach(struct acpi_device *adev,
+ 				const struct acpi_device_id *id)
+ {
+-	return acpi_install_cmos_rtc_space_handler(adev->handle);
++	int ret;
++
++	ret = acpi_install_cmos_rtc_space_handler(adev->handle);
++	if (ret < 0)
++		return ret;
++
++	return 1;
  }
  
--static void acpi_cmos_rtc_detach_handler(struct acpi_device *adev)
--{
--	acpi_remove_cmos_rtc_space_handler(adev->handle);
--}
--
  static struct acpi_scan_handler cmos_rtc_handler = {
- 	.ids = acpi_cmos_rtc_ids,
--	.attach = acpi_cmos_rtc_attach_handler,
--	.detach = acpi_cmos_rtc_detach_handler,
-+	.attach = acpi_cmos_rtc_attach,
- };
- 
- void __init acpi_cmos_rtc_init(void)
 -- 
 2.51.0
 
