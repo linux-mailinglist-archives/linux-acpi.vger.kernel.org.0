@@ -1,175 +1,218 @@
-Return-Path: <linux-acpi+bounces-21091-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21092-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DyENm++nGlSKAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21091-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:54:07 +0100
+	id sPHoJOW9nGlSKAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21092-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:51:49 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A4B17D3E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:54:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2D017D362
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1AB1C30EA2A1
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:49:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1222B301877D
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518537880A;
-	Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D2C36BCD6;
+	Mon, 23 Feb 2026 20:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhoaT+ij"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j42MD0k3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E8D378802
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE5F31690A
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771879588; cv=none; b=ugCguSwlVv2EwHve4AJghcGS+/tCfU6gqk9pLi8SgRW/xhi6fLZJLebPgfon1pfbIL7YucYeaExqJoZyf6j4Vh/jRESOuHvrNZQcY2rsfMpFDzuKCmgfOSvrRkwTcoUT9sLojHzlsf9GORDuI7Zl+LvSR0qptV0P3zRKZ+7EzE4=
+	t=1771879876; cv=none; b=i/WHbP6KCK9GDGVhsuz2JOA7XYHKNrpT9h4qfmyHL0nvtZWLf5jsnqYMsIdacpxjkSzfQqkBvZfPlcTJw73lI0GAjQQcnEeoiEgDXJSlqQbB8GHCDe6lhoQgwcIwuzp0HpPvudA0+HpyJWCHUMyCVz8NTb5NbWnade50sOtnL4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771879588; c=relaxed/simple;
-	bh=jBLcyP02/sek7zk4NqxV5S1bZCQap/LZYHzTBfHrwTU=;
+	s=arc-20240116; t=1771879876; c=relaxed/simple;
+	bh=O4MPolK4vKNvn2aEyULiFnrflj5nw9ZU33O+z3/6hjY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rjLAIG3k4tl/T5ol+NmZ2wLz2t43OFNe3CXu/AGAVXvUaAQs+HYgIopyorgqSV05MWZX2hoHZsHF/hBEs8jWhNvxf98pl9UDmxyRsmHOdC+LlCkbfLyMB95fMB8Fsv420lIFFfjLGhjofqUjnIL0WuqYfro04A/rvOFZ/wrDdFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhoaT+ij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ACDC4AF09
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:46:28 +0000 (UTC)
+	 To:Cc:Content-Type; b=Xh9PcYMylZCGj6n/S/n5UFZb5IcEK77Vg4JRayZjHiMJnLeOT0DbiJstji4hOEaOymJjCVM2thSjS2R0uruCiVEvvTknvTMKB7fF72bQJ2q/s3GqpgMGvvIUCxGH7kDKkZlbrCkbSDmRm3uqb47dHNO7FiQFdexghgYsfbqzkec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j42MD0k3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E463C2BC87
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771879588;
-	bh=jBLcyP02/sek7zk4NqxV5S1bZCQap/LZYHzTBfHrwTU=;
+	s=k20201202; t=1771879876;
+	bh=O4MPolK4vKNvn2aEyULiFnrflj5nw9ZU33O+z3/6hjY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fhoaT+ij5oMRcYXaq+w8wFWGRoQwgDZeg5WYEVYFm995Dz5HH5fJI5bK+H2hK7N0O
-	 P1rQhoYJqKAy0ya+CvvGpiSiqh+f91Yu1pZARCV5EHpmZDiOvpA7Xt3imYEeOSNbbL
-	 sOiggXe7+97uwPLnyAxVmncmWLNGL5g6zdk/5FdU6027it/YLoSIOi3j0vSf3YsHr4
-	 yJgTJuRCEJPUxBMBKINkpGpXAXN9B/2TNYLjji+JHPDA+l3ds0a+l5+AWwfNowMvCE
-	 EtPEeM3jsaKisuJHd1LTeDs6KQDjTQEWC90jTQ4K3NP419zYGPe2z0++ZhN8lI9aBw
-	 W3GiKZb3KsFNw==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-66ee7b9af94so1850251eaf.0
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 12:46:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXkWGL6u8D0R7AMipm7f8HwcLyjxbAwdowzOa8vgm7lWALiEw1sc3I4DufHR2+4zK0njp8JHTNC1we9@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3ExG2AyEJS81QalCdTHiVHKIyAu9SJMnjksXSMxR27Zkq/tSx
-	EP2rke/HTwfe94ajKaLCaUn9gjd4VTpzUbzRKdW4Dpr3qC69IRtMQEAdT2Nwhtgy/ZuhmLsFdhu
-	qQHWPPNYL7NAnwaUHOiPj9SWCIchTet4=
-X-Received: by 2002:a05:6820:460a:b0:679:8b1d:ba00 with SMTP id
- 006d021491bc7-679c470f3f0mr3886821eaf.55.1771879587668; Mon, 23 Feb 2026
- 12:46:27 -0800 (PST)
+	b=j42MD0k3GBDtJb5JnWTYbmGv1Wj2vE7blMKwrOdGzlbVQKTw/tEJwjyACMG8pwLrd
+	 2PImupdiGx4t89rx/4H8sMC5P1r1Kpwiu67OEi3sjH1XmZbqFkaeqbWL4n+o6dU4lU
+	 Ey8iikRuA+B8JzZ3F8pkGuX81/phRhVWv4ry54lhyz7eFP73MgCc6lP8RjxmG2xRa7
+	 7wrtNju2q894tgcFA4TYqGaoGNfxXaqufqZCYixBKUIHDkbXQGZSczN5tItwarQTFQ
+	 mvPmEKOTTdRp8WvtS7wt/km7odOF17049gqjgoJ2SSyjyz+K/lQmgN7nBiiFtVU3RG
+	 /etK3aCK453bQ==
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d4bd4db87aso3093061a34.2
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 12:51:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVkOjJYaYlOl4NdxlF8qvwTvMR6F/m7Fta62bQyiJtzESGvQz715mzewGb1xDjRc3JPv3pJjoxD5N/z@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGqVPiB0DcPTVhIEhcxAUBBN4JHTTEabBstNMxV5GNbcRLKYFm
+	WVvVb86nlrQaPhp4AhWj3JSBCDDMgOQz4kcbwMIsMqDtHgF4cJdUbslpHkjrS8P6nrxvBuXxmhj
+	mkmO+XXp417vQnCcscinT7gEF0uHLcnI=
+X-Received: by 2002:a05:6820:1792:b0:676:e8d1:bb57 with SMTP id
+ 006d021491bc7-679c44ebd39mr5867783eaf.58.1771879875150; Mon, 23 Feb 2026
+ 12:51:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223-device-match-secondary-fwnode-v2-0-966c00c9eeeb@oss.qualcomm.com>
- <20260223-device-match-secondary-fwnode-v2-2-966c00c9eeeb@oss.qualcomm.com>
-In-Reply-To: <20260223-device-match-secondary-fwnode-v2-2-966c00c9eeeb@oss.qualcomm.com>
+References: <20260223204412.3298508-1-andriy.shevchenko@linux.intel.com> <20260223204412.3298508-4-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20260223204412.3298508-4-andriy.shevchenko@linux.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 23 Feb 2026 21:46:16 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hgjGinrM_SMTAv27No=b__HUQ-9W18rHzNNiM-TnpQmA@mail.gmail.com>
-X-Gm-Features: AaiRm51MQYy4860EILV63_T3N_-5AgKrlcj9pG9QN8uuwuEr3GzncbmkDDBN4X0
-Message-ID: <CAJZ5v0hgjGinrM_SMTAv27No=b__HUQ-9W18rHzNNiM-TnpQmA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] gpiolib: match secondary fwnode too in gpio_device_find_by_fwnode()
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+Date: Mon, 23 Feb 2026 21:51:03 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hF=Mk25csPR9nkLVm4i_f9QrcOn_aU-RHVx9ow676fbg@mail.gmail.com>
+X-Gm-Features: AaiRm52Y4Rk-MeIB82T7rQUey8wR_pi6WPfESPE3Kl06AnDnckRAZBp3gaCe-K4
+Message-ID: <CAJZ5v0hF=Mk25csPR9nkLVm4i_f9QrcOn_aU-RHVx9ow676fbg@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] driver core: Split device related fwnode API to device/fwnode.h
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Zijun Hu <zijun.hu@oss.qualcomm.com>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+	Sakari Ailus <sakari.ailus@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21091-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,linux.intel.com,lists.linux.dev,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-21092-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,lists.linux.dev,linuxfoundation.org,kernel.org,gmail.com,linux.intel.com];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 88A4B17D3E6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: 0E2D017D362
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 4:41=E2=80=AFPM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
+On Mon, Feb 23, 2026 at 9:44=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> In GPIOLIB, during fwnode lookup, after having resolved the consumer's
-> reference to a specific fwnode, we only match it against the primary
-> node of the controllers. Let's extend that to also the secondary node by
-> reworking gpio_chip_match_by_fwnode()
+> device.h is a huge header which is hard to follow and easy to miss
+> something. Improve that by splitting device related fwnode API
+> to device/fwnode.h.
 >
-> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> In particular this helps to speedup the build of the code that includes
+> device.h solely for a device related fwnode API.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/gpio/gpiolib.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
+>  include/linux/device.h        | 17 +----------------
+>  include/linux/device/fwnode.h | 28 ++++++++++++++++++++++++++++
+
+I would call this node.h, so it is less easily confused with
+include/linux/fwnode.h and also because it is not just about
+fwnode_handle.
+
+>  2 files changed, 29 insertions(+), 16 deletions(-)
+>  create mode 100644 include/linux/device/fwnode.h
 >
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index c52200eaaaff82b12f22dd1ee8459bdd8ec10d81..7fe1d9ab1281d6c5022b9bdd8=
-909fef2cb74122e 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -11,6 +11,7 @@
->  #include <linux/errno.h>
->  #include <linux/file.h>
->  #include <linux/fs.h>
-> +#include <linux/fwnode.h>
->  #include <linux/idr.h>
->  #include <linux/interrupt.h>
->  #include <linux/irq.h>
-> @@ -1395,7 +1396,16 @@ EXPORT_SYMBOL_GPL(gpio_device_find_by_label);
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index 4ba6ae72ddf6..d2e2745243ea 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -31,6 +31,7 @@
+>  #include <linux/device/devlink.h>
+>  #include <linux/device/devres.h>
+>  #include <linux/device/driver.h>
+> +#include <linux/device/fwnode.h>
+>  #include <linux/device/types.h>
+>  #include <linux/cleanup.h>
 >
->  static int gpio_chip_match_by_fwnode(struct gpio_chip *gc, const void *f=
-wnode)
->  {
-> -       return device_match_fwnode(&gc->gpiodev->dev, fwnode);
-> +       struct device *dev =3D &gc->gpiodev->dev;
-> +       struct fwnode_handle *node =3D dev_fwnode(dev);
-> +
-> +       if (IS_ERR(fwnode))
-> +               return 0;
-> +
-> +       if (device_match_fwnode(dev, fwnode))
-> +               return 1;
-> +
-> +       return fwnode_is_primary(node) && node->secondary =3D=3D fwnode;
-
-Actually, you can replace the above statement with
-
-      return node && node->secondary =3D=3D fwnode;
-
-because fwnode_is_primary(node) expands to (node &&
-!IS_ERR(node->secondary)), but since you compare node->secondary to
-fwnode, the IS_ERR() check on it is redundant (fwnode is known to be
-non-error already at this point).
-
-That would allow you to avoid exporting fwnode_is_primary() (which is
-kind of useful given the review comments).
-
->  }
+> @@ -38,8 +39,6 @@ struct device_driver;
+>  struct module;
+>  struct class;
+>  struct subsys_private;
+> -struct device_node;
+> -struct fwnode_handle;
 >
 >  /**
+>   * struct subsys_interface - interfaces to device functions
+> @@ -603,20 +602,6 @@ int lock_device_hotplug_sysfs(void);
+>  int device_offline(struct device *dev);
+>  int device_online(struct device *dev);
 >
+> -void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode=
+);
+> -void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwno=
+de);
+> -void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+> -int device_add_of_node(struct device *dev, struct device_node *of_node);
+> -void device_remove_of_node(struct device *dev);
+> -void device_set_of_node_from_dev(struct device *dev, const struct device=
+ *dev2);
+> -
+> -static inline struct device_node *dev_of_node(struct device *dev)
+> -{
+> -       if (!IS_ENABLED(CONFIG_OF) || !dev)
+> -               return NULL;
+> -       return dev->of_node;
+> -}
+> -
+>  static inline int dev_num_vf(struct device *dev)
+>  {
+>         if (dev->bus && dev->bus->num_vf)
+> diff --git a/include/linux/device/fwnode.h b/include/linux/device/fwnode.=
+h
+> new file mode 100644
+> index 000000000000..4fe6107191a6
+> --- /dev/null
+> +++ b/include/linux/device/fwnode.h
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _DEVICE_FWNODE_H_
+> +#define _DEVICE_FWNODE_H_
+> +
+> +#include <linux/stddef.h>
+> +
+> +#include "types.h"
+> +
+> +struct device_node;
+> +struct fwnode_handle;
+> +
+> +void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode=
+);
+> +void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwno=
+de);
+> +
+> +void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+> +
+> +int device_add_of_node(struct device *dev, struct device_node *of_node);
+> +void device_remove_of_node(struct device *dev);
+> +void device_set_of_node_from_dev(struct device *dev, const struct device=
+ *dev2);
+> +
+> +static inline struct device_node *dev_of_node(struct device *dev)
+> +{
+> +       if (!IS_ENABLED(CONFIG_OF) || !dev)
+> +               return NULL;
+> +       return dev->of_node;
+> +}
+> +
+> +#endif /* _DEVICE_FWNODE_H_ */
 > --
+> 2.50.1
+>
 
