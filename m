@@ -1,56 +1,58 @@
-Return-Path: <linux-acpi+bounces-21053-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21052-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4P6PE4tznGmcGAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21053-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:34:35 +0100
+	id qCa5CV5znGmcGAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21052-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:33:50 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75848178C7A
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:34:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC25178C52
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 16:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB0E23034B02
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:33:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 071A6300612E
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 15:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF762EBDFA;
-	Mon, 23 Feb 2026 15:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C44F2E975E;
+	Mon, 23 Feb 2026 15:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pf8Md06/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB29jXXI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2222EAB61;
-	Mon, 23 Feb 2026 15:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1795927FB18;
+	Mon, 23 Feb 2026 15:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860830; cv=none; b=EztXPDwNrzHpp2iR2yRr0e+rReeRta+VeEHfI7T0VXLiVnIhvFcvWdZfZ1H+Cf7J+LpgEvvmh2zyk+gmQjDuuZtgOabaU2T5UqnMmwRQTrF1gnk+GQbQJ0lF82cRxqedwpnoFATresleKD/ds6V4mgbTBM0YMi52oay1km9AU0s=
+	t=1771860826; cv=none; b=GAzG54lIx5Wk5/TkxaDBPvsh24h9I93r1UsjqejL9Z8bstZGewFl96YMOSgm9l7f9x+uRjYibIyAVZ8g6FPgs48SlhfIb1QAtusP8uLR/68HiPl65HlOTBwalHW43aFawJmmkBIJvuN9wDaKJ3WvQt3PueotHpwqd/Kw4RnJmKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860830; c=relaxed/simple;
-	bh=KUh/wdz4o/ak+NTW79FlOzH8EePib+aTr/uBTxCk+IA=;
+	s=arc-20240116; t=1771860826; c=relaxed/simple;
+	bh=VzZrU/dFnGsRih3TvDfo18RrYRZGPj+QUNCUV0TW0y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XdoaM0ZfsCOxXoEyqofAC61/xwKvZcbpobc9kEDo8xtvzQ3Vz/aDhKruMOHKJjLRCkdJvfY4gK+jstAdanOazz+tLSRwIQWQ0qRZJaCeXD2tO+3/jVebGNXPylu4DDSSW6J9Z12g76qUB7VTA2RrvjU0W+bPdeCOk4TGT716RPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pf8Md06/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3831C116D0;
-	Mon, 23 Feb 2026 15:33:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rTmDzdCZDRD+w9ttv2wDyqiIxjk1NIk5YQJrY5QK+SpK2PMFjVnbosxq6SfWO9hYpJ4TFZaTp6QXV27Qu0T7RWyrPAqi3uIjxCKqpunQd2p+QZjMFFG3mezFnZnX30yEsXGP9QoKenLwiR7qmXq3eJnKeYOCRGtFW4wLmStl3BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB29jXXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A615EC116C6;
+	Mon, 23 Feb 2026 15:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771860830;
-	bh=KUh/wdz4o/ak+NTW79FlOzH8EePib+aTr/uBTxCk+IA=;
+	s=k20201202; t=1771860826;
+	bh=VzZrU/dFnGsRih3TvDfo18RrYRZGPj+QUNCUV0TW0y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pf8Md06/Q/l8qVSOoeCOVhy1dRTHrIG1aJ11y2r6uj6BEOdRy/mguEjrB/FvCaNUq
-	 wf0e3+iPhd0DW0eHFscsQPNgRk5yJFf6utdOzXbwDhL4zEsBJY42MUjpLFG0EZq7WG
-	 TnPC8rwTaYDiB6lmM7yeqcbEPyUDSVNe5+tzGW0FDQP45gM/+S1elPD8DneDZuDwAM
-	 3pFiJZMbaBv07nWoPHfvG1FljKX/I6O/TLvO2f8IypJFdiMeoZ8fsBeqVQXiK6Qj1I
-	 ENLdnma+td7XkLxqHBav67DLDIt9PRyF3S0+ws7mVJfLT5Lve666GL5wnppLAUVgMU
-	 ewlhjSuVEaxtw==
+	b=oB29jXXI85Qi8bkSIQxI6BfOOSwmVFQHsjcVAOm2fMgA6WmMHrH1tyW7ALPSBHqzq
+	 SkOwXKVYmFVVGWd0QSslhb0GDColqLWPvPECCbjqrZlqt/2CyvUWR7s0E1hDm/g0XS
+	 MmJroJPf6u1UJgnU+2q8idDVBu4i157JWHWo88VUYOIsqAEzV6ICGG63X3j/zBEKX+
+	 yXiC9YgQVsOssJ1dnZv+BifwFySPAZ1QOrMDzHtswCmHRy5EMW58jRhJ7jEc7uYKqk
+	 Cf0wS0fa9eYpYEmC8+rsNCXLcgqYy6yuYv2jJV7bsImWAWUlMGv1ekMj6IcLQdFHlD
+	 D/ziDC1Ap+7LA==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>,
  linux-rtc@vger.kernel.org, Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH v1 7/8] rtc: cmos: Drop PNP device support
-Date: Mon, 23 Feb 2026 16:32:29 +0100
-Message-ID: <2355012.iZASKD2KPV@rafael.j.wysocki>
+Subject:
+ [PATCH v1 8/8] ACPI: TAD/x86: cmos_rtc: Consolidate address space handler
+ setup
+Date: Mon, 23 Feb 2026 16:33:27 +0100
+Message-ID: <23028644.EfDdHjke4D@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <5983325.DvuYhMxLoT@rafael.j.wysocki>
 References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
@@ -68,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	CTE_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -76,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-21053-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21052-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -87,176 +89,215 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 75848178C7A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,rafael.j.wysocki:mid]
+X-Rspamd-Queue-Id: 9EC25178C52
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Previous changes effectively prevented PNP devices from being created
-for the CMOS RTC on x86 with ACPI.
+On x86, as a rule the CMOS RTC address space handler is set up by the
+CMOS RTC ACPI scan handler attach callback, acpi_cmos_rtc_attach(),
+but if the ACPI namespace does not contain a CMOS RTC device object,
+the CMOS RTC address space handler installation is taken care of the
+ACPI TAD (Timer and Alarm Device) driver.
 
-Although in principle a CMOS RTC PNP device may exist on an x86 system
-without ACPI (that is, an x86 system where there is no ACPI at all, not
-one booted with ACPI disabled), such systems were there in the field ~30
-years ago and most likely they would not be able to run a contemporary
-Linux kernel.
+This is not particularly straightforward and can be avoided by adding
+the ACPI TAD device ID to the CMOS RTC ACPI scan handler which will
+cause it to create a platform device for ACPI TAD after installing
+the CMOS RTC address space handler.  One related detail that needs to
+be taken care of, though, is that the creation of an ACPI TAD platform
+device should not cause cmos_rtc_platform_device_present to be set,
+since this may cause add_rtc_cmos() to suppress the creation of a
+fallback CMOS RTC platform device which may not be the right thing
+to do (for instance, due to the fact that the ACPI TAD driver is
+missing an RTC class device interface).
 
-For the above reasons, drop the PNP device support from the rtc-cmos
-driver.
+After doing the above, the CMOS RTC address space handler installation
+and removal can be dropped from the ACPI TAD driver (which allows it to
+be simplified quite a bit), acpi_remove_cmos_rtc_space_handler() can
+be dropped and acpi_install_cmos_rtc_space_handler() can be made static.
+
+Update the code as per the above.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/rtc/rtc-cmos.c | 113 +++--------------------------------------
- 1 file changed, 8 insertions(+), 105 deletions(-)
+ drivers/acpi/acpi_tad.c     | 27 +++++----------------------
+ drivers/acpi/x86/cmos_rtc.c | 26 +++++---------------------
+ include/acpi/acpi_bus.h     |  9 ---------
+ 3 files changed, 10 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 7457f42fd6f0..9ac5bab846c1 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -1370,85 +1370,6 @@ static int __maybe_unused cmos_resume(struct device *dev)
+diff --git a/drivers/acpi/acpi_tad.c b/drivers/acpi/acpi_tad.c
+index 6d870d97ada6..4f5089fc023d 100644
+--- a/drivers/acpi/acpi_tad.c
++++ b/drivers/acpi/acpi_tad.c
+@@ -563,7 +563,6 @@ static int acpi_tad_disable_timer(struct device *dev, u32 timer_id)
+ static void acpi_tad_remove(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	acpi_handle handle = ACPI_HANDLE(dev);
+ 	struct acpi_tad_driver_data *dd = dev_get_drvdata(dev);
  
- static SIMPLE_DEV_PM_OPS(cmos_pm_ops, cmos_suspend, cmos_resume);
+ 	device_init_wakeup(dev, false);
+@@ -587,7 +586,6 @@ static void acpi_tad_remove(struct platform_device *pdev)
  
--/*----------------------------------------------------------------*/
--
--/* On non-x86 systems, a "CMOS" RTC lives most naturally on platform_bus.
-- * ACPI systems always list these as PNPACPI devices, and pre-ACPI PCs
-- * probably list them in similar PNPBIOS tables; so PNP is more common.
-- *
-- * We don't use legacy "poke at the hardware" probing.  Ancient PCs that
-- * predate even PNPBIOS should set up platform_bus devices.
-- */
--
--#ifdef	CONFIG_PNP
--
--#include <linux/pnp.h>
--
--static int cmos_pnp_probe(struct pnp_dev *pnp, const struct pnp_device_id *id)
--{
--	int irq;
--
--	if (pnp_port_start(pnp, 0) == 0x70 && !pnp_irq_valid(pnp, 0)) {
--		irq = 0;
--#ifdef CONFIG_X86
--		/* Some machines contain a PNP entry for the RTC, but
--		 * don't define the IRQ. It should always be safe to
--		 * hardcode it on systems with a legacy PIC.
--		 */
--		if (nr_legacy_irqs())
--			irq = RTC_IRQ;
--#endif
--	} else {
--		irq = pnp_irq(pnp, 0);
+ 	pm_runtime_suspend(dev);
+ 	pm_runtime_disable(dev);
+-	acpi_remove_cmos_rtc_space_handler(handle);
+ }
+ 
+ static int acpi_tad_probe(struct platform_device *pdev)
+@@ -599,11 +597,6 @@ static int acpi_tad_probe(struct platform_device *pdev)
+ 	unsigned long long caps;
+ 	int ret;
+ 
+-	ret = acpi_install_cmos_rtc_space_handler(handle);
+-	if (ret < 0) {
+-		dev_info(dev, "Unable to install space handler\n");
+-		return -ENODEV;
 -	}
--
--	return cmos_do_probe(&pnp->dev, pnp_get_resource(pnp, IORESOURCE_IO, 0), irq);
--}
--
--static void cmos_pnp_remove(struct pnp_dev *pnp)
--{
--	cmos_do_remove(&pnp->dev);
--}
--
--static void cmos_pnp_shutdown(struct pnp_dev *pnp)
--{
--	struct device *dev = &pnp->dev;
--	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
--
--	if (system_state == SYSTEM_POWER_OFF) {
--		int retval = cmos_poweroff(dev);
--
--		if (cmos_aie_poweroff(dev) < 0 && !retval)
--			return;
--	}
--
--	cmos_do_shutdown(cmos->irq);
--}
--
--static const struct pnp_device_id rtc_ids[] = {
--	{ .id = "PNP0b00", },
--	{ .id = "PNP0b01", },
--	{ .id = "PNP0b02", },
--	{ },
--};
--MODULE_DEVICE_TABLE(pnp, rtc_ids);
--
--static struct pnp_driver cmos_pnp_driver = {
--	.name		= driver_name,
--	.id_table	= rtc_ids,
--	.probe		= cmos_pnp_probe,
--	.remove		= cmos_pnp_remove,
--	.shutdown	= cmos_pnp_shutdown,
--
--	/* flag ensures resume() gets called, and stops syslog spam */
--	.flags		= PNP_DRIVER_RES_DO_NOT_CHANGE,
--	.driver		= {
--			.pm = &cmos_pm_ops,
--	},
--};
--
--#endif	/* CONFIG_PNP */
--
- #ifdef CONFIG_OF
- static const struct of_device_id of_cmos_match[] = {
- 	{
-@@ -1543,45 +1464,27 @@ static struct platform_driver cmos_platform_driver = {
+ 	/*
+ 	 * Initialization failure messages are mostly about firmware issues, so
+ 	 * print them at the "info" level.
+@@ -611,27 +604,22 @@ static int acpi_tad_probe(struct platform_device *pdev)
+ 	status = acpi_evaluate_integer(handle, "_GCP", NULL, &caps);
+ 	if (ACPI_FAILURE(status)) {
+ 		dev_info(dev, "Unable to get capabilities\n");
+-		ret = -ENODEV;
+-		goto remove_handler;
++		return -ENODEV;
  	}
+ 
+ 	if (!(caps & ACPI_TAD_AC_WAKE)) {
+ 		dev_info(dev, "Unsupported capabilities\n");
+-		ret = -ENODEV;
+-		goto remove_handler;
++		return -ENODEV;
+ 	}
+ 
+ 	if (!acpi_has_method(handle, "_PRW")) {
+ 		dev_info(dev, "Missing _PRW\n");
+-		ret = -ENODEV;
+-		goto remove_handler;
++		return -ENODEV;
+ 	}
+ 
+ 	dd = devm_kzalloc(dev, sizeof(*dd), GFP_KERNEL);
+-	if (!dd) {
+-		ret = -ENOMEM;
+-		goto remove_handler;
+-	}
++	if (!dd)
++		return -ENOMEM;
+ 
+ 	dd->capabilities = caps;
+ 	dev_set_drvdata(dev, dd);
+@@ -673,11 +661,6 @@ static int acpi_tad_probe(struct platform_device *pdev)
+ 
+ fail:
+ 	acpi_tad_remove(pdev);
+-	/* Don't fallthrough because cmos rtc space handler is removed in acpi_tad_remove() */
+-	return ret;
+-
+-remove_handler:
+-	acpi_remove_cmos_rtc_space_handler(handle);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
+index a6df5b991c96..ced334e19896 100644
+--- a/drivers/acpi/x86/cmos_rtc.c
++++ b/drivers/acpi/x86/cmos_rtc.c
+@@ -18,13 +18,12 @@
+ #include "../internal.h"
+ 
+ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
++	{ "ACPI000E", 1 }, /* ACPI Time and Alarm Device (TAD) */
+ 	ACPI_CMOS_RTC_IDS
  };
  
--#ifdef CONFIG_PNP
--static bool pnp_driver_registered;
--#endif
- static bool platform_driver_registered;
+ bool cmos_rtc_platform_device_present;
  
- static int __init cmos_init(void)
- {
--	int retval = 0;
-+	int retval;
- 
--#ifdef	CONFIG_PNP
--	retval = pnp_register_driver(&cmos_pnp_driver);
--	if (retval == 0)
--		pnp_driver_registered = true;
--#endif
-+	if (cmos_rtc.dev)
-+		return 0;
- 
--	if (!cmos_rtc.dev) {
--		retval = platform_driver_probe(&cmos_platform_driver,
--					       cmos_platform_probe);
--		if (retval == 0)
--			platform_driver_registered = true;
--	}
-+	retval = platform_driver_probe(&cmos_platform_driver, cmos_platform_probe);
-+	if (retval)
-+		return retval;
- 
--	if (retval == 0)
--		return 0;
-+	platform_driver_registered = true;
- 
--#ifdef	CONFIG_PNP
--	if (pnp_driver_registered)
--		pnp_unregister_driver(&cmos_pnp_driver);
--#endif
--	return retval;
-+	return 0;
+-static bool cmos_rtc_space_handler_present __read_mostly;
+-
+ static acpi_status acpi_cmos_rtc_space_handler(u32 function,
+ 					       acpi_physical_address address,
+ 					       u32 bits, u64 *value64,
+@@ -56,8 +55,9 @@ static acpi_status acpi_cmos_rtc_space_handler(u32 function,
+ 	return AE_BAD_PARAMETER;
  }
- module_init(cmos_init);
  
- static void __exit cmos_exit(void)
+-int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
++static int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
  {
--#ifdef	CONFIG_PNP
--	if (pnp_driver_registered)
--		pnp_unregister_driver(&cmos_pnp_driver);
--#endif
- 	if (platform_driver_registered)
- 		platform_driver_unregister(&cmos_platform_driver);
++	static bool cmos_rtc_space_handler_present __read_mostly;
+ 	acpi_status status;
+ 
+ 	if (cmos_rtc_space_handler_present)
+@@ -76,22 +76,6 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+ 
+ 	return 1;
  }
+-EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
+-
+-void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
+-{
+-	acpi_status status;
+-
+-	if (cmos_rtc_space_handler_present)
+-		return;
+-
+-	status = acpi_remove_address_space_handler(handle,
+-						   ACPI_ADR_SPACE_CMOS,
+-						   acpi_cmos_rtc_space_handler);
+-	if (ACPI_FAILURE(status))
+-		pr_err("Failed to remove CMOS-RTC address space handler\n");
+-}
+-EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
+ 
+ static int acpi_cmos_rtc_attach(struct acpi_device *adev,
+ 				const struct acpi_device_id *id)
+@@ -103,9 +87,9 @@ static int acpi_cmos_rtc_attach(struct acpi_device *adev,
+ 		return ret;
+ 
+ 	if (IS_ERR_OR_NULL(acpi_create_platform_device(adev, NULL))) {
+-		pr_err("Failed to create CMOS-RTC platform device\n");
++		pr_err("Failed to create a platform device for %s\n", (char *)id->id);
+ 		return 0;
+-	} else {
++	} else if (!id->driver_data) {
+ 		cmos_rtc_platform_device_present = true;
+ 	}
+ 	return 1;
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index aad1a95e6863..be6d9032a161 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -760,8 +760,6 @@ int acpi_disable_wakeup_device_power(struct acpi_device *dev);
+ #ifdef CONFIG_X86
+ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *status);
+ bool acpi_quirk_skip_acpi_ac_and_battery(void);
+-int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
+-void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
+ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip);
+ #else
+ static inline bool acpi_device_override_status(struct acpi_device *adev,
+@@ -773,13 +771,6 @@ static inline bool acpi_quirk_skip_acpi_ac_and_battery(void)
+ {
+ 	return false;
+ }
+-static inline int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+-{
+-	return 1;
+-}
+-static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
+-{
+-}
+ static inline int
+ acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
+ {
 -- 
 2.51.0
 
