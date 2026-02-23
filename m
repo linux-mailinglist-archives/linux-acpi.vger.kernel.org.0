@@ -1,87 +1,78 @@
-Return-Path: <linux-acpi+bounces-21088-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21086-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ko7KH69nGlSKAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21088-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:50:06 +0100
+	id yHoQJVm6nGlHKAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21086-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:36:41 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B4D17D2ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:50:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F26F817CFC6
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 21:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1ED7630451DC
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:47:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4980D3171C33
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Feb 2026 20:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB1637D12B;
-	Mon, 23 Feb 2026 20:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AFD36B059;
+	Mon, 23 Feb 2026 20:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kERfU3m7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a+64DF2B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEADC37D12D;
-	Mon, 23 Feb 2026 20:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9C7369979
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Feb 2026 20:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771879470; cv=none; b=m19qNigm+VWed3GWfD57J1qgOSaMlqjWR0554rxOXUiHxaCOWnkkBxIKCfqfV9lpke0il3VHTKnK+nBoLfBsCmGTHad82ar0zCOFPwvyTkZTR5PBQ9rXmmsfjrlJTXP5imFqOmXCqCgEcmg/+Zi69sdQewl6H7iIxdHjoyVV2BA=
+	t=1771878814; cv=none; b=lhzOnXmZ7VRjGlsRrhB8lHd6hFE/OgnQRf/siPicArXrJ8uoClqiUMYYTvWPsCSG54ME9H/nWFZwnOzMt/1kzix54jVBi9qa26zmD+9AM+RciLoMepdWzjFX4ub2Z6SJ2LP9FlZvHJh0vAQIN7xKHwwITz8yJsdgLJCWapLUOjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771879470; c=relaxed/simple;
-	bh=hDo7vV4l0SXbcs1Xo9+74l02q5jsJ4F9mHa8kkrZXjk=;
+	s=arc-20240116; t=1771878814; c=relaxed/simple;
+	bh=ESvyMVF+dYACKaZd3BgG8cX6TSnmtZvG/Oqd/0HHweU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+AP1+EhruxUIRRSHCmqV1N6vfckUGh5Hr5v5pUOY8q8gv2LNnVzNj9N0Iximatug1ExUMZUznrgL7GvpNhfM1JWZW0EtRiBD3NSVliFp+pJGfXfwS5PKoFAKZG9UtDAY7dVpWb2umc3HRDW9yxvm/XZJdd8T/CyGertOVpW+04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kERfU3m7; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 MIME-Version; b=IEnsz5SWDRi0E+h8oc7krzKNBsngMv7p1x92Cvte0qQXW8ZhyNMjKUXUN9VfOXS87+BLuZ9arW7kLDP3EGeY4duCbntm6gjQNGr6sfLFwKtTxWx+NgHSfVA48LC9kqcB+fGxY1h5ZDuxokoBEMY6QIJvR6BpAhX3OitVdpCfdKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a+64DF2B; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771879467; x=1803415467;
+  t=1771878813; x=1803414813;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hDo7vV4l0SXbcs1Xo9+74l02q5jsJ4F9mHa8kkrZXjk=;
-  b=kERfU3m7qJskSzbTJaOu/bTMh7GZ9X0SJYOtdouYfe/jAUxLxsC0q0J8
-   //Om9wt77g2q3YfAmr/YTHgMfufx9XJoZ3k5l+ocG3WvCCuGzGbEjhqz/
-   VraQRuZV/lZp1iYUrF1MmuZEtSwq4zZh6XgAAXdvVFLX5v/wkw+scVjly
-   IIQovyytoilFELQkTvxNy3IkyOySL1nunj9P6LG3JI6ngtCmwzmOPM1Of
-   dvcNnyQEzdXYlX0gfZ/tckbieFKGaB+lpjhe/Nkyaq7iGTu3kI+TBoIBC
-   Dtot0r09nMVnKZQ/MC7TiN2NRzl6upx/dFD8XX8/61I4lnIK7D9gpAdTy
+  bh=ESvyMVF+dYACKaZd3BgG8cX6TSnmtZvG/Oqd/0HHweU=;
+  b=a+64DF2BDyUPXsJnJtEl+zhij6Vql9MIo36VgExlSm5K8YH8dENwL1vF
+   nkBZHMRGb0KtbNvQtfpOO56hHt486+uIF9xQK70Vxy4y/I7e9Mq7IcDvE
+   zlWuAPh2ESJymQ3i88d5XqHwLDA9CNUDo35xd3pz+vlIdcuEnwxiv0OsH
+   cpYGEWG2p9JGFvjV8y8NVKV0cwymFw+xoA83ODs6vq7jPX5t+eRh0b0HP
+   CUwCIR2Q+/bzAGXeg/U5YJ28xeuYTsrt3XsMP5AQ0krbrQb/ZVxjR4mbi
+   gwGeqJPfeIescXBuh/Z7TfT4lwH+sjBEoLnM0qBOA7MP2UqcktHJ1IQxv
    A==;
-X-CSE-ConnectionGUID: 1Jzxn8DvRrSLLooIdkIxVw==
-X-CSE-MsgGUID: A8QqalleQ0q8zB7+fNsCjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72795338"
+X-CSE-ConnectionGUID: sCP6a0eZSHaYdN/PdRHl/A==
+X-CSE-MsgGUID: fm9LaExhRR+pbNw1td0dVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="90467253"
 X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="72795338"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:44:22 -0800
-X-CSE-ConnectionGUID: E/8Q1/VRREiGblqjJnAi2w==
-X-CSE-MsgGUID: 7pbjLTCcRXq+IeUj2e7gLw==
+   d="scan'208";a="90467253"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:33 -0800
+X-CSE-ConnectionGUID: dZSSgVerSTmU0I/oI/AvdA==
+X-CSE-MsgGUID: J3Ia0JU8T9+hgS/7mDMJgA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="215700222"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa008.jf.intel.com with ESMTP; 23 Feb 2026 12:44:19 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 39F1C9B; Mon, 23 Feb 2026 21:44:18 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-acpi@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH v1 3/3] driver core: Split device related fwnode API to device/fwnode.h
-Date: Mon, 23 Feb 2026 21:30:32 +0100
-Message-ID: <20260223204412.3298508-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260223204412.3298508-1-andriy.shevchenko@linux.intel.com>
-References: <20260223204412.3298508-1-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="213988161"
+Received: from nldesimo-desk.amr.corp.intel.com ([10.53.80.57])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:32 -0800
+From: Nate DeSimone <nathaniel.l.desimone@intel.com>
+To: tony.luck@intel.com
+Cc: lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	nathaniel.l.desimone@intel.com,
+	rafael@kernel.org
+Subject: Re: [PATCH v1] ACPI: FPDT: expose FBPT and S3PT subtables via sysfs
+Date: Mon, 23 Feb 2026 12:32:58 -0800
+Message-ID: <20260223203258.2877-1-nathaniel.l.desimone@intel.com>
+X-Mailer: git-send-email 2.51.2.windows.1
+In-Reply-To: <SJ1PR11MB6083ECBFD999F240987EBDE1FC77A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+References: <SJ1PR11MB6083ECBFD999F240987EBDE1FC77A@SJ1PR11MB6083.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -91,126 +82,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,linux.intel.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-21086-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21088-lists,linux-acpi=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathaniel.l.desimone@intel.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 45B4D17D2ED
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: F26F817CFC6
 X-Rspamd-Action: no action
 
-device.h is a huge header which is hard to follow and easy to miss
-something. Improve that by splitting device related fwnode API
-to device/fwnode.h.
+> > Add sysfs attributes at /sys/firmware/acpi/fpdt/tables/FBPT and
+> > /sys/firmware/acpi/fpdt/tables/S3PT that expose the raw contents of the
+> > FPDT subtables. Note that /sys/firmware/acpi/tables/FPDT only provides
+> > the top level table, not the subtables. Adding access to the subtables
+> > enables a usage model similar to /sys/firmware/dmi/tables/DMI, allowing
+> > userspace tools to interpret newer record types (e.g. String Event
+> > Records, Microcontroller Boot Performance Data Records, etc.) defined
+> > in recent ACPI specifications[1] without requiring kernel changes.
+>
+> Is the existing (for BERT) /sys/firmware/acpi/tables/data directory a more
+> appropriate spot for these? Naming the new subdirectory "tables" seems
+> misleading as there aren't a top-level ACPI "FBPT" or "S3PT" tables?
 
-In particular this helps to speedup the build of the code that includes
-device.h solely for a device related fwnode API.
+I'm not experienced with the organizational semantics of sysfs. I made a
+best-guess when choosing /sys/firmware/acpi/fpdt/tables/FBPT. Should I do
+something like /sys/firmware/acpi/tables/data/fpdt/FBPT? That way the data
+source is explicit and there won't be name collisions with other data in the
+future?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/device.h        | 17 +----------------
- include/linux/device/fwnode.h | 28 ++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 16 deletions(-)
- create mode 100644 include/linux/device/fwnode.h
+Wherever the kernel maintainers think is the best place to put these new sysfs
+attributes I'm completely on-board with. Please let me know where in the
+filesystem they should go and I'll get a v2 patch implemented!
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 4ba6ae72ddf6..d2e2745243ea 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -31,6 +31,7 @@
- #include <linux/device/devlink.h>
- #include <linux/device/devres.h>
- #include <linux/device/driver.h>
-+#include <linux/device/fwnode.h>
- #include <linux/device/types.h>
- #include <linux/cleanup.h>
- 
-@@ -38,8 +39,6 @@ struct device_driver;
- struct module;
- struct class;
- struct subsys_private;
--struct device_node;
--struct fwnode_handle;
- 
- /**
-  * struct subsys_interface - interfaces to device functions
-@@ -603,20 +602,6 @@ int lock_device_hotplug_sysfs(void);
- int device_offline(struct device *dev);
- int device_online(struct device *dev);
- 
--void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
--void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
--void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
--int device_add_of_node(struct device *dev, struct device_node *of_node);
--void device_remove_of_node(struct device *dev);
--void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
--
--static inline struct device_node *dev_of_node(struct device *dev)
--{
--	if (!IS_ENABLED(CONFIG_OF) || !dev)
--		return NULL;
--	return dev->of_node;
--}
--
- static inline int dev_num_vf(struct device *dev)
- {
- 	if (dev->bus && dev->bus->num_vf)
-diff --git a/include/linux/device/fwnode.h b/include/linux/device/fwnode.h
-new file mode 100644
-index 000000000000..4fe6107191a6
---- /dev/null
-+++ b/include/linux/device/fwnode.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _DEVICE_FWNODE_H_
-+#define _DEVICE_FWNODE_H_
-+
-+#include <linux/stddef.h>
-+
-+#include "types.h"
-+
-+struct device_node;
-+struct fwnode_handle;
-+
-+void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
-+void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
-+
-+void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
-+
-+int device_add_of_node(struct device *dev, struct device_node *of_node);
-+void device_remove_of_node(struct device *dev);
-+void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
-+
-+static inline struct device_node *dev_of_node(struct device *dev)
-+{
-+	if (!IS_ENABLED(CONFIG_OF) || !dev)
-+		return NULL;
-+	return dev->of_node;
-+}
-+
-+#endif /* _DEVICE_FWNODE_H_ */
--- 
-2.50.1
+> Once naming is resolved, needs update to Documentation/ABI/testing/sysfs-fi=
+> rmware-acpi
+> for whatever names are chosed for the new files.
 
+I will happily add that as well in a v2 patch series.
+
+>
+> Code looks good.
+>
+> -Tony
+
+Thank You!
+-Nate
 
