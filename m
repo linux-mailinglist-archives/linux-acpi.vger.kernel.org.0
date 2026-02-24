@@ -1,56 +1,55 @@
-Return-Path: <linux-acpi+bounces-21103-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21104-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBqgI7o3nWlINQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21103-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:38 +0100
+	id aBeFLck3nWlINQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21104-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:53 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057A1181F6A
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD13B181F7D
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A603E30D950A
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 05:30:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66F4830F05D2
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 05:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4024B29E0F7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5459F2BE63F;
 	Tue, 24 Feb 2026 05:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l712owvZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpRhNN6w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8445218AB9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC81528B4FA;
 	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771911052; cv=none; b=AuxkLYsms1XRbJu4wNlWEtFPyjy2Vt8u+r/d7XhPKcprvPPm2I/3MIQywIGhE6agM6KR46Cf77Yhfu956eQdHRiyOauBXfJzLhfKnEDiGdk9YxPX9yg4szAaglsLpJOzpZfmZayksikRdlRzntjmy2XU4bTgwp162DmEJBLO7uE=
+	t=1771911053; cv=none; b=nJsW8AEOxxPpIJ6S2If29c1oyPg2rxJnwOp4XwXcsSSatGqHZZNgrCwEE3ysJm+IEp8wPkDYD4qBfeXUJAqcQ9wpz8laGmFY/7OyN1igrTvGTJSBxC6PCSo6l2z1n+G0JKATGoMeekow0mEpTTQQpesY3xi+xZ6aY3aOv57p0Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771911052; c=relaxed/simple;
-	bh=JoCqd4qTmhZAw9Ra/kUSAYchs5sr6tzJ0I7Nt266T1c=;
+	s=arc-20240116; t=1771911053; c=relaxed/simple;
+	bh=HpGVKc0NY5imy2HoLh3gTZqlP+PKdsOsRjHmaFdWlwA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZETwmhL0GZA1kkr4Oq1qj9xYK79acNBhK4R3OFk+ySfHhKvXk7QEihA6zNTcv8+NT8kz/zH1rY2hRrqWa9etD5+h+p69qmpCypKzEYIx0Ig3SgsFNC9hxT63jwLsMV+18gyn4Ht+syIIi1lNkQAKl8CNosgr2aHY+qy1+omEb7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l712owvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A3568C2BC86;
+	 In-Reply-To:To:Cc; b=eTvwiC+ozGK6bGuHZCe+A8rivjd7YE0NL2UP9HY5qWaRQb6B2BU+SXYt2ZHL96ps4FfCVDz4exhk9Vw7xGZM31Ac7hbM5sfS/y51+f/EBG/iiVjE2G2HMJYPkufccndjQGP4XK7wh65mqc55DDqMqwUi2xYqXr3qhsSqPLH2qU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpRhNN6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BC3B9C19424;
 	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771911052;
-	bh=JoCqd4qTmhZAw9Ra/kUSAYchs5sr6tzJ0I7Nt266T1c=;
+	bh=HpGVKc0NY5imy2HoLh3gTZqlP+PKdsOsRjHmaFdWlwA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=l712owvZtBOLZNSZ8jVFkdyZ1s0SR6C8uijHIcEFtvLu+1rF3/RLeJ+j/N5dGW02R
-	 jjL/LJGDZ3tb4lEQiSd8xiJrpNykSM/lQUTPnDK+Ow9TRvV+RoCiyeF9tXaXhdutOE
-	 l5vgevn2Vt9DiOcL2pivOTvJNVV2ks2Axmage+ripyLGiPmI0CiZZdQOkOHHiHQg2J
-	 7MfqYwdOmUIUsH6LJuPAWUD8oD5fyCAJ6eewu6b/lDkqxitXU/INr61sEYz1kIecD+
-	 sqnciGqus0UECl2eF91R+xT20Z+Bb7SfQg5kLRv4Xxh2ygcnhKc9FKcb0vra9XwotY
-	 yt7Myk5h87KDg==
+	b=WpRhNN6wmYYtMagYhYig5HGWe/MTOnHSg8Fq7vjHTzFBKj1UufsSHZBlMfj+MW7uB
+	 vYgaXwaXCYHr3TcsF1PEGwA34D+PF4d9azi4TPQwyyAC3c1w67pyRllmsbRKrHbIYP
+	 i1hoOiF0bAA6+OsmPmwSdYpNyG3yLByH7fcVS7Ny8N1z2Bzn+Rc3KhlqofWDJIPLDV
+	 Z4Vlws5oMMeMLX+O/0rv0adRYrdQfUaOrnzpHKstlg6OFU2IUaimLEx8R1+mZTG3wt
+	 9ygX1yJk7FfUIFk5MRoql4vriBLfqnCv+m0Kh4JvuckNcjDhB9rW2/+Ba8cHWT2ksV
+	 8yW1XsuwbTaVA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 939CCEFB800;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF03DEFB7F9;
 	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Tue, 24 Feb 2026 11:00:49 +0530
-Subject: [PATCH v5 3/9] serdev: Do not return -ENODEV from
- of_serdev_register_devices() if external connector is used
+Date: Tue, 24 Feb 2026 11:00:50 +0530
+Subject: [PATCH v5 4/9] dt-bindings: serial: Document the graph port
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -59,7 +58,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-pci-m2-e-v5-3-dd9b9501d33c@oss.qualcomm.com>
+Message-Id: <20260224-pci-m2-e-v5-4-dd9b9501d33c@oss.qualcomm.com>
 References: <20260224-pci-m2-e-v5-0-dd9b9501d33c@oss.qualcomm.com>
 In-Reply-To: <20260224-pci-m2-e-v5-0-dd9b9501d33c@oss.qualcomm.com>
 To: Rob Herring <robh@kernel.org>, 
@@ -85,18 +84,18 @@ Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
  Hans de Goede <johannes.goede@oss.qualcomm.com>, 
- Bartosz Golaszewski <brgl@kernel.org>
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1461;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1136;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=9JYNk+DMPq2LlZQfTiexJ4EeAYXDboalcaCh+TYovs0=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpnTeIZPVB6TXs7qJCxZKnKwelNFrs4yCQW7stK
- n5l2YxnGqCJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaZ03iAAKCRBVnxHm/pHO
- 9WeqB/4oeIaNaesPvXIPgrTC8c8dEL+ulzvpa7xXgn0f/n1iIZcd9Qvnor+uSHBIjnNX8YytZSU
- NIsWprNhRtUxTsmwu/NNQGg7R7AJbd4oHn6iQlDv7VLBN+H5wv7DoRHWXdIefCDpqsOMKLsWLi+
- nBMntq4rZWhXVYbh3oKmMweIWcVMC1ABHIubxhIVf8W0SQUzlbu9UIThUVftK37wRFbS7GAkWXk
- YBaWTeSSp1nrKZL630unIuLiAyW/zW0ZrwfgilYI3oZD6RxCs0iZfe5EoHib+HCpnY9sqcKlq79
- o0KO4smHOJfm+t7x0Fe6lXI+H7vupOMr/IjtMQh7G9ykqDb+
+ bh=GL3e+NsnxRKZAnbhCXHzDHMKMZEirA8W+47KdhQACxY=;
+ b=owGbwMvMwMUYOl/w2b+J574ynlZLYsica96h277e1mjKV56q0/LmB3awLD5x31z57eMMbc09s
+ +cJXKgp7GQ0ZmFg5GKQFVNkSV/qrNXocfrGkgj16TCDWJlApjBwcQrARO5pcTA0eZTuv7x4Q2bn
+ uqCt8enKuUzNLMv5LoWutl67SpRndqlnBrvSg7qeLvN+eQ6Vh+8+fNu+hyF/lpPATPUyluu+ZzV
+ deabMr3vRf/Ful1XgnoYH936r7N6js910QZeVgFyGXVi3k2NYPu/35qLQkIcv5dR8FJXv/1aUNW
+ BLeO9uImTs5BIdlDqt5buX7uEwLaE1uzhLJzyuDH4npOhxulcl9Zq9VP+NDHVT2cIJpSEdzUHTC
+ g+LsduJmzK56xxNEZxfdoilPP5jesIGRvuvMcr7U6c/VFf+pPFz0ZGdxw5rbXfOZN91zv+2Y+ih
+ I58qmg+6Cdic/5k8jVfP8YJWxtrsuR5qcz1/KjFLyP4AAA==
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -114,7 +113,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21103-lists,linux-acpi=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-21104-lists,linux-acpi=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[kernel.org,linuxfoundation.org,linux.dev,linux.intel.com,squebb.ca,gmail.com,holtmann.org,bgdev.pl];
@@ -127,56 +126,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-acpi@vger.kernel.org];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.997];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
 	HAS_REPLYTO(0.00)[manivannan.sadhasivam@oss.qualcomm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:replyto,qualcomm.com:email]
-X-Rspamd-Queue-Id: 057A1181F6A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: AD13B181F7D
 X-Rspamd-Action: no action
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-If an external connector like M.2 is connected to the serdev controller
-in DT, then the serdev devices may be created dynamically by the connector
-driver. So do not return -ENODEV from of_serdev_register_devices() if the
-static nodes are not found and the graph node is used.
+A serial controller could be connected to an external connector like PCIe
+M.2 for controlling the serial interface of the card. Hence, document the
+OF graph port.
 
 Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com> # ThinkPad T14s gen6 (arm64)
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- drivers/tty/serdev/core.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/serial/serial.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-index bf88b95f7458..e9d044a331b0 100644
---- a/drivers/tty/serdev/core.c
-+++ b/drivers/tty/serdev/core.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_graph.h>
- #include <linux/of_device.h>
- #include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
-@@ -561,7 +562,13 @@ static int of_serdev_register_devices(struct serdev_controller *ctrl)
- 		} else
- 			found = true;
- 	}
--	if (!found)
-+
-+	/*
-+	 * When the serdev controller is connected to an external connector like
-+	 * M.2 in DT, then the serdev devices may be created dynamically by the
-+	 * connector driver.
-+	 */
-+	if (!found && !of_graph_is_present(dev_of_node(&ctrl->dev)))
- 		return -ENODEV;
+diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
+index 6aa9cfae417b..96eb1de8771e 100644
+--- a/Documentation/devicetree/bindings/serial/serial.yaml
++++ b/Documentation/devicetree/bindings/serial/serial.yaml
+@@ -87,6 +87,9 @@ properties:
+     description:
+       TX FIFO threshold configuration (in bytes).
  
- 	return 0;
++  port:
++    $ref: /schemas/graph.yaml#/properties/port
++
+ patternProperties:
+   "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
+     if:
 
 -- 
 2.51.0
