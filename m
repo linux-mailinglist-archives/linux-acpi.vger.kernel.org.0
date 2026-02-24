@@ -1,149 +1,252 @@
-Return-Path: <linux-acpi+bounces-21133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFAXISS6nWklRgQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21133-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 15:48:04 +0100
+	id WLMgLqzCnWnzRgQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21134-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:24:28 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0110E188A58
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 15:48:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B082188F19
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C50173094A24
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 14:47:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 839DE303CE07
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 15:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CD022154F;
-	Tue, 24 Feb 2026 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlhvpUWK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16103A1E7E;
+	Tue, 24 Feb 2026 15:22:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4941F8755
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197014502F;
+	Tue, 24 Feb 2026 15:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771944437; cv=none; b=oBXJhJyi6GM2IYeve/D0ndprvpuDKEWz4Fqkk7sPbOP+VJ5bP6GApxWXbsz0V5OMJhe3erioz7hZDc4kGJuFoPPB8fJVNGrRklJfjXOpoLKxe6WOPrGurw65rgw/qQ75MlBSwMs8ylU65rrjQIfJNKNmtdZU+pinv95YWhZkdcM=
+	t=1771946559; cv=none; b=ql6+BnDspNxzAeIs8meyAn06vU79aMIswB4SG/eXlExLPRStpJM0OQbGAB4jhtBJZCjUoGGTzNzeV6h+liM8EuxyH1YTdhuBe+BOtAGVhQs3ele2wQAtPBIdAYaPEpfvszSNchPZ8vrrTFpYiSwdkdIu5iEMV6SjFUilKEd9gmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771944437; c=relaxed/simple;
-	bh=HR6SwXIYzbLzdbD9bXS+UDt2zwZGO3QXIOeK1VrlTWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V76GQ3sTfcjlOc9Z+StrKBJ48sJpwohcyfKwV7Jbnx/eRgpZihDmmoDM6WvzjFiknp8iW7J9zTVB9uMG8fQAkgHbDUpZPCnsvQYiyxW20AG1MFwBMOxyixY5Y86Yixwf6kxM2IIzg5vMwY3q9OWtOqJzUqVTcjLeEMw9Q5WMUwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlhvpUWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56F4C2BC86
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 14:47:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771944436;
-	bh=HR6SwXIYzbLzdbD9bXS+UDt2zwZGO3QXIOeK1VrlTWE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KlhvpUWK7tWpIwRJ33TPlXbLJe6shM1b23z4YEXdijxTTammvOUejMyZfb5PVHtTp
-	 EUpBioJaqbRS81KmKoe6t0mULF2u+95T8IqPprQxBmK3UPs9XPVTwb+A/zw0PGwBZf
-	 vbR8II/pz2X8q9BX6kQXHFnjrYMkLaxyrpA63DzjXYNk3CLaxl8yKbXO6FouMZ2/Y0
-	 pvf1t4G9XDicY9UMkmEPC5LiN1jPuNUQLew0unEqnYJahl6/wEtfOaBfjO5L0TIW61
-	 eqDBdFYa7dt3ehlW9smA5UkH5eAnwdSN09E1SHEFdWsPI5RB/etv+TcOiJo9rkhWQQ
-	 VNoWfj7tcxXwQ==
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d4c12ff3d5so5162040a34.2
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 06:47:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWDa35V+R5cMKg1TCpAGSslH6/pv/6xpen1+QofU4CzHACoB8K5kEAOIAQ0s3SxNfClkIlvlp1a30+a@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6nMdmr6uqwmV5VTEQ9ZVYDWB9v86K4LXj93ewOdshbpSP0avw
-	HHbEsF8GJHYeoT0R2vqJ+pLmp2em+5fSgZJDItV3Jv4a9gohNdo42gE4VLR1eLtCglUI1uwIcdI
-	BUGUrESCttLUWLdJ1Dee1C6y6dhv+Ycc=
-X-Received: by 2002:a05:6820:160a:b0:662:facc:529f with SMTP id
- 006d021491bc7-679c446f068mr6761829eaf.28.1771944436022; Tue, 24 Feb 2026
- 06:47:16 -0800 (PST)
+	s=arc-20240116; t=1771946559; c=relaxed/simple;
+	bh=lJJG+rbmg1bthB43+VBSJv90qHClL59YAS6yfJ0ArGw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hIXIMSA3NIt34kjljMhu0NciZeLr4Q6sQStqUW934Um3yQZ0thYdrhixOfChR5PnoSWWAPp1Ny27BoXYzDkdw80ih8ghoDzFwi8lYCbeJufqg1541vxsQtZsZkAxL6b87u+9m6ciadwpAaEAcAASqqNoPkIu1xPOPKuX1cL1kkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fL1fp4W6xzJ46g6;
+	Tue, 24 Feb 2026 23:22:10 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 612B64056A;
+	Tue, 24 Feb 2026 23:22:32 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 24 Feb
+ 2026 15:22:31 +0000
+Date: Tue, 24 Feb 2026 15:22:30 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Ahmed Tiba <ahmed.tiba@arm.com>
+CC: <devicetree@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<Dmitry.Lamerov@arm.com>, <catalin.marinas@arm.com>, <bp@alien8.de>,
+	<robh@kernel.org>, <rafael@kernel.org>, <will@kernel.org>,
+	<conor@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-doc@vger.kernel.org>, <krzk+dt@kernel.org>, <Michael.Zhao2@arm.com>,
+	<tony.luck@intel.com>, "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH v2 01/11] ACPI: APEI: GHES: share macros via a private
+ header
+Message-ID: <20260224152230.00000531@huawei.com>
+In-Reply-To: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-1-347fa2d7351b@arm.com>
+References: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-0-347fa2d7351b@arm.com>
+	<20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-1-347fa2d7351b@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223025240.518509-1-sofia@schn.dev>
-In-Reply-To: <20260223025240.518509-1-sofia@schn.dev>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Feb 2026 15:47:04 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i3bWhzdzmBmw=cB14ogP6hBa=eppwA_Q03mHLZDk6ngA@mail.gmail.com>
-X-Gm-Features: AaiRm53RfiD_OD85m-Cb9M3P2gjWxAA5c8IhuDEQ8socH_w29VTVvTPv5wj_b3U
-Message-ID: <CAJZ5v0i3bWhzdzmBmw=cB14ogP6hBa=eppwA_Q03mHLZDk6ngA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
-To: sofia@schn.dev
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-21134-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21133-lists,linux-acpi=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,schn.dev:email]
-X-Rspamd-Queue-Id: 0110E188A58
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.987];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi,dt,huawei];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,arm.com:email]
+X-Rspamd-Queue-Id: 2B082188F19
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 4:00=E2=80=AFAM Sofia Schneider <sofia@schn.dev> wr=
-ote:
->
-> The screen backlight turns off during boot (specifically during udev devi=
-ce
-> initialization) when returning true for _OSI("Windows 2009").
->
-> Analyzing the device's DSDT reveals that the firmware takes a different
-> code path when Windows 7 is reported, which leads to the backlight shutof=
-f.
-> Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
->
-> Signed-off-by: Sofia Schneider <sofia@schn.dev>
-> ---
->  drivers/acpi/osi.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-> index f2c943b934be..9470f1830ff5 100644
-> --- a/drivers/acpi/osi.c
-> +++ b/drivers/acpi/osi.c
-> @@ -389,6 +389,19 @@ static const struct dmi_system_id acpi_osi_dmi_table=
-[] __initconst =3D {
->                 },
->         },
->
-> +       /*
-> +        * The screen backlight turns off during udev device creation
-> +        * when returning true for _OSI("Windows 2009")
-> +        */
-> +       {
-> +       .callback =3D dmi_disable_osi_win7,
-> +       .ident =3D "Acer Aspire One D255",
-> +       .matches =3D {
-> +                    DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-> +                    DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
-> +               },
-> +       },
-> +
->         /*
->          * The wireless hotkey does not work on those machines when
->          * returning true for _OSI("Windows 2012")
-> --
+On Fri, 20 Feb 2026 13:42:19 +0000
+Ahmed Tiba <ahmed.tiba@arm.com> wrote:
 
-Applied as 7.0-rc material, thanks!
+> Carve the CPER helper macros out of ghes.c and place them in a private
+> header so they can be shared with upcoming helper files. This is a
+> mechanical include change with no functional differences.
+> 
+> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
++CC Mauro as he's been doing a lot of work on error injection recently so
+can probably review the use of the various structures much more easily
+than I can!
+
+My main comment is on the naming of the new header.
+
+Jonathan
+
+
+> ---
+>  drivers/acpi/apei/ghes.c | 60 +-----------------------------
+>  include/acpi/ghes_cper.h | 95 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 96 insertions(+), 59 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index f96aede5d9a3..07b70bcb8342 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+
+>  
+>  static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+> diff --git a/include/acpi/ghes_cper.h b/include/acpi/ghes_cper.h
+> new file mode 100644
+> index 000000000000..2597fbadc4f3
+> --- /dev/null
+> +++ b/include/acpi/ghes_cper.h
+> @@ -0,0 +1,95 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * APEI Generic Hardware Error Source: CPER Helper
+
+There is other stuff in her usch as the GHES acks etc
+in ghes_clear_estatus(). So I think this intro text
+needs a bit more thought.  The boundary is already rather
+blurred though as for example cper_estatus_len() is only
+tangentially connected to cper.
+
+> + *
+> + * Copyright (C) 2026 ARM Ltd.
+
+Doesn't make sense to ad this copyright in this patch as so far
+it's cut and paste of code from a file that you didn't write (at least
+not in 2026!)
+
+Might make sense after a few patches, in which case add the copyright
+when it does.
+
+> + * Author: Ahmed Tiba <ahmed.tiba@arm.com>
+> + * Based on ACPI APEI GHES driver.
+> + *
+> + */
+> +
+> +#ifndef ACPI_APEI_GHES_CPER_H
+> +#define ACPI_APEI_GHES_CPER_H
+> +
+> +#include <linux/workqueue.h>
+> +
+> +#include <acpi/ghes.h>
+> +
+> +#define GHES_PFX	"GHES: "
+> +
+> +#define GHES_ESTATUS_MAX_SIZE		65536
+> +#define GHES_ESOURCE_PREALLOC_MAX_SIZE	65536
+> +
+> +#define GHES_ESTATUS_POOL_MIN_ALLOC_ORDER 3
+> +
+> +/* This is just an estimation for memory pool allocation */
+> +#define GHES_ESTATUS_CACHE_AVG_SIZE	512
+> +
+> +#define GHES_ESTATUS_CACHES_SIZE	4
+> +
+> +#define GHES_ESTATUS_IN_CACHE_MAX_NSEC	10000000000ULL
+> +/* Prevent too many caches are allocated because of RCU */
+> +#define GHES_ESTATUS_CACHE_ALLOCED_MAX	(GHES_ESTATUS_CACHES_SIZE * 3 / 2)
+> +
+> +#define GHES_ESTATUS_CACHE_LEN(estatus_len)			\
+> +	(sizeof(struct ghes_estatus_cache) + (estatus_len))
+> +#define GHES_ESTATUS_FROM_CACHE(estatus_cache)			\
+> +	((struct acpi_hest_generic_status *)				\
+> +	 ((struct ghes_estatus_cache *)(estatus_cache) + 1))
+> +
+> +#define GHES_ESTATUS_NODE_LEN(estatus_len)			\
+> +	(sizeof(struct ghes_estatus_node) + (estatus_len))
+> +#define GHES_ESTATUS_FROM_NODE(estatus_node)			\
+> +	((struct acpi_hest_generic_status *)				\
+> +	 ((struct ghes_estatus_node *)(estatus_node) + 1))
+> +
+> +#define GHES_VENDOR_ENTRY_LEN(gdata_len)                               \
+> +	(sizeof(struct ghes_vendor_record_entry) + (gdata_len))
+> +#define GHES_GDATA_FROM_VENDOR_ENTRY(vendor_entry)                     \
+> +	((struct acpi_hest_generic_data *)                              \
+> +	((struct ghes_vendor_record_entry *)(vendor_entry) + 1))
+> +
+> +static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+> +{
+> +	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+> +}
+> +
+> +/*
+> + * A platform may describe one error source for the handling of synchronous
+> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
+> + * or External Interrupt). On x86, the HEST notifications are always
+> + * asynchronous, so only SEA on ARM is delivered as a synchronous
+> + * notification.
+> + */
+> +static inline bool is_hest_sync_notify(struct ghes *ghes)
+> +{
+> +	u8 notify_type = ghes->generic->notify.type;
+> +
+> +	return notify_type == ACPI_HEST_NOTIFY_SEA;
+> +}
+> +
+> +struct ghes_vendor_record_entry {
+> +	struct work_struct work;
+> +	int error_severity;
+> +	char vendor_record[];
+> +};
+> +
+> +static struct ghes *ghes_new(struct acpi_hest_generic *generic);
+> +static void ghes_fini(struct ghes *ghes);
+> +
+> +static int ghes_read_estatus(struct ghes *ghes,
+> +		      struct acpi_hest_generic_status *estatus,
+> +		      u64 *buf_paddr, enum fixed_addresses fixmap_idx);
+> +static void ghes_clear_estatus(struct ghes *ghes,
+> +			struct acpi_hest_generic_status *estatus,
+> +			u64 buf_paddr, enum fixed_addresses fixmap_idx);
+
+I'm not sure some of this makes sense in a file named ghes_cper.h
+Maybe we just need a different intro comment though.
+
+> +static int __ghes_peek_estatus(struct ghes *ghes,
+> +			struct acpi_hest_generic_status *estatus,
+> +			u64 *buf_paddr, enum fixed_addresses fixmap_idx);
+> +static int __ghes_check_estatus(struct ghes *ghes,
+> +			 struct acpi_hest_generic_status *estatus);
+> +static int __ghes_read_estatus(struct acpi_hest_generic_status *estatus,
+> +			u64 buf_paddr, enum fixed_addresses fixmap_idx,
+> +			size_t buf_len);
+> +
+> +#endif /* ACPI_APEI_GHES_CPER_H */
+> 
+
 
