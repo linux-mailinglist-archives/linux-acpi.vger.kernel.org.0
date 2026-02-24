@@ -1,311 +1,263 @@
-Return-Path: <linux-acpi+bounces-21141-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21142-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oENWDCMvnmmkTwQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21141-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 00:07:15 +0100
+	id uP61JKQwnmk/UAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21142-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 00:13:40 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D5E18E0CF
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 00:07:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C52A18E1BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 00:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 79D853020FC6
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 23:06:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 771D13035BD1
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 23:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED6343D71;
-	Tue, 24 Feb 2026 23:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F66934DB60;
+	Tue, 24 Feb 2026 23:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="TmmUKsl4"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="Qdma0wyH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021102.outbound.protection.outlook.com [40.93.194.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A0D29E113;
-	Tue, 24 Feb 2026 23:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771974362; cv=none; b=oOUYQzbpu3c1Tl0TkIhky5p/N8br/nRwkrPff8ybzxjD+jW/syjETxSumjauESr4I80Noxyhmynknl0erFLrKXudXjq5zzuivwK5Rl4mWZE1ievoGfzGHric9YeVZCwLXkV7hCPXOz+J1+d9iOY9RG15nO3H+dQ5CAspM167Wrg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771974362; c=relaxed/simple;
-	bh=3IlEnfeTl5A8RtXHNUgLItLqk8NlROW/Ya2uGnNdw0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=DFjV+49tolmRzR7n0JNPWnRh42t5JSwuTDR81ygdzSjwLI8hgUUKDylu8bKmyptLJ5A3SKITsRPaUZZ7F9B/IOv9/uHKmhXMPhpZulEvcld58f6NoWK6K0KtMgvFoNBBUgqUiZulEixKnKVmwgiP1hMGa+S5zX7ATZb97afHo6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=TmmUKsl4; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1771974358; x=1772579158; i=w_armin@gmx.de;
-	bh=MEg/YbMkczQIK3AfSTjpfZZJSwyNo/fwALJW8Z7w/34=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=TmmUKsl4CqDbHcyoZysDyLcThux2earZ/SXZS54ZkhjKt8zhjGUQdAWRTF5s+4rF
-	 0HFO7h3vxDbMDpWcjBbdQ5LWzf2if9ilA69k46Pr1bnEm4LcEFRVeN2Qkc837CbpX
-	 DHUsgNthpPBHdw+MMJ9a9/ux1Tl21mH7jigJ1drggutawv5iKXffQvxlFfzAxkX0u
-	 VFPuvLjZtlZ8oiYaPjXaUiH5HED1D+YQIgtcz/+9QVD0dvdPAdETdyh5O9S0Hw3fs
-	 hiXNFjUgerr4m0JfkmAQaYyqa+uKeHzd+bOe/8IA9ic7YyXN+yMEQlL5OSyFnfsda
-	 sWgU5awS0ygEG1n09Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.69] ([91.14.226.35]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3lYB-1vukMQ3LJj-00CCvB; Wed, 25
- Feb 2026 00:05:58 +0100
-Message-ID: <c5d23d8a-8f58-48c3-90ca-5d1a46964280@gmx.de>
-Date: Wed, 25 Feb 2026 00:05:56 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23D234D382;
+	Tue, 24 Feb 2026 23:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.102
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771974816; cv=fail; b=RtwI3LApka5sUYwG+/Bb69YoJqyuA+8YGJpcFpEJO7K07huXSusxbsRsdsTQIb4EX2XGcJvl2OX3jGx0Zj+/fAef1t6jFfTnL1FESANh3zWm3dCvf04Qv65TN5mluckmr0I/2qAJfRRgN2CS/2whi9wUAhzCrXDUtZtSWp5yTZ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771974816; c=relaxed/simple;
+	bh=dFdMC1AOsnRUtSnHh8WQbbKUVKC26bzZP3x7c2QxyKA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=t3B1TBkA0f78/8Bj1eyGdnr7HaVc6HcqO1q9clj5FSIUywwaH2H/jKecq588so+/rvm/D6g8AM0iXntcRL224wb93XYfz2zwbUG5o4D6gE45aA11ewk1kaWYEl/JIML+GnmGZhIG2pC+ts00D1GJg4+7CzSJiSoBDXV25KDVowk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=Qdma0wyH reason="key not found in DNS"; arc=fail smtp.client-ip=40.93.194.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UCGJBibv0HRUKQ7iuA5TktpCRnqs1XPuph+3/0V6AIpACKK6T8JdrRThSiphKPWDVsczTIz0wN3ghdCHfWLfACVjBzUyP2fPL88CqTA8fHM1CLxSL5qkT1tvfXxlxFY7M7hCnZjX+CuN9vHkYELJdAgq2OnG6IxUE2/Ity1M+Nd5hShvpo90jPfAEZBEGTX1FlnHp0JwWVxRiQ/7tj7RCk5XlweyNQix6qN2+ipn1snqaBBwcx45NCUqIcedS4YqhtxzRXfszuij3CrwQNie/aVRxMwEb5iZG/XbK6j1BUenR322ZiTv3TGUiwU2FtmQ/1kmOSsh1z4BG4giUhiuFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RPCAJ8iqDNjUUrZYetNlrXxUUG27grGIYUzos0mD9c8=;
+ b=p3ldkJ0bDhD7m5f2NRdxYI6ba9MFE2tdOdrW/zNrUdHivuwVN0PEiiO1ZtRBe8/HwayPQwE1MbsNrzlhuDa8/z5U210Lhi6CKfSej/fNdo6z61/EhXVzbhGkQQqAg7qr4PYC7qphu+63VuttCbwJT/0AkXqEYALKMS05exk7SYUCjxYDWz+7+WjtVnYPxC1pEIFJoAOJ0g7Po6LCfVmf69Aum8XBBUXXHVFqBHr5TTon3wzFpsmbhFLYxB87Ps5VMUZPaCauyuDQxCAVfQT1B1Oe5Gtn1gSsQiJitkmRb3Jg7VwBE4fCYt5CDmMsY33oxZQl7dlq1UEsMlIGGPEWvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RPCAJ8iqDNjUUrZYetNlrXxUUG27grGIYUzos0mD9c8=;
+ b=Qdma0wyH/1hgp/cq6QFpNG2y0Xjh0fHym8ibTZ4gYb9pGKfVXuKHHK4tZ7nu/SncmKu5e5153Tb+HJB9TyeT+pRE6A2f/MkR+tZKuzc3DJ9nUmdqOu2v9VeKeA99mlVIDcuFg+DcQtyATxpS49O1hyzEsi0FtnxvsJ5w/oPLEwc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
+ CYYPR01MB8567.prod.exchangelabs.com (2603:10b6:930:c2::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.22; Tue, 24 Feb 2026 23:13:31 +0000
+Received: from BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9]) by BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 23:13:31 +0000
+Message-ID: <13256ebc-f1e8-4a85-82c4-b7dbd08eb41c@amperemail.onmicrosoft.com>
+Date: Tue, 24 Feb 2026 18:13:26 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] mailbox: pcc: Refactor and improve initialisation and
+ interrupt handling
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jassi Brar <jassisinghbrar@gmail.com>,
+ Adam Young <admiyo@os.amperecomputing.com>,
+ Robbie King <robbiek@xsightlabs.com>, Huisong Li <lihuisong@huawei.com>,
+ Cristian Marussi <cristian.marussi@arm.com>
+References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
+ <20251127-ancient-baboon-of-opportunity-5f773d@sudeepholla>
+ <aWUnZJ83_AKQDagu@bogus>
+ <f30ff47e-2bcf-4239-9f56-c624f4978307@amperemail.onmicrosoft.com>
+ <aXiFlkKAuV8QSgcM@bogus>
+Content-Language: en-US
+From: Adam Young <admiyo@amperemail.onmicrosoft.com>
+In-Reply-To: <aXiFlkKAuV8QSgcM@bogus>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CYXPR02CA0050.namprd02.prod.outlook.com
+ (2603:10b6:930:cd::10) To BN3PR01MB9212.prod.exchangelabs.com
+ (2603:10b6:408:2cb::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ACPI: OSL: Poweroff when encountering a fatal ACPI
- error
-From: Armin Wolf <W_Armin@gmx.de>
-To: rafael@kernel.org, lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260204212931.3860-1-W_Armin@gmx.de>
-Content-Language: en-US
-In-Reply-To: <20260204212931.3860-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xuiNHYal4xvtuxoRYoDccyEdTomsEDt0x5uMqo7m1duEjfIPTB2
- x/2xTMMmqmWslOboVIODLQE7DwnuaKqRg2Xeh/V4OIlQ0hzMshCQfvfNOPozmcG/NqJ8jkw
- 0vHxfL1dUJ9R0t2mHc2r2/I0pDCuh56R40yFZkpx8G/cuNGB4mWeDaCmIE6KwIptRB2MHBk
- apamGpsqW8n/2eS6AO5Ow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zQGfdKF67Kk=;kZnWTe9J1cKNNUWTyjPtMu1FSl3
- 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
- /evfbNCHfbaYVEKTCWFa
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|CYYPR01MB8567:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb11edc1-878d-41c9-5bde-08de73fa5333
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZkZHVFpYSDhYYTBIRmFJbEdkRU00MndHNTdmL05zU0FHcHF1RysvZzIyVjRM?=
+ =?utf-8?B?NFFrWUpkNUxOTXhzNGcwQmRlanhVc21Nb1dLRFVyaUNDUHFPMzh2dVYyNFJr?=
+ =?utf-8?B?ZGx1RmVmK1JyQmlXWEpDTUtnOVVCMUZpWGhWcll6NnhScEoxa1RmdURrU250?=
+ =?utf-8?B?UitqR0RHcXdXM21zbzVrVmdxK0NBRVVpRDBGK3o0dDF3c2dqY0VITjN2d2lM?=
+ =?utf-8?B?UTBDQVBKbHZ6b0dCSkNJV01heityVVliblZGUklSUjJGMHU1QW5ET3ptUExD?=
+ =?utf-8?B?Z09hcW1xenZCcnJkZkVzYW9qdXlkanR4Ly9LZytpOHJLTmZkZnh2Nm90R0xK?=
+ =?utf-8?B?VUFDM25mQWcyN1l1NTFGQmxTQ1djYjlUdFhvdjZHVkVYelBFTjhXSSthVjZV?=
+ =?utf-8?B?RTRWRHVXZFRwTmlDbjFQeWJXZ1A1OWxpeTRST0x6clVSVVhWSGZwd2VONEV2?=
+ =?utf-8?B?aUNZaU1MREhnWFpYYVFwUmpISDFFRGhVbVpBUEZBUFNyajlDbUJUNmF1c1ps?=
+ =?utf-8?B?ZVZjTVJRSmV1VURwd0ZsWjF3ZSs2MzE1eHVITHNuWmdkdUovVkJ4Y2dMOHB1?=
+ =?utf-8?B?dWtvYzFOaXNhZk9zcmhSRzhEcmIwc0VrQmMvWFpmeWI0STJXak1WaHlMZ2lj?=
+ =?utf-8?B?VFA3a28rcjg0aDlMQUlUcDBDeUhuaTlQZjBseVFiR0ZQTEZKemY3M0k3cmpu?=
+ =?utf-8?B?cytWMWUyYnhFUGpxMjArb05jMitsMnFUc0VlNFZZUUFhQkk3aHQvS2xVSGIw?=
+ =?utf-8?B?ck5teGlXNDY1UDNNQ1JOS2FKTGJBa0l3N016M1JPNTRzZFBoVkN3KzJnYUlt?=
+ =?utf-8?B?VmE2NjNlL2liaEV3d1Ewa1RYOVQwZE5UTnhIMlQxbURoZURCaGQ1S01Gdk9w?=
+ =?utf-8?B?NVo3eVgwaWJVR0RtbUNISG9EbWRLWmtjZ3loSER2eFZDcnZvMFJ3SkhYaWkw?=
+ =?utf-8?B?akJDRWFWY2VSRXYvRXA5NHZOVmt1Q0dwYVFuWGt1TEQrQlZkNWYxTWhlMkxF?=
+ =?utf-8?B?eTVhOEZvbFdENlZtekVpbGNOK2RwRWFoNnZVTEVKZFhDZVhKem9oSyttbTkx?=
+ =?utf-8?B?UXJkQnV6QnpTSEYvaVJFYWVMcnVEZGlnNURHQzZtc1JETHNRQVdRMDVCbjBG?=
+ =?utf-8?B?Q2tDYWZSK2UwMjBkR016YllWcE1NVnJuQUV5U0srSEIyd1BmYlJOMm1uUjF6?=
+ =?utf-8?B?eDBFTlNmdHNLaGF5Vm1sSEp1eXRlMU9tZ2pCbEVEeHRkWG5DdGFnMVlMNGJ5?=
+ =?utf-8?B?ZFBxMlRqaXhUbVhvOWVlZ0RKQjZ3eXhQdk9rL3VZTWowd1NNSDJkVkpzOTdB?=
+ =?utf-8?B?RTRkOXhJdVNpU2JDSFJCZGs2ZUNmUXFLWUIzdG5uUFhFS0FvVzNIR0Q2blVr?=
+ =?utf-8?B?YjRyM0JwN3dIeVh4dTZ5ZEtoV2RDV09pbnhSK3h3U3A5VXZ5RDBrRkExSC9I?=
+ =?utf-8?B?WCtHS2xNUFZSWDJsUWJNRzN6TWUxTFBJWTY3WW1xZi8wMEVjUU9vUHdtTVdQ?=
+ =?utf-8?B?cEFOVFJMQmpzMmN0T3NzNzd5U2FuUFRWV0dKOHVQYWt0YnhHaUszck5oRFpU?=
+ =?utf-8?B?VW1RNmxSU2lWdlhKS0tmcDFzdjFIWUE5amRvWHdtRVlKa3dFVTFuV2VabUtl?=
+ =?utf-8?B?N3JKanBHT3RxakFDcktwU0dHOGF2OEEyaEJOUkVKT1l0ZlFEakY1eERHSlU0?=
+ =?utf-8?B?RWJvR3FEMmkxZGJuU1BPMDl3d3NVbVRFaXBFL3dIRmxPSnQyNTlPT25jamFQ?=
+ =?utf-8?B?cm5PRmFBbXZPQkJrYkc1cVVNWnpQaE1ETmQvQkt5bG9Db2Y0cDZacHU2UGw0?=
+ =?utf-8?B?amlVa1lKSFpMaVpuQ3o3bXl0QlJ5N3RvWnNhN21GWUgwcnhDQmhReU13UWxx?=
+ =?utf-8?B?SW1jYlFOVUUvUldjL240QVlQbVA2NFBkbUlPYmFsZjBhQ3hxY2VnN3ZJWlJE?=
+ =?utf-8?B?QlMxWC9MS0dUYWJ0ekhnY2tpcWd2SzRibWU0ejFEaTl5Tk5GTmFaaHpLeXU5?=
+ =?utf-8?B?bU9pbElrMllFaUJ5QU1uUUZZb0dqN2w0bTFZYnMrcVdUL3JhRnlqUkdVZEtS?=
+ =?utf-8?B?dnMzalBkaE9GcDRMOUhTejBKblJYZTBScVo4TFBmckd3dmJ3MUlPcjFmdkkw?=
+ =?utf-8?Q?n+yo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UmUrMGllNGRaQWxHdFN6RHlOQXU0dWJyZWhnSGszbmRVcDJQNnVBTldIRHJ3?=
+ =?utf-8?B?VndCclZrSXhGVFByZEw0TlFKa25VVjE0T3hoWWNTaVlaeG1qZy8zS1dPbkZW?=
+ =?utf-8?B?Z3QxaVh6OXAxd1dieGQ2cWYzTUpMcDlpdnQ1ZlRoeGdDU05FSnFvVkt3TXVo?=
+ =?utf-8?B?cmNPMXhnM3FUelZHSURFY1EvNXJJK2RGSUpKOERXbFpLZ2kwbklENGpZeXR4?=
+ =?utf-8?B?VldTQm9TV0pYa05DYUtxZVRjOGlUNzZ0eXdINTNwVzRhNmdwRmRXMVZkQk12?=
+ =?utf-8?B?R3RpSGpobll0UERsblhXeUhSaE9QYzlZNTYzU1F2NnErQlp3czUyMGlOaFFa?=
+ =?utf-8?B?MFQyYkpHT3RJL3lQNUp1MFZFNkViNFI4OVYzOFFjWms2MWUrL2JjcVhmUUhh?=
+ =?utf-8?B?WFk3OW1zZUdPSElKSnNGdXFnWEU5VFFOTE9iSVNGQlJDTWJMUCtJbFkyMGt5?=
+ =?utf-8?B?R0l4azZLTFdnbHVOOWZwL3NzU2YyMXhHTyt6K1JLY0w5d1EwVzdtTTJiTlRZ?=
+ =?utf-8?B?Z2NRSDhhSXhtelNwditwS3VMN1JVdHZQUXBxamhnZExscnFxakNpWW1ndElv?=
+ =?utf-8?B?cDluZVFJS1NOUnRmK0o2d2J0amdUOE1FemtqSXRFOUJUZUUyNTVmWEJVR3l2?=
+ =?utf-8?B?czRsZXM0byt2bG5teU15ZlhkbUh2b1hvVDhiVm05cmhXUE1vNVQvUnkra3dG?=
+ =?utf-8?B?R212UkN5UHNXTitvb0ExWWNYaEE0a29wZ3pEKzZUaXdweDI2TWtUTW5aN05t?=
+ =?utf-8?B?ZDBvS2NCR3V1d0V6SS81eTZmbUJSRjdvNE82UENjejdVQ2JaN1RtS3QxNTkv?=
+ =?utf-8?B?WHA3ekNDYm1adFlCYm8vbU1YVHBacFZGazZ3VXovVlZRWFIyb1FoZTZUUHBu?=
+ =?utf-8?B?NFBkUjBJQmZ5SmxqSzZNZWVxM242c09wUWZJRjZNZkFlUWtsN0hEcVg2Qklw?=
+ =?utf-8?B?SzdkYkkwYUJLVEN4aEVlNVlOa2NxMzdZNmZJQlgxaURHdGhvQ3B1K3psaVRr?=
+ =?utf-8?B?SGNFNkptRnNQSlFNTm5CcG5rbERRS1VyUGJVT2pHdVVDUGFlY2FnaUx3dFZp?=
+ =?utf-8?B?dHVMemJwd2dMc2hTUktyYlhTTXhaVmE1R09zY2c1cmF4cWlpMSt0QWNMYnJ0?=
+ =?utf-8?B?bmxJZXpGbW5zTXpIbmVqWk55V21wbDhUK20yMFg5NEU3UjBYMjZHZmZHZjI0?=
+ =?utf-8?B?dnVkUm9XU2JNaWp3eXZzc0RNK2R0WjZ6YzVuY0pOUzRVMHdaZWMyejVhR1Vu?=
+ =?utf-8?B?OWtyUFA4WGtKanQvSVdRc1hielpsbmJOZlNMNFpIUUtCbHVkdnh0YjNKbE5C?=
+ =?utf-8?B?cWR0QjJ1bmVRdkV4eTZRNElJZjhBdkZQRllGRGVUZUs3UHZ4c0lJeUNIQnF1?=
+ =?utf-8?B?YnFpWnhZcVVreHdScU5XMysvZUJsTzFqRmFnbUdDQWpGbzVDNzdDWER6N09O?=
+ =?utf-8?B?ZzhaTzdPcjZvYkMvKzllV09OYklFY1J3YUFiUDdtclhxRlBrcjVTSUVEN1RS?=
+ =?utf-8?B?N1dzdmZ5QVFaQ1hUSWh4R0c3NFJDVHBnTUZ4R3J6N0FGL1B5Tm1qVVpCV1RI?=
+ =?utf-8?B?dHExV3QvTk5jaHphT3FSNnZTODY0eWxYYUJRbVRuYWw1UlZYdStKbUF1ZmRR?=
+ =?utf-8?B?TzBjRVpnUHNaVnpBOGkrakZhWDYrMVB5d0N4OXkxOC96bGxrbnZtNFAxb3Vv?=
+ =?utf-8?B?TjJyUHBOemlrZ0greVVMdDl6eSs2Nm11eEdLK1N6STVoYVJvOFFtWFM1Qkk3?=
+ =?utf-8?B?a1FWUW80Y3JJNWwzODF0ZEtUNi9BblBFSEh5MlU2ZXNjLzhpYkpsanpFMk15?=
+ =?utf-8?B?ZDBaMElQWjNGRzFZNExIbVBsdktKL0h5NEh2dXRSVUozQm1VMHA3UmdBanBo?=
+ =?utf-8?B?OXF4b1NrdHNFVXhGU3BPaElGTnNiTnVKNE15S0V0TmQyWEJEVG5pT1JnU0l0?=
+ =?utf-8?B?bEpMZytWclR5SUJWQVZLaWRnQVlIT1ZwemZXb29xejdTbDhQcUVOUmFablVG?=
+ =?utf-8?B?RUlvVFF6OGp4OGdDRWNsWGlmSk5OQktLSSt4dmNVcWhmWFJoeGllTWp3RnF5?=
+ =?utf-8?B?VlVWN09DbVVTa0FUZCtaUFdJakphRWpNbGJZVDVLNHFXVUgxL0drYk9RUXBz?=
+ =?utf-8?B?Y2VDcEF4RzM5eS9HWk11WFc0U1BWQU9sRktTQlEvb0dEL28rNlBmaG5qc3h1?=
+ =?utf-8?B?d0VTNWxJOWIrSk5XZVhqUWd3cXdhMDRqd1pucDNQY1U0ZVFoVG5pa1JoYkZW?=
+ =?utf-8?B?TG5aN0o3SFRBWUUxclpJellUSG9pYXpZdGNFZVRiVXBySmcvL1ZrMm4zU3Bu?=
+ =?utf-8?B?cVRqVDhMVnNzTURUZUlvK3dUZ2x6QVVzOFVOelBsQlNUVGNFZGNFdXROMS9F?=
+ =?utf-8?Q?xrFE7uGw9KDnTOs2NmrQWZBaXGlzyzYE+bpgNYqeGmsr/?=
+X-MS-Exchange-AntiSpam-MessageData-1:
+	G+1gmJzcnrsFEKuqRYF9G+/bUeeYl5yKHSXEQhA21O2/sOpzM/b9IuBp
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb11edc1-878d-41c9-5bde-08de73fa5333
+X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 23:13:31.0426
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yqQNq7yAsQEcneDwoL/MpRnKcjwOnWLZchly7sqxn4v2ymrq+PyypwOnUvChmDJM764Tz1/vf545rXDcB4KkGBfciOJcc+PxBaEdH2fbJYIeK4uGwUawT3q/ZMMsDIpT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR01MB8567
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21141-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21142-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[onmicrosoft.com];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	TO_DN_NONE(0.00)[];
+	R_DKIM_PERMFAIL(0.00)[amperemail.onmicrosoft.com:s=selector1-amperemail-onmicrosoft-com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,os.amperecomputing.com,xsightlabs.com,huawei.com,arm.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amperemail.onmicrosoft.com:~];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	FROM_NEQ_ENVFROM(0.00)[admiyo@amperemail.onmicrosoft.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.641];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim,gmx.de:email,uefi.org:url]
-X-Rspamd-Queue-Id: 98D5E18E0CF
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amperemail.onmicrosoft.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2C52A18E1BF
 X-Rspamd-Action: no action
 
-Am 04.02.26 um 22:29 schrieb Armin Wolf:
 
-> The ACPI spec states that the operating system should respond
-> to a fatal ACPI error by "performing a controlled OS shutdown in
-> a timely fashion". Comply with the ACPI specification by powering
-> off the system when ACPICA signals a fatal ACPI error. Users can
-> still disable this behavior by using the acpi.poweroff_on_fatal
-> kernel option to work around firmware bugs.
+On 1/27/26 04:29, Sudeep Holla wrote:
+> On Mon, Jan 26, 2026 at 12:07:26PM -0500, Adam Young wrote:
+>>
+>> On 1/12/26 11:55, Sudeep Holla wrote:
+>>> On Thu, Nov 27, 2025 at 02:40:56PM +0000, Sudeep Holla wrote:
+>>>> Hi Jassi,
+>>>>
+>>>> On Thu, Oct 16, 2025 at 08:08:14PM +0100, Sudeep Holla wrote:
+>>>>> This series refines and stabilizes the PCC mailbox driver to improve
+>>>>> initialisation order, interrupt handling, and completion signaling.
+>>>>>
+>>>> Are you happy to pull these patches directly from the list or do you
+>>>> prefer me to send you pull request or do you want me to direct this via
+>>>> ACPI/Rafael's tree. Please advice.
+>>>>
+>>> Hi Jassi,
+>>>
+>>> Sorry for the nag. I did see these patches in -next as well as your
+>>> v6.19 merge window pull request which didn't make it to Linus tree.
+>>> However I don't see it -next any longer. Please advice if you want
+>>> anything from my side so that this can be merged for v6.20/v7.0
+>>>
+>> I thought you had an approach you wanted to implement for the functions that
+>> provided access to the Mailbox internals: you wanted to do them inline but
+>> hadn't gotten to them yet.  Is that still the case?  I will resubmit mine as
+>> is with -next if that is acceptable.
+>>
+> Honestly, it has been a while and I have lost the context. Please post what
+> you have or thinking of on top of linux-next or jassi's -next and we can start
+> the discussion fresh.
 
-Any updates on this?
+The updated patch is posted.  It has a title of
 
-Thanks,
-Armin Wolf
+[net-next v31 1/2] mailbox: pcc: functions for reading and writing PCC 
+extended data
 
-> Link: https://uefi.org/specs/ACPI/6.6/19_ASL_Reference.html#fatal-fatal-=
-error-check
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
-> Changes since v2:
-> - poweroff instead of triggering a kernel panic
->
-> Changes since v1:
-> - use IS_ENABLED() for checking the presence of CONFIG_ACPI_PANIC_ON_FAT=
-AL
-> ---
->   .../admin-guide/kernel-parameters.txt         |  9 +++++++++
->   drivers/acpi/Kconfig                          | 11 +++++++++++
->   drivers/acpi/osl.c                            | 19 ++++++++++++++++++-
->   3 files changed, 38 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documenta=
-tion/admin-guide/kernel-parameters.txt
-> index 1058f2a6d6a8..1f2eaa0ec424 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -187,6 +187,15 @@ Kernel parameters
->   			unusable.  The "log_buf_len" parameter may be useful
->   			if you need to capture more output.
->  =20
-> +	acpi.poweroff_on_fatal=3D	[ACPI]
-> +			{0 | 1}
-> +			Causes the system to poweroff when the ACPI bytecode signals
-> +			a fatal error. The default value of this setting can
-> +			be configured using CONFIG_ACPI_POWEROFF_ON_FATAL.
-> +			Overriding this value should only be done for diagnosing
-> +			ACPI firmware problems, as the system might behave erratically
-> +			after having encountered a fatal ACPI error.
-> +
->   	acpi_enforce_resources=3D	[ACPI]
->   			{ strict | lax | no }
->   			Check for resource conflicts between native drivers
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index df0ff0764d0d..1610dd4c8278 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -65,6 +65,17 @@ config ACPI_THERMAL_LIB
->          depends on THERMAL
->          bool
->  =20
-> +config ACPI_POWEROFF_ON_FATAL
-> +	bool "Poweroff on fatal ACPI error"
-> +	default y
-> +	help
-> +	  The ACPI bytecode can signal that a fatal error has occurred using t=
-he Fatal()
-> +	  ASL operator, normaly causing the system to poweroff. Disabling this=
- option causes
-> +	  such a condition to be treated like a ordinary ACPI error.
-> +
-> +	  This setting can also be overridden during boot using the acpi.power=
-off_on_fatal
-> +	  kernel parameter.
-> +
->   config ACPI_DEBUGGER
->   	bool "AML debugger interface"
->   	select ACPI_DEBUG
-> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 05393a7315fe..f2b45fa4a752 100644
-> --- a/drivers/acpi/osl.c
-> +++ b/drivers/acpi/osl.c
-> @@ -11,8 +11,10 @@
->  =20
->   #define pr_fmt(fmt) "ACPI: OSL: " fmt
->  =20
-> +#include <linux/kconfig.h>
->   #include <linux/module.h>
->   #include <linux/kernel.h>
-> +#include <linux/reboot.h>
->   #include <linux/slab.h>
->   #include <linux/mm.h>
->   #include <linux/highmem.h>
-> @@ -70,6 +72,10 @@ static bool acpi_os_initialized;
->   unsigned int acpi_sci_irq =3D INVALID_ACPI_IRQ;
->   bool acpi_permanent_mmap =3D false;
->  =20
-> +static bool poweroff_on_fatal =3D IS_ENABLED(CONFIG_ACPI_POWEROFF_ON_FA=
-TAL);
-> +module_param(poweroff_on_fatal, bool, 0);
-> +MODULE_PARM_DESC(poweroff_on_fatal, "Poweroff when encountering a fatal=
- ACPI error");
-> +
->   /*
->    * This list of permanent mappings is for memory that may be accessed =
-from
->    * interrupt context, where we can't do the ioremap().
-> @@ -1381,9 +1387,20 @@ acpi_status acpi_os_notify_command_complete(void)
->  =20
->   acpi_status acpi_os_signal(u32 function, void *info)
->   {
-> +	struct acpi_signal_fatal_info *fatal_info;
-> +
->   	switch (function) {
->   	case ACPI_SIGNAL_FATAL:
-> -		pr_err("Fatal opcode executed\n");
-> +		fatal_info =3D info;
-> +		pr_emerg("Fatal error while evaluating ACPI control method\n");
-> +		pr_emerg("Type 0x%X Code 0x%X Argument 0x%X\n",
-> +			 fatal_info->type, fatal_info->code, fatal_info->argument);
-> +
-> +		if (poweroff_on_fatal)
-> +			orderly_poweroff(true);
-> +		else
-> +			add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STILL_OK);
-> +
->   		break;
->   	case ACPI_SIGNAL_BREAKPOINT:
->   		/*
+
+
 
