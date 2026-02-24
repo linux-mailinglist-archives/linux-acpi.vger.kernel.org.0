@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-21137-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21138-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD6lNlzGnWkkSAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21137-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:40:12 +0100
+	id kPDxD9DKnWmxSAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21138-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:59:12 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513D81892D1
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756CC18975B
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 16:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16ED531CEDEF
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 15:34:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55470306BC18
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 15:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D1427B327;
-	Tue, 24 Feb 2026 15:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D883A63F9;
+	Tue, 24 Feb 2026 15:55:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FA127380A;
-	Tue, 24 Feb 2026 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E993A640B;
+	Tue, 24 Feb 2026 15:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771947256; cv=none; b=meLGwaG2pG0YW/WBeePK5tAk5v6fkPI20/5w8S0HWj7/LUn+FYe+r0fdlbti5SDiUi+g6xMvtOM0HRDw+evwRI6dzDl5HNlGhDCOjk8qKjhPnzz25qItLfXFGj8hDH9TL1W4xkprHASjcEdh+LZTphmQRIoXkBXGa59BhiEoZ60=
+	t=1771948528; cv=none; b=nLBm6f1awiz84se/CnwO1RNH5oToAGb8szh5gasSkBibfzzbOQOtClZ95/W4IpeDj5dXHdToUfHBWIIlrEgrdIpaNBVIBThSsk0iel3g6VsalO5f8D+O344q8gSAuIhGbXgPWo1feGrZPxXCqgzzvl4U2I+eSkQrbEhtHk7C+qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771947256; c=relaxed/simple;
-	bh=3UnJNpKBp41060PCCiUKh/z/XCpPqIeEtBlEINpW5VI=;
+	s=arc-20240116; t=1771948528; c=relaxed/simple;
+	bh=xx3mBUgxulb6qnDlZhFAjY4Vf/Vpgh9LOJI+Hc/sXrM=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cX0ESuGgM/uDzcoc2wkhVpwGM44wgQZSuC4bVleKl4T8sciky9NkFfcfs1dKR1Pcdeyhdpl3sn/r0Be9aNssTe4qfyNNoNjwTsv+PwXR8t8H1vvny2ghO7FI4KM4W4BVegd8F1DpfKKK6ypf3WpmrZNcRG4IdRlme890AQZqkP4=
+	 MIME-Version:Content-Type; b=UEcdDuGgoSqSOx4ygCIwHyz1X95SOvpZ/1uMBGaWx8KVUuFNhbdRCvLfQzKZHF1vzTcFXyp6eoDuryBhis+kX21xX31IHeTNuocSsu4V3s7XtJH1nxdrbz3+LC2hxhJ53iDEf/ijbIQ+SYvupaOq2rg/7nVDB7sCIo6Rp6pA7kQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fL1wG0MXHzJ4678;
-	Tue, 24 Feb 2026 23:33:50 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fL2Nh6dWTzJ46ZV;
+	Tue, 24 Feb 2026 23:55:00 +0800 (CST)
 Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id C841E40573;
-	Tue, 24 Feb 2026 23:34:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B2B0C40539;
+	Tue, 24 Feb 2026 23:55:22 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
  (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 24 Feb
- 2026 15:34:10 +0000
-Date: Tue, 24 Feb 2026 15:34:09 +0000
+ 2026 15:55:21 +0000
+Date: Tue, 24 Feb 2026 15:55:20 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Ahmed Tiba <ahmed.tiba@arm.com>
 CC: <devicetree@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
@@ -50,12 +50,13 @@ CC: <devicetree@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<robh@kernel.org>, <rafael@kernel.org>, <will@kernel.org>,
 	<conor@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-doc@vger.kernel.org>, <krzk+dt@kernel.org>, <Michael.Zhao2@arm.com>,
-	<tony.luck@intel.com>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH v2 07/11] ACPI: APEI: GHES: move CXL CPER helpers
-Message-ID: <20260224153409.0000191a@huawei.com>
-In-Reply-To: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-7-347fa2d7351b@arm.com>
+	<tony.luck@intel.com>
+Subject: Re: [PATCH v2 11/11] RAS: add DeviceTree firmware-first CPER
+ provider
+Message-ID: <20260224155520.00004e92@huawei.com>
+In-Reply-To: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-11-347fa2d7351b@arm.com>
 References: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-0-347fa2d7351b@arm.com>
-	<20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-7-347fa2d7351b@arm.com>
+	<20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-11-347fa2d7351b@arm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -65,19 +66,19 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
  dubpeml500005.china.huawei.com (7.214.145.207)
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
 	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-21137-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-21138-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -88,367 +89,394 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.985];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.983];
 	MID_RHS_MATCH_FROM(0.00)[];
 	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:mid]
-X-Rspamd-Queue-Id: 513D81892D1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+X-Rspamd-Queue-Id: 756CC18975B
 X-Rspamd-Action: no action
 
-On Fri, 20 Feb 2026 13:42:25 +0000
+On Fri, 20 Feb 2026 13:42:29 +0000
 Ahmed Tiba <ahmed.tiba@arm.com> wrote:
 
-> Move the CXL CPER handling paths out of ghes.c and into ghes_cper.c so the
-> helpers can be reused. The code is moved as-is, with the public
-> prototypes updated so GHES keeps calling into the new translation unit.
+> Add a DeviceTree firmware-first CPER provider that reuses the shared
+> GHES helpers, wire it into the RAS Kconfig/Makefile and document it in
+> the admin guide. Update MAINTAINERS now that the driver exists.
 > 
 > Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
+Hi Ahmed,
 
-+CC linux-cxl.
-
-I haven't looked closely but suspect the same stuff on code movement and patch
-break up applies here.
-
-Thanks,
+Various comments inline.
 
 Jonathan
 
 > ---
->  drivers/acpi/apei/ghes.c      | 132 -----------------------------------------
->  drivers/acpi/apei/ghes_cper.c | 135 ++++++++++++++++++++++++++++++++++++++++++
->  include/acpi/ghes_cper.h      |  11 ++++
->  3 files changed, 146 insertions(+), 132 deletions(-)
+>  Documentation/admin-guide/RAS/main.rst |  18 +++
+>  MAINTAINERS                            |   1 +
+>  drivers/acpi/apei/apei-internal.h      |  10 +-
+>  drivers/acpi/apei/ghes_cper.c          |   2 +
+>  drivers/ras/Kconfig                    |  12 ++
+>  drivers/ras/Makefile                   |   1 +
+>  drivers/ras/esource-dt.c               | 264 +++++++++++++++++++++++++++++++++
+>  include/acpi/ghes_cper.h               |   9 ++
+>  8 files changed, 308 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 9703c602a8c2..136993704d52 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -383,138 +383,6 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
->  #endif
->  }
+> diff --git a/Documentation/admin-guide/RAS/main.rst b/Documentation/admin-guide/RAS/main.rst
+> index 5a45db32c49b..4ffabaaeabb1 100644
+> --- a/Documentation/admin-guide/RAS/main.rst
+> +++ b/Documentation/admin-guide/RAS/main.rst
+> @@ -205,6 +205,24 @@ Architecture (MCA)\ [#f3]_.
+>  .. [#f3] For more details about the Machine Check Architecture (MCA),
+>    please read Documentation/arch/x86/x86_64/machinecheck.rst at the Kernel tree.
 >  
-> -/* Room for 8 entries */
-> -#define CXL_CPER_PROT_ERR_FIFO_DEPTH 8
-> -static DEFINE_KFIFO(cxl_cper_prot_err_fifo, struct cxl_cper_prot_err_work_data,
-> -		    CXL_CPER_PROT_ERR_FIFO_DEPTH);
-> -
-> -/* Synchronize schedule_work() with cxl_cper_prot_err_work changes */
-> -static DEFINE_SPINLOCK(cxl_cper_prot_err_work_lock);
-> -struct work_struct *cxl_cper_prot_err_work;
-> -
-> -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> -				   int severity)
-> -{
-> -#ifdef CONFIG_ACPI_APEI_PCIEAER
-> -	struct cxl_cper_prot_err_work_data wd;
-> -
-> -	if (cxl_cper_sec_prot_err_valid(prot_err))
-> -		return;
-> -
-> -	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
-> -
-> -	if (!cxl_cper_prot_err_work)
-> -		return;
-> -
-> -	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-> -		return;
-> -
-> -	if (!kfifo_put(&cxl_cper_prot_err_fifo, wd)) {
-> -		pr_err_ratelimited("CXL CPER kfifo overflow\n");
-> -		return;
-> -	}
-> -
-> -	schedule_work(cxl_cper_prot_err_work);
-> -#endif
-> -}
-> -
-> -int cxl_cper_register_prot_err_work(struct work_struct *work)
-> -{
-> -	if (cxl_cper_prot_err_work)
-> -		return -EINVAL;
-> -
-> -	guard(spinlock)(&cxl_cper_prot_err_work_lock);
-> -	cxl_cper_prot_err_work = work;
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_register_prot_err_work, "CXL");
-> -
-> -int cxl_cper_unregister_prot_err_work(struct work_struct *work)
-> -{
-> -	if (cxl_cper_prot_err_work != work)
-> -		return -EINVAL;
-> -
-> -	guard(spinlock)(&cxl_cper_prot_err_work_lock);
-> -	cxl_cper_prot_err_work = NULL;
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_prot_err_work, "CXL");
-> -
-> -int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data *wd)
-> -{
-> -	return kfifo_get(&cxl_cper_prot_err_fifo, wd);
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_prot_err_kfifo_get, "CXL");
-> -
-> -/* Room for 8 entries for each of the 4 event log queues */
-> -#define CXL_CPER_FIFO_DEPTH 32
-> -DEFINE_KFIFO(cxl_cper_fifo, struct cxl_cper_work_data, CXL_CPER_FIFO_DEPTH);
-> -
-> -/* Synchronize schedule_work() with cxl_cper_work changes */
-> -static DEFINE_SPINLOCK(cxl_cper_work_lock);
-> -struct work_struct *cxl_cper_work;
-> -
-> -static void cxl_cper_post_event(enum cxl_event_type event_type,
-> -				struct cxl_cper_event_rec *rec)
-> -{
-> -	struct cxl_cper_work_data wd;
-> -
-> -	if (rec->hdr.length <= sizeof(rec->hdr) ||
-> -	    rec->hdr.length > sizeof(*rec)) {
-> -		pr_err(FW_WARN "CXL CPER Invalid section length (%u)\n",
-> -		       rec->hdr.length);
-> -		return;
-> -	}
-> -
-> -	if (!(rec->hdr.validation_bits & CPER_CXL_COMP_EVENT_LOG_VALID)) {
-> -		pr_err(FW_WARN "CXL CPER invalid event\n");
-> -		return;
-> -	}
-> -
-> -	guard(spinlock_irqsave)(&cxl_cper_work_lock);
-> -
-> -	if (!cxl_cper_work)
-> -		return;
-> -
-> -	wd.event_type = event_type;
-> -	memcpy(&wd.rec, rec, sizeof(wd.rec));
-> -
-> -	if (!kfifo_put(&cxl_cper_fifo, wd)) {
-> -		pr_err_ratelimited("CXL CPER kfifo overflow\n");
-> -		return;
-> -	}
-> -
-> -	schedule_work(cxl_cper_work);
-> -}
-> -
-> -int cxl_cper_register_work(struct work_struct *work)
-> -{
-> -	if (cxl_cper_work)
-> -		return -EINVAL;
-> -
-> -	guard(spinlock)(&cxl_cper_work_lock);
-> -	cxl_cper_work = work;
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_register_work, "CXL");
-> -
-> -int cxl_cper_unregister_work(struct work_struct *work)
-> -{
-> -	if (cxl_cper_work != work)
-> -		return -EINVAL;
-> -
-> -	guard(spinlock)(&cxl_cper_work_lock);
-> -	cxl_cper_work = NULL;
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_work, "CXL");
-> -
-> -int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
-> -{
-> -	return kfifo_get(&cxl_cper_fifo, wd);
-> -}
-> -EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, "CXL");
-> -
->  static void ghes_log_hwerr(int sev, guid_t *sec_type)
->  {
->  	if (sev != CPER_SEV_RECOVERABLE)
-> diff --git a/drivers/acpi/apei/ghes_cper.c b/drivers/acpi/apei/ghes_cper.c
-> index 627f6c712261..673dca208935 100644
-> --- a/drivers/acpi/apei/ghes_cper.c
-> +++ b/drivers/acpi/apei/ghes_cper.c
-> @@ -9,10 +9,12 @@
->   *
->   */
+> +Firmware-first CPER via DeviceTree
+> +----------------------------------
+> +
+> +Some systems expose Common Platform Error Record (CPER) data
+> +via DeviceTree instead of ACPI HEST tables.
+
+I'd argue this isn't really DT specific, it's just not ACPI table.
+You could for instance use PRP0001 and wire this up on ACPI with only
+one trivial change to generic property.h accessor for the boolean.
+
+Or use another firmware information source entirely.
+
+> +Enable ``CONFIG_RAS_ESOURCE_DT`` to build the ``drivers/ras/esource-dt.c``
+> +driver and describe the CPER error source buffer with the
+> +``Documentation/devicetree/bindings/firmware/arm,ras-ffh.yaml`` binding.
+> +The driver reuses the GHES CPER helper object in
+> +``drivers/acpi/apei/ghes_cper.c`` so the logging, notifier chains, and
+> +memory failure handling match the ACPI GHES behaviour even when
+> +ACPI is disabled.
+> +
+> +Once a platform describes a firmware-first provider, both ACPI GHES and the
+> +DeviceTree driver reuse the same code paths. This keeps the behaviour
+> +consistent regardless of whether the error source is described via ACPI
+> +tables or DeviceTree.
+
+> diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
+> index fc4f4bb94a4c..ea6d96713020 100644
+> --- a/drivers/ras/Kconfig
+> +++ b/drivers/ras/Kconfig
+> @@ -34,6 +34,18 @@ if RAS
+>  source "arch/x86/ras/Kconfig"
+>  source "drivers/ras/amd/atl/Kconfig"
 >  
-> +#include <linux/aer.h>
->  #include <linux/err.h>
->  #include <linux/genalloc.h>
->  #include <linux/irq_work.h>
->  #include <linux/io.h>
-> +#include <linux/kfifo.h>
->  #include <linux/kernel.h>
->  #include <linux/list.h>
->  #include <linux/math64.h>
-> @@ -319,6 +321,139 @@ void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
->  	schedule_work(&entry->work);
->  }
->  
+> +config RAS_ESOURCE_DT
+> +	bool "DeviceTree firmware-first CPER error source block provider"
+It isn't really DT specific other than one call that I've suggested you
+replace with a generic firmware accessor.
+
+> +	depends on OF
+
+Generally we don't gate on OF unless there are OF specific calls. Here there
+aren't so you are just reducing build coverage. || COMPILE_TEST 
+maybe.
+
+> +	depends on ARM64
+
+Likewise, nothing in here is arm64 specific that I can spot.
+
+> +	select GHES_CPER_HELPERS
+> +	help
+> +	  Enable support for firmware-first Common Platform Error Record (CPER)
+> +	  error source block providers that are described via DeviceTree
+> +	  instead of ACPI HEST tables. The driver reuses the existing GHES
+> +	  CPER helpers so the error processing matches the ACPI code paths,
+> +	  but it can be built even when ACPI is disabled.
 > +
-> +/* Room for 8 entries */
-> +#define CXL_CPER_PROT_ERR_FIFO_DEPTH 8
-> +static DEFINE_KFIFO(cxl_cper_prot_err_fifo, struct cxl_cper_prot_err_work_data,
-> +		    CXL_CPER_PROT_ERR_FIFO_DEPTH);
+
+> diff --git a/drivers/ras/esource-dt.c b/drivers/ras/esource-dt.c
+> new file mode 100644
+> index 000000000000..b575a2258536
+> --- /dev/null
+> +++ b/drivers/ras/esource-dt.c
+> @@ -0,0 +1,264 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * DeviceTree provider for firmware-first CPER error source block.
+> + *
+> + * This driver shares the GHES CPER helpers so we keep the reporting and
+> + * notifier behaviour identical to ACPI GHES
+> + *
+> + * Copyright (C) 2025 ARM Ltd.
+> + * Author: Ahmed Tiba <ahmed.tiba@arm.com>
+> + */
 > +
-> +/* Synchronize schedule_work() with cxl_cper_prot_err_work changes */
-> +static DEFINE_SPINLOCK(cxl_cper_prot_err_work_lock);
-> +struct work_struct *cxl_cper_prot_err_work;
+> +#include <linux/atomic.h>
+> +#include <linux/bitops.h>
+> +#include <linux/device.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/io-64-nonatomic-lo-hi.h>
+Used?
+> +#include <linux/module.h>
+mod_devicetable.h for of_device_id definition.
+
+> +#include <linux/of_address.h>
+> +#include <linux/of_irq.h>
+Generally very little reason to include these.  Not sure why you need
+them here.
+
+> +#include <linux/panic.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +#include <linux/spinlock.h>
 > +
-> +void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				   int severity)
+> +#include <acpi/ghes.h>
+> +#include <acpi/ghes_cper.h>
+> +
+> +static atomic_t ghes_ffh_source_ids = ATOMIC_INIT(0);
+I'd normally expect an IDA or similar. If nothing else it clearly
+indicates we only want a unique ID.
+> +
+> +struct ghes_ffh_ack {
+> +	void __iomem *addr;
+> +	u64 preserve;
+> +	u64 set;
+> +	u8 width;
+> +	bool present;
+> +};
+> +
+> +struct ghes_ffh {
+> +	struct device *dev;
+> +	void __iomem *status;
+> +	size_t status_len;
+> +
+> +	struct ghes_ffh_ack ack;
+> +
+> +	struct acpi_hest_generic *generic;
+> +	struct acpi_hest_generic_status *estatus;
+> +
+> +	bool sync;
+> +	int irq;
+> +
+> +	/* Serializes access to the firmware-owned buffer. */
+If we are serializing it, in what sense is it owned by the firmware?
+
+> +	spinlock_t lock;
+> +};
+
+
+> +
+> +static void ghes_ffh_process(struct ghes_ffh *ctx)
 > +{
-> +#ifdef CONFIG_ACPI_APEI_PCIEAER
-> +	struct cxl_cper_prot_err_work_data wd;
+> +	unsigned long flags;
+> +	int sev;
 > +
-> +	if (cxl_cper_sec_prot_err_valid(prot_err))
-> +		return;
+> +	spin_lock_irqsave(&ctx->lock, flags);
+
+guard() + include cleanup.h. Then can do returns in error paths.
+
 > +
-> +	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+> +	if (ghes_ffh_copy_status(ctx))
+> +		goto out;
+Like here to give simpler lfow.
+
+
 > +
-> +	if (!cxl_cper_prot_err_work)
-> +		return;
+> +	sev = ghes_severity(ctx->estatus->error_severity);
+> +	if (sev >= GHES_SEV_PANIC)
+> +		ghes_ffh_fatal(ctx);
 > +
-> +	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-> +		return;
-> +
-> +	if (!kfifo_put(&cxl_cper_prot_err_fifo, wd)) {
-> +		pr_err_ratelimited("CXL CPER kfifo overflow\n");
-> +		return;
+> +	if (!ghes_estatus_cached(ctx->estatus)) {
+> +		if (ghes_print_estatus(NULL, ctx->generic, ctx->estatus))
+
+Combine the two if statements with &&
+
+> +			ghes_estatus_cache_add(ctx->generic, ctx->estatus);
 > +	}
 > +
-> +	schedule_work(cxl_cper_prot_err_work);
-> +#endif
+> +	ghes_cper_handle_status(ctx->dev, ctx->generic, ctx->estatus, ctx->sync);
+> +
+> +	ghes_ffh_ack(ctx);
+> +
+> +out:
+> +	spin_unlock_irqrestore(&ctx->lock, flags);
 > +}
 > +
-> +int cxl_cper_register_prot_err_work(struct work_struct *work)
+> +static irqreturn_t ghes_ffh_irq(int irq, void *data)
 > +{
-> +	if (cxl_cper_prot_err_work)
+> +	struct ghes_ffh *ctx = data;
+> +
+> +	ghes_ffh_process(ctx);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int ghes_ffh_init_ack(struct platform_device *pdev,
+> +			     struct ghes_ffh *ctx)
+> +{
+> +	struct resource *res;
+> +	size_t size;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> +	if (!res)
+> +		return 0;
+> +
+> +	ctx->ack.addr = devm_ioremap_resource(&pdev->dev, res);
+Why not devm_platform_get_and_ioremap_resource()?
+
+> +	if (IS_ERR(ctx->ack.addr))
+> +		return PTR_ERR(ctx->ack.addr);
+> +
+> +	size = resource_size(res);
+> +	switch (size) {
+> +	case 4:
+> +		ctx->ack.width = 32;
+> +		ctx->ack.preserve = ~0U;
+> +		break;
+> +	case 8:
+> +		ctx->ack.width = 64;
+> +		ctx->ack.preserve = ~0ULL;
+> +		break;
+> +	default:
+> +		dev_err(&pdev->dev, "Unsupported ack resource size %zu\n", size);
 > +		return -EINVAL;
-> +
-> +	guard(spinlock)(&cxl_cper_prot_err_work_lock);
-> +	cxl_cper_prot_err_work = work;
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_register_prot_err_work, "CXL");
-> +
-> +int cxl_cper_unregister_prot_err_work(struct work_struct *work)
-> +{
-> +	if (cxl_cper_prot_err_work != work)
-> +		return -EINVAL;
-> +
-> +	guard(spinlock)(&cxl_cper_prot_err_work_lock);
-> +	cxl_cper_prot_err_work = NULL;
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_prot_err_work, "CXL");
-> +
-> +int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data *wd)
-> +{
-> +	return kfifo_get(&cxl_cper_prot_err_fifo, wd);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_prot_err_kfifo_get, "CXL");
-> +
-> +/* Room for 8 entries for each of the 4 event log queues */
-> +#define CXL_CPER_FIFO_DEPTH 32
-> +DEFINE_KFIFO(cxl_cper_fifo, struct cxl_cper_work_data, CXL_CPER_FIFO_DEPTH);
-> +
-> +/* Synchronize schedule_work() with cxl_cper_work changes */
-> +static DEFINE_SPINLOCK(cxl_cper_work_lock);
-> +struct work_struct *cxl_cper_work;
-> +
-> +void cxl_cper_post_event(enum cxl_event_type event_type,
-> +				struct cxl_cper_event_rec *rec)
-> +{
-> +	struct cxl_cper_work_data wd;
-> +
-> +	if (rec->hdr.length <= sizeof(rec->hdr) ||
-> +	    rec->hdr.length > sizeof(*rec)) {
-> +		pr_err(FW_WARN "CXL CPER Invalid section length (%u)\n",
-> +		       rec->hdr.length);
-> +		return;
 > +	}
 > +
-> +	if (!(rec->hdr.validation_bits & CPER_CXL_COMP_EVENT_LOG_VALID)) {
-> +		pr_err(FW_WARN "CXL CPER invalid event\n");
-> +		return;
-> +	}
-> +
-> +	guard(spinlock_irqsave)(&cxl_cper_work_lock);
-> +
-> +	if (!cxl_cper_work)
-> +		return;
-> +
-> +	wd.event_type = event_type;
-> +	memcpy(&wd.rec, rec, sizeof(wd.rec));
-> +
-> +	if (!kfifo_put(&cxl_cper_fifo, wd)) {
-> +		pr_err_ratelimited("CXL CPER kfifo overflow\n");
-> +		return;
-> +	}
-> +
-> +	schedule_work(cxl_cper_work);
-> +}
-> +
-> +int cxl_cper_register_work(struct work_struct *work)
-> +{
-> +	if (cxl_cper_work)
-> +		return -EINVAL;
-> +
-> +	guard(spinlock)(&cxl_cper_work_lock);
-> +	cxl_cper_work = work;
+> +	ctx->ack.set = BIT_ULL(0);
+> +	ctx->ack.present = true;
 > +	return 0;
 > +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_register_work, "CXL");
 > +
-> +int cxl_cper_unregister_work(struct work_struct *work)
+> +static int ghes_ffh_probe(struct platform_device *pdev)
+
+Consider using a 
+	struct device *dev = &pdev->dev;
+given there is only one device around and it will shorten a bunch of
+lines a little.
+
 > +{
-> +	if (cxl_cper_work != work)
-> +		return -EINVAL;
+> +	struct ghes_ffh *ctx;
+> +	struct resource *res;
+> +	int rc;
 > +
-> +	guard(spinlock)(&cxl_cper_work_lock);
-> +	cxl_cper_work = NULL;
+> +	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +
+> +	spin_lock_init(&ctx->lock);
+> +	ctx->dev = &pdev->dev;
+> +	ctx->sync = of_property_read_bool(pdev->dev.of_node, "arm,sea-notify");
+Hmm. I'd allow for other firmware types with
+	device_property_read_bool() instead.
+
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "status region missing\n");
+In probe you can always use dev_err_probe. It pretty prints the return value etc and
+saves lines of code.
+		return dev_err_probe(&pdev->dev, -EINVAL, "status region missing\n");
+
+Don't worry about slightly long line.
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	ctx->status_len = resource_size(res);
+> +	if (!ctx->status_len) {
+> +		dev_err(&pdev->dev, "Status region has zero length\n");
+As above, use dev_err_probe()
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	ctx->status = devm_ioremap_resource(&pdev->dev, res);
+I'd be tempted to use devm_platform_get_and_ioremap_resource() and just
+not worry about mapping and unmapping that will unnecessarily occur in the
+case of error.
+
+> +	if (IS_ERR(ctx->status))
+> +		return PTR_ERR(ctx->status);
+> +
+> +	rc = ghes_ffh_init_ack(pdev, ctx);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = ghes_ffh_init_pool();
+> +	if (rc)
+> +		return rc;
+> +
+> +	ctx->estatus = devm_kzalloc(&pdev->dev, ctx->status_len, GFP_KERNEL);
+> +	if (!ctx->estatus)
+> +		return -ENOMEM;
+> +
+> +	ctx->generic = devm_kzalloc(&pdev->dev, sizeof(*ctx->generic), GFP_KERNEL);
+> +	if (!ctx->generic)
+> +		return -ENOMEM;
+> +
+> +	ctx->generic->header.type = ACPI_HEST_TYPE_GENERIC_ERROR;
+> +	ctx->generic->header.source_id =
+> +		atomic_inc_return(&ghes_ffh_source_ids);
+> +	ctx->generic->notify.type = ctx->sync ?
+> +		ACPI_HEST_NOTIFY_SEA : ACPI_HEST_NOTIFY_EXTERNAL;
+> +	ctx->generic->error_block_length = ctx->status_len;
+> +
+> +	ctx->irq = platform_get_irq_optional(pdev, 0);
+> +	if (ctx->irq <= 0) {
+> +		if (ctx->irq == -EPROBE_DEFER)
+> +			return ctx->irq;
+> +		dev_err(&pdev->dev, "interrupt is required (%d)\n", ctx->irq);
+If it's required, why call get_irq_optional?
+That only serves to suppress the error message inside the call.  Use
+the non optional version and drop this.
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	rc = devm_request_threaded_irq(&pdev->dev, ctx->irq,
+> +				       NULL, ghes_ffh_irq,
+> +				       IRQF_ONESHOT,
+> +				       dev_name(&pdev->dev), ctx);
+> +	if (rc)
+> +		return rc;
+> +
+> +	platform_set_drvdata(pdev, ctx);
+
+I can't immediately spot where this is used.  If it isn't don't set it as that
+will mislead people into thinking it's needed.
+
+> +	dev_info(&pdev->dev, "Firmware-first CPER status provider (interrupt)\n");
+
+Krysztof already commented on this one.
+
 > +	return 0;
 > +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_work, "CXL");
 > +
-> +int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
+> +static void ghes_ffh_remove(struct platform_device *pdev)
 > +{
-> +	return kfifo_get(&cxl_cper_fifo, wd);
+
+If nothing to do, platform drivers don't need a remove so get rid of it.
+
 > +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, "CXL");
 > +
->  /*
->   * GHES error status reporting throttle, to report more kinds of
->   * errors, instead of just most frequently occurred errors.
-> diff --git a/include/acpi/ghes_cper.h b/include/acpi/ghes_cper.h
-> index c5ff4c502017..4522e8699ce0 100644
-> --- a/include/acpi/ghes_cper.h
-> +++ b/include/acpi/ghes_cper.h
-> @@ -15,6 +15,7 @@
->  #include <linux/workqueue.h>
->  
->  #include <acpi/ghes.h>
-> +#include <cxl/event.h>
->  
->  #define GHES_PFX	"GHES: "
->  
-> @@ -99,5 +100,15 @@ void ghes_estatus_cache_add(struct acpi_hest_generic *generic,
->  			    struct acpi_hest_generic_status *estatus);
->  void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
->  				   int sev);
-> +void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +			    int severity);
-> +int cxl_cper_register_prot_err_work(struct work_struct *work);
-> +int cxl_cper_unregister_prot_err_work(struct work_struct *work);
-> +int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data *wd);
-> +void cxl_cper_post_event(enum cxl_event_type event_type,
-> +			 struct cxl_cper_event_rec *rec);
-> +int cxl_cper_register_work(struct work_struct *work);
-> +int cxl_cper_unregister_work(struct work_struct *work);
-> +int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd);
->  
->  #endif /* ACPI_APEI_GHES_CPER_H */
-> 
+> +static const struct of_device_id ghes_ffh_of_match[] = {
+> +	{ .compatible = "arm,ras-ffh" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, ghes_ffh_of_match);
+> +
+> +static struct platform_driver ghes_ffh_driver = {
+> +	.driver = {
+> +		.name = "esource-dt",
+> +		.of_match_table = ghes_ffh_of_match,
+> +	},
+> +	.probe = ghes_ffh_probe,
+> +	.remove = ghes_ffh_remove,
+> +};
+> +
+Common convention is keep this tightly coupled with the
+struct platform_driver but not having a blank line here.
+
+> +module_platform_driver(ghes_ffh_driver);
+> +
+> +MODULE_AUTHOR("Ahmed Tiba <ahmed.tiba@arm.com>");
+> +MODULE_DESCRIPTION("Firmware-first CPER provider for DeviceTree platforms");
+> +MODULE_LICENSE("GPL");
+
 
 
