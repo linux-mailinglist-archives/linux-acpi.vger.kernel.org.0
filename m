@@ -1,55 +1,56 @@
-Return-Path: <linux-acpi+bounces-21104-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21105-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBeFLck3nWlINQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21104-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:53 +0100
+	id UJILA9c3nWn5NQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21105-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:32:07 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD13B181F7D
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:31:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A23181FD9
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 06:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66F4830F05D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 05:31:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4763A310C4B0
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 05:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5459F2BE63F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF47A2D322F;
 	Tue, 24 Feb 2026 05:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpRhNN6w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIQkGpWS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC81528B4FA;
-	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E1C29D288;
+	Tue, 24 Feb 2026 05:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771911053; cv=none; b=nJsW8AEOxxPpIJ6S2If29c1oyPg2rxJnwOp4XwXcsSSatGqHZZNgrCwEE3ysJm+IEp8wPkDYD4qBfeXUJAqcQ9wpz8laGmFY/7OyN1igrTvGTJSBxC6PCSo6l2z1n+G0JKATGoMeekow0mEpTTQQpesY3xi+xZ6aY3aOv57p0Sw=
+	t=1771911053; cv=none; b=tT7lUlG20YIaa/ea1Q3lBAG3lXrofeBRg/Wpfs5Jt4z/SInVgZw54kAwhaMwhmW852QwTOrz6XaGk2/IEKi32lCR2kqsjIB+d1QIaGCdYxOdAhAaWbQ4PfN8CiY6ZYfbwpucxPJVKbpxMUE2AyYv5FKNjD5TbgSIOGl4FDZU2pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771911053; c=relaxed/simple;
-	bh=HpGVKc0NY5imy2HoLh3gTZqlP+PKdsOsRjHmaFdWlwA=;
+	bh=bJdUOGhU660sciPYfD5tlNkRUZIlYy6w4phG6SGa/EI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eTvwiC+ozGK6bGuHZCe+A8rivjd7YE0NL2UP9HY5qWaRQb6B2BU+SXYt2ZHL96ps4FfCVDz4exhk9Vw7xGZM31Ac7hbM5sfS/y51+f/EBG/iiVjE2G2HMJYPkufccndjQGP4XK7wh65mqc55DDqMqwUi2xYqXr3qhsSqPLH2qU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpRhNN6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BC3B9C19424;
+	 In-Reply-To:To:Cc; b=ia7Ts4mcvWEfUWk2Wo2p/DkCGNjwCgofyk+Io0YCSfKax/Ne7SCMWwXmh+y4peW06GM4RLGlZwsF9iy3klHX3oiIMPaqHubG7dHxPbIIJyTzgiCPUKPczuuCbPfqhpgf8Ub4Rd7d9DGXTlY8neZ+R7Q3ww/qttmAIM9GQs4EQUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIQkGpWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DFE54C2BC87;
 	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771911052;
-	bh=HpGVKc0NY5imy2HoLh3gTZqlP+PKdsOsRjHmaFdWlwA=;
+	bh=bJdUOGhU660sciPYfD5tlNkRUZIlYy6w4phG6SGa/EI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WpRhNN6wmYYtMagYhYig5HGWe/MTOnHSg8Fq7vjHTzFBKj1UufsSHZBlMfj+MW7uB
-	 vYgaXwaXCYHr3TcsF1PEGwA34D+PF4d9azi4TPQwyyAC3c1w67pyRllmsbRKrHbIYP
-	 i1hoOiF0bAA6+OsmPmwSdYpNyG3yLByH7fcVS7Ny8N1z2Bzn+Rc3KhlqofWDJIPLDV
-	 Z4Vlws5oMMeMLX+O/0rv0adRYrdQfUaOrnzpHKstlg6OFU2IUaimLEx8R1+mZTG3wt
-	 9ygX1yJk7FfUIFk5MRoql4vriBLfqnCv+m0Kh4JvuckNcjDhB9rW2/+Ba8cHWT2ksV
-	 8yW1XsuwbTaVA==
+	b=bIQkGpWSM8MSH2kN3+hgy/h9Z+d8Kkkf9bvegazZDB83wi589CB2G5VuI3+ATGAtT
+	 6M4IamOUpTVJbIu2ebdghHlRRGH/uwSP4Ym98REDOgT7MWaXtyJCd0/kVljBjn0xHY
+	 F21yinZQ11KQxyAzqSLqIBUSiVkVQ0ATYPtoHz+n3F6+AlEEtL8tvwpllAcJ/f73Ih
+	 3EbhbqHCMH61c77vI+Uns7pI5QPCLyi9wLGAzF0PRz4unqRtartiu2DhRZVyGVb5Ec
+	 GikFrGKzHspZOD2H3a1xbGDODk6En2dEBXrdFWTe5SzBgTZMqw+4AnAjvRSUPsggNn
+	 XA/YdzBkSu3/A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF03DEFB7F9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D290BEFB7FF;
 	Tue, 24 Feb 2026 05:30:52 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Tue, 24 Feb 2026 11:00:50 +0530
-Subject: [PATCH v5 4/9] dt-bindings: serial: Document the graph port
+Date: Tue, 24 Feb 2026 11:00:51 +0530
+Subject: [PATCH v5 5/9] dt-bindings: connector: Add PCIe M.2 Mechanical Key
+ E connector
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,7 +59,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-pci-m2-e-v5-4-dd9b9501d33c@oss.qualcomm.com>
+Message-Id: <20260224-pci-m2-e-v5-5-dd9b9501d33c@oss.qualcomm.com>
 References: <20260224-pci-m2-e-v5-0-dd9b9501d33c@oss.qualcomm.com>
 In-Reply-To: <20260224-pci-m2-e-v5-0-dd9b9501d33c@oss.qualcomm.com>
 To: Rob Herring <robh@kernel.org>, 
@@ -83,19 +84,18 @@ Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
  linux-acpi@vger.kernel.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
- Hans de Goede <johannes.goede@oss.qualcomm.com>, 
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+ Hans de Goede <johannes.goede@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1136;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8280;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=GL3e+NsnxRKZAnbhCXHzDHMKMZEirA8W+47KdhQACxY=;
- b=owGbwMvMwMUYOl/w2b+J574ynlZLYsica96h277e1mjKV56q0/LmB3awLD5x31z57eMMbc09s
- +cJXKgp7GQ0ZmFg5GKQFVNkSV/qrNXocfrGkgj16TCDWJlApjBwcQrARO5pcTA0eZTuv7x4Q2bn
- uqCt8enKuUzNLMv5LoWutl67SpRndqlnBrvSg7qeLvN+eQ6Vh+8+fNu+hyF/lpPATPUyluu+ZzV
- deabMr3vRf/Ful1XgnoYH936r7N6js910QZeVgFyGXVi3k2NYPu/35qLQkIcv5dR8FJXv/1aUNW
- BLeO9uImTs5BIdlDqt5buX7uEwLaE1uzhLJzyuDH4npOhxulcl9Zq9VP+NDHVT2cIJpSEdzUHTC
- g+LsduJmzK56xxNEZxfdoilPP5jesIGRvuvMcr7U6c/VFf+pPFz0ZGdxw5rbXfOZN91zv+2Y+ih
- I58qmg+6Cdic/5k8jVfP8YJWxtrsuR5qcz1/KjFLyP4AAA==
+ bh=UPIXQxg5yQZg/Nb/1C/QZjYZ3lvZ8kANbcyudC4LWz0=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpnTeIcZzEPYkUuKBISR5gRB3UL4Wvs7TViAp7o
+ 7Mrrtia0H+JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaZ03iAAKCRBVnxHm/pHO
+ 9cdXCACj+5WDF01H7LqXtCI6RkegJfjCC0ItHskl3wrC6ohsY/gl5GtcG1qltKOiA3OjCGGApaQ
+ QWafzkFTMoYG6tmqS1bEJp+rEQO5viNo+FtJwVxRcDHmkRuZQax8uMOHLimUUndox7aZ1gdeQae
+ nXQOXSTRdgB/4Vx4+53P8m7MFSheoW2XAOxL/skUnuUixDXC3qRgZ2PQsPtqi3W63mMuCyRonX1
+ hG+JUpfENq5hQG8saBA09Fshh7Ufb5xiC6PNYHVFoAtVHAOmxScoOBfbD0XJivPffP/RwHwV0wW
+ m0F407tCU0ivOZQZHuFAaKLD51hV5zl+uqmUMMZDo3EdYpUm
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -108,17 +108,17 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21104-lists,linux-acpi=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-21105-lists,linux-acpi=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[kernel.org,linuxfoundation.org,linux.dev,linux.intel.com,squebb.ca,gmail.com,holtmann.org,bgdev.pl];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
+	RCPT_COUNT_TWELVE(0.00)[31];
 	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -126,43 +126,240 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-acpi@vger.kernel.org];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-acpi,dt];
 	HAS_REPLYTO(0.00)[manivannan.sadhasivam@oss.qualcomm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: AD13B181F7D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,0.0.0.2:email,oss.qualcomm.com:mid,oss.qualcomm.com:replyto,0.0.0.4:email,0.0.0.1:email,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A4A23181FD9
 X-Rspamd-Action: no action
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-A serial controller could be connected to an external connector like PCIe
-M.2 for controlling the serial interface of the card. Hence, document the
-OF graph port.
+Add the devicetree binding for PCIe M.2 Mechanical Key E connector defined
+in the PCI Express M.2 Specification, r4.0, sec 5.1.2. This connector
+provides interfaces like PCIe or SDIO to attach the WiFi devices to the
+host machine, USB or UART+PCM interfaces to attach the Bluetooth (BT)
+devices. Spec also provides an optional interface to connect the UIM card,
+but that is not covered in this binding.
+
+The connector provides a primary power supply of 3.3v, along with an
+optional 1.8v VIO supply for the Adapter I/O buffer circuitry operating at
+1.8v sideband signaling.
+
+The connector also supplies optional signals in the form of GPIOs for fine
+grained power management.
 
 Tested-by: Hans de Goede <johannes.goede@oss.qualcomm.com> # ThinkPad T14s gen6 (arm64)
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- Documentation/devicetree/bindings/serial/serial.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ .../bindings/connector/pcie-m2-e-connector.yaml    | 184 +++++++++++++++++++++
+ MAINTAINERS                                        |   1 +
+ 2 files changed, 185 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
-index 6aa9cfae417b..96eb1de8771e 100644
---- a/Documentation/devicetree/bindings/serial/serial.yaml
-+++ b/Documentation/devicetree/bindings/serial/serial.yaml
-@@ -87,6 +87,9 @@ properties:
-     description:
-       TX FIFO threshold configuration (in bytes).
- 
-+  port:
-+    $ref: /schemas/graph.yaml#/properties/port
+diff --git a/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
+new file mode 100644
+index 000000000000..82dfd776d480
+--- /dev/null
++++ b/Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
+@@ -0,0 +1,184 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/connector/pcie-m2-e-connector.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- patternProperties:
-   "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
-     if:
++title: PCIe M.2 Mechanical Key E Connector
++
++maintainers:
++  - Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
++
++description:
++  A PCIe M.2 E connector node represents a physical PCIe M.2 Mechanical Key E
++  connector. Mechanical Key E connectors are used to connect Wireless
++  Connectivity devices including combinations of Wi-Fi, BT, NFC to the host
++  machine over interfaces like PCIe/SDIO, USB/UART+PCM, and I2C.
++
++properties:
++  compatible:
++    const: pcie-m2-e-connector
++
++  vpcie3v3-supply:
++    description: A phandle to the regulator for 3.3v supply.
++
++  vpcie1v8-supply:
++    description: A phandle to the regulator for VIO 1.8v supply.
++
++  i2c-parent:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: I2C interface
++
++  clocks:
++    description: 32.768 KHz Suspend Clock (SUSCLK) input from the host system to
++      the M.2 card. Refer, PCI Express M.2 Specification r4.0, sec 3.1.12.1 for
++      more details.
++    maxItems: 1
++
++  w-disable1-gpios:
++    description: GPIO output to W_DISABLE1# signal. This signal is used by the
++      host system to disable WiFi radio in the M.2 card. Refer, PCI Express M.2
++      Specification r4.0, sec 3.1.12.3 for more details.
++    maxItems: 1
++
++  w-disable2-gpios:
++    description: GPIO output to W_DISABLE2# signal. This signal is used by the
++      host system to disable WiFi radio in the M.2 card. Refer, PCI Express M.2
++      Specification r4.0, sec 3.1.12.3 for more details.
++    maxItems: 1
++
++  viocfg-gpios:
++    description: GPIO input to IO voltage configuration (VIO_CFG) signal. The
++      card drives this signal to indicate to the host system whether the card
++      supports an independent IO voltage domain for sideband signals. Refer,
++      PCI Express M.2 Specification r4.0, sec 3.1.15.1 for more details.
++    maxItems: 1
++
++  uart-wake-gpios:
++    description: GPIO input to UART_WAKE# signal. The card asserts this signal
++      to wake the host system and initiate UART interface communication. Refer,
++      PCI Express M.2 Specification r4.0, sec 3.1.8.1 for more details.
++    maxItems: 1
++
++  sdio-wake-gpios:
++    description: GPIO input to SDIO_WAKE# signal. The card asserts this signal
++      to wake the host system and initiate SDIO interface communication. Refer,
++      PCI Express M.2 Specification r4.0, sec 3.1.7 for more details.
++    maxItems: 1
++
++  sdio-reset-gpios:
++    description: GPIO output to SDIO_RESET# signal. This signal is used by the
++      host system to reset SDIO interface of the M.2 card. Refer, PCI Express
++      M.2 Specification r4.0, sec 3.1.7 for more details.
++    maxItems: 1
++
++  vendor-porta-gpios:
++    description: GPIO for the first vendor specific signal (VENDOR_PORTA). This
++      signal's functionality is defined by the card manufacturer and may be
++      used for proprietary features. Refer the card vendor's documentation for
++      details.
++    maxItems: 1
++
++  vendor-portb-gpios:
++    description: GPIO for the second vendor specific signal (VENDOR_PORTB). This
++      signal's functionality is defined by the card manufacturer and may be
++      used for proprietary features. Refer the card vendor's documentation for
++      details.
++    maxItems: 1
++
++  vendor-portc-gpios:
++    description: GPIO for the third vendor specific signal (VENDOR_PORTC). This
++      signal's functionality is defined by the card manufacturer and may be
++      used for proprietary features. Refer the card vendor's documentation for
++      details.
++    maxItems: 1
++
++  ports:
++    $ref: /schemas/graph.yaml#/properties/ports
++    description: OF graph bindings modeling the interfaces exposed on the
++      connector. Since a single connector can have multiple interfaces, every
++      interface has an assigned OF graph port number as described below.
++
++    properties:
++      port@0:
++        $ref: /schemas/graph.yaml#/properties/port
++        description: PCIe interface for Wi-Fi
++
++      port@1:
++        $ref: /schemas/graph.yaml#/properties/port
++        description: SDIO interface for Wi-Fi
++
++      port@2:
++        $ref: /schemas/graph.yaml#/properties/port
++        description: USB 2.0 interface for BT
++
++      port@3:
++        $ref: /schemas/graph.yaml#/properties/port
++        description: UART interface for BT
++
++      port@4:
++        $ref: /schemas/graph.yaml#/properties/port
++        description: PCM/I2S interface
++
++    anyOf:
++      - anyOf:
++          - required:
++              - port@0
++          - required:
++              - port@1
++      - anyOf:
++          - required:
++              - port@2
++          - required:
++              - port@3
++
++required:
++  - compatible
++  - vpcie3v3-supply
++
++additionalProperties: false
++
++examples:
++  # PCI M.2 Key E connector for Wi-Fi/BT with PCIe/UART interfaces
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    connector {
++        compatible = "pcie-m2-e-connector";
++        vpcie3v3-supply = <&vreg_wcn_3p3>;
++        vpcie1v8-supply = <&vreg_l15b_1p8>;
++        i2c-parent = <&i2c0>;
++        w-disable1-gpios = <&tlmm 115 GPIO_ACTIVE_LOW>;
++        w-disable2-gpios = <&tlmm 116 GPIO_ACTIVE_LOW>;
++        viocfg-gpios = <&tlmm 117 GPIO_ACTIVE_HIGH>;
++        uart-wake-gpios = <&tlmm 118 GPIO_ACTIVE_LOW>;
++        sdio-wake-gpios = <&tlmm 119 GPIO_ACTIVE_LOW>;
++        sdio-reset-gpios = <&tlmm 120 GPIO_ACTIVE_LOW>;
++
++        ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            port@0 {
++                reg = <0>;
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                endpoint@0 {
++                    reg = <0>;
++                    remote-endpoint = <&pcie4_port0_ep>;
++                };
++            };
++
++            port@3 {
++                reg = <3>;
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                endpoint@0 {
++                    reg = <0>;
++                    remote-endpoint = <&uart14_ep>;
++                };
++            };
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 55af015174a5..565198d3b500 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21044,6 +21044,7 @@ PCIE M.2 POWER SEQUENCING
+ M:	Manivannan Sadhasivam <mani@kernel.org>
+ L:	linux-pci@vger.kernel.org
+ S:	Maintained
++F:	Documentation/devicetree/bindings/connector/pcie-m2-e-connector.yaml
+ F:	Documentation/devicetree/bindings/connector/pcie-m2-m-connector.yaml
+ F:	drivers/power/sequencing/pwrseq-pcie-m2.c
+ 
 
 -- 
 2.51.0
