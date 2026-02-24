@@ -1,80 +1,81 @@
-Return-Path: <linux-acpi+bounces-21125-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21126-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGS0DQWXnWnwQgQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21125-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 13:18:13 +0100
+	id wGRZLKeYnWnwQgQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21126-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 13:25:11 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD0B186D17
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 13:18:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597D1186EAF
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 13:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 166433061514
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 12:17:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DA71311FA9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Feb 2026 12:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12883396D16;
-	Tue, 24 Feb 2026 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE580396D23;
+	Tue, 24 Feb 2026 12:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fYNxMplQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLfbpEwP"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985AE396D03
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 12:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB8396D1A
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 12:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771935464; cv=none; b=lHR3DuAWPNpD6U9YhlWmc3snJincUR2Uq9NszaaUiFyorGrPzr/7b2w7OiuRgkCun35ntarZijgIlLrR5oSqYUFia/LelD7CpX5WlZT6p45a0K/JpXPWpZODUlQlURfbI8sqSKtzm2FjY2yR+UKcUWNVPj+6VOBC46Yjbnr/mCk=
+	t=1771935683; cv=none; b=TBGWAGzEu6qS/f0lwdVUO7DUMiMtJUCgfohml1ZQCR+tczUN2b0HkMHwyGfSY9RbbDNnAEk0Ra1HZgkZlUaD+tKZFvMXgvBqBJ645B/dHTBOc4jLGhaLhBEnTwfbPBTr77p97qr1Nn48du8e937h6btvQuu4viFYpgQV2qzbDVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771935464; c=relaxed/simple;
-	bh=LXAbzxo+O8HcnXz/n/MRwtj0chUGnuOiHznWbLW+sRY=;
+	s=arc-20240116; t=1771935683; c=relaxed/simple;
+	bh=qeiE8prTSBBAw3kzkORhXcd0llIS/zF9fU+idkLpvc0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m91MqZMonB3TCQoIIZfujl2NetztwGTiflKco9kXkE0qteJX3IinbjrDsobDalpmieJhm7MXXANbhSJowBtcuUMmY0K4KMBT2MihVptxMqusOnin8ncrYqiLGLP9zt9KDZLxV9vyHTyeGg2/AruMq37HAmuCJ7ECaTWT+ItQG/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fYNxMplQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA0DC2BC86
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 12:17:44 +0000 (UTC)
+	 To:Cc:Content-Type; b=I26Rn99dhQCBhT/2wr0+jGwS0wcwdD/BlM+8lSTn+9mlDmNHnKCusnLvbKqQd3/umFckohEnid9Vh4lYQoUNuTy55oWo8L/5Wlo5HXzz3ncFHxIXPVP7rP4swohEP0XV/RHg3XUC2Pp3/cnyznhzFXuVHS3Bo8z2lNwKuFiRphs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLfbpEwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87115C19424
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 12:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771935464;
-	bh=LXAbzxo+O8HcnXz/n/MRwtj0chUGnuOiHznWbLW+sRY=;
+	s=k20201202; t=1771935683;
+	bh=qeiE8prTSBBAw3kzkORhXcd0llIS/zF9fU+idkLpvc0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fYNxMplQTMGokYR+YiDFNEQz8epZ2G2llYSsiqtMzJzAav8EHG+LJGh26PieXVW8M
-	 1/Mqwy8JSo9Hwk88ixnoSnZffKvMqqNPhoNmuarbjQ3O5OlTY43pwkbnOSiES5QUtn
-	 Dw4sHRf9hyhSqMI0ELWb33NkqblzRlx1DQln4zX4/6h0EfxTdAT9Ovse64qjdqdxWI
-	 xV9uOBe+vG9/0fgsbh5x4obBz2k5WEgX/pgSi5Omge4DTcusyae6WqJ0of78srT3LT
-	 X/+BPPrK9rS6wSodGKr0B5wl/jvot1R22hNLzE3IXLQmJg2/coc1IPI4BTALX6llTt
-	 3M+Ze52nASFnA==
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-674181e5bb9so1037114eaf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 04:17:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWI6TEC7WlqiATaXJTU9iP73lPDxZbE4Qpw+M5IlUxvcJi0e7aasdzI2A603kv+/2GjBVHRsbOTl4Dg@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCHDtiskzQAfyyOlwImswPmt7GIUBFzsLMsrvceTb9F6fr46QH
-	ck2hvpGfGpNZN8IFk+bJopBMTIFtrI6NF1xMGdoP/s1eN1SugQqs9320rokgxqhqB8pd41wwI8r
-	4WZqCMKtzfrf/6Vsl3GCLQqy0VUZqIGc=
-X-Received: by 2002:a4a:e911:0:b0:679:a4fe:f025 with SMTP id
- 006d021491bc7-679c44f4d0emr6808274eaf.59.1771935463291; Tue, 24 Feb 2026
- 04:17:43 -0800 (PST)
+	b=OLfbpEwP34kfma9oJIt/FpcFz79Oi+NcwY5X25e/q+58YlQoPCL+gTJmaivq36xic
+	 4/bVGe1xIOXu9R9Z6Hrl1ZV29j77Uorr+2OECYiHGS9bMxGPVBaEf7g8BvyX4ibPwj
+	 CzCmqHk6Eyvc8GSZT2yvRxW9H02+OmZdyXkmCH68kUy0UIL0MxUDBBJmgDUDdqTh4j
+	 DKjB0f+qpyrd0Y7QbPmzmjmtLmvuoRyv2mpf7srhGEyykHVpzhECz2zSQ7zSzJc4ew
+	 QVy6tZpDF/RKyiJhX/u+Q/Y83eZQxHshF6Ucr4P7lfp3WuqhHCFziqu4jY1WK0QaTX
+	 hXNUopFnF8N1w==
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4c68f0e47so3252691a34.1
+        for <linux-acpi@vger.kernel.org>; Tue, 24 Feb 2026 04:21:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXMvRiaZk3uILITG2crruOKUq9o9Iqw53qHqFSkpYZhbIqFaE198aFCHR3mBV3ZsEWJJBcMjklKSizv@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6dZElfLucboyC5QL23g33/YRDvwY5nNBCvsNTMty6KF6jjCnG
+	d8toiUJVP+DlGemhH7PtrkfrmIzmqlTmVmn4sK7iO92goh+nj7KRyzFrEdpeXhtTHuCzhSwG9U5
+	45+N1Hoc5FImnxalOMwLKrr7Is7MzYIM=
+X-Received: by 2002:a05:6830:7181:b0:7c7:2d7d:5d0f with SMTP id
+ 46e09a7af769-7d52bf3ea23mr6651601a34.20.1771935682677; Tue, 24 Feb 2026
+ 04:21:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223220102.2158611-1-bart.vanassche@linux.dev> <20260223220102.2158611-29-bart.vanassche@linux.dev>
-In-Reply-To: <20260223220102.2158611-29-bart.vanassche@linux.dev>
+References: <20260223204412.3298508-1-andriy.shevchenko@linux.intel.com>
+ <20260223204412.3298508-2-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0gS6kyCOmwL-9JYiaxCDVubtBoK6Rb5NSgHD1GwkGoCRA@mail.gmail.com> <aZ1p4lgioFlxhFr_@smile.fi.intel.com>
+In-Reply-To: <aZ1p4lgioFlxhFr_@smile.fi.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Feb 2026 13:17:31 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0goP11BWS4jKWuB1F2teaHdMnovG2MJ=B6aL+vwXqKWSQ@mail.gmail.com>
-X-Gm-Features: AaiRm52QfhGiDPAdUawZvtFvHbk8IjTWiSmuQOaTV00Gj_l0F4FI1xa-Uc_MAEE
-Message-ID: <CAJZ5v0goP11BWS4jKWuB1F2teaHdMnovG2MJ=B6aL+vwXqKWSQ@mail.gmail.com>
-Subject: Re: [PATCH 28/62] PNP: isapnp: Check the isapnp_cfg_begin() return value
-To: Bart Van Assche <bart.vanassche@linux.dev>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
-	linux-kernel@vger.kernel.org, Marco Elver <elver@google.com>, 
-	Christoph Hellwig <hch@lst.de>, Steven Rostedt <rostedt@goodmis.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Jann Horn <jannh@google.com>, Bart Van Assche <bvanassche@acm.org>, Jaroslav Kysela <perex@perex.cz>, 
-	Adam Belay <ambx1@neo.rr.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
+Date: Tue, 24 Feb 2026 13:21:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hUwCFKH3f6pCW1idquyJ-93wtXzO70tq6D+ruU17+oGw@mail.gmail.com>
+X-Gm-Features: AaiRm50Lc8LqRacvNU19wNDDonluoX7up49q2kXb2dcY2nK4iMjMXkGPP-hHwCQ
+Message-ID: <CAJZ5v0hUwCFKH3f6pCW1idquyJ-93wtXzO70tq6D+ruU17+oGw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] driver core: Split device data types to device/types.h
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zijun Hu <zijun.hu@oss.qualcomm.com>, 
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
@@ -82,19 +83,19 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21125-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[infradead.org,redhat.com,kernel.org,vger.kernel.org,google.com,lst.de,goodmis.org,acm.org,perex.cz,neo.rr.com];
+	TAGGED_FROM(0.00)[bounces-21126-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,vger.kernel.org,lists.linux.dev,linuxfoundation.org,gmail.com,linux.intel.com];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -104,77 +105,42 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,acm.org:email]
-X-Rspamd-Queue-Id: AAD0B186D17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 597D1186EAF
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 11:03=E2=80=AFPM Bart Van Assche
-<bart.vanassche@linux.dev> wrote:
+On Tue, Feb 24, 2026 at 10:05=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> From: Bart Van Assche <bvanassche@acm.org>
+> On Mon, Feb 23, 2026 at 09:53:17PM +0100, Rafael J. Wysocki wrote:
+> > On Mon, Feb 23, 2026 at 9:44=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > device.h is a huge header which is hard to follow and easy to miss
+> > > something. Improve that by splitting device data types to device/type=
+s.h.
+> > >
+> > > In particular this helps to speedup the build of the code that includ=
+es
+> > > device.h solely for a device data types.
+> > >
+> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > But why do you want to move the struct device definition out of device.=
+h?
 >
-> Instead of ignoring isapnp_cfg_begin() failures, propagate the value
-> returned by this function in case of a failure. This patch prepares
-> for enabling thread-safety analysis since isapnp_cfg_begin() only locks
-> a particular mutex if it returns zero.
+> Because it's a data type, and we have many drivers that may require it
+> (embed the struct device), but no device.h API is called directly =E2=80=
+=94
+> only via a certain framework).
 >
-> Cc: Jaroslav Kysela <perex@perex.cz>
-> Cc: Adam Belay <ambx1@neo.rr.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Fixes: f72e5c5c861c ("[PATCH] PnP Rewrite V0.9 - 2.5.43")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> device.h also includes many unrelated headers in such a case.
 
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Why is this a problem?
 
-> ---
->  drivers/pnp/isapnp/core.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
-> index 219f96f2aaaf..3591a2791c1a 100644
-> --- a/drivers/pnp/isapnp/core.c
-> +++ b/drivers/pnp/isapnp/core.c
-> @@ -853,7 +853,9 @@ static int isapnp_get_resources(struct pnp_dev *dev)
->
->         pnp_dbg(&dev->dev, "get resources\n");
->         pnp_init_resources(dev);
-> -       isapnp_cfg_begin(dev->card->number, dev->number);
-> +       ret =3D isapnp_cfg_begin(dev->card->number, dev->number);
-> +       if (ret)
-> +               return ret;
->         dev->active =3D isapnp_read_byte(ISAPNP_CFG_ACTIVATE);
->         if (!dev->active)
->                 goto __end;
-> @@ -887,10 +889,12 @@ static int isapnp_get_resources(struct pnp_dev *dev=
-)
->  static int isapnp_set_resources(struct pnp_dev *dev)
->  {
->         struct resource *res;
-> -       int tmp;
-> +       int tmp, ret;
->
->         pnp_dbg(&dev->dev, "set resources\n");
-> -       isapnp_cfg_begin(dev->card->number, dev->number);
-> +       ret =3D isapnp_cfg_begin(dev->card->number, dev->number);
-> +       if (ret)
-> +               return ret;
->         dev->active =3D 1;
->         for (tmp =3D 0; tmp < ISAPNP_MAX_PORT; tmp++) {
->                 res =3D pnp_get_resource(dev, IORESOURCE_IO, tmp);
-> @@ -936,9 +940,13 @@ static int isapnp_set_resources(struct pnp_dev *dev)
->
->  static int isapnp_disable_resources(struct pnp_dev *dev)
->  {
-> +       int ret;
-> +
->         if (!dev->active)
->                 return -EINVAL;
-> -       isapnp_cfg_begin(dev->card->number, dev->number);
-> +       ret =3D isapnp_cfg_begin(dev->card->number, dev->number);
-> +       if (ret)
-> +               return ret;
->         isapnp_deactivate(dev->number);
->         dev->active =3D 0;
->         isapnp_cfg_end();
+Could those headers be moved to different header files instead?
+
+device.h is mostly about the struct device definition and the other
+stuff in it is more or less additional.  Why do you want to make it
+the other way around?
 
