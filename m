@@ -1,165 +1,134 @@
-Return-Path: <linux-acpi+bounces-21160-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21161-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGVBARc5n2m5ZQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21160-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:01:59 +0100
+	id oDULCy47n2m5ZQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21161-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:10:54 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156B419BF39
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:01:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2C819C0F4
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 70E47300E4B6
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 18:01:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60B40305A97B
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 18:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F32DF3DA;
-	Wed, 25 Feb 2026 18:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625C22EBB8C;
+	Wed, 25 Feb 2026 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MUm0I+cv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ef3mosPO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059282DF717;
-	Wed, 25 Feb 2026 18:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9DB2EAD15
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Feb 2026 18:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772042513; cv=none; b=QcXASrlMgaNBNCsdrmoFE/A8C9XKKojI4IXmazEdBBZ2pXZdyTPkv0ujbUd1YYVwL+b/NkAXL5Rh+IWtG3XB04pMWBPuw0+oPuVjj2kDWVJhSJUTIHkBm6tGWNunrnga4PV3+dVUuRm/gz4RFYEiOaFldTJu12Yl93N/w/rhAIQ=
+	t=1772043042; cv=none; b=m7ISljJtfqJVqW+skrxrULajD7/0SmHVf4GpJQfBDES533nt5wTvPkGT7WpZAiBPGEPk44We+qUAKopr3VndThl7DEP+2ASD24GJJ2M3ZL0bhAirVOIezxih2ETMiyyNun7ZSZAgRiCC7HUhAGLTeOoZRn61sHHDd/MlUXToRqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772042513; c=relaxed/simple;
-	bh=G85ubvQS75DRzcmOv/zXQpDpT6TytBv/KbcnO62LKuE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YwP0a8KMBYMwvGJ9GnNrNiojWzlzy/qrg08ddkK7+yuw+H54CwSh7EJYebdBMvleXbmJMcIX8mDcYEow6RFML4r9Q1zWzn7YBGUBVGxAk8failSLDFBaJFWL+7XVvvwwzd/SDuoWBxD/vA+WiVKhVk09L0WYZlIN04X9brOltDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MUm0I+cv; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772042512; x=1803578512;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=G85ubvQS75DRzcmOv/zXQpDpT6TytBv/KbcnO62LKuE=;
-  b=MUm0I+cv4zZ91LZHacFKWGGpvPW/70oPA8HMBXrVWDcx/JtG9mAq1kwo
-   XCam/SdXRiDzVjezlypTBPGEoxYuFiugYXdfi1T65lUBtJolBUcTt0bkB
-   bJlY4cvY3kS/yBGZAfmr/F/FBHR8MS+YoCzuaaMzLa86LrfZBTmAJrAZu
-   tWgNVH+YbwKN1vJrNcYUckb2qoN2eVQvbE3/rzIDiDmw1IMEHWU2eH1JR
-   NJVECW+rBsf9O434DEwk1jJAesnycXAhbKviVfKjGv/5wnqHR4KP/SCnH
-   0eQMRVGmTFds70Nv9Y7bciGv/P5klV58yLUepoyMP1Xzs2o4Y4jMdvVRE
-   w==;
-X-CSE-ConnectionGUID: 8lecBaP9R6mMfrQME7lJrg==
-X-CSE-MsgGUID: hSX168YGTeeoL0de8c+T6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="83422102"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="83422102"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:51 -0800
-X-CSE-ConnectionGUID: jZAOCrAzSM6qm7EAxj3Djg==
-X-CSE-MsgGUID: tCTho3EwT2qkUFoNBLCPmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="246862864"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.111.87]) ([10.125.111.87])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:51 -0800
-Message-ID: <8ba9c47a-5c66-4330-a2fe-509c25220f23@intel.com>
-Date: Wed, 25 Feb 2026 10:01:50 -0800
+	s=arc-20240116; t=1772043042; c=relaxed/simple;
+	bh=YNTwvo/Pda57gkHbqBvSuOxAQKDUGF2V0zFCz7zr0/c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KJ6ZcvLKXoaBgXETNeyFFJnn2QjExw617qYz+7U4pKnDLpi5lfLXk/9s8ZkvbGKylE0gb+/qxEBqM5YY+PzUdShchpydrlzbMHTS1xAl9GqfjffKf4ThvyF98dkZmxtlMz/kLztcxGb9HeAEy9KaliH8VE9hcx/5dbm++hzztec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ef3mosPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0368C116D0
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Feb 2026 18:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772043042;
+	bh=YNTwvo/Pda57gkHbqBvSuOxAQKDUGF2V0zFCz7zr0/c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ef3mosPOQu8mfIISLKfEJ27f8kWxtRuUsdK8YD8yumzxgcX5SK18OWBAa9+rkv3c+
+	 1CpjwF7wwW2uW0Sw4Qr088SbJ1l/hoXbnG3bv1WbjOONNlgQN+nj5eyAh1E/R7sq3P
+	 EZJRFZ5HNeOIuA+el3fKeqxhqzRl4WJZvWWto+Wmal2zDXPcC/eZeZjlb3GB8zsm8i
+	 fhYrE93qmKIbx/mnlAxLo+xmq5ugPEBYdt5L4VuWXqVJ0t/4jU1EjQ9Velry1UgPLr
+	 W063QVvE2AIydrW9zxslygbFEXbmeTo9+qkGAXfZqaHaJSgDPXa6NkGI7lP92unjl/
+	 yByxDTmln8B0A==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-66f3e7d9eccso42854eaf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Feb 2026 10:10:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV+4eWr1RoIxcS47EGyyKzuDRGaLm3MrokNmVFXbk8KytyvgXjdWFihP7FkWpvmpkqaL43v5+nPweua@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzzA2diawjTLuQsup2zL+ryBpnNoQPD1UKXpfRWYx6Mvi/bgf+
+	75c2jUByKIMGDk/jyxF9ryuA1JFRVrRWNbe6UevdwXhch7cmEhYST2zZWnKaxBaNRPMuGM3guur
+	2pxrOBORoeL2QTeQBmVxyt5+voxkcUBc=
+X-Received: by 2002:a05:6820:4888:b0:675:a193:b9ab with SMTP id
+ 006d021491bc7-679c40a0216mr6506809eaf.0.1772043041055; Wed, 25 Feb 2026
+ 10:10:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/8] ACPI: x86: cmos_rtc: Create a CMOS RTC platform
- device
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>,
- linux-rtc@vger.kernel.org, Alexandre Belloni <alexandre.belloni@bootlin.com>
-References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
- <1962427.tdWV9SEqCh@rafael.j.wysocki>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <1962427.tdWV9SEqCh@rafael.j.wysocki>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <5983325.DvuYhMxLoT@rafael.j.wysocki> <8660687.T7Z3S40VBb@rafael.j.wysocki>
+ <6b751b23-ded2-4343-bf29-103f4a7ab6ba@intel.com>
+In-Reply-To: <6b751b23-ded2-4343-bf29-103f4a7ab6ba@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 25 Feb 2026 19:10:30 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iydudmE_HQVKCrMVtnUK0YKOd_XiqJwnR8Y9W3OL6CLw@mail.gmail.com>
+X-Gm-Features: AaiRm51rEBLt3EUFbi7RLHoBLLxSr6ongn-NfwzYafPxsNBFpjS3KQ9hZSgGHZk
+Message-ID: <CAJZ5v0iydudmE_HQVKCrMVtnUK0YKOd_XiqJwnR8Y9W3OL6CLw@mail.gmail.com>
+Subject: Re: [PATCH v1 6/8] x86: rtc: Drop PNP device check
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>, linux-rtc@vger.kernel.org, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21160-lists,linux-acpi=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-21161-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 156B419BF39
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: AA2C819C0F4
 X-Rspamd-Action: no action
 
-On 2/23/26 07:29, Rafael J. Wysocki wrote:
-> Make the CMOS RTC ACPI scan handler create a platform device that will
-> be used subsequently by rtc-cmos for driver binding on x86 systems with
-> ACPI and update add_rtc_cmos() to skip registering a fallback platform
-> device for the CMOS RTC when the above one has been registered.
+On Wed, Feb 25, 2026 at 7:01=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 2/23/26 07:31, Rafael J. Wysocki wrote:
+> > Previous changes effectively prevented PNP devices from being created
+> > for the CMOS RTC on x86 with ACPI.
+> >
+> > Although in principle a CMOS RTC PNP device may exist on an x86 system
+> > without ACPI (that is, an x86 system where there is no ACPI at all, not
+> > one booted with ACPI disabled), such systems were there in the field ~3=
+0
+> > years ago and most likely they would not be able to run a contemporary
+> > Linux kernel.
+> >
+> > For the above reasons, drop the PNP device check from add_rtc_cmos().
+>
+> If someone had one of these devices, what would they see after applying
+> this? Would they just not be able to detect the RTC any longer?
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86
+No, add_rtc_cmos() would just create a fallback platform device for
+the CMOS RTC AFAICS and the driver would pick up that one.
+
+> In any case, this does seem obscure enough to not worry about any more:
+>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86
+
+Thanks!
 
