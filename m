@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-21159-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21160-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCHdKtg5n2m5ZQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21159-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:05:12 +0100
+	id WGVBARc5n2m5ZQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21160-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:01:59 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5866C19BFD0
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:05:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156B419BF39
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 19:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BCFF30672D1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 18:01:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 70E47300E4B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 18:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F502D7DE1;
-	Wed, 25 Feb 2026 18:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F32DF3DA;
+	Wed, 25 Feb 2026 18:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k6hCDJWB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MUm0I+cv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFB8433B3;
-	Wed, 25 Feb 2026 18:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059282DF717;
+	Wed, 25 Feb 2026 18:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772042506; cv=none; b=t6JpS6R3FjPbgays4u7c5cbXAA+e5dV4r760dYVg6ncQ8oplQ9S+/Iv/52rELsZLekjifzDIUVgAc2N+fol9Umch51vd0aPkHCcezYoD1Y2CgCI4c4vrkRrNxBSsQc4cNILqiwkQe4PHy+UIzKTVmbqN95Ozeq6WLBplkV+mEFM=
+	t=1772042513; cv=none; b=QcXASrlMgaNBNCsdrmoFE/A8C9XKKojI4IXmazEdBBZ2pXZdyTPkv0ujbUd1YYVwL+b/NkAXL5Rh+IWtG3XB04pMWBPuw0+oPuVjj2kDWVJhSJUTIHkBm6tGWNunrnga4PV3+dVUuRm/gz4RFYEiOaFldTJu12Yl93N/w/rhAIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772042506; c=relaxed/simple;
-	bh=JiAGReSfZKuZMVg8YvgotK7FHeThSTrinMxzxW9ZrpA=;
+	s=arc-20240116; t=1772042513; c=relaxed/simple;
+	bh=G85ubvQS75DRzcmOv/zXQpDpT6TytBv/KbcnO62LKuE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gazCm1xjaqzyyUce5VdM14T13+5RzBtK+fEZdd/CwxIAgwOCf1xVquJFenM5eX5gQRT4kqg7BUdj6pSRxDe/aP/g4SfOOrHlIwoemdEQOF7NrFzQB8+4v8pH6V6KO18UXuJ5shhfmjz+ICzdmCjYTSc5Az4yGaOMY9noiu2Z6Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k6hCDJWB; arc=none smtp.client-ip=198.175.65.11
+	 In-Reply-To:Content-Type; b=YwP0a8KMBYMwvGJ9GnNrNiojWzlzy/qrg08ddkK7+yuw+H54CwSh7EJYebdBMvleXbmJMcIX8mDcYEow6RFML4r9Q1zWzn7YBGUBVGxAk8failSLDFBaJFWL+7XVvvwwzd/SDuoWBxD/vA+WiVKhVk09L0WYZlIN04X9brOltDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MUm0I+cv; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772042504; x=1803578504;
+  t=1772042512; x=1803578512;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=JiAGReSfZKuZMVg8YvgotK7FHeThSTrinMxzxW9ZrpA=;
-  b=k6hCDJWB2RWSb47lclsSdCO40cIbTcDcEA9lbX9QY7vt6rAjIcx6R6Ih
-   uoVHKjVuujGacMnB13ElVfzJXPNu4NXGXY/AFAJZxfZqq7WGiYFurLtRJ
-   4MpxjsFAc5+e8KsmjFLPurw2pj4ZBpfwELbsjBv8d1bgQBhRCq4yg+hVa
-   q9b7KRS6XDRZa5rBnRyu8eA18V204U0nyiL+feU03OKWYWLt7eofGEfb1
-   I+a0F6J/KhqGTFDJqne2uoV6NIhkFQhSB8su7WBiu5z/L8T7pdmGbsHER
-   iPkZcaguaOzcwz3X+VKJGyKol4CvXX099uJeeBc691cUfQuzz7qdX65OA
-   Q==;
-X-CSE-ConnectionGUID: RsLFGqyVTH+ptOcv7TkeyA==
-X-CSE-MsgGUID: i4j4638sT72JhijouYaLqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="83422082"
+  bh=G85ubvQS75DRzcmOv/zXQpDpT6TytBv/KbcnO62LKuE=;
+  b=MUm0I+cv4zZ91LZHacFKWGGpvPW/70oPA8HMBXrVWDcx/JtG9mAq1kwo
+   XCam/SdXRiDzVjezlypTBPGEoxYuFiugYXdfi1T65lUBtJolBUcTt0bkB
+   bJlY4cvY3kS/yBGZAfmr/F/FBHR8MS+YoCzuaaMzLa86LrfZBTmAJrAZu
+   tWgNVH+YbwKN1vJrNcYUckb2qoN2eVQvbE3/rzIDiDmw1IMEHWU2eH1JR
+   NJVECW+rBsf9O434DEwk1jJAesnycXAhbKviVfKjGv/5wnqHR4KP/SCnH
+   0eQMRVGmTFds70Nv9Y7bciGv/P5klV58yLUepoyMP1Xzs2o4Y4jMdvVRE
+   w==;
+X-CSE-ConnectionGUID: 8lecBaP9R6mMfrQME7lJrg==
+X-CSE-MsgGUID: hSX168YGTeeoL0de8c+T6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="83422102"
 X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="83422082"
+   d="scan'208";a="83422102"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:39 -0800
-X-CSE-ConnectionGUID: IzecNPveRYuKMKYfAvcTQQ==
-X-CSE-MsgGUID: btb71okpRLuVNEZhd+p1Dg==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:51 -0800
+X-CSE-ConnectionGUID: jZAOCrAzSM6qm7EAxj3Djg==
+X-CSE-MsgGUID: tCTho3EwT2qkUFoNBLCPmQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="246862819"
+   d="scan'208";a="246862864"
 Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.111.87]) ([10.125.111.87])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:39 -0800
-Message-ID: <6b751b23-ded2-4343-bf29-103f4a7ab6ba@intel.com>
-Date: Wed, 25 Feb 2026 10:01:37 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 10:01:51 -0800
+Message-ID: <8ba9c47a-5c66-4330-a2fe-509c25220f23@intel.com>
+Date: Wed, 25 Feb 2026 10:01:50 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,13 +70,14 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 6/8] x86: rtc: Drop PNP device check
+Subject: Re: [PATCH v1 3/8] ACPI: x86: cmos_rtc: Create a CMOS RTC platform
+ device
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
  Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, x86 Maintainers <x86@kernel.org>,
  linux-rtc@vger.kernel.org, Alexandre Belloni <alexandre.belloni@bootlin.com>
 References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
- <8660687.T7Z3S40VBb@rafael.j.wysocki>
+ <1962427.tdWV9SEqCh@rafael.j.wysocki>
 Content-Language: en-US
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -122,21 +123,21 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <8660687.T7Z3S40VBb@rafael.j.wysocki>
+In-Reply-To: <1962427.tdWV9SEqCh@rafael.j.wysocki>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21159-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21160-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
@@ -145,31 +146,20 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5866C19BFD0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 156B419BF39
 X-Rspamd-Action: no action
 
-On 2/23/26 07:31, Rafael J. Wysocki wrote:
-> Previous changes effectively prevented PNP devices from being created
-> for the CMOS RTC on x86 with ACPI.
-> 
-> Although in principle a CMOS RTC PNP device may exist on an x86 system
-> without ACPI (that is, an x86 system where there is no ACPI at all, not
-> one booted with ACPI disabled), such systems were there in the field ~30
-> years ago and most likely they would not be able to run a contemporary
-> Linux kernel.
-> 
-> For the above reasons, drop the PNP device check from add_rtc_cmos().
-
-If someone had one of these devices, what would they see after applying
-this? Would they just not be able to detect the RTC any longer?
-
-In any case, this does seem obscure enough to not worry about any more:
+On 2/23/26 07:29, Rafael J. Wysocki wrote:
+> Make the CMOS RTC ACPI scan handler create a platform device that will
+> be used subsequently by rtc-cmos for driver binding on x86 systems with
+> ACPI and update add_rtc_cmos() to skip registering a fallback platform
+> device for the CMOS RTC when the above one has been registered.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86
 
