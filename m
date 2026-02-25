@@ -1,58 +1,59 @@
-Return-Path: <linux-acpi+bounces-21171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21170-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ4vK35jn2lRagQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21171-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 22:02:54 +0100
+	id iG9bEWFjn2lRagQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21170-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 22:02:25 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA9419D8F7
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 22:02:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D242E19D8AC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 22:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876583055959
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 20:57:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBEB130416D9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Feb 2026 20:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3322EAD15;
-	Wed, 25 Feb 2026 20:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25F42F6905;
+	Wed, 25 Feb 2026 20:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BmGjk/EK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UavcFhbY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81052DC789;
-	Wed, 25 Feb 2026 20:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CB22F12C1;
+	Wed, 25 Feb 2026 20:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772053063; cv=none; b=eCaFftqgI1OAmAGLGQGXcudQOnlLhC6FJGSigr+90OzPiwOQwrdnYUU+BoVrRWmRN8Kajp9IgKDvrcmM4Fwox3V6g8gU1fQeoTLaEj7Zbo/nH7aWDA+TlzNRg99OUURmB1ufLaI43nqK3jzvcQNIwMER19TEzHgLNrolz0XGrIE=
+	t=1772053059; cv=none; b=NafSh7eBCdWYTPyN2xYMfVjtUqQZg5reyKKnG9+7ZJ84C+HGdK8KCUKiGX7Adzfb313GWsOXK43vtB/QZueX4EWkNn7MCEfXy0Eg/vjZBHVCUK327DU4/nFTOqKdgJIg44my0swo8y++fgMNtC1cV/8+NAX1W7sGxK0CkgFkf6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772053063; c=relaxed/simple;
-	bh=PAs1bGrn2mdKOWRmzEaVX6nloInZtadGhLhSZt/+Vd0=;
+	s=arc-20240116; t=1772053059; c=relaxed/simple;
+	bh=os8p/7f07bfNvKhOQbtBqfHHFLUH8MjabQ3v6ti7ReI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiOBzy0owsk9YnJdjm2qSG8MVqNE0Dn+XnL5paG8dMKfm/T1dIXitR4EHvo0vzHByN6RhHKcXp9jCkDUWdwnV5ZFFjlxvfdSsJJI5jpdSAMdBFNUUhcpc0kW4lTIhrGLnlFZIji8hbv750NlzL5nIMy9jAddgL07XQsUtVtrhiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BmGjk/EK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8578C116D0;
-	Wed, 25 Feb 2026 20:57:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cglOav6InQ2tR7OzVR4Y3YWpYuU5NI7L191IHXYVMp7zEuR4WXqEu08/dlffl+aIRu/YR9VA/0rte1FJH4dW6sKG95KU01EHJOiewOXgU+beiCXhKUNxs4ZDFBI9D882gSRSwk9fFtRTCOyAAvLwls57voutm/EWPJiklaUDExw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UavcFhbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A299DC19423;
+	Wed, 25 Feb 2026 20:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772053063;
-	bh=PAs1bGrn2mdKOWRmzEaVX6nloInZtadGhLhSZt/+Vd0=;
+	s=k20201202; t=1772053059;
+	bh=os8p/7f07bfNvKhOQbtBqfHHFLUH8MjabQ3v6ti7ReI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmGjk/EKyTJP0jPdPWx7zQCAjw6cvZWezt5plX4oNKADWK3j5ezvu/7T9isyxNh23
-	 Rjkc/96CC6wt7TgghE4mQglFWBOVQY5SwJPy74FhA0GRC3/oAk1wSQ9xffTRaNUJhN
-	 40OTybxWgCM8ACU+tfoRbTPomu8YGXBL0m0n82TOOCSritq0rgoP5eipmneMHqfLz6
-	 EDt0EZ+j0VL5wF8IcKheOcseHwlGhiKwrr8a/F11BPb9ZGhJI57hlbFu6SxKA81xE8
-	 qrCL6oOkSGo3WPF0Gp4+o/Fkdl/WXfpiseTJAj+8xwuvwLOJQYuB6wRGZ3YGeQAGrv
-	 JFTII+AiFjFhg==
+	b=UavcFhbYvarlp4E6obqGNwDGqm4Rn6zt1hbCUFssPSdlcUIUfg4ga0ePsUX7ma2l7
+	 3I9dgeCa2Ua6VJdk6vFIQtrJVE/i4UdFlW2JuLhMZKgGQwvLpx6sEDo+Zoc63JEyyY
+	 yb+15XSODoSB7wyS6WZXRCm0E/1G9MWc0gKbnjSQcl6PHGHcYyWvBGbH9rurJHoL8L
+	 7B5oHL1llB7h7sg2R5UzL2I2xJZ4Tx4QCAi5Z2/3xanK2oFj/5Bl9xEEOPj7olUdVM
+	 NmLBnBRkRms8bzQcjFFdXeJ0q5ny2GgnA9dVVCIMHwTc6+e89PjcWZh/MAUPpBjJNO
+	 BJgr8+dKlOJsg==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: Robert Gerlach <khnz@gmx.de>, Hans de Goede <hansg@kernel.org>,
  LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>,
  platform-driver-x86@vger.kernel.org, Jonathan Woithe <jwoithe@just42.net>
 Subject:
- [PATCH v1 3/5] platform/x86: fujitsu: Register ACPI notify handlers directly
-Date: Wed, 25 Feb 2026 21:47:07 +0100
-Message-ID: <10828467.nUPlyArG6x@rafael.j.wysocki>
+ [PATCH v1 4/5] platform/x86: fujitsu: Convert backlight driver to a platform
+ one
+Date: Wed, 25 Feb 2026 21:52:09 +0100
+Message-ID: <23036941.EfDdHjke4D@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <1968442.tdWV9SEqCh@rafael.j.wysocki>
 References: <1968442.tdWV9SEqCh@rafael.j.wysocki>
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21171-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21170-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -91,112 +92,336 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	BLOCKLISTDE_FAIL(0.00)[10.30.226.201:query timed out,100.90.174.1:query timed out,172.234.253.10:query timed out];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	BLOCKLISTDE_FAIL(0.00)[100.90.174.1:query timed out,2600:3c0a:e001:db::12fc:5321:query timed out,10.30.226.201:query timed out];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,rafael.j.wysocki:mid]
-X-Rspamd-Queue-Id: 4AA9419D8F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rafael.j.wysocki:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: D242E19D8AC
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-To facilitate subsequent conversion of the driver to using struct
-platform_driver instead of struct acpi_driver, make it install its ACPI
-notify handlers directly instead of using struct acpi_driver .notify()
-callbacks.
+In all cases in which a struct acpi_driver is used for binding a driver
+to an ACPI device object, a corresponding platform device is created by
+the ACPI core and that device is regarded as a proper representation of
+underlying hardware.  Accordingly, a struct platform_driver should be
+used by driver code to bind to that device.  There are multiple reasons
+why drivers should not bind directly to ACPI device objects [1].
 
-No intentional functional impact.
+Overall, it is better to bind drivers to platform devices than to their
+ACPI companions, so convert the backlight part of the Fujitsu laptop
+driver from an ACPI driver to a platform one.
 
+After this change, the backlight and input subordinate devices will be
+registered under the platform device used for driver binding instead of
+its ACPI companion.
+
+While this is not expected to alter functionality, it changes sysfs
+layout and so it will be visible to user space.
+
+Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/platform/x86/fujitsu-laptop.c | 30 ++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/platform/x86/fujitsu-laptop.c | 117 +++++++++++++-------------
+ 1 file changed, 58 insertions(+), 59 deletions(-)
 
 diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
-index 1adce90ae3e6..cb13c06b8f35 100644
+index cb13c06b8f35..d4550309ac13 100644
 --- a/drivers/platform/x86/fujitsu-laptop.c
 +++ b/drivers/platform/x86/fujitsu-laptop.c
-@@ -502,8 +502,9 @@ static int fujitsu_backlight_register(struct acpi_device *device)
+@@ -284,15 +284,16 @@ static void fujitsu_battery_charge_control_remove(struct acpi_device *device)
  
- /* Brightness notify */
+ /* Hardware access for LCD brightness control */
  
--static void acpi_fujitsu_bl_notify(struct acpi_device *device, u32 event)
-+static void acpi_fujitsu_bl_notify(acpi_handle handle, u32 event, void *data)
+-static int set_lcd_level(struct acpi_device *device, int level)
++static int set_lcd_level(struct device *dev, int level)
  {
-+	struct acpi_device *device = data;
- 	struct fujitsu_bl *priv = acpi_driver_data(device);
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	acpi_status status;
+ 	char *method;
+ 
+ 	switch (use_alt_lcd_levels) {
+ 	case -1:
+-		if (acpi_has_method(device->handle, "SBL2"))
++		if (acpi_has_method(handle, "SBL2"))
+ 			method = "SBL2";
+ 		else
+ 			method = "SBLL";
+@@ -305,16 +306,14 @@ static int set_lcd_level(struct acpi_device *device, int level)
+ 		break;
+ 	}
+ 
+-	acpi_handle_debug(device->handle, "set lcd level via %s [%d]\n", method,
+-			  level);
++	acpi_handle_debug(handle, "set lcd level via %s [%d]\n", method, level);
+ 
+ 	if (level < 0 || level >= priv->max_brightness)
+ 		return -EINVAL;
+ 
+-	status = acpi_execute_simple_method(device->handle, method, level);
++	status = acpi_execute_simple_method(handle, method, level);
+ 	if (ACPI_FAILURE(status)) {
+-		acpi_handle_err(device->handle, "Failed to evaluate %s\n",
+-				method);
++		acpi_handle_err(handle, "Failed to evaluate %s\n", method);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -323,15 +322,16 @@ static int set_lcd_level(struct acpi_device *device, int level)
+ 	return 0;
+ }
+ 
+-static int get_lcd_level(struct acpi_device *device)
++static int get_lcd_level(struct device *dev)
+ {
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	unsigned long long state = 0;
+ 	acpi_status status = AE_OK;
+ 
+-	acpi_handle_debug(device->handle, "get lcd level via GBLL\n");
++	acpi_handle_debug(handle, "get lcd level via GBLL\n");
+ 
+-	status = acpi_evaluate_integer(device->handle, "GBLL", NULL, &state);
++	status = acpi_evaluate_integer(handle, "GBLL", NULL, &state);
+ 	if (ACPI_FAILURE(status))
+ 		return 0;
+ 
+@@ -340,15 +340,16 @@ static int get_lcd_level(struct acpi_device *device)
+ 	return priv->brightness_level;
+ }
+ 
+-static int get_max_brightness(struct acpi_device *device)
++static int get_max_brightness(struct device *dev)
+ {
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	unsigned long long state = 0;
+ 	acpi_status status = AE_OK;
+ 
+-	acpi_handle_debug(device->handle, "get max lcd level via RBLL\n");
++	acpi_handle_debug(handle, "get max lcd level via RBLL\n");
+ 
+-	status = acpi_evaluate_integer(device->handle, "RBLL", NULL, &state);
++	status = acpi_evaluate_integer(handle, "RBLL", NULL, &state);
+ 	if (ACPI_FAILURE(status))
+ 		return -1;
+ 
+@@ -361,15 +362,13 @@ static int get_max_brightness(struct acpi_device *device)
+ 
+ static int bl_get_brightness(struct backlight_device *b)
+ {
+-	struct acpi_device *device = bl_get_data(b);
++	struct device *dev = bl_get_data(b);
+ 
+-	return b->props.power == BACKLIGHT_POWER_OFF ? 0 : get_lcd_level(device);
++	return b->props.power == BACKLIGHT_POWER_OFF ? 0 : get_lcd_level(dev);
+ }
+ 
+ static int bl_update_status(struct backlight_device *b)
+ {
+-	struct acpi_device *device = bl_get_data(b);
+-
+ 	if (fext) {
+ 		if (b->props.power == BACKLIGHT_POWER_OFF)
+ 			call_fext_func(fext, FUNC_BACKLIGHT, 0x1,
+@@ -379,7 +378,7 @@ static int bl_update_status(struct backlight_device *b)
+ 				       BACKLIGHT_PARAM_POWER, BACKLIGHT_ON);
+ 	}
+ 
+-	return set_lcd_level(device, b->props.brightness);
++	return set_lcd_level(bl_get_data(b), b->props.brightness);
+ }
+ 
+ static const struct backlight_ops fujitsu_bl_ops = {
+@@ -455,12 +454,13 @@ static const struct key_entry keymap_backlight[] = {
+ 	{ KE_END, 0 }
+ };
+ 
+-static int acpi_fujitsu_bl_input_setup(struct acpi_device *device)
++static int acpi_fujitsu_bl_input_setup(struct device *dev)
+ {
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
++	struct acpi_device *device = ACPI_COMPANION(dev);
+ 	int ret;
+ 
+-	priv->input = devm_input_allocate_device(&device->dev);
++	priv->input = devm_input_allocate_device(dev);
+ 	if (!priv->input)
+ 		return -ENOMEM;
+ 
+@@ -479,9 +479,9 @@ static int acpi_fujitsu_bl_input_setup(struct acpi_device *device)
+ 	return input_register_device(priv->input);
+ }
+ 
+-static int fujitsu_backlight_register(struct acpi_device *device)
++static int fujitsu_backlight_register(struct device *dev)
+ {
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
+ 	const struct backlight_properties props = {
+ 		.brightness = priv->brightness_level,
+ 		.max_brightness = priv->max_brightness - 1,
+@@ -489,9 +489,8 @@ static int fujitsu_backlight_register(struct acpi_device *device)
+ 	};
+ 	struct backlight_device *bd;
+ 
+-	bd = devm_backlight_device_register(&device->dev, "fujitsu-laptop",
+-					    &device->dev, device,
+-					    &fujitsu_bl_ops, &props);
++	bd = devm_backlight_device_register(dev, "fujitsu-laptop",
++					    dev, dev, &fujitsu_bl_ops, &props);
+ 	if (IS_ERR(bd))
+ 		return PTR_ERR(bd);
+ 
+@@ -504,73 +503,74 @@ static int fujitsu_backlight_register(struct acpi_device *device)
+ 
+ static void acpi_fujitsu_bl_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct acpi_device *device = data;
+-	struct fujitsu_bl *priv = acpi_driver_data(device);
++	struct device *dev = data;
++	struct fujitsu_bl *priv = dev_get_drvdata(dev);
  	int oldb, newb;
  
-@@ -558,7 +559,18 @@ static int acpi_fujitsu_bl_add(struct acpi_device *device)
+ 	if (event != ACPI_FUJITSU_NOTIFY_CODE) {
+-		acpi_handle_info(device->handle, "unsupported event [0x%x]\n",
+-				 event);
++		acpi_handle_info(handle, "unsupported event [0x%x]\n", event);
+ 		sparse_keymap_report_event(priv->input, -1, 1, true);
+ 		return;
+ 	}
+ 
+ 	oldb = priv->brightness_level;
+-	get_lcd_level(device);
++	get_lcd_level(dev);
+ 	newb = priv->brightness_level;
+ 
+-	acpi_handle_debug(device->handle,
+-			  "brightness button event [%i -> %i]\n", oldb, newb);
++	acpi_handle_debug(handle, "brightness button event [%i -> %i]\n",
++			  oldb, newb);
+ 
+ 	if (oldb == newb)
+ 		return;
+ 
+ 	if (!disable_brightness_adjust)
+-		set_lcd_level(device, newb);
++		set_lcd_level(dev, newb);
+ 
+ 	sparse_keymap_report_event(priv->input, oldb < newb, 1, true);
+ }
+ 
+-static int acpi_fujitsu_bl_add(struct acpi_device *device)
++static int acpi_fujitsu_bl_probe(struct platform_device *pdev)
+ {
++	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+ 	struct fujitsu_bl *priv;
+ 	int ret;
+ 
+ 	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
+ 		return -ENODEV;
+ 
+-	priv = devm_kzalloc(&device->dev, sizeof(*priv), GFP_KERNEL);
++	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+ 	fujitsu_bl = priv;
+ 	strscpy(acpi_device_name(device), ACPI_FUJITSU_BL_DEVICE_NAME);
+ 	strscpy(acpi_device_class(device), ACPI_FUJITSU_CLASS);
+-	device->driver_data = priv;
++
++	platform_set_drvdata(pdev, priv);
+ 
+ 	pr_info("ACPI: %s [%s]\n",
+ 		acpi_device_name(device), acpi_device_bid(device));
+ 
+-	if (get_max_brightness(device) <= 0)
++	if (get_max_brightness(&pdev->dev) <= 0)
+ 		priv->max_brightness = FUJITSU_LCD_N_LEVELS;
+-	get_lcd_level(device);
++	get_lcd_level(&pdev->dev);
+ 
+-	ret = acpi_fujitsu_bl_input_setup(device);
++	ret = acpi_fujitsu_bl_input_setup(&pdev->dev);
  	if (ret)
  		return ret;
  
--	return fujitsu_backlight_register(device);
-+	ret = fujitsu_backlight_register(device);
-+	if (ret)
-+		return ret;
-+
-+	return acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
-+					       acpi_fujitsu_bl_notify, device);
-+}
-+
-+static void acpi_fujitsu_bl_remove(struct acpi_device *device)
-+{
-+	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
-+				       acpi_fujitsu_bl_notify);
+-	ret = fujitsu_backlight_register(device);
++	ret = fujitsu_backlight_register(&pdev->dev);
+ 	if (ret)
+ 		return ret;
+ 
+ 	return acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
+-					       acpi_fujitsu_bl_notify, device);
++					       acpi_fujitsu_bl_notify, &pdev->dev);
+ }
+ 
+-static void acpi_fujitsu_bl_remove(struct acpi_device *device)
++static void acpi_fujitsu_bl_remove(struct platform_device *pdev)
+ {
+-	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
+-				       acpi_fujitsu_bl_notify);
++	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
++				       ACPI_DEVICE_NOTIFY, acpi_fujitsu_bl_notify);
  }
  
  /* ACPI device for hotkey handling */
-@@ -941,8 +953,9 @@ static void acpi_fujitsu_laptop_release(struct acpi_device *device)
- 	}
- }
+@@ -1107,14 +1107,13 @@ static const struct acpi_device_id fujitsu_bl_device_ids[] = {
+ 	{"", 0},
+ };
  
--static void acpi_fujitsu_laptop_notify(struct acpi_device *device, u32 event)
-+static void acpi_fujitsu_laptop_notify(acpi_handle handle, u32 event, void *data)
+-static struct acpi_driver acpi_fujitsu_bl_driver = {
+-	.name = ACPI_FUJITSU_BL_DRIVER_NAME,
+-	.class = ACPI_FUJITSU_CLASS,
+-	.ids = fujitsu_bl_device_ids,
+-	.ops = {
+-		.add = acpi_fujitsu_bl_add,
+-		.remove = acpi_fujitsu_bl_remove,
+-		},
++static struct platform_driver acpi_fujitsu_bl_driver = {
++	.probe = acpi_fujitsu_bl_probe,
++	.remove = acpi_fujitsu_bl_remove,
++	.driver = {
++		.name = ACPI_FUJITSU_BL_DRIVER_NAME,
++		.acpi_match_table = fujitsu_bl_device_ids,
++	},
+ };
+ 
+ static const struct acpi_device_id fujitsu_laptop_device_ids[] = {
+@@ -1143,7 +1142,7 @@ static int __init fujitsu_init(void)
  {
-+	struct acpi_device *device = data;
- 	struct fujitsu_laptop *priv = acpi_driver_data(device);
- 	unsigned long flags;
- 	int scancode, i = 0;
-@@ -1056,6 +1069,11 @@ static int acpi_fujitsu_laptop_add(struct acpi_device *device)
+ 	int ret;
+ 
+-	ret = acpi_bus_register_driver(&acpi_fujitsu_bl_driver);
++	ret = platform_driver_register(&acpi_fujitsu_bl_driver);
  	if (ret)
- 		goto err_free_fifo;
+ 		return ret;
  
-+	ret = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
-+					      acpi_fujitsu_laptop_notify, device);
-+	if (ret)
-+		goto err_free_fifo;
-+
- 	ret = fujitsu_battery_charge_control_add(device);
- 	if (ret < 0)
- 		pr_warn("Unable to register battery charge control: %d\n", ret);
-@@ -1074,6 +1092,9 @@ static void acpi_fujitsu_laptop_remove(struct acpi_device *device)
+@@ -1166,7 +1165,7 @@ static int __init fujitsu_init(void)
+ err_unregister_platform_driver:
+ 	platform_driver_unregister(&fujitsu_pf_driver);
+ err_unregister_acpi:
+-	acpi_bus_unregister_driver(&acpi_fujitsu_bl_driver);
++	platform_driver_unregister(&acpi_fujitsu_bl_driver);
  
- 	fujitsu_battery_charge_control_remove(device);
+ 	return ret;
+ }
+@@ -1177,7 +1176,7 @@ static void __exit fujitsu_cleanup(void)
  
-+	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
-+				       acpi_fujitsu_laptop_notify);
-+
- 	fujitsu_laptop_platform_remove(device);
+ 	platform_driver_unregister(&fujitsu_pf_driver);
  
- 	kfifo_free(&priv->fifo);
-@@ -1092,7 +1113,7 @@ static struct acpi_driver acpi_fujitsu_bl_driver = {
- 	.ids = fujitsu_bl_device_ids,
- 	.ops = {
- 		.add = acpi_fujitsu_bl_add,
--		.notify = acpi_fujitsu_bl_notify,
-+		.remove = acpi_fujitsu_bl_remove,
- 		},
- };
+-	acpi_bus_unregister_driver(&acpi_fujitsu_bl_driver);
++	platform_driver_unregister(&acpi_fujitsu_bl_driver);
  
-@@ -1108,7 +1129,6 @@ static struct acpi_driver acpi_fujitsu_laptop_driver = {
- 	.ops = {
- 		.add = acpi_fujitsu_laptop_add,
- 		.remove = acpi_fujitsu_laptop_remove,
--		.notify = acpi_fujitsu_laptop_notify,
- 		},
- };
- 
+ 	pr_info("driver unloaded\n");
+ }
 -- 
 2.51.0
 
