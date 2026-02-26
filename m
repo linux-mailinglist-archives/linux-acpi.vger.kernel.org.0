@@ -1,237 +1,141 @@
-Return-Path: <linux-acpi+bounces-21194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJZ5DCawoGnUlgQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21194-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 21:42:14 +0100
+	id OPxAIRK3oGnClwQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21195-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 22:11:46 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16541AF3A7
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 21:42:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA59C1AF819
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 22:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06D8B3008D51
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 20:42:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18AE03007CBE
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 21:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B97466B47;
-	Thu, 26 Feb 2026 20:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38AF44DB6F;
+	Thu, 26 Feb 2026 21:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gu42HW0m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HeW0NKNX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565DF3290BD;
-	Thu, 26 Feb 2026 20:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA7844D029
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 21:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772138529; cv=none; b=iNnhOetRis3Y/7kH3Geiz9Bh4IgYk/C5u7ZBW9UEUnVxYhIn3BdbPLXk5xa9A6i0m/8aPu5jQ07j40+ICBz6xDkgg47gmluYmcsPIJGyJTO3VUMKbLupkzKx3nYV3up5GYwYOqB0hvrdzAk5TK/K0KsbbrQBSTWwKYUo2O7VR0E=
+	t=1772140294; cv=none; b=Uc+EJp+0mnq5+CVoosFqzMASbbs60P0YODGYsawBM2odmJfJ5lqoTBavJ9OpUwCCkQKrMP/k6IhAgpEzfnL8SBXJqR4o1VW/yWBqcZ5kKL0AObDqRyZQtTJCfnQRP+v+vwUpjFJE+muMmJz2NHjUEnwLRe+f9bxRtMiPot+pgCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772138529; c=relaxed/simple;
-	bh=NO6Ob2zpd7YGokR5iJAChHNFetdbeNd4WgTd2I4zTBU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MngKUiZppDqSfsS3/NCsI9HX1v1TA/O07nSKvRHP0fUQ6hTXcRtTo1Ghap7n1Qx95tbwVFWZwDkSCdF6j/+m71Fb5hRFF2imCeiIzLNbcm8hvrGGCz2cHcM4BrYJiUfJRGMNMFE3jFjdMrciBn6XmBDo4O2Sp3rSKnd6tIZwXEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gu42HW0m; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772138528; x=1803674528;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NO6Ob2zpd7YGokR5iJAChHNFetdbeNd4WgTd2I4zTBU=;
-  b=Gu42HW0mjd7NLaUmytEAa7oSkHhZN5+p3WHkE7TBDc89LZxq1eRatKvD
-   eSSr990MMGOrf1ufDrWp8JDogceothqiurc+62amAzhDSRrhABD8N2zjW
-   EyJjqhfhBgXomzkqhlvuF/qm0SbfBNaow7hF7ilmdnPIJckJqe7QM32mx
-   gXSlEYQ42+xp2nmtSSyQkCUIBsd5r2SI/VKtTn5qhX7IdQDHLeV9p+m9C
-   XgY1lYNngXRAXGPi4vhLEmWEsifR+DY1NloZFCIaou4M7LTkQadnRn6CN
-   TOfJxIajeXfwuRk/STYudqC9x1dxGBcGHhJD3xGZiqv+Drzbh0P2tdsQA
-   A==;
-X-CSE-ConnectionGUID: daejUElgSHCCEl6xr9gnGA==
-X-CSE-MsgGUID: 9C8c2kB1QceqmNqPsQPbIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="72246732"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="72246732"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 12:42:07 -0800
-X-CSE-ConnectionGUID: vSiVx1dVQOqhziPzOuf6nA==
-X-CSE-MsgGUID: jVmLzne9R6mmKTUu4aQIsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="247202708"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.167])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 12:42:05 -0800
-Date: Thu, 26 Feb 2026 22:42:03 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mike Isely at pobox <isely@pobox.com>
-Cc: mike.isely@cobaltdigital.com, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-acpi@vger.kernel.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] sofware node: Only the managing device can
- unreference managed software node
-Message-ID: <aaCwG-llsnmQYgd0@smile.fi.intel.com>
-References: <20260224191922.2972974-1-mike.isely@cobaltdigital.com>
- <20260224191922.2972974-2-mike.isely@cobaltdigital.com>
- <aZ7bX4SIoxKTPtoi@smile.fi.intel.com>
- <3951478d-43d6-1c9b-de5e-8affc5937472@isely.net>
- <aZ9VHXwReXdWZHz8@smile.fi.intel.com>
- <5c5f39f4-9797-4d84-eaf2-3fb7a830cbbf@isely.net>
- <aZ_zX-jQ7T8LVeSU@smile.fi.intel.com>
- <3d7a7e25-b78c-6c60-a485-92cced6075d1@isely.net>
+	s=arc-20240116; t=1772140294; c=relaxed/simple;
+	bh=mbN5C9Fq1cV1MyrDq59GzqvjYsLtaVEHnXF1HFfVphs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZSriI+K6MWMbaYI8UoLmrQupFR/X4amf+k/JpWNtjI6HgiSuOr69+qW0RiZlIqi1tsnAH3z4S8+M3ZpiVaZYMQDbrX7cGS0+LjoDHV4usha9OrOrnUJrLlX+BCAwyFemSCMTC6r6Kd/SEnBa3BFyUloG6tEqHpFMlka7HHF/0bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HeW0NKNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872A0C19423
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 21:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772140294;
+	bh=mbN5C9Fq1cV1MyrDq59GzqvjYsLtaVEHnXF1HFfVphs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=HeW0NKNXezqXHBOjDqo83YEpqrsN8UPzoMLEgwY1LI/PfrAzP8NABAqWP+OOGflJ0
+	 X+92oU6X2eKro0frTLLLXUlNp+yH3k9NsqdG+SGZw1BVmzZysOA4+eMpG+BZiMUBzQ
+	 dt5It3drUZ+nRrDXtjeg9nQ58dPwnC9sQ5PURXmm7q+RuOOm/3eHXK2e9D6guncs5K
+	 ORQpkdHdDp681VvdbYZqrKn4vR8GJuUU+lrY/p9h3LWSX4WE7A9J4RTUQQcxmkMGP0
+	 u2dECnnIYs9XEE/uBG4OOJRfdplWHeJTC7YXhBd6VFMfSdTvwPa9Msjp8jS8eWXzy4
+	 oPIhummOVfwTQ==
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-679efb9eb0dso1023322eaf.2
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 13:11:34 -0800 (PST)
+X-Gm-Message-State: AOJu0YwQxMwX8akzLMN6Ws1PNHGydDhyMX1hrYXY1dn1zTfUSgsRH6z9
+	LPXGP2CVlUst7vw0FTZqXKL8Q9ZiHeNKRCQQjwsGfpRIwkaiWc1HY53kjAgey+MG8+emdHctkuJ
+	MD6kLsKnStes7q6AYF0uNZOCY/oSk/8E=
+X-Received: by 2002:a05:6820:1506:b0:679:953c:746e with SMTP id
+ 006d021491bc7-679faf0f2c3mr458273eaf.41.1772140293714; Thu, 26 Feb 2026
+ 13:11:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d7a7e25-b78c-6c60-a485-92cced6075d1@isely.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 26 Feb 2026 22:11:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h9VMwNSMrb_w2BGrv+fRDcUCJ-_1pYeDJ+oYigJovDLw@mail.gmail.com>
+X-Gm-Features: AaiRm50aKPRqtovswum2gC3CbKkrFn5SyBo1GknyuOhuTRwuP6QTb_p77zGd19M
+Message-ID: <CAJZ5v0h9VMwNSMrb_w2BGrv+fRDcUCJ-_1pYeDJ+oYigJovDLw@mail.gmail.com>
+Subject: [GIT PULL] ACPI support updates for v7.0-rc2
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[cobaltdigital.com,gmail.com,linux.intel.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-21194-lists,linux-acpi=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-21195-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: B16541AF3A7
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: DA59C1AF819
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 01:06:42PM -0600, Mike Isely wrote:
-> On Thu, 26 Feb 2026, Andy Shevchenko wrote:
-> > On Wed, Feb 25, 2026 at 02:16:39PM -0600, Mike Isely wrote:
-> > > On Wed, 25 Feb 2026, Andy Shevchenko wrote:
-> > > > On Wed, Feb 25, 2026 at 01:42:30PM -0600, Mike Isely wrote:
-> > > > > On Wed, 25 Feb 2026, Andy Shevchenko wrote:
-> > > > > > On Tue, Feb 24, 2026 at 01:19:22PM -0600, mike.isely@cobaltdigital.com wrote:
+Hi Linus,
 
-...
+Please pull from the tag
 
-> > > > > > > A scenario exists where device_create_managed_software_node() is used
-> > > > > > > to create an swnode instance that will be implicitly shared to a child
-> > > > > > > device despite best intentions not to permit such sharing (per the
-> > > > > > > comment in device_create_managed_software_node()).  I encountered this
-> > > > > > > with the sfp kernel module when it was instantiated with properties
-> > > > > > 
-> > > > > > SFP? Or is it the name of the actual module in the kernel?
-> > > > > 
-> > > > > Actual kernel module name, sfp.ko, CONFIG_SFP in .config, named after 
-> > > > > the piece of hardware it works with, an SFP cage.  This is logic which 
-> > > > > monitors SFP cages for hotplug appearance / removal of SFP transceivers.  
-> > > > > When a transceiver appears, the sfp kernel module will create a child 
-> > > > > hwmon device instance to monitor various bits of metadata from the 
-> > > > > transceiver.  When that transceiver goes away, the sfp kernel module 
-> > > > > will tear down that child hwmon device instance.
-> > > > > 
-> > > > > The sfp kernel module needs resources configured to know where to 
-> > > > > monitor; in our case that is set up dynamically by another locally 
-> > > > > written kernel module (which iteracts with an FPGA we have where the SFP 
-> > > > > hardware elements reside), and that kernel module will combine 
-> > > > 
-> > > > > devicetree information with some run-time information to generate the 
-> > > > > properties handed off to the sfp kernel module instantiation.
-> > > > 
-> > > > What runtime information? Why this can't be done via DT overlay as others do?
-> > > 
-> > > I don't recall the specifics.  It might be calculation of a unit name.  
-> > > The connectivity in this case is I2C so that should be a constant.  We 
-> > > have some variants where the FPGA is PCIE-connected to the host and so 
-> > > the memory map is a run-time calculation.  We have other drivers that 
-> > > have to be instantiated with run-time computed properties.  So we handle 
-> > > this as a general case.
-> > 
-> > But the configurations are semi-static, right? For the contents of FPGA we have
-> > a specific manager that reloads the FPGA configuration.
-> > 
-> > Using swnode for dynamically calculated data seems weird. The data in swnodes
-> > is usually static (const), I can't remember the case where we need to supply
-> > run-time calculated values.
-> 
-> Semi-static means partially dynamic...
-> 
-> We use the kernel FPGA manager in one platform (zynqmp) and a userspace 
-> loader program in another (PCIE connected to bcm2711 soc).  However it 
-> is not reasonable to reload on-the-fly as that would disrupt every piece 
-> of logic (kernel modules and userspace code) currently pointing inside 
-> its memory space.  It would require tearing down the application space 
-> and unloading every kernel module using the FPGA space (some of which is 
-> ours and others which are stock kernel code).  Might as well reboot - so 
-> we load once at boot time.  If the image needs to be swapped out (and 
-> there are defined cases for this), a symbolic link is updated to point 
-> to the new bitfile and the processor is rebooted.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-7.0-rc2
 
-To me the (full) reversing of the kernel state seems the correct approach.
-The modules not really needs to be unloaded. The driver should be unbound
-from the device.
+with top-most commit 3d9b8b00da184f885c4db08fe5521f6a3e3f964e
 
-> But this is getting off-topic.
+ Merge branch 'acpi-pm'
 
-Not really, it gets more understanding on why this way was chosen and not
-another.
+on top of commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 
-> We actually don't directly invoke the use of swnode.  It's being done 
-> indirectly inside of platform_device_register_full(), when its 
-> pdevinfo->properties argument is non-null, which is a normal thing that 
-> happens in many other invocations of that function.  See 
-> drivers/base/platform.c at the call to 
-> device_create_managed_software_node().
+ Linux 7.0-rc1
 
-I'm aware of this. I reviewed a lot of swnode code.
+to receive ACPI support updates for 7.0-rc2.
 
-So, the properties supplied are not const, that's what you are trying to say?
-And this I believe a problem. I don't remember if we have such a case in kernel
-(when we use dynamic properties with platform_device_register_full().
+These add new platform quirks for two systems:
 
-> I had no idea of even the existence of swnode until I started tracking down
-> the kernel misbehavior.
+ - Add a quirk for Lenovo G70-35 to save the ACPI NVS memory on system
+   suspend (Piotr Mazek)
 
-> Whether statically provided or calculated, this code path is happening.  
-> Our case may be dynamic, but certainly any other managed swnode usage 
-> which involves child devices is going to be a reference-counting problem 
-> before this patch.
+ - Add a DMI quirk for Acer Aspire One D255 to work around a backlight
+   issue by returning false to _OSI("Windows 2009") (Sofia Schneider)
 
-I have a hardware that uses drivers/mfd/intel_quark_i2c_gpio.c. Do you think
-I can reproduce the issue with it?
-
-The hierarchy is that
-
-PCI device (associated ACPI node)
-  I2C host controller (associated node in ACPI and managed swnode from the driver)
-    I2C-client (it has it's own ACPI node)
-  GPIO controller (associated node in ACPI and managed swnode from the driver)
-    GPIO controller port (child swnode from the driver)
-      ...users of GPIO pins of the given port...
+Thanks!
 
 
--- 
-With Best Regards,
-Andy Shevchenko
+---------------
 
+Piotr Mazek (1):
+      ACPI: PM: Save NVS memory on Lenovo G70-35
 
+Sofia Schneider (1):
+      ACPI: OSI: Add DMI quirk for Acer Aspire One D255
+
+---------------
+
+ drivers/acpi/osi.c   | 13 +++++++++++++
+ drivers/acpi/sleep.c |  8 ++++++++
+ 2 files changed, 21 insertions(+)
 
