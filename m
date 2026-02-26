@@ -1,212 +1,421 @@
-Return-Path: <linux-acpi+bounces-21178-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21179-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YB8YE8/pn2l7ewQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21178-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 07:35:59 +0100
+	id mI8dH+Lrn2nYewQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21179-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 07:44:50 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54FA1A1595
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 07:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144771A1689
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 07:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A239304480B
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 06:35:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BE1F304C09D
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Feb 2026 06:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D4C2BE64F;
-	Thu, 26 Feb 2026 06:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A7638BF61;
+	Thu, 26 Feb 2026 06:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Y+clA8gG"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LXyqSEwC";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Tgzt9bo8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FF6223DD4;
-	Thu, 26 Feb 2026 06:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772087756; cv=none; b=LJXbD7M0pFVSG0bzEoKCT18Y/dcxbG+7bfce4ZOm9XfQcNT+6JSJ+IxIxvxGUD0BZkY6IOyA8bYHC4LhiuMiuqX5SJq+vUQo2E9q4sn9vMi1sKjf2Hb6Sw0HwCpwJd95qBVdN9TxC0dhcuXirw9A9dy22Ug2WGTh1NKKHBLNzVE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772087756; c=relaxed/simple;
-	bh=clCIZW1g5REI+8+JPLAovHKqYTsLG3ZPRfws3cT9+oU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjMt8T2PFiNqeUWk5ATVJfQ6JZ4T25Er0yK1bWFpDPlU4oF7HnDM8l1cmnhjoMcxPevzLRYs7rbN1z/gxvFffyO/mjHyejvn63JFC2rogX4VZFUs6pngDBIgrfd9Ub7TULSaR2pnZ0B32mteMdNoNW7kn9wIkANBBt0K2CVRJVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Y+clA8gG; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1772087748; x=1772692548; i=w_armin@gmx.de;
-	bh=i9stZFnGYSdrXOZ1q0VJaVqTGr82Zixdt5j1nUPvGmE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Y+clA8gGrcsT6n/8LqzFVt93Bd2uBhS2bi+DZqbxd8DLs99L5Dgvdh1jEa4j8j8M
-	 Rjuo3WAyc+UIIqcbK5hPXZsNT4TQT6VXEvPV5JCYhaDH3sHYxpkAecu2zGTSWP0sS
-	 2JM9jBRJO+MnHlfJhf8WOgne/HdedvS/TT/oYAZgqXyAdoItF0FZg/rArtpXkihPe
-	 3g9682PKeLfTEYe9pZoOsyDhKC7/j4g7sI1hCf217V6TVfQGbfiOk6E/1h/ufssTO
-	 yvVCGGI8a7iiIAbUnJGDYa357vNorQfH+UNiOjJnITBe4GE0w6bh8LZe25A2gW3QR
-	 3VDF/uM5EW1gYVKHjQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1My36T-1vVBMZ0Edr-014Ykn; Thu, 26
- Feb 2026 07:35:48 +0100
-Message-ID: <6825e6b2-802b-4cd2-b2c5-b4eab67b00e4@gmx.de>
-Date: Thu, 26 Feb 2026 07:35:47 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C4338B7CD
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 06:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772088281; cv=pass; b=ZIlox9VEgPBvf4C0tvDrXJa0QrO0gBOV/lZlGKu1I9s2fx4NODrGbHphqwLOojEhu5gwpYU+oKeaKZ9Iezr9rjqMd4Hry8Tka4hBGGLRfyrD/+8v3CIwYMoZYKVC6T1VSPeTos6KMo2xLgWqxERnlHc3jSpObC9hOojgg0vGKFk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772088281; c=relaxed/simple;
+	bh=pAU3JAU84JmGKm87jtWoCRvQvPPVCrmccbK+z53wNO0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sO3Edr+Qh78xQPqsrV5tpBRQ66D9OgB2pGAFNA8EauT8xSpKnZdBOzj0lwWngMoBd79hVBlwBlvVgFiqu+LtSFw5YTtdLfy4peq8qQm+zptMR3MawbaAohDG7wJrcK4Z7c3UyflRF8dwUbyahQEXFZZPnbPBcxPcp7J5K+Mni4s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LXyqSEwC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Tgzt9bo8; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4VRr4576511
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 06:44:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	feLzlxQHC4cwWCidFRZFj0vPLV0yL+/3P9Ho77Du94Q=; b=LXyqSEwCxTLss82O
+	KGTevmugKHsamOfer4V1RKk1N+rnb8x4W4EpbCeyBwJo059YXIxwKS9h9vPsme3z
+	35pbJiCgB5E3GBpsjjmwXzXmbX6E3h2+JKAPgk38ATFgaa1GYqztgV1XMe6OjNkX
+	VHFwUFtgzR/SfB4KyIPNNeO8V0cpEoL9bHtP+XGlC87iM0H+m8yNA+WKF7YPgbm/
+	REetkHs/b2ZQUJu+FGGR2C4a/sWgZqmVR8K6+pBjzJyBBOazfgPz7MGjcPwOOi3u
+	8CUfSLEdsPoXWRGL8c8QMNt8TRoLv2OnZKoe6DcGMXLoAvTjKIjjWKWTWxxwraz1
+	HBXEQA==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj350jj0r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Feb 2026 06:44:39 +0000 (GMT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7d4c7afa9e0so7600981a34.0
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Feb 2026 22:44:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772088278; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DkIdhpvwU1G8vWPdMwqs34Pr3BM2Y2kaO7NPmYb9pujcA2zwXuN7C+2dFcawLKogpw
+         PS5/cucgnJokfGPUQS6iSTMcWwZ4qDdGBep3DThrWyhF+9rhROe+IKNFWLXKAqwcDdTF
+         F2I3EjmWK2QHrD8V/p/exp/eQIGQ8ZyaehrLZ2JsjMrDtl3W8xA8HG03KvyCaLlaHsPd
+         wC+Mrt+L+L93e7xhGKdNarrVwswl3rRVM3JYyWgNsJ3RayjL8CXvmc3d5qX7r+NflmxU
+         4l7pu4nudGxkFkJwT7ZU61JQI8nMmAASSad5UD950xpCaU37zeS0zSVgUk1T+FpLeN+Q
+         y44g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=feLzlxQHC4cwWCidFRZFj0vPLV0yL+/3P9Ho77Du94Q=;
+        fh=VWBq9vKAj8vXAhGaWjj3XY3ES9YDkp+3YRME2MV/Fc4=;
+        b=BKASmfasfA4CCcOFXjK7f7l0hMqeCRGzUVrVGrHJioU+DAa1cfPDEDBnPgSbQmaXiH
+         EGTphUmx8xIoY6eKFDcoYhiE6AesM3xlatUxOFkKWo5O17nm2Rz26ZEPDXSAAYq0mxMs
+         gCXQd1OSJYDrYmf/1f3JIA96HR6ItPIp+4r0zNrmGGbwwVwGj3z5vxiYoKfjUkhZhLrs
+         IBDwQ8poIQ/l2vCMcw8UjYKXv6qyxIXJIabEQh+uA9Lw6XzAfyHNhtDkUH883Fcvill7
+         ticlvjgvOpdOoyWUukK/ZraeYASVQ7YXJbXbxt6tRXMgkJJtKd8y8/Er7yDds1IH3wMi
+         hgFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772088278; x=1772693078; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=feLzlxQHC4cwWCidFRZFj0vPLV0yL+/3P9Ho77Du94Q=;
+        b=Tgzt9bo87XPUdl0Ue9MvM40TudIZ0Wl2yBiWGD60JxnOhX0+JarV81wsyIOjLjaTgn
+         jeRGDAGkPYWinj9oRN4HltE2hR/BZziErUzs75dgqif/C0D2VPyyphqE4NSQn5WZMYhe
+         wfHX1VMnFyDxK8zIx6ifZTim2ZbCGtG7ruWi8ET2wNTv5ILx0qPScS7/UMzx3u44LI1Q
+         ixEVNbz4gVz2kfyEKbtSpQ6CrIev/GFOdtjx/ue8c0JHt8Ssq6qV3HltDQoUf3o+9Z48
+         B1+znb8VFxbSKFl3hfCLwQsU3tvsYEAdl0R+UZdzjbFH3Q3TF7Q5aAbQ7VQtAf2LqOX3
+         T2lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772088278; x=1772693078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=feLzlxQHC4cwWCidFRZFj0vPLV0yL+/3P9Ho77Du94Q=;
+        b=LZs3+y9y84Z8swBvypFkApHnrD7+qoY/v1MDQpt17izwvwraR/MtMWx7I4i0LlCEx+
+         vNdOSyxqwq/Ddy3zqJdobzTwX3RrD7eApDH1vb69oWHH7t+FIYMYDgKy3Ie9ruiTisiI
+         jA3YBMMdJZG5IxC8UaOQwTmvShwlazdHi2YHH/JLwb/w+sUkCOmxY0S+tVrlK1Czt/mA
+         5ufskEH3O/60DfYEUJooLRdUMdhHrGz2heXHDN4fW5bA7LZ9pDS6VYi/BfUmAQu+/Br6
+         1vh0GPz/AoW38DECQUbQCQKHg59E5/rtY0L5y96i3XKoC1Xu7U3cA4VkAvihw8dLFjTm
+         VNSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA5EwQSU8X2eLvI9fs4jVnEu6zUsGTeKJq9tnM+gXqFALOCNZg5pV/HvVNHg0SaX27apZiD0gxLdyA@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsNa8QHLKyneBB5hoAlpIjQmbiJkv308QVRh49h+8ts6JlduAj
+	vb+qmueRvz0wsR6BCZOSSOIOcbJ7WD9lZ64TLDsim4kGqt90nTl6dyCF+kz/cw0KUtCbayXbzoy
+	efYmLmnsl8KwTDXiBpw0OfaJ7NyR4Yx3h05tF6w/Z+C1pT/qwr3n/sh3Us4xHXIIiIzM7VFWBfi
+	Taz7OW8uPHd8G18TGyLjzNPDYkPmupAwBzZ9n5x/E=
+X-Gm-Gg: ATEYQzwroT+SbH/+z0UKy+oq/xY0sSSjNHWDGyiuC+jGV7dQhyjNQk7wsg5i4V1EZit
+	JSHKtisPu2t3OeTdRFN9pBPd98x3ZOxubHrkVuw4l9s3VxPve8vE+xlUM+rpVf0UYgRUwwYFzAb
+	FYdF3AuhGg50a8+9d++Uyh+E8pr+CrDBTDJfYO6JPGEVYqXN8QV98x/0Vbcy3gMBp1x2iO264f7
+	x0+IVE=
+X-Received: by 2002:a05:6830:2a17:b0:7cf:d819:a2d2 with SMTP id 46e09a7af769-7d52bf512camr11500516a34.31.1772088278229;
+        Wed, 25 Feb 2026 22:44:38 -0800 (PST)
+X-Received: by 2002:a05:6830:2a17:b0:7cf:d819:a2d2 with SMTP id
+ 46e09a7af769-7d52bf512camr11500510a34.31.1772088277848; Wed, 25 Feb 2026
+ 22:44:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ACPI: OSL: Poweroff when encountering a fatal ACPI
- error
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260204212931.3860-1-W_Armin@gmx.de>
- <c5d23d8a-8f58-48c3-90ca-5d1a46964280@gmx.de>
- <CAJZ5v0g6w_2+4oUytzxHtAhsJczK9pe84ZfXPeOcjKqU0k_GkQ@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0g6w_2+4oUytzxHtAhsJczK9pe84ZfXPeOcjKqU0k_GkQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-0-347fa2d7351b@arm.com>
+ <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-1-347fa2d7351b@arm.com>
+In-Reply-To: <20260220-topics-ahmtib01-ras_ffh_arm_internal_review-v2-1-347fa2d7351b@arm.com>
+From: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
+Date: Thu, 26 Feb 2026 12:14:26 +0530
+X-Gm-Features: AaiRm51ZQEVzQPuSNRCFd13Five9fB0P9HahXQ78_EQWjVuCiTnlrkcRyhMOVfQ
+Message-ID: <CA+Ht8=a9a-zB_kEt1ZHFeTWSYGn4o3MRuHdXY9FDWWNZ=gc-Yg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/11] ACPI: APEI: GHES: share macros via a private header
+To: Ahmed Tiba <ahmed.tiba@arm.com>
+Cc: devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dmitry.Lamerov@arm.com, catalin.marinas@arm.com, bp@alien8.de,
+        robh@kernel.org, rafael@kernel.org, will@kernel.org, conor@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        krzk+dt@kernel.org, Michael.Zhao2@arm.com, tony.luck@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tKfWy7GLjPVO8NpE80cRWWLU1PKIxDXssvxgjHImFFHWi5gmA5p
- u8e7jKj/z+UbxgpQ8v3OzZhbvl5NuH4UpkhyXcOPjIi8yLw2z4JDaddJcDp/ddMJbjLG0CM
- QtwE/+OTNjKk+SJ1xHBiRYqY0jCT/E2ejlNBgQOUFJZPoZaJJju3Q4HHnmfI1l370gO56js
- 9V5qO3YqAFTvXZWPO/euA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:o8plUEL/j8c=;dCUqwQHh0UZqNAZnPG/KzcqQLe+
- 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
- wfyQzx3xq4aGvJxE8MU3clHOQtkxv
+X-Proofpoint-GUID: VSHiIBCODFotkGjuPS9X9kcKOLTEMa5g
+X-Authority-Analysis: v=2.4 cv=Zs/g6t7G c=1 sm=1 tr=0 ts=699febd7 cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=DJpcGTmdVt4CTyJn9g5Z:22 a=7CQSdrXTAAAA:8 a=el1Gr4cE1T2VXIUlPsIA:9
+ a=QEXdDO2ut3YA:10 a=EyFUmsFV_t8cxB2kMr4A:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA1OCBTYWx0ZWRfX7tuxsvXcAuUM
+ Pct4voC0ptkAaozzBWc756Em5A5mvvhVGOfspEaZuEx1+gkTZxM7iuE4gOiVXqesAftUvRVUpSJ
+ ZqGk+zAOxDtiOeLMFS3Jv2A6l2oIp6ej4oQvN2c0cQzsuwB6v0dqsTYpSj8aTYCJ+IdVJ4Go6v9
+ ErFzDKiXemR5ESisJovjs/3TcyzOhOpb2i4k9zVa1yR/XhHDiF8UsfSk5rI2XCX0CpKNYkDrJl7
+ 3PXgLUjsaAQgdZFxmyt+mnOqrIZM2f+0YYMR/uWqq+UZ3JreJxUe6teRrtnX5Bc3TnQtmlSm3Wk
+ /PmD8dAaARNH/7zyxHGKo4L5tpVdgsfkqeQD4F6yXjDPDBhBllsYmxnRuWG80LjrvdVHX1tBjZ/
+ tDcONRJwQf83WdFOLEMQHd+Xunfa+PYVSBl2TunTdI7q2Zr7DenKnmTHvUAKu58U6ptaQoSvWnz
+ 5NNAWNnyZqoNOIXvQ7Q==
+X-Proofpoint-ORIG-GUID: VSHiIBCODFotkGjuPS9X9kcKOLTEMa5g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260058
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21178-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-21179-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: A54FA1A1595
+	FROM_NEQ_ENVFROM(0.00)[himanshu.chauhan@oss.qualcomm.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-acpi,dt];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,mail.gmail.com:mid,arm.com:email]
+X-Rspamd-Queue-Id: 144771A1689
 X-Rspamd-Action: no action
 
-Am 25.02.26 um 22:28 schrieb Rafael J. Wysocki:
-
-> On Wed, Feb 25, 2026 at 12:06=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+On Fri, Feb 20, 2026 at 7:13=E2=80=AFPM Ahmed Tiba <ahmed.tiba@arm.com> wro=
 te:
->> Am 04.02.26 um 22:29 schrieb Armin Wolf:
->>
->>> The ACPI spec states that the operating system should respond
->>> to a fatal ACPI error by "performing a controlled OS shutdown in
->>> a timely fashion". Comply with the ACPI specification by powering
->>> off the system when ACPICA signals a fatal ACPI error. Users can
->>> still disable this behavior by using the acpi.poweroff_on_fatal
->>> kernel option to work around firmware bugs.
->> Any updates on this?
-> I was about to apply it, but then I thought that I was not sure about
-> the Kconfig option.
 >
->   I don't see much value in it TBH.  If you agree, I'll just apply the
-> patch without that part.
+> Carve the CPER helper macros out of ghes.c and place them in a private
+> header so they can be shared with upcoming helper files. This is a
+> mechanical include change with no functional differences.
 >
-> Thanks!
+> Signed-off-by: Ahmed Tiba <ahmed.tiba@arm.com>
+> ---
+>  drivers/acpi/apei/ghes.c | 60 +-----------------------------
+>  include/acpi/ghes_cper.h | 95 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 96 insertions(+), 59 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index f96aede5d9a3..07b70bcb8342 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -49,6 +49,7 @@
+>
+>  #include <acpi/actbl1.h>
+>  #include <acpi/ghes.h>
+> +#include <acpi/ghes_cper.h>
+>  #include <acpi/apei.h>
+>  #include <asm/fixmap.h>
+>  #include <asm/tlbflush.h>
+> @@ -57,40 +58,6 @@
+>
+>  #include "apei-internal.h"
+>
+> -#define GHES_PFX       "GHES: "
+> -
+> -#define GHES_ESTATUS_MAX_SIZE          65536
+> -#define GHES_ESOURCE_PREALLOC_MAX_SIZE 65536
+> -
+> -#define GHES_ESTATUS_POOL_MIN_ALLOC_ORDER 3
+> -
+> -/* This is just an estimation for memory pool allocation */
+> -#define GHES_ESTATUS_CACHE_AVG_SIZE    512
+> -
+> -#define GHES_ESTATUS_CACHES_SIZE       4
+> -
+> -#define GHES_ESTATUS_IN_CACHE_MAX_NSEC 10000000000ULL
+> -/* Prevent too many caches are allocated because of RCU */
+> -#define GHES_ESTATUS_CACHE_ALLOCED_MAX (GHES_ESTATUS_CACHES_SIZE * 3 / 2=
+)
+> -
+> -#define GHES_ESTATUS_CACHE_LEN(estatus_len)                    \
+> -       (sizeof(struct ghes_estatus_cache) + (estatus_len))
+> -#define GHES_ESTATUS_FROM_CACHE(estatus_cache)                 \
+> -       ((struct acpi_hest_generic_status *)                            \
+> -        ((struct ghes_estatus_cache *)(estatus_cache) + 1))
+> -
+> -#define GHES_ESTATUS_NODE_LEN(estatus_len)                     \
+> -       (sizeof(struct ghes_estatus_node) + (estatus_len))
+> -#define GHES_ESTATUS_FROM_NODE(estatus_node)                   \
+> -       ((struct acpi_hest_generic_status *)                            \
+> -        ((struct ghes_estatus_node *)(estatus_node) + 1))
+> -
+> -#define GHES_VENDOR_ENTRY_LEN(gdata_len)                               \
+> -       (sizeof(struct ghes_vendor_record_entry) + (gdata_len))
+> -#define GHES_GDATA_FROM_VENDOR_ENTRY(vendor_entry)                     \
+> -       ((struct acpi_hest_generic_data *)                              \
+> -       ((struct ghes_vendor_record_entry *)(vendor_entry) + 1))
+> -
+>  /*
+>   *  NMI-like notifications vary by architecture, before the compiler can=
+ prune
+>   *  unused static functions it needs a value for these enums.
+> @@ -102,25 +69,6 @@
+>
+>  static ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
+>
+> -static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+> -{
+> -       return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_E=
+RROR_V2;
+> -}
+> -
+> -/*
+> - * A platform may describe one error source for the handling of synchron=
+ous
+> - * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
+CI
+> - * or External Interrupt). On x86, the HEST notifications are always
+> - * asynchronous, so only SEA on ARM is delivered as a synchronous
+> - * notification.
+> - */
+> -static inline bool is_hest_sync_notify(struct ghes *ghes)
+> -{
+> -       u8 notify_type =3D ghes->generic->notify.type;
+> -
+> -       return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
+> -}
 
-You can drop the Kconfig option if you want.
+All this has nothing to do with CPER which is defined in UEFI. All of
+this is part of the GHES structure defined in ACPI. Why are these
+being moved to ghes_cper.h.
+It is blurring out the demacations. If you are caving out CPER
+helpers, please don't move GHES helpers. The better place to move
+these helpers is ghes.h otherwise they are good where they are.
 
-Thanks,
-Armin Wolf
-
+> -
+>  /*
+>   * This driver isn't really modular, however for the time being,
+>   * continuing to use module_param is the easiest way to remain
+> @@ -165,12 +113,6 @@ static DEFINE_MUTEX(ghes_devs_mutex);
+>   */
+>  static DEFINE_SPINLOCK(ghes_notify_lock_irq);
+>
+> -struct ghes_vendor_record_entry {
+> -       struct work_struct work;
+> -       int error_severity;
+> -       char vendor_record[];
+> -};
+> -
+>  static struct gen_pool *ghes_estatus_pool;
+>
+>  static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS=
+_CACHES_SIZE];
+> diff --git a/include/acpi/ghes_cper.h b/include/acpi/ghes_cper.h
+> new file mode 100644
+> index 000000000000..2597fbadc4f3
+> --- /dev/null
+> +++ b/include/acpi/ghes_cper.h
+> @@ -0,0 +1,95 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * APEI Generic Hardware Error Source: CPER Helper
+> + *
+> + * Copyright (C) 2026 ARM Ltd.
+> + * Author: Ahmed Tiba <ahmed.tiba@arm.com>
+> + * Based on ACPI APEI GHES driver.
+> + *
+> + */
+> +
+> +#ifndef ACPI_APEI_GHES_CPER_H
+> +#define ACPI_APEI_GHES_CPER_H
+> +
+> +#include <linux/workqueue.h>
+> +
+> +#include <acpi/ghes.h>
+> +
+> +#define GHES_PFX       "GHES: "
+> +
+> +#define GHES_ESTATUS_MAX_SIZE          65536
+> +#define GHES_ESOURCE_PREALLOC_MAX_SIZE 65536
+> +
+> +#define GHES_ESTATUS_POOL_MIN_ALLOC_ORDER 3
+> +
+> +/* This is just an estimation for memory pool allocation */
+> +#define GHES_ESTATUS_CACHE_AVG_SIZE    512
+> +
+> +#define GHES_ESTATUS_CACHES_SIZE       4
+> +
+> +#define GHES_ESTATUS_IN_CACHE_MAX_NSEC 10000000000ULL
+> +/* Prevent too many caches are allocated because of RCU */
+> +#define GHES_ESTATUS_CACHE_ALLOCED_MAX (GHES_ESTATUS_CACHES_SIZE * 3 / 2=
+)
+> +
+> +#define GHES_ESTATUS_CACHE_LEN(estatus_len)                    \
+> +       (sizeof(struct ghes_estatus_cache) + (estatus_len))
+> +#define GHES_ESTATUS_FROM_CACHE(estatus_cache)                 \
+> +       ((struct acpi_hest_generic_status *)                            \
+> +        ((struct ghes_estatus_cache *)(estatus_cache) + 1))
+> +
+> +#define GHES_ESTATUS_NODE_LEN(estatus_len)                     \
+> +       (sizeof(struct ghes_estatus_node) + (estatus_len))
+> +#define GHES_ESTATUS_FROM_NODE(estatus_node)                   \
+> +       ((struct acpi_hest_generic_status *)                            \
+> +        ((struct ghes_estatus_node *)(estatus_node) + 1))
+> +
+> +#define GHES_VENDOR_ENTRY_LEN(gdata_len)                               \
+> +       (sizeof(struct ghes_vendor_record_entry) + (gdata_len))
+> +#define GHES_GDATA_FROM_VENDOR_ENTRY(vendor_entry)                     \
+> +       ((struct acpi_hest_generic_data *)                              \
+> +       ((struct ghes_vendor_record_entry *)(vendor_entry) + 1))
+> +
+> +static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+> +{
+> +       return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_E=
+RROR_V2;
+> +}
+> +
+> +/*
+> + * A platform may describe one error source for the handling of synchron=
+ous
+> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
+CI
+> + * or External Interrupt). On x86, the HEST notifications are always
+> + * asynchronous, so only SEA on ARM is delivered as a synchronous
+> + * notification.
+> + */
+> +static inline bool is_hest_sync_notify(struct ghes *ghes)
+> +{
+> +       u8 notify_type =3D ghes->generic->notify.type;
+> +
+> +       return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
+> +}
+> +
+> +struct ghes_vendor_record_entry {
+> +       struct work_struct work;
+> +       int error_severity;
+> +       char vendor_record[];
+> +};
+> +
+> +static struct ghes *ghes_new(struct acpi_hest_generic *generic);
+> +static void ghes_fini(struct ghes *ghes);
+> +
+> +static int ghes_read_estatus(struct ghes *ghes,
+> +                     struct acpi_hest_generic_status *estatus,
+> +                     u64 *buf_paddr, enum fixed_addresses fixmap_idx);
+> +static void ghes_clear_estatus(struct ghes *ghes,
+> +                       struct acpi_hest_generic_status *estatus,
+> +                       u64 buf_paddr, enum fixed_addresses fixmap_idx);
+> +static int __ghes_peek_estatus(struct ghes *ghes,
+> +                       struct acpi_hest_generic_status *estatus,
+> +                       u64 *buf_paddr, enum fixed_addresses fixmap_idx);
+> +static int __ghes_check_estatus(struct ghes *ghes,
+> +                        struct acpi_hest_generic_status *estatus);
+> +static int __ghes_read_estatus(struct acpi_hest_generic_status *estatus,
+> +                       u64 buf_paddr, enum fixed_addresses fixmap_idx,
+> +                       size_t buf_len);
+> +
+> +#endif /* ACPI_APEI_GHES_CPER_H */
+>
+> --
+> 2.43.0
+>
+>
 
