@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-21228-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21229-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHTkAGmnoWm1vQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21228-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:17:13 +0100
+	id WC2uIcynoWmivQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21229-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:18:52 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AA11B8A64
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:17:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F02A1B8B28
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B5CA0306ED20
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 14:05:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3735230B5A92
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 14:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CFE425CE3;
-	Fri, 27 Feb 2026 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00926429814;
+	Fri, 27 Feb 2026 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UfO44clo"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m4t7l6CL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84754423A77;
-	Fri, 27 Feb 2026 14:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9644A428843;
+	Fri, 27 Feb 2026 14:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772200956; cv=none; b=Z/4CdJ9eStrnVD9cjj2U5/Asdw3+FbSouriKcwdSVKtfWeJmuCepBSz6TWNFOmjRN0C6DhAz7EWzlqyYdDxN7y6g/0EMyLYaTA+vDjzKzJClXlyeini4DgtC/3zFs6fFjiVJoERXys2btmIsTSXA78RMbK/QngXURCs5eSGNSpQ=
+	t=1772200972; cv=none; b=Eh9VsizyuCzVlPvyq1jHhopiur9oX4qhu9LmGzBgS8xxZ7noUSxTZeJzcY8+zaaeSMdTbfsge2mqXz81s6JGPaljgMyJpc+EeitwJL4zd7Dz9gHORpHejgPI8KhPPQMJZCddoc4ozoxlVJUKWy6X9NExuX0haf42biGSKbFMX28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772200956; c=relaxed/simple;
-	bh=xmLqHbZKT2Cv/CWmcreGU77H12f7Xun8iJll/1MC4EU=;
+	s=arc-20240116; t=1772200972; c=relaxed/simple;
+	bh=SsD09xOCQ2lgSQj/n0w/ZoUczDXfNByivtOBGWXEmt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfhqotgUGwR9TADDZnr4xGwkEsudlvXkHE1Q3XA3Dwd5QhpeWWG23mFjEMaCtxqPKmckjmYq6WFQdTb1oFZg7oqbP11GvLT/IGYiw4DqD3DtI/gIaDzNgNl41ffNM5pghSNyZTcP2+2SzdfPbZmk4g3hjzT0dZQ5MLH8gimLtYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UfO44clo; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=e5WbmzsDsL+K1FsWhS7mOZFJ1yUlQMArdpOG0Kn7xqc07OKcCDzn4jGWruj/tlVTrqd/Oxw0pQNMlXMVqlyjTxy6QlxOnCT/R4Dw4MBI3huWLRJ8Lbd5jJh0wTwBOq98m26ayAe9LjO9bdxk4wJZwL12YqxCknptz1pN6SNG1BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m4t7l6CL; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 183F0C406A4;
-	Fri, 27 Feb 2026 14:02:49 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 57E941A1B17;
+	Fri, 27 Feb 2026 14:02:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 33FBE5FE46;
-	Fri, 27 Feb 2026 14:02:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B74021036944D;
-	Fri, 27 Feb 2026 15:02:12 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D0455FE74;
+	Fri, 27 Feb 2026 14:02:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A5A8B10369455;
+	Fri, 27 Feb 2026 15:02:30 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772200949; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1772200967; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=gX4rEvCiby9B2yvI++vEu3sfDTTG+/1csPgc0WEGIYs=;
-	b=UfO44cloo5Kb5sjfe1DtwGp8kSrPzUcq1tqFW2iZCRa5SWccGZE7mkodmPuk95KzuEP3Dg
-	bvhOR0nafZ7IR73RJqM+4PEj4U85H1qLeonwG8su9wKTLlDfyMZvIN64Pjhg8Cmr0zmg/K
-	Be4lhof6Cg+BqSCQn6E/xvH6nF+hPxq6ETSlPT/SKVEccCAUM4jvlov2CYgBlIn+7ZmQZ+
-	T70SHNKXkJXLgLMckwXCGTkn+0Pfx1/zXnHq04UKvlGy/rH/dtTsQ7cHBIh/yHNoVqy/u9
-	7mKmP2tyCM5lPKkhKkH5kFT5fsjUBtWq9GdQc9p8sNpV+sXDIRKTHdZDQFhGAg==
+	bh=Q13pHLbTNQd/5Auc3jF+bDsxwBJ2OfItINqgqY+fL/8=;
+	b=m4t7l6CLBBA9iTTCOyPpqIu/Jtq4asiz5+LxtMLuGbi1rWAr5+NuAo+0JE893eyPpWBXnX
+	1JyHY30KY9ekk58yW31RhKOdn0jDjJhOiDeQTl8qGViJIw3Zo/z0JqtnV3AKjQQUm4KCrj
+	CtG58IDJuSXdxVfdIYAV3kCfYZAfyuE7iGFfkuNGQLVJpT7eax6BBVmfqWwBngGwedq+w4
+	rCWsWWvZ+eglBoCp24F7kUea/YLTYyv8hFSeqbvsIHwk/J4qygbwowdhRy8vxiHZ1TS3XG
+	1Raamvfi5wD5+zE6bZiwCJQn7/VTUIWzWWmbYsAA3ZChS8kFYtSmUddjg274EQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Rob Herring <robh@kernel.org>,
@@ -115,9 +115,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v5 26/28] misc: lan966x_pci: Add dtsi/dtso nodes in order to support SFPs
-Date: Fri, 27 Feb 2026 14:54:23 +0100
-Message-ID: <20260227135428.783983-27-herve.codina@bootlin.com>
+Subject: [PATCH v5 27/28] misc: lan966x_pci: Sort the drivers list in Kconfig help
+Date: Fri, 27 Feb 2026 14:54:24 +0100
+Message-ID: <20260227135428.783983-28-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260227135428.783983-1-herve.codina@bootlin.com>
 References: <20260227135428.783983-1-herve.codina@bootlin.com>
@@ -136,7 +136,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -144,11 +144,11 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[lunn.ch,kernel.org,glider.be,gmail.com,linuxfoundation.org,nxp.com,pengutronix.de,baylibre.com,sang-engineering.com,axentia.se,arndb.de,bootlin.com,google.com,opensource.cirrus.com,cirrus.com,linaro.org,linux.intel.com,stgolabs.net,huawei.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-21228-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21229-lists,linux-acpi=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[bootlin.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,linux-acpi@vger.kernel.org];
@@ -159,220 +159,41 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_GT_50(0.00)[63];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A9AA11B8A64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 2F02A1B8B28
 X-Rspamd-Action: no action
 
-Add device-tree nodes needed to support SFPs.
-Those nodes are:
- - the clock controller
- - the i2c controller
- - the i2c mux
- - the SFPs themselves and their related ports in the switch
+The LAN966X Kconfig help section mentions drivers related to
+devices.
+
+Sort this list alphabetically.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/misc/lan966x_evb_lan9662_nic.dtso | 96 +++++++++++++++++++++++
- drivers/misc/lan966x_pci.dtsi             | 42 ++++++++++
- 2 files changed, 138 insertions(+)
+ drivers/misc/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/misc/lan966x_evb_lan9662_nic.dtso b/drivers/misc/lan966x_evb_lan9662_nic.dtso
-index 3ad50abee72d..20e1fe4f78bf 100644
---- a/drivers/misc/lan966x_evb_lan9662_nic.dtso
-+++ b/drivers/misc/lan966x_evb_lan9662_nic.dtso
-@@ -4,6 +4,7 @@
-  */
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 5cc79d1517af..9c285a7c88ba 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -635,13 +635,13 @@ config MCHP_LAN966X_PCI
+ 	  Even if this driver does not depend on those other drivers, in order
+ 	  to have a fully functional board, the following drivers are needed:
+ 	    - fixed-clock (COMMON_CLK)
+-	    - lan966x-oic (LAN966X_OIC)
+ 	    - lan966x-cpu-syscon (MFD_SYSCON)
+-	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
++	    - lan966x-miim (MDIO_MSCC_MIIM)
++	    - lan966x-oic (LAN966X_OIC)
+ 	    - lan966x-pinctrl (PINCTRL_OCELOT)
+ 	    - lan966x-serdes (PHY_LAN966X_SERDES)
+-	    - lan966x-miim (MDIO_MSCC_MIIM)
+ 	    - lan966x-switch (LAN966X_SWITCH)
++	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
  
- #include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/mfd/atmel-flexcom.h>
- #include <dt-bindings/phy/phy-lan966x-serdes.h>
- 
- /dts-v1/;
-@@ -27,15 +28,94 @@ __overlay__ {
- 			#size-cells = <2>;
- 
- 			#include "lan966x_pci.dtsi"
-+
-+			i2c0_emux: i2c0-emux {
-+				compatible = "i2c-mux-pinctrl";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				i2c-parent = <&i2c0>;
-+				pinctrl-names = "i2c102", "i2c103", "idle";
-+				pinctrl-0 = <&i2cmux_0>;
-+				pinctrl-1 = <&i2cmux_1>;
-+				pinctrl-2 = <&i2cmux_pins>;
-+
-+				i2c102: i2c@0 {
-+					reg = <0>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+				};
-+
-+				i2c103: i2c@1 {
-+					reg = <1>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+				};
-+			};
-+
-+			sfp2: sfp2 {
-+				compatible = "sff,sfp";
-+				i2c-bus = <&i2c102>;
-+				tx-disable-gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
-+				los-gpios = <&gpio 25 GPIO_ACTIVE_HIGH>;
-+				mod-def0-gpios = <&gpio 18 GPIO_ACTIVE_LOW>;
-+				tx-fault-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
-+			};
-+
-+			sfp3: sfp3 {
-+				compatible = "sff,sfp";
-+				i2c-bus = <&i2c103>;
-+				tx-disable-gpios = <&gpio 1 GPIO_ACTIVE_HIGH>;
-+				los-gpios = <&gpio 26 GPIO_ACTIVE_HIGH>;
-+				mod-def0-gpios = <&gpio 19 GPIO_ACTIVE_LOW>;
-+				tx-fault-gpios = <&gpio 3 GPIO_ACTIVE_HIGH>;
-+			};
- 		};
- 	};
- };
- 
-+&flx0 {
-+	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_TWI>;
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+	pinctrl-0 = <&fc0_a_pins>;
-+	pinctrl-names = "default";
-+	i2c-analog-filter;
-+	i2c-digital-filter;
-+	i2c-digital-filter-width-ns = <35>;
-+	status = "okay";
-+};
-+
- &gpio {
- 	tod_pins: tod_pins {
- 		pins = "GPIO_36";
- 		function = "ptpsync_1";
- 	};
-+
-+	fc0_a_pins: fcb4-i2c-pins {
-+		/* RXD, TXD */
-+		pins = "GPIO_9", "GPIO_10";
-+		function = "fc0_a";
-+	};
-+
-+	i2cmux_pins: i2cmux-pins {
-+		pins = "GPIO_76", "GPIO_77";
-+		function = "twi_slc_gate";
-+		output-low;
-+	};
-+
-+	i2cmux_0: i2cmux-0 {
-+		pins = "GPIO_76";
-+		function = "twi_slc_gate";
-+		output-high;
-+	};
-+
-+	i2cmux_1: i2cmux-1 {
-+		pins = "GPIO_77";
-+		function = "twi_slc_gate";
-+		output-high;
-+	};
- };
- 
- &lan966x_phy0 {
-@@ -64,6 +144,22 @@ &port1 {
- 	status = "okay";
- };
- 
-+&port2 {
-+	phy-mode = "sgmii";
-+	phys = <&serdes 2 SERDES6G(0)>;
-+	sfp = <&sfp2>;
-+	managed = "in-band-status";
-+	status = "okay";
-+};
-+
-+&port3 {
-+	phy-mode = "sgmii";
-+	phys = <&serdes 3 SERDES6G(1)>;
-+	sfp = <&sfp3>;
-+	managed = "in-band-status";
-+	status = "okay";
-+};
-+
- &switch {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&tod_pins>;
-diff --git a/drivers/misc/lan966x_pci.dtsi b/drivers/misc/lan966x_pci.dtsi
-index 170298084fa5..d5c2056e4e5c 100644
---- a/drivers/misc/lan966x_pci.dtsi
-+++ b/drivers/misc/lan966x_pci.dtsi
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2025 Microchip UNG
-  */
- 
-+#include <dt-bindings/clock/microchip,lan966x.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- 
- cpu_clk: clock-600000000 {
-@@ -61,6 +62,39 @@ port1: port@1 {
- 				reg = <1>;
- 				status = "disabled";
- 			};
-+
-+			port2: port@2 {
-+				reg = <2>;
-+				status = "disabled";
-+			};
-+
-+			port3: port@3 {
-+				reg = <3>;
-+				status = "disabled";
-+			};
-+		};
-+	};
-+
-+	flx0: flexcom@e0040000 {
-+		compatible = "atmel,sama5d2-flexcom";
-+		reg = <0xe0040000 0x100>;
-+		clocks = <&clks GCK_ID_FLEXCOM0>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x0 0xe0040000 0x800>;
-+		status = "disabled";
-+
-+		i2c0: i2c@600 {
-+			compatible = "microchip,sam9x60-i2c";
-+			reg = <0x600 0x200>;
-+			interrupt-parent = <&oic>;
-+			interrupts = <48 IRQ_TYPE_LEVEL_HIGH>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			clocks = <&clks GCK_ID_FLEXCOM0>;
-+			assigned-clocks = <&clks GCK_ID_FLEXCOM0>;
-+			assigned-clock-rates = <20000000>;
-+			status = "disabled";
- 		};
- 	};
- 
-@@ -69,6 +103,14 @@ cpu_ctrl: syscon@e00c0000 {
- 		reg = <0xe00c0000 0xa8>;
- 	};
- 
-+	clks: clock-controller@e00c00a8 {
-+		compatible = "microchip,lan966x-gck";
-+		#clock-cells = <1>;
-+		clocks = <&cpu_clk>, <&ddr_clk>, <&sys_clk>;
-+		clock-names = "cpu", "ddr", "sys";
-+		reg = <0xe00c00a8 0x38>, <0xe00c02cc 0x4>;
-+	};
-+
- 	oic: oic@e00c0120 {
- 		compatible = "microchip,lan966x-oic";
- 		#interrupt-cells = <2>;
+ source "drivers/misc/c2port/Kconfig"
+ source "drivers/misc/eeprom/Kconfig"
 -- 
 2.53.0
 
