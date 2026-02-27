@@ -1,83 +1,78 @@
-Return-Path: <linux-acpi+bounces-21241-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21242-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLwqCl4Aoml4yAQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21241-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 21:36:46 +0100
+	id wCirIHkBomnXyAQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21242-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 21:41:29 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D215E1BDB95
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 21:36:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30961BDD0C
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 21:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4025305DD23
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 20:36:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E332A311BC4C
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 20:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB40E4779B9;
-	Fri, 27 Feb 2026 20:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A04477E3F;
+	Fri, 27 Feb 2026 20:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv9wUJBS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfvaVjWp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988ED37D111
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 20:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA4B453493
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 20:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772224602; cv=none; b=rylCIv9P4xLnpva9EhOEOiwflkfMWsQAaV/mZx2wNiON2p3z9RZsycDr7AvOId8U0qWhkNyOra9HUu3xtvKR9Wiu9D/SjHPOKZOLXIH4sOZZ3Tirf/xvUTflquQnIXnHmeXOF01P6KqueL6Pxx5eNMl0cL0ip1ycAQw0W0+SSJg=
+	t=1772224763; cv=none; b=t8Yoz7lBgFTUODiUsjxnFPuGL9j0c2AKeYHGKuja5lJguINjtUMAoEreEQDoFj2Jyy02SBbR2GzpW4gMV6CNzi6+cpfp3lk6nY+cq8pEBTrgOYCjERfOi/vHCPaLp2lq+RJOXax0qrSfo9JOoFUCNaBC9p6Dagj8H60IBM9DA/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772224602; c=relaxed/simple;
-	bh=mg9sfrdjj9Rxh2K/4kD1npVTFhhd/pgaXjnGwsMfUKE=;
+	s=arc-20240116; t=1772224763; c=relaxed/simple;
+	bh=6AdUKpKiYsXqGo/mY/vHMu0nT7ukrT9GDbr4FQ+OAjI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ASpQZrnZKhcIqyTYZPkbHNzfXStlN3bNZhDKdYPYIof3OgNxDaONgYd+ZW20Rdjwk2ohtzAouqAO768vr4dPToHv8Lb0B3sWqSYH1T3DcyfKOgpQRj3mWHxYTkoxlp6HTh8ADAArJVNwopx4+wZJVgKgq19KYFejDFSv2BwcIjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sv9wUJBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5714CC2BC9E
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 20:36:42 +0000 (UTC)
+	 To:Cc:Content-Type; b=VRoarocFBI20NEFJe6uQk/5eKt1ESsjGeQySA5DZ1Jc2U/VdOJ7TR93bWbzuuAdVzqXtO/fpEaKvL/rz3t4ujuFGHXIjdufX4l76UEplvFvqtNkcedSicmvbs7Q4THYJARjw46xutpafXkj+LI2OuhP6TgIohfLzkIJ2cwCek6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfvaVjWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16726C19423
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 20:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224602;
-	bh=mg9sfrdjj9Rxh2K/4kD1npVTFhhd/pgaXjnGwsMfUKE=;
+	s=k20201202; t=1772224763;
+	bh=6AdUKpKiYsXqGo/mY/vHMu0nT7ukrT9GDbr4FQ+OAjI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sv9wUJBSLNM/iugNZfMmvn+QqKUYCLlHWqFVIp/SsbR8KDw53ukPHiP2dU1QRI/Q8
-	 uAPMPlKyAvZlEIRDOwk8pWDVQ5OSslwiOKEXxQ7K8+uvZRf4TK7OE8vvkKDjT5v7Gb
-	 DMhV3cQMGuFkjZyoOG7zcy/ByiZnJeQigW3dcItLwRRK+QoF/AjU0eM0L5FqirUhYc
-	 JBHTqKI2U036ynmRbzdqYpkU07pat515hWNpqOdJiYmChR8jEAjDPSPsY3kWwdFqGW
-	 qaBtIKnvZPZ0cWahQmsHpCwKqHah04dVo4lNKeEfxcWJUnTZZL85ZP+1P80jpzTK8J
-	 GHfJBWpiiex3w==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-662f30d3f1fso2447508eaf.1
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 12:36:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXY6J40leU6RQj+2aecMBlh42VLR7mVuqX6WjR9i89DjiH/cGqWJ9LLxinz8iXdkByv4O3QyY6eGhvZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrbMVb/RS2sPWrzjFW0zufj/ipCxD7y8RuD8CGmn1WlNmOKWp2
-	cOP0ypL9tSp0Din2d9PsuktyHolx6h8SSBbbmgppFFFfqc0II9fDk3LW+pMWmW+va894VmJ8wvn
-	A30d29rP2+F0sjo5JA6N6byF1H30mThc=
-X-Received: by 2002:a4a:edc9:0:b0:672:397d:5da2 with SMTP id
- 006d021491bc7-679fb55a57bmr2115102eaf.25.1772224601395; Fri, 27 Feb 2026
- 12:36:41 -0800 (PST)
+	b=RfvaVjWpotzQzpzzCr2JRnxWlVfxZ9puwjFwX978E6NtLMCBJIZJ0+afoIeu8YYnF
+	 BljF5wCwaPrglmYNfC4mZuFG9vqHapkYQ93DLT99dTMrKohJ8mJ4KfH6XDz3MzhwTO
+	 EwHZgIK20a1NH9z4GMRQPuMCjZqwmz0KvAWZ/10iQbIade4R77ZBfYNPtFFBdVCpnY
+	 d5EytFKWH8yDlPTudCrulurfUE5AaX+zgL78Nav28ZI+1lLR8R8EXIvz3EdxKe+jbs
+	 oFl3PepgwjAvrwemV8QYcvWj0cBvZTCaesogYXPcVjkNkJkKLtEA8ULbbSh4tCQuTQ
+	 UVLYoZ3/4xjtg==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d4be94eeacso2146007a34.2
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 12:39:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWDX0Z9ibSu7z0KYZiceh7Xn3CfelcXbGZ05JgR3IUWR57B1o1z6e6JJgQ9PBgLfc3Db7N4+w80sZlz@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy/wI9XNEkn6S3jo+Svn0U2EAMS+02z9+o/O1ppGQK6e9vtdQm
+	eHR2PJyrghERHCSRO6SR8fa3YzPklffdhhvJ7clzwjyfEXhfp7YBG8HYZ5/dNIMXVl8QJNaakqw
+	N7kgzOe1NpGyobPhnkm01SuilNCBHmPw=
+X-Received: by 2002:a05:6830:63ce:b0:7cf:d119:8d93 with SMTP id
+ 46e09a7af769-7d591a0bc67mr2451415a34.0.1772224762229; Fri, 27 Feb 2026
+ 12:39:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260206142658.72583-1-sumitg@nvidia.com> <48b52f98-119e-4693-806b-78d47f7a43bb@nvidia.com>
-In-Reply-To: <48b52f98-119e-4693-806b-78d47f7a43bb@nvidia.com>
+References: <20260204212931.3860-1-W_Armin@gmx.de> <c5d23d8a-8f58-48c3-90ca-5d1a46964280@gmx.de>
+ <CAJZ5v0g6w_2+4oUytzxHtAhsJczK9pe84ZfXPeOcjKqU0k_GkQ@mail.gmail.com>
+ <6825e6b2-802b-4cd2-b2c5-b4eab67b00e4@gmx.de> <CAJZ5v0h7Nc2gUr_WaJSL4vEekhfL_4aojDWdkidnS=3T-=uxRg@mail.gmail.com>
+ <c663548b-29ee-4d23-a6b7-9a88eab5470e@gmx.de> <e7ba6414-a1f3-4e49-a3af-3a8592a46a99@gmx.de>
+In-Reply-To: <e7ba6414-a1f3-4e49-a3af-3a8592a46a99@gmx.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 27 Feb 2026 21:36:30 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iOsqoZx0EZ3AqEk_8mrGxSj6wj-m8phRJ0cT71NTuBWA@mail.gmail.com>
-X-Gm-Features: AaiRm53Rvoc1jPRsW_C3wm3K2uu7f-OR6f-nyVhpAFv0qIGeTAbPKLPHLqUbNQc
-Message-ID: <CAJZ5v0iOsqoZx0EZ3AqEk_8mrGxSj6wj-m8phRJ0cT71NTuBWA@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] Enhanced autonomous selection and improvements
-To: Sumit Gupta <sumitg@nvidia.com>
-Cc: rafael@kernel.org, viresh.kumar@linaro.org, pierre.gondois@arm.com, 
-	zhenglifeng1@huawei.com, ionela.voinescu@arm.com, lenb@kernel.org, 
-	robert.moore@intel.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com, 
-	perry.yuan@amd.com, zhanjie9@hisilicon.com, yumpusamongus@gmail.com, 
-	dedekind1@gmail.com, linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, treding@nvidia.com, 
-	jonathanh@nvidia.com, vsethi@nvidia.com, ksitaraman@nvidia.com, 
-	sanjayc@nvidia.com, nhartman@nvidia.com, mochs@nvidia.com, bbasu@nvidia.com
+Date: Fri, 27 Feb 2026 21:39:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jwE_CYDAxT3OYx4+i4nk1v2TTuyFHbzCKXVD0j5mBuiw@mail.gmail.com>
+X-Gm-Features: AaiRm51iwGFCTt8H0lLQ9HamBk_cna2fmE4ZFfBfpfyTpN2nlmUixgNGMkDOXKk
+Message-ID: <CAJZ5v0jwE_CYDAxT3OYx4+i4nk1v2TTuyFHbzCKXVD0j5mBuiw@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: OSL: Poweroff when encountering a fatal ACPI error
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
@@ -85,19 +80,19 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21241-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,arm.com,huawei.com,intel.com,lwn.net,infradead.org,amd.com,hisilicon.com,gmail.com,vger.kernel.org,lists.linux.dev,nvidia.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21242-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -106,46 +101,61 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: D215E1BDB95
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,gmx.de:email]
+X-Rspamd-Queue-Id: E30961BDD0C
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 2:59=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wro=
-te:
+On Fri, Feb 27, 2026 at 8:55=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
 >
+> Am 27.02.26 um 20:50 schrieb Armin Wolf:
 >
-> > This patch series improves the CPPC cpufreq driver with new ACPI APIs
-> > and enhancements for Autonomous Selection (auto_select).
+> > Am 26.02.26 um 19:46 schrieb Rafael J. Wysocki:
 > >
-> > CPPC auto_select enables hardware-driven CPU performance scaling using
-> > Energy Performance Preference (EPP) hints. Currently, there's limited
-> > runtime control and visibility into CPPC performance registers.
+> >> On Thu, Feb 26, 2026 at 7:35=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wr=
+ote:
+> >>> Am 25.02.26 um 22:28 schrieb Rafael J. Wysocki:
+> >>>
+> >>>> On Wed, Feb 25, 2026 at 12:06=E2=80=AFAM Armin Wolf <W_Armin@gmx.de>=
+ wrote:
+> >>>>> Am 04.02.26 um 22:29 schrieb Armin Wolf:
+> >>>>>
+> >>>>>> The ACPI spec states that the operating system should respond
+> >>>>>> to a fatal ACPI error by "performing a controlled OS shutdown in
+> >>>>>> a timely fashion". Comply with the ACPI specification by powering
+> >>>>>> off the system when ACPICA signals a fatal ACPI error. Users can
+> >>>>>> still disable this behavior by using the acpi.poweroff_on_fatal
+> >>>>>> kernel option to work around firmware bugs.
+> >>>>> Any updates on this?
+> >>>> I was about to apply it, but then I thought that I was not sure abou=
+t
+> >>>> the Kconfig option.
+> >>>>
+> >>>>    I don't see much value in it TBH.  If you agree, I'll just apply
+> >>>> the
+> >>>> patch without that part.
+> >>>>
+> >>>> Thanks!
+> >>> You can drop the Kconfig option if you want.
+> >> OK, applied as 7.1 material.
+> >>
+> >> Please double check
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/co=
+mmit/?h=3Dbleeding-edge&id=3D6f09a7009a1d7a132ddce3a8dd0c46aac66ad8e2
+> >>
 > >
-> > The series adds cppc_get_perf() API to read performance controls, updat=
-es
-> > MIN_PERF/MAX_PERF in target callbacks using existing scaling_min/max_fr=
-eq
-> > interface similar to intel_cpufreq HWP handling, and exposes perf_limit=
-ed
-> > register via sysfs to detect throttling events.
+> > Looks good to me, except that the include of kconfig.h should be
+> > dropped now.
 > >
-> > The patches are grouped as below:
-> > - Patch 1: Add cppc_get_perf() API (independent).
-> > - Patch 2: Warn on missing mandatory DESIRED_PERF (independent).
-> > - Patch 3: Extend cppc_set_epp_perf for FFH/SystemMemory (independent).
-> > - Patch 4: Update cached perf_ctrls on sysfs write (independent).
-> > - Patch 5: Update MIN_PERF/MAX_PERF in target callbacks (depends on 4).
-> > - Patch 6-7: APIs, sysfs and doc for perf_limited (independent).
->
-> Gentle ping.
->
-> If there are no further comments, could this be considered for merging.
+> > Thanks,
+> > Armin Wolf
+> >
+> I also just noticed that we still need to include panic.h for add_taint()=
+.
 
-Applied as 7.1 material, thanks!
+It complied regardless, likely because kernel.h was included, but yes.
 
-That said, wouldn't it be prudent to check cpc_read() return values everywh=
-ere?
+> Should i send a new revision?
 
-They are handled quite inconsistently and this series doesn't improve that.
+No need, I've just updated it by hand and pushed it out.
 
