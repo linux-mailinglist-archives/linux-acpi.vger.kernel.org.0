@@ -1,200 +1,180 @@
-Return-Path: <linux-acpi+bounces-21198-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21199-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDyjCu1coWmDsQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21198-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 09:59:25 +0100
+	id 4K4aBvpzoWkPtQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21199-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 11:37:46 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8391B4D1A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 09:59:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E43B1B610D
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 11:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE400304DE79
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 08:59:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F752301077C
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 10:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27E33D3484;
-	Fri, 27 Feb 2026 08:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E7B3939AA;
+	Fri, 27 Feb 2026 10:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R4/1+DXQ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="McKsJQfF"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="w0TV0ZBz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B684A2D8DAF
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 08:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895DE3A1A23
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 10:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772182746; cv=none; b=iiL/qOZvXrluvSflIh+VToxzxOVUI6KxuBRgVtKcQpLJ2Cb9vjXZ0jvsc3FykkPQYXJXKzFX4aQHElGTUFtbduH6xRVu6wjhxj4b4bFLzJVl29oMws6uW7pXa4bH5UBPLnVDyRgKQvNxq1xJ2aPSfjBBYNcAtkCB5ml8ej4KENw=
+	t=1772188660; cv=none; b=XF7jg3VsX8rC7r1srQShiv/hCKBhX0sbAqwxZfIvTDdQUI8wNaclVvJJbNWObUNwrb5v70h6mkfSB8tU3K1laspZqqysWOMFUcB4/PmItjqb2/EWEzR+CVP8GMk21H6bfCqyGbqh11Oybh3SB4LZx+GyGaw92f9RqZ+tHbwZOC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772182746; c=relaxed/simple;
-	bh=fB5UjQPpD+D9qZyDCB8SYs/gFWNRAvvueceaPw1cEQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GxKfGfQnyrHfAxipO/zqg3Lw+D8OrIuNnBNZeY1JJZh+Ca2ZqlHbxGd0scD6Kfa2mvOVFdGxM1gLUo8Hen/jMNWtOxFUI0973ttiMB3oM4OJkGLgxSDXbyGB9JN8UqEY28QodUhEOwyKrY8ScHjt7R8cIWn4FCQfEYtbArlCito=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R4/1+DXQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=McKsJQfF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R2KIfQ236930
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 08:59:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xa2xwKsAARO5/o99tsp0/G2WXxT4BDvg1rDv8++bkVk=; b=R4/1+DXQpBbCj2El
-	llgdt2vPmQDBD8CFDy0MVKnkTd6eQXyKPPjuJVc6VvjxtX+SNfJ1XVcP96ZnlQIq
-	C14W/xWsGKw1PkGbAG8UTQhqJXfuCdwWA345FOqCMniL/G0ZgxHgRWh7g7ltJ7Ot
-	ouerbdN7CU70HTNcHDmT6yKgpIE9iYLS8kKU9hwoOnYI8ubZ0ZNvKrgvjy3mn2eV
-	Uf7WgWvNaZx79bXOI0Hx7QYJNAwjcqsT5SBietDJzXJyahRuFdjXEUakcKDo+X0i
-	sDIcqTa6/RKUILUhW93HBCN40FaiQaUrXHR2kF/uN+JHktF4fT9UZpmSF9jDA+ZJ
-	fVHd+A==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cjx1xsud7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 08:59:05 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cb52a9c0eeso2357576885a.2
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 00:59:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772182744; x=1772787544; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xa2xwKsAARO5/o99tsp0/G2WXxT4BDvg1rDv8++bkVk=;
-        b=McKsJQfFRzwdYdk0gliF5886NV0vUETR/gE7cBiksuffU92VqYlo2dmwK8fYOl+n9+
-         JTe7Bg/s9KvFJ9uTxPOowG47RApoih+z+9zf4IckYS2yh/KYvsbxrlv1A+0kf7IB5nqG
-         6O/eIFO0TldSE2gUt5aUQRhc0shKQICnOs6gsPQjSKbAjkxIdeRu0HYQIEEaUPnDChLc
-         A5CuwFxxeLl/1Rcc7QBX/13dV3z9iONXm3xlSqej+2YGYyknZBl8N6gcu/LT92POWogk
-         3RIUsesT/nw9oJIu4S4xc83zYhT9RQ9Wz+lYLG3jIG/zLcfXMEQcpXv5rnA/h7GdX7VW
-         atOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772182744; x=1772787544;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xa2xwKsAARO5/o99tsp0/G2WXxT4BDvg1rDv8++bkVk=;
-        b=DXg3IUiNgr2cUxesJdi3ji36bLqMyjfpzb3eHgNlbQs/SGSFluO2OR07tllkxjIyt0
-         zH2tdgyBJSrqj++D8wYo8zH1JfnaheaUHfAeH/9ns4hFYoZ5BhN+2nNw9Ed1HDwCiBee
-         bsnt+/DQTu1UogWePrbCkUfnrZ/SajqFnYvS8gw6w33DcJNul0twQhe9zG0iRvipktU1
-         PVJyHwYUJvYFunbUCL/bstMAq1ii4toBCNoLUUsCgOf1+aTS4NZPochVjooQi3TBmuMT
-         6zl9kpO8kVQNiVkVz5tUfFjREWBVsCAPodhjhqYv4vBNo2V1u3z7/sqLtM7d+OoQxC5e
-         DJzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG4rtGoarZ/xR+HQkMeVc9xu8jItDBNrMrAEZVVOyVqSjPSyilKj6gcWJ9w1Zu0DeNXGStLT8W3jsV@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZkfz0CnCacimRZz86Z3e7oFJFa0+xs2csq4+Ltk6vE30qhOIp
-	nq+6mev6+Pn5AH8s+JCzYNTBuh/mVj3i7AnYcBqKO30lAE004juNN1GAoIvIPBnclvlAACWD/k8
-	F2utQMpOCG3hA9Nx167tP7w0mj1R/ZHN7fJy9ft59MHsmWKl2KXU/41hc3sfkvWwB
-X-Gm-Gg: ATEYQzz/kcGrKm8fI9iYSggNFv+46dPVJm8MJG2KurNX/dmW9gHYg4fvxey6vsttEEe
-	16+ra3FI4jOVhtmEj3jAi3OrBw3m6LNUAwUT1eC+aD9OpezJVbiibi7Nbu4SFR4q2oe4NLqqTbR
-	Kr7IMxCKfygHhKxqLFEzJL7KVK8QEDZDI8mvA4Qu0uP3oiZSdBr6dF8lHR8uDU81Nj/Al4vpYxX
-	8+eq5FOiKvqmv85FFfcmD3Oy86kzHARnjrGC2VtuS36Q0D2vLIQl299l9RKULvwlJeCDZEQRCa2
-	onftRfhdPt1gC3ZP31MmhrDZnZRAbHgk+2qvLhbT0xrbGV4OqP1R1zOxoqpF0pjHwozzAWt7CL5
-	zAOF/gmMA1pscnGqOoj1klSuSkR+WzsbCCRgpfNTII8Q1b3KYlEw=
-X-Received: by 2002:a05:620a:1726:b0:8ca:2e37:ad08 with SMTP id af79cd13be357-8cbc8d9d7d0mr259514785a.34.1772182744194;
-        Fri, 27 Feb 2026 00:59:04 -0800 (PST)
-X-Received: by 2002:a05:620a:1726:b0:8ca:2e37:ad08 with SMTP id af79cd13be357-8cbc8d9d7d0mr259512585a.34.1772182743777;
-        Fri, 27 Feb 2026 00:59:03 -0800 (PST)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:8bcf:177b:d085:ed57])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd702e7bsm224129855e9.5.2026.02.27.00.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 00:59:03 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4] gpiolib: match secondary fwnode too in gpio_device_find_by_fwnode()
-Date: Fri, 27 Feb 2026 09:58:57 +0100
-Message-ID: <177218264423.8055.13971416115087410858.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260226-device-match-secondary-fwnode-v4-1-27bd0cfbd8c6@oss.qualcomm.com>
-References: <20260226-device-match-secondary-fwnode-v4-1-27bd0cfbd8c6@oss.qualcomm.com>
+	s=arc-20240116; t=1772188660; c=relaxed/simple;
+	bh=FyfWSA3yMbotQyW/kydmCJpUichjMj/M/X1snlxlvvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W05kqocGr42qN/+nwj0M6gdidS5O32bxOrNaNf6Gg1gs/SfWn+4qVanlef/TEplNUJbb15p4KK0faMILi79N8Qm1vENma43/F7R46LkNqaCOuqeCPC0xHBwUZedw57hiilZiVjni3FgHQpTUn5NJ5UoGAD+P7x92v3cqXru3ERc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=w0TV0ZBz; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BC7841A1A54
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Feb 2026 10:37:35 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 911565FE46;
+	Fri, 27 Feb 2026 10:37:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99DA210368D57;
+	Fri, 27 Feb 2026 11:37:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772188655; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=ohtriEmRdRFAOG5NOsPeDzSDBGb5/D2uWfF2TVYCHoo=;
+	b=w0TV0ZBzUL5mLeSTvj+Od5e9VlnNrp+EfUrTXPSlIhQDpFdK8ZT4bhZQCn2w6sTqM494oX
+	Ko2cgMYJuKx8BEuiJwNy0C9MAPbaupk/iSSE1x8PXkn6DIT95j6MGFy3Xbho5vAA8zh9Z3
+	7F3KJBDzpmCQqRKBPmuD16RcbU/UG7soH/ZtitT+8TnOtscAxx43a6+4maVCkLJpbNPR5V
+	5Ddzot71SbOgcTYG0XYzxi8lR9wfDye5fSTzkww8RazTWPv2qWcSouS0F1agZjfDI3xoYh
+	m80bV1u9K/FMN6Wa6rwC7GcgAjUBACgLGSDrK3jDVcJExipctxAxDbBqzrTuFQ==
+Date: Fri, 27 Feb 2026 11:37:34 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v0 5/6] ACPI: TAD: Add RTC class device interface
+Message-ID: <202602271037341ec1378a@mail.local>
+References: <4727679.LvFx2qVVIh@rafael.j.wysocki>
+ <10819001.nUPlyArG6x@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: F11oadw18zlNxq9-qVxqRkJKff5IFqxV
-X-Authority-Analysis: v=2.4 cv=Vtouwu2n c=1 sm=1 tr=0 ts=69a15cd9 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=riAGlF5WBYjY1qQTpiUA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA3NyBTYWx0ZWRfXwRT8dlywQwor
- yEyJPuROsg67COKmSdkXxqwCDm8I7JPPlN2DQ85nggr03IdJjjMiKkVcCcFoYwa7SDWL4cJtsi/
- 73oJW0coT72l8gtUlpiVDJvRcW6gQAUpXzBgKFtm/FrKCeesn0NgkK0CoZz5xxuTTtY5PiMH5nG
- pomNwGTWoOgIUh/rSSEccALFlCEAYWzQvJlmQNnOhgGsM/euHgnMvN+DYYIgHDSQfnJU3sdfkge
- 03GysLWPDxItIrYxisSDd8Qk0xZ4JwKy5xod4S6g60CgU0MyFHYG70zFWiDqK0TAD72RmjoDqkL
- C74TYmv949GERk6LZ2SQ3CiduEwEfOQyL57POauQjbWtBsDOziW9xOkQSW7JOv+ho7TM80T+TP+
- 6f33msi98m/fcydus3rxy0p2ZJyqBTg2XvIkIDq6nre8X48Meq5TZ5Us7jsrbxpiHp7kcxeCCuc
- 8uc7EJ7qQj6ltOXUGjg==
-X-Proofpoint-GUID: F11oadw18zlNxq9-qVxqRkJKff5IFqxV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
- impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602270077
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10819001.nUPlyArG6x@rafael.j.wysocki>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21198-lists,linux-acpi=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,gmail.com,linux.intel.com,oss.qualcomm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21199-lists,linux-acpi=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexandre.belloni@bootlin.com,linux-acpi@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: BA8391B4D1A
+	TAGGED_RCPT(0.00)[linux-acpi];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:url,bootlin.com:dkim,rt.tz:url]
+X-Rspamd-Queue-Id: 2E43B1B610D
 X-Rspamd-Action: no action
 
+Hello,
 
-On Thu, 26 Feb 2026 10:56:36 +0100, Bartosz Golaszewski wrote:
-> In GPIOLIB, during fwnode lookup, after having resolved the consumer's
-> reference to a specific fwnode, we only match it against the primary
-> node of the controllers. Let's extend that to also the secondary node by
-> reworking gpio_chip_match_by_fwnode()
+On 22/02/2026 15:18:29+0100, Rafael J. Wysocki wrote:
+> +static int acpi_tad_rtc_procfs(struct device *dev, struct seq_file *seq)
+> +{
+> +	struct acpi_tad_rt rt;
+> +	int ret;
+> +
+> +	ret = acpi_tad_get_real_time(dev, &rt);
+> +	if (ret)
+> +		return ret;
+> +
+> +	seq_printf(seq,
+> +		   "Time\t\t: %u:%u:%u\n"
+> +		   "Date\t\t: %u-%u-%u\n"
+> +		   "Daylight\t: %s\n",
+> +		   rt.hour, rt.minute, rt.second,
+> +		   rt.year, rt.month, rt.day,
+> +		   str_yes_no(rt.daylight == ACPI_TAD_TIME_ISDST));
+> +
+> +	if (rt.tz == ACPI_TAD_TZ_UNSPEC)
+> +		seq_puts(seq, "Timezone\t: unspecified\n");
+> +	else
+> +		seq_printf(seq, "Timezone\t: %d\n", rt.tz);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct rtc_class_ops acpi_tad_rtc_ops = {
+> +	.read_time = acpi_tad_rtc_read_time,
+> +	.set_time = acpi_tad_rtc_set_time,
+> +	.proc = acpi_tad_rtc_procfs,
+
+I would avoid implementing .proc, it has been deprecated for a while and
+doesn't bring much.
+
+> +};
+> +
+> +/* Platform driver interface */
+> +
+>  static int acpi_tad_disable_timer(struct device *dev, u32 timer_id)
+>  {
+>  	return acpi_tad_wake_set(dev, "_STV", timer_id, ACPI_TAD_WAKE_DISABLED);
+> @@ -655,10 +730,16 @@ static int acpi_tad_probe(struct platfor
+>  	pm_runtime_suspend(dev);
+>  
+>  	ret = sysfs_create_group(&dev->kobj, &acpi_tad_attr_group);
+> -	if (ret)
+> +	if (ret) {
+>  		acpi_tad_remove(pdev);
+> +		return ret;
+> +	}
+>  
+> -	return ret;
+> +	if (caps & ACPI_TAD_RT)
+> +		devm_rtc_device_register(dev, "acpi-tad-rtc", &acpi_tad_rtc_ops,
+> +					 THIS_MODULE);
+> +
+
+Please use devm_rtc_allocate_device() and devm_rtc_register_device() so
+you can set range_min and range_max. I get you don't need the rtc_device
+later so we could have a helper that takes the range and registers the
+rtc.
+
+> +	return 0;
+>  }
+>  
+>  static const struct acpi_device_id acpi_tad_ids[] = {
 > 
 > 
+> 
 
-Applied, thanks!
-
-[1/1] gpiolib: match secondary fwnode too in gpio_device_find_by_fwnode()
-      https://git.kernel.org/brgl/c/eb58f2b9bb0909ebce64e1a90b21b5cc2c9f17df
-
-Best regards,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
