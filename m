@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-21217-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21218-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAtTNlikoWl/vQQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21217-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:04:08 +0100
+	id aNmKC8ykoWlxvQQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21218-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:06:04 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4658D1B84DB
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA611B85BB
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 15:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 546163152F53
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 13:59:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A87B317D92B
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Feb 2026 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B2940F8D8;
-	Fri, 27 Feb 2026 13:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71761410D17;
+	Fri, 27 Feb 2026 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="w4eum9Fv"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qhWmxsQs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77BA3E95B3;
-	Fri, 27 Feb 2026 13:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB073F23A9;
+	Fri, 27 Feb 2026 13:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772200766; cv=none; b=MDWl33FvfmZZoSbOUvRQQnzDWzjdICio5qJK+cDTEjB74PxK8+grhNyKMzPk6wpn/XGdBLfgkg3lGOGknW5tFCPQ7Mipci13WNeVO7yD7DzAthoutFZmCEby2Hl14y791XXuBFV3i22yEsgicndeVAXBfJX1u2XwXez7G370m14=
+	t=1772200778; cv=none; b=sOcGRr8Z/uSFVxF/fa8FqHHvyeoWMo/Z3GM/HIpT4Vi/CGgv+mEcQqFY8W1VGr8ufQjWu1VOtYs6XjJt9WG6MEITuus6+ix1ww8ilQt/lkAaosDLm3Ue1E7WBfbw5pyABBpZ90IpcDXaEI3Ovq9Kin/kjuHgZk5bB/SNTObFkUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772200766; c=relaxed/simple;
-	bh=a6PXb9i+X1sA4Or6Y0E0jaWxGpVSsTki8LaE/KXqa6Y=;
+	s=arc-20240116; t=1772200778; c=relaxed/simple;
+	bh=DaRfsV2u+e7/20CbFYhTmGEe9Lq4oc9ftgi7hzgtJxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCsoQgROTk1v8RcZsz8UEYXFrVGKR37W1tHTh8V1tR37Ob1z8aQACQ2l2KX6yplvuWmf7NEGRQKRk/b46pMLMLfGVeajdgfbZeZCpeuvNiY4QMHemyZUykwnXaEu3FqjF45EbjuOCPRk9dRrgaMsZe1J/5kTDna7BhmO0CmaSHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=w4eum9Fv; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=jU7IRtSh9L5Uy9oGPPUhzybwmzPkpQ4iqGTe8LA+D0FU7KMPlXSGSfrNmdzEZwperswx9FxONb5xjUyMLSCGWRVSCVjHdSb2lWtoi6s9H4mODcVmOtc6kPnXoXh5GLf6pAjGF4J0W3kZDu7atw56qD91y8qyUHm+rvR64onhEro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qhWmxsQs; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C42581A118A;
-	Fri, 27 Feb 2026 13:59:23 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id F41A74E41922;
+	Fri, 27 Feb 2026 13:59:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9B8485FE46;
-	Fri, 27 Feb 2026 13:59:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 89B991036944D;
-	Fri, 27 Feb 2026 14:59:06 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C197E5FE74;
+	Fri, 27 Feb 2026 13:59:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 512ED10369455;
+	Fri, 27 Feb 2026 14:59:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772200760; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1772200773; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=d6GGxvV9pG6IJ1z9yk6YAUQbBDjX/c3f4oqsz6zyCeA=;
-	b=w4eum9Fv6LvEcDP17xGgtJmhQFEqh4dMU1qVvpHKgx0UdviP8T2rRlJE1uCx60GcOKm3W6
-	mMd6tPj3uYXoPHPT7e9qrC7MzGR2PWAWQlEEfuPi+9SXYT1Z/SXtLQRqYCwAxrGBnFygZ+
-	gm3xpEiDnuTrpz7nX+B2ntYGZkVym4XUeJSq19QHBx/nYfRWFtD+NH0wjMOy92HJ/k9o86
-	zyEMOMMZ4b6guUeRDpnHFAjQH9gMaBlgH17YpLBS1SXjyLvhmkBUNMjIBDJzt5GS2a7rNw
-	bTqF8kKp8OY0J7hArYrrVXKYELUYXDDN8kRt3p/YGW8Mhn92CVDVKLqBNRcITQ==
+	bh=EO+KwDm3fpx2sS0DmTpGwECNmbhB0N19pDgf5whzoMI=;
+	b=qhWmxsQsRt0OU1IK3m5H6p4bRNT1Je3fcsO7325r4sNhWLQFLi1BVbQ+7TDw12k2BvQNi1
+	3X84m/W2WVyTgydX7dje7kg+8+u67v1eMf2FFLH/OAsvvRtX6o85OrXPw5TVb1fyYazYI5
+	44uSEJw58YISkXHDI/w9HAc5HHgMsb59EQ9zUmkcX3YyE6XwDq2KKjs1wKIuGgMlKiur4u
+	q1kUn3fAYxbuotjnD+8x/TfAsJKyZvoOvXonz9wvO1zXthYxO35kDLPiihQ3c5YMXdg1aF
+	kJcU2UWrZkAGwneOMRxSa9BZAIxsbD6CKQ/NyHpoEqaahluagUjG2IEmFQlCRw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Rob Herring <robh@kernel.org>,
@@ -115,9 +115,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v5 15/28] i2c: core: Introduce i2c_get_adapter_physdev()
-Date: Fri, 27 Feb 2026 14:54:12 +0100
-Message-ID: <20260227135428.783983-16-herve.codina@bootlin.com>
+Subject: [PATCH v5 16/28] i2c: mux: Set adapter physical device
+Date: Fri, 27 Feb 2026 14:54:13 +0100
+Message-ID: <20260227135428.783983-17-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260227135428.783983-1-herve.codina@bootlin.com>
 References: <20260227135428.783983-1-herve.codina@bootlin.com>
@@ -144,7 +144,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[lunn.ch,kernel.org,glider.be,gmail.com,linuxfoundation.org,nxp.com,pengutronix.de,baylibre.com,sang-engineering.com,axentia.se,arndb.de,bootlin.com,google.com,opensource.cirrus.com,cirrus.com,linaro.org,linux.intel.com,stgolabs.net,huawei.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-21217-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21218-lists,linux-acpi=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[bootlin.com:+];
@@ -159,79 +159,36 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_GT_50(0.00)[63];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:dkim,bootlin.com:email]
-X-Rspamd-Queue-Id: 4658D1B84DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:mid,bootlin.com:dkim,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BEA611B85BB
 X-Rspamd-Action: no action
 
-The physical device providing an I2C adapter is the device that calls
-i2c_add_adapter() or variants and i2c_del_adapter().
+For i2c muxes, the parent of the mux adapter device is the adapter
+device the mux is connected to.
 
-Most of the time this physical device is the parent of the adapter
-device.
+This parent is not the physical device related to the mux adapter.
+Indeed, the physical device of the mux adapter is the mux device itself.
 
-Exceptions exist with i2c muxes. Indeed, in case of i2c muxes, the
-parent of the mux adapter device points to the adapter device the mux is
-connected to instead of the physical of this mux adapter.
-
-Introduce i2c_get_adapter_physdev() and a new physdev field in the
-adapter structure in order to ease the adapter physical device
-retrieval.
+Fill the adap.physdev with the mux device.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 16 ++++++++++++++++
- include/linux/i2c.h         |  3 +++
- 2 files changed, 19 insertions(+)
+ drivers/i2c/i2c-mux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 9c46147e3506..59214f0c84ec 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1919,6 +1919,22 @@ struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode)
- }
- EXPORT_SYMBOL(i2c_get_adapter_by_fwnode);
- 
-+/**
-+ * i2c_get_adapter_physdev() - Get the physical device of an adapter
-+ * @adapter: the adapter to get the physical device from
-+ *
-+ * Return:
-+ * Look up and return the &struct device corresponding to the device supplying
-+ * this @adapter.
-+ *
-+ * The user must call put_device() once done with the physical device returned.
-+ */
-+struct device *i2c_get_adapter_physdev(struct i2c_adapter *adapter)
-+{
-+	return get_device(adapter->physdev ?: adapter->dev.parent);
-+}
-+EXPORT_SYMBOL(i2c_get_adapter_physdev);
-+
- static void i2c_parse_timing(struct device *dev, char *prop_name, u32 *cur_val_p,
- 			    u32 def_val, bool use_def)
- {
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 20fd41b51d5c..dff04d20cafe 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -744,6 +744,7 @@ struct i2c_adapter {
- 	int timeout;			/* in jiffies */
- 	int retries;
- 	struct device dev;		/* the adapter device */
-+	struct device *physdev;		/* the physical device */
- 	unsigned long locked_flags;	/* owned by the I2C core */
- #define I2C_ALF_IS_SUSPENDED		0
- #define I2C_ALF_SUSPEND_REPORTED	1
-@@ -911,6 +912,8 @@ struct i2c_adapter *i2c_get_adapter(int nr);
- void i2c_put_adapter(struct i2c_adapter *adap);
- unsigned int i2c_adapter_depth(struct i2c_adapter *adapter);
- 
-+struct device *i2c_get_adapter_physdev(struct i2c_adapter *adap);
-+
- void i2c_parse_fw_timings(struct device *dev, struct i2c_timings *t, bool use_defaults);
- 
- /* Return the functionality mask */
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index 681a201c239b..f4e73e7a0e33 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -315,6 +315,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 	priv->adap.algo = &priv->algo;
+ 	priv->adap.algo_data = priv;
+ 	priv->adap.dev.parent = &parent->dev;
++	priv->adap.physdev = muxc->dev;
+ 	priv->adap.retries = parent->retries;
+ 	priv->adap.timeout = parent->timeout;
+ 	priv->adap.quirks = parent->quirks;
 -- 
 2.53.0
 
