@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-21268-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21269-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EuHNJcfo2mC9wQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21268-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 18:02:15 +0100
+	id YAtFE6Yfo2mC9wQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21269-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 18:02:30 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52481C49C8
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 18:02:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64C51C49E6
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 18:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 372C230015BB
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 17:02:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C4B3730387D1
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 17:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E476126ED25;
-	Sat, 28 Feb 2026 17:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070B230171C;
+	Sat, 28 Feb 2026 17:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B5othWjQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EVbJuoBi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E9D2DA76F;
-	Sat, 28 Feb 2026 17:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8EB2D8DDB
+	for <linux-acpi@vger.kernel.org>; Sat, 28 Feb 2026 17:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772298129; cv=none; b=Nh5vqLo9VdpM0Ak6S7kxwb9LWm39mYSK7zaLezkLYvgz3IK4Yp1SLJynqjp32CJYCnmD25ZpumIGNko+k3OFXPtzWarZ1zkTg8+NaNiOq50beKxP97RGOMg8hfCeTSgcEbih+Ju9Gn8P/mXxWUEUKCRufwuuIbEbrOIfnpR4Qhs=
+	t=1772298144; cv=none; b=ZEtw0nrCmo9Mw8k6Ytclm1kGCUIFp1qm0aBWesxIIN9qZFgABW2Kw8TcEyPBLmaxkPpkWeoGwpI67VeJHKQJctXjRCviJuz/7RiyEkBFpzD8qXosNF19A9cO4DNAbfp+i+GQPKWMdn8voNAjZHV9o9Ot5cgUrH0b2BApsa8MJ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772298129; c=relaxed/simple;
-	bh=1Zmoe7KTw+dHQINnsvafHx9BYQ93yBePTvJWnSabeKE=;
+	s=arc-20240116; t=1772298144; c=relaxed/simple;
+	bh=E3tyh57oOhLe/qbSqgIBwvufs0nNmS1nqN+6+tLdkUM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PDsDX983tB7iMuEU5/aDgFymjAl+iOvWGQw/yhgakCAxL0W4fTNTy9BRVy7y3cZGAABWn/q4EMrbCRTvCSuM3YqhlgVkDDilumAfQWA8JhygkLDzJ1cZcdxQaCUPhILmtQakyLe+/Xajy3+2ny1+2KpTevDgTqhliIadddOq01M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B5othWjQ; arc=none smtp.client-ip=91.218.175.181
+	 In-Reply-To:Content-Type; b=TqxUtw4ZdTomDJ74wQ0a9r2t6IzR6DFj5iFsxp4jypPGdJIBVcVdvVUCR9E32EKodLV3WggsQHIXJ34PEYVE2kT7w84FI5mYHl76s4sArq/Dfdl+0C4c1xMU2GPnzfU6O3QWlbJc6lI4CK4U8NHDu3cl/nnnZNL2Z04IPqIBkfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EVbJuoBi; arc=none smtp.client-ip=95.215.58.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <c9697592-c70b-4ef8-864f-213b5ea4782d@linux.dev>
+Message-ID: <6da00c19-423f-4735-8cb4-b80c94cfd208@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772298116;
+	t=1772298141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LenEUBQ0NkEZoIo2rjfTgSjz49CNYQTmftfJQFrn2GA=;
-	b=B5othWjQEN8ETB6YM4LnFyPDWsOmSDLyAgLTx21mTYM5DSWQc0VqPUzxIGahCvTBvHLpjT
-	WW+3YBkDvRlA2aW0oZ+2mXnCokNlLqUHPXVRA2u6aBWqgVb8Qqvwx7KgbXqvfEPkTAAGSz
-	IftNYp32iU+3H371g1oVlLgq4SRwxGo=
-Date: Sat, 28 Feb 2026 18:01:45 +0100
+	bh=pIQ7OHAbilr2QMHzf2op6gOeHt4JbJAlTPM85ZhRxbM=;
+	b=EVbJuoBiRPJMx/Sb9HVJDcogOeFjzpypImY6YXqXBUhS3ZSAAnN8wSK6UBfaEj/XED4zkJ
+	EmS4Sae3QMPrgwIuLlNOLseCrJNm/HDXaBucX86V88b8SSxw5sFQc1+dYy7tdTo0dL28U2
+	DSNFeZxLZmVw14wjbuByUOrzhJdrgHg=
+Date: Sat, 28 Feb 2026 18:02:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 2/4] platform/x86: asus-laptop: Convert ACPI driver to
- a platform one
+Subject: Re: [PATCH v1 3/4] platform/x86: asus-wireless: Register ACPI notify
+ handler directly
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
@@ -62,13 +62,13 @@ Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
  Corentin Chary <corentin.chary@gmail.com>, "Luke D. Jones"
  <luke@ljones.dev>, =?UTF-8?Q?Jo=C3=A3o_Paulo_Rechi_Vita?= <jprvita@gmail.com>
 References: <5971620.DvuYhMxLoT@rafael.j.wysocki>
- <2402539.ElGaqSPkdT@rafael.j.wysocki>
+ <1949745.tdWV9SEqCh@rafael.j.wysocki>
 Content-Language: en-US, it-IT, en-US-large
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Denis Benato <denis.benato@linux.dev>
-In-Reply-To: <2402539.ElGaqSPkdT@rafael.j.wysocki>
+In-Reply-To: <1949745.tdWV9SEqCh@rafael.j.wysocki>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,ljones.dev];
-	TAGGED_FROM(0.00)[bounces-21268-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21269-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
@@ -97,135 +97,78 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:mid,linux.dev:dkim,linux.dev:email,intel.com:email]
-X-Rspamd-Queue-Id: E52481C49C8
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D64C51C49E6
 X-Rspamd-Action: no action
 
 
-On 2/28/26 16:11, Rafael J. Wysocki wrote:
+On 2/28/26 16:12, Rafael J. Wysocki wrote:
 > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 >
-> In all cases in which a struct acpi_driver is used for binding a driver
-> to an ACPI device object, a corresponding platform device is created by
-> the ACPI core and that device is regarded as a proper representation of
-> underlying hardware.  Accordingly, a struct platform_driver should be
-> used by driver code to bind to that device.  There are multiple reasons
-> why drivers should not bind directly to ACPI device objects [1].
+> To facilitate subsequent conversion of the driver to a platform one,
+> make it install an ACPI notify handler directly instead of using
+> a .notify() callback in struct acpi_driver.
 >
-> Overall, it is better to bind drivers to platform devices than to their
-> ACPI companions, so convert the Asus laptop ACPI driver to a platform
-> one.
->
-> While this is not expected to alter functionality, it changes sysfs
-> layout and so it will be visible to user space.
-Alright I will take a look if asus-linux software is affected and act accordingly.
-How much time do I have?
-
-Thanks. 
-> Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> No intentional functional impact.
 Reviewed-by: Denis Benato <denis.benato@linux.dev>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->  drivers/platform/x86/asus-laptop.c | 35 +++++++++++++++---------------
->  1 file changed, 18 insertions(+), 17 deletions(-)
+>  drivers/platform/x86/asus-wireless.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
-> index c927665dfa96..dbbb6292cd11 100644
-> --- a/drivers/platform/x86/asus-laptop.c
-> +++ b/drivers/platform/x86/asus-laptop.c
-> @@ -1824,8 +1824,9 @@ static void asus_dmi_check(void)
+> diff --git a/drivers/platform/x86/asus-wireless.c b/drivers/platform/x86/asus-wireless.c
+> index 41227bf95878..45d41875c515 100644
+> --- a/drivers/platform/x86/asus-wireless.c
+> +++ b/drivers/platform/x86/asus-wireless.c
+> @@ -108,9 +108,10 @@ static void led_state_set(struct led_classdev *led, enum led_brightness value)
+>  	queue_work(data->wq, &data->led_work);
+>  }
 >  
->  static bool asus_device_present;
->  
-> -static int asus_acpi_add(struct acpi_device *device)
-> +static int asus_acpi_probe(struct platform_device *pdev)
+> -static void asus_wireless_notify(struct acpi_device *adev, u32 event)
+> +static void asus_wireless_notify(acpi_handle handle, u32 event, void *context)
 >  {
-> +	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
->  	struct asus_laptop *asus;
->  	int result;
+> -	struct asus_wireless_data *data = acpi_driver_data(adev);
+> +	struct asus_wireless_data *data = context;
+> +	struct acpi_device *adev = data->adev;
 >  
-> @@ -1837,7 +1838,6 @@ static int asus_acpi_add(struct acpi_device *device)
->  	asus->handle = device->handle;
->  	strscpy(acpi_device_name(device), ASUS_LAPTOP_DEVICE_NAME);
->  	strscpy(acpi_device_class(device), ASUS_LAPTOP_CLASS);
-> -	device->driver_data = asus;
->  	asus->device = device;
->  
->  	asus_dmi_check();
-> @@ -1846,6 +1846,8 @@ static int asus_acpi_add(struct acpi_device *device)
->  	if (result)
->  		goto fail_platform;
->  
-> +	platform_set_drvdata(pdev, asus);
+>  	dev_dbg(&adev->dev, "event=%#x\n", event);
+>  	if (event != 0x88) {
+> @@ -166,8 +167,18 @@ static int asus_wireless_add(struct acpi_device *adev)
+>  	data->led.default_trigger = "rfkill-none";
+>  	err = devm_led_classdev_register(&adev->dev, &data->led);
+>  	if (err)
+> -		destroy_workqueue(data->wq);
+> +		goto err;
 > +
->  	/*
->  	 * Need platform type detection first, then the platform
->  	 * device.  It is used as a parent for the sub-devices below.
-> @@ -1907,11 +1909,12 @@ static int asus_acpi_add(struct acpi_device *device)
->  	return result;
+> +	err = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
+> +					      asus_wireless_notify, data);
+> +	if (err) {
+> +		devm_led_classdev_unregister(&adev->dev, &data->led);
+> +		goto err;
+> +	}
+> +	return 0;
+>  
+> +err:
+> +	destroy_workqueue(data->wq);
+>  	return err;
 >  }
 >  
-> -static void asus_acpi_remove(struct acpi_device *device)
-> +static void asus_acpi_remove(struct platform_device *pdev)
+> @@ -175,6 +186,8 @@ static void asus_wireless_remove(struct acpi_device *adev)
 >  {
-> -	struct asus_laptop *asus = acpi_driver_data(device);
-> +	struct asus_laptop *asus = platform_get_drvdata(pdev);
+>  	struct asus_wireless_data *data = acpi_driver_data(adev);
 >  
-> -	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY, asus_acpi_notify);
-> +	acpi_dev_remove_notify_handler(asus->device, ACPI_DEVICE_NOTIFY,
-> +				       asus_acpi_notify);
->  	asus_backlight_exit(asus);
->  	asus_rfkill_exit(asus);
->  	asus_led_exit(asus);
-> @@ -1930,15 +1933,13 @@ static const struct acpi_device_id asus_device_ids[] = {
+> +	acpi_dev_remove_notify_handler(adev, ACPI_DEVICE_NOTIFY,
+> +				       asus_wireless_notify);
+>  	if (data->wq) {
+>  		devm_led_classdev_unregister(&adev->dev, &data->led);
+>  		destroy_workqueue(data->wq);
+> @@ -188,7 +201,6 @@ static struct acpi_driver asus_wireless_driver = {
+>  	.ops = {
+>  		.add = asus_wireless_add,
+>  		.remove = asus_wireless_remove,
+> -		.notify = asus_wireless_notify,
+>  	},
 >  };
->  MODULE_DEVICE_TABLE(acpi, asus_device_ids);
->  
-> -static struct acpi_driver asus_acpi_driver = {
-> -	.name = ASUS_LAPTOP_NAME,
-> -	.class = ASUS_LAPTOP_CLASS,
-> -	.ids = asus_device_ids,
-> -	.flags = ACPI_DRIVER_ALL_NOTIFY_EVENTS,
-> -	.ops = {
-> -		.add = asus_acpi_add,
-> -		.remove = asus_acpi_remove,
-> -		},
-> +static struct platform_driver asus_acpi_driver = {
-> +	.probe = asus_acpi_probe,
-> +	.remove = asus_acpi_remove,
-> +	.driver = {
-> +		.name = ASUS_LAPTOP_NAME,
-> +		.acpi_match_table = asus_device_ids,
-> +	},
->  };
->  
->  static int __init asus_laptop_init(void)
-> @@ -1949,7 +1950,7 @@ static int __init asus_laptop_init(void)
->  	if (result < 0)
->  		return result;
->  
-> -	result = acpi_bus_register_driver(&asus_acpi_driver);
-> +	result = platform_driver_register(&asus_acpi_driver);
->  	if (result < 0)
->  		goto fail_acpi_driver;
->  	if (!asus_device_present) {
-> @@ -1959,7 +1960,7 @@ static int __init asus_laptop_init(void)
->  	return 0;
->  
->  fail_no_device:
-> -	acpi_bus_unregister_driver(&asus_acpi_driver);
-> +	platform_driver_unregister(&asus_acpi_driver);
->  fail_acpi_driver:
->  	platform_driver_unregister(&platform_driver);
->  	return result;
-> @@ -1967,7 +1968,7 @@ static int __init asus_laptop_init(void)
->  
->  static void __exit asus_laptop_exit(void)
->  {
-> -	acpi_bus_unregister_driver(&asus_acpi_driver);
-> +	platform_driver_unregister(&asus_acpi_driver);
->  	platform_driver_unregister(&platform_driver);
->  }
->  
+>  module_acpi_driver(asus_wireless_driver);
 
