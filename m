@@ -1,57 +1,58 @@
-Return-Path: <linux-acpi+bounces-21261-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21260-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJiCNAYKo2nY9AQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21261-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:30:14 +0100
+	id +OwPBvoJo2nY9AQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21260-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:30:02 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F0A1C3F30
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD24C1C3F1A
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB9AA30909EE
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 15:28:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CCDC30834F5
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 15:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D1747CC6D;
-	Sat, 28 Feb 2026 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A227747B41D;
+	Sat, 28 Feb 2026 15:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jidd/vXr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6H4tH7c"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF74657E8;
-	Sat, 28 Feb 2026 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1AF4657E8;
+	Sat, 28 Feb 2026 15:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772292512; cv=none; b=cwzRDRtHuspPyqUPcLQ4KmhA7rHbR94+vA6Nxll9npdq4mdUuptxmjAgYu4pBPtxflpszujPGPL5SA00L4CR3mY55rdOFwWJ2WLIHmzRNkB8RnYIf6k3ouq0Psw080ENx3pHCpCxRI4JFg2SeJsJiLkK2of1f/JE+Rb7Kl8jGjY=
+	t=1772292509; cv=none; b=ecz903ox6L5rbQ9adD/DySbUbZglFNP2DxYz73zqsAoSh+5wZxhrCoPs+Jpx5okwgJo9bXt6/bngh+u1eLXDZWE0pfY/8lwJTflLtt0M425FdPZwedjc0hglcXVhd59KynXobvrqOw3+W/kY88EpGSNKlgFxG7N8o8ER3uZFV2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772292512; c=relaxed/simple;
-	bh=WAA+4Jswq8LzLLcEOF7eyHn+Y0Wrn/cOgXMCZ/evFtE=;
+	s=arc-20240116; t=1772292509; c=relaxed/simple;
+	bh=PqsHVriJG2y4k84mt+nShq24fHU0P2YcBGu3dv7USAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X2jLatf+9gURNDgrFVsFI/t7zYttW23fEXJN84l7yBe0Nq+BtT3v9QD1OUqHOY3zykzoixC3kzgmFj3QMa3GCsleU17oWFi3IPDBBG9CK0XFcpmW8dlSUz/B6pNwbNkao24hQXXe9vExMoTDGy95R9IX3N5GtC5WyqM9NFcLGqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jidd/vXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AE1C19424;
-	Sat, 28 Feb 2026 15:28:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HcoU4udTJ9rU7vp1KG4E9emR5bsC2020FFCFGl3uQHo4OmTmpoW6aVW+q2iqwDm+kwCHsSTI8MyMBKMruEmsR1iJVGIPu9Dnky01c9Znl+EL4kWV/wdRPA5fZaRrk+zFGhkNFo2I0RU6l78bRe+UONiTlSZOSPqtuqwvKq7VXpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6H4tH7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369B6C116D0;
+	Sat, 28 Feb 2026 15:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772292512;
-	bh=WAA+4Jswq8LzLLcEOF7eyHn+Y0Wrn/cOgXMCZ/evFtE=;
+	s=k20201202; t=1772292509;
+	bh=PqsHVriJG2y4k84mt+nShq24fHU0P2YcBGu3dv7USAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jidd/vXrXHUcupKKOpt5Gtca9v/oP360ohxbQJhc/jb2m0YC48DEa0QLQpE99Uz+/
-	 ihLjH31t+4ALsee+8SnCXp5pGA63ivCKOURfHyn9s2JPT9Mfz+Faf01LN004tQZhQj
-	 QrGSfQ6p5MPBXsICn47ynwu6G/UGTkc3DRcjAUEaLsgBYkZVnCWONsaLzbbJDDXLjy
-	 GBST9QulhIsOyCFfbWHUTHYHMiWi6axdGf7PUehVwJWpYZuL8tLp3CnkdrQzpD4A9j
-	 nyn/+9ZFYgfQQudTXbUpqK5F23J2c518ZsK+l5rrn1CVzxjnxDTKbtKa6NO2KzRfnf
-	 W9pWivCEAJ85g==
+	b=s6H4tH7cZUWSjVIVACgjkBcjWJa7+0fa0RUDH3l+gEd7XNI2BP1ojeluIYEymfcQB
+	 +71LBN2rXYkdEjrLRujhrl28RLp+arApH7w9CDupkJcSMD8ozxheCEYeToORtoJoq9
+	 5uKOzjBYALeN9INkB7GmBvYN99UyNLoIOZZb4NQ2nnK84IymkgH1SYO8NIN1gFF+1r
+	 VrOyJDmAu/JSuCQHQpCwCG1XbqFe/apnYSy+Apbq0XTk8B/SVKygr7l0F5fzW3nt4O
+	 89tr0zfHY15lc3BOVLBBxh6Po6gM1DeW/2yKi00gmuWQHUnFx5SfrzGYRVWgvgXIUd
+	 F93a61SPzt9QQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
  Linux ACPI <linux-acpi@vger.kernel.org>, platform-driver-x86@vger.kernel.org
 Subject:
- [PATCH v1 1/2] platform/x86: intel/rst: Convert ACPI driver to a platform one
-Date: Sat, 28 Feb 2026 16:27:33 +0100
-Message-ID: <3599223.QJadu78ljV@rafael.j.wysocki>
+ [PATCH v1 2/2] platform/x86: intel/smartconnect: Convert ACPI driver to a
+ platform one
+Date: Sat, 28 Feb 2026 16:28:19 +0100
+Message-ID: <24282289.6Emhk5qWAg@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <8692017.NyiUUSuA9g@rafael.j.wysocki>
 References: <8692017.NyiUUSuA9g@rafael.j.wysocki>
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-21261-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21260-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -91,8 +92,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rafael.j.wysocki:mid]
-X-Rspamd-Queue-Id: 80F0A1C3F30
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,rafael.j.wysocki:mid]
+X-Rspamd-Queue-Id: AD24C1C3F1A
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -105,7 +106,7 @@ used by driver code to bind to that device.  There are multiple reasons
 why drivers should not bind directly to ACPI device objects [1].
 
 Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the Intel Rapid Start Technology (rst) ACPI
+ACPI companions, so convert the Intel Smart Connect disabling ACPI
 driver to a platform one.
 
 While this is not expected to alter functionality, it changes sysfs
@@ -114,68 +115,62 @@ layout and so it will be visible to user space.
 Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/platform/x86/intel/rst.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/platform/x86/intel/smartconnect.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/rst.c b/drivers/platform/x86/intel/rst.c
-index f3a60e14d4c1..4bd10927aad9 100644
---- a/drivers/platform/x86/intel/rst.c
-+++ b/drivers/platform/x86/intel/rst.c
-@@ -5,6 +5,7 @@
+diff --git a/drivers/platform/x86/intel/smartconnect.c b/drivers/platform/x86/intel/smartconnect.c
+index 31019a1a6d5e..4d866b6366d6 100644
+--- a/drivers/platform/x86/intel/smartconnect.c
++++ b/drivers/platform/x86/intel/smartconnect.c
+@@ -5,22 +5,24 @@
  
  #include <linux/acpi.h>
  #include <linux/module.h>
 +#include <linux/platform_device.h>
- #include <linux/slab.h>
  
- MODULE_DESCRIPTION("Intel Rapid Start Technology Driver");
-@@ -99,8 +100,9 @@ static struct device_attribute irst_timeout_attr = {
- 	.store = irst_store_wakeup_time
- };
+ MODULE_DESCRIPTION("Intel Smart Connect disabling driver");
+ MODULE_LICENSE("GPL");
  
--static int irst_add(struct acpi_device *acpi)
-+static int irst_probe(struct platform_device *pdev)
+-static int smartconnect_acpi_init(struct acpi_device *acpi)
++static int smartconnect_acpi_probe(struct platform_device *pdev)
  {
-+	struct acpi_device *acpi = ACPI_COMPANION(&pdev->dev);
- 	int error;
++	acpi_handle handle = ACPI_HANDLE(&pdev->dev);
+ 	unsigned long long value;
+ 	acpi_status status;
  
- 	error = device_create_file(&acpi->dev, &irst_timeout_attr);
-@@ -114,8 +116,10 @@ static int irst_add(struct acpi_device *acpi)
- 	return error;
- }
+-	status = acpi_evaluate_integer(acpi->handle, "GAOS", NULL, &value);
++	status = acpi_evaluate_integer(handle, "GAOS", NULL, &value);
+ 	if (ACPI_FAILURE(status))
+ 		return -EINVAL;
  
--static void irst_remove(struct acpi_device *acpi)
-+static void irst_remove(struct platform_device *pdev)
- {
-+	struct acpi_device *acpi = ACPI_COMPANION(&pdev->dev);
-+
- 	device_remove_file(&acpi->dev, &irst_wakeup_attr);
- 	device_remove_file(&acpi->dev, &irst_timeout_attr);
- }
-@@ -125,16 +129,15 @@ static const struct acpi_device_id irst_ids[] = {
- 	{"", 0}
+ 	if (value & 0x1) {
+-		dev_info(&acpi->dev, "Disabling Intel Smart Connect\n");
+-		status = acpi_execute_simple_method(acpi->handle, "SAOS", 0);
++		dev_info(&pdev->dev, "Disabling Intel Smart Connect\n");
++		status = acpi_execute_simple_method(handle, "SAOS", 0);
+ 	}
+ 
+ 	return 0;
+@@ -32,13 +34,12 @@ static const struct acpi_device_id smartconnect_ids[] = {
  };
+ MODULE_DEVICE_TABLE(acpi, smartconnect_ids);
  
--static struct acpi_driver irst_driver = {
--	.name = "intel_rapid_start",
--	.class = "intel_rapid_start",
--	.ids = irst_ids,
+-static struct acpi_driver smartconnect_driver = {
+-	.name = "intel_smart_connect",
+-	.class = "intel_smart_connect",
+-	.ids = smartconnect_ids,
 -	.ops = {
--		.add = irst_add,
--		.remove = irst_remove,
-+static struct platform_driver irst_driver = {
-+	.probe = irst_probe,
-+	.remove = irst_remove,
+-		.add = smartconnect_acpi_init,
++static struct platform_driver smartconnect_driver = {
++	.probe = smartconnect_acpi_probe,
 +	.driver = {
-+		.name = "intel_rapid_start",
-+		.acpi_match_table = irst_ids,
++		.name = "intel_smart_connect",
++		.acpi_match_table = smartconnect_ids,
  	},
  };
  
--module_acpi_driver(irst_driver);
-+module_platform_driver(irst_driver);
- 
- MODULE_DEVICE_TABLE(acpi, irst_ids);
+-module_acpi_driver(smartconnect_driver);
++module_platform_driver(smartconnect_driver);
 -- 
 2.51.0
 
