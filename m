@@ -1,48 +1,49 @@
-Return-Path: <linux-acpi+bounces-21253-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21252-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKzHE5MGo2l+9AQAu9opvQ
-	(envelope-from <linux-acpi+bounces-21253-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:15:31 +0100
+	id ABDpMzsGo2lo9AQAu9opvQ
+	(envelope-from <linux-acpi+bounces-21252-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:14:03 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032791C3DA3
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:15:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED201C3D74
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 16:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9889E30C57EF
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 15:13:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AA348304128A
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Feb 2026 15:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A11D4611C8;
-	Sat, 28 Feb 2026 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F7D4534BE;
+	Sat, 28 Feb 2026 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcJeT7qu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zqrj6MjJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E4445BD59;
-	Sat, 28 Feb 2026 15:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65D52D6E55;
+	Sat, 28 Feb 2026 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772291609; cv=none; b=OKTaC4dqd5o2x3wIfcv/kcydyLmhNCjBK7hHmyGZdY7PJVBRTFVis6CeJ1qZBb+qW8Mr39Q6bf6N5kR/UOyRC/cn5Rzj6XnXjKhojurZiRH+b1h2qlqYoBL7AqzPU4jG4Yan007rhnDlDB8jqr/7SjBr3GRbarbB64tsV3XLDSI=
+	t=1772291604; cv=none; b=p/TfUgmxvKDlvFGp5Ehsa5z+gsDaXWBdqo0a9HbfyKGibKb9588B7XNyZrdzDThHxcO6C9PMjgIMUEbzYsLBhMARku7zDYvjdLwkBhR4bW/4sRs8fWvJc9vLtRpgGpZJ4wjNBFcG9odGNFryNND1sKRey5Y+MxflnhbbFJx9BsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772291609; c=relaxed/simple;
-	bh=Dcj5XSusjpBUWlJoE51CNZ+xiv9mHuVUuqJjDCZfUk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cnFmKJw8xkVGndcWCZ6KKNfRdiRNyJ5pGTbUKYr3zY8bHK6IOut0TzJ/KZSxPWfDw9Sxji6j3BMYx146QluySyqZOuIf6rdmoI3sTxPIHYMmQZHlsXuCMmZkoD62AAmvPU9gu/cKeQep+uGHt5mQerItSo8VW4auuJDJmhnSHkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcJeT7qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1BBC116D0;
-	Sat, 28 Feb 2026 15:13:26 +0000 (UTC)
+	s=arc-20240116; t=1772291604; c=relaxed/simple;
+	bh=Z7MGjeaKrghIRXvHj3sjOMomomFKo2VTFmMgAlLX3b8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HV1znQ3dF0m+c9tsesOtagYqG5LP5L800fOijPfVckoxfDmJLyTtjncIgZ0u2ozj3jpQMdH0n6TPSOO9EL+Xe/iiKj0rA9SbAjuKcv0s2MM2eIUv+dn/tUWxeMq605za2g0fXtG4zKQx8jDiZeRQVrgo2HgSFqtir7YLGMv2JTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zqrj6MjJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90457C19421;
+	Sat, 28 Feb 2026 15:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772291609;
-	bh=Dcj5XSusjpBUWlJoE51CNZ+xiv9mHuVUuqJjDCZfUk0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UcJeT7quOHPnRTq4rmaa4PSLYWCFAWYZfBRQ6j3G/xIrDEw0w8VpVhECrC49Hskpm
-	 I2UPwcNGyGpjbdUo+S+T7GjjBi87vxm/6ZDss0QTZss3WBKopCLcv7NvlKv7G2phR0
-	 Q1d2K0YRHOE7KYJY4wippIizK92VTkj17/r7m8SD09Nqvlg8WtAGf4tTqEEaKH6mMj
-	 qtwR9Z0/Yii8unpg2MfjjXGwlb9igt31xCgpPUQN80cy9bOlFsBGB+PNjjI6Cp4Hru
-	 GbjZuHVSQ/xK/llvnBoW+mSciM1c8+9O+Q8tQ361687y/iZkKSeIzMmhkxY2i52dSp
-	 DBGEHKAl2Rzwg==
+	s=k20201202; t=1772291604;
+	bh=Z7MGjeaKrghIRXvHj3sjOMomomFKo2VTFmMgAlLX3b8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Zqrj6MjJXcQjMqSTcY/6TChS4ZLUso5yGWTejjNcrsqAJB9BqvwzR6wRFdS9QA0T7
+	 7bO+wqPxCVbmdJNBU0Z1Ws8/d1EBLk79yc/UiyNV+WVTR8yLv4QYL96jk3yx+LJ0NZ
+	 q75Z06/ibwRlpIbakhQ5k7IqS8btFDimTd1tPeMarAHwwhUXWYt6lLViu59fxckG2x
+	 f+4zqNmDa9ZoDyrrwE/My5QOSB1smfz/eoezQlPjsWV6XQK9ZBRaP4enCRmhIkWq1w
+	 dEI6516Z+seWvjV781n1bgyHQUVYP3uE6Jo2NHmjoGmwEG7nuv+JYk0fz7okK8ZRxQ
+	 Wr4g5g8t8C+Cg==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
@@ -51,11 +52,13 @@ Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
  Denis Benato <benato.denis96@gmail.com>,
  =?ISO-8859-1?Q?Jo=E3o?= Paulo Rechi Vita <jprvita@gmail.com>
 Subject:
- [PATCH v1 0/4] platform/x86: asus: Bind drivers to platform devices instead
- of ACPI ones
-Date: Sat, 28 Feb 2026 16:09:20 +0100
-Message-ID: <5971620.DvuYhMxLoT@rafael.j.wysocki>
+ [PATCH v1 1/4] platform/x86: asus-laptop: Register ACPI notify handler
+ directly
+Date: Sat, 28 Feb 2026 16:10:21 +0100
+Message-ID: <5082508.31r3eYUQgx@rafael.j.wysocki>
 Organization: Linux Kernel Development
+In-Reply-To: <5971620.DvuYhMxLoT@rafael.j.wysocki>
+References: <5971620.DvuYhMxLoT@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,13 +73,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	CTE_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21253-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21252-lists,linux-acpi=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
 	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,ljones.dev];
@@ -93,42 +96,71 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,rafael.j.wysocki:mid]
-X-Rspamd-Queue-Id: 032791C3DA3
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DED201C3D74
 X-Rspamd-Action: no action
 
-Hi All,
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-This series is part of a larger effort to switch over all drivers using
-the struct acpi_driver interface to the more common struct platform_driver
-interface and eliminate the former.  The background is explained in
-Documentation/driver-api/acpi/acpi-drivers.rst and in the changelog of
-the patch that introduced the above document:
+To facilitate subsequent conversion of the driver to a platform one,
+make it install an ACPI notify handler directly instead of using
+a .notify() callback in struct acpi_driver.
 
-https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/
+No intentional functional impact.
 
-The bottom line is that the kernel would be better off without struct
-acpi_driver and so it is better to get rid of it.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/platform/x86/asus-laptop.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-This series carries out driver conversions of the platform x86 drivers
-for Asus platforms.
+diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
+index d96f6af26ff7..c927665dfa96 100644
+--- a/drivers/platform/x86/asus-laptop.c
++++ b/drivers/platform/x86/asus-laptop.c
+@@ -1517,9 +1517,9 @@ static void asus_input_exit(struct asus_laptop *asus)
+ /*
+  * ACPI driver
+  */
+-static void asus_acpi_notify(struct acpi_device *device, u32 event)
++static void asus_acpi_notify(acpi_handle handle, u32 event, void *data)
+ {
+-	struct asus_laptop *asus = acpi_driver_data(device);
++	struct asus_laptop *asus = data;
+ 	u16 count;
+ 
+ 	/* TODO Find a better way to handle events count. */
+@@ -1881,6 +1881,11 @@ static int asus_acpi_add(struct acpi_device *device)
+ 	if (result && result != -ENODEV)
+ 		goto fail_pega_rfkill;
+ 
++	result = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
++						 asus_acpi_notify, asus);
++	if (result)
++		goto fail_pega_rfkill;
++
+ 	asus_device_present = true;
+ 	return 0;
+ 
+@@ -1906,6 +1911,7 @@ static void asus_acpi_remove(struct acpi_device *device)
+ {
+ 	struct asus_laptop *asus = acpi_driver_data(device);
+ 
++	acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY, asus_acpi_notify);
+ 	asus_backlight_exit(asus);
+ 	asus_rfkill_exit(asus);
+ 	asus_led_exit(asus);
+@@ -1932,7 +1938,6 @@ static struct acpi_driver asus_acpi_driver = {
+ 	.ops = {
+ 		.add = asus_acpi_add,
+ 		.remove = asus_acpi_remove,
+-		.notify = asus_acpi_notify,
+ 		},
+ };
+ 
+-- 
+2.51.0
 
-Patch [1/4] updates the asus-laptop driver to install an ACPI notify
-handler by itself instead of using the .notify() callback from struct
-acpi_driver, which is requisite for the driver conversion.
-
-Patche [2/4] converts the asus-laptop driver to using struct platform_driver
-for device binding.
-
-Patch [3/4] updates the asus-wireless driver to install an ACPI notify
-handler by itself instead of using the .notify() callback from struct
-acpi_driver, which is requisite for the driver conversion.
-
-Patche [4/4] converts the asus-wireless driver to using struct platform_driver
-for device binding.
-
-Thanks!
 
 
 
