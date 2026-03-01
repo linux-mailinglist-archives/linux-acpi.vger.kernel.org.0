@@ -1,59 +1,57 @@
-Return-Path: <linux-acpi+bounces-21279-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21280-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8N+4HEWZo2neHgUAu9opvQ
-	(envelope-from <linux-acpi+bounces-21279-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Mar 2026 02:41:25 +0100
+	id YATHAQmqo2nfJQUAu9opvQ
+	(envelope-from <linux-acpi+bounces-21280-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Mar 2026 03:52:57 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9F21CB5A3
-	for <lists+linux-acpi@lfdr.de>; Sun, 01 Mar 2026 02:41:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6014E1CE040
+	for <lists+linux-acpi@lfdr.de>; Sun, 01 Mar 2026 03:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0AA52302A1AF
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Mar 2026 01:40:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CE8A32FF337
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Mar 2026 01:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2685E2E54A2;
-	Sun,  1 Mar 2026 01:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3E72DA76C;
+	Sun,  1 Mar 2026 01:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S62jzCqs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8UPSgBS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035292D948D;
-	Sun,  1 Mar 2026 01:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8782D948A;
+	Sun,  1 Mar 2026 01:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329198; cv=none; b=qoZkhbrC5swN9E0J59yAX+HalB6q82ouAaWApxvSuUemuo7KZsxvC7O4dHbLt6WpaB1IFhUkdx/I6VQSLESig8jvyxHKFUXZQNgQC8R2RMp4dpMlEu7l6xWQyVW2zpV7q2cxS7vWAoaPq39w5/zzIKXOCKxhOkNA2W1R7ox7l1U=
+	t=1772329460; cv=none; b=dSiffb4u5TDuwgZ2CxwcSzXo1SJp7nlVl2a5sseIUJYT2h4ymP5N74PBZjZrYCFLrEJte1vjyQ+SKh4uzu/jY3IV/MGXCQVmiz6UyF/ejvM5yq16rVu1KILTtkdL0Z5O9fphe0n4X7kdSqOM1k+o3L0RnFQ9+/Rbnua8rbsd9Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329198; c=relaxed/simple;
-	bh=V4gpfFM2WeGaPXEeXT7iWEhUa3a6LiJUqfZVoN0X2L4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JlJD5U3ewQvv14MI8ev8ncqAyPs5DicGwyhoBryYQu4SX7lo8kOAXBeX1AQILIPgFlkZwa3pC9rrKjeYkgq4gtfBL7gvMdzhxli2TDtd4kCH5F/yzZxJOP8Iua6i8AH6RARYVC7qfiwExAevpgakrhsf52TWCOAgUc2gBXaCraY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S62jzCqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258E4C19421;
-	Sun,  1 Mar 2026 01:39:57 +0000 (UTC)
+	s=arc-20240116; t=1772329460; c=relaxed/simple;
+	bh=C8Oqq+sZ6Fe2dRVJwSAfic/qZBcnC56Acrt8cyLc4To=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hXFN0kXxxryCYko9rQqN+rktVOsJw76xc+vhF9OUGxEvTWS0XnFhb4tCusZ+t9tpEvOHXNeioLxYtARP+cbs5VulPc6mvS1yYWeC1wtvpwmwXXh1m+cjRQmtr1gZAMTW0Hu+5e0fIwJWq4uQYPu/0DB5BX5f7SsZdYtn1SB1ghA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8UPSgBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC33DC19421;
+	Sun,  1 Mar 2026 01:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329197;
-	bh=V4gpfFM2WeGaPXEeXT7iWEhUa3a6LiJUqfZVoN0X2L4=;
+	s=k20201202; t=1772329460;
+	bh=C8Oqq+sZ6Fe2dRVJwSAfic/qZBcnC56Acrt8cyLc4To=;
 	h=From:To:Cc:Subject:Date:From;
-	b=S62jzCqs40H62EPSjXyQm1LYPdUif/JyaYm12204Ta7HojxRr2DhuYr+M8PA/9Ti/
-	 l0WQumBhLrN65VAWsw0geB5y/NXdhYERr6PeTJ66a/7xiiSbyuUC14M7p8uJghDls+
-	 YXNLgh9EfP2mFo70ya4niGojJ4kNWeJjdicODlQ8RbssDdKvgwDyM8Xib8yQasOnmr
-	 brXTB0vyNC1OW6ruRLS53+d6eNGz0rkIAhfUIcXQc4XxoKCiHt4fobpIgwCH63N99Z
-	 EuloX8qgM9ZB+cUQdtBuG8E+VE634ULSbe6/mLz2h0JcHgeExArMkn/53qs2xkZ3h/
-	 NEd8U+3zmEGKQ==
+	b=N8UPSgBSl9Xf1sJSIGMChzlVxIauTf6/knc29mYdbcvgetIfDEkH7tX4C229ahCxK
+	 SAcjb4it1l18ZgMErP5mH4avCRZlegp0Q83fgVQTyCPUypvFtoNDKPdM1Q2EIanWSp
+	 JxLQB9KNLQgqMQcs7KXfe3PIzljhGuMQxRswfYP6W5LNIfvMWG9l09kyIottL3Lrjx
+	 N0tOe5Ov1jQt++/dGLcOqVBR2hE78rqPG2a1BA8FS7g4+JVjUTuN8at1FdDT5Lv/0N
+	 6Wxbtehm+RwkBImtgX6zAeyXPByfToyfywfkaCYCdtJzr8rM7ezxSS8OugU3VMTkGW
+	 lldivKW4YW/Pg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yazen.ghannam@amd.com
-Cc: Michal Pecio <michal.pecio@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	linux-acpi@vger.kernel.org
-Subject: FAILED: Patch "x86/acpi/boot: Correct acpi_is_processor_usable() check again" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:39:55 -0500
-Message-ID: <20260301013956.1701053-1-sashal@kernel.org>
+	nathan@kernel.org
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: FAILED: Patch "ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:44:18 -0500
+Message-ID: <20260301014418.1706534-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -65,36 +63,33 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,alien8.de,kernel.org,linux.intel.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-21280-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21279-lists,linux-acpi=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,alien8.de:email,intel.com:email]
-X-Rspamd-Queue-Id: EA9F21CB5A3
+	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6014E1CE040
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 6.1-stable tree.
@@ -107,131 +102,55 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From adbf61cc47cb72b102682e690ad323e1eda652c2 Mon Sep 17 00:00:00 2001
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-Date: Tue, 11 Nov 2025 14:53:57 +0000
-Subject: [PATCH] x86/acpi/boot: Correct acpi_is_processor_usable() check again
+From b584bfbd7ec417f257f651cc00a90c66e31dfbf1 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 14 Jan 2026 16:27:11 -0700
+Subject: [PATCH] ACPI: APEI: GHES: Disable KASAN instrumentation when compile
+ testing with clang < 18
 
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
+After a recent innocuous change to drivers/acpi/apei/ghes.c, building
+ARCH=arm64 allmodconfig with clang-17 or older (which has both
+CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
 
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
+  drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
+    902 | static void ghes_do_proc(struct ghes *ghes,
+        |             ^
 
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
+A KASAN pass that removes unneeded stack instrumentation, enabled by
+default in clang-18 [1], drastically improves stack usage in this case.
 
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=0" it is expected that the OS will completely ignore these
-entries.
+To avoid the warning in the common allmodconfig case when it can break
+the build, disable KASAN for ghes.o when compile testing with clang-17
+and older. Disabling KASAN outright may hide legitimate runtime issues,
+so live with the warning in that case; the user can either increase the
+frame warning limit or disable -Werror, which they should probably do
+when debugging with KASAN anyways.
 
-However, QEMU will do the same (include entries with "Enabled=0") for
-the purpose of allowing CPU hotplug within the guest.
-
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-  [ mingo: Removed misapplied -stable tag. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
-Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
+Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ drivers/acpi/apei/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9fa321a95eb33..d6138b2b633a3 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
- 
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force = 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
- 
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
- 
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
- }
- 
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index f55ea3cdbf88e..23190a786d310 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
- 
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/msr.h>
-@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
- 		cpuid_to_apicid[cpu] = apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
--
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
- 	}
- 
+diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
+index 5db61dfb46915..1a0b85923cd42 100644
+--- a/drivers/acpi/apei/Makefile
++++ b/drivers/acpi/apei/Makefile
+@@ -1,6 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_ACPI_APEI)		+= apei.o
+ obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
++# clang versions prior to 18 may blow out the stack with KASAN
++ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
++KASAN_SANITIZE_ghes.o := n
++endif
+ obj-$(CONFIG_ACPI_APEI_PCIEAER)	+= ghes_helpers.o
+ obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
+ einj-y				:= einj-core.o
 -- 
 2.51.0
 
