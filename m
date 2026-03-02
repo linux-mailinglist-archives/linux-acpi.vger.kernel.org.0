@@ -1,161 +1,158 @@
-Return-Path: <linux-acpi+bounces-21295-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21296-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEDTItRypWlsBQYAu9opvQ
-	(envelope-from <linux-acpi+bounces-21295-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Mar 2026 12:21:56 +0100
+	id uOKjDDSBpWl1CgYAu9opvQ
+	(envelope-from <linux-acpi+bounces-21296-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Mar 2026 13:23:16 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD651D760D
-	for <lists+linux-acpi@lfdr.de>; Mon, 02 Mar 2026 12:21:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB97D1D83C7
+	for <lists+linux-acpi@lfdr.de>; Mon, 02 Mar 2026 13:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C261D3006148
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Mar 2026 11:21:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15845304953C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Mar 2026 12:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56971361DA9;
-	Mon,  2 Mar 2026 11:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rckh1YIX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B027136C9CF;
+	Mon,  2 Mar 2026 12:21:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFA2360751;
-	Mon,  2 Mar 2026 11:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22557175A85;
+	Mon,  2 Mar 2026 12:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772450513; cv=none; b=vA9QnBprP8tvak6Ldg61/dutDM7Xyl3TeSpugQ2CqH0msWZXaGwpNG8lxkS38NUVGdJAqE0aHFmgJtalyWU7BiudY+T9nHivxl/BEajRfZFfG/0AhgbO9v3/VnjctRVUdTe3q9MNoLb9uSQku3h1eByZg3XJvyQmaolQ/S93iCU=
+	t=1772454109; cv=none; b=fSYEIBWbOM9kvRzQ7C8pXjKui+Y5Fxpw+D9OmAHbmPg7t0wxQFdloEtshM9zmKa+jiiZp+xT0fKpujZIfIZHAJaloavzQgaQfz/NraQi8WGe4pWPykEHrGpcVDzsCShSLEkviAT3lDvuloMiQVoPdHGxmyultIAfnFM4rqK/6nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772450513; c=relaxed/simple;
-	bh=iFbvh8tKvkPrHovLN/ghzsebmiJAP5hbMNeaXZFFXZM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=DDEmI4/tAmFFpheU2f8T076sDBAOCIN0EgqCCZcppASELmqiP3VoApjf5/10n0L1VSu5je5Pa/LAWEYarsulXYbWZsvY0JcvLebfWH/kB9zrgqcwUIOvUaNBdRneXOKlEWcNyYrSa5SaDah9KWBky7U3z82ZVshAc3BMpfmyGOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rckh1YIX; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772450512; x=1803986512;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=iFbvh8tKvkPrHovLN/ghzsebmiJAP5hbMNeaXZFFXZM=;
-  b=Rckh1YIXE8w8ENqJIKV0jH1Zc3cJ56t5qpONd/7/PN9TtQIr3jrcTgG5
-   Sc4tKPl8ZW4hQpEqW/ssK970Xhe4P9xweafzG5caDGy4fREtQgb9yOq1l
-   8kZmEst93/UOOM5OKuW5Di1JFizv2Xu7BgiYPR02CML0oO9SbB/YDdRhu
-   5OZsIYvt/CylxRNF28p8muYERd/sLCJVBr/SoH/rgX+NXQTmOlcFkAzyI
-   Xi6GijmBw0co7hyPDuB/k1ZFBY8aG7otbFQ3VZYFieejVbOLGpiadPCBI
-   exLjElFB8kWE+LbQMdvI2FdEB4r9YAQwFjvTsUDMGknSYeNzcIfvtT094
-   g==;
-X-CSE-ConnectionGUID: t9d/Bk0/QNGB9rqLpSfkbg==
-X-CSE-MsgGUID: wWa+e6f8Qdqpb5yUnXON6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="77318135"
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="77318135"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 03:21:51 -0800
-X-CSE-ConnectionGUID: V99rOaplRqOEwKBSjrKEkQ==
-X-CSE-MsgGUID: 2deyfAciTpuAJb7xgG1hJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; 
-   d="scan'208";a="215275602"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.116])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 03:21:47 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 2 Mar 2026 13:21:45 +0200 (EET)
-To: Denis Benato <denis.benato@linux.dev>
-cc: "Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hansg@kernel.org>, 
-    LKML <linux-kernel@vger.kernel.org>, 
-    Linux ACPI <linux-acpi@vger.kernel.org>, 
-    platform-driver-x86@vger.kernel.org, 
-    Corentin Chary <corentin.chary@gmail.com>, 
-    "Luke D. Jones" <luke@ljones.dev>, 
-    =?ISO-8859-15?Q?Jo=E3o_Paulo_Rechi_Vita?= <jprvita@gmail.com>
-Subject: Re: [PATCH v1 2/4] platform/x86: asus-laptop: Convert ACPI driver
- to a platform one
-In-Reply-To: <c9697592-c70b-4ef8-864f-213b5ea4782d@linux.dev>
-Message-ID: <ab094189-b333-895a-7238-f20050966d37@linux.intel.com>
-References: <5971620.DvuYhMxLoT@rafael.j.wysocki> <2402539.ElGaqSPkdT@rafael.j.wysocki> <c9697592-c70b-4ef8-864f-213b5ea4782d@linux.dev>
+	s=arc-20240116; t=1772454109; c=relaxed/simple;
+	bh=hY4/1V4CPkbzOM46xddbLCRjIns1Rne2oR81yNkRkMQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zs4I+AmdVZGEnrx256SEazhMrm2xjZTnZ7Qlty/7b7bWlrXt4b6GHsRRB/3Z4wA+27U7p3yuwrb0qUdxhvJAniS4/hAeYLnMSeNlXAX0ft3vdu/4sffPPrqxPdP2BtOB4mB72fTGd/OzFNy3ySDjeqauPHGpiCfGslzsVigw97M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fPdLq4LTKzHnGhl;
+	Mon,  2 Mar 2026 20:20:51 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 53AA54056B;
+	Mon,  2 Mar 2026 20:21:43 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Mar
+ 2026 12:21:41 +0000
+Date: Mon, 2 Mar 2026 12:21:39 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Herve Codina <herve.codina@bootlin.com>
+CC: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
+ Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha Hauer"
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, "Michael Turquette"
+	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, "Andi Shyti"
+	<andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, "Arnd Bergmann" <arnd@arndb.de>, Saravana
+ Kannan <saravanak@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+	<rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
+ Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
+ Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+	<sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
+ Jiang" <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, "Shawn Guo" <shawnguo@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-clk@vger.kernel.org>,
+	<linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+	<patches@opensource.cirrus.com>, <linux-gpio@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Allan Nielsen
+	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
+	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 10/28] cxl/test: Use device_set_node()
+Message-ID: <20260302122139.00000041@huawei.com>
+In-Reply-To: <20260227135428.783983-11-herve.codina@bootlin.com>
+References: <20260227135428.783983-1-herve.codina@bootlin.com>
+	<20260227135428.783983-11-herve.codina@bootlin.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1444050466-1772450505=:1094"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	SUSPICIOUS_RECIPS(1.50)[];
-	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21295-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,ljones.dev];
-	MIME_TRACE(0.00)[0:+,1:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lunn.ch,kernel.org,glider.be,gmail.com,linuxfoundation.org,nxp.com,pengutronix.de,baylibre.com,sang-engineering.com,axentia.se,arndb.de,google.com,opensource.cirrus.com,cirrus.com,linaro.org,linux.intel.com,stgolabs.net,intel.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,microchip.com,bootlin.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21296-lists,linux-acpi=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi,dt,renesas];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-acpi@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[62];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.964];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: DBD651D760D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,bootlin.com:email,huawei.com:mid,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AB97D1D83C7
 X-Rspamd-Action: no action
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, 27 Feb 2026 14:54:07 +0100
+Herve Codina <herve.codina@bootlin.com> wrote:
 
---8323328-1444050466-1772450505=:1094
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+> The code set directly dev->fwnode.
+> 
+> Use the dedicated helper to perform this operation.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-On Sat, 28 Feb 2026, Denis Benato wrote:
-> On 2/28/26 16:11, Rafael J. Wysocki wrote:
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> >
-> > In all cases in which a struct acpi_driver is used for binding a driver
-> > to an ACPI device object, a corresponding platform device is created by
-> > the ACPI core and that device is regarded as a proper representation of
-> > underlying hardware.  Accordingly, a struct platform_driver should be
-> > used by driver code to bind to that device.  There are multiple reasons
-> > why drivers should not bind directly to ACPI device objects [1].
-> >
-> > Overall, it is better to bind drivers to platform devices than to their
-> > ACPI companions, so convert the Asus laptop ACPI driver to a platform
-> > one.
-> >
-> > While this is not expected to alter functionality, it changes sysfs
-> > layout and so it will be visible to user space.
->
-> Alright I will take a look if asus-linux software is affected and act acc=
-ordingly.
-> How much time do I have?
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-Please take your time, we don't need to rush things, especially=20
-refactoring when there are open questions to answer.
+> ---
+>  tools/testing/cxl/test/cxl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+> index 81e2aef3627a..3d9107b2661c 100644
+> --- a/tools/testing/cxl/test/cxl.c
+> +++ b/tools/testing/cxl/test/cxl.c
+> @@ -1136,7 +1136,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+>  {
+>  	device_initialize(&adev->dev);
+>  	fwnode_init(&adev->fwnode, NULL);
+> -	dev->fwnode = &adev->fwnode;
+> +	device_set_node(dev, &adev->fwnode);
+>  	adev->fwnode.dev = dev;
+>  }
+>  
 
-> Thanks.=C2=A0
-> > Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ =
-[1]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Denis Benato <denis.benato@linux.dev>
-
---=20
- i.
-
---8323328-1444050466-1772450505=:1094--
 
