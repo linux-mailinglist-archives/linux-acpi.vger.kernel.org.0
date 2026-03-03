@@ -1,227 +1,158 @@
-Return-Path: <linux-acpi+bounces-21301-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21302-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIcXFzdwpml2PwAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21301-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 06:23:03 +0100
+	id +G9nIeB6pml8QQAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21302-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 07:08:32 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E141E932F
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 06:23:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310A41E9671
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 07:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EAB0303A112
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2026 05:22:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C43B230528BC
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2026 06:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925DA7263B;
-	Tue,  3 Mar 2026 05:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91959358365;
+	Tue,  3 Mar 2026 06:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b="ABfH6uHm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K27VfvfK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cnc.isely.net (cnc.isely.net [192.69.181.175])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18D83BB48;
-	Tue,  3 Mar 2026 05:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.69.181.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF167262F;
+	Tue,  3 Mar 2026 06:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772515322; cv=none; b=jagiSjZ/w1X8br6rMuTOdUYZsEpKWW8/9tSxfLDuYsXvoeM3KE0ChxlSE5uUp6bdUcJyGezrPFNzUmKSXHHEP8BdZVf/Bxc5fjyjLLGqFpS9Fhd6FyObdSyAfX8tBFUldqvlZKnWnZbbRU236oREOXyGJ7/0YNti7PWhDtPOnTk=
+	t=1772518077; cv=none; b=VIybMCbYmZKTKMZkqCd7fTkpd4fjLwmKtdQ9sURscJ7HMG4m9MqM3M8YoW/wgpk7e2f1EHv46/VI2fIf071eDpnTJsV4Uo45I8oEt7zD6Id/H2olWzLIbJt7QqYSeRNS2+99lrFczzEe+fLgwj0JbBXtY6Te4J8FXaXUWEr5mTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772515322; c=relaxed/simple;
-	bh=NJRHljmK4dCn9HBxJpHfWdbGwB4zdCQ2Y/BCxUkoE+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=pJ9Tfth+5HAqyoYj8SeihQceWCvo0ZARSx84aBgnv34hetm2/fyuL9oVSIH0jGMSILLSN4s1PrQHTjAwpOkXCDwMVOBmWfIw/WipdpZtLL+QpuudmKSyiY+3ztZ1tCKAJLpfzfmyaroB/9P7Q6x3KIJtAaIYi2P4kb7WCvtkBs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=cobaltdigital.com; spf=fail smtp.mailfrom=cobaltdigital.com; dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b=ABfH6uHm; arc=none smtp.client-ip=192.69.181.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=cobaltdigital.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=cobaltdigital.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=isely.net; s=deb;
-	t=1772515314; bh=CXDsVMKPyybRszcxRIEhXdAH0I7glKFE+R9UuY6wqik=;
-	h=From:To:Cc:Subject:Date;
-	b=ABfH6uHmSr3LIRPEYp7/8ptERJbSWgv9udJNq4ZPuiyf07Mux9CxR2v/JlLDDpCtN
-	 uy+aX70oDGQAicEM4sc4fG9T0Gdr5RjFwfAmo9zsKZO2Npi9I8cjDIq4FEJAg36BKu
-	 Wc/UHmFIoiasJEKjgD7op0e3iNkA/wmHZAh/skkA/qnP408wsf0/AVRntubRj
-Original-Subject: [PATCH] sofware node: Only the managing device can unreference managed software node
-Author: mike.isely@cobaltdigital.com
-Original-Cc: Mike Isely <mike.isely@cobaltdigital.com>,
-  Mike Isely <isely@pobox.com>, linux-acpi@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Received: from cobalt1.prod.cobalt.internal (ts4-dock4.isely.net [::ffff:192.168.23.121])
-  (AUTH: PLAIN isely, TLS: TLS1.3,256bits,ECDHE_RSA_AES_256_GCM_SHA384)
-  by cnc.isely.net with ESMTPSA
-  id 00000000000A0004.0000000069A66FF2.000053AF; Mon, 02 Mar 2026 23:21:54 -0600
-From: mike.isely@cobaltdigital.com
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-  Daniel Scally <djrscally@gmail.com>,
-  Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-  Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mike Isely <mike.isely@cobaltdigital.com>,
-  Mike Isely <isely@pobox.com>, linux-acpi@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: [PATCH] sofware node: Only the managing device can unreference managed software node
-Date: Mon,  2 Mar 2026 23:21:41 -0600
-Message-ID: <20260303052146.1166717-1-mike.isely@cobaltdigital.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1772518077; c=relaxed/simple;
+	bh=bYGxeb0oKnPKhTR3gcq9FDbtu2F7YmpxraTvFuPYRRg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ta0iugmq+01IC3xENGmBBFBbR8/yxYWRAtnORlNQ1wYY6GjP++SFxsSBmhGouvvBhCMCBuskycBdR/IBa1nYK8yoNTU/V4SjbDqYKwJEawr02/iIT2htXOYx4TB8DsxWFpIR+JAdGIHo74tcR72rOMwb2331jtYuZuc3F2dRRAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K27VfvfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E1DC116C6;
+	Tue,  3 Mar 2026 06:07:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772518077;
+	bh=bYGxeb0oKnPKhTR3gcq9FDbtu2F7YmpxraTvFuPYRRg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K27VfvfKyTIqhbi5/kcpQyQh82zF4irXRKnnde7Bi2L4lt0VYr3QxxD9oDRMtjimC
+	 MmsziJkMiR9P/nfJR6Li7hIkTVCu+N5t+Kln01q985h0dtNfaZ3ZGzDbFS2Wvqrwiy
+	 5E6BtdSfg46+O5qOIExeRbucY1mZGAVOi4aBp5kSPGC4X3T72Brv21no0FQ/1MwZT3
+	 Vs+qlKE0tF6o+eVyfyF1T8VLZi5JSLR1yvgxpAeDRXW3XqfqzkSPIscCahf7Swj/EO
+	 JrzhLxFeEkNb3A9Xp7WK+v+S0RH4qtCZQGi/thxt4uu9Laj/Gp5xW3K2an3pNmaoIg
+	 mxTMoDu8W6fXg==
+Date: Mon, 2 Mar 2026 23:07:52 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	x86 Maintainers <x86@kernel.org>, linux-rtc@vger.kernel.org,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH v1 4/8] ACPI: x86/rtc-cmos: Use platform device for
+ driver binding
+Message-ID: <20260303060752.GA2749263@ax162>
+References: <5983325.DvuYhMxLoT@rafael.j.wysocki>
+ <13969123.uLZWGnKmhe@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
-X-Rspamd-Queue-Id: 66E141E932F
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13969123.uLZWGnKmhe@rafael.j.wysocki>
+X-Rspamd-Queue-Id: 310A41E9671
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[isely.net:s=deb];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[cobaltdigital.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linux.intel.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21301-lists,linux-acpi=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[mike.isely@cobaltdigital.com,linux-acpi@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[isely.net:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-21302-lists,linux-acpi=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pobox.com:email]
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linux-acpi@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Mike Isely <mike.isely@cobaltdigital.com>
+Hi Rafael,
 
-Explanation here is lengthy because the problem is subtle.
+On Mon, Feb 23, 2026 at 04:30:21PM +0100, Rafael J. Wysocki wrote:
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> 
+> Modify the rtc-cmos driver to bind to a platform device on systems with
+> ACPI via acpi_match_table and advertise the CMOST RTC ACPI device IDs
+> for driver auto-loading.  Note that adding the requisite device IDs to
+> it and exposing them via MODULE_DEVICE_TABLE() is sufficient for this
+> purpose.
+> 
+> Since the ACPI device IDs in question are the same as for the CMOS RTC
+> ACPI scan handler, put them into a common header file and use the
+> definition from there in both places.
+> 
+> Additionally, to prevent a PNP device from being created for the CMOS
+> RTC if a platform one is present already, make is_cmos_rtc_device()
+> check cmos_rtc_platform_device_present introduced previously.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-A scenario exists where device_create_managed_software_node() is used
-to create an swnode instance that will be implicitly shared to a child
-device despite best intentions not to permit such sharing (per the
-comment in device_create_managed_software_node()).  I encountered this
-with the sfp kernel module when it was instantiated with properties
-via a call to platform_device_register_full() - it will create hwmon
-child devices which get all property references.  Unfortunately with
-just a "managed" boolean in struct swnode handling this, then
-kobject_put() gets called for the managed aspect when the child device
-goes away instead of the parent.  This leads to premature freeing of
-the swnode structure, followed by use-after-free problems, heap
-corruption, and generally chaos / crashes / misbehavior in the kernel.
+After this change in -next as commit 2a78e4210444 ("ACPI: x86/rtc-cmos:
+Use platform device for driver binding"), I am seeing
 
-This commit changes that boolean into a pointer to the actual managing
-struct device, which is then checked against the struct device
-instance that is actually going away (via the usual call back into
-software_node_notify_remove()).  Thus the child device removal is
-ignored as it should, and we only do the kobject_put() when the actual
-managing struct device instance goes away.  We effectively carry a
-little bit more information now so that we can be sure to clean up
-only when the correct struct device instance is actually going away.
+  rtc_cmos PNP0B00:00: error -ENXIO: IRQ index 0 not found
 
-Note that while we are now keeping a pointer to a struct device here,
-this is safe to do because the pointer itself only stays in use while
-the pointed-to device remains valid.  (So no need to be concerned
-about additional reference counting.)
+on a few of my test machines. Is this expected?
 
-Here's a succinct, generic sequence that spells out the steps which
-lead to trouble:
+Cheers,
+Nathan
 
-  1. Somebody creates a struct device instance.
-
-  2. Somebody calls device_create_managed_software_node() associating
-  it with that struct device instance.  This causes two kobject
-  references to be counted against the swnode instance (one for the
-  struct device and one because the managed flag was set).  refcount=2
-
-  3. Some time later, a child struct device is created and the
-  properties of the parent are shared with the child.  This causes
-  another kobject reference to be counted against the swnode instance.
-  refcount=3
-
-  4. Some time later, that child struct device instance goes
-  away (perhaps due to a hotplug removal).  During the tear-down,
-  software_node_notify_remove() notices that the managed field of the
-  swnode instance is set, so TWO kobject references are removed
-  instead of the single reference created by the previous step.
-  refcount=1
-
-  5. Repeat step 3.  refcount=2
-
-  6. Repeat step 4.  refcount=0
-
-  7. Now the kobject reference count inside the swnode instance has
-  dropped to zero and so the swnode instance is released.  Notice that
-  the parent device is still holding a physical reference, now
-  pointing into freed memory.  Chaos likely follows.  If lucky, a NULL
-  pointer kernel oops is the result.
-
-The patch fixes this by causing step 4 to only do the second reference
-decrement if the device being torn down is the same one that
-established the managing relationship in the first place.  Then
-everything stays balanced.
-
-I confirmed this exact sequence of behavior in the context of the sfp
-kernel module with appropriate printk debug trace added, when
-instantiated with platform_device_register_full() with properties
-provided.  While that's may be hard for to reproduce without sfp
-hardware, anything else which performs those steps should produce
-similar results.
-
-Note that because platform_device_register_full() will implicitly
-employ a managed swnode instance any time it is passed properties in
-its pdevinfo argument, then by implication anyone calling
-platform_device_register_full() in that manner - which happens in
-multiple other places in the kernel - is at risk for the same issue.
-
-Signed-off-by: Mike Isely <mike.isely@cobaltdigital.com>
-Signed-off-by: Mike Isely <isely@pobox.com>
----
- drivers/base/swnode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 53b3f0061ad12..18a903a35197c 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -36,8 +36,8 @@ struct swnode {
- 	struct list_head children;
- 	struct swnode *parent;
- 
-+	struct device *managing_dev;
- 	unsigned int allocated:1;
--	unsigned int managed:1;
- };
- 
- static DEFINE_IDA(swnode_root_ids);
-@@ -1060,7 +1060,7 @@ int device_create_managed_software_node(struct device *dev,
- 	if (IS_ERR(fwnode))
- 		return PTR_ERR(fwnode);
- 
--	to_swnode(fwnode)->managed = true;
-+	to_swnode(fwnode)->managing_dev = dev;
- 	set_secondary_fwnode(dev, fwnode);
- 
- 	if (device_is_registered(dev))
-@@ -1104,7 +1104,7 @@ void software_node_notify_remove(struct device *dev)
- 	sysfs_remove_link(&dev->kobj, "software_node");
- 	kobject_put(&swnode->kobj);
- 
--	if (swnode->managed) {
-+	if (swnode->managing_dev == dev) {
- 		set_secondary_fwnode(dev, NULL);
- 		kobject_put(&swnode->kobj);
- 	}
--- 
-2.47.3
-
----
+# bad: [d517cb8cea012f43b069617fc8179b45404f8018] Add linux-next specific files for 20260302
+# good: [11439c4635edd669ae435eec308f4ab8a0804808] Linux 7.0-rc2
+git bisect start 'd517cb8cea012f43b069617fc8179b45404f8018' '11439c4635edd669ae435eec308f4ab8a0804808'
+# bad: [30cad5d4db9212a3e9bb99be1d99c4fbc17966c7] Merge branch 'master' of https://git.kernel.org/pub/scm/linux/kernel/git/wpan/wpan-next.git
+git bisect bad 30cad5d4db9212a3e9bb99be1d99c4fbc17966c7
+# good: [3d6642ce50abe4cccbbc4cfda0808300b4f39cb6] Merge branch 'for-next' of https://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git
+git bisect good 3d6642ce50abe4cccbbc4cfda0808300b4f39cb6
+# good: [e832bc0903e6b85f9f084fef0a9d51bbbbcc1ee7] Merge branch 'for-next/pstore' of https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
+git bisect good e832bc0903e6b85f9f084fef0a9d51bbbbcc1ee7
+# bad: [ef26f99b113b16135282e2cda9ee8afda2d39e10] Merge branch 'for-next' of https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git
+git bisect bad ef26f99b113b16135282e2cda9ee8afda2d39e10
+# good: [df57aa49ec08ebe55d2840e3950be37bff3a8853] Merge branch 'docs-next' of git://git.lwn.net/linux.git
+git bisect good df57aa49ec08ebe55d2840e3950be37bff3a8853
+# bad: [8aec61332e195aae38737a3b6454526938132f41] Merge branch 'next' of https://git.kernel.org/pub/scm/linux/kernel/git/ulfh/linux-pm.git
+git bisect bad 8aec61332e195aae38737a3b6454526938132f41
+# bad: [ea956cb5e17cb5910382be255aa2329e067edd3b] Merge branch 'cpupower' of https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux.git
+git bisect bad ea956cb5e17cb5910382be255aa2329e067edd3b
+# bad: [0953f6a5e08b6fc636b17e00dcac3d9eeef78e72] Merge branch 'acpi-cmos-rtc' into linux-next
+git bisect bad 0953f6a5e08b6fc636b17e00dcac3d9eeef78e72
+# bad: [0139085310c40853cc429d5c38fd66e540c97d34] x86: rtc: Drop PNP device check
+git bisect bad 0139085310c40853cc429d5c38fd66e540c97d34
+# good: [1ae2f435350ec05224a39995c3a680aa6fdae5a5] ACPI: x86: cmos_rtc: Create a CMOS RTC platform device
+git bisect good 1ae2f435350ec05224a39995c3a680aa6fdae5a5
+# bad: [d15f1c2e413e861270ca6aa5dc5d9da1bcd678ca] ACPI: PNP: Drop CMOS RTC PNP device support
+git bisect bad d15f1c2e413e861270ca6aa5dc5d9da1bcd678ca
+# bad: [2a78e42104444f948698f1225deaf515e9b7224d] ACPI: x86/rtc-cmos: Use platform device for driver binding
+git bisect bad 2a78e42104444f948698f1225deaf515e9b7224d
+# first bad commit: [2a78e42104444f948698f1225deaf515e9b7224d] ACPI: x86/rtc-cmos: Use platform device for driver binding
 
