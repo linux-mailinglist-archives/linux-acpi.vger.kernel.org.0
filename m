@@ -1,123 +1,237 @@
-Return-Path: <linux-acpi+bounces-21317-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21318-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHzrCtZOp2nKggAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21317-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 22:12:54 +0100
+	id 8LjxHhdPp2nKggAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21318-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 22:13:59 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5251F73E3
-	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 22:12:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04081F7410
+	for <lists+linux-acpi@lfdr.de>; Tue, 03 Mar 2026 22:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C4A913029450
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2026 21:12:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0794306D890
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Mar 2026 21:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8929938C400;
-	Tue,  3 Mar 2026 21:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CAD37F723;
+	Tue,  3 Mar 2026 21:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b="Aclw0TWO"
+	dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b="BiTbYqSu"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cnc.isely.net (cnc.isely.net [192.69.181.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA40137F723;
-	Tue,  3 Mar 2026 21:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1936386C3D;
+	Tue,  3 Mar 2026 21:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.69.181.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772572368; cv=none; b=pcbJM3FfngAIzqQYNZXhbGuE2gPSuALyi1Fmdg9kzn6LWSD7xvNOSSxb+LoZcVMb411chbjUiqGyT9xDxQaKhNQgVVq/jW+MsI6xpEArnL+ZL8PX4Bs7iMBoeoKiYMXeq0u9HSfqTP5KNsTPskO9+AAyHll3z+YqAfydPJwh1xs=
+	t=1772572437; cv=none; b=sA+rsDD0Fv/BMIJvqZzoZuH2zBXf5wQQcXC8HAzgz2OvLYHAuF5mGABBf+N0MIRho5io3VH5sWdGldk891+g85anNc83742FY7PZmx8WFsHz6+RPWklCS/tLA/s3CrZ5CfvAk/eluxyY3dHbotTGTamRJM0DR94Hi4ZFgwP7YYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772572368; c=relaxed/simple;
-	bh=dRXK6/awjk2Kxgccsg+IJyWo/Jvy8DrhOKp/mAjCAys=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 Mime-Version:Content-Type; b=g0rxu9Ymj43y5lR3eNtPi0m7gS7OqtWYLdL2lj6Q0aVKTzpUgXUPxhyu0bN37E/HfvkJUM+vEhCLiiQVmztHdmR4yuikd2OS9sHoXNikg7KEPJBvNAKNJG512cXo1vyjtoUuPnq3A4IpsK9UJvCdKderuiT7aFKL80kBd3rnZ2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isely.net; spf=pass smtp.mailfrom=isely.net; dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b=Aclw0TWO; arc=none smtp.client-ip=192.69.181.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isely.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isely.net
+	s=arc-20240116; t=1772572437; c=relaxed/simple;
+	bh=/89ZCToBmaEG9DFFuTJNX3H+igTBVEciXwbB9aan/J0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=d9o+ooZ28eIR74mQaofO6pGAEbx+EE46FScamTvbr0vO2Z+e4qaEacrzO8Z/TljDwEc1O796esJ2CKUV2C4trSMUv2moBVIEs/87T4c2LueHluO8glAfIFtr8JO/rr0Ik/jYbbbLAj+F+d/DWUCPHbGK57ZABqKa9+uIFn5wD/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=cobaltdigital.com; spf=fail smtp.mailfrom=cobaltdigital.com; dkim=pass (1152-bit key) header.d=isely.net header.i=@isely.net header.b=BiTbYqSu; arc=none smtp.client-ip=192.69.181.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=cobaltdigital.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=cobaltdigital.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=isely.net; s=deb;
-	t=1772572365; bh=widlcjRiMNafN4+/A9h0WgcS9CJFKWAEN3NALlbEnSo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=Aclw0TWOeJYwZu2G8pF+V+hVoDu4ubbbTdrLSsdRH98jMCZDHIlIyK/vNU/ce/+56
-	 iHNar9IENvB0SlZREf/KZ0jnfHWaIv0p9lFS7i3QNFj/7KY4KwYuBCQg4PK14C7OTn
-	 acxy5I3AMKgh/mOYRfXTHMxL+Ax6ZJYFtUNPvW6Gx0ACtXF4GT00jQbaqQFpb
-Original-Subject: Re: [PATCH] sofware node: Only the managing device can unreference
- managed software node
-Author: Mike Isely <isely@isely.net>
-Original-cc: mike.isely@cobaltdigital.com,
-  Daniel Scally <djrscally@gmail.com>,
-  Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-  Sakari Ailus <sakari.ailus@linux.intel.com>,
-  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Received: from ts4-dock4.isely.net (ts4-dock4.isely.net [::ffff:192.168.23.121])
+	t=1772572434; bh=3nw6ol0iYsCc39sx4LX+oHNjkyK0jcV8mP01NpdAGRY=;
+	h=From:To:Cc:Subject:Date;
+	b=BiTbYqSukr1Cw2OrH7pLAQ5TqflbpmnuC+foHJMrAVN44h4yaBoypb1oeFQmei1ah
+	 qhKuYW3bm428c6jslQWS/9zvuOvNC4DVGRO1FA9s7nEStsV5Nd6fiBJ9rdwNL2pBFM
+	 qUuuPKWfMTGTqHu1IaikbLegajtH3Z0St2/Ln07k3bK7l2WKepE1R+2B0SBLo
+Original-Subject: [PATCH v2] software node: Only the managing device can unreference managed software node
+Author: mike.isely@cobaltdigital.com
+Original-Cc: Mike Isely <mike.isely@cobaltdigital.com>,
+  Mike Isely <isely@pobox.com>, linux-acpi@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Received: from cobalt1.prod.cobalt.internal (ts4-dock4.isely.net [::ffff:192.168.23.121])
   (AUTH: PLAIN isely, TLS: TLS1.3,256bits,ECDHE_RSA_AES_256_GCM_SHA384)
   by cnc.isely.net with ESMTPSA
-  id 00000000000A0006.0000000069A74ECD.00002895; Tue, 03 Mar 2026 15:12:45 -0600
-Date: Tue, 3 Mar 2026 15:12:45 -0600 (CST)
-From: Mike Isely <isely@isely.net>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-cc: mike.isely@cobaltdigital.com,
+  id 00000000000A0006.0000000069A74F12.00002908; Tue, 03 Mar 2026 15:13:54 -0600
+From: mike.isely@cobaltdigital.com
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
   Daniel Scally <djrscally@gmail.com>,
   Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-  Sakari Ailus <sakari.ailus@linux.intel.com>,
-  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sofware node: Only the managing device can unreference
- managed software node
-In-Reply-To: <aaabo5LqR3Ors5er@ashevche-desk.local>
-Message-ID: <be2cbf7b-c3e6-6980-65e4-eb37167a98b6@isely.net>
-References: <20260303052146.1166717-1-mike.isely@cobaltdigital.com> <aaabo5LqR3Ors5er@ashevche-desk.local>
+  Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mike Isely <mike.isely@cobaltdigital.com>,
+  Mike Isely <isely@pobox.com>, linux-acpi@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: [PATCH v2] software node: Only the managing device can unreference managed software node
+Date: Tue,  3 Mar 2026 15:13:47 -0600
+Message-ID: <20260303211348.2414465-1-mike.isely@cobaltdigital.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2F5251F73E3
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+X-Rspamd-Queue-Id: C04081F7410
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[isely.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[isely.net:s=deb];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[cobaltdigital.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21317-lists,linux-acpi=lfdr.de];
-	FREEMAIL_CC(0.00)[cobaltdigital.com,gmail.com,linux.intel.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[isely.net:+];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[isely@isely.net,linux-acpi@vger.kernel.org];
+	FREEMAIL_TO(0.00)[linux.intel.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21318-lists,linux-acpi=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[mike.isely@cobaltdigital.com,linux-acpi@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[isely.net:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cobaltdigital.com:mid,cobaltdigital.com:email]
 X-Rspamd-Action: no action
 
+From: Mike Isely <mike.isely@cobaltdigital.com>
 
-OK, this time for sure...  Patch coming up.
+Explanation here is lengthy because the problem is subtle.
 
-  -Mike
+A scenario exists where device_create_managed_software_node() is used
+to create an swnode instance that will be implicitly shared to a child
+device despite best intentions not to permit such sharing (per the
+comment in device_create_managed_software_node()).  I encountered this
+with the sfp kernel module when it was instantiated with properties
+via a call to platform_device_register_full() - it will create hwmon
+child devices which get all property references.  Unfortunately with
+just a "managed" boolean in struct swnode handling this, then
+kobject_put() gets called for the managed aspect when the child device
+goes away instead of the parent.  This leads to premature freeing of
+the swnode structure, followed by use-after-free problems, heap
+corruption, and generally chaos / crashes / misbehavior in the kernel.
 
-On Tue, 3 Mar 2026, Andy Shevchenko wrote:
+This commit changes that boolean into a pointer to the actual managing
+struct device, which is then checked against the struct device
+instance that is actually going away (via the usual call back into
+software_node_notify_remove()).  Thus the child device removal is
+ignored as it should, and we only do the kobject_put() when the actual
+managing struct device instance goes away.  We effectively carry a
+little bit more information now so that we can be sure to clean up
+only when the correct struct device instance is actually going away.
 
-> On Mon, Mar 02, 2026 at 11:21:41PM -0600, mike.isely@cobaltdigital.com wrote:
-> 
-> Can you send it with proper version given (I think v2) and changelog?
-> Also in the Subject a typo should be fixed: "software node" is the correct
-> spelling.
-> 
-> 
+Note that while we are now keeping a pointer to a struct device here,
+this is safe to do because the pointer itself only stays in use while
+the pointed-to device remains valid.  (So no need to be concerned
+about additional reference counting.)
+
+Here's a succinct, generic sequence that spells out the steps which
+lead to trouble:
+
+  1. Somebody creates a struct device instance.
+
+  2. Somebody calls device_create_managed_software_node() associating
+  it with that struct device instance.  This causes two kobject
+  references to be counted against the swnode instance (one for the
+  struct device and one because the managed flag was set).  refcount=2
+
+  3. Some time later, a child struct device is created and the
+  properties of the parent are shared with the child.  This causes
+  another kobject reference to be counted against the swnode instance.
+  refcount=3
+
+  4. Some time later, that child struct device instance goes
+  away (perhaps due to a hotplug removal).  During the tear-down,
+  software_node_notify_remove() notices that the managed field of the
+  swnode instance is set, so TWO kobject references are removed
+  instead of the single reference created by the previous step.
+  refcount=1
+
+  5. Repeat step 3.  refcount=2
+
+  6. Repeat step 4.  refcount=0
+
+  7. Now the kobject reference count inside the swnode instance has
+  dropped to zero and so the swnode instance is released.  Notice that
+  the parent device is still holding a physical reference, now
+  pointing into freed memory.  Chaos likely follows.  If lucky, a NULL
+  pointer kernel oops is the result.
+
+The patch fixes this by causing step 4 to only do the second reference
+decrement if the device being torn down is the same one that
+established the managing relationship in the first place.  Then
+everything stays balanced.
+
+I confirmed this exact sequence of behavior in the context of the sfp
+kernel module with appropriate printk debug trace added, when
+instantiated with platform_device_register_full() with properties
+provided.  While that's may be hard for to reproduce without sfp
+hardware, anything else which performs those steps should produce
+similar results.
+
+Note that because platform_device_register_full() will implicitly
+employ a managed swnode instance any time it is passed properties in
+its pdevinfo argument, then by implication anyone calling
+platform_device_register_full() in that manner - which happens in
+multiple other places in the kernel - is at risk for the same issue.
+
+Signed-off-by: Mike Isely <mike.isely@cobaltdigital.com>
+Signed-off-by: Mike Isely <isely@pobox.com>
+---
+ drivers/base/swnode.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 53b3f0061ad12..18a903a35197c 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -36,8 +36,8 @@ struct swnode {
+ 	struct list_head children;
+ 	struct swnode *parent;
+ 
++	struct device *managing_dev;
+ 	unsigned int allocated:1;
+-	unsigned int managed:1;
+ };
+ 
+ static DEFINE_IDA(swnode_root_ids);
+@@ -1060,7 +1060,7 @@ int device_create_managed_software_node(struct device *dev,
+ 	if (IS_ERR(fwnode))
+ 		return PTR_ERR(fwnode);
+ 
+-	to_swnode(fwnode)->managed = true;
++	to_swnode(fwnode)->managing_dev = dev;
+ 	set_secondary_fwnode(dev, fwnode);
+ 
+ 	if (device_is_registered(dev))
+@@ -1104,7 +1104,7 @@ void software_node_notify_remove(struct device *dev)
+ 	sysfs_remove_link(&dev->kobj, "software_node");
+ 	kobject_put(&swnode->kobj);
+ 
+-	if (swnode->managed) {
++	if (swnode->managing_dev == dev) {
+ 		set_secondary_fwnode(dev, NULL);
+ 		kobject_put(&swnode->kobj);
+ 	}
+-- 
+2.47.3
+
+---
+
+Correct issue in drivers/base/swnode.c that can lead to use-after-free
+due to kobject reference counting error, which itself is due to
+incorrect behavior with the "managed" struct swnode flag in
+circumstances involving child struct device instances where the parent
+struct device is managing a struct swnode.
+
+Use-after-free in this case leads to likely kernel heap corruption, so
+any manner of chaos can result, if left unaddressed.
+
 
