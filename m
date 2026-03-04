@@ -1,200 +1,183 @@
-Return-Path: <linux-acpi+bounces-21371-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21372-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGFZCzLEqGk2xAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21371-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:45:54 +0100
+	id SOBbDejGqGm9xAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21372-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:57:28 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC68209177
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:45:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51DD20942F
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 062223115E21
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 23:42:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A82E43063AFE
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 23:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508B93B583E;
-	Wed,  4 Mar 2026 23:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8AD39F17C;
+	Wed,  4 Mar 2026 23:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZuQH2l//"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="oCiDkoZT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B033A1A57;
-	Wed,  4 Mar 2026 23:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA31D390CBA
+	for <linux-acpi@vger.kernel.org>; Wed,  4 Mar 2026 23:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772667756; cv=none; b=JNwk9SHVr2gSZbBSI6F2uviC9JxviS3SJmbSGny1joBWOaNiyQOdDluY9vLeWdUjUVSy/IeWuh5cqnvyM5Y9xJWh/xvXSJ03YON4m0TJyNZJGPEQXhnS+3x/2W0riFCwruGnfCh2wXqNc+bkBtqNrMhZiP+cSGNw884UlQlH6iQ=
+	t=1772668606; cv=none; b=ZjXwd3j1XwXBOUTNo6QUD2uqHmCA9b4ulkAJXdsDtDrNAf3k7KfQRGlKaN6Obuzdj5rJvWy33G0JRblPQxvlvo2KOD2CUv+CsMZtP5FtKZCnBYdTTORxwKcBvOgT3fOecBMVRxNO478eQwHNdOE7iK/8/ETAFZHw4W+V5Rh2G4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772667756; c=relaxed/simple;
-	bh=4ImPkuHX0JnsNxTdR6Gbhl0L3k7v5fMn2n2Td8f8HKc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DENf5bXdYGFZ+BOiUCh/7LsI8UXpYx5iD2CsQfII+2hSEG8ao3SXCVYxD12sqkMVQZPUbFtnRsxH9YSUzn8RSd3XdtRUjLDeEU0UbzIfI7dxl+ujQu35ERHBbkYUheFPKuGpFaoJrO+1lUAvSvWbLWj3pcESRnNMEFvtpy9Tfkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZuQH2l//; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772667755; x=1804203755;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=4ImPkuHX0JnsNxTdR6Gbhl0L3k7v5fMn2n2Td8f8HKc=;
-  b=ZuQH2l//kCLutBfCK6qyUFznbbmTWf0Axn172nUPbQFGUZ73Gs7jnU/A
-   CKjWZcrNeeJ7cZT1hGmuAWLpMQ/EadxW2KTyqa5/Rd3apGDbuD1PwpVQp
-   4jdmroWIoSRhiN5FhjWdzJL59Y6cQfDKYBBAgTTGTbaxTJwolnQtmxOkm
-   rPbvWs/sYQHytMN+tVo1AC3vYXq4XoPTWe13UrmGjhwFoubgq1kah+Imv
-   pbly/jy8wkl9XNdKHZVn2OiowBbJ6SW0X9oqSH53zYgEv/bcIWce3pNGV
-   RebH0HcgbzRkJaEgVn8LOzP1ue/BLyAunBVGNkmxy5xXVtjPbyzgUlbAZ
-   w==;
-X-CSE-ConnectionGUID: IiJvyQoAQP66OgwD3GTQbA==
-X-CSE-MsgGUID: H7Fhx0ScR4Se3G0hag0vww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="96359405"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="96359405"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 15:42:31 -0800
-X-CSE-ConnectionGUID: J0MFm4ujRGmzMTlWgVc6+Q==
-X-CSE-MsgGUID: 4rWWICZlRKSF0AL4A9mFXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="215376924"
-Received: from unknown (HELO [172.25.112.21]) ([172.25.112.21])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 15:42:29 -0800
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Date: Wed, 04 Mar 2026 15:41:21 -0800
-Subject: [PATCH v9 10/10] x86/hyperv/vtl: Use the wakeup mailbox to boot
- secondary CPUs
+	s=arc-20240116; t=1772668606; c=relaxed/simple;
+	bh=Giw3/067GrNgQbtrZLaDCpoqSBeafl6A+nGzlEidTog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vp0F9fIxe6LMWV0B5aob24JwOWMWz1LmjrUbCe9E31g8df02troW+WDVYfgHZs1c5ryP+zS8ND+UEBQjf1+vUHJ1zx5TXbJhX43t0DdXLeSS8W0LxPBC5mMw8sfgOe5PiYnarKFhAiurdDDDkLX0WY3S63j2X22it5Cg3pKqYg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=oCiDkoZT; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-899e85736e2so45818096d6.1
+        for <linux-acpi@vger.kernel.org>; Wed, 04 Mar 2026 15:56:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1772668603; x=1773273403; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dpj9qG8Bv81Wer9VtkXzUxrZr6VBH25/Zpz3n0Y4DLM=;
+        b=oCiDkoZTqsg4uUrW/LBZ4m6EqOVlTY6fHZu5kNdxmZMM3fs/mlcwUv2kW8LMw7Faud
+         93v02w3cK9twv+4COFVEQb+yZ9x5mEVH8oXcE6bFC37ziEvFC1LN/7RqOaE9KriQkgY8
+         oZ2Uh1RzjxXLVE5Hku2JMhWBFhqi9Ih4D46IKvzn6oZbfyrui58jwsv5WXRrnuft24i/
+         8drMCphlfdIQ4bBJBL9NNMoLDCq/LoyhxU4ACafDowh28dOzUS68r3Ng8F+0o438HNUa
+         5fkuZNn/AgMR0vgF9kcUSX2NKyEAScoLHf+baGkQvUO9Cz9KYtGTC2yz4D60Z3OP64J+
+         tr0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772668603; x=1773273403;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dpj9qG8Bv81Wer9VtkXzUxrZr6VBH25/Zpz3n0Y4DLM=;
+        b=kNsYt6JGeZPLY2ekO9je3W0sdBUhtUdGRIsWs7GRCGbQV42t3/a1U6cRtiVUHbEFfd
+         dGS1kPVHy69HhNwFw/OsMl6BcTmNIC/CaTFk37SbO0XMFP8ewXWgF/NWja8enMurMs9j
+         5R9uQ2aupOHcCSantWtfP5wMRctmiHn1Xi49NwkcYlZloQ06wko9bXIhVcqoye46CMjg
+         4/g9s0KmjqCIGc80ZcUsyDooX19MQ1k5nPyzMQa/O/qeOpXvHdx9moMkcIP0MDVjkyOJ
+         KO2tefHFHlgh3EPuCubBMltu7zFZ8gQkot9Dzg/G13egw41YRgKDX/6mIhZkTYKjvEu3
+         qvoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXj/XgIh7w0U637Ew6KPSj2uhasOF1xy/Tq5lJbeiBeb6OLxUnC+4TYuxe/DFTpLLMbpTqieQzaoxxd@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY6ZWD+cNziL40rlcXDEyWEF2BAh+5IZV1qBnbhRfQnPuG7PwU
+	i9jBz84eNswFMeaho4jH+AI43K09E8TnytVM9mQkV6ptAThfVniu4Q0EWd6S7ri4zD8=
+X-Gm-Gg: ATEYQzyFsx6sJdA45sY++C07Nuc4fDZEH/OVhQW789F8cBoyHChszkrrwMMSo5EnC1z
+	Brxsz1bO5xcmLnabH+Bxj7R6MXmK5OlztWbQNHShIKK+zYxLvQLzeYBMtGZ5FDLdCitqBBQWn3F
+	NsujYJG8SZWZuJZFQRwF+QgfTeu487TB6v5HeG2mVqkLzt3Hck+1mZAYw4jIURI8+aMfzXOG2PK
+	kVIS72JYL6YHmKvO/CYKeAdwyK37VRabdD6OigK4VogAEql7EMmxZkU/zgO6uo0dURXHkjs/QTf
+	oJiAqbANxdhqKkM7Z1l+Lx8JyC5mBdzDKPQv+uBj0KNo1JwyJgvsLzUqcdllNJULppDipDEU0Uo
+	9sIfhV9hY1PKGeDLB1CLi3GlGJUg1HLSSMSkmRKfnhTld7rOORYbk36PHnDkU5HpkjEVeelnwtP
+	mzM+tGkU8OQ9fNicSngNrCHuDkbVSY0meZZp1i7TqJDtNmS6ytEaYtLdcTG4kyyvCw/7fmxPthJ
+	mfrfdX2YQ==
+X-Received: by 2002:a05:6214:20a8:b0:899:e8b8:504c with SMTP id 6a1803df08f44-89a2490cb15mr6076996d6.30.1772668603583;
+        Wed, 04 Mar 2026 15:56:43 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-507449630b6sm186648081cf.7.2026.03.04.15.56.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 15:56:42 -0800 (PST)
+Date: Wed, 4 Mar 2026 18:56:40 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Alison Schofield <alison.schofield@intel.com>
+Cc: Kai Huang <kai.huang@intel.com>, rafael@kernel.org, lenb@kernel.org,
+	dan.j.williams@intel.com, akpm@linux-foundation.org,
+	nunodasneves@linux.microsoft.com, xueshuai@linux.alibaba.com,
+	thorsten.blum@linux.dev, wangyuquan1236@phytium.com.cn,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is on
+Message-ID: <aajGuOC-G_dFYpwa@gourry-fedora-PF4VCD3F>
+References: <20260304213342.5776-1-kai.huang@intel.com>
+ <aaizNh-0LEvRQMCy@gourry-fedora-PF4VCD3F>
+ <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-rneri-wakeup-mailbox-v9-10-a5c6845e6251@linux.intel.com>
-References: <20260304-rneri-wakeup-mailbox-v9-0-a5c6845e6251@linux.intel.com>
-In-Reply-To: <20260304-rneri-wakeup-mailbox-v9-0-a5c6845e6251@linux.intel.com>
-To: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
- linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ricardo Neri <ricardo.neri@intel.com>, 
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772667694; l=2059;
- i=ricardo.neri-calderon@linux.intel.com; s=20250602;
- h=from:subject:message-id; bh=4ImPkuHX0JnsNxTdR6Gbhl0L3k7v5fMn2n2Td8f8HKc=;
- b=1fd4O5CSN59eMQ8HBo+M366SHzD8Kqya0ZKIQI1fLSgv3tOoNuq7VkpnEfmfV+o/lnsF8Xlym
- AmWWZw5zY1DAAShL6EZRRLRipxtnCi4Gg7ddidkqa8+sBaZodpKNQ3y
-X-Developer-Key: i=ricardo.neri-calderon@linux.intel.com; a=ed25519;
- pk=NfZw5SyQ2lxVfmNMaMR6KUj3+0OhcwDPyRzFDH9gY2w=
-X-Rspamd-Queue-Id: ABC68209177
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
+X-Rspamd-Queue-Id: C51DD20942F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21371-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,microsoft.com,outlook.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[gourry.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21372-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gourry.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ricardo.neri-calderon@linux.intel.com,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,outlook.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gourry.net:dkim]
 X-Rspamd-Action: no action
 
-The hypervisor is an untrusted entity for TDX guests. It cannot be used
-to boot secondary CPUs. The function hv_vtl_wakeup_secondary_cpu() cannot
-be used.
+On Wed, Mar 04, 2026 at 03:20:11PM -0800, Alison Schofield wrote:
+> On Wed, Mar 04, 2026 at 05:33:26PM -0500, Gregory Price wrote:
+> > On Thu, Mar 05, 2026 at 10:33:42AM +1300, Kai Huang wrote:
+> > > Increasing the 'nr_node_ids' has side effects.  For instance, it is
+> > > widely used by the kernel for "highest possible NUMA node" based memory
+> > > allocations.  It also impacts userspace ABIs, e.g., some NUMA memory
+> > > related system calls such as 'get_mempolicy' which requires 'maxnode'
+> > > not being smaller than the 'nr_node_ids'.
+> > > 
+> 
+> > 
+> > Is this a Linux issue or a Firmware issue?
+> 
+> IIUC BIOS creates the CEDT based on the hardware it 'sees' as present.
+> 
+> This patch is describing the case (weird as it seems to me) where we
+> then boot a system with ACPI and NUMA enabled but CXL_ACPI disabled.
+> 
+> So, I don't think we can blame BIOS.
+> 
+> > 
+> > Is GNR exporting more CFMWS than it should?
+> Not sure of any limits on flavors of CFMWS's a BIOS can offer.
+> If BIOS can carve out a window, it can create a CFMWS.
+> Not clear how that matters to the issue.
+> 
+> > 
+> > Is your SRAT missing entries for CFMWS that are otherwise present?
+> > 
+> > Are the CFMWS empty? (is that even valid)
+> 
+> Why this line of questioning ;)  I see the problem as a bit simpler.
+> We have other code that tells us if the CFMWS's are valid, etc, but
+> the point here is, we are not going to use these CFMWS's so stop
+> the parse as early as possible, like right here as Kai has done.
+> 
 
-Instead, the virtual firmware boots the secondary CPUs and places them in
-a state to transfer control to the kernel using the wakeup mailbox. The
-firmware enumerates the mailbox via either an ACPI table or a DeviceTree
-node.
+Mostly i'm wondering if this issue should be dealt with in the acpi code
+or if the issue is that we just don't want to figure out how to
+lazy-create these things instead of always creating them at __init.
 
-If the wakeup mailbox is present, the kernel updates the APIC callback
-wakeup_secondary_cpu_64() to use it.
+it does seem rational to build out support for CEDT entries if CXL_ACPI
+is built out, but this also means you can't otherwise load modules that
+would have made use of this information.
 
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-Changes in v9:
- - None
+This basically says if specifically CXL_ACPI is built out, the NUMA
+structure is forever lost - even though it's accurately described by
+BIOS.  Maybe that's a rational decision, just kind of prodding a bit.
 
-Changes in v8:
- - None
-
-Changes in v7:
- - None
-
-Changes in v6:
- - Added Reviewed-by tag from Dexuan. Thanks!
-
-Changes in v5:
- - None
-
-Changes in v4:
- - Added Reviewed-by tag from Michael. Thanks!
-
-Changes in v3:
- - Unconditionally use the wakeup mailbox in a TDX confidential VM.
-   (Michael).
- - Edited the commit message for clarity.
-
-Changes in v2:
- - None
----
- arch/x86/hyperv/hv_vtl.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 1e2f5b3ea772..07fac3d687c3 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -274,7 +274,15 @@ int __init hv_vtl_early_init(void)
- 		panic("XSAVE has to be disabled as it is not supported by this module.\n"
- 			  "Please add 'noxsave' to the kernel command line.\n");
- 
--	apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
-+	/*
-+	 * TDX confidential VMs do not trust the hypervisor and cannot use it to
-+	 * boot secondary CPUs. Instead, they will be booted using the wakeup
-+	 * mailbox if detected during boot. See setup_arch().
-+	 *
-+	 * There is no paravisor present if we are here.
-+	 */
-+	if (!hv_isolation_type_tdx())
-+		apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
- 
- 	return 0;
- }
-
--- 
-2.43.0
-
+~Gregory
 
