@@ -1,63 +1,59 @@
-Return-Path: <linux-acpi+bounces-21346-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21356-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIFANuV+qGmYvAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21346-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 19:50:13 +0100
+	id 6HoFKbeAqGmYvAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21356-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 19:57:59 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455A2206A37
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 19:50:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1E0206B8F
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 19:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB2DB301A38F
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 18:46:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1543A3045279
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 18:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C150B3D75AF;
-	Wed,  4 Mar 2026 18:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111C43DA5A0;
+	Wed,  4 Mar 2026 18:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gufh1TiP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkkSdw8G"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4443D5650;
-	Wed,  4 Mar 2026 18:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BBA3DA5B0;
+	Wed,  4 Mar 2026 18:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772649983; cv=none; b=DOHURWMS63Ip5BtKlfGoWB44iTWS7p8oeKImEZALJOpL9zKQpv8QtkyD+PhykG+lID5/9HP4bKaRhKjfWKYDgkLyP+yZZURkyaDSJ7kV4l9OYTVkYaDD/JzsPiTO45eUVtWsPy2LWHJ2FRVWkvMRJSGc/YV3PwO2KQFLu+/Ck8w=
+	t=1772650553; cv=none; b=LCWXDPgXvcrUpUtEpl9VQ4V4GNZsChw+mRvfeXaqcDRojLSbiP554rO8gzSjuUSW3w6ZufMOEUkarKLgEal+6/CAPG45/c9EaRfsPhp2vPeAs8fyfgJURRdkLqAP0aPJOk1CQQ0Nele79xQKAhk24cUCvE57Jp8TJMR7WfVr3Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772649983; c=relaxed/simple;
-	bh=CUMzCv4iybUnbgKiUbGmNjI3qQhlJn7tyzQUrs/2W/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3DONE23hdJKj68pAoPm7IdBTUiv+D6NnMpDYXDqxOiW5RoyahdfzKYep+KZlE30D0k9T+fl+gUUQaFxQWdRAS1I9YfvfEHaO4xP6jgl+aqEy/SdfPRKeYDO8LED4ot3qZ5oHsHzfd+CvAd6P63VsNFwxTeweneedQFSUYETv7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gufh1TiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31715C4CEF7;
-	Wed,  4 Mar 2026 18:46:20 +0000 (UTC)
+	s=arc-20240116; t=1772650553; c=relaxed/simple;
+	bh=Al62TdymjzPb85apT20XaFb3FDGpi7ZZpgnUuu8131A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YiZ5dG0xuprHwp1O6LyoNzkONJijBYnmzdKts7u8ixV8qgAzj80+jObNeFBuGaqHph4c15YMTn4DCUiWHUs+YfXv19geLQfMIFqIbbBh/xqCX0WyaPbBiqQfvsg+yYon5UqW5Pfl28/nCnfzlCVZz4Ql4g0SGRDN9UDbql/2Q2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkkSdw8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE30EC2BCB0;
+	Wed,  4 Mar 2026 18:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772649982;
-	bh=CUMzCv4iybUnbgKiUbGmNjI3qQhlJn7tyzQUrs/2W/k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gufh1TiPJZXw2SfxI1KhK5x+7aateD5nIL8ub0OS8c0YmxsNwCDfl3G0t0h50rn83
-	 D/S3lDyi1qsEns2GdZ8A3ErCAF6eeMjDBCrZKJN8p+tbQOxGvncatlVXeZWtUqSVAG
-	 +SoXNb36dqk84y5MmkWqqSQpM7j1Ks6xSOKblbFbm5cH++dyW9R26iqNr9uIjuGWJr
-	 qOhX+0W0Uum8aG6UpasL967oZfwQzgv/q4mp7AKmk6p9I/6IPzoMHCL7mOyW9F/a4E
-	 1miLVUL2N+J3UHjgAek8PvIIqTjNFxdJYIv6kr46N6/MA0ZU8z5GrQVBE+uUEVVDNO
-	 dploXOg8mFtwg==
+	s=k20201202; t=1772650553;
+	bh=Al62TdymjzPb85apT20XaFb3FDGpi7ZZpgnUuu8131A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pkkSdw8GRaRyPfAZihkn/e31NtlfyOFXZSEZ+WABTBEOAXNhW8OxEn/1qzmc+UWQJ
+	 Wt1Hv/WRgqEPhRfS2SaVdZxIE/zcitB0xZALFkkno0Nu/PCLJlcq11N/MnIQQFWBHb
+	 G2xQx3Wso21o823ricw+GTDsMoLvfnmBHMCe1iFfQKmy0CHTh7TI2qUiFfUgyXY8Jm
+	 /PPG1Ywf1GeChRSGpvdCuSPfKAdPP2lTLhixy1LmloCkGi3OV6reYkd6yd87QpHmO9
+	 WX/cFo3Z9Av6Uc+gqY+vMQhh/7Yn/hwEow7UnCtNMUdIPTqzDMu6SjcSI58AVYjWuW
+	 qFIyi1KRaBqUg==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: chrome-platform@lists.linux.dev
+To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>, Benson Leung <bleung@chromium.org>,
- Tzung-Bi Shih <tzungbi@kernel.org>,
- Enric Balletbo i Serra <eballetbo@kernel.org>,
- Ravi Chandra Sadineni <ravisadineni@chromium.org>
+ Linux ACPI <linux-acpi@vger.kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, platform-driver-x86@vger.kernel.org
 Subject:
- [PATCH v1 6/6] platform/chrome: wilco_ec: event: Convert to a platform driver
-Date: Wed, 04 Mar 2026 19:45:52 +0100
-Message-ID: <2053315.yKVeVyVuyW@rafael.j.wysocki>
+ [PATCH v1 0/3] platform/surface: surfacepro3_button: Use platform device for
+ driver binding
+Date: Wed, 04 Mar 2026 19:53:24 +0100
+Message-ID: <2909929.BEx9A2HvPv@rafael.j.wysocki>
 Organization: Linux Kernel Development
-In-Reply-To: <2274474.Mh6RI2rZIc@rafael.j.wysocki>
-References: <2274474.Mh6RI2rZIc@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,271 +62,65 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 455A2206A37
+X-Rspamd-Queue-Id: 0E1E0206B8F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21346-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-21356-lists,linux-acpi=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,rafael.j.wysocki:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Hi All,
 
-In all cases in which a struct acpi_driver is used for binding a driver
-to an ACPI device object, a corresponding platform device is created by
-the ACPI core and that device is regarded as a proper representation of
-underlying hardware.  Accordingly, a struct platform_driver should be
-used by driver code to bind to that device.  There are multiple reasons
-why drivers should not bind directly to ACPI device objects [1].
+This series is part of a larger effort to switch over all drivers using
+the struct acpi_driver interface to the more common struct platform_driver
+interface and eliminate the former.  The background is explained in
+Documentation/driver-api/acpi/acpi-drivers.rst and in the changelog of
+the patch that introduced the above document:
 
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the ChromeOS Wilco Embedded Controller event
-ACPI driver to a platform one.
+https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/
 
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
+The bottom line is that the kernel would be better off without struct
+acpi_driver and so it is better to get rid of it.
 
-Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/platform/chrome/wilco_ec/event.c | 66 ++++++++++++------------
- 1 file changed, 34 insertions(+), 32 deletions(-)
+This series carries out driver conversion of the Surface Pro3 button
+driver.
 
-diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
-index f4500dd05f93..b6e935badc0e 100644
---- a/drivers/platform/chrome/wilco_ec/event.c
-+++ b/drivers/platform/chrome/wilco_ec/event.c
-@@ -38,6 +38,7 @@
- #include <linux/io.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/poll.h>
- #include <linux/spinlock.h>
- #include <linux/uaccess.h>
-@@ -198,7 +199,7 @@ struct event_device_data {
- 
- /**
-  * enqueue_events() - Place EC events in queue to be read by userspace.
-- * @adev: Device the events came from.
-+ * @dev: Device the events came from.
-  * @buf: Buffer of event data.
-  * @length: Length of event data buffer.
-  *
-@@ -209,9 +210,9 @@ struct event_device_data {
-  *
-  * Return: 0 on success or negative error code on failure.
-  */
--static int enqueue_events(struct acpi_device *adev, const u8 *buf, u32 length)
-+static int enqueue_events(struct device *dev, const u8 *buf, u32 length)
- {
--	struct event_device_data *dev_data = adev->driver_data;
-+	struct event_device_data *dev_data = dev_get_drvdata(dev);
- 	struct ec_event *event, *queue_event, *old_event;
- 	size_t num_words, event_size;
- 	u32 offset = 0;
-@@ -222,14 +223,14 @@ static int enqueue_events(struct acpi_device *adev, const u8 *buf, u32 length)
- 		num_words = ec_event_num_words(event);
- 		event_size = ec_event_size(event);
- 		if (num_words > EC_ACPI_MAX_EVENT_WORDS) {
--			dev_err(&adev->dev, "Too many event words: %zu > %d\n",
-+			dev_err(dev, "Too many event words: %zu > %d\n",
- 				num_words, EC_ACPI_MAX_EVENT_WORDS);
- 			return -EOVERFLOW;
- 		}
- 
- 		/* Ensure event does not overflow the available buffer */
- 		if ((offset + event_size) > length) {
--			dev_err(&adev->dev, "Event exceeds buffer: %zu > %d\n",
-+			dev_err(dev, "Event exceeds buffer: %zu > %d\n",
- 				offset + event_size, length);
- 			return -EOVERFLOW;
- 		}
-@@ -262,12 +263,13 @@ static int enqueue_events(struct acpi_device *adev, const u8 *buf, u32 length)
- static void event_device_notify(acpi_handle handle, u32 value, void *data)
- {
- 	struct acpi_buffer event_buffer = { ACPI_ALLOCATE_BUFFER, NULL };
--	struct acpi_device *adev = data;
-+	struct device *dev = data;
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	union acpi_object *obj;
- 	acpi_status status;
- 
- 	if (value != EC_ACPI_NOTIFY_EVENT) {
--		dev_err(&adev->dev, "Invalid event: 0x%08x\n", value);
-+		dev_err(dev, "Invalid event: 0x%08x\n", value);
- 		return;
- 	}
- 
-@@ -275,31 +277,31 @@ static void event_device_notify(acpi_handle handle, u32 value, void *data)
- 	status = acpi_evaluate_object(adev->handle, EC_ACPI_GET_EVENT,
- 				      NULL, &event_buffer);
- 	if (ACPI_FAILURE(status)) {
--		dev_err(&adev->dev, "Error executing ACPI method %s()\n",
-+		dev_err(dev, "Error executing ACPI method %s()\n",
- 			EC_ACPI_GET_EVENT);
- 		return;
- 	}
- 
- 	obj = (union acpi_object *)event_buffer.pointer;
- 	if (!obj) {
--		dev_err(&adev->dev, "Nothing returned from %s()\n",
-+		dev_err(dev, "Nothing returned from %s()\n",
- 			EC_ACPI_GET_EVENT);
- 		return;
- 	}
- 	if (obj->type != ACPI_TYPE_BUFFER) {
--		dev_err(&adev->dev, "Invalid object returned from %s()\n",
-+		dev_err(dev, "Invalid object returned from %s()\n",
- 			EC_ACPI_GET_EVENT);
- 		kfree(obj);
- 		return;
- 	}
- 	if (obj->buffer.length < sizeof(struct ec_event)) {
--		dev_err(&adev->dev, "Invalid buffer length %d from %s()\n",
-+		dev_err(dev, "Invalid buffer length %d from %s()\n",
- 			obj->buffer.length, EC_ACPI_GET_EVENT);
- 		kfree(obj);
- 		return;
- 	}
- 
--	enqueue_events(adev, obj->buffer.pointer, obj->buffer.length);
-+	enqueue_events(dev, obj->buffer.pointer, obj->buffer.length);
- 	kfree(obj);
- }
- 
-@@ -434,8 +436,8 @@ static void hangup_device(struct event_device_data *dev_data)
- }
- 
- /**
-- * event_device_add() - Callback when creating a new device.
-- * @adev: ACPI device that we will be receiving events from.
-+ * event_device_probe() - Callback when creating a new device.
-+ * @pdev: Platform device that we will be receiving events from.
-  *
-  * This finds a free minor number for the device, allocates and initializes
-  * some device data, and creates a new device and char dev node.
-@@ -447,7 +449,7 @@ static void hangup_device(struct event_device_data *dev_data)
-  *
-  * Return: 0 on success, negative error code on failure.
-  */
--static int event_device_add(struct acpi_device *adev)
-+static int event_device_probe(struct platform_device *pdev)
- {
- 	struct event_device_data *dev_data;
- 	int error, minor;
-@@ -455,7 +457,7 @@ static int event_device_add(struct acpi_device *adev)
- 	minor = ida_alloc_max(&event_ida, EVENT_MAX_DEV-1, GFP_KERNEL);
- 	if (minor < 0) {
- 		error = minor;
--		dev_err(&adev->dev, "Failed to find minor number: %d\n", error);
-+		dev_err(&pdev->dev, "Failed to find minor number: %d\n", error);
- 		return error;
- 	}
- 
-@@ -466,7 +468,7 @@ static int event_device_add(struct acpi_device *adev)
- 	}
- 
- 	/* Initialize the device data. */
--	adev->driver_data = dev_data;
-+	platform_set_drvdata(pdev, dev_data);
- 	dev_data->events = event_queue_new(queue_size);
- 	if (!dev_data->events) {
- 		kfree(dev_data);
-@@ -492,8 +494,9 @@ static int event_device_add(struct acpi_device *adev)
- 		goto free_dev_data;
- 
- 	/* Install an ACPI notify handler. */
--	error = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
--						event_device_notify, adev);
-+	error = acpi_dev_install_notify_handler(ACPI_COMPANION(&pdev->dev),
-+						ACPI_DEVICE_NOTIFY,
-+						event_device_notify, &pdev->dev);
- 	if (error)
- 		goto free_cdev;
- 
-@@ -508,12 +511,12 @@ static int event_device_add(struct acpi_device *adev)
- 	return error;
- }
- 
--static void event_device_remove(struct acpi_device *adev)
-+static void event_device_remove(struct platform_device *pdev)
- {
--	struct event_device_data *dev_data = adev->driver_data;
-+	struct event_device_data *dev_data = platform_get_drvdata(pdev);
- 
--	acpi_dev_remove_notify_handler(adev, ACPI_DEVICE_NOTIFY,
--				       event_device_notify);
-+	acpi_dev_remove_notify_handler(ACPI_COMPANION(&pdev->dev),
-+				       ACPI_DEVICE_NOTIFY, event_device_notify);
- 	cdev_device_del(&dev_data->cdev, &dev_data->dev);
- 	ida_free(&event_ida, MINOR(dev_data->dev.devt));
- 	hangup_device(dev_data);
-@@ -525,13 +528,12 @@ static const struct acpi_device_id event_acpi_ids[] = {
- };
- MODULE_DEVICE_TABLE(acpi, event_acpi_ids);
- 
--static struct acpi_driver event_driver = {
--	.name = DRV_NAME,
--	.class = DRV_NAME,
--	.ids = event_acpi_ids,
--	.ops = {
--		.add = event_device_add,
--		.remove = event_device_remove,
-+static struct platform_driver event_driver = {
-+	.probe = event_device_probe,
-+	.remove = event_device_remove,
-+	.driver = {
-+		.name = DRV_NAME,
-+		.acpi_match_table = event_acpi_ids,
- 	},
- };
- 
-@@ -554,7 +556,7 @@ static int __init event_module_init(void)
- 	}
- 	event_major = MAJOR(dev_num);
- 
--	ret = acpi_bus_register_driver(&event_driver);
-+	ret = platform_driver_register(&event_driver);
- 	if (ret < 0) {
- 		pr_err(DRV_NAME ": Failed registering driver: %d\n", ret);
- 		goto unregister_region;
-@@ -572,7 +574,7 @@ static int __init event_module_init(void)
- 
- static void __exit event_module_exit(void)
- {
--	acpi_bus_unregister_driver(&event_driver);
-+	platform_driver_unregister(&event_driver);
- 	unregister_chrdev_region(MKDEV(event_major, 0), EVENT_MAX_DEV);
- 	class_unregister(&event_class);
- 	ida_destroy(&event_ida);
--- 
-2.51.0
+Patch [1/3] Fixes a wakeup source leak on driver removal.
 
+Patch [2/3] updates the driver to install an ACPI notify handler by itself
+instead of using the .notify() callback from struct acpi_driver, which is
+requisite for the driver conversion.
+
+Patch [3/3] converts the driver to using struct platform_driver for device
+binding.
+
+Thanks!
 
 
 
