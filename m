@@ -1,207 +1,191 @@
-Return-Path: <linux-acpi+bounces-21331-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21332-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +E7OMH5VqGlutQAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21331-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 16:53:34 +0100
+	id GIkfKw5cqGmZtgAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21332-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 17:21:34 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3C82035D8
-	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 16:53:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8602041F4
+	for <lists+linux-acpi@lfdr.de>; Wed, 04 Mar 2026 17:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C61F31FC607
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 15:43:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9EF69300B46F
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 16:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1F34B1AD;
-	Wed,  4 Mar 2026 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FFD21578D;
+	Wed,  4 Mar 2026 16:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZ/M2/nA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NF72tvyX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E5C3491CD;
-	Wed,  4 Mar 2026 15:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CAD33E7;
+	Wed,  4 Mar 2026 16:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772638730; cv=none; b=uoly9NbJLyOqYSIQvzcM32XOYUYSozELRtSo8zQ/boUOfDutbAqUhJKz9sh6u7FbtyoOqhp9JPWpp2tra6dD9CLh5abkzA5ePDy0u3aqv/BJC2o7JGQxm4Qqe+K/UqrYqOr73TfNUJhPGNtNPeaNZd4DukF+IVdfEDcMhMlO/0E=
+	t=1772640186; cv=none; b=IyFvGkLnsCWff0EunzXYJ1lPVeCTQ2mOUxgfTad7N577wyJOT9VRX41y60imOlT5q0uk0a0T/9xcrEoYgtG57HoOsBWV+9jJpFyTo/MBhN+PGSmR2rABzpFvrmcZL941lCWNrY2rUhw56DN8wVIvgueG4gj6CqWaCXLoPv0y7FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772638730; c=relaxed/simple;
-	bh=+2y0TVWK+1mxtFkQGBZ5c+xyYFKAYuSiURAJvKFtcJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=pyG4u4jkBPsmc8xIB5GWDjMmyLMKjs6Katni+Jfy+ICTs8x0YSXbaVfdVl64tU6ce4psmQ6mmKjjy7p/LFH1waFZZdeWd6xAJf15GoGijlS/rH0yR7OwPF4cdWyL2lvgKHp8D5MLqkAmNmy6H517wxXPhrnZhYVlNyRAi37Bfy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZ/M2/nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BAFC4CEF7;
-	Wed,  4 Mar 2026 15:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772638729;
-	bh=+2y0TVWK+1mxtFkQGBZ5c+xyYFKAYuSiURAJvKFtcJ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=AZ/M2/nA/TTlnyPlxoPPO7EVvRaa1LGPJygEkPPlAUFMqNcscOCJQSUTJYlG3BmAy
-	 VJo9Y/U/t4ky/NZ6jkYnBGtmWhCGcUh6NQnnSNmRJYD7+rAdu2wfL+RlyKZQAao1zR
-	 Jj4kUbHgSVFRk0pG9TQrHmIaump8gzcND8PfOO3wwnwrws1OIw9jpCOsc3LHWBHfzF
-	 OJtdm2qWzDZPJRKQ0hsZ5sTbnc3oUlfjuWTazLj1RdCGLP7guzUhZE5PufzyYiNfof
-	 +QK2IlC33id33RDxw7fcuokmmMnQu5uY9L3Ez2fVlgkbgmHPk3UgqnKrJzJhow1Zvg
-	 tqrNGAMRFJIDA==
-Date: Wed, 4 Mar 2026 09:38:47 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: linux-pci@vger.kernel.org, bhelgaas@google.com,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	wei.huang2@amd.com, Eric.VanTassell@amd.com,
-	jonathan.cameron@huawei.com, wangzhou1@hisilicon.com,
-	wanghuiqiang@huawei.com, liuyonglong@huawei.com,
-	stable@vger.kernel.org, Jeremy Linton <jeremy.linton@arm.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Sunil V L <sunilvl@oss.qualcomm.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Liupu Wang <wangliupu@loongson.cn>
-Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-Message-ID: <20260304153847.GA23109@bhelgaas>
+	s=arc-20240116; t=1772640186; c=relaxed/simple;
+	bh=Z4MlP0pcwsJnvGgg0+nCTAjPNwgwdLgy8oD9Ai3EQhA=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=HcTG/yWT3I6Fbl8jdgU5uY5weudAp7EvClqT/JpfVoaH3PiLytO1HOScTJ91uxyk1UZSKB2U/4AqZd6Vs+yqoHDlDUPLv7SP4G5j1G4Mz3TCG81PGrbR3K703mVv1cYfEkfEDJ5Y4APL0MzIoW9pU9qBRsBbMQ/Mp5rdaZ23P2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NF72tvyX; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772640186; x=1804176186;
+  h=date:from:to:cc:subject:message-id;
+  bh=Z4MlP0pcwsJnvGgg0+nCTAjPNwgwdLgy8oD9Ai3EQhA=;
+  b=NF72tvyXXJzeufpr30GJlGo9Tc9bN1cLXCo0/YjdE3cpLTIhdcpfJG29
+   zP8b2Mrh3WnTstqKI4vs2Eft92ajd+/4TW7oxjhAG378UCek4YABsatYz
+   9M/JN1oVCljQHRfthJfqN4ofz52zBLqS13ZSwCleQu8fVQQwymLhGBWwJ
+   RQuZGYCZtbhtIWauBVcCFWStiPEa5plYgTZZCWfx5rG0lO09Nbo7aWXKC
+   EK3KJUEouj5PL6KC/mo7tx+gbUcTO2tpo59+sFDUvgPjVwzy/r3k02C+r
+   oNGR7F5I3bF8Nihse4JcUhH+2nlr92Ei6mDQC3eGzAWR9TgpBwQOhtqh/
+   A==;
+X-CSE-ConnectionGUID: j4EJJKcTR2u21WoQFE5MPw==
+X-CSE-MsgGUID: YOBRdSt8QyWr+VBbcH1FqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77310332"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="77310332"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:03:06 -0800
+X-CSE-ConnectionGUID: CNxRToOVRoeJdGJzqoHJHQ==
+X-CSE-MsgGUID: VYRQSXCGTS218vIMPrU6+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="248856504"
+Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 04 Mar 2026 08:03:04 -0800
+Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vxogf-00000000424-1WqY;
+	Wed, 04 Mar 2026 16:03:01 +0000
+Date: Thu, 05 Mar 2026 00:02:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:fixes] BUILD SUCCESS
+ 8ca098725827d6509f75752ed807ab5a8d5b6bf1
+Message-ID: <202603050042.zooczN38-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ddf4b6db-b0c7-43ca-baad-a9df6acdca2e@huawei.com>
-X-Rspamd-Queue-Id: 2B3C82035D8
+X-Rspamd-Queue-Id: BD8602041F4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21331-lists,linux-acpi=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21332-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 05:28:36PM +0800, fengchengwen wrote:
-> On 3/4/2026 3:02 AM, Bjorn Helgaas wrote:
-> > [+cc Jeremy, Sunil, Huacai, Liupu, authors of get_acpi_id_for_cpu()
-> > for arm64, riscv, loongson]
-> > 
-> > On Tue, Mar 03, 2026 at 08:36:25AM +0800, Chengwen Feng wrote:
-> >> Currently the pcie_tph_get_cpu_st() has a problem on ARM64 platform:
-> >> 1. The pcie_tph_get_cpu_st() function directly uses cpu_uid as the input
-> >>    parameter to call the PCI ACPI DSM method. According to the DSM
-> >>    definition, the input value should be the ACPI Processor UID. For
-> >>    details, please see [1].
-> >>
-> >> 2. In the Broadcom driver implementation [2] (which invoke
-> >>    pcie_tph_get_cpu_st()), cpu_uid is obtained based on
-> >>    cpumask_first(irq->cpu_mask), that is the logical ID of a CPU core,
-> >>    which is generated and managed by the kernel. For example, [0,255]
-> >>    if the system has 256 logical CPU cores.
-> >> 3. Unfortunately, on ARM64 platform, ACPI assigns Processor UID to the
-> >>    core which listed in the MADT table, the Processor UID may not equal
-> >>    the logical ID of a CPU core in the kernel. So the current
-> >>    implementation cannot obtain the cpu's real steer-tag in such case.
-> >> 4. The reason why it can run on the AMD platform is that the mapping
-> >>    between the logical ID and ACPI Processor UID is similar.
-> >>
-> >> This commit fixes it by:
-> >> 1. Introduce config ARCH_HAS_GET_CPU_ACPI_ID_API and its corresponding
-> >>    API acpi_get_cpu_acpi_id() to obtain the ACPI Processor UID of a CPU
-> >>    core. This API invokes get_acpi_id_for_cpu() to obtain the UID on
-> >>    ARM64 platform.
-> >> 2. Because using the logical ID as the ACPI Processor UID directly on
-> >>    X86 platform is not standard. This commit uses cpu_acpi_id() to
-> >>    obtain the UID.
-> >> 3. At the same time, the input parameter cpu_uid of
-> >>    pcie_tph_get_cpu_st() is renamed to cpu for clarity.
-> > 
-> > Thanks for raising this issue!
-> > 
-> > TLP Processing Hints (TPH) and Steering Tags are generic PCIe features
-> > that we should support for both ACPI and non-ACPI systems.
-> > 
-> > The current implementation of pcie_tph_get_cpu_st() only supports
-> > ACPI, and it assumes the cpu_uid parameter is an ACPI CPU UID that can
-> > be passed directly to the _DSM.  But since we want this to be a
-> > generic interface, I think the "cpu" parameter should be the Linux
-> > logical CPU ID, not an ACPI UID, as you point out.
-> ...
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
+branch HEAD: 8ca098725827d6509f75752ed807ab5a8d5b6bf1  Merge branch 'acpi-pm' into fixes
 
-> >>  int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
-> >> -			unsigned int cpu_uid, u16 *tag)
-> >> +			unsigned int cpu, u16 *tag)
-> >>  {
-> >> -#ifdef CONFIG_ACPI
-> >> +#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
-> >> +	unsigned int cpu_uid = acpi_get_cpu_acpi_id(cpu);
-> > 
-> > Any required conversion between Linux logical CPU and ACPI CPU UID
-> > should be internal to pcie_tph_get_cpu_st(), as you're doing here.
-> > 
-> > But rather than adding CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API and the
-> > ifdefs in acpi_get_cpu_acpi_id(), I think there should be a generic
-> > ACPI interface that converts logical CPU ID to ACPI UID, and every
-> > arch supporting ACPI should have to implement it.
-> > 
-> > We already have get_acpi_id_for_cpu(), implemented for arm64, riscv,
-> > and loongarch:
-> > 
-> >   30d87bfacbee ("arm64/acpi: Create arch specific cpu to acpi id helper")
-> >   f99561199470 ("RISC-V: ACPI: Cache and retrieve the RINTC structure")
-> >   f6f0c9a74a48 ("LoongArch: Add SMT (Simultaneous Multi-Threading) support")
-> > 
-> > What if we just implemented it for x86 as well and moved it to
-> > include/linux/acpi.h or similar?
-> 
-> Your idea to unify the ACPI CPU ID function across architectures is
-> great. I noticed that all exported ACPI functions use the `acpi_`
-> prefix, so I think we shouldn’t simply modify x86’s implementation
-> directly – we should also align the naming convention for other
-> platforms.
-> 
-> Since only x86, arm64, risc-v, and loongarch currently support ACPI,
-> how about we remove the new config and instead use this approach:
-> 
-> unsigned int acpi_get_cpu_acpi_id(unsigned int cpu)
-> {
->         if (cpu >= nr_cpu_ids)
->                 return 0;
-> #ifdef CONFIG_X86
->         return cpu_acpi_id(cpu);
-> #elif defined(CONFIG_ARM64) || defined(CONFIG_RISCV) || defined(CONFIG_LOONGARCH)
->         return get_acpi_id_for_cpu(cpu);
-> #endif
-> }
-> 
-> For any new platform that plans to support ACPI in the future, this
-> will trigger a compile error – which is intentional. It will prompt
-> the maintainers of that platform to add their own implementation of
-> either `get_acpi_id_for_cpu` or `cpu_acpi_id` as needed.
+elapsed time: 1500m
 
-I agree that an "acpi_" prefix would be appropriate.  I'd suggest
-separate implementations in arch/*/kernel/acpi.c instead of #ifdefs in
-a common version.
+configs tested: 66
+configs skipped: 1
 
-Maybe users of cpu_acpi_id() and get_acpi_id_for_cpu() could be
-converted to use the generic interface.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arm                               allnoconfig    clang-23
+arm                              allyesconfig    gcc-15.2.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    gcc-15.2.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20260304    gcc-8.5.0
+riscv                 randconfig-002-20260304    clang-23
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                  randconfig-001-20260304    clang-23
+s390                  randconfig-002-20260304    gcc-15.2.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                          r7780mp_defconfig    gcc-15.2.0
+sh                    randconfig-001-20260304    gcc-15.2.0
+sh                    randconfig-002-20260304    gcc-15.2.0
+sh                     sh7710voipgw_defconfig    gcc-15.2.0
+sparc                             allnoconfig    gcc-15.2.0
+sparc64                          allmodconfig    clang-23
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260304    gcc-14
+x86_64      buildonly-randconfig-002-20260304    clang-20
+x86_64      buildonly-randconfig-003-20260304    clang-20
+x86_64      buildonly-randconfig-004-20260304    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
