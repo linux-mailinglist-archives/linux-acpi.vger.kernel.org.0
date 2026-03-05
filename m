@@ -1,177 +1,239 @@
-Return-Path: <linux-acpi+bounces-21410-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21411-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFgBN29oqWlN6wAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21410-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 12:26:39 +0100
+	id 0OfxHmJ2qWl77wAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21411-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 13:26:10 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1CA2108F1
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 12:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E69211960
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 13:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C57EC3027317
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 11:26:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44DE630A65C8
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 12:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5937C374745;
-	Thu,  5 Mar 2026 11:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544B939A7EC;
+	Thu,  5 Mar 2026 12:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b="N3zqnHq7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPJALvc+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C5537B022
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Mar 2026 11:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DC339A7E0
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Mar 2026 12:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772709987; cv=none; b=S639ehEdl2jHfJCMpXSl8jbUm77O/5VAvGGx6LfvlDgj/xGhgTTBp9hKVdcNYXv0OOOcflRU3iSV3DXYgMtr1HBNEdzczT2cMZitnPz5Sg/WE9DRhPO9SV5DIHexgBu4t/XpBVJt91pV7DfIXhn9B5y2zfvVyusfeWBgjyXR6fk=
+	t=1772713266; cv=none; b=UMthR7RbIEkDiUaUyokxhp1UxzjiRouo++/OGgDw1JW7WTzfTAdxrtG8r6OcXj4GaSYBgj00YkpyVupYN6Q0nEn9Q6hvhtNOdrUNF9DWVwsN5Xb9fIuZYRNwkOBumkqjjvm0R5kbNitpkcdDkwdzJTzG8v5HUK+FkkksTDmFmi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772709987; c=relaxed/simple;
-	bh=1e5FmJqr0d5Nr1ikMsAxK6bIvG+kQKpIeszylR7qdmg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AfdUxL1jRH5kT0RSHBci9KV/b4njeUzAWcF6lenXI76HSlnGyVADLXg8sO5Y58taV9yo5ot4X9NYcHvYJIz+UMg7/REBSKzE3qZWf5jzzlP5HeGXFLELWdjuRp6uSdy4J9qmRikKzv+kYkKbLLtaZHZyo8j2s8NiICy4M6xChYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com; spf=pass smtp.mailfrom=shopee.com; dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b=N3zqnHq7; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shopee.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8298fad2063so136232b3a.3
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Mar 2026 03:26:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1772709985; x=1773314785; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ysqjtnihLzlMKmZvTnyQ/HF3OaRcuwAeEcdn2G2RcKg=;
-        b=N3zqnHq7jAgUcauG/TKePtAtMHzaV2BTqTTPlVORTHCRmY9tP9kpc6bxuU1X5mXF69
-         9UWFtTD2t1Ekaa0O0Qp2JCAw4hZbjjClKwR2T0harDLeOAz3VDPhnh+AzlGBbm+zqW/q
-         cux0lPNYLLKTbtCJu9hiMzvNrQHlWXpwEugITs38h57ykdKkqeR5HnUuxKAAn05CoI+N
-         MH12kP+oDlGiIUH7kYLFelTqfILyltVcZQRJHFpK7eY1Q1mNht3uU6kU6kEmwaKVpljC
-         ulDa/dwV0A81v8bsZfk99RBss8Y6UbUoU3jLHTay0+ZCdaAuJW1o/qVFbpcvzZmu9CdE
-         zE6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772709985; x=1773314785;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ysqjtnihLzlMKmZvTnyQ/HF3OaRcuwAeEcdn2G2RcKg=;
-        b=DElI18P9QLnP6rELO92JSmv79MMoN1JkUCoQfftmFr2P/HoFecd7EftwAq0iUCzkuF
-         4CcBkK6Z3qascwNd6kfsPyLJqFUpue98zLLhRa3jVRXfnU/AaDTN7Q11OC+AfOYL169+
-         dLOvfbxGBi0wEyCE2n6IEgJtIG3jTSYS3nV6LKIGf5NaGCiFuGX56MQftb356EbxGXNV
-         vb0oHnu+U5Ev6vr3rx3esLMFTPtfiKVXxeIdWMmjqTHIdanEAJnx8c/Rj1vOtqQpKDqM
-         lPiQxTlgXqzUZrvxA+fLm1sgV/N8OClA1qbY9gncTL2PfP2ThV2KPkTEw9gE1n49oANg
-         iazw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYZxTS2iDmA5NYw1k4cg3BHFMsmq97dNYgiFK70yHisH3Q+6ks3NHERsGZgm/5TVlgiKaQphV//TD0@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfbWAWgs4dGAHAW9BD8Ct/OYxbM+PPnZDKiy1lWAl8MfqQs3Zw
-	QK11LelwiXbnWK9YgYeizIjOcggcnhjZ20Uos/jqKTDvDuylQeWza0vBLHoMCi2eH3Y=
-X-Gm-Gg: ATEYQzy4MNq57tPHKgRUoiG97ooCH4zl7j7s8Tm72NJRiOPmJ+dZ6IpxL3hJM/lwvyJ
-	sQgsVfKeA0SuS6EQ7mMRI7mEDv/SvmA3FhSK0K4/XTL0onC0Qqas+f48ohaz1C9ukBjcmTMaVCL
-	IcKwcBS/q4NEQVGniMsSCtnzjQZMJzBuO5ph2mlyA0qqQDg500Q9XYrIO+aT7j0bBKwVTYR/zB1
-	QLFasKZo38CdH9wDBXFlyO2KDzA1QxAnt8TR7BciRwXOwPr/917bvRriFIFDMPx0Lyy5oollNd0
-	8sqJkoaXqc6Zr/WHUtGLc0Apc6GH7UfwVph6j1ug+qXuYHfLqlqxALYhg/PWXR5H9j3IrdK5N+5
-	piV1W1oTes308cpj3HDqf1g/xxVIWe0iez8SV1Kyo9CDhrqKhEEoGkvcX/3oXX+C13g8ezsSjq+
-	6WGTpZXDjd6kcj9E2MBr5gm03anbBw0X2+OoYOU4MPvrmXLmXQ/wOC8fe285jEKIqVSzCOOxawX
-	90Lu4aBBKU=
-X-Received: by 2002:a05:6a00:1488:b0:81f:23b5:dc33 with SMTP id d2e1a72fcca58-82972c9eeccmr5183569b3a.30.1772709985579;
-        Thu, 05 Mar 2026 03:26:25 -0800 (PST)
-Received: from [10.54.26.107] (static-ip-148-99-134-202.rev.dyxnet.com. [202.134.99.148])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d4e10csm21738076b3a.1.2026.03.05.03.26.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Mar 2026 03:26:25 -0800 (PST)
-Message-ID: <e705cd6f-5946-4a8b-8870-0c49f8239d4f@shopee.com>
-Date: Thu, 5 Mar 2026 19:26:18 +0800
+	s=arc-20240116; t=1772713266; c=relaxed/simple;
+	bh=D86PuWa6NH/eoJoY2tTCZyyoZIoFdAsfvzQUv8BN9yo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l8toVrmYWwkkTTSjHxVGQuOJ/9yHexRefPqG3jZSpjQFLzcJg8yZEBZD9PSBt/z0sV9JxYDxlRJ84HW/trN0g3tDEZ8UeyHsL8eUxH2aScKPZ/GHv0dyWWEuaWDbVCtS0r9//wagfOxMI2PwV/EEJ2HYx2Qr/ZqOaXI/t8C4I/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPJALvc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95C9C2BCB0
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Mar 2026 12:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772713265;
+	bh=D86PuWa6NH/eoJoY2tTCZyyoZIoFdAsfvzQUv8BN9yo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XPJALvc+j4Seljolcxf1ol97pkrI0ldueLzPFd0VVai+kfynpI3kROF1JcPdT/TdB
+	 sCPmpcIDERkA6CvT2MF9FI2H0bqQ2FcuzyaiYa30DkYWVOVnH7/NX5eaCLBmot7Ns9
+	 hWSDG4sZKJN7WzwKK1G/ucBvkE+xkBj53tP95ny5+o0Fh7HgoA/W4YfAmYr1ucX6kL
+	 9WiwI6Her2js1Krrdjs+GbU+yEy7/j50OhQU0tdQt7FVPfacZ4AUKtfT4nstXNvMw/
+	 pi2Y8s9Y5JRDoK7rTIk8yxF5fM+aAb6kocup4we+5BqBdAvU0d7ant0gClg+AyhVwg
+	 lCqVj+TDX94Eg==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40ed9a23aaeso1258815fac.1
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Mar 2026 04:21:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXfbhiNfurfnBoaSIK6AZ/pHGRrbQ58qTNstiP6CaqzpBGogBs0NOf24JeRPHDiKxzFdiY0De5sclNs@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAqDObTzPZN/9ng+qiOT/wr37KvDgygNHnaayDSv+VxJaJPton
+	DUT5S28/c8nlecXp7QAdkYvXL+ZP/KOzILHFi29GmzVj+DGWlfl+tIyY9wN8xQtiKh6KTVPp5dY
+	M7Vhpx1t281cew7JE5pEPScqdFiClcdA=
+X-Received: by 2002:a05:6871:529b:b0:416:3a7f:5ee5 with SMTP id
+ 586e51a60fabf-416abad0f51mr3151965fac.25.1772713264846; Thu, 05 Mar 2026
+ 04:21:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is on
-To: "Huang, Kai" <kai.huang@intel.com>,
- "Schofield, Alison" <alison.schofield@intel.com>,
- "gourry@gourry.net" <gourry@gourry.net>
-Cc: "nunodasneves@linux.microsoft.com" <nunodasneves@linux.microsoft.com>,
- "lenb@kernel.org" <lenb@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "thorsten.blum@linux.dev" <thorsten.blum@linux.dev>,
- "wangyuquan1236@phytium.com.cn" <wangyuquan1236@phytium.com.cn>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Williams, Dan J" <dan.j.williams@intel.com>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20260304213342.5776-1-kai.huang@intel.com>
- <aaizNh-0LEvRQMCy@gourry-fedora-PF4VCD3F>
- <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
- <aajGuOC-G_dFYpwa@gourry-fedora-PF4VCD3F>
- <4809035f61dcd6ace773532efe46b0f1928be313.camel@intel.com>
- <8355402a-e4f0-42b5-854a-ee42f9505612@shopee.com>
- <aee45ef3bc5e62814b09db5f605270b3b376fc64.camel@intel.com>
-From: Haifeng Xu <haifeng.xu@shopee.com>
-In-Reply-To: <aee45ef3bc5e62814b09db5f605270b3b376fc64.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5E1CA2108F1
+References: <76675c4d49d3a8f72252076812ef8f22276230c2.1772282441.git.houwenlong.hwl@antgroup.com>
+ <b5d7f0734005eb08f31e7b9b72e253efcd2614ab.1772282441.git.houwenlong.hwl@antgroup.com>
+In-Reply-To: <b5d7f0734005eb08f31e7b9b72e253efcd2614ab.1772282441.git.houwenlong.hwl@antgroup.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 5 Mar 2026 13:20:53 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ibAwNi95giT5tF-7UvZ4SijneHkOtOB1d83SbjYLv4MA@mail.gmail.com>
+X-Gm-Features: AaiRm53W5_8nGkWmrEPfxN-dAJp7siRIAvcpD9cmFBt1l6FZ0NABi8Po-9KsTTU
+Message-ID: <CAJZ5v0ibAwNi95giT5tF-7UvZ4SijneHkOtOB1d83SbjYLv4MA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI, x86/boot: Remove {set|get}_root_pointer() ACPI callbacks
+To: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Sohil Mehta <sohil.mehta@intel.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E0E69211960
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shopee.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[shopee.com:s=shopee.com];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[shopee.com:+];
-	TAGGED_FROM(0.00)[bounces-21410-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21411-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haifeng.xu@shopee.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,shopee.com:dkim,shopee.com:mid]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[antgroup.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
+On Sun, Mar 1, 2026 at 6:05=E2=80=AFAM Hou Wenlong <houwenlong.hwl@antgroup=
+.com> wrote:
+>
+> After removing pvh_get_root_pointer(), the only get_root_pointer() ACPI
+> callback is x86_default_get_root_pointer(). Move the implementation
+> directly into acpi_arch_get_root_pointer() and remove the
+> get_root_pointer() ACPI callback. Since the set_root_pointer() ACPI
+> callback is also only x86_default_set_root_pointer(), remove it as well.
+>
+> Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
+Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-On 2026/3/5 18:25, Huang, Kai wrote:
-> 
->>
->> By the way, If insert real cxl memory but disable CXL_ACPI, how the kernel
->> initilaizes the cxl memory and assigns the numa node? can you provide the
->> related kernel souce code?
-> 
-> Sorry I am a bit confused what you want to do.
-> 
-
-" It only avoids detecting CFMWS, which doesn't provide any NUMA info actually -- that's why
-kernel assigns a 'faked' NUMA node for each of them."
-
-Sorry I misunderstand what you said above. I originally thought that the inserted cxl memory
-was assigned to a 'faked' NUMA node if disable CXL_ACPI. 
-
-
-> If you have actual CXL memory installed, that means you want to use that?
-> 
-> But if you want to use CXL memory, you cannot disable CXL_ACPI IIUC.
-> 
-> If you don't want to use CXL memory in your deployment then you can either
-> disable CXL memory in your BIOS or, with this patch, disable CXL_ACPI in
-> your kernel.
-> 
-
-I see.
-
-Thanks!
+> ---
+>  arch/x86/include/asm/acpi.h     | 15 +++------------
+>  arch/x86/include/asm/x86_init.h |  4 ----
+>  arch/x86/kernel/acpi/boot.c     | 10 ----------
+>  arch/x86/kernel/x86_init.c      |  2 --
+>  4 files changed, 3 insertions(+), 28 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index a03aa6f999d1..1286e044c623 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -17,6 +17,7 @@
+>  #include <asm/cpufeature.h>
+>  #include <asm/irq_vectors.h>
+>  #include <asm/xen/hypervisor.h>
+> +#include <asm/setup.h>
+>
+>  #include <xen/xen.h>
+>
+> @@ -160,20 +161,17 @@ static inline bool acpi_has_cpu_in_madt(void)
+>  #define ACPI_HAVE_ARCH_SET_ROOT_POINTER
+>  static __always_inline void acpi_arch_set_root_pointer(u64 addr)
+>  {
+> -       x86_init.acpi.set_root_pointer(addr);
+> +       boot_params.acpi_rsdp_addr =3D addr;
+>  }
+>
+>  #define ACPI_HAVE_ARCH_GET_ROOT_POINTER
+>  static __always_inline u64 acpi_arch_get_root_pointer(void)
+>  {
+> -       return x86_init.acpi.get_root_pointer();
+> +       return boot_params.acpi_rsdp_addr;
+>  }
+>
+>  void acpi_generic_reduced_hw_init(void);
+>
+> -void x86_default_set_root_pointer(u64 addr);
+> -u64 x86_default_get_root_pointer(void);
+> -
+>  #ifdef CONFIG_XEN_PV
+>  /* A Xen PV domain needs a special acpi_os_ioremap() handling. */
+>  extern void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys,
+> @@ -193,13 +191,6 @@ static inline void disable_acpi(void) { }
+>
+>  static inline void acpi_generic_reduced_hw_init(void) { }
+>
+> -static inline void x86_default_set_root_pointer(u64 addr) { }
+> -
+> -static inline u64 x86_default_get_root_pointer(void)
+> -{
+> -       return 0;
+> -}
+> -
+>  #endif /* !CONFIG_ACPI */
+>
+>  #define ARCH_HAS_POWER_INIT    1
+> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_i=
+nit.h
+> index 6c8a6ead84f6..254221eec395 100644
+> --- a/arch/x86/include/asm/x86_init.h
+> +++ b/arch/x86/include/asm/x86_init.h
+> @@ -132,13 +132,9 @@ struct x86_hyper_init {
+>
+>  /**
+>   * struct x86_init_acpi - x86 ACPI init functions
+> - * @set_root_pointer:          set RSDP address
+> - * @get_root_pointer:          get RSDP address
+>   * @reduced_hw_early_init:     hardware reduced platform early init
+>   */
+>  struct x86_init_acpi {
+> -       void (*set_root_pointer)(u64 addr);
+> -       u64 (*get_root_pointer)(void);
+>         void (*reduced_hw_early_init)(void);
+>  };
+>
+> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> index a3f2fb1fea1b..6365a75d9e1c 100644
+> --- a/arch/x86/kernel/acpi/boot.c
+> +++ b/arch/x86/kernel/acpi/boot.c
+> @@ -1828,16 +1828,6 @@ void __init arch_reserve_mem_area(acpi_physical_ad=
+dress addr, size_t size)
+>         e820__update_table_print();
+>  }
+>
+> -void x86_default_set_root_pointer(u64 addr)
+> -{
+> -       boot_params.acpi_rsdp_addr =3D addr;
+> -}
+> -
+> -u64 x86_default_get_root_pointer(void)
+> -{
+> -       return boot_params.acpi_rsdp_addr;
+> -}
+> -
+>  #ifdef CONFIG_XEN_PV
+>  void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size =
+size)
+>  {
+> diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+> index ebefb77c37bb..4a1a70366b71 100644
+> --- a/arch/x86/kernel/x86_init.c
+> +++ b/arch/x86/kernel/x86_init.c
+> @@ -121,8 +121,6 @@ struct x86_init_ops x86_init __initdata =3D {
+>         },
+>
+>         .acpi =3D {
+> -               .set_root_pointer       =3D x86_default_set_root_pointer,
+> -               .get_root_pointer       =3D x86_default_get_root_pointer,
+>                 .reduced_hw_early_init  =3D acpi_generic_reduced_hw_init,
+>         },
+>  };
+> --
+> 2.31.1
+>
+>
 
