@@ -1,239 +1,306 @@
-Return-Path: <linux-acpi+bounces-21382-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21381-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLaNJLTcqGnGxwAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21382-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 02:30:28 +0100
+	id +CtcAovcqGnGxwAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21381-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 02:29:47 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26987209D45
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 02:30:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 912A8209D08
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 02:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3756304EEC9
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 01:30:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A65A3013460
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 01:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C5E2459CF;
-	Thu,  5 Mar 2026 01:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CF315746F;
+	Thu,  5 Mar 2026 01:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OypenRTl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MtDePDF7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA04B1E1E16;
-	Thu,  5 Mar 2026 01:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772674204; cv=none; b=l2UJ3UlY5BYxW4ieO2cQvkow2ToRhm34odEluQw5p9h5jCzst9RYx7GbPcw4rkf0e42+/Icitz4DDeD4uEagK87zlj6/CgnrHlwlRNz5B2LooNClM+ZSJ89SOw5V+EnjgIeR1XDf8BC6jejHgKvAuLps3xI+uZUvX8j1xZMrlR0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772674204; c=relaxed/simple;
-	bh=oNU/jaVVUf/SRNVN4crRULN++oHkeGDmQU+FnUaIOCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FyyHvKmf4I10TR4WPqyZ7jZfYPi62qcXmng/YhhVdpjer5z/wF+Wl9aKBGFv4GE0rdsVc+tGwwF7Mxxsx8eqjhpsTdhJz29tO0KN+rPVEsdu6/otSnE1qx1T5F/fNc2zuhB5bwWG/yfHYhakXAtcnGNFB8VpntGotxszWdkw0js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OypenRTl; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079023E229;
+	Thu,  5 Mar 2026 01:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772674182; cv=fail; b=sPYSYyN4FZxGgL0UREzAWSuYHz5OWN9gEGj6JWuWKMU5JV5FQMJ80TUqf6rupTbJVp6dtIr1ke0H0BAogJmO/8mUDv/hxMINfZ/RCRluQ6icsF5sPCJHKXJboBzggJuLZX1R12QSY7GY/5F2lFif0BErw3Pif3hfIXCGFk3yGIA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772674182; c=relaxed/simple;
+	bh=9sZhvOxRagi5X3qVWPuE7Z8xZy54MZPD1UDLnX7BkGE=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=a90OepFfWpd6S7DxP/ZDkr2DJ/TYzWyzwrFD8o9gPNCfnCp4Oe+BSCDI1Jokg/epZck/6R/2nNsZBjq6W/mQ1aX4qpthfClrV3h+y2PBfu+uqVegOPPOeD5klk6l3KOSqrKyNrDfY1vlUmmVbYacR6UCBkMER91KvwK8AYZeZZg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MtDePDF7; arc=fail smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772674203; x=1804210203;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oNU/jaVVUf/SRNVN4crRULN++oHkeGDmQU+FnUaIOCo=;
-  b=OypenRTlTYeP51hzCX4N9mCrbiZAwM8dFqec3rLzrSAFmawoW1YXQwhx
-   jxdYPjXu4rwxlfTEfoqxEUIERDBWKbXkDOPdJIbL0yhQ9+rIjZ+OpkDge
-   mPxLN0c1d1xlgcpwdEr21/USkhOue0iRNzJTS3KjFjsjU6KirF/Iu8YQq
-   kY6bni6o61k+Vhy3QwScy/oFFoic8xxSyRabI/dsC8ZcrToUlHrtpx75x
-   hcK3VOPcb9wZgqNl49mfpkD9N0HFQ/3p9LNlZRumyZ0z11en8tUQjV01J
-   fXmavEunI5mGmtdPUSycy7qA9fS9XvahZMYQtbc1pcs3roPD1BnQC5c6y
-   A==;
-X-CSE-ConnectionGUID: h64QWw5LTAWnuuZ6Hsydbw==
-X-CSE-MsgGUID: IgYYbAezRfy09DqTJnUmpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="61324294"
+  t=1772674180; x=1804210180;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=9sZhvOxRagi5X3qVWPuE7Z8xZy54MZPD1UDLnX7BkGE=;
+  b=MtDePDF7kkbimet/NYO9a1/leyJ7uFXxY5t1K7WNKbQYJVKcbKdV1nLW
+   5EYppUMzayfgKCQNAn+eJyxkZH59voHq2e9ZldAbzj6MHlF2qEFWdn/uX
+   rb900Wnh8Iv8FA22/xMu4xSpJUH4qFWQXoVkBbNIhaYmoZgC1rzebffLX
+   jlFWuq7x9lndijv4u6+sdkGanpBQAjl55iqvgXxpEjtjQy0McWvXRgft5
+   5bxO49hqPS1u/YH0/hyGVbuqyE+dWsPfq/YK5VWhklc9y94jXYyME9y3r
+   NcNJvLv35GHz4R3OdM/WZf076x6noWOqQZUUYuEvp9aezyyH/TqPZsvIl
+   Q==;
+X-CSE-ConnectionGUID: /Zv/3uzdSPur6U7gJeMQOA==
+X-CSE-MsgGUID: RE/JKBOOQFmwSjcRiwQ6hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73622797"
 X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="61324294"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:30:02 -0800
-X-CSE-ConnectionGUID: ApuRj/gDTbm8wBpDlrHS9Q==
-X-CSE-MsgGUID: dUdZd7y+RDSoxwR4pi0CbQ==
+   d="scan'208";a="73622797"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:29:39 -0800
+X-CSE-ConnectionGUID: dupRbk+1QLule26XNvQ8Vw==
+X-CSE-MsgGUID: BuGCjrbCTJO3hbZd/Sc3eg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="215391454"
-Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 04 Mar 2026 17:29:58 -0800
-Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxxXI-000000004wH-0Oif;
-	Thu, 05 Mar 2026 01:29:56 +0000
-Date: Thu, 5 Mar 2026 09:29:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chengwen Feng <fengchengwen@huawei.com>, linux-pci@vger.kernel.org,
-	bhelgaas@google.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	rafael@kernel.org, lenb@kernel.org, wei.huang2@amd.com,
-	Eric.VanTassell@amd.com, jonathan.cameron@huawei.com,
-	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com,
-	liuyonglong@huawei.com, Chengwen Feng <fengchengwen@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-Message-ID: <202603050927.IVSflNry-lkp@intel.com>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
+   d="scan'208";a="223017125"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:29:38 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 17:29:37 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 4 Mar 2026 17:29:37 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.11) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 17:29:37 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=elkzVQaORadcc7MIzU7d/uEcgLaYiKHAMgXHDeP0aMJ/AMldZJjOJbZD74Z7qifzN1YfwoKoAa2I/S4bhS3BGDfUZFuo0qzl1tfcAi3xffPiB/OXm5G3KyrdJkYetNUmHzSllDf/8m/K+CjNuasQHUTRWHxE7JA+U/rE8V6Hn+xObUDGoOH53V3zr/JQI1n+ehmPZrHQRmLS0uFDSQM2Xb5Dgmznrv1Zg0dunTOoOsdSPPFFga+QDTM+92vPfG+aHF+Utbs4f3UjlpWfEfpzauXwsdOn8F6FJYmFPfchuOfDzigGhk5U9ZLxfU4YoAeMhmlI8fBqFI8WCtHyEoLILg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IlC8OVl3IjH/95QNOjcYN+EVP4YHO0YojVYZtGHXmF0=;
+ b=N26Bn00dU2RSpumGCdTdoVp0n19Sd5DWy6dvrUhIKoTFPn9vZsKPbeWU0pV4X1LjwFYOrEvalC8jCI0urwOBlk6W+UabBGt2Eg/BwEVK4K88S24XUxmuht1l29QpAZjJSBFjM4DOS/ELeSv1pL2PAR9AXyVytu5y3VtN/sZaKEvjvlJTz1Ajvt4Uh/BSfOpxC+WPg8YVpPugmoCbqkQeivZaCe06266VhBDs+SflfBLplTWObq1/DVfO77iZAPmqup9OCQfc8CGla9RUD6HsBLv+QsdBrPsNJ82W6NW35a7xEeJZCHhlab5MvDd8OzclD6g3ZrE9tecL8zTagpXVnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SN7PR11MB8111.namprd11.prod.outlook.com (2603:10b6:806:2e9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
+ 2026 01:29:34 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%3]) with mapi id 15.20.9654.022; Thu, 5 Mar 2026
+ 01:29:34 +0000
+From: <dan.j.williams@intel.com>
+Date: Wed, 4 Mar 2026 17:29:32 -0800
+To: "Huang, Kai" <kai.huang@intel.com>, "gourry@gourry.net"
+	<gourry@gourry.net>
+CC: "nunodasneves@linux.microsoft.com" <nunodasneves@linux.microsoft.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "Schofield, Alison"
+	<alison.schofield@intel.com>, "thorsten.blum@linux.dev"
+	<thorsten.blum@linux.dev>, "wangyuquan1236@phytium.com.cn"
+	<wangyuquan1236@phytium.com.cn>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "lenb@kernel.org"
+	<lenb@kernel.org>
+Message-ID: <69a8dc7ca72c2_2f4a10026@dwillia2-mobl4.notmuch>
+In-Reply-To: <178a85c1d5a48938bf866a85d34ee2ba87901d10.camel@intel.com>
+References: <20260304213342.5776-1-kai.huang@intel.com>
+ <aaizNh-0LEvRQMCy@gourry-fedora-PF4VCD3F>
+ <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
+ <aajGuOC-G_dFYpwa@gourry-fedora-PF4VCD3F>
+ <4809035f61dcd6ace773532efe46b0f1928be313.camel@intel.com>
+ <aajOckpcmQwYydVQ@gourry-fedora-PF4VCD3F>
+ <178a85c1d5a48938bf866a85d34ee2ba87901d10.camel@intel.com>
+Subject: Re: [PATCH] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is on
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0081.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::26) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303003625.39035-1-fengchengwen@huawei.com>
-X-Rspamd-Queue-Id: 26987209D45
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SN7PR11MB8111:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea93b84b-beee-411c-ecce-08de7a56a821
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: heK/iR4TtEbHtsoQoAnRY216MNN4XkbkNOouIFvLPfPHkPlxcSPjpKqp8bXPxgDuL2WWo0rc4XVGPtquHWMClGsrAufNLwOlH3H+G3SFTRUg3eHCZn1B5ROyQBGpeyLZOREnU1j5EZSgpeW6TMJYs7My//m2hpVLOjM42AxFM8+KuVAAxYy+p96g7s7XqgIb7JGshw3//Tlv7X07unsHRmopA+F7tTe46dNresCuzkMCiEGc4SBfljNskP8JzWZJVY03Or8duQlAM2LjlzdMwGqkKSA0r9dkl9ooeD1MXmBt/cbhDsRgznOs/MGY22ecfqz3n/PwSA47Xge6wU/SOFd/4CMLRCSl67krWvjzFukgIGAn7qNohiERYQDiZIPc1TqWi7GCvP7OFg7gci7pMlA3HKN/QI5h4Yq1BaS3qtS8223r/cT8a4lGcSbU8yYAY9WmHhwwtVVYsky1MPEuYSr8YUaK/K/OMZValPc4q2grF6qUsWtygXuyu3CNDJ6DtTQYSDoZLvj0P6FBdsplyU8c/ypKBNzEnBaGQvkuAg6CDjJnAvAjAZXZBM7JUOMLttZ1fxx/r0nfHT/LCwt/2N6x7MEhbLT20f6Dzi2D/BooND1wBUbKWa0tF8Sdlu6YaYzJlcBUy+Sw2uR/39H5tEl/trD+bz9Ihy0tw6cucGmx3t08PuUmu2c8WNJ6s0AgD7gaooGXnEc3Gs/TcsQAJIEJKhtC8a/cMy5djMjCmag=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YytQRzZlUWNuTTNDRzRSbEtLWjg2M2NjSVhIT0lQOG5aL3ZkbEMwdnNBMURw?=
+ =?utf-8?B?bC8wN0lSd1FrQ2pnODQzSjNnaFBtKzNWWUxha1V5NTJrb3VFS2t0VFBIV2Iv?=
+ =?utf-8?B?WGs1bElNSTJjNU1Fb3hwTm9mTmJZRG42RGQ2VEoxVEc5TjBWSHdqRmIrQVRF?=
+ =?utf-8?B?SDBrZUtiM3M0a2dxbUMxODBGZWorcjl5a09WRXRPV3JjSG10ZUh6NlFQdkkx?=
+ =?utf-8?B?OE9kSGw5ZW4zNVdTRVJmbG13bUJaV0FRWm04UUNiTWduWWNFTjRjNWt4ZWFq?=
+ =?utf-8?B?dDhwQUQ3NzE4SkNkSHBDUS9SVmw1dGt1cUdLLzRNS2JqRm56S2tST2RRQVJD?=
+ =?utf-8?B?Mi9iemNOU3VTcHRPVHBDQUc3cFZwK2Y4a2QyYk9FRStpSUV1ckN6SE1UZTBP?=
+ =?utf-8?B?Nyt2SU80MDczUGE5em5MT0ZLaHk1T3N3TTNSaXF4Y1k4S05GazNPYjJoRTZx?=
+ =?utf-8?B?NXc5VGIxb3R0emxmMmF1dFRCOEtYL29xN0FmQVgyUi9kRG9QVmR1aTd6LzlY?=
+ =?utf-8?B?VVRrS3E2c2V5bUdISFUwOGF4T2kwOVIxNGRjRjYwdU93QVh5dTQ0OHBxVXhU?=
+ =?utf-8?B?UGhaT21abnBKcUtFRDZJcU16K2E2U2wraENwTUJLdkY4NEoxbnZTdGRoNnl4?=
+ =?utf-8?B?OFM2TG9uUFNFZ04wMjdnZmt2TVpjK0FYeUJFZXd1cGxMRXBWVGNTU1NZblYx?=
+ =?utf-8?B?M1VwSW4wWEgyWVhaeXBUZGZ4dmJRZmdFYzVSczFkNXZWTkdpdWt4a0xoaU96?=
+ =?utf-8?B?bW1nbjROY0F5cEhzRldVYllKeHpvVzFTM0J2UXFONHYyK1U0SkdqZUZ1NDBJ?=
+ =?utf-8?B?ZDBRaTJCcno2RjJOQ3pBMWZucFFmbG1tTjdIODZFNnV5bEViSEV1U0xEMDgx?=
+ =?utf-8?B?eFBMVFlRK1ROZUlZejI4WjZ6cWx2VWhuczM3bmJGcURCTWtwdnBnU1VZbWxD?=
+ =?utf-8?B?U0ZDZi9jVDJRS0tmRzRNRDVabStUQnkxcHZzcGxsZjN2NUlrNUhQSDc0TnNZ?=
+ =?utf-8?B?RFR4SEcrWEFJbzFBWmF6U3B1NndGT1V3UUtGbGFrV0lIRDJxemRKR2psVmw3?=
+ =?utf-8?B?UGRKeUNiSDBDNE8zb1NNczRiTW5VYjIzSmVZRjRoS2xQVWt1UXVONFI2VUlz?=
+ =?utf-8?B?Vzljd1BUQTlJZmkxU1AzTDNoa1YyVUZxUThaYVVuWCtENEgzQUh6bzR2WFZr?=
+ =?utf-8?B?YWRkSFcrUFp4RGhUMkxDMlZKU0lWNldtbzBFK3Y3RGN2Nkp5YnhLZEYxazND?=
+ =?utf-8?B?WHJJdGQrUGlQNFFqZmtuZWt3cW1qQkU1ZmI0bm9vQklNcmVyZHo5SWFCem9Q?=
+ =?utf-8?B?SEdzMldYbFlYUFVnQ0w0aGRKOERkQmdTc0l6TzZid1MvUDJHYXZJY0dHZ0Uy?=
+ =?utf-8?B?TjdqeVNUdkZYQzN1STk3dkt1c3YxMkpyZTI2WkVYLyt5d0xXUDd1RHlrajJs?=
+ =?utf-8?B?V2xISkptS2pHSFNCdG1ORjVCemhTV1B0Ni9kL2Ywa2VpM28vY2F1bTBkNG1S?=
+ =?utf-8?B?N0t5S1JWajk1SkNPdUhOa0M0ZXd2NE9GRmxBaGtWbkJocWdBMi9iaFFGVE9X?=
+ =?utf-8?B?SkVValY5NlV6UzArVXRrenp4RkNTMm1NdW04cUlwY0pXRHU2SmdOQVU3OGhJ?=
+ =?utf-8?B?eDlaTWN1SmZSR0NmMjFmWlRlZFhUTEVRNS9PVHlPeGtJa29BNGxLUHkxR3hF?=
+ =?utf-8?B?L291dVhVWE9ZUmt2amNkeXllQlpFbmVDN04ybVE3MldYSkYrVWwyWVdNMzNv?=
+ =?utf-8?B?aXRBd3Q1NG9yQ0YxVXdMOWpnZXpPd28xK1F2ektveGJ3SEpLZDFUaDNFTUVT?=
+ =?utf-8?B?aFlBdUVFNzdWdllyeTg3c2FYSE50UEpWWVRjZkJSOFJpUHBZYU9nZVVNV0RB?=
+ =?utf-8?B?Z3hYaFRiTGYxTVVCOVg0YzcvVk95djdaM3l6c1oreGl2b25LdFJVSmZHVU4z?=
+ =?utf-8?B?bStiaWRIanhmblJtYW1hU0h0Y3J5aWQwd2JXVzVwaS94NE01RWxwRmRmaTAw?=
+ =?utf-8?B?Q09QaFF4L2xVVDFwdVg0N0J0d0FLYnBLeUZnTkUwMlBpOGdpTjd3dTRFRGN4?=
+ =?utf-8?B?M0pUV0YyWU8vM2twSWlWZGxwMXNkZEphQkd3NlMxK01RN1BHeVlIVkFwVUZu?=
+ =?utf-8?B?RlhtNXl3cVo4MGVyZ2tYYjl1Zzl6bitpblhTeE5PQlg2QlJoS0hHWTBKVW5n?=
+ =?utf-8?B?cFhJV1BMcHdYUGFDUEIxS2RhZzJ2RHNHM2IvaVN1dUxGemJta256UWljdlpU?=
+ =?utf-8?B?VmlMMUF3NDBoUnh6MkZkZnRKMGd2R1Nxa1d0VkpScVE1NmRaMTUxdkkzbHFn?=
+ =?utf-8?B?Qi9NQXJjODJWendRSVI4bVF2ekV6MkFUUFlXNE16dy83TUdlSzJkN0xHM0ZC?=
+ =?utf-8?Q?nB0vl7xy3D5mw4X8=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea93b84b-beee-411c-ecce-08de7a56a821
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 01:29:34.1215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /bC7GhZZhYwdedqG3MSNRlnHFz+cAouj426BHzTBqqVuS9Jc7y+EurVBQUNgU6DBi/EZn+eG2y8BclnFNoWKTcQoZBrDgBIVwiUrhMsFM60=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8111
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 912A8209D08
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21382-lists,linux-acpi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21381-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dan.j.williams@intel.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid,git-scm.com:url]
+	TAGGED_RCPT(0.00)[linux-acpi];
+	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-Hi Chengwen,
+Huang, Kai wrote:
+> On Wed, 2026-03-04 at 19:29 -0500, Gregory Price wrote:
+> > On Thu, Mar 05, 2026 at 12:14:52AM +0000, Huang, Kai wrote:
+> > > On Wed, 2026-03-04 at 18:56 -0500, Gregory Price wrote:
+> > > >=20
+> > > > This basically says if specifically CXL_ACPI is built out, the NUMA
+> > > > structure is forever lost - even though it's accurately described b=
+y
+> > > > BIOS. =C2=A0
+> > > >=20
+> > >=20
+> > > The normal NUMA info described in SRAT is still there.  It only avoid=
+s
+> > > detecting CFMWS, which doesn't provide any NUMA info actually -- that=
+'s why
+> > > kernel assigns a 'faked' NUMA node for each of them.
+> > >=20
+> > > So we are not losing anything AFAICT.
+> >=20
+> > Well, I'm mostly confused why there are CEDT entries for hardware that
+> > presumably isn't even there - unless this platform is reserving space
+> > for future hotplug. =C2=A0
+> >=20
+>=20
+> I think this should be the case.
+>=20
+> > Just want to make sure we're not adjusting for
+> > strange firmware behavior.
+>=20
+> How to check whether it is "strange"?
+>
 
-kernel test robot noticed the following build warnings:
+So these are fine. These are CXL hotplug windows and the expectation is
+that they *might* be populated in the future. SRAT can not make claims
+about future CXL hotplug (see NOTE). So the expecation for CXL hotplug
+is reserve some numa nodes that Linux can determine the affinity of
+dynamically with HMAT Generic Port and device CDAT information.
 
-[auto build test WARNING on pci/next]
-[also build test WARNING on pci/for-linus rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v7.0-rc2 next-20260303]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+NOTE: SRAT *does* make claims about the affinity of future *ACPI*
+Hotplug, but in that case the platform statically knows something about
+the configuration of memory that can possibly be plugged in the future.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-get-cpu-steer-tag-fail-on-ARM64-platform/20260303-084305
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20260303003625.39035-1-fengchengwen%40huawei.com
-patch subject: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-config: loongarch-randconfig-002-20260305 (https://download.01.org/0day-ci/archive/20260305/202603050927.IVSflNry-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603050927.IVSflNry-lkp@intel.com/reproduce)
+> > You are taking something away by nature of compiling something out by
+> > default that was previously not compiled out by default.
+>=20
+> Yeah, and it is due to "there's a cost" if we don't compile out by defaul=
+t.
+>=20
+> Hope that justifies?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603050927.IVSflNry-lkp@intel.com/
+I think it makes sense that if you disable CXL hotplug by setting
+CONFIG_CXL_ACPI=3Dn then no need to reserve numa ids. However, just do
+something like this rather than add ifdefs to the code:
 
-All warnings (new ones prefixed by >>):
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index aa87ee1583a4..62d4a8df0b8c 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -654,8 +654,11 @@ int __init acpi_numa_init(void)
+ 	}
+ 	last_real_pxm =3D fake_pxm;
+ 	fake_pxm++;
+-	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
+-			      &fake_pxm);
++
++	/* No need to expand numa nodes if CXL is disabled */
++	if (IS_ENABLED(CONFIG_CXL_ACPI))
++		acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
++				      &fake_pxm);
+=20
+ 	if (cnt < 0)
+ 		return cnt;
 
->> drivers/pci/tph.c:92:20: warning: 'tph_invoke_dsm' defined but not used [-Wunused-function]
-      92 | static acpi_status tph_invoke_dsm(acpi_handle handle, u32 cpu_uid,
-         |                    ^~~~~~~~~~~~~~
->> drivers/pci/tph.c:56:12: warning: 'tph_extract_tag' defined but not used [-Wunused-function]
-      56 | static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
-         |            ^~~~~~~~~~~~~~~
+The call to acpi_table_parse_cedt() will get skipped and the code for
+acpi_parse_cfmws() will get automatically compiled out of the file.
 
+At the same time I doubt this patch provides end users much value in
+practice as most distro kernels have CONFIG_CXL_ACPI, and the few end
+users that have CXL are not going blink at the overhead to support the
+full feature set.
 
-vim +/tph_invoke_dsm +92 drivers/pci/tph.c
-
-d2e8a34876ce69b Wei Huang 2024-10-02   55  
-d2e8a34876ce69b Wei Huang 2024-10-02  @56  static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
-d2e8a34876ce69b Wei Huang 2024-10-02   57  			   union st_info *info)
-d2e8a34876ce69b Wei Huang 2024-10-02   58  {
-d2e8a34876ce69b Wei Huang 2024-10-02   59  	switch (req_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   60  	case PCI_TPH_REQ_TPH_ONLY: /* 8-bit tag */
-d2e8a34876ce69b Wei Huang 2024-10-02   61  		switch (mem_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   62  		case TPH_MEM_TYPE_VM:
-d2e8a34876ce69b Wei Huang 2024-10-02   63  			if (info->vm_st_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   64  				return info->vm_st;
-d2e8a34876ce69b Wei Huang 2024-10-02   65  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   66  		case TPH_MEM_TYPE_PM:
-d2e8a34876ce69b Wei Huang 2024-10-02   67  			if (info->pm_st_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   68  				return info->pm_st;
-d2e8a34876ce69b Wei Huang 2024-10-02   69  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   70  		}
-d2e8a34876ce69b Wei Huang 2024-10-02   71  		break;
-d2e8a34876ce69b Wei Huang 2024-10-02   72  	case PCI_TPH_REQ_EXT_TPH: /* 16-bit tag */
-d2e8a34876ce69b Wei Huang 2024-10-02   73  		switch (mem_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   74  		case TPH_MEM_TYPE_VM:
-d2e8a34876ce69b Wei Huang 2024-10-02   75  			if (info->vm_xst_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   76  				return info->vm_xst;
-d2e8a34876ce69b Wei Huang 2024-10-02   77  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   78  		case TPH_MEM_TYPE_PM:
-d2e8a34876ce69b Wei Huang 2024-10-02   79  			if (info->pm_xst_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   80  				return info->pm_xst;
-d2e8a34876ce69b Wei Huang 2024-10-02   81  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   82  		}
-d2e8a34876ce69b Wei Huang 2024-10-02   83  		break;
-d2e8a34876ce69b Wei Huang 2024-10-02   84  	default:
-d2e8a34876ce69b Wei Huang 2024-10-02   85  		return 0;
-d2e8a34876ce69b Wei Huang 2024-10-02   86  	}
-d2e8a34876ce69b Wei Huang 2024-10-02   87  
-d2e8a34876ce69b Wei Huang 2024-10-02   88  	return 0;
-d2e8a34876ce69b Wei Huang 2024-10-02   89  }
-d2e8a34876ce69b Wei Huang 2024-10-02   90  
-d2e8a34876ce69b Wei Huang 2024-10-02   91  #define TPH_ST_DSM_FUNC_INDEX	0xF
-d2e8a34876ce69b Wei Huang 2024-10-02  @92  static acpi_status tph_invoke_dsm(acpi_handle handle, u32 cpu_uid,
-d2e8a34876ce69b Wei Huang 2024-10-02   93  				  union st_info *st_out)
-d2e8a34876ce69b Wei Huang 2024-10-02   94  {
-d2e8a34876ce69b Wei Huang 2024-10-02   95  	union acpi_object arg3[3], in_obj, *out_obj;
-d2e8a34876ce69b Wei Huang 2024-10-02   96  
-d2e8a34876ce69b Wei Huang 2024-10-02   97  	if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 7,
-d2e8a34876ce69b Wei Huang 2024-10-02   98  			    BIT(TPH_ST_DSM_FUNC_INDEX)))
-d2e8a34876ce69b Wei Huang 2024-10-02   99  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  100  
-d2e8a34876ce69b Wei Huang 2024-10-02  101  	/* DWORD: feature ID (0 for processor cache ST query) */
-d2e8a34876ce69b Wei Huang 2024-10-02  102  	arg3[0].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  103  	arg3[0].integer.value = 0;
-d2e8a34876ce69b Wei Huang 2024-10-02  104  
-d2e8a34876ce69b Wei Huang 2024-10-02  105  	/* DWORD: target UID */
-d2e8a34876ce69b Wei Huang 2024-10-02  106  	arg3[1].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  107  	arg3[1].integer.value = cpu_uid;
-d2e8a34876ce69b Wei Huang 2024-10-02  108  
-d2e8a34876ce69b Wei Huang 2024-10-02  109  	/* QWORD: properties, all 0's */
-d2e8a34876ce69b Wei Huang 2024-10-02  110  	arg3[2].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  111  	arg3[2].integer.value = 0;
-d2e8a34876ce69b Wei Huang 2024-10-02  112  
-d2e8a34876ce69b Wei Huang 2024-10-02  113  	in_obj.type = ACPI_TYPE_PACKAGE;
-d2e8a34876ce69b Wei Huang 2024-10-02  114  	in_obj.package.count = ARRAY_SIZE(arg3);
-d2e8a34876ce69b Wei Huang 2024-10-02  115  	in_obj.package.elements = arg3;
-d2e8a34876ce69b Wei Huang 2024-10-02  116  
-d2e8a34876ce69b Wei Huang 2024-10-02  117  	out_obj = acpi_evaluate_dsm(handle, &pci_acpi_dsm_guid, 7,
-d2e8a34876ce69b Wei Huang 2024-10-02  118  				    TPH_ST_DSM_FUNC_INDEX, &in_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  119  	if (!out_obj)
-d2e8a34876ce69b Wei Huang 2024-10-02  120  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  121  
-d2e8a34876ce69b Wei Huang 2024-10-02  122  	if (out_obj->type != ACPI_TYPE_BUFFER) {
-d2e8a34876ce69b Wei Huang 2024-10-02  123  		ACPI_FREE(out_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  124  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  125  	}
-d2e8a34876ce69b Wei Huang 2024-10-02  126  
-d2e8a34876ce69b Wei Huang 2024-10-02  127  	st_out->value = *((u64 *)(out_obj->buffer.pointer));
-d2e8a34876ce69b Wei Huang 2024-10-02  128  
-d2e8a34876ce69b Wei Huang 2024-10-02  129  	ACPI_FREE(out_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  130  
-d2e8a34876ce69b Wei Huang 2024-10-02  131  	return AE_OK;
-d2e8a34876ce69b Wei Huang 2024-10-02  132  }
-d2e8a34876ce69b Wei Huang 2024-10-02  133  #endif
-d2e8a34876ce69b Wei Huang 2024-10-02  134  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Can you not just disable CXL support in the BIOS for your system and
+avoid complicating this code path for a small win?=
 
