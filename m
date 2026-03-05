@@ -1,160 +1,228 @@
-Return-Path: <linux-acpi+bounces-21459-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21460-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qdSeFUsLqmnqKAEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21459-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 00:01:31 +0100
+	id +JzhAaYNqmlbKQEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21460-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 00:11:34 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344B2219240
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 00:01:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9534F219325
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 00:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14778301D97C
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 23:01:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD6B0301A2C9
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 23:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B27C27AC54;
-	Thu,  5 Mar 2026 23:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3557A3659E9;
+	Thu,  5 Mar 2026 23:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W81u0WsB"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Lds+X2Jn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011025.outbound.protection.outlook.com [52.101.52.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E296D189B84;
-	Thu,  5 Mar 2026 23:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772751688; cv=none; b=sLLBNv35dxkKT6+WypwKQXjeFWTtvkfTgw2+ABmq4jPPK8l3NU51ubR1phQbtWoIZn5m+ZtHWTy3Hgk0uKzVCiS+VYN56F4xrfF8YK1yNHE+5HXbwnvpgc1gdQ3xlAZsQk7zUCnI8jE4a3RhfUeUlQXO8wVqTyOMBhqhqVho6Dw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772751688; c=relaxed/simple;
-	bh=PHQYA+3ODj8Z0jhwDvxeCHGYytqRZCCsl9F3HYya9J4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwqLl9paEN3qM02zjX3XZ4YwwiIsIXlmTCmSwOz3dI+aZwBDwR8/yrn71zTsBwkzz2T55JYyO2ngUvcvxalHjDVtYOC6jfa+ZkfPo9q4lpHbh3ckNSlwM3KkNj2hRfrCei9LKOUaNWHq6ng3oJRNWSY7t0h2577O7CpHSOgLgDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W81u0WsB; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772751686; x=1804287686;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PHQYA+3ODj8Z0jhwDvxeCHGYytqRZCCsl9F3HYya9J4=;
-  b=W81u0WsBzVd/r1u4mlmihcdb3EDDKjauPEbiungHh7XhOOty6VDhjYiB
-   bFhhTtL06QoUywr1Yu5+1c79s6Q2rtnBMpI/boQEGbWGBdcNIkvJuMzCQ
-   dBLIqUqVb7l1xkjiVko8I4TZxcRfqsZkujPgIJFcHqtD42SB2ypyU7it7
-   G1jPeNarL39ZM3Q5b2uQBMxkZD5LV0A6Yp3W0hlWEHvvZc0IcDt1uIvH3
-   t4/JbHrhV9W0z4/i7lW28L5tPop09/RSWeMjcSCjgUag3NjshiU5cVHqL
-   WqozPAAK8/Z9Z4+58NmUiITipij/HHl2AYCAR5l+13FbuMAPBRy+o3Rxg
-   Q==;
-X-CSE-ConnectionGUID: xVOeLacBRTeD1P6HvJ9RYA==
-X-CSE-MsgGUID: LGxbN0jsReuUQ1eOQaypzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85203676"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="85203676"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 15:01:25 -0800
-X-CSE-ConnectionGUID: MkLBjoWHTx2WDalC9yxBuA==
-X-CSE-MsgGUID: BHdtxPvpQdyBhzegB1swIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="218777587"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 05 Mar 2026 15:01:22 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyHh0-00000000037-30Zz;
-	Thu, 05 Mar 2026 23:01:18 +0000
-Date: Fri, 6 Mar 2026 07:00:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haifeng Xu <haifeng.xu@shopee.com>, rafael@kernel.org, lenb@kernel.org,
-	dan.j.williams@intel.com, jonathan.cameron@huawei.com
-Cc: oe-kbuild-all@lists.linux.dev, dave@stgolabs.net, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Haifeng Xu <haifeng.xu@shopee.com>
-Subject: Re: [PATCH] ACPI: add a boot parameter to disable parsing CFMWS
- during NUMA init
-Message-ID: <202603060605.Fa8yGC4u-lkp@intel.com>
-References: <20260304080647.169434-1-haifeng.xu@shopee.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5793644CB;
+	Thu,  5 Mar 2026 23:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772752290; cv=fail; b=EBTcUgIAPGBd7aqJDfsuzl3wQswH6MF+j1gbm6pQbs5qLcmNWV1nO676Z6f0fjyprM98MWFx3Gu9hbpBeYWFLBlsnHfdRgNMmoGZUtJV2QGfKl2W76iiSmSgy1C+hWj+J7gJXhAP/KM5MHzaBTIQknrubjjfd3T2fYWUB8Pp30c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772752290; c=relaxed/simple;
+	bh=6qI8p/SM0BSSCKZexB0HFjOkvZQKa5aCJ2+ZsA0NBMc=;
+	h=Message-ID:Date:To:Cc:From:Subject:Content-Type:MIME-Version; b=ieBGPQRSWZNP3jC0zq0QN/goIF6FRgZe6OVTBDsAqB0FA7UL8Puel54Cifv2OUvT2E/vDFgKC/+VPYl6G5eOL6R3IhxPYZwpUyra3RiqHDsaboRQpBWB4yQl7Bz633fbpdlNtKUgq/5ILJ2BW8jk6WdEEaGEta1GgNhr/AGy6QQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Lds+X2Jn; arc=fail smtp.client-ip=52.101.52.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kxJmipR8mWgIZvPqEckxpfn1UOvOaKMnwOnz6vvofjFogHiMkjGnBhhbup6L4Fi13G+M5+eMOm59kgLp2VhQuzeIZgm5hYJYmwv9EqZpXJWbnPtpk6iUCj7ZVvXP533sPK7borb5BAvPl1LO9/MY9DxhVXg7JzoEVRv0S7T0U283/CHdtmMzCK5H5pIohiiccOl1AJv7L9jfGNMbS2ci38DgrkCJuTfBHqxO1vck1+NA/QqnR1jAMHneikh5+AI9KbUCLXMIjsSq7jZaZFAJHGkGlJj2llPRrgJElCAqe9r/xo7oRRCdpsOMStVIU2pOAl3sqt/LjfJTmOizF/yFLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KKkIZhJvZjIdM3iObxSkGqMlhKoaIiQAJ2hGaKb7VNE=;
+ b=Cr6ybFOLd32Slms0G+sqpUsr9mrX+HgMQ92ibCivTyfOIeqIHNcyjPzuK/CoQRNg2rAxvaKfigjK4U96XF+T/DMLFyrbgQhqkdFd8F9W98woE4LZWgZ2AUtQvpWZ6llBzH6G1Za20958ZvleQ1k7VTaEmUBQR8FGTRCzSPyHlloEGBW0jQxsMSZNdPShBUsKvxak23sLNWN7LEI4qkjChyeLL6n6Xb96ShePEgIqcPfsYm9IwHsBkCux+wmrvOKV1MYJPpy1ZCvaAySo/FlBcN7WW/mK1nKfWOgpypfQ+4e/a3/JNpXgZap6/lq2DXKyCgMHxobgEc9JYz+Q0tZDUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KKkIZhJvZjIdM3iObxSkGqMlhKoaIiQAJ2hGaKb7VNE=;
+ b=Lds+X2JnFaFhcJ4WdEis5rQl/Af+dIP2Ub1JKoMFJJwiCpYJyhru3M1VTu+Ki6WHfTlDSZ9Y3XZbt8s+h6ICC7Wm2uYal9sUcuqk3qXfA3HPooCnlUsuOY/GRo+IPPb5chMD6avBzIEkP2ndq/7gIyXRn4tI8d8Wy5enEbXM0xo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB9501.namprd12.prod.outlook.com (2603:10b6:8:250::17)
+ by DS0PR12MB7606.namprd12.prod.outlook.com (2603:10b6:8:13c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
+ 2026 23:11:25 +0000
+Received: from DS7PR12MB9501.namprd12.prod.outlook.com
+ ([fe80::4564:457c:524b:6b96]) by DS7PR12MB9501.namprd12.prod.outlook.com
+ ([fe80::4564:457c:524b:6b96%4]) with mapi id 15.20.9654.022; Thu, 5 Mar 2026
+ 23:11:25 +0000
+Message-ID: <007e3390-6b2b-457e-83c7-c794c5952018@amd.com>
+Date: Thu, 5 Mar 2026 18:11:23 -0500
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: rafael@kernel.org
+Cc: W_Armin@gmx.de, lenb@kernel.org,
+ Mario Limonciello <mario.limonciello@amd.com>, Bin Du <bin.du@amd.com>,
+ benjamin.chan@amd.com, king.li@amd.com, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, regressions@lists.linux.dev
+From: "Nirujogi, Pratap" <pnirujog@amd.com>
+Subject: [REGRESSION] AMDISP failure with kernel v7.0-rc2 due to Commit:
+ 02c057ddefef5
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4PR01CA0251.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10f::19) To DS7PR12MB9501.namprd12.prod.outlook.com
+ (2603:10b6:8:250::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304080647.169434-1-haifeng.xu@shopee.com>
-X-Rspamd-Queue-Id: 344B2219240
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9501:EE_|DS0PR12MB7606:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3197040d-dd57-4412-8f0d-08de7b0c8610
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	tuFbLPvwcP1oSW62WPBP+fIivbqZtsTBQuZFUcmHQPf48fXBB7cVgNUYpwhECI8/m9FJ+mxjhpo5SU29MiVIfnHYdTNnOGBx34D4TV2dyJ3D98oKybe4OC/e6ZOoFYNSts0DtK9jSZsT2jiemH7l6U0tgxDMJlHXfVfxz79EnMXd7W8S8xZ5Wm6eahpqVC2WVxBzjxQd6dteAUnJ3n0+D+pFLPmFakP9VEXV6opPiJ1D1mQM8cK7okGPldinP148W6BWnG4QQOMu20KU3mSr7uTfiapCIN2Ilj80i1pZg17Cp1+OO0Tfqi4iSEVFoBoPvOiTpmpsZhM7hFbiGogG35TvNjp8TAmuIQFo+0UEVG9Xllh5SPxIGLQCQA4IJiiT1EUxvwfobkJjlSVB55DPg7ka+61lC13VODzYJBRBTfrP+zGWoKwFTVd101Loyqinw0+y+yhBFCXP1yh3xrjOr3qhtQwt4StshvV9wV6ZZz+W4bYIvtG5pi05AXCYECiSWd32yWxZBLWiiCMWaGdTjn/SaficALNo5rO9xYxqt9lYcfEpRVRBvl2jyGqDTw3hKmKUtlURciICpGwWmdbzKti9tbze2YQPIWAwMuu48wgyLEbA9+2ptdAnuVPmCGzdvZDxVynbm1CjWBOdLRwkbVp5kKIj+zr9B8FquOXKGJYRMw+P7R7nXkJhT/Dmse0r
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9501.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OXc2RkRjQkk3dWNGZWhCamt5ai9hcFI0dE9rQ2w0ajJRdEJYOS9jNDFxcjNw?=
+ =?utf-8?B?NTBKNlErV2wrVXhwNjdxVTMrcTE0S24vVlVSSVV4MWwxNDFvemI5NTUrOGI2?=
+ =?utf-8?B?Y1BKUGttZkZXZzczaEVEZ3Y2M0pwd0g0WHFiZk1vNXZiR0VPMC9OT2c4clJ3?=
+ =?utf-8?B?TWpFVW42aXpmbXBYK3AxOXdZK0o1cGJsRnZZSFBNeExVQnBucURsNFFrZ1lI?=
+ =?utf-8?B?ME1WU1VaaVplL3B5ZmZObjhGTGh5dUJXUnZhNWt2UGZ5ZjU2N25TZzdiY0lk?=
+ =?utf-8?B?Z1VkYjBlclBWOS9DNWpRNGdlZlJaQ0RDcTR4YmVPeFMvNTh6WG5IZmN0REtj?=
+ =?utf-8?B?Q2pZeTBkaUcwUmR1ZURya3FZdnE3OVhCZjNJUFkza1dHRjc4d283cXRaeGhU?=
+ =?utf-8?B?Q1BNQzdROG0vdjRmRTRNeGs1REpWS0RNTlJEUlNpTXBiUDVnV0VNOGU1SDBk?=
+ =?utf-8?B?OTUybDFyUXRlOTAvbFpOSlVFTjV2bHVtSDU0MFR2K050eTVmeDlxN3Erc2dF?=
+ =?utf-8?B?d3F6MVMrZ3FTSVRQTFVSZ1BIZ0ZHU2VZM3oyS3B4SmgzNTlrUDlFOXFMbFQ1?=
+ =?utf-8?B?UTRTNUZCa1pVQmpvV1dCMU1OMElJbndrWXhWRXdPU2tLYjRoTy9BS3ZndFdM?=
+ =?utf-8?B?d1JZNERkc3hUSUNIRVVpc01rYWphcm5YeFI4a1FJYlhpNjgzdzEwMjF2RGxW?=
+ =?utf-8?B?L0ZTQXlQdGszbzBvUUpXWjhLMVluZGxCNHZLbDBqZDNJdlN0dWFlTmw1dGt0?=
+ =?utf-8?B?VEU0bFg1eHZia1phaWxQRzFWTVlDVkttd0QzdmIvd1JNTklqREJLaXhGOStR?=
+ =?utf-8?B?VGhYL2pXRWxaSDQxMTJ5OEs0L1QyS1hkL3R3eGcrcTAwYjRPNEl1dE02ZFhI?=
+ =?utf-8?B?ZDJ5RG1uMCtSZGdFaGRpZVU2YW5qYklTY1JpVzhyV1Q5N01lTlVObEdSM05F?=
+ =?utf-8?B?UGRnS3BtU0tzSlJJcy9TeXJYQTd1SlhITHZkWmdtcy9rK3Z6cVJpVEd0bEY0?=
+ =?utf-8?B?dkJhbHYrd3RKY0k1WWZ4MmN3Nk96NGtiUGkvUlE3Si9QSkVqYnV1SEZTelJp?=
+ =?utf-8?B?cloyWmg4MVJmNmFKNGhwM082d01CU1NpZlFEQVQva0xUSEFzdmtDOWFiVzZT?=
+ =?utf-8?B?Ykc0RVZycnRSbXVxZEZ2REpNeEpkekR4RXNmMnF3ZUczbFRWdVk0OEI5Z0E3?=
+ =?utf-8?B?cnRaeVhZc0hJbjFmMmZhRlpsWFN1MDBtd2dsYXFWSnUzcElLbjFqRE05SkxO?=
+ =?utf-8?B?ODBYUWtMQXF6S2xVZkRYSnVvMkNjL3RvWW04aTVpcWl4bElCTXVRNitLMHAr?=
+ =?utf-8?B?U1VVTlZQTXlPc21JWHN2YzlDSklucGozT0JST0ZqZFJ4SlBicTdtUjY5Slpj?=
+ =?utf-8?B?d3RYSkNXb2JEeWMzZWJPYUxWRHg4MXQ0c2F1eDdhb1gxSjNmaDc0amtGeC9T?=
+ =?utf-8?B?QUNrVDJlbmQ2UTFaQVNESUxsRmpmWXlwMDhFQWk4SmxIYStyb3dvYm5Danlw?=
+ =?utf-8?B?MUFDSG4vQWp6dFR4WEozc0pCNkJOaTZsRlc2T05rZVpIb3NhSERDb1hnNkNn?=
+ =?utf-8?B?cnJKVjNjMmRhQTd5VDRMdFlnYmI4M1RYQkJlTXRsVVpSVS8zaHhaQmJHYUw2?=
+ =?utf-8?B?cjlEZ3hSanpNdXpEUS96VzVmSlVYRUtRVUpYYmw2MHVaYmtwWmk1VjB4dkVh?=
+ =?utf-8?B?Q1NTN0pkSlVQWGtYejlwb1RQWXUySCtWWDNacGNyc0hpZjJGY0xZOE81akZQ?=
+ =?utf-8?B?WDlIMm1uRHJmZUI4MVlETjR6OEZ0bDdVRmRuM3B1WFhLdkpNdDRFd1BpRGpQ?=
+ =?utf-8?B?SnRyazNTdXR3ajdhaldxeS93MTE4WjVLMFZiTDNhcFpZNDFZY0thWlNLNnpt?=
+ =?utf-8?B?bFRvRjlaYXJRekw3eWVNZGpKQ1ltcFlsVUxtU0hPT0R4QUczUEtHVXRzcVJJ?=
+ =?utf-8?B?RktYWXhiOUFBM1orbThRMTRTWXpGRGd3L2ttaGwwaDdCdTF6VlRRZ0xRS0Fu?=
+ =?utf-8?B?TEJjNXVqaGczUEN4b2hrdFRvbmpndUxLZUR4cFZBYnEwaG5GOThpckRxandh?=
+ =?utf-8?B?WmZoUVgramNNeS83OWVWN21SQzRBOStwTFJWclRZNmR4dnBKL2JkbXREVUZ4?=
+ =?utf-8?B?azdKclhhOE5SV2k0bnZKVDg3aFFOUVl3bkFEcmhxaDMxNUJ2SUxGMWJZZW1J?=
+ =?utf-8?B?QVJFTVFvNWU3SExaSWh3VUs5Wm81Y1BvREZLQWF2dUtkNVV3c0lWTytWQ3A5?=
+ =?utf-8?B?YXJ1VlZLT2ZwUEVXR0F4emFDNWtUU0xOelY4WGJMVkdQcmJ0MVdNWEVTVnph?=
+ =?utf-8?B?OTh3bUV2UTFuU3ZSVFA3aS93ZGxlSExrMHZMNGtlUlBZa0ZodEdKdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3197040d-dd57-4412-8f0d-08de7b0c8610
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9501.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 23:11:25.3981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +eYF7fW01aIyHD+AWcoRrsXFYLZAOVL1NjQZzmTtFIjcTlYqhAJrSfNzDmPX58V6Tptm0Ty1+qW8op+Qxe5dxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7606
+X-Rspamd-Queue-Id: 9534F219325
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21459-lists,linux-acpi=lfdr.de];
+	FREEMAIL_CC(0.00)[gmx.de,kernel.org,amd.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-21460-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pnirujog@amd.com,linux-acpi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-acpi];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,git-scm.com:url,01.org:url]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:dkim,amd.com:mid]
 X-Rspamd-Action: no action
 
-Hi Haifeng,
+Hi Rafael,
 
-kernel test robot noticed the following build warnings:
+In kernel version 7.0-rc2, the AMDISP device reports the following 
+errors when created via mfd_add_hotplug_devices.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/bleeding-edge cxl/next tip/x86/mm linus/master v7.0-rc2 next-20260305]
-[cannot apply to cxl/pending]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+[    5.236645] ACPI: video: Video Device [GFX0] (multi-head: yes  rom: 
+no  post: no)
+[    5.236744] input: Video Bus as 
+/devices/pci0000:00/0000:00:08.1/0000:c3:00.0/amd_isp_capture.1.auto/input/input21
+[    5.236779] acpi device:14: Error installing notify handler
+[    5.236782] acpi device:15: Error installing notify handler
+[    5.236783] acpi device:16: Error installing notify handler
+[    5.236784] acpi device:17: Error installing notify handler
+[    5.236785] acpi device:18: Error installing notify handler
+[    5.236786] acpi device:19: Error installing notify handler
+[    5.236786] acpi device:1a: Error installing notify handler
+[    5.236787] acpi device:1b: Error installing notify handler
+[    5.236788] acpi device:1c: Error installing notify handler
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haifeng-Xu/ACPI-add-a-boot-parameter-to-disable-parsing-CFMWS-during-NUMA-init/20260304-160933
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20260304080647.169434-1-haifeng.xu%40shopee.com
-patch subject: [PATCH] ACPI: add a boot parameter to disable parsing CFMWS during NUMA init
-config: loongarch-randconfig-r134-20260306 (https://download.01.org/0day-ci/archive/20260306/202603060605.Fa8yGC4u-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260306/202603060605.Fa8yGC4u-lkp@intel.com/reproduce)
+These failures indicate AMDISP device is incorrectly detected as ACPI 
+Video device while it is not.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603060605.Fa8yGC4u-lkp@intel.com/
+The seems like a regression caused by the change that converts the ACPI 
+video device to a platform device (commit: 02c057ddefef5).
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/acpi/numa/srat.c:323:12: sparse: sparse: symbol 'cfmws_disabled' was not declared. Should it be static?
+Issue is not observed in 6.19-rc6, and also when this change is reverted 
+in 7.0-rc2.
 
-vim +/cfmws_disabled +323 drivers/acpi/numa/srat.c
+I really appreciate your inputs on addressing this issue and helping us 
+make progress on 7.0 rc2.
 
-   322	
- > 323	int __init cfmws_disabled(void)
-   324	{
-   325		return cfmws_numa < 0;
-   326	}
-   327	
+Steps followed to reproduce the issue:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+1. Apply AMDISP v9 patch series [1] on top of kernel v7.0-rc2
+2. Add NULL check for “dev->type” in isp_genpd_add_device() [2] (to 
+avoid kernel panic found in v7.0-rc2)
+3. Build kernel with:
+     - CONFIG_AMD_ISP_PLATFORM=y
+     - CONFIG_VIDEO_AMD_ISP4_CAPTURE=m
+4. Install kernel on AMDISP supported system (HP ZBook Ultra G1a)
+5. Boot system to see the failures
+
+[1] https://lore.kernel.org/all/20260302073020.148277-1-Bin.Du@amd.com/
+[2] 
+https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c#L132
+
+Thanks,
+Pratap
+
+
+
+
 
