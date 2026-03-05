@@ -1,49 +1,49 @@
-Return-Path: <linux-acpi+bounces-21440-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21439-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id II+vIxHeqWm4GgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21440-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 20:48:33 +0100
+	id aPzgFKDeqWm4GgEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21439-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 20:50:56 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9678D217BDE
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 20:48:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5605217CA0
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 20:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E5726300B9CA
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 19:48:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51FDD315E21D
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 19:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434AB3A7F4F;
-	Thu,  5 Mar 2026 19:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E675F303A1E;
+	Thu,  5 Mar 2026 19:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNta+q2z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDLCk2G6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203241FBCA7;
-	Thu,  5 Mar 2026 19:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB61FBCA7;
+	Thu,  5 Mar 2026 19:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772740104; cv=none; b=C2ikiNMD9m+qBs8n6WsKsP/s3Mi3JDNoWxImn1xv5GShepkbSNh2TfLQuC5/yv5sDVpNcheGHggKBKMMOXMMLuVFryweuaIoM55saPbEu/+24hiy58v1XI8HYeqVTgyqBA50q5ItszOoNmaXMCRkjbAzVhVfa5lw1nogawrzSHo=
+	t=1772740099; cv=none; b=KXBondVNnRKy19FqiV1E9pP0nlnT5IkCW4n0lXfLmJ5suc3qTRZWsG9MyL90v6eCs/25FLpXCqTz0iZMe4DPnBkg421zcdnm6Bo3kglwYr/YYoOTFwd/MY/VmL4LOD/IOvla/tqdxL7pa67b6jIcBVUMvBIaHCxZyRYH/UkVmDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772740104; c=relaxed/simple;
-	bh=ArBEjEEehMlFNLpth2XtCfGINxTQbnR6YRcCNjwC3KQ=;
+	s=arc-20240116; t=1772740099; c=relaxed/simple;
+	bh=Q82r9wg0x+buil6mOSMF4yHR/SO7a2zHEs98f/7HQig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AlsG0mAZmLGysm6s6gUjRhszSTSFZNFG3x6M+02s4CIcfJ3hjGirO3MGtGoExCgc9LiZDvGwkBSXefwViqMzpfMtTzxsHI4ymNCkKRgpKomJ1E4YMasYW4rMqAurdqtEQBoJw6x+bw9Nm3JtvMQwu5RpTdbbZPP4L7UXniLYgiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNta+q2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F05C19422;
-	Thu,  5 Mar 2026 19:48:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A1vV34cqll+wzxfqvxR0YokFnYI0zFo9oCeX1oEw6j1RDIma2Ojy54kRUzgtqrGwj3Uq3k/4j1L2sbckcCmRpXNcSEm+6F9zMxB9HZwPRdj+RIW4/KRC19Wotex0M0FiL+l0Gbq7ax12LOye48zkZe5Kxf6I/ElNzWHNdDecs2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDLCk2G6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096BDC19422;
+	Thu,  5 Mar 2026 19:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772740103;
-	bh=ArBEjEEehMlFNLpth2XtCfGINxTQbnR6YRcCNjwC3KQ=;
+	s=k20201202; t=1772740099;
+	bh=Q82r9wg0x+buil6mOSMF4yHR/SO7a2zHEs98f/7HQig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNta+q2zL8jzsX8hPgYBS3VLfKhWRwpp+tQzdsdLXftUZdiLZjWQNsAb1R6v9TufA
-	 zyDo8mRwL8rQXEeGaIhlPW+clySTAnpJVUSbD8ns95eaFmDC1TEQyVrUJULqEKQXXI
-	 pfBxaR2gDZcmCeJM2lmFnEBGwB95QEVBtvnYoa6VeyWebb/FfCsnCI+jLVeqtw8YX+
-	 4QcSWerm5fwltz3P+m+ovZjrgtdQy1rPuTVz5336Xm5QR4IiR7b+2x1dtxawnBUwlb
-	 CB4margG6aPMMwmZUBAY3ekc9hgbmuG9t07Fl75HNLOp66a3p8iI6IpTjftty4+Szy
-	 9FzjsSfwYpurA==
+	b=BDLCk2G6+ORhm8BTd6UQ7in2x+8z3VEhybNcH9421i8nzGmOF5ztrYgm8vCNtEp7F
+	 naaqmHliMpPQ1xPxZb7AfyfzgtdigrGcTiXC2tLPUhx9zVnuEBhuZn3rbYEiJWBp8T
+	 aLnewtcVuORCrYB3ZgZsacBfhTzkV0NwaH50dRQ7kQcO5y2XgO/oRpJWsDsPKhQS77
+	 YtphPBvGOjjHvzGWwIn2jnnI3Pnp13rFmsAhCXaWG/iPHrwWkS57U4PzPaZKcwHujL
+	 sw8Bfy/lYdCK96ltmNmFhkpUKcHTwHygqM9rNuS+k3kuBRfR51PCAO3VIZ6b2bESxd
+	 Jlu6xd+ieMIiw==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Tzung-Bi Shih <tzungbi@kernel.org>
 Cc: chrome-platform@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
@@ -51,10 +51,9 @@ Cc: chrome-platform@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
  Enric Balletbo i Serra <eballetbo@kernel.org>,
  Ravi Chandra Sadineni <ravisadineni@chromium.org>
 Subject:
- [PATCH v2 1/6] platform/chrome: Convert ChromeOS privacy-screen driver to
- platform
-Date: Thu, 05 Mar 2026 20:37:54 +0100
-Message-ID: <1963835.tdWV9SEqCh@rafael.j.wysocki>
+ [PATCH v2 3/6] platform/chrome: chromeos_tbmc: Register ACPI notify handler
+Date: Thu, 05 Mar 2026 20:39:05 +0100
+Message-ID: <3413961.aeNJFYEL58@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <6259948.lOV4Wx5bFT@rafael.j.wysocki>
 References: <6259948.lOV4Wx5bFT@rafael.j.wysocki>
@@ -66,18 +65,18 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9678D217BDE
+X-Rspamd-Queue-Id: C5605217CA0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21440-lists,linux-acpi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-21439-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
@@ -94,138 +93,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rafael.j.wysocki:mid,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-In all cases in which a struct acpi_driver is used for binding a driver
-to an ACPI device object, a corresponding platform device is created by
-the ACPI core and that device is regarded as a proper representation of
-underlying hardware.  Accordingly, a struct platform_driver should be
-used by driver code to bind to that device.  There are multiple reasons
-why drivers should not bind directly to ACPI device objects [1].
+To facilitate subsequent conversion of the driver to a platform one,
+make it install an ACPI notify handler directly instead of using
+a .notify() callback in struct acpi_driver.
 
-Overall, it is better to bind drivers to platform devices than to their
-ACPI companions, so convert the ChromeOS privacy-screen ACPI driver
-to a platform one.
+No intentional functional impact.
 
-While this is not expected to alter functionality, it changes sysfs
-layout and so it will be visible to user space.
-
-Link: https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/ [1]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
 v1 -> v2: No changes
 
 ---
- .../platform/chrome/chromeos_privacy_screen.c | 41 ++++++++-----------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+ drivers/platform/chrome/chromeos_tbmc.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/chrome/chromeos_privacy_screen.c b/drivers/platform/chrome/chromeos_privacy_screen.c
-index bb74ddf9af4a..abc5d189a389 100644
---- a/drivers/platform/chrome/chromeos_privacy_screen.c
-+++ b/drivers/platform/chrome/chromeos_privacy_screen.c
-@@ -12,6 +12,7 @@
-  */
+diff --git a/drivers/platform/chrome/chromeos_tbmc.c b/drivers/platform/chrome/chromeos_tbmc.c
+index e248567c0a18..9c988e697d09 100644
+--- a/drivers/platform/chrome/chromeos_tbmc.c
++++ b/drivers/platform/chrome/chromeos_tbmc.c
+@@ -45,8 +45,10 @@ static __maybe_unused int chromeos_tbmc_resume(struct device *dev)
+ 	return chromeos_tbmc_query_switch(adev, adev->driver_data);
+ }
  
- #include <linux/acpi.h>
-+#include <linux/platform_device.h>
- #include <drm/drm_privacy_screen_driver.h>
- 
- /*
-@@ -32,11 +33,10 @@ chromeos_privacy_screen_get_hw_state(struct drm_privacy_screen
- 				     *drm_privacy_screen)
+-static void chromeos_tbmc_notify(struct acpi_device *adev, u32 event)
++static void chromeos_tbmc_notify(acpi_handle handle, u32 event, void *data)
  {
- 	union acpi_object *obj;
--	acpi_handle handle;
- 	struct device *privacy_screen =
- 		drm_privacy_screen_get_drvdata(drm_privacy_screen);
-+	acpi_handle handle = ACPI_HANDLE(privacy_screen);
- 
--	handle = acpi_device_handle(to_acpi_device(privacy_screen));
- 	obj = acpi_evaluate_dsm(handle, &chromeos_privacy_screen_dsm_guid,
- 				PRIV_SCRN_DSM_REVID,
- 				PRIV_SCRN_DSM_FN_GET_STATUS, NULL);
-@@ -65,11 +65,9 @@ chromeos_privacy_screen_set_sw_state(struct drm_privacy_screen
- 				     enum drm_privacy_screen_status state)
- {
- 	union acpi_object *obj = NULL;
--	acpi_handle handle;
- 	struct device *privacy_screen =
- 		drm_privacy_screen_get_drvdata(drm_privacy_screen);
--
--	handle = acpi_device_handle(to_acpi_device(privacy_screen));
-+	acpi_handle handle = ACPI_HANDLE(privacy_screen);
- 
- 	if (state == PRIVACY_SCREEN_DISABLED) {
- 		obj = acpi_evaluate_dsm(handle,
-@@ -104,30 +102,28 @@ static const struct drm_privacy_screen_ops chromeos_privacy_screen_ops = {
- 	.set_sw_state = chromeos_privacy_screen_set_sw_state,
- };
- 
--static int chromeos_privacy_screen_add(struct acpi_device *adev)
-+static int chromeos_privacy_screen_probe(struct platform_device *pdev)
- {
- 	struct drm_privacy_screen *drm_privacy_screen =
--		drm_privacy_screen_register(&adev->dev,
-+		drm_privacy_screen_register(&pdev->dev,
- 					    &chromeos_privacy_screen_ops,
--					    &adev->dev);
-+					    &pdev->dev);
- 
- 	if (IS_ERR(drm_privacy_screen)) {
--		dev_err(&adev->dev, "Error registering privacy-screen\n");
-+		dev_err(&pdev->dev, "Error registering privacy-screen\n");
- 		return PTR_ERR(drm_privacy_screen);
++	struct acpi_device *adev = data;
++
+ 	acpi_pm_wakeup_event(&adev->dev);
+ 	switch (event) {
+ 	case 0x80:
+@@ -92,11 +94,22 @@ static int chromeos_tbmc_add(struct acpi_device *adev)
+ 		return ret;
  	}
- 
--	adev->driver_data = drm_privacy_screen;
--	dev_info(&adev->dev, "registered privacy-screen '%s'\n",
-+	platform_set_drvdata(pdev, drm_privacy_screen);
-+	dev_info(&pdev->dev, "registered privacy-screen '%s'\n",
- 		 dev_name(&drm_privacy_screen->dev));
- 
+ 	device_init_wakeup(dev, true);
++
++	ret = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
++					      chromeos_tbmc_notify, adev);
++	if (ret) {
++		dev_err(dev, "cannot install ACPI notify handler\n");
++		device_init_wakeup(dev, false);
++		return ret;
++	}
++
  	return 0;
  }
  
--static void chromeos_privacy_screen_remove(struct acpi_device *adev)
-+static void chromeos_privacy_screen_remove(struct platform_device *pdev)
+ static void chromeos_tbmc_remove(struct acpi_device *adev)
  {
--	struct drm_privacy_screen *drm_privacy_screen =	acpi_driver_data(adev);
--
--	drm_privacy_screen_unregister(drm_privacy_screen);
-+	drm_privacy_screen_unregister(platform_get_drvdata(pdev));
++	acpi_dev_remove_notify_handler(adev, ACPI_DEVICE_NOTIFY,
++				       chromeos_tbmc_notify);
+ 	device_init_wakeup(&adev->dev, false);
  }
  
- static const struct acpi_device_id chromeos_privacy_screen_device_ids[] = {
-@@ -136,17 +132,16 @@ static const struct acpi_device_id chromeos_privacy_screen_device_ids[] = {
- };
- MODULE_DEVICE_TABLE(acpi, chromeos_privacy_screen_device_ids);
- 
--static struct acpi_driver chromeos_privacy_screen_driver = {
--	.name = "chromeos_privacy_screen_driver",
--	.class = "ChromeOS",
--	.ids = chromeos_privacy_screen_device_ids,
--	.ops = {
--		.add = chromeos_privacy_screen_add,
--		.remove = chromeos_privacy_screen_remove,
-+static struct platform_driver chromeos_privacy_screen_driver = {
-+	.probe = chromeos_privacy_screen_probe,
-+	.remove = chromeos_privacy_screen_remove,
-+	.driver = {
-+		.name = "chromeos_privacy_screen_driver",
-+		.acpi_match_table = chromeos_privacy_screen_device_ids,
+@@ -116,7 +129,6 @@ static struct acpi_driver chromeos_tbmc_driver = {
+ 	.ops = {
+ 		.add = chromeos_tbmc_add,
+ 		.remove = chromeos_tbmc_remove,
+-		.notify = chromeos_tbmc_notify,
  	},
+ 	.drv.pm = &chromeos_tbmc_pm_ops,
  };
- 
--module_acpi_driver(chromeos_privacy_screen_driver);
-+module_platform_driver(chromeos_privacy_screen_driver);
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("ChromeOS ACPI Privacy Screen driver");
- MODULE_AUTHOR("Rajat Jain <rajatja@google.com>");
 -- 
 2.51.0
 
