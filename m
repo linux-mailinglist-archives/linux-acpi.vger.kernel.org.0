@@ -1,177 +1,242 @@
-Return-Path: <linux-acpi+bounces-21394-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21395-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGclGkU0qWk73AAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21394-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 08:44:05 +0100
+	id wLniOT41qWlk3AAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21395-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 08:48:14 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E3920CD3F
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 08:44:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628A120CE30
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 08:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D3C3301F394
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 07:44:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9ED4302F687
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 07:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED613264DF;
-	Thu,  5 Mar 2026 07:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBCB328608;
+	Thu,  5 Mar 2026 07:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b="AWFB08gI"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pHaZPZDn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FC231B824
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Mar 2026 07:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A6530B53A;
+	Thu,  5 Mar 2026 07:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772696642; cv=none; b=X1avUtfzHIF3+UiKto7WXL2+obQPmcu03muHY4zWHpcejGntwfUOG0s3YNT7Wygamj4WnLxlkFjaEwFtlVHMM+sVlm5St8Fh+sjT0G09eQKnXnJnRcwK8bbcbxVzo1Ms6HFWETqFqUtjCEVJyuC4MlnJdrNQT/upTdC0RVGl62Y=
+	t=1772696888; cv=none; b=KlAHGN6+X0SDfwrF+ux3sHPK6V3covoDgIqEED31AzaBOrJgUA6QcU2DaPg7Nk8mAsdNZzwMqv6Rj/cAbFI9BLKYqjqWeQEfdTvVoQGueP9OIKH20CdOYuSFiHmZXJfeMfSWPi24dH7WEy8XYRDk5xKjDEh+M/fDy+KfcoYKEOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772696642; c=relaxed/simple;
-	bh=HFhQGScd5orZZTQDNzxl2IwQKAoGG4UpAXqgoxIXrwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZYI4OlTzfuBHmcSSU/vmOA8n0DgjxLE3zglnIVhcVNKM7+fK4I13FfuMp8mBcS5h7QRgMBA90SI197OSP/K2vSpC5EDt20RVoC1Nxa83YoD1u+okKQL3WW3/7lJqnZbr+9G95GiXJeng2A5v5S1BTQGw87vRP+GPywcF7/5VSC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com; spf=pass smtp.mailfrom=shopee.com; dkim=pass (2048-bit key) header.d=shopee.com header.i=@shopee.com header.b=AWFB08gI; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shopee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shopee.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-829756f3ee9so1350375b3a.2
-        for <linux-acpi@vger.kernel.org>; Wed, 04 Mar 2026 23:44:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1772696641; x=1773301441; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YGV5tSt+Pn/qUjEUL1W1gWV5V7UmQEiKPJnjCM1uOgk=;
-        b=AWFB08gIfQHFD01398SGmCH3CzEFasxne52A1do5Pdw7CGgVTPfRl3YFfvsC1sHMkr
-         RoJl1th+KvOMt4wzT00KIR956nm5m5izbt/yySY035pxRUpaWvwZr4WAO8kT7fZgR4E3
-         CpyJ7kGjPbA0xq+DF0bPltOLbArHZ7aNqMqRSCC+ua2mRr9NPrRrAB4ju7YD65h5xEuv
-         YLsqSH5b6Gh0LYGyq8kpPczuZKMFDyMTYkAxf7xqys9/Z9QAzh8L3b8aaQWeUTDWF5zv
-         +MSPAYZmfbElVnZlb0DbZ7MoorU5iiKhZUlEdZ8BhsUoiYvbylsXWX4WZZgNt0i0MZ7k
-         s8NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772696641; x=1773301441;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YGV5tSt+Pn/qUjEUL1W1gWV5V7UmQEiKPJnjCM1uOgk=;
-        b=adup92ROY3sfikW1pFRhE0J6qLgyBkNQJd93mu5SAWws9GvAiBvfYZj33r65GrmnFS
-         0hkDTz0Usucjafd1nzW8I0GZm6jRX5k1WHgxL4a8WD0z/IdrbMii3Zp+a47NLK1jFU1v
-         sI+J4Fr6RVC1aTCmSkZZ6nOP2N27Zizcr8qxl0br5Q9rgH4us/Jy3TV8D8AV88tE3uX4
-         Sp4HK1vcgi58t3r0GBSBl6G4FKBeJQxd9RbS4aKe/tB19KGWIgfNd5/G2njjHQrn8vzi
-         l/+Ez56Gzwj+gP6vzq7jBxajECeNKqYr2jM6wqHGRrHoB9D51APh0QsI/gpSNco1ta27
-         jFwg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/K30YY/e76jg+cCtGxzhBYJe9j7sxtESoPKU8cW3ByHPQGCUJKcTvH2PMkdBQB3t2nKDYQS7u/vfo@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt7t0TK13SW//vYvm9rnB2PAWaJLtWRylMsUR16LUJ89/dfJEG
-	FFaPWdwDeGJdk11Oe64zuM09e7V9Zo5QrYBl8vk+VNw6rYQEWN+jcu4MOztIKRLs0zs=
-X-Gm-Gg: ATEYQzw7aq+Gik6hQQPkFH54ttjxAZbom5TAuOSn6my/vlfDxdWn+yOZbYOM9F6T4XC
-	mD1bXM3WTFgZFtF6nXWl0V0UeFNLP2V43Byr+Rdj28nPDllP6zI1H6U7Kn4Hl9+RDenDuwsH7/2
-	MNxRVeGUYlInD5HQPZGWyaVPogs0+NXO9joz/+90y3j61y2we+0cC7KIs2NSd9y+rcW3jvuSml5
-	iqWFauzG1H1sY0bB5RWaXnTJZAh0Ek5iw6kEbMJ2w5VSYOvuzM7awCscv25QA/fHGrkKvniS7jq
-	R+CqrQYgGUcB+LFnJp3w1OCak1mEtSre/Ca5IpVmRBo6ZVlcWS6OmtQfOwEumg2sxcr7roYZwIm
-	liAycY0jw+9R4HWZERZ6Y/NZ0Z5lfyjJtgw7QFgGzt3SvG2DMFyyGu1nVGhf2+9GnyZYBIVCEHe
-	67fSGBm6VZca15edhPIQXKYVedxp13T5lJ/zCu
-X-Received: by 2002:a05:6a00:cca:b0:827:46b2:50f6 with SMTP id d2e1a72fcca58-82972cd401cmr4596619b3a.49.1772696640701;
-        Wed, 04 Mar 2026 23:44:00 -0800 (PST)
-Received: from [10.54.26.107] ([143.92.118.3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8297a05d155sm2593862b3a.25.2026.03.04.23.43.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 23:44:00 -0800 (PST)
-Message-ID: <a549b1d3-547b-49a5-b92d-864bb825945c@shopee.com>
-Date: Thu, 5 Mar 2026 15:43:54 +0800
+	s=arc-20240116; t=1772696888; c=relaxed/simple;
+	bh=Ovvh/6MYV2WSyqHB9xbSPCaYhmlv1JQ0NQT+k21dghI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TPi5ypm7NV+9gU9u38tfec4y54wvPXGuvAr3USuixAVVANGXUu71hSP1u9/twRpuaasKHuf0CG+HYuNYFWC9PlpXUf7/TKS4wZZRQzrtB02ITe7W6rgmJAD9WsDbRJ6FfJa4HXPKVH1s7wMT49fsiF1vqmuR22fZmOQ29xpoKr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pHaZPZDn; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E963FC40404;
+	Thu,  5 Mar 2026 07:48:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5F2A25FDEB;
+	Thu,  5 Mar 2026 07:48:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 289351036981A;
+	Thu,  5 Mar 2026 08:48:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772696882; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=hsyLDW4nJEH6PPZ0/VDK4H6ENav77uqw47Wi4VxY1J0=;
+	b=pHaZPZDnb7mfsmgbqkqNhzzem8M6VyZFj3UsRfACQ8vnMcmpS6z5nolKpCw1+E1OWD3vlB
+	SxEWRQbOeR22zWMd9uetQyHlCnm1yaI6aACAmbLK7rxFBAhszqmkgooVeFDYWMfU/UaigD
+	yPIiitmqH+W7ssYSFE6DHQUsSCsu85o95g/P2CQ0YTQrSCR7Dr4YOhoPepM6tX+1EUZrFS
+	EV31NWCs72eWs3hpg1gUqQ1kEiqk6KkC4eHJ2sF4TX6PiHnyFh22990+EI/sBOJ5a9W8m6
+	mjNlIvR0A2LYLKQ4eAxvmvGPEHTXTkg01CzDMDdA93AgGUHcIk0v84lu7nI5Ow==
+Date: Thu, 5 Mar 2026 08:48:01 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, linux-rtc@vger.kernel.org,
+	Linux PM <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v1 6/7] ACPI: TAD: Add RTC class device interface
+Message-ID: <20260305074801a04117a7@mail.local>
+References: <5092662.31r3eYUQgx@rafael.j.wysocki>
+ <2352027.iZASKD2KPV@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: add a boot parameter to disable parsing CFMWS
- during NUMA init
-To: Gregory Price <gourry@gourry.net>
-Cc: rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
- jonathan.cameron@huawei.com, dave@stgolabs.net, dave.jiang@intel.com,
- alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260304080647.169434-1-haifeng.xu@shopee.com>
- <aaho0IyQ0WAjcRMM@gourry-fedora-PF4VCD3F>
- <8ad398f6-995a-489b-8ca2-f21afdce47e4@shopee.com>
- <aaki7DZ78o_vr0kb@gourry-fedora-PF4VCD3F>
-From: Haifeng Xu <haifeng.xu@shopee.com>
-In-Reply-To: <aaki7DZ78o_vr0kb@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07E3920CD3F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2352027.iZASKD2KPV@rafael.j.wysocki>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 628A120CE30
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shopee.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[shopee.com:s=shopee.com];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-21394-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[shopee.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21395-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haifeng.xu@shopee.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[alexandre.belloni@bootlin.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shopee.com:dkim,shopee.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,mail.local:mid]
 X-Rspamd-Action: no action
 
+On 04/03/2026 19:16:01+0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Add an RTC class device interface allowing to read and set the real time
+> value to the ACPI TAD driver.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
+> ---
+>  drivers/acpi/acpi_tad.c |   78 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 76 insertions(+), 2 deletions(-)
+> 
+> --- a/drivers/acpi/acpi_tad.c
+> +++ b/drivers/acpi/acpi_tad.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/rtc.h>
+>  #include <linux/suspend.h>
+>  
+>  MODULE_DESCRIPTION("ACPI Time and Alarm (TAD) Device Driver");
+> @@ -51,6 +52,7 @@ MODULE_AUTHOR("Rafael J. Wysocki");
+>  
+>  /* ACPI TAD RTC */
+>  #define ACPI_TAD_TZ_UNSPEC	2047
+> +#define ACPI_TAD_TIME_ISDST	3
+>  
+>  struct acpi_tad_driver_data {
+>  	u32 capabilities;
+> @@ -164,6 +166,8 @@ static int acpi_tad_get_real_time(struct
+>  	return 0;
+>  }
+>  
+> +/* sysfs interface */
+> +
+>  static char *acpi_tad_rt_next_field(char *s, int *val)
+>  {
+>  	char *p;
+> @@ -579,6 +583,71 @@ static const struct attribute_group acpi
+>  	.is_visible = acpi_tad_attr_is_visible,
+>  };
+>  
+> +#ifdef CONFIG_RTC_CLASS
+> +/* RTC class device interface */
+> +
+> +static int acpi_tad_rtc_set_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +	struct acpi_tad_rt rt;
+> +
+> +	rt.year = tm->tm_year + 1900;
+> +	rt.month = tm->tm_mon + 1;
+> +	rt.day = tm->tm_mday;
+> +	rt.hour = tm->tm_hour;
+> +	rt.minute = tm->tm_min;
+> +	rt.second = tm->tm_sec;
+> +	rt.tz = ACPI_TAD_TZ_UNSPEC;
+> +	rt.daylight = ACPI_TAD_TIME_ISDST * !!tm->tm_isdst;
+> +
+> +	return acpi_tad_set_real_time(dev, &rt);
+> +}
+> +
+> +static int acpi_tad_rtc_read_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +	struct acpi_tad_rt rt;
+> +	int ret;
+> +
+> +	ret = acpi_tad_get_real_time(dev, &rt);
+> +	if (ret)
+> +		return ret;
+> +
+> +	tm->tm_year = rt.year - 1900;
+> +	tm->tm_mon = rt.month - 1;
+> +	tm->tm_mday = rt.day;
+> +	tm->tm_hour = rt.hour;
+> +	tm->tm_min = rt.minute;
+> +	tm->tm_sec = rt.second;
+> +	tm->tm_isdst = rt.daylight == ACPI_TAD_TIME_ISDST;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct rtc_class_ops acpi_tad_rtc_ops = {
+> +	.read_time = acpi_tad_rtc_read_time,
+> +	.set_time = acpi_tad_rtc_set_time,
+> +};
+> +
+> +static void acpi_tad_register_rtc(struct device *dev)
+> +{
+> +	struct rtc_device *rtc;
+> +
+> +	rtc = devm_rtc_allocate_device(dev);
+> +	if (IS_ERR(rtc))
+> +		return;
+> +
+> +	rtc->range_min = mktime64(1900,  1,  1,  0,  0,  0);
+> +	rtc->range_max = mktime64(9999, 12, 31, 23, 59, 59);
+> +
+> +	rtc->ops = &acpi_tad_rtc_ops;
+> +
+> +	devm_rtc_register_device(rtc);
+> +}
+> +#else /* !CONFIG_RTC_CLASS */
+> +static inline void acpi_tad_register_rtc(struct device *dev) {}
+> +#endif /* !CONFIG_RTC_CLASS */
+> +
+> +/* Platform driver interface */
+> +
+>  static int acpi_tad_disable_timer(struct device *dev, u32 timer_id)
+>  {
+>  	return acpi_tad_wake_set(dev, "_STV", timer_id, ACPI_TAD_WAKE_DISABLED);
+> @@ -660,10 +729,15 @@ static int acpi_tad_probe(struct platfor
+>  	pm_runtime_suspend(dev);
+>  
+>  	ret = sysfs_create_group(&dev->kobj, &acpi_tad_attr_group);
+> -	if (ret)
+> +	if (ret) {
+>  		acpi_tad_remove(pdev);
+> +		return ret;
+> +	}
+>  
+> -	return ret;
+> +	if (caps & ACPI_TAD_RT)
+> +		acpi_tad_register_rtc(dev);
+> +
+> +	return 0;
+>  }
+>  
+>  static const struct acpi_device_id acpi_tad_ids[] = {
+> 
+> 
+> 
 
-On 2026/3/5 14:30, Gregory Price wrote:
-> On Thu, Mar 05, 2026 at 12:18:05PM +0800, Haifeng Xu wrote:
->> On 2026/3/5 01:16, Gregory Price wrote:
->>> On Wed, Mar 04, 2026 at 04:06:47PM +0800, Haifeng Xu wrote:
->>
->> Every memcg records shrinker info for each possible node. If we use online node
->> instead of possible node，then during memory hotplug, we must tarverse all memcgs
->> and shrinkers to check whether corresponding node has allocated the shrinker_info.
->> This way introduces more complexity.
->>
-> 
-> Right, but some systems might actually WANT this many nodes, and this
-> does not scale well at all as-is.  I also don't think it's as complex as
-> you think, most of the infrastructure is already there.
-> 
->>> If you're not actually using CXL, can't you just disable CXL in the
->>> BIOS?  Then you shouldn't even emit CFMWS at all.
->>
->> I have asked our Intel Support Engineer, he saied that cxl can't be disabled
->> in BIOS.
->>
-> 
-> Huh, this is surprising.
-> 
-> If this is the case then see Dan's patch here:
-> https://lore.kernel.org/linux-cxl/1f5074979a58803ec875dd10c9234c7b1a17192d.camel@intel.com/T/#m0d64b723a63ca7faf44311c52c1ebd5f280ae626
-> 
-> That should deal with your issue more cleanly.
-> 
-> Otherwise, the problem you're describing here really should really be
-> fixed with either better lock scoping or lazy-allocation.
-> 
-> (Already poking at the issue a bit)
-
-Yes，the patch you paste above worke well for us.
-
-Thanks！
-
-> 
-> ~Gregory
-
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
