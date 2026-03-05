@@ -1,225 +1,168 @@
-Return-Path: <linux-acpi+bounces-21447-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJSXCrvnqWnuHQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21447-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 21:29:47 +0100
+	id uL6bOHrlqWl+HQEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21443-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 21:20:10 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83FA21826C
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 21:29:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669DB21819E
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 21:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37FB130439F2
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 20:29:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCB09305E33C
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 20:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED9D33986F;
-	Thu,  5 Mar 2026 20:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498DD328B7B;
+	Thu,  5 Mar 2026 20:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2/9/QOr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oGNlDZ0V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B03339856;
-	Thu,  5 Mar 2026 20:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3853B32D7FB;
+	Thu,  5 Mar 2026 20:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772742563; cv=none; b=M9pYVgyVu+zjOSgIV6yiWpQtn41rxVumGtRDI7SWe2hcjjm+dhFVq93lvI1OpplIJSg3Gqj+aALhABoxv0KrMbSpJQa4/T+p0UfEYZVoOQO6muKcZAk9WBdCYVCRTNC5BK06JsC7GZ+emBD88Dg+AQw6mqZCXM8AI5sfykxtbMA=
+	t=1772742007; cv=none; b=C5XjvDe0+r85A1Oq4KaEYxkoXMbaxCQRVgi5jmlKiku+jlNLWpMO9h83GgDNA05PAwP7ZkJSz3gVOsmCBH7oY8Ktl0Y8GLbok4NitP6zlQ9aYrtfTcYzmQtWIEDM0jD6OHCf/s7vUJ5PQ/16jKDaoSsIQVCkuvoWCQkerjou+Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772742563; c=relaxed/simple;
-	bh=vJI7ioecKB+292u90uxL/TjFPXuKipET1011BWNkI/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cXS7W1NR2CtblK58CvBIU3+oRRJG4+fhkNytP9qlBRY/v+xdOKN4gzWG8xtLuaHHg4CVssS6luO1yucZiTkzEzUuGkt/whSghEMZL9iGMu2GYEVXQNeagBYYtGIVXbYbgvkoK1gbSsjWWVw1I8KeQOx+i+n7beC8wU08yjCf8N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2/9/QOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C69FC2BCB0;
-	Thu,  5 Mar 2026 20:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772742563;
-	bh=vJI7ioecKB+292u90uxL/TjFPXuKipET1011BWNkI/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2/9/QOrufG3KuPgwN46SxTuBzhEC489DGVJCSF5P5sbmZe8yB5VFZby/Q4snHgSp
-	 FUvKLv9KWW1qWedAlxAJP3EDICjupADNWPpqk3Gdg0b3+UunWOacG/e8g/I1Zac+Te
-	 jBHng9wmKe/5SKOgPdcoBGNJF9xoKaxVjHF7cgPOixdpSg4Z8I/2LSRd76EwuCb20G
-	 UXFcKdB+kdmqtBaEUX8cyVVKuHRWZaZ16j1mA2f/Gp7Vcthyj4VrSmz+A0OHaHorDe
-	 aPRWuNEuI45OPHYijUdj3q8HXCXPzue8fq6Chq4LZxm/3TYnRlkPYCqaPN+eer5YM3
-	 djJhMlfbLzLpw==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>
-Subject: [PATCH v1 6/9] ACPI: event: Redefine acpi_notifier_call_chain()
-Date: Thu, 05 Mar 2026 21:18:22 +0100
-Message-ID: <2914546.BEx9A2HvPv@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <4505861.ejJDZkT8p0@rafael.j.wysocki>
-References: <4505861.ejJDZkT8p0@rafael.j.wysocki>
+	s=arc-20240116; t=1772742007; c=relaxed/simple;
+	bh=b/aA0R2rkxsvdEpn9luZz6MliKLYCgptFmRmP/LpAyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ucsuco0LZ4GUEx0ww2pc04VMEJNdUldLnb2XUTsQAd/Cba8RLutL+l3v1B5kkwJmGIgciU3O8GgQZ4p9+TJUoX145rgs8J6lHAz73SKg0k4JIS237gSNG6syZpWtgHwrFSz8L2n12qDBRgi9qhhQHXyXKyMvvNSenog4G4oJZgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oGNlDZ0V; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772742005; x=1804278005;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b/aA0R2rkxsvdEpn9luZz6MliKLYCgptFmRmP/LpAyE=;
+  b=oGNlDZ0VZ6ExuyRYK/jOCUuOiE30iZBHGU62TkxbpNirbDjdLjfC1vRX
+   XcAMwb8JMrr2g3EGreBunnUT6d30SuY2BCxhizWXm5c8IO6lagAo2Wtht
+   BPogSNljyF1dwlmSDZUFa0JXRF+PcYZcI55ufoQfW6QfunidVDQM+iCRC
+   ucCQFYkrEhfT898j/1+ABQe0aVwj6Unaem3ll0qNCi3TDKYuGGxFzy8jm
+   oJE5hkURgB0mzuHeJexw8kh1ZhRqKkgjaWHUBdNsyZFK3DBVhiBXftHBl
+   Bh8hzS/LR+LOnvmwUcpMGH3asEP3fsQRhVBs0RyX5hMLJ9Pwa7z5jwtSg
+   Q==;
+X-CSE-ConnectionGUID: OH/OeSmgQBmxFx8p2VWZFA==
+X-CSE-MsgGUID: TC44z7LuRoGuSHyG2bQBVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77714596"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="77714596"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 12:20:04 -0800
+X-CSE-ConnectionGUID: bC/qC8JjSe6l4ckthTlsNA==
+X-CSE-MsgGUID: rwuba9+YRKeSqiYME3ysFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="218776277"
+Received: from lkp-server01.sh.intel.com (HELO cadc4577a874) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 05 Mar 2026 12:20:01 -0800
+Received: from kbuild by cadc4577a874 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vyFAr-000000001Bu-1fKc;
+	Thu, 05 Mar 2026 20:19:57 +0000
+Date: Fri, 6 Mar 2026 04:19:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Haifeng Xu <haifeng.xu@shopee.com>, rafael@kernel.org, lenb@kernel.org,
+	dan.j.williams@intel.com, jonathan.cameron@huawei.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, dave@stgolabs.net,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Haifeng Xu <haifeng.xu@shopee.com>
+Subject: Re: [PATCH] ACPI: add a boot parameter to disable parsing CFMWS
+ during NUMA init
+Message-ID: <202603060405.6xBosunB-lkp@intel.com>
+References: <20260304080647.169434-1-haifeng.xu@shopee.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A83FA21826C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304080647.169434-1-haifeng.xu@shopee.com>
+X-Rspamd-Queue-Id: 669DB21819E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	CTE_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21447-lists,linux-acpi=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-21443-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,rafael.j.wysocki:mid,intel.com:email]
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Hi Haifeng,
 
-Notice that acpi_notifier_call_chain() only uses its device argument
-to retrieve the pnp.device_class and pnp.bus_id values from there, so
-it can be redefined to take pointers to those two strings as parameters
-istead of a struct acpi_device pointer.
+kernel test robot noticed the following build warnings:
 
-That allows all of its callers to pass a string literal as its first
-argument, so they won't need to initialize pnp.device_class in
-struct acpi_device objects operated by them any more, and its
-signature becomes more similar to acpi_bus_generate_netlink_event()
-then.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge cxl/next tip/x86/mm linus/master v7.0-rc2 next-20260305]
+[cannot apply to cxl/pending]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Update the code as per the above.
+url:    https://github.com/intel-lab-lkp/linux/commits/Haifeng-Xu/ACPI-add-a-boot-parameter-to-disable-parsing-CFMWS-during-NUMA-init/20260304-160933
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20260304080647.169434-1-haifeng.xu%40shopee.com
+patch subject: [PATCH] ACPI: add a boot parameter to disable parsing CFMWS during NUMA init
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260306/202603060405.6xBosunB-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260306/202603060405.6xBosunB-lkp@intel.com/reproduce)
 
-No intentional functional impact.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603060405.6xBosunB-lkp@intel.com/
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/ac.c         | 3 ++-
- drivers/acpi/acpi_video.c | 9 ++++++---
- drivers/acpi/battery.c    | 3 ++-
- drivers/acpi/event.c      | 7 ++++---
- include/acpi/acpi_bus.h   | 3 ++-
- 5 files changed, 16 insertions(+), 9 deletions(-)
+All warnings (new ones prefixed by >>):
 
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index 4985c8890609..2b500e89169f 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -133,7 +133,8 @@ static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
- 		acpi_bus_generate_netlink_event(adev->pnp.device_class,
- 						  dev_name(&adev->dev), event,
- 						  (u32) ac->state);
--		acpi_notifier_call_chain(adev, event, (u32) ac->state);
-+		acpi_notifier_call_chain(ACPI_AC_CLASS, acpi_device_bid(adev),
-+					 event, ac->state);
- 		power_supply_changed(ac->charger);
- 	}
- }
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 4fc2e52401a6..be53afcfb948 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1568,7 +1568,8 @@ static void acpi_video_bus_notify(acpi_handle handle, u32 event, void *data)
- 		break;
- 	}
- 
--	if (acpi_notifier_call_chain(device, event, 0))
-+	if (acpi_notifier_call_chain(ACPI_VIDEO_CLASS, acpi_device_bid(device),
-+				     event, 0))
- 		/* Something vetoed the keypress. */
- 		keycode = 0;
- 
-@@ -1609,7 +1610,8 @@ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
- 		if (video_device->backlight)
- 			backlight_force_update(video_device->backlight,
- 					       BACKLIGHT_UPDATE_HOTKEY);
--		acpi_notifier_call_chain(device, event, 0);
-+		acpi_notifier_call_chain(ACPI_VIDEO_CLASS, acpi_device_bid(device),
-+					 event, 0);
- 		return;
- 	}
- 
-@@ -1642,7 +1644,8 @@ static void acpi_video_device_notify(acpi_handle handle, u32 event, void *data)
- 	if (keycode)
- 		may_report_brightness_keys = true;
- 
--	acpi_notifier_call_chain(device, event, 0);
-+	acpi_notifier_call_chain(ACPI_VIDEO_CLASS, acpi_device_bid(device),
-+				 event, 0);
- 
- 	if (keycode && (report_key_events & REPORT_BRIGHTNESS_KEY_EVENTS)) {
- 		input_report_key(input, keycode, 1);
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index acf5dd2177a1..1bfc4179e885 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1081,7 +1081,8 @@ static void acpi_battery_notify(acpi_handle handle, u32 event, void *data)
- 	acpi_bus_generate_netlink_event(device->pnp.device_class,
- 					dev_name(&device->dev), event,
- 					acpi_battery_present(battery));
--	acpi_notifier_call_chain(device, event, acpi_battery_present(battery));
-+	acpi_notifier_call_chain(ACPI_BATTERY_CLASS, acpi_device_bid(device),
-+				 event, acpi_battery_present(battery));
- 	/* acpi_battery_update could remove power_supply object */
- 	if (old && battery->bat)
- 		power_supply_changed(battery->bat);
-diff --git a/drivers/acpi/event.c b/drivers/acpi/event.c
-index 96a9aaaaf9f7..4d840d2e7b98 100644
---- a/drivers/acpi/event.c
-+++ b/drivers/acpi/event.c
-@@ -24,12 +24,13 @@
- /* ACPI notifier chain */
- static BLOCKING_NOTIFIER_HEAD(acpi_chain_head);
- 
--int acpi_notifier_call_chain(struct acpi_device *dev, u32 type, u32 data)
-+int acpi_notifier_call_chain(const char *device_class,
-+			     const char *bus_id, u32 type, u32 data)
- {
- 	struct acpi_bus_event event;
- 
--	strscpy(event.device_class, dev->pnp.device_class);
--	strscpy(event.bus_id, dev->pnp.bus_id);
-+	strscpy(event.device_class, device_class);
-+	strscpy(event.bus_id, bus_id);
- 	event.type = type;
- 	event.data = data;
- 	return (blocking_notifier_call_chain(&acpi_chain_head, 0, (void *)&event)
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index aad1a95e6863..ff14c9362122 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -625,7 +625,8 @@ int acpi_dev_install_notify_handler(struct acpi_device *adev,
- void acpi_dev_remove_notify_handler(struct acpi_device *adev,
- 				    u32 handler_type,
- 				    acpi_notify_handler handler);
--extern int acpi_notifier_call_chain(struct acpi_device *, u32, u32);
-+extern int acpi_notifier_call_chain(const char *device_class,
-+				    const char *bus_id, u32 type, u32 data);
- extern int register_acpi_notifier(struct notifier_block *);
- extern int unregister_acpi_notifier(struct notifier_block *);
- 
+>> drivers/acpi/numa/srat.c:323:12: warning: no previous prototype for function 'cfmws_disabled' [-Wmissing-prototypes]
+     323 | int __init cfmws_disabled(void)
+         |            ^
+   drivers/acpi/numa/srat.c:323:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+     323 | int __init cfmws_disabled(void)
+         | ^
+         | static 
+   1 warning generated.
+
+
+vim +/cfmws_disabled +323 drivers/acpi/numa/srat.c
+
+   322	
+ > 323	int __init cfmws_disabled(void)
+   324	{
+   325		return cfmws_numa < 0;
+   326	}
+   327	
+
 -- 
-2.51.0
-
-
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
