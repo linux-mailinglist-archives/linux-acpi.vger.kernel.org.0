@@ -1,95 +1,83 @@
-Return-Path: <linux-acpi+bounces-21372-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21373-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOBbDejGqGm9xAAAu9opvQ
-	(envelope-from <linux-acpi+bounces-21372-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:57:28 +0100
+	id 4LvkHzHIqGnhxAAAu9opvQ
+	(envelope-from <linux-acpi+bounces-21373-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 01:02:57 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51DD20942F
-	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 00:57:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8355420952E
+	for <lists+linux-acpi@lfdr.de>; Thu, 05 Mar 2026 01:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A82E43063AFE
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Mar 2026 23:56:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7CACC300BE3C
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Mar 2026 00:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8AD39F17C;
-	Wed,  4 Mar 2026 23:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3AB42AA9;
+	Thu,  5 Mar 2026 00:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="oCiDkoZT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WOwpa454"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA31D390CBA
-	for <linux-acpi@vger.kernel.org>; Wed,  4 Mar 2026 23:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AAA70809;
+	Thu,  5 Mar 2026 00:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772668606; cv=none; b=ZjXwd3j1XwXBOUTNo6QUD2uqHmCA9b4ulkAJXdsDtDrNAf3k7KfQRGlKaN6Obuzdj5rJvWy33G0JRblPQxvlvo2KOD2CUv+CsMZtP5FtKZCnBYdTTORxwKcBvOgT3fOecBMVRxNO478eQwHNdOE7iK/8/ETAFZHw4W+V5Rh2G4U=
+	t=1772668972; cv=none; b=IZxgGTsuI2RN5sPdu2BHmP+zkyZGV8sNObbPa2S5ugrIirdy/Q5I3Kc6V4l0WUUhW8W/53cJBpcPcDAdtXVJ3NW2Hlb37E+KuFiup7ofo1URzrjCuBA/CI4LI4NJ6x6nyHWgxW7wWm9HQtj5wHmMR4lh6/unRlAe18vYlFhTCJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772668606; c=relaxed/simple;
-	bh=Giw3/067GrNgQbtrZLaDCpoqSBeafl6A+nGzlEidTog=;
+	s=arc-20240116; t=1772668972; c=relaxed/simple;
+	bh=EvNQexAL85C3eOmkJAT7oc88RZq8E/bM2KOB2OJFNHg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vp0F9fIxe6LMWV0B5aob24JwOWMWz1LmjrUbCe9E31g8df02troW+WDVYfgHZs1c5ryP+zS8ND+UEBQjf1+vUHJ1zx5TXbJhX43t0DdXLeSS8W0LxPBC5mMw8sfgOe5PiYnarKFhAiurdDDDkLX0WY3S63j2X22it5Cg3pKqYg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=oCiDkoZT; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-899e85736e2so45818096d6.1
-        for <linux-acpi@vger.kernel.org>; Wed, 04 Mar 2026 15:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1772668603; x=1773273403; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dpj9qG8Bv81Wer9VtkXzUxrZr6VBH25/Zpz3n0Y4DLM=;
-        b=oCiDkoZTqsg4uUrW/LBZ4m6EqOVlTY6fHZu5kNdxmZMM3fs/mlcwUv2kW8LMw7Faud
-         93v02w3cK9twv+4COFVEQb+yZ9x5mEVH8oXcE6bFC37ziEvFC1LN/7RqOaE9KriQkgY8
-         oZ2Uh1RzjxXLVE5Hku2JMhWBFhqi9Ih4D46IKvzn6oZbfyrui58jwsv5WXRrnuft24i/
-         8drMCphlfdIQ4bBJBL9NNMoLDCq/LoyhxU4ACafDowh28dOzUS68r3Ng8F+0o438HNUa
-         5fkuZNn/AgMR0vgF9kcUSX2NKyEAScoLHf+baGkQvUO9Cz9KYtGTC2yz4D60Z3OP64J+
-         tr0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772668603; x=1773273403;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dpj9qG8Bv81Wer9VtkXzUxrZr6VBH25/Zpz3n0Y4DLM=;
-        b=kNsYt6JGeZPLY2ekO9je3W0sdBUhtUdGRIsWs7GRCGbQV42t3/a1U6cRtiVUHbEFfd
-         dGS1kPVHy69HhNwFw/OsMl6BcTmNIC/CaTFk37SbO0XMFP8ewXWgF/NWja8enMurMs9j
-         5R9uQ2aupOHcCSantWtfP5wMRctmiHn1Xi49NwkcYlZloQ06wko9bXIhVcqoye46CMjg
-         4/g9s0KmjqCIGc80ZcUsyDooX19MQ1k5nPyzMQa/O/qeOpXvHdx9moMkcIP0MDVjkyOJ
-         KO2tefHFHlgh3EPuCubBMltu7zFZ8gQkot9Dzg/G13egw41YRgKDX/6mIhZkTYKjvEu3
-         qvoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXj/XgIh7w0U637Ew6KPSj2uhasOF1xy/Tq5lJbeiBeb6OLxUnC+4TYuxe/DFTpLLMbpTqieQzaoxxd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY6ZWD+cNziL40rlcXDEyWEF2BAh+5IZV1qBnbhRfQnPuG7PwU
-	i9jBz84eNswFMeaho4jH+AI43K09E8TnytVM9mQkV6ptAThfVniu4Q0EWd6S7ri4zD8=
-X-Gm-Gg: ATEYQzyFsx6sJdA45sY++C07Nuc4fDZEH/OVhQW789F8cBoyHChszkrrwMMSo5EnC1z
-	Brxsz1bO5xcmLnabH+Bxj7R6MXmK5OlztWbQNHShIKK+zYxLvQLzeYBMtGZ5FDLdCitqBBQWn3F
-	NsujYJG8SZWZuJZFQRwF+QgfTeu487TB6v5HeG2mVqkLzt3Hck+1mZAYw4jIURI8+aMfzXOG2PK
-	kVIS72JYL6YHmKvO/CYKeAdwyK37VRabdD6OigK4VogAEql7EMmxZkU/zgO6uo0dURXHkjs/QTf
-	oJiAqbANxdhqKkM7Z1l+Lx8JyC5mBdzDKPQv+uBj0KNo1JwyJgvsLzUqcdllNJULppDipDEU0Uo
-	9sIfhV9hY1PKGeDLB1CLi3GlGJUg1HLSSMSkmRKfnhTld7rOORYbk36PHnDkU5HpkjEVeelnwtP
-	mzM+tGkU8OQ9fNicSngNrCHuDkbVSY0meZZp1i7TqJDtNmS6ytEaYtLdcTG4kyyvCw/7fmxPthJ
-	mfrfdX2YQ==
-X-Received: by 2002:a05:6214:20a8:b0:899:e8b8:504c with SMTP id 6a1803df08f44-89a2490cb15mr6076996d6.30.1772668603583;
-        Wed, 04 Mar 2026 15:56:43 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-507449630b6sm186648081cf.7.2026.03.04.15.56.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 15:56:42 -0800 (PST)
-Date: Wed, 4 Mar 2026 18:56:40 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Alison Schofield <alison.schofield@intel.com>
-Cc: Kai Huang <kai.huang@intel.com>, rafael@kernel.org, lenb@kernel.org,
-	dan.j.williams@intel.com, akpm@linux-foundation.org,
-	nunodasneves@linux.microsoft.com, xueshuai@linux.alibaba.com,
-	thorsten.blum@linux.dev, wangyuquan1236@phytium.com.cn,
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is on
-Message-ID: <aajGuOC-G_dFYpwa@gourry-fedora-PF4VCD3F>
-References: <20260304213342.5776-1-kai.huang@intel.com>
- <aaizNh-0LEvRQMCy@gourry-fedora-PF4VCD3F>
- <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZUk3yaoWACF7XtdHIZvY19n6PngJys/ymlMnENQUOQUFLNQz5ChM55T7auwtNGtFllZJchTuiFrAj/83rUcMhCg7wVvq1A0w/hX0gfv8/xM3dPLcaaJvyBccLuRihXauidKM/eTmXZlZWxHwXlsT6U8Adc272g8qK8UJcpcGJso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WOwpa454; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772668968; x=1804204968;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EvNQexAL85C3eOmkJAT7oc88RZq8E/bM2KOB2OJFNHg=;
+  b=WOwpa454B5RHJ3uaU4MqAO9F2p+6w/w5+rGxDpyY239N//KerXtPN6Js
+   sLsJ80bxPHSlJJ45hNnv6i7/PZAmWbOnQdLjmbm+a71IJ8VCV66vC1vBN
+   9Pi9tDzp6a39rVPjRR3ATGMbfkXPIcbzejNzLCsBN0KyUh/RDl6xAyGYQ
+   VEyFdxs/Kl+59/pVBzf7GkTgbtfABif0ApDDItuo2K89Wnwyd9nls9mfo
+   cGw/WVTP4L06M2HAoBG8NusapOPURIHK7eekbK7de7HOPtd6VRxJcnRmS
+   3BQc4+kly/HNG62rqRXzFMh9Dz2qQ8+9YoJilOQslBSXe8UwNJ6d+iEIL
+   Q==;
+X-CSE-ConnectionGUID: 80RgpuyUQHKEqZnoNlmXnQ==
+X-CSE-MsgGUID: lUAWLn5NTvmGQI1GwUS98A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="76348793"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="76348793"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 16:02:48 -0800
+X-CSE-ConnectionGUID: tV70856wTSC3HyuYjAzjVg==
+X-CSE-MsgGUID: oX55X8+ASqCsAM1tVN4aoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="256382620"
+Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 04 Mar 2026 16:02:44 -0800
+Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vxwAr-000000004j3-1cRe;
+	Thu, 05 Mar 2026 00:02:41 +0000
+Date: Thu, 5 Mar 2026 08:02:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chengwen Feng <fengchengwen@huawei.com>, linux-pci@vger.kernel.org,
+	bhelgaas@google.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	rafael@kernel.org, lenb@kernel.org, wei.huang2@amd.com,
+	Eric.VanTassell@amd.com, jonathan.cameron@huawei.com,
+	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com,
+	liuyonglong@huawei.com, Chengwen Feng <fengchengwen@huawei.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+Message-ID: <202603050748.kO9QwTCh-lkp@intel.com>
+References: <20260303003625.39035-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -98,86 +86,87 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aai-K2tEdIp5B4XP@aschofie-mobl2.lan>
-X-Rspamd-Queue-Id: C51DD20942F
+In-Reply-To: <20260303003625.39035-1-fengchengwen@huawei.com>
+X-Rspamd-Queue-Id: 8355420952E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21373-lists,linux-acpi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21372-lists,linux-acpi=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gourry.net:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,git-scm.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 03:20:11PM -0800, Alison Schofield wrote:
-> On Wed, Mar 04, 2026 at 05:33:26PM -0500, Gregory Price wrote:
-> > On Thu, Mar 05, 2026 at 10:33:42AM +1300, Kai Huang wrote:
-> > > Increasing the 'nr_node_ids' has side effects.  For instance, it is
-> > > widely used by the kernel for "highest possible NUMA node" based memory
-> > > allocations.  It also impacts userspace ABIs, e.g., some NUMA memory
-> > > related system calls such as 'get_mempolicy' which requires 'maxnode'
-> > > not being smaller than the 'nr_node_ids'.
-> > > 
-> 
-> > 
-> > Is this a Linux issue or a Firmware issue?
-> 
-> IIUC BIOS creates the CEDT based on the hardware it 'sees' as present.
-> 
-> This patch is describing the case (weird as it seems to me) where we
-> then boot a system with ACPI and NUMA enabled but CXL_ACPI disabled.
-> 
-> So, I don't think we can blame BIOS.
-> 
-> > 
-> > Is GNR exporting more CFMWS than it should?
-> Not sure of any limits on flavors of CFMWS's a BIOS can offer.
-> If BIOS can carve out a window, it can create a CFMWS.
-> Not clear how that matters to the issue.
-> 
-> > 
-> > Is your SRAT missing entries for CFMWS that are otherwise present?
-> > 
-> > Are the CFMWS empty? (is that even valid)
-> 
-> Why this line of questioning ;)  I see the problem as a bit simpler.
-> We have other code that tells us if the CFMWS's are valid, etc, but
-> the point here is, we are not going to use these CFMWS's so stop
-> the parse as early as possible, like right here as Kai has done.
-> 
+Hi Chengwen,
 
-Mostly i'm wondering if this issue should be dealt with in the acpi code
-or if the issue is that we just don't want to figure out how to
-lazy-create these things instead of always creating them at __init.
+kernel test robot noticed the following build errors:
 
-it does seem rational to build out support for CEDT entries if CXL_ACPI
-is built out, but this also means you can't otherwise load modules that
-would have made use of this information.
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v7.0-rc2 next-20260303]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-This basically says if specifically CXL_ACPI is built out, the NUMA
-structure is forever lost - even though it's accurately described by
-BIOS.  Maybe that's a rational decision, just kind of prodding a bit.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-get-cpu-steer-tag-fail-on-ARM64-platform/20260303-084305
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20260303003625.39035-1-fengchengwen%40huawei.com
+patch subject: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+config: i386-randconfig-141-20260305 (https://download.01.org/0day-ci/archive/20260305/202603050748.kO9QwTCh-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+smatch: v0.5.0-9004-gb810ac53
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603050748.kO9QwTCh-lkp@intel.com/reproduce)
 
-~Gregory
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603050748.kO9QwTCh-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/acpi/processor_core.c:344:9: error: call to undeclared function 'cpu_acpi_id'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     344 |         return cpu_acpi_id(cpu);
+         |                ^
+   1 error generated.
+
+
+vim +/cpu_acpi_id +344 drivers/acpi/processor_core.c
+
+   337	
+   338	#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
+   339	unsigned int acpi_get_cpu_acpi_id(unsigned int cpu)
+   340	{
+   341		if (cpu >= nr_cpu_ids)
+   342			return 0;
+   343	#ifdef CONFIG_X86
+ > 344		return cpu_acpi_id(cpu);
+   345	#elif CONFIG_ARM64
+   346		return get_acpi_id_for_cpu(cpu);
+   347	#endif
+   348	}
+   349	#endif /* CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API */
+   350	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
