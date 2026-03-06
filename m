@@ -1,167 +1,128 @@
-Return-Path: <linux-acpi+bounces-21475-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21476-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gABREMFIqmlkOgEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21475-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 04:23:45 +0100
+	id EPWcAzVcqmmkQAEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21476-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 05:46:45 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FAA21B092
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 04:23:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9736321B827
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 05:46:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A01E3300F94D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 03:23:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E7A13028E90
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 04:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E4A36A000;
-	Fri,  6 Mar 2026 03:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4035274B58;
+	Fri,  6 Mar 2026 04:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XhO4g1Px"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nv9bdOZL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53711338596;
-	Fri,  6 Mar 2026 03:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE42F21CC7B;
+	Fri,  6 Mar 2026 04:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772767419; cv=none; b=XBsiD4A0WrWtpep+y3PD/9GXPcTta0bdLsR6nzmGhq81kOA8spU+k4//pDPdetXAAPjKRFpEvTVjnM6CJ8ccPqsDYtS8S44+ZxXTBLBFIeVzqswvepAbu8n5GHAQ6jyizNCvHllA4FH71nHFb0a2EfbIhAZjw+aOY/alwoZ9X+k=
+	t=1772772399; cv=none; b=ZRhChClm+MoPhicqMDTUA8WZZNJ9jLy8TkGvMAn5LZpxmiWRKSAqaNcoG/3Acq9/zWnRYCs0f6A9PIjA2gy9D85dEj/x7tgjjRVyIaNko78h5CqjHNdTrbysNtFdEWfq2y27TSwb5DU5m0x+og9nluaoyi9J31+0ZYmfpGRkwPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772767419; c=relaxed/simple;
-	bh=tA9L12xlCsrK8dz+Fq8CyoLAozPl60QyKkM4A17q6sA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=soGaHBlzHmcUoiW/f0OofXE0htijnZkVjfb+MgfhHCDKEii/+BgUlkv2g5p8DmqHHrwEaemuJbBpa5wmKCtBq4r9GHdYrPHuyN5j53BfAL2L3dGNNv1aubL43iVv//+FuMFNFpGIlxVh8YEomJlOz5KYWk4SvRoshAf5YjHM+8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XhO4g1Px; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772767418; x=1804303418;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tA9L12xlCsrK8dz+Fq8CyoLAozPl60QyKkM4A17q6sA=;
-  b=XhO4g1PxV4DIs7shKiRk7kywQ1zR1eT+KOkbZOotLwJ2rq/twk8ORfOl
-   bhv1Rg/N4KrtQKvOHb7ATJnjtQ6dBoX+xof5pnQeL2OYd3Yrjt4Wefor+
-   L7hx6OXdruDNEMt+lY5L/dj+Cy96quPwTj97PN81SWskW3oib/OsWk7yE
-   PVrAOwlxsvqVftKyYHnWGPL6pkK38tLwGblotekdKPZ6rOrYydiNokMDJ
-   fNDOzTKY3XbBxcRna1O5XQ9OaL5jhbq2+WlI9AnqLpm5fO56Ap90J8UOe
-   FMESXdnq5FFo5bMYJrO8+Fb4WTeeZ6l5OouJq6yrWAV1qm2VpT7qMCgMg
-   w==;
-X-CSE-ConnectionGUID: sdsD2uywS0W99uMf+VB/mQ==
-X-CSE-MsgGUID: GRLpPI7kTUm5xAD+4CHK9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="61446875"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="61446875"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 19:23:38 -0800
-X-CSE-ConnectionGUID: jD6OhW6aQNqpuQRqlhrT5g==
-X-CSE-MsgGUID: ucmj+6C0SJKG4sfPqTw1Ug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="223016462"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 19:23:34 -0800
-Message-ID: <6416b7fe-0190-4c7b-9a62-5da7d5eea794@linux.intel.com>
-Date: Fri, 6 Mar 2026 11:22:52 +0800
+	s=arc-20240116; t=1772772399; c=relaxed/simple;
+	bh=f79BlgSg2in5KMGVfAJr8z5EZZmUtj9u7hprpV0hlH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hPO1xKLwFifR0GQb+g7MFVQ1efL+nxgwOBla19jypzgNH41PC7Dipd14lqhjFDWl/HXDcS4kdc6H6bfk+nBdGzK5O6b8gICKpzN/hJWyyLEsppiQvtZG8hTNtJxSWlG/cz5UtF0MR54CI059SrSjPebdkG26/A+f1Fnp2lncurM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nv9bdOZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D74C19422;
+	Fri,  6 Mar 2026 04:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772772399;
+	bh=f79BlgSg2in5KMGVfAJr8z5EZZmUtj9u7hprpV0hlH8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nv9bdOZLpVjJtVcYH4YKiEvY3dV9ExZsQN2de7AxOW2GHBJ6zwdKX30ZKsleR9gEz
+	 ZeGbHv+AoVy3wZ3gZzq9pUl0JSgFR1RCT4BLLOApv8arvwIDq48AbhyVAtSYmlQKYg
+	 wtPnK+TL4IxzjMISiKtQagsvKlkRTZH3d5xWLljTXS+CY9+70KdaktUAVp8+ZM6g5w
+	 HQEWrAb1Qw+Yf06V+7B3gMBGY9x61npLZLpMfokxGZwyao++pac/iTBQlkJn0BQ0Dz
+	 btyAJfPpYikc/CaT7+mRrISlCwqwfqJY7DLOAOcBDJf52cRDmAS9Jz3Y/uji2cfE9o
+	 EqfFaBhtEGkxQ==
+Date: Fri, 6 Mar 2026 04:46:36 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: chrome-platform@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Enric Balletbo i Serra <eballetbo@kernel.org>,
+	Ravi Chandra Sadineni <ravisadineni@chromium.org>
+Subject: Re: [PATCH v2 0/6] platform/chrome: Bind drivers to platform devices
+ instead of ACPI ones
+Message-ID: <aapcLMIq-hk_Ze_Y@google.com>
+References: <6259948.lOV4Wx5bFT@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] iommu/arm-smmu-v3: Recover ATC invalidate timeouts
-To: Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>
-Cc: will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
- bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org, praan@google.com,
- kees@kernel.org, smostafa@google.com, Alexander.Grest@microsoft.com,
- kevin.tian@intel.com, miko.lenczewski@arm.com,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, vsethi@nvidia.com
-References: <cover.1772686998.git.nicolinc@nvidia.com>
- <ca7ab934bf0f433b62a5c15d42241632c4cb9366.1772686998.git.nicolinc@nvidia.com>
- <20260305153911.GT972761@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260305153911.GT972761@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D4FAA21B092
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6259948.lOV4Wx5bFT@rafael.j.wysocki>
+X-Rspamd-Queue-Id: 9736321B827
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-21475-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-21476-lists,linux-acpi=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,linux-acpi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzungbi@kernel.org,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On 3/5/26 23:39, Jason Gunthorpe wrote:
-> On Wed, Mar 04, 2026 at 09:21:42PM -0800, Nicolin Chen wrote:
->> +	/*
->> +	 * ATC timeout indicates the device has stopped responding to coherence
->> +	 * protocol requests. The only safe recovery is a reset to flush stale
->> +	 * cached translations. Note that pci_reset_function() internally calls
->> +	 * pci_dev_reset_iommu_prepare/done() as well and ensures to block ATS
->> +	 * if PCI-level reset fails.
->> +	 */
->> +	if (!pci_reset_function(pdev)) {
->> +		/*
->> +		 * If reset succeeds, set BME back. Otherwise, fence the system
->> +		 * from a faulty device, in which case user will have to replug
->> +		 * the device to invoke pci_set_master().
->> +		 */
->> +		pci_dev_lock(pdev);
->> +		pci_set_master(pdev);
->> +		pci_dev_unlock(pdev);
->> +	}
-> I thought we talked about this, the iommu driver cannot just blindly
-> issue a reset like this, the reset has to come from the actual device
-> driver through the AERish mechanism. Otherwise the driver RAS is going
-> to explode.
+On Thu, Mar 05, 2026 at 08:34:58PM +0100, Rafael J. Wysocki wrote:
+> Hi All,
 > 
-> The smmu driver should immediately block the STE (reject translated
-> requests) to protect the system before resuming whatever command
-> submissio n has encountered the error.
+> This is a v2 of
 > 
-> You could delegate the STE change to the interrupted command
-> submission to avoid doing it from a ISR, that makes alot of sense
-> because the submission thread is already operating a cmdq so it could
-> stick in a STE invalidation command, possibly even in place of the
-> failed ATC command.
+> https://lore.kernel.org/linux-acpi/2274474.Mh6RI2rZIc@rafael.j.wysocki/
 > 
-> I think I'd break this up into smaller steps, just focus on this STE
-> mechanism at start and have any future attach callback fix the STE.
+> addressing review comments on patches [2/6] and [4/6].
 > 
-> Then we can talk about how to properly trigger the PCI RAS flow and so
-> on.
+> The series description below still applies.
+>
+> [...]
 
-I believe this issue is not unique to the arm-smmu-v3 driver. Device ATC
-invalidation timeout is a generic challenge across all IOMMU
-architectures that support PCI ATS. Would it be feasible to implement a
-common 'fencing and recovery' mechanism in the IOMMU core so that all
-IOMMU drivers could benefit?
+Applied to
 
-Thanks,
-baolu
+    https://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux.git for-next
+
+[1/6] platform/chrome: Convert ChromeOS privacy-screen driver to platform
+      commit: d3c2872ae323ea45cc32ea0247f26c2189a481cb
+[2/6] platform/chrome: chromeos_tbmc: Drop wakeup source on remove
+      commit: 5d441a4bc93642ed6f41da87327a39946b4e1455
+[3/6] platform/chrome: chromeos_tbmc: Register ACPI notify handler
+      commit: de1260139dbd7610a2f25343c962569b8fe23f8f
+[4/6] platform/chrome: chromeos_tbmc: Convert to a platform driver
+      commit: a2676ead257f6cf12e458efc786a68d6ab7c1224
+[5/6] platform/chrome: wilco_ec: event: Register ACPI notify handler
+      commit: 25a06b7a3224161cf4b27049bea93cac21136460
+[6/6] platform/chrome: wilco_ec: event: Convert to a platform driver
+      commit: 27d58498f690ab39140678df918155a597b3a17a
+
+Thanks!
 
