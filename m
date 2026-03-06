@@ -1,245 +1,208 @@
-Return-Path: <linux-acpi+bounces-21467-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21468-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPikFf0oqmmQMQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21467-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 02:08:13 +0100
+	id GC3hKQkuqmkyMwEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21468-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 02:29:45 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0681621A21B
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 02:08:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A57221A3D8
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 02:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72DF8301FFB8
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 01:06:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AEDBB3022991
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 01:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28972FD1A1;
-	Fri,  6 Mar 2026 01:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4063F313E3B;
+	Fri,  6 Mar 2026 01:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWUrdSQi"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="plHNX8iu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCA82F12D4;
-	Fri,  6 Mar 2026 01:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772759201; cv=none; b=aMygMXvZQnesNc/EoxIFe1+1KtMlPJmzi/QfudwRpt8b4rWUXLDGy1Hbz+tBw/BsJvLKwBLa63Nq/tM2CWRaVje/EvRZWEHVtOYIKHp4zZIOvSR1sjMXIkk+GhEGC8yBlHeCa1uSr/q25nz5heAoXruf2HfMmAzXQ7r++TSUaVY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772759201; c=relaxed/simple;
-	bh=/3UzXOX7nYsk0ycjPDcHwDC51rQGido5I13QEdeIfH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dc/R/XyZs0RgpTuTty2KXC14aVgn3rdg5fI0hiLv0pbN0BXmSad0G1ggF45mfht1/WromIVv1ueCwj5c3X6kRq0LxjVtMOIMGKQkCvaIlqnp0chkSBYHUwW7VLFGbN5vPvocdX+hqhemZim15axfQUdjFVdAoFZEDKzama/J2X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWUrdSQi; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772759201; x=1804295201;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/3UzXOX7nYsk0ycjPDcHwDC51rQGido5I13QEdeIfH8=;
-  b=XWUrdSQiVf11AJe0g1236y/1ZSCpdG+E5pbZucqeUg56FPbrEvRcBvGX
-   Vges25oan8P8p4la9iHY3wlrzTZX/uJzH/nKrVl/+I7oqNm5HhdbuPVee
-   U4XYy8ptpdrV0by9ztjYpA7HXU+DISs6bjKRWJd9dL6Q09VUUCpeDTpnQ
-   bbGAVNJ/HveRpJx9hp/TB8xnajH+wB6pujGIPJ5bdwyEOK5YH4yBSrwct
-   VHiMmYOrl4Rc2Tvzmc0hxQ9bR+9917V4mQBvgXiR33B2WvtRAv96Kgsh1
-   araXI4w0JVEEeBpnxfopYMPabqtRE3d/3V06ITEQ9F3q5YePQ51yTaQBS
-   Q==;
-X-CSE-ConnectionGUID: ftmJPMyZQzqmYY/8rYLIhw==
-X-CSE-MsgGUID: B6/Qz+/ITZCB+TAaJYYNZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73779493"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="73779493"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 17:06:40 -0800
-X-CSE-ConnectionGUID: Fb6imYfYRdyyNHiSGLSlLg==
-X-CSE-MsgGUID: fmZ26AOZSoCSufqFWdsyZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="218805096"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 05 Mar 2026 17:06:34 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyJe9-0000000009N-2EjF;
-	Fri, 06 Mar 2026 01:06:29 +0000
-Date: Fri, 6 Mar 2026 09:06:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 2/6] gpio: move hogs into GPIO core
-Message-ID: <202603060850.dUlmPBav-lkp@intel.com>
-References: <20260305-gpio-hog-fwnode-v1-2-97d7df6bbd17@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1A526ED33;
+	Fri,  6 Mar 2026 01:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772760583; cv=fail; b=WU/+BzCL1JUfOz1/7ulXKbSsq5OmdXSi/fgIuTEgnFjqOUAiQ2ionQG1mTvrgnMFDGUHmhT62OmkKLTL9zQFsprxttvT4rcfR+VsOtpiANCuQ8xm4RKDIvqh+bl4HuadBicDNNZ5Fdl2uvSo5/xiJzKqrzGs0VQlz9L3ejvIdjc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772760583; c=relaxed/simple;
+	bh=Em5Nc3ElXKORdjxMPHGzYza+7TyfUvx67LY9LgKrvBk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i8Us9DnbVIjveUdcou5vdc0ql3EMd/5S0W9Qrhsorp+8sUf3FpHjdIWPhdl8VejS2HA90OVpPxg3cyWAm0q09oOO6jaTXasYO9BC/B1/rLLcoGHRF8sx0uq+em02zZnQj+pmW/oEuUC2fqCQELToYaMrxxoHV9I2YflGyZpqsps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=plHNX8iu; arc=fail smtp.client-ip=40.107.209.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tylPmc9d5cH4oQVuCg0WBblWnO3dUpAtSEOSYv8RwVRMUsXRIGvfbe2NVHEx65IqVYI1EEIIABlzj9a+BKWNdSGq5A85h/FLEQqh6cP3WYqdc071I9o3ClC16ZNzkqYhha330aRuo8+p3Er3hJAXC5ZOgjuBzJ+euYQz1S0m1wlUx8W262NiTtPwzvNsQloe9/FFEs1edhBQ8SwVwxrRxiAitWpHmLJbDfYDHuytZPUsyDtg8IIGWoxi6l2jPrMpOA+nid0xqEwtDHjntQocAQd3XSmvSiayhWkpYuxX20BfXXv10g2Rucc2PakJuYh1c5MQmoasPma9M0HATYz5Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gfPLjVRO2nOOwLUUjvDT6W/Je5YmZ9lTARccIVlkByw=;
+ b=lYpadOKoxr1TjHNicLlq/r4SmcsDlWS8up6GBtO3B9hxs93oXflP5YECEZwj6bgextp2YD1Jik/tmEl/czCPLkUTvrC4tZHVJMEw+OTYNL91deRo3S8eiygSdua8zBxRevDrWXTZO2xDtmxrH1C5cw9bz8oLdt/G5aRUCXuco5WWlbFIvDUNYEYVMzWxrWW5XSFS1204at5ir1DNTs3iA9fh5b52CvGhmu/2hBS4e9ZM9QDvfGMrryOtvF02uUYzflFdJGmjC/CHftPC5ZO3RXwBGlf40gzmJ5FDkWsGd37sRa1cV3pG/rCUuoBUzP0E7N/cpv/Gvl2b6JGFsUE2gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gfPLjVRO2nOOwLUUjvDT6W/Je5YmZ9lTARccIVlkByw=;
+ b=plHNX8iu1n/fSpcyomHzoogbrAiY7quzzf/I4S5e2HhP6/8nGiOpPQPupMIBRqCNmUrvkub7yty3mbdDHTbhXxkMQWN559BxLd74C+xs4pAnYb+n1Dn9paY8STP5mIQKS98haTgCEKFH4K5Ffb3IbVNXu6q8B+ePlX3r6kHxzdcr3kjkb5/MGaQHCDCJsSRn9RC8d3vXIGJrvNfgPbgLfpyxh7j+VHBMvl2stvRpAOgjcfPZu4LfR4nJP7ZFAULV0PMQNnxyXLMogf3j7GpEqMwhNfI6c7lNVNavGp4JQiEgEqClAysU4ITeojYK0maCgpTRt3qzhqvuRj2gBr9rpw==
+Received: from CH0P221CA0006.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::29)
+ by DM3PR12MB9436.namprd12.prod.outlook.com (2603:10b6:8:1af::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
+ 2026 01:29:33 +0000
+Received: from CH1PEPF0000AD7C.namprd04.prod.outlook.com
+ (2603:10b6:610:11c:cafe::e5) by CH0P221CA0006.outlook.office365.com
+ (2603:10b6:610:11c::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.18 via Frontend Transport; Fri,
+ 6 Mar 2026 01:29:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH1PEPF0000AD7C.mail.protection.outlook.com (10.167.244.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Fri, 6 Mar 2026 01:29:32 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Mar
+ 2026 17:29:24 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 5 Mar 2026 17:29:24 -0800
+Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 5 Mar 2026 17:29:23 -0800
+Date: Thu, 5 Mar 2026 17:29:22 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: <will@kernel.org>, <robin.murphy@arm.com>, <joro@8bytes.org>,
+	<bhelgaas@google.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<praan@google.com>, <kees@kernel.org>, <baolu.lu@linux.intel.com>,
+	<smostafa@google.com>, <Alexander.Grest@microsoft.com>,
+	<kevin.tian@intel.com>, <miko.lenczewski@arm.com>,
+	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <vsethi@nvidia.com>
+Subject: Re: [PATCH v1 2/2] iommu/arm-smmu-v3: Recover ATC invalidate timeouts
+Message-ID: <aaot8uRsli5jNPzH@Asurada-Nvidia>
+References: <cover.1772686998.git.nicolinc@nvidia.com>
+ <ca7ab934bf0f433b62a5c15d42241632c4cb9366.1772686998.git.nicolinc@nvidia.com>
+ <20260305153911.GT972761@nvidia.com>
+ <aanygWWZLA1htDdQ@Asurada-Nvidia>
+ <20260305234158.GB1651202@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260305-gpio-hog-fwnode-v1-2-97d7df6bbd17@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 0681621A21B
+In-Reply-To: <20260305234158.GB1651202@nvidia.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7C:EE_|DM3PR12MB9436:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37f609f6-2b92-4399-ea05-08de7b1fd1f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	WjOJnqwyaZodK7fcL+MGhWT4ok304Z5Sf5Umj7s/FpZRImTLMRnwrpNcP42+LExVHdgIObxEVAh9rNTM1OhLuhWVBIgCJrFcdwvLkcFPQYjHtCRMrrsq3x3TKodG4mcZyyb2PIS2aH5+RLVOeoXsuntDJvpCuJxjU1S0fI/+xIEXFlGGMtK0WOnrmntVxSLeXNZt+uEOwuzGRAnTlTgoH5GAv4yqyBBntOzO05bBu1mwBzGaP3CHeJCNxbzGQXKA/1k7SvBXdMUMmNfuizSLrXpruty3MlI6Hrg/hKj7q/DLGSv0t0GOuCjTRmjuqgorMOvc8CUt1n8tApx7GnrryKytisF81273T9vD/Axc8zeci8K/qaStKxMHHwvJ0nDnkGDOJmG2bilye4szni5R1RtgTS/oqbL1Gg6CNs9iDfcrYAgFQYR2Lh2JyARo6lta3clK4uB29O7bB1bAeqMmL+R7FXoq1Lt/UMtsGkJmOUqop4XQ8J0A9jEUi7Wpfw8TaVeiOHc9fxbAYbzU5OPnF9RzDLSrVXwMF+9y1zs7D3s79nqOz5uoUx+tWIOyk93LmN4f2/4/kBLiHON3qkXC+N9KfaKoo7u+H0HSIcTigum/c3ND7JJHcCAo/J1mipJp2VzdL6H//ih/dy0kak7xshPebtcBIumev3gBAUHaERH/rhD+mO9ooFrunuQj0QJiJvJXxf0NVD2yRehgnsQ1dtz0/qn+Q1TbSW3JuoI6nNQXuKiss4y4K58vVjgdgcuHMxo0y8Nxqq7EK6gwZCBz5Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DKD49Z4+NLxoODy2CbYeI2mjj0zAqIpm9cv+SZRM8iBbNSMTLMc2nUZo9Qoz5N1+qGwuPMtWhW0aPBvLHxdb3eYvr51kWC5DvDgj+SRnauw0vtC/f02JS0DNElWG6jHwomrfcD3ZQM6y+pvIdBb3RARkbguCfZ4Sylj7yBv4/E7ALYVKxGk6YoG3nOVWTx9SaBRMMuX5NqhuU9LP5b9E3mf9nPb0UR2YZ7xhSO9KknRQKqRP2bZtN5fBJyZwz33HTtjCDr1Px6/0jSy2Ow6+uEJNLkgsN2HPfR5Dqn36ngPfai+rCNGGJPF8fMAwQ+14B14fAbE5eMY9oaKIXBpM7uhLHoqObnegD4zW2ZZmn2QgZuuRgcl2FOTvciUONjjiuh8+zERB9ljI611ZYS7D3jc9BgzoH7NH15aqoyNKrpAboapVQWTM2VT65rpZJRdj
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 01:29:32.8345
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37f609f6-2b92-4399-ea05-08de7b1fd1f2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD7C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9436
+X-Rspamd-Queue-Id: 4A57221A3D8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21467-lists,linux-acpi=lfdr.de];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,glider.be,gmail.com,linux.intel.com,iki.fi,atomide.com,armlinux.org.uk,lwn.net,linuxfoundation.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-21468-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-acpi,renesas];
+	FROM_NEQ_ENVFROM(0.00)[nicolinc@nvidia.com,linux-acpi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-acpi];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid]
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Action: no action
 
-Hi Bartosz,
+On Thu, Mar 05, 2026 at 07:41:58PM -0400, Jason Gunthorpe wrote:
+> On Thu, Mar 05, 2026 at 01:15:45PM -0800, Nicolin Chen wrote:
+> 
+> > You mean in arm_smmu_cmdq_issue_cmdlist() that issued the timed
+> > out ATC command?
+> 
+> Yes, it was my off hand thought.
+>
+> > So my test case was to trigger a device fault followed by an ATC
+> > command. But, I found that the ATC command submission returned 0
+> > while only the ISR received:
+> >     CMDQ error (cons 0x03000003): ATC invalidate timeout
+> >     arm_smmu_debugfs_atc_write: ATC_INV ret=0
+> > 
+> > It seems difficult to insert a CMDQ_OP_CFGI_STE in the submission
+> > thread?
+> 
+> I didn't look, but I thought the CMDQ stops on the ATC invalidation,
+> flags the error and the ISR NOP's the failing CMDQ entry and restarts
+> it to resume the thread? Is that something else?
+> 
+> If so you could insert the STE flush instead of a NOP
 
-kernel test robot noticed the following build warnings:
+Yea, we could do a surgical STE update/flush in the ISR, bypassing
+the arm_smmu_ste_writer that has dependency on "master" vs "smmu".
 
-[auto build test WARNING on c025f6cf4209e1542ec2afebe49f42bbaf1a5c7b]
+> Otherwise the arm_smmu_cmdq_issue_cmdlist() can just push another CMD
+> to the queue and sync, it is obviously in a context that can do that.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bartosz-Golaszewski/gpio-of-clear-OF_POPULATED-on-hog-nodes-in-remove-path/20260305-175735
-base:   c025f6cf4209e1542ec2afebe49f42bbaf1a5c7b
-patch link:    https://lore.kernel.org/r/20260305-gpio-hog-fwnode-v1-2-97d7df6bbd17%40oss.qualcomm.com
-patch subject: [PATCH 2/6] gpio: move hogs into GPIO core
-config: loongarch-allnoconfig (https://download.01.org/0day-ci/archive/20260306/202603060850.dUlmPBav-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project c32caeec8158d634bb71ab8911a6031248b9fc47)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260306/202603060850.dUlmPBav-lkp@intel.com/reproduce)
+It was actually a good idea and would make things cleaner..
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603060850.dUlmPBav-lkp@intel.com/
+But arm_smmu_cmdq_issue_cmdlist() doesn't know when to push another
+CMD. In my case where ATC_INV irq occurs, the return value from the
+arm_smmu_cmdq_poll_until_sync() in the Step 5 is 0, and prods/cons
+are also matched. Actually, at this point that NOP ISR has already
+finished.
 
-All warnings (new ones prefixed by >>):
-
->> drivers/gpio/gpiolib.c:981:10: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-     981 |                 return ret;
-         |                        ^~~
-   drivers/gpio/gpiolib.c:971:9: note: initialize the variable 'ret' to silence this warning
-     971 |         int ret, argc;
-         |                ^
-         |                 = 0
-   1 warning generated.
-
-
-vim +/ret +981 drivers/gpio/gpiolib.c
-
-   962	
-   963	int gpiochip_add_hog(struct gpio_chip *gc, struct fwnode_handle *fwnode)
-   964	{
-   965		struct fwnode_handle *gc_node = dev_fwnode(&gc->gpiodev->dev);
-   966		struct of_phandle_args gpiospec;
-   967		enum gpiod_flags dflags;
-   968		struct gpio_desc *desc;
-   969		unsigned long lflags;
-   970		const char *name;
-   971		int ret, argc;
-   972		u32 gpios[3]; /* We support up to three-cell bindings. */
-   973		u32 cells;
-   974	
-   975		lflags = GPIO_LOOKUP_FLAGS_DEFAULT;
-   976		dflags = GPIOD_ASIS;
-   977		name = NULL;
-   978	
-   979		argc = fwnode_property_count_u32(fwnode, "gpios");
-   980		if (argc < 0)
- > 981			return ret;
-   982		if (argc > 3)
-   983			return -EINVAL;
-   984	
-   985		ret = fwnode_property_read_u32_array(fwnode, "gpios", gpios, argc);
-   986		if (ret < 0)
-   987			return ret;
-   988	
-   989		if (is_of_node(fwnode)) {
-   990			/*
-   991			 * OF-nodes need some additional special handling for
-   992			 * translating of devicetree flags.
-   993			 */
-   994			ret = fwnode_property_read_u32(gc_node, "#gpio-cells", &cells);
-   995			if (ret)
-   996				return ret;
-   997			if (cells && argc != cells)
-   998				return -EINVAL;
-   999	
-  1000			memset(&gpiospec, 0, sizeof(gpiospec));
-  1001			gpiospec.np = to_of_node(fwnode);
-  1002			gpiospec.args_count = argc;
-  1003			memcpy(&gpiospec.args, gpios, argc * sizeof(u32));
-  1004	
-  1005			ret = of_gpiochip_get_lflags(gc, &gpiospec, &lflags);
-  1006			if (ret)
-  1007				return ret;
-  1008		} else {
-  1009			/*
-  1010			 * GPIO_ACTIVE_LOW is currently the only lookup flag
-  1011			 * supported for non-OF firmware nodes.
-  1012			 */
-  1013			if (gpios[1])
-  1014				lflags |= GPIO_ACTIVE_LOW;
-  1015		}
-  1016	
-  1017		if (fwnode_property_present(fwnode, "input"))
-  1018			dflags |= GPIOD_IN;
-  1019		else if (fwnode_property_present(fwnode, "output-low"))
-  1020			dflags |= GPIOD_OUT_LOW;
-  1021		else if (fwnode_property_present(fwnode, "output-high"))
-  1022			dflags |= GPIOD_OUT_HIGH;
-  1023		else
-  1024			return -EINVAL;
-  1025	
-  1026		fwnode_property_read_string(fwnode, "line-name", &name);
-  1027	
-  1028		desc = gpiochip_get_desc(gc, gpios[0]);
-  1029		if (IS_ERR(desc))
-  1030			return PTR_ERR(desc);
-  1031	
-  1032		ret = gpiod_hog(desc, name, lflags, dflags);
-  1033		if (ret)
-  1034			return ret;
-  1035	
-  1036		return 0;
-  1037	}
-  1038	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+Nicolin
 
