@@ -1,176 +1,233 @@
-Return-Path: <linux-acpi+bounces-21488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GI0MorNqmkNXQEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21488-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 13:50:18 +0100
+	id emJBBmbOqml4XQEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21489-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 13:53:58 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101BD220F87
-	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 13:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E03221115
+	for <lists+linux-acpi@lfdr.de>; Fri, 06 Mar 2026 13:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1718319485F
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 12:43:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C95C1302C6F5
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Mar 2026 12:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1D329B8D9;
-	Fri,  6 Mar 2026 12:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF35288530;
+	Fri,  6 Mar 2026 12:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8tp9lUU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k8bsKCJl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB76828C864
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Mar 2026 12:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB89289E17;
+	Fri,  6 Mar 2026 12:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772800980; cv=none; b=R1KX51425F3maPXEubhECjYWzq18DBg60smVrnVN7vTfeZprKiOBD0vK9NRJOm9F5XdRJjxwgIKYcITDg+z1q4TtgPZSomJAGPXc/U1H8Y2/bQQaP8gDN8MPskQPNPj9cu0SK6fwbOpeDbNeU9JfRBUxMjBE5tZrSUEjw0chvE8=
+	t=1772801065; cv=none; b=pcsKE9uJU060NSPNBhtUDgcje9MFUYEXqpB4sNvJwcrE6sh5BXocZpskCGhixcQNAryQGX3J2+1T/LgVi9pc2tQDlpWWBoULLGTVIRqhSEmzKRU+IAgN0oXbvWj3kalRuyfGdsoL4EFJ+44WhUfDy+Iw2Mim1htnTlaT2fVEqUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772800980; c=relaxed/simple;
-	bh=gSmTssy6CNAAgTZVKgwAcfCJxvMXUcM2Ff7OKTcAWos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l363yODH8X8wtPVhb6b8fPD5a/ER+ElN3GuLT0zqdosGDQyGVPwrOXVZDWgZ1tbkAeuH5bY2v4+u0uEm3l14plqScCetPF2H8bjbf+JAhYnDJWOugW6YonTNKlWriF6bcLF1P45k/ArhJ9Uzqm3B/yBGqTsFywKgTzzD84ZOs5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8tp9lUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E647DC4CEF7;
-	Fri,  6 Mar 2026 12:42:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772800980;
-	bh=gSmTssy6CNAAgTZVKgwAcfCJxvMXUcM2Ff7OKTcAWos=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l8tp9lUU8gK29/LPrmM/X3xbs/Q/kG0p9AkRk6597v/jWPh9DFc6jtRJbN3RKvvXv
-	 qOFN4G+rOzpLisfr6HzzhwNIJL+dwKGf11RDCFLBKmDepUXRM8+1Pwrh7Ga1vamaoW
-	 gYaIrlz3XhxIdMSSGS+WSycxKTLiEdMJ16PgGFTI2yiPbIBJYAWJJNi9U0f7r4HQ5t
-	 1OsZkjR7SzIOgqijY/2DLLnUq3QY5dBMFGaZWZnKdmDXdNTphpLDGHFL1tPlLABrRE
-	 eY+5zO5Jp1qgAYMf5rD3+/QEgQOzDCrJAHT2TABqvCeVwRHM5i7RukypKsZJv3LNUU
-	 pQ2IS1pbNs0Pg==
-Message-ID: <23a0f5f8-11a6-4f41-9e32-19cb08110bc6@kernel.org>
-Date: Fri, 6 Mar 2026 06:42:58 -0600
+	s=arc-20240116; t=1772801065; c=relaxed/simple;
+	bh=Tq1d43LGzegHgS7nbs7ynJ8NqJPbG38gDZGWn7nBmhU=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=NHMOurch2/Dl2dckTJNidbLi4CbCWB9WL4r/nU9C6zT0HKqVB9FByOGkcOaaW6ml6S/DuO2bFHFQgoLpFrJJSPSXOpXawSywW4shLGkTjx5GVp4ng1Y1uSwuZuDiVD7qBZu1C6Lb5ky9B9RFDQ9EEVnJ7WvDqJL6SlsSMidxapc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k8bsKCJl; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772801061; x=1804337061;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Tq1d43LGzegHgS7nbs7ynJ8NqJPbG38gDZGWn7nBmhU=;
+  b=k8bsKCJlcHdl38VS0SQaNeWvdFRSVfeCNuSYUPfyF/wMb7ng5JB3pguW
+   /XkgmFgWLPtWQ6PjdG4VFrec2ZoY3TVKo5z0cVJXY/vV00AWniEFdcodN
+   EiR51z1Llz1J22EKevkwph14FM9QCdieMtvBXZ7rfyHfOvmjyoO7gM7ro
+   i+z+0aGV+FQ+OIPTC691b9dN//0WWZKjpha8sYxbwJGBkpp9wJWM9pCvT
+   ReVd4Zq+6Ro6hJiM7vPAaVLvjJuUNtKmcsU2oYNb1L6S5UM0+p6hiYT4S
+   NqPhH5JtQ1Uk+xfmv1Z/d22AS8osey84VTfTLvTPeiSp86+uP/tFzdWR7
+   w==;
+X-CSE-ConnectionGUID: bR/AIwS/RXuSxBzaw/dLxg==
+X-CSE-MsgGUID: UhIU8ftGRByCb/WHpJxFgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77777580"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="77777580"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 04:44:20 -0800
+X-CSE-ConnectionGUID: OtofVhFTTyOSIeT4q7K2KA==
+X-CSE-MsgGUID: MGdmFMJNQ6aArM44PPNKoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="223123793"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.235])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 04:44:16 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 6 Mar 2026 14:44:12 +0200 (EET)
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+cc: Linux ACPI <linux-acpi@vger.kernel.org>, 
+    LKML <linux-kernel@vger.kernel.org>, Hans de Goede <hansg@kernel.org>, 
+    platform-driver-x86@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+    Alex Deucher <alexander.deucher@amd.com>, 
+    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>
+Subject: Re: [PATCH v1 9/9] ACPI: AC: Define ACPI_AC_CLASS in one place
+In-Reply-To: <2787819.X9hSmTKtgW@rafael.j.wysocki>
+Message-ID: <ba409fad-7b2e-6fb1-eeee-8d9cacf4cb74@linux.intel.com>
+References: <4505861.ejJDZkT8p0@rafael.j.wysocki> <2787819.X9hSmTKtgW@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: video: Don't allow MFD devices to probe
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: mario.limonciello@amd.com, W_Armin@gmx.de,
- Pratap Nirujogi <pnirujog@amd.com>, rafael.j.wysocki@intel.com,
- linux-acpi@vger.kernel.org
-References: <20260306025144.604062-1-superm1@kernel.org>
- <CAJZ5v0hVm8Ceut_H74LOU7bHuzWCJERAtQ44q5VT4FY9-BwsNw@mail.gmail.com>
- <CAJZ5v0ihj+DARV3P52LMOn9U+bqwVW=2fQ_QtDsjeVZkR9hFmQ@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAJZ5v0ihj+DARV3P52LMOn9U+bqwVW=2fQ_QtDsjeVZkR9hFmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 101BD220F87
+Content-Type: multipart/mixed; boundary="8323328-151852091-1772801052=:1000"
+X-Rspamd-Queue-Id: 77E03221115
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21488-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,gmx.de,intel.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21489-lists,linux-acpi=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[superm1@kernel.org,linux-acpi@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323328-151852091-1772801052=:1000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On 3/6/26 6:17 AM, Rafael J. Wysocki wrote:
-> On Fri, Mar 6, 2026 at 11:50 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
->>
->> On Fri, Mar 6, 2026 at 3:51 AM Mario Limonciello (AMD)
->> <superm1@kernel.org> wrote:
->>>
->>> After ACPI video was converted into a platform device in
->>> commit 02c057ddefef5 ("ACPI: video: Convert the driver to a platform one")
->>> other devices that are MFD children of LNXVIDEO are being probed.
->>> This isn't intended.
->>>
->>> During probe detect MFD cells and reject them.
->>>
->>> Fixes: 02c057ddefef5 ("ACPI: video: Convert the driver to a platform one")
->>> Reported-by: Pratap Nirujogi <pnirujog@amd.com>
->>> Closes: https://lore.kernel.org/regressions/007e3390-6b2b-457e-83c7-c794c5952018@amd.com/
->>
->> The link is broken, so I can't see what is really happening, but my
->> guess is that MFD devices are created under the video bus device and
->> they get the same device ID (confusingly enough).
+On Thu, 5 Mar 2026, Rafael J. Wysocki wrote:
 
-Hmm, I just double checked the link and it worked for me.
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> The ACPI_AC_CLASS symbol is defined in several places in the same way
+> which is rather unfortunate.
+>=20
+> Instead, define it in one common header file (acpi_bus.h) that is
+> already included by all of its users.
 
-But you are on the To: list of that thread also.
+It's a bit misleading to say it like that as acpi_bus.h is included only=20
+through another include (at least acpi/acpi.h) for most of the=20
+cases.
 
->>
->>> Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
->>> ---
->>>   drivers/acpi/acpi_video.c | 4 ++++
->>>   1 file changed, 4 insertions(+)
->>>
->>> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
->>> index 3fa28f1abca38..2cb526775ac47 100644
->>> --- a/drivers/acpi/acpi_video.c
->>> +++ b/drivers/acpi/acpi_video.c
->>> @@ -14,6 +14,7 @@
->>>   #include <linux/init.h>
->>>   #include <linux/types.h>
->>>   #include <linux/list.h>
->>> +#include <linux/mfd/core.h>
->>>   #include <linux/mutex.h>
->>>   #include <linux/input.h>
->>>   #include <linux/backlight.h>
->>> @@ -1988,6 +1989,9 @@ static int acpi_video_bus_probe(struct platform_device *pdev)
->>>          int error;
->>>          acpi_status status;
->>>
->>> +       if (mfd_get_cell(pdev))
->>> +               return -ENODEV;
->>
->> If the above is the case, I'd prefer this check
->>
->>          if (!device->pnp.type.backlight)
->>
->> which should also work, but is more general.
-> 
-> Well, this will not work if the ACPI companion is shared between
-> multiple devices.
-> 
-> However, adding an MFD check here is a "works for me" change rather.
-> 
-> I think what needs to be done is to extend the duplication check (see
-> my patch from yesterday at
-> https://lore.kernel.org/linux-acpi/5663583.Sb9uPGUboI@rafael.j.wysocki/)
-> to detect the cases when another platform device (not necessarily a
-> child of the same parent) sharing the same ACPI companion is probed.
-> 
+Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 
-Generally makes sense to me.  But in this particular case it shouldn't 
-be a FW_BUG.
+--=20
+ i.
 
-Do you want to roll this in your series?  Or would you prefer one of us 
-to send a follow up patch?
+> No intentional functional impact.
+>=20
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/ac.c                         |    1 -
+>  drivers/acpi/sbs.c                        |    1 -
+>  drivers/gpu/drm/amd/include/amd_acpi.h    |    2 --
+>  drivers/gpu/drm/radeon/radeon_acpi.c      |    2 --
+>  drivers/platform/x86/hp/hp-wmi.c          |    2 --
+>  drivers/platform/x86/lenovo/wmi-capdata.c |    1 -
+>  include/acpi/acpi_bus.h                   |    2 ++
+>  7 files changed, 2 insertions(+), 9 deletions(-)
+>=20
+> --- a/drivers/acpi/ac.c
+> +++ b/drivers/acpi/ac.c
+> @@ -21,7 +21,6 @@
+>  #include <linux/acpi.h>
+>  #include <acpi/battery.h>
+> =20
+> -#define ACPI_AC_CLASS=09=09=09"ac_adapter"
+>  #define ACPI_AC_FILE_STATE=09=09"state"
+>  #define ACPI_AC_NOTIFY_STATUS=09=090x80
+>  #define ACPI_AC_STATUS_OFFLINE=09=090x00
+> --- a/drivers/acpi/sbs.c
+> +++ b/drivers/acpi/sbs.c
+> @@ -26,7 +26,6 @@
+> =20
+>  #include "sbshc.h"
+> =20
+> -#define ACPI_AC_CLASS=09=09=09"ac_adapter"
+>  #define ACPI_SBS_DEVICE_NAME=09=09"Smart Battery System"
+>  #define ACPI_BATTERY_DIR_NAME=09=09"BAT%i"
+>  #define ACPI_AC_DIR_NAME=09=09"AC0"
+> --- a/drivers/gpu/drm/amd/include/amd_acpi.h
+> +++ b/drivers/gpu/drm/amd/include/amd_acpi.h
+> @@ -26,8 +26,6 @@
+> =20
+>  #include <linux/types.h>
+> =20
+> -#define ACPI_AC_CLASS           "ac_adapter"
+> -
+>  struct atif_verify_interface {
+>  =09u16 size;=09=09/* structure size in bytes (includes size field) */
+>  =09u16 version;=09=09/* version */
+> --- a/drivers/gpu/drm/radeon/radeon_acpi.c
+> +++ b/drivers/gpu/drm/radeon/radeon_acpi.c
+> @@ -44,8 +44,6 @@ bool radeon_atpx_dgpu_req_power_for_disp
+>  static inline bool radeon_atpx_dgpu_req_power_for_displays(void) { retur=
+n false; }
+>  #endif
+> =20
+> -#define ACPI_AC_CLASS           "ac_adapter"
+> -
+>  struct atif_verify_interface {
+>  =09u16 size;=09=09/* structure size in bytes (includes size field) */
+>  =09u16 version;=09=09/* version */
+> --- a/drivers/platform/x86/hp/hp-wmi.c
+> +++ b/drivers/platform/x86/hp/hp-wmi.c
+> @@ -58,8 +58,6 @@ enum hp_ec_offsets {
+>  #define HP_POWER_LIMIT_DEFAULT=09 0x00
+>  #define HP_POWER_LIMIT_NO_CHANGE 0xFF
+> =20
+> -#define ACPI_AC_CLASS "ac_adapter"
+> -
+>  #define zero_if_sup(tmp) (zero_insize_support?0:sizeof(tmp)) // use when=
+ zero insize is required
+> =20
+>  enum hp_thermal_profile_omen_v0 {
+> --- a/drivers/platform/x86/lenovo/wmi-capdata.c
+> +++ b/drivers/platform/x86/lenovo/wmi-capdata.c
+> @@ -53,7 +53,6 @@
+>  #define LENOVO_CAPABILITY_DATA_01_GUID "7A8F5407-CB67-4D6E-B547-39B3BE01=
+8154"
+>  #define LENOVO_FAN_TEST_DATA_GUID "B642801B-3D21-45DE-90AE-6E86F164FB21"
+> =20
+> -#define ACPI_AC_CLASS "ac_adapter"
+>  #define ACPI_AC_NOTIFY_STATUS 0x80
+> =20
+>  #define LWMI_FEATURE_ID_FAN_TEST 0x05
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -613,6 +613,8 @@ struct acpi_bus_event {
+>  =09u32 data;
+>  };
+> =20
+> +#define ACPI_AC_CLASS=09"ac_adapter"
+> +
+>  extern struct kobject *acpi_kobj;
+>  extern int acpi_bus_generate_netlink_event(const char*, const char*, u8,=
+ int);
+>  void acpi_bus_private_data_handler(acpi_handle, void *);
 
+--8323328-151852091-1772801052=:1000--
 
