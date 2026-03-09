@@ -1,207 +1,125 @@
-Return-Path: <linux-acpi+bounces-21566-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21567-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AfJNEwMr2lzMQIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21566-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 19:07:08 +0100
+	id SKpdI/0Xr2nHNgIAu9opvQ
+	(envelope-from <linux-acpi+bounces-21567-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 19:57:01 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CB623E388
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 19:07:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC3B23EF58
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 19:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2A773068A1E
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 18:01:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3725830180AF
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 18:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B1E41C2EB;
-	Mon,  9 Mar 2026 17:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CE636165F;
+	Mon,  9 Mar 2026 18:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQ32ADvb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EB388eVL"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D589E41C2E2;
-	Mon,  9 Mar 2026 17:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF24727467F
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 18:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773079055; cv=none; b=YIOpOYJjbBlieke7qTNW/vAXD3v/2B5UOK5cJ9KhkCMRQRPyev01jHPyr9hNt+Ew00RrmU9Vx2TDvl4Rk8r6QSOuDqPwikoc9XdSCBklZOCBZwto4BYpIK8CkDo8D3bTJ8Vh8lv3ad211/VeXUFAgUgi/pDHs1gwCtuLmp3jzOk=
+	t=1773082454; cv=none; b=IhM2OyzgmKJIzWFwZPjYV1C/58vy9IR5NidmuhyPkesr4JyHh25+uRtCr/pB8q1fjocsfZLLmR6OzKJhk69UhtMV3P5bhKS0blblODgF4Kp1lIcWYG5ebmvOcJ/hwo6S3GAJhpIAHI/XU2elmIwhQRtOdr2Z8PSjZVBIKjpzD9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773079055; c=relaxed/simple;
-	bh=umRBIgezxy/dOmobJ4s+VmhAY+beHNIpBO1wRh2/qIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZVY4lwcbrPyVHtrkryWJvkLa+JcXdF70OuWcDi848V4vcem2DtAvpUYqBXyJt0t+6BOmzleO+l23OLcx55XQBVuFc804Qq7yRfKbUiXPzdKhIFoPE2jEqmEvcK+dUlK122z/wZVWQiwNgQStvN+47AuZig5V9gxu1zsCCoLLdmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ32ADvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CFBC4CEF7;
-	Mon,  9 Mar 2026 17:57:35 +0000 (UTC)
+	s=arc-20240116; t=1773082454; c=relaxed/simple;
+	bh=3Y4zutod5x/Bn7XxYias+h3PaC3h123Q65BXDeLPTMc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zfb9zDmG82xpgyiXwlrkYJ8IE57tY8c6AG85agzpv0AWfV6AplyqoAo7SRD3vKBlgrOkSoQuQYjSlyKl/jULc88BcG71TeQ+jLe4K3JGwonoFq2AHoc1bkQ9JQGCCvP4DLWJZNXvHYJaOhVIKr7iW9rBCYRMxL6EZgmfIKxb7zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EB388eVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E919C4CEF7
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 18:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773079055;
-	bh=umRBIgezxy/dOmobJ4s+VmhAY+beHNIpBO1wRh2/qIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VQ32ADvbfD8iXzwmmwiwU2Ui8jZLQQH+l6LYrom56+g7S04WbCyAnYohKGaSSUOmC
-	 MSSR3B5KEwOtM1Yh/X71U+8lF3phb8uo5L182+r0/Ri1G0tp1uST/I+4TIA66IePu7
-	 dd6iGq5iKJoz8sv36dOfoMLXpdUEjUlqOYBimR0bix5sHkNWoBtmyZrR3EWVKu6Lh5
-	 17kKtJ1CXfPIWsJlzO/yZNVc9z+Phvj/TE3bWOqPEE8JnBx3PPChlKY+ppKSi2rSJO
-	 YfaQJbHxeFttKUY3sVC00sHrNAdWJdA0IZBm8NGHF+hiXrOhUMEp6ajGu7Jci8T92o
-	 9wymE9A806tYw==
-Date: Mon, 9 Mar 2026 17:57:33 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>,
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ricardo Neri <ricardo.neri@intel.com>,
-	Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Subject: Re: [PATCH v8 09/10] x86/hyperv/vtl: Mark the wakeup mailbox page as
- private
-Message-ID: <20260309175733.GA3083831@liuwe-devbox-debian-v2.local>
-References: <20260107-rneri-wakeup-mailbox-v8-0-2f5b6785f2f5@linux.intel.com>
- <20260107-rneri-wakeup-mailbox-v8-9-2f5b6785f2f5@linux.intel.com>
+	s=k20201202; t=1773082454;
+	bh=3Y4zutod5x/Bn7XxYias+h3PaC3h123Q65BXDeLPTMc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EB388eVL15LAoYOBdrx1a5sybLbkwa3mw947FMQMT/tqycstzltd+BHB4p/7u4+Gh
+	 p3XmRIztPSHWFs08ahQGur06Fs6p+2/Pj8RGAPJJdzhcRQUS8MuKm7IDL/AW/7wquj
+	 7aF8XuoIyzuqtmC4MTEUU4RfcOat/X56zByBCKPCyHlawcH6RLNYk+9gyOyvDgMSwh
+	 exMSWTq53XPKW1IsoWHzeXOo+dt+CpTSSvSu29DU2WakHNX0zMjTshflfbybVFypXa
+	 ohDpyRSQXvloMhsUb8VsNhVM5nu6nTRbzXJyztAZDVJGeMrefJluhOM7wJM2PaEv4g
+	 QTtiEz0KeKafA==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d75371d873so984037a34.3
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2026 11:54:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUyek1Mq6Qb1B66qQzsciDKS+kz8mfHZtjkYCZUxBDAIQKZZKCT4xLyhQkl7RUotTuErkeWXtNxTTAt@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJnru4Sd1QzSvE+QSJqhEpV9sgNjN4NVbxq9WY7mezFtePx++m
+	nHNTdmCfJeCr+P4D/VtclWAbyULDVWwOGll8lNOU7qUyngbDIhm5zkKCkf2oZ535fagpfuYuIyH
+	MfUTdVrnRWrNc03e4CVGQwQFzPsA5/9c=
+X-Received: by 2002:a05:6808:6544:20b0:466:f3a2:dc37 with SMTP id
+ 5614622812f47-466f3a2dddcmr3254667b6e.30.1773082453425; Mon, 09 Mar 2026
+ 11:54:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107-rneri-wakeup-mailbox-v8-9-2f5b6785f2f5@linux.intel.com>
-X-Rspamd-Queue-Id: 64CB623E388
+References: <20260215002608.54934-1-contact@jingk.ai> <20260305213831.53985-1-contact@jingk.ai>
+ <20260306-fine-golden-koel-dccbc1@sudeepholla>
+In-Reply-To: <20260306-fine-golden-koel-dccbc1@sudeepholla>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 9 Mar 2026 19:54:01 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iTO7kpBLaue_gRpECu1DW_KcyYjTSrTFD_WzOVNQEuYQ@mail.gmail.com>
+X-Gm-Features: AaiRm52Z7jc4ywI3BivcmXq17Dd7bTD-ewyZwNNdJIhXtjfC9dNX_o0AjguhXIM
+Message-ID: <CAJZ5v0iTO7kpBLaue_gRpECu1DW_KcyYjTSrTFD_WzOVNQEuYQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: processor: idle: Add missing bounds check in flatten_lpi_states()
+To: Sudeep Holla <sudeep.holla@kernel.org>, Jingkai Tan <contact@jingk.ai>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: DDC3B23EF58
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21566-lists,linux-acpi=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,microsoft.com,outlook.com,linux.microsoft.com,vger.kernel.org,intel.com,linux.intel.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wei.liu@kernel.org,linux-acpi@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-acpi,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-21567-lists,linux-acpi=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,liuwe-devbox-debian-v2.local:mid]
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Dexuan, are you happy with the patch? You can also delegate to Saurabh
-if you think it's more appropriate. Thanks!
+On Fri, Mar 6, 2026 at 10:18=E2=80=AFAM Sudeep Holla <sudeep.holla@kernel.o=
+rg> wrote:
+>
+> On Thu, Mar 05, 2026 at 09:38:31PM +0000, Jingkai Tan wrote:
+> > The inner loop in flatten_lpi_states() that combines composite LPI
+> > states can increment flat_state_cnt multiple times within the loop.
+> >
+> > The condition that guards this (checks bounds against ACPI_PROCESSOR
+> > _MAX_POWER) occurs at the top of the outer loop. flat_state_cnt might
+> > exceed ACPI_PROCESSOR_MAX_POWER if it is incremented multiple times
+> > within the inner loop between outer loop iterations.
+> >
+> > Add a bounds check after the increment inside the inner loop so that
+> > it breaks out when flat_state_cnt reaches ACPI_PROCESSOR_MAX_POWER.
+> > The existing check in the outer loop will then handle the warning.
+> >
+>
+> Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
 
-On Wed, Jan 07, 2026 at 01:44:45PM -0800, Ricardo Neri wrote:
-> From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> 
-> The current code maps MMIO devices as shared (decrypted) by default in a
-> confidential computing VM.
-> 
-> In a TDX environment, secondary CPUs are booted using the Multiprocessor
-> Wakeup Structure defined in the ACPI specification. The virtual firmware
-> and the operating system function in the guest context, without
-> intervention from the VMM. Map the physical memory of the mailbox as
-> private. Use the is_private_mmio() callback.
-> 
-> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> ---
-> Changes in v8:
->  - Included linux/acpi.h to add missing definitions that caused build
->    breaks (kernel test robot)
-> 
-> Changes in v7:
->  - Dropped check for !CONFIG_X86_MAILBOX_WAKEUP. The symbol is no longer
->    valid and now we have a stub for !CONFIG_ACPI.
->  - Dropped Reviewed-by tags from Dexuan and Michael as this patch
->    changed.
-> 
-> Changes in v6:
->  - Fixed a compile error with !CONFIG_X86_MAILBOX_WAKEUP.
->  - Added Reviewed-by tag from Dexuan. Thanks!
-> 
-> Changes in v5:
->  - None
-> 
-> Changes in v4:
->  - Updated to use the renamed function acpi_get_mp_wakeup_mailbox_paddr().
->  - Added Reviewed-by tag from Michael. Thanks!
-> 
-> Changes in v3:
->  - Use the new helper function get_mp_wakeup_mailbox_paddr().
->  - Edited the commit message for clarity.
-> 
-> Changes in v2:
->  - Added the helper function within_page() to improve readability
->  - Override the is_private_mmio() callback when detecting a TDX
->    environment. The address of the mailbox is checked in
->    hv_is_private_mmio_tdx().
-> ---
->  arch/x86/hyperv/hv_vtl.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-> index 752101544663..2af825f7a447 100644
-> --- a/arch/x86/hyperv/hv_vtl.c
-> +++ b/arch/x86/hyperv/hv_vtl.c
-> @@ -6,6 +6,9 @@
->   *   Saurabh Sengar <ssengar@microsoft.com>
->   */
->  
-> +#include <linux/acpi.h>
-> +
-> +#include <asm/acpi.h>
->  #include <asm/apic.h>
->  #include <asm/boot.h>
->  #include <asm/desc.h>
-> @@ -59,6 +62,18 @@ static void  __noreturn hv_vtl_restart(char __maybe_unused *cmd)
->  	hv_vtl_emergency_restart();
->  }
->  
-> +static inline bool within_page(u64 addr, u64 start)
-> +{
-> +	return addr >= start && addr < (start + PAGE_SIZE);
-> +}
-> +
-> +static bool hv_vtl_is_private_mmio_tdx(u64 addr)
-> +{
-> +	u64 mb_addr = acpi_get_mp_wakeup_mailbox_paddr();
-> +
-> +	return mb_addr && within_page(addr, mb_addr);
-> +}
-> +
->  void __init hv_vtl_init_platform(void)
->  {
->  	/*
-> @@ -71,6 +86,8 @@ void __init hv_vtl_init_platform(void)
->  	/* There is no paravisor present if we are here. */
->  	if (hv_isolation_type_tdx()) {
->  		x86_init.resources.realmode_limit = SZ_4G;
-> +		x86_platform.hyper.is_private_mmio = hv_vtl_is_private_mmio_tdx;
-> +
->  	} else {
->  		x86_platform.realmode_reserve = x86_init_noop;
->  		x86_platform.realmode_init = x86_init_noop;
-> 
-> -- 
-> 2.43.0
-> 
+Applied as 7.1 material, thanks!
 
