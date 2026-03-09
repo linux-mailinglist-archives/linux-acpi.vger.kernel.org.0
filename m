@@ -1,452 +1,331 @@
-Return-Path: <linux-acpi+bounces-21545-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21546-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLH4FhLLrmnEIwIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21545-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 14:28:50 +0100
+	id gGEaE13LrmnEIwIAu9opvQ
+	(envelope-from <linux-acpi+bounces-21546-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 14:30:05 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A7D239BE3
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 14:28:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D3F239C26
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 14:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE1BF3006506
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 13:28:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7C9B5301E995
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 13:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A105C3C1987;
-	Mon,  9 Mar 2026 13:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037EE3B8D53;
+	Mon,  9 Mar 2026 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FFD+a1v/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KeDmsxx+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0dcdh/U"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575253B8D46
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 13:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D399F3AE71C
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 13:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773062927; cv=none; b=jwvEvuxmDCpmXDbvfUgyAJMQj6WNwtpBfroDxJqZwPqY4jKbexuvKJ9nyruLIKC1RmtMxeI0e/dCtAOhJItXbqO/G6gpQPfJMh5eRb6uWetuMI6COso5zJFc5yvvLFGbl9LN0VuSIhkHYDv/Y0oF5ZIbOEjNraAYCavYLARyGkk=
+	t=1773063002; cv=none; b=tuAyRUiVAAJ8SPWvLkxw1m6q6aywhEHxRATqs8OKnqA4FcdJS8Me679m5+/tn4U9OXg+QoZWKnqlFhTpExb3eXofsW5Av6iLtE09ftugvsKXHhvwIBMBYLmiavZfwabxwrNADHVXqErlri6F1LOYngZfsYWlVScWnEWaxhng/ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773062927; c=relaxed/simple;
-	bh=jIr9e+Rhmr3XjUEnPVgpCtQXQAFbSJyH+evMq47zWrE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WZkN7mBGG5VddKQeCzSjye0Kz2t0UcVgmG4M3UJOvE5WvO1uLcDQgRTRb4QRaG7Q+URdcSM05r0exGsl8PcD6ZOvh4GbtjgsE30A0SySml4WzeidxfGc4JljMA8WTKZKuinRf13UVLtZfOWepfAY2r1HUbbH89CwK56FWr7iGlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FFD+a1v/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KeDmsxx+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629Cr8ru1077700
-	for <linux-acpi@vger.kernel.org>; Mon, 9 Mar 2026 13:28:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fnfugPh5B+LbknIiKQszfyisSyvY3KjBZqNzEIMIThI=; b=FFD+a1v/aR3KoRdc
-	Da2K/cGUixBiX2O9Xq4wA6Ke2vVqpLT97D6Hr0VJp1MHMTRGNVLc/t6Wfe3+J6E3
-	iLuPef+qjEvTGklfkpDVlW5KHbhydyOd4rwbf7rPH2KlZzuG2+NolXCKcL8W8m7D
-	1a2Da+Yk0nMmiwdLgTQ9+G46CV7VhCjp44JnK40gflSt0nuc2QowVq48oyJH3xCJ
-	tnBrbebSmWJ48oRIg1rWmQJy9b8R9SS4rXXbv6iSSPLxPcuc4LxvesYnl23rRPI4
-	kHDemytbuCYFUgwr8vQjrYOM99UifO1yBPnD5oOaYqB2uBVK6VF1CP2jOkrioo7O
-	7YF76Q==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4crcd8dg2f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2026 13:28:41 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35988b84201so3351874a91.3
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2026 06:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773062921; x=1773667721; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fnfugPh5B+LbknIiKQszfyisSyvY3KjBZqNzEIMIThI=;
-        b=KeDmsxx+dP5ZIZhWuwPYemC2b4o75/E0uovsRGP3/JqsxMW7K2M+HhimlQldMejtKr
-         14o4iMbDmC7nyvDwbYEWEqsRsdzkY7/VqUqqMf0vmZl2JyjkLobR7kUHVpPsZ/Xq8UG3
-         R28/g9ePYDTHFluElLt19/5amHpY0PjvPNIihvc/nO9W3IWcDY3OcuSKbAqwAj9leIxK
-         Nz4NXNY33UzUjKDvvszB3xq2qNFSAUMRL2RdH8KsyemT7HAL5qqbROHM2bRRrXc0X8ka
-         PV1fNCwWSTVxczxCgCvwkLhjmBArinlGPDtb3zUtxSzu53LljJ4rVgjEzaZXPrxWXXx/
-         zG2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773062921; x=1773667721;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fnfugPh5B+LbknIiKQszfyisSyvY3KjBZqNzEIMIThI=;
-        b=nh7l6zth/7Y4igZ+0GPWF8M8SG+n/zLDBIJ+lUhtuNXaEpaebI+Go88mdyGn2/oxxX
-         Tn7H6NjT90iA+jjQ8++MVwTHJH9vKW/tRP1U70rv163iXfrK4cN7C+nP0PwLBInsEAZ5
-         9Gz/d5Km5zjT6ZScpxJWy+4mnIqKwxnCCPHmeXmq0hSmaHAU6KMTZCrK4YMiL4kMrydu
-         1elEF6yTVODUWMsuhEn1vTe2IHx2TdOFBoRBVrEEO6zbZGaHz6aLhf646VkmkJ3O+JLF
-         MjIHMetjZYevSQ2j/EMs/OlpFRGqEyhhcP4kdozVCSCrkyvNgICgNB3zQV8iWJJTtK3w
-         zAWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXAFFjY1wS8Hx5zfISAWOfns5uqpfzNuVdGronxweDrBJF/vT0kZ5K3DOdGWq6puJ8NW30aAfxq2Wvp@vger.kernel.org
-X-Gm-Message-State: AOJu0YydPsPVijXzbiTOu6wlvimwRBMKQ00WUmqR/9MUTY1I35DRTtc/
-	/dLZlumyBmBInhrk3PX8nMLl9e1Woq7KaZbMRSCyTooLkozHUgoAQwTt6Vm965nKA0zy8OkJPfJ
-	74HbQeZoVOGkqE7g1CL/Wxc7tIh+Kz/mnwlX8sPvqcuAb48xpgBLO62lz5m5L6ny+
-X-Gm-Gg: ATEYQzy4ZJRfJRDA5+8df0gJpaPDNKdGS/7RV7mhiG/jueg2dllBZtRjDG5z82BCG7+
-	SY6SChMRWQk1NFm9ENE6v5uOgy2BwytOwOV/Sd+bi90+ujdRWvF3erJuYcKuiaGC+3sj+yR4nGa
-	v68eDqsZU3U5nCVHRsl9c+IkcV76dNSjoxhhQbHt/EnUUURsa5+mwemTlUd+PSMftCMX7/rSh1/
-	7YXdzMzIpNauLANU2aNWrbKal9W8YbPQ8qXYOH3H1G5NqRkrm24IGvmifqLOAbr48GUVUBD1L02
-	z0o2T20ZPtOeV4uec3M6E6/QIqRqphLFnFfyBwZ63THRhDAQg8ZtPgdEzNT5n+3T0D6pmAUYSVL
-	WoaKWSxeOwei25QOOvyYO6bw+ZZW4bIXXH0nY7HhfMeQXJpI1R7IfBE+pj+FrEUYHddAHUxzpg3
-	XDhQWcwTat
-X-Received: by 2002:a17:90a:fc45:b0:359:8d95:4a57 with SMTP id 98e67ed59e1d1-359be352188mr7707187a91.6.1773062920816;
-        Mon, 09 Mar 2026 06:28:40 -0700 (PDT)
-X-Received: by 2002:a17:90a:fc45:b0:359:8d95:4a57 with SMTP id 98e67ed59e1d1-359be352188mr7707158a91.6.1773062920025;
-        Mon, 09 Mar 2026 06:28:40 -0700 (PDT)
-Received: from ?IPV6:2406:b400:b5:b794:54ad:c739:c526:34f4? ([2406:b400:b5:b794:54ad:c739:c526:34f4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359bc9bd61fsm5864869a91.3.2026.03.09.06.28.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Mar 2026 06:28:39 -0700 (PDT)
-Message-ID: <edf7e7eb-8f02-4672-bc31-16e0a8fb9715@oss.qualcomm.com>
-Date: Mon, 9 Mar 2026 18:58:29 +0530
+	s=arc-20240116; t=1773063002; c=relaxed/simple;
+	bh=/UpE9x4v0F+CNAUIdLtq+XMTp7Kikc6ThmOhH3qFRSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B3ZXFcl9xC4u7M22if0n5oSZTAkncIpCAamRlwjZ2hzH0X4xzaNyiRW8+0fkmlSVPrZJhH7QnF0YcyuGAsYmA1DiOIZw9DWvSdVCVu75IyOX3NvXENwHlMBBw6ACT9X3TgcN8kGhBYPBA5YFDjJ/ZrsOQN9CQ8MIKiKPF1mBtyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0dcdh/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87314C2BC86
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 13:30:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773063002;
+	bh=/UpE9x4v0F+CNAUIdLtq+XMTp7Kikc6ThmOhH3qFRSU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=l0dcdh/UsmikM8MhM7nnR9sFSwzhhnHrl5yw3ultKfrvKHqgLOPe7/BW9hdQAoOpy
+	 2Jagib5TrJblrZ+MwYWhCwOlsEKFr5tiqHf2B4RgcY4YPgnSU/j6abw1W4rr/SrCtp
+	 JquQI0E00Vm3CrfF9UO5M2Kd06qBxfeXDtxYUe19rW3uccesip9eGAdc4f877FcIYk
+	 KuYxa3VsYebvqPtfvjUpPzU3BVa0qGHWfflqKVGSCTV4EblYvn7dvpEyvAon+iGnad
+	 wTLQTTJDsWmUXfDWDAe+5vZIZcWeI+3fLilJuh1zyd8f083A0ym0NZLLJIWixwJek/
+	 c9scmPFxwT/fQ==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b940f962a82so656059566b.2
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2026 06:30:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7ddE+yObVYZLNFJJFsrjiTwRheFzF4RqP5JgamTyHDMyQ5BkTb1jzxA2WYaPUSEfUiNJpW2Z5c48X@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRqyVFBHY1S0alpqt5qIq+r1j32L3BMHoKMqvWmqrfL/MDLjgz
+	grqoeShOX7y73OtB7J3inOH0iBefBXk8yQ+Jy19gnvj9s7iIkeMeRkaw3YV3JMlqTH4N5s3IH2e
+	V6uoDKcJZlIqc0NiVxxXoaceeRK9fNeA=
+X-Received: by 2002:a17:906:6a0c:b0:b8e:3d49:25db with SMTP id
+ a640c23a62f3a-b942e00db25mr648759166b.54.1773063000939; Mon, 09 Mar 2026
+ 06:30:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/16] Support Armv8 RAS Extensions for Kernel-first
- error handling
-To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
-        will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rafael@kernel.org, robin.murphy@arm.com,
-        mark.rutland@arm.com, tony.luck@intel.com, bp@alien8.de,
-        tglx@linutronix.de, peterz@infradead.org
-Cc: lenb@kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-edac@vger.kernel.org,
-        mchehab@kernel.org, xueshuai@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, oliver.yang@linux.alibaba.com
-References: <20260122094656.73399-1-tianruidong@linux.alibaba.com>
-Content-Language: en-US
-From: Umang Chheda <umang.chheda@oss.qualcomm.com>
-In-Reply-To: <20260122094656.73399-1-tianruidong@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: YIKZimPd_7t9BCjuF2aSRfdByiMHepzu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDEyMyBTYWx0ZWRfXyAANv6gTMXTL
- 8e5MOj4RX6D5ejoVBubSls1eTCl2W23VZ5oPwnwGYGIvtPemPRD7YSJg/s0axT7CttRr1OjCof3
- rWSU5E+GZFqfvXWxLFPOzDGJPg21k5P3SDa5kZJQQ6a7sV8gyiI6n3HMPVVsULzyyatsFfy4F6/
- 7obuiq840MRczPrOyEZuT8baYeeOhbhm3UsKqpba1XiJ4GuT5KsKqwww9pVUo9wr48YUj2Gv+Wn
- uS6A2vQdIfmi/isMKPIrGD+BtyRa9kLE2eLTTOV/C8Hvfhc7bAuUZyd/EVK1u4EtN9B5w7zFis9
- vx6AxgzfBf3xOaIYbovFAIxTC0Mr+DlRcp11qFSOhH9+qWvKlQMsY1tNm0fNrzVY/yFQZfjk2zh
- pilBMalt5YOLG9BggC1DKdnikNvJ5aO2gXfeeLhmYmH8i/u5BRRFPQ45IH1ZwAL6C4/f+cqpaEQ
- krGKE3UNCyUGSXI9GCA==
-X-Authority-Analysis: v=2.4 cv=O/w0fR9W c=1 sm=1 tr=0 ts=69aecb09 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=7CQSdrXTAAAA:8
- a=VwQbUJbxAAAA:8 a=zd2uoN0lAAAA:8 a=vzhER2c_AAAA:8 a=SRrdq9N9AAAA:8
- a=NEAV23lmAAAA:8 a=QyXUC8HyAAAA:8 a=cpMiU1yUC2MWLmdqKLoA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22 a=a-qgeE7W1pNrGK8U0ZQC:22
- a=0YTRHmU2iG2pZC6F1fw2:22
-X-Proofpoint-GUID: YIKZimPd_7t9BCjuF2aSRfdByiMHepzu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_03,2026-03-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1011 spamscore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090123
-X-Rspamd-Queue-Id: C3A7D239BE3
+References: <20260303003625.39035-1-fengchengwen@huawei.com>
+ <20260309041659.18815-1-fengchengwen@huawei.com> <20260309041659.18815-2-fengchengwen@huawei.com>
+In-Reply-To: <20260309041659.18815-2-fengchengwen@huawei.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 9 Mar 2026 21:29:50 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7Cy1OuReaoGotZvdvHWLic_ECESFVZgbvNpk2HVjPjuw@mail.gmail.com>
+X-Gm-Features: AaiRm53999Ro86GVlT52rErQab9_tcwK7Kxxf4dLpRSgjEOSn5mzv7jn4vq_ISk
+Message-ID: <CAAhV-H7Cy1OuReaoGotZvdvHWLic_ECESFVZgbvNpk2HVjPjuw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] ACPI: Rename get_acpi_id_for_cpu() to
+ acpi_get_cpu_acpi_id() on non-x86
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Sunil V L <sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>, 
+	linux-acpi@vger.kernel.org, wei.huang2@amd.com, Eric.VanTassell@amd.com, 
+	jonathan.cameron@huawei.com, wangzhou1@hisilicon.com, wanghuiqiang@huawei.com, 
+	liuyonglong@huawei.com, stable@vger.kernel.org, jeremy.linton@arm.com, 
+	sunilvl@oss.qualcomm.com, chenhuacai@loongson.cn, wangliupu@loongson.cn, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-perf-users@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E5D3F239C26
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	TAGGED_FROM(0.00)[bounces-21545-lists,linux-acpi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21546-lists,linux-acpi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,arm.com:url];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[umang.chheda@oss.qualcomm.com,linux-acpi@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.954];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,linux-acpi@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.957];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-Hello Ruidong Tain,
+Hi, Chengwen,
 
-On 1/22/2026 3:16 PM, Ruidong Tian wrote:
-> Motivation: Reliability in Modern Data Centers
-> =================================================
-> In modern data centers, proactive maintenance is essential for achieving high
-> service availability. The practice of using Corrected Errors (CE) to predict
-> impending Uncorrected Errors (UE) is already widely deployed at scale across
-> the industry, like Alibaba[2], Tencent[4], Intel[1], AMD[2]. By analyzing CE
-> telemetry, operators can identify failing hardware and perform migrations
-> before catastrophic failures occur.
+On Mon, Mar 9, 2026 at 12:17=E2=80=AFPM Chengwen Feng <fengchengwen@huawei.=
+com> wrote:
 >
-> Problem: Inefficient CE Collection on ARM
-> ==========================================
-> Currently, ARM-based systems primarily rely on "Firmware-First" error
-> handling (e.g., via GHES). This path is inherently heavy-weight. To avoid
-> significant performance overhead, firmware is often configured with high
-> thresholds—reporting to the OS only after thousands of CEs have occurred.
-> If the threshold is set lower, the high frequency of errors leads to
-> excessive and costly context switching between the OS and firmware.
-> Consequently, ARM platforms currently lack an efficient mechanism to collect
-> the granular CE data required for high-fidelity error prediction.
->
-> Solution: Kernel-First Handling via AEST
-> ===========================================
-> Other architectures have long utilized "Kernel-First" approaches for
-> efficient CE collection: Intel provides CMCI (Corrected Machine Check
-> Interrupt), and AMD has recently introduced similar CE interrupt support[5].
->
-> On the ARM architecture, hardware already provides the necessary RAS
-> Extensions[6], and the ACPI AEST specification[0] defines a standardized way for
-> the OS to discover these error source registers. This series implements
-> AEST support, enabling the kernel to:
->
->  - Discover error sources directly via ACPI tables.
->  - Handle CE notifications via direct interrupts.
->  - Bypass firmware overhead to collect every CE or use low-latency thresholds.
->
-> This implementation provides the missing link for efficient RAS telemetry
-> on ARM, bringing it to parity with other enterprise architectures.
+> To unify the CPU ACPI ID retrieval interface across architectures,
+> rename the existing get_acpi_id_for_cpu() function to
+> acpi_get_cpu_acpi_id() on arm64/riscv/loongarch platforms.
+Can we also rename cpu_acpi_id() to acpi_get_cpu_acpi_id() for x86?
 
-Thanks for posting this series enabling kernel-first handling for the Armv8 RAS extensions.
+Huacai
 
-We noticed the current implementation targets ACPI-based server platforms. For embedded/SoC systems, Device Tree is often the primary firmware description. 
-Do you have any plans to add DT-based support for the same flow? If not, do you see any blockers to extending this series to support DT 
-(e.g., DT bindings + discovery/registration path analogous to the ACPI plumbing) ? 
-If DT support is in-scope, We would be happy to align on the expected approach and help with review/development/testing for DT-based platforms.
-
-> Background and Maintenance
-> =============================
-> This series is based on Tyler Baicar's preliminary patches [7]. I attempted
-> to follow up with Tyler in 2022 [8] but received no reply. As he no longer
-> appears active on the mailing list, I have picked up this work, updated it
-> to align with the latest AEST v2.0 specification, and addressed pending
-> feedback to ensure this critical feature is integrated into the mainline.
 >
-> AEST Driver Architecture
-> ========================
+> This is a pure rename with no functional change, preparing for a
+> consistent ACPI Processor UID retrieval interface across all ACPI-enabled
+> platforms.
 >
-> The AEST driver is structured into three primary components:
->   - AEST device: Responsible for handling interrupts, managing the lifecycle
->                  of AEST nodes, and processing error records.
->   - AEST node: Corresponds directly to a RAS node in the hardware
->   - AEST record: Represents a set of RAS registers associated with a specific
->                  error source.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> ---
+>  arch/arm64/include/asm/acpi.h      |  4 ++--
+>  arch/loongarch/include/asm/acpi.h  |  2 +-
+>  arch/riscv/include/asm/acpi.h      |  2 +-
+>  arch/riscv/kernel/acpi_numa.c      |  2 +-
+>  drivers/acpi/pptt.c                | 16 ++++++++--------
+>  drivers/acpi/riscv/rhct.c          |  2 +-
+>  drivers/perf/arm_cspmu/arm_cspmu.c |  2 +-
+>  7 files changed, 15 insertions(+), 15 deletions(-)
 >
-> Comparison with x86 MCA:
+> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.=
+h
+> index c07a58b96329..202107aeb05b 100644
+> --- a/arch/arm64/include/asm/acpi.h
+> +++ b/arch/arm64/include/asm/acpi.h
+> @@ -114,7 +114,7 @@ static inline bool acpi_has_cpu_in_madt(void)
+>  }
 >
-> RAS record ≈ MCA bank.
-> RAS node ≈ A set of MCA banks + CMCI on a core.
+>  struct acpi_madt_generic_interrupt *acpi_cpu_get_madt_gicc(int cpu);
+> -static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+> +static inline u32 acpi_get_cpu_acpi_id(unsigned int cpu)
+>  {
+>         return  acpi_cpu_get_madt_gicc(cpu)->uid;
+>  }
+> @@ -125,7 +125,7 @@ static inline int get_cpu_for_acpi_id(u32 uid)
 >
-> The key difference lies in uncore handling: x86 typically maps uncore errors
-> (like those from a memory controller) into core-based MCA banks. In contrast,
-> ARM requires uncore components to provide their own standalone RAS nodes. When
-> a component requires multiple such nodes, they are grouped and managed as a
-> "RAS device" in AEST driver. 
+>         for (cpu =3D 0; cpu < nr_cpu_ids; cpu++)
+>                 if (acpi_cpu_get_madt_gicc(cpu) &&
+> -                   uid =3D=3D get_acpi_id_for_cpu(cpu))
+> +                   uid =3D=3D acpi_get_cpu_acpi_id(cpu))
+>                         return cpu;
 >
-> These components are organized hierarchically as follows:
+>         return -EINVAL;
+> diff --git a/arch/loongarch/include/asm/acpi.h b/arch/loongarch/include/a=
+sm/acpi.h
+> index 7376840fa9f7..89c6c8f52cc3 100644
+> --- a/arch/loongarch/include/asm/acpi.h
+> +++ b/arch/loongarch/include/asm/acpi.h
+> @@ -40,7 +40,7 @@ extern struct acpi_madt_core_pic acpi_core_pic[MAX_CORE=
+_PIC];
 >
->  ┌──────────────────────────────────────────────────┐
->  │             AEST Driver Device Management        │
->  │┌─────────────┐    ┌──────────┐     ┌───────────┐ │
->  ││ AEST Device ├─┬─►│AEST Node ├──┬─►│AEST Record│ │
->  │└─────────────┘ │  └──────────┘  │  └───────────┘ │
->  │                │       .        │  ┌───────────┐ │
->  │                │       .        ├─►│AEST Record│ │
->  │                │       .        │  └───────────┘ │
->  │                │  ┌──────────┐  │        .       │
->  │                ├─►│AEST Node │  │        .       │
->  │                │  └──────────┘  │        .       │
->  │                │                │  ┌───────────┐ │
->  │                │  ┌──────────┐  └─►│AEST Record│ │
->  │                └─►│AEST Node │     └───────────┘ │
->  │                   └──────────┘                   │
->  └──────────────────────────────────────────────────┘
+>  extern int __init parse_acpi_topology(void);
 >
-> AEST Interrupt Handle
-> =====================
+> -static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+> +static inline u32 acpi_get_cpu_acpi_id(unsigned int cpu)
+>  {
+>         return acpi_core_pic[cpu_logical_map(cpu)].processor_id;
+>  }
+> diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.=
+h
+> index 6e13695120bc..1d23681b61b5 100644
+> --- a/arch/riscv/include/asm/acpi.h
+> +++ b/arch/riscv/include/asm/acpi.h
+> @@ -61,7 +61,7 @@ static inline void arch_fix_phys_package_id(int num, u3=
+2 slot) { }
 >
-> Upon an AEST interrupt, the driver performs the following sequence:
-> 1. The AEST device iterates through all registered AEST nodes to identify the
->    specific node(s) and record(s) that reported an error.
-> 2. Each node typically contains two types of records:
->       - report record: Errors can be located efficiently through a bitmap
->                        in the `ERRGSR` register.
->       - poll record: The node must individually poll all records to determine
->                      if an error has occurred.
-> 3. process record:
->       - if error is corrected, The CE threshold is reset, and the error event
->         is logged.
->       - if error is defered, Relevant registers are dumped, and
->         `memory_failure()` is invoked.
->       - if error is uncorrected, panic, While UEs typically trigger an
->         exception rather than an interrupt, if detected, the system will panic.
-> 4. decode record: The AEST driver notifies other relevant drivers, such as
->    EDAC, to further decode the reported RAS register information.
+>  void acpi_init_rintc_map(void);
+>  struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> -static inline u32 get_acpi_id_for_cpu(int cpu)
+> +static inline u32 acpi_get_cpu_acpi_id(int cpu)
+>  {
+>         return acpi_cpu_get_madt_rintc(cpu)->uid;
+>  }
+> diff --git a/arch/riscv/kernel/acpi_numa.c b/arch/riscv/kernel/acpi_numa.=
+c
+> index 130769e3a99c..c2eb4824d0f7 100644
+> --- a/arch/riscv/kernel/acpi_numa.c
+> +++ b/arch/riscv/kernel/acpi_numa.c
+> @@ -40,7 +40,7 @@ static inline int get_cpu_for_acpi_id(u32 uid)
+>         int cpu;
 >
-> Testing
-> ===================
-> I have tested this series on THead Yitian710 SOC with customized BIOS. Someone
-> can also use QEMU[9] for preliminary driver testing.
+>         for (cpu =3D 0; cpu < nr_cpu_ids; cpu++)
+> -               if (uid =3D=3D get_acpi_id_for_cpu(cpu))
+> +               if (uid =3D=3D acpi_get_cpu_acpi_id(cpu))
+>                         return cpu;
 >
-> 1. Boot Qemu
+>         return -EINVAL;
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index de5f8c018333..c1a8fba4c2b2 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -459,7 +459,7 @@ static void cache_setup_acpi_cpu(struct acpi_table_he=
+ader *table,
+>  {
+>         struct acpi_pptt_cache *found_cache;
+>         struct cpu_cacheinfo *this_cpu_ci =3D get_cpu_cacheinfo(cpu);
+> -       u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>         struct cacheinfo *this_leaf;
+>         unsigned int index =3D 0;
+>         struct acpi_pptt_processor *cpu_node =3D NULL;
+> @@ -546,7 +546,7 @@ static int topology_get_acpi_cpu_tag(struct acpi_tabl=
+e_header *table,
+>                                      unsigned int cpu, int level, int fla=
+g)
+>  {
+>         struct acpi_pptt_processor *cpu_node;
+> -       u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
 >
-> qemu-system-aarch64 -smp 4 -m 32G \
->   -cpu host --enable-kvm -machine virt,gic-version=3 \
->   -kernel Image -initrd initrd.cpio.gz \
->   -device virtio-net-pci,netdev=t0 -netdev user,id=t0 \
->   -bios /usr/share/edk2/aarch64/QEMU_EFI.fd  \
->   -append "rdinit=/sbin/init earlycon verbose debug console=ttyAMA0 aest.dyndbg='+pt'" \
->   -nographic -d guest_errors -D qemu.log
+>         cpu_node =3D acpi_find_processor_node(table, acpi_cpu_id);
+>         if (cpu_node) {
+> @@ -622,7 +622,7 @@ static int find_acpi_cpu_topology_tag(unsigned int cp=
+u, int level, int flag)
+>  static int check_acpi_cpu_flag(unsigned int cpu, int rev, u32 flag)
+>  {
+>         struct acpi_table_header *table;
+> -       u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>         struct acpi_pptt_processor *cpu_node =3D NULL;
+>         int ret =3D -ENOENT;
 >
-> 2. inject error
-> devmem 0x90d0808 l 0xc4800390
+> @@ -671,7 +671,7 @@ int acpi_get_cache_info(unsigned int cpu, unsigned in=
+t *levels,
 >
-> 2.1 Memory error
-> [   64.959849] AEST: {1}[Hardware Error]: Hardware error from AEST memory.90d0000
-> [   64.959852] AEST: {1}[Hardware Error]:  Error from memory at SRAT proximity domain 0x0
-> [   64.959855] AEST: {1}[Hardware Error]:   ERR0FR: 0x40000080044081
-> [   64.959858] AEST: {1}[Hardware Error]:   ERR0CTRL: 0x108
-> [   64.959859] AEST: {1}[Hardware Error]:   ERR0STATUS: 0xc4800390
-> [   64.959860] AEST: {1}[Hardware Error]:   ERR0ADDR: 0x8400000043344521
-> [   64.959861] AEST: {1}[Hardware Error]:   ERR0MISC0: 0x7fff00000000
-> [   64.959861] AEST: {1}[Hardware Error]:   ERR0MISC1: 0x0
-> [   64.959862] AEST: {1}[Hardware Error]:   ERR0MISC2: 0x0
-> [   64.959863] AEST: {1}[Hardware Error]:   ERR0MISC3: 0x0
-> [   64.959873] Memory failure: 0x43344: recovery action for free buddy page: Recovered
+>         pr_debug("Cache Setup: find cache levels for CPU=3D%d\n", cpu);
 >
-> 2.2 CMN error
-> [  132.044283] AEST: {2}[Hardware Error]: Hardware error from AEST XP
-> [  132.044286] AEST: {2}[Hardware Error]:  Error from vendor hid ARMHC700 uid 0x0
-> [  132.044288] AEST: {2}[Hardware Error]:   ERR0FR: 0x48a5
-> [  132.044290] AEST: {2}[Hardware Error]:   ERR0CTRL: 0x108
-> [  132.044292] AEST: {2}[Hardware Error]:   ERR0STATUS: 0xc4800390
-> [  132.044293] AEST: {2}[Hardware Error]:   ERR0ADDR: 0x8400000043344521
-> [  132.044295] AEST: {2}[Hardware Error]:   ERR0MISC0: 0x0
-> [  132.044296] AEST: {2}[Hardware Error]:   ERR0MISC1: 0x0
-> [  132.044298] AEST: {2}[Hardware Error]:   ERR0MISC2: 0x0
-> [  132.044299] AEST: {2}[Hardware Error]:   ERR0MISC3: 0x0
-> [  132.044302] Memory failure: 0x43344: recovery action for already poisoned page: Failed
+> -       acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>         cpu_node =3D acpi_find_processor_node(table, acpi_cpu_id);
+>         if (!cpu_node)
+>                 return -ENOENT;
+> @@ -797,7 +797,7 @@ int find_acpi_cpu_topology_cluster(unsigned int cpu)
+>         if (!table)
+>                 return -ENOENT;
 >
-> [0]: https://developer.arm.com/documentation/den0085/0200/
-> [1]: Intel: Predicting Uncorrectable Memory Errors from the Correctable Error History
-> [2]: Alibaba. Predicting DRAM-Caused Risky VMs in Large-Scale Clouds. Published in HPCA2025
-> [3]: AMD: Physics-informed machinelearning for dram error modeling
-> [4]: Tencent: Predicting uncorrectablememory errors for proactive replacement: An empirical study on large-scale field data
-> [5]: https://lore.kernel.org/all/20251104-wip-mca-updates-v8-4-66c8eacf67b9@amd.com/
-> [6]: https://developer.arm.com/documentation/ihi0100/
-> [7]: https://lore.kernel.org/all/20211124170708.3874-1-baicar@os.amperecomputing.com/
-> [8]: https://lore.kernel.org/all/b365db02-b28c-1b22-2e87-c011cef848e2@linux.alibaba.com/
-> [9]: https://github.com/winterddd/qemu/tree/error_record
+> -       acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>         cpu_node =3D acpi_find_processor_node(table, acpi_cpu_id);
+>         if (!cpu_node || !cpu_node->parent)
+>                 return -ENOENT;
+> @@ -872,7 +872,7 @@ static void acpi_pptt_get_child_cpus(struct acpi_tabl=
+e_header *table_hdr,
+>         cpumask_clear(cpus);
 >
-> Change from V5:
-> https://lore.kernel.org/all/20251230090945.43969-1-tianruidong@linux.alibaba.com/
-> 1. Based on the feedback from Borislav Petkov, I've dropped the idea of a 
->    unified address translation interface across ARM and AMD.
+>         for_each_possible_cpu(cpu) {
+> -               acpi_id =3D get_acpi_id_for_cpu(cpu);
+> +               acpi_id =3D acpi_get_cpu_acpi_id(cpu);
+>                 cpu_node =3D acpi_find_processor_node(table_hdr, acpi_id)=
+;
 >
-> Change from V4:
-> https://lore.kernel.org/all/20251222094351.38792-1-tianruidong@linux.alibaba.com/
-> 1. Fix build warning in 0010 and 0014 report by kernel test robot:
->     https://lore.kernel.org/all/202512230122.CfXZcF76-lkp@intel.com/
->     https://lore.kernel.org/all/202512230007.Vs6IvFVD-lkp@intel.com/
-> 2. Dropped the extra patch(0014) that was mistakenly included in v4.
+>                 while (cpu_node) {
+> @@ -966,7 +966,7 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>         for_each_possible_cpu(cpu) {
+>                 bool empty;
+>                 int level =3D 1;
+> -               u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +               u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>                 struct acpi_pptt_cache *cache;
+>                 struct acpi_pptt_processor *cpu_node;
 >
-> Change from V3:
-> https://lore.kernel.org/all/20250115084228.107573-1-tianruidong@linux.alibaba.com/
-> 1. Add vendor AEST node framework and support CMN700
-> 2. Borislav Petkov
->     - Split into multiple smaller patches for easier review.
->     - refined the English in the cover letter for better flow.
-> 3. Accept Tomohiro Misono's comment
+> @@ -1030,7 +1030,7 @@ int acpi_pptt_get_cpumask_from_cache_id(u32 cache_i=
+d, cpumask_t *cpus)
+>         for_each_possible_cpu(cpu) {
+>                 bool empty;
+>                 int level =3D 1;
+> -               u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +               u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
+>                 struct acpi_pptt_cache *cache;
+>                 struct acpi_pptt_processor *cpu_node;
 >
-> Change from V2:
-> https://lore.kernel.org/all/20240321025317.114621-1-tianruidong@linux.alibaba.com/
-> 1. Tomohiro Misono
->     - dump register before panic
-> 2. Baolin Wang & Shuai Xue: accept all comment.
-> 3. Support AEST V2.
+> diff --git a/drivers/acpi/riscv/rhct.c b/drivers/acpi/riscv/rhct.c
+> index caa2c16e1697..c15ce8c13136 100644
+> --- a/drivers/acpi/riscv/rhct.c
+> +++ b/drivers/acpi/riscv/rhct.c
+> @@ -44,7 +44,7 @@ int acpi_get_riscv_isa(struct acpi_table_header *table,=
+ unsigned int cpu, const
+>         struct acpi_rhct_isa_string *isa_node;
+>         struct acpi_table_rhct *rhct;
+>         u32 *hart_info_node_offset;
+> -       u32 acpi_cpu_id =3D get_acpi_id_for_cpu(cpu);
+> +       u32 acpi_cpu_id =3D acpi_get_cpu_acpi_id(cpu);
 >
-> Change from V1:
-> https://lore.kernel.org/all/20240304111517.33001-1-tianruidong@linux.alibaba.com/
-> 1. Marc Zyngier
->   - Use readq/writeq_relaxed instead of readq/writeq for MMIO address.
->   - Add sync for system register operation.
->   - Use irq_is_percpu_devid() helper to identify a per-CPU interrupt.
->   - Other fix.
-> 2. Set RAS CE threshold in AEST driver.
-> 3. Enable RAS interrupt explicitly in driver.
-> 4. UER and UEO trigger memory_failure other than panic.
+>         BUG_ON(acpi_disabled);
 >
-> Ruidong Tian (16):
->   ACPI/AEST: Parse the AEST table
->   ras: AEST: Add probe/remove for AEST driver
->   ras: AEST: support different group format
->   ras: AEST: Unify the read/write interface for system and MMIO register
->   ras: AEST: Probe RAS system architecture version
->   ras: AEST: Support RAS Common Fault Injection Model Extension
->   ras: AEST: Support CE threshold of error record
->   ras: AEST: Enable and register IRQs
->   ras: AEST: Add cpuhp callback
->   ras: AEST: Introduce AEST driver sysfs interface
->   ras: AEST: Add error count tracking and debugfs interface
->   ras: AEST: Allow configuring CE threshold via debugfs
->   ras: AEST: Introduce AEST inject interface to test AEST driver
->   ras: AEST: Add framework to process AEST vendor node
->   ras: AEST: support vendor node CMN700
->   trace, ras: add ARM RAS extension trace event
+> diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/=
+arm_cspmu.c
+> index 34430b68f602..506b661c60fd 100644
+> --- a/drivers/perf/arm_cspmu/arm_cspmu.c
+> +++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+> @@ -1115,7 +1115,7 @@ static int arm_cspmu_acpi_get_cpus(struct arm_cspmu=
+ *cspmu)
+>         if (affinity_flag =3D=3D ACPI_APMT_FLAGS_AFFINITY_PROC) {
+>                 for_each_possible_cpu(cpu) {
+>                         if (apmt_node->proc_affinity =3D=3D
+> -                           get_acpi_id_for_cpu(cpu)) {
+> +                           acpi_get_cpu_acpi_id(cpu)) {
+>                                 cpumask_set_cpu(cpu, &cspmu->associated_c=
+pus);
+>                                 break;
+>                         }
+> --
+> 2.17.1
 >
->  Documentation/ABI/testing/debugfs-aest |   99 +++
->  MAINTAINERS                            |   11 +
->  arch/arm64/include/asm/arm-cmn.h       |   47 ++
->  arch/arm64/include/asm/ras.h           |   95 +++
->  drivers/acpi/arm64/Kconfig             |   11 +
->  drivers/acpi/arm64/Makefile            |    1 +
->  drivers/acpi/arm64/aest.c              |  311 +++++++
->  drivers/perf/arm-cmn.c                 |   37 +-
->  drivers/ras/Kconfig                    |    1 +
->  drivers/ras/Makefile                   |    1 +
->  drivers/ras/aest/Kconfig               |   17 +
->  drivers/ras/aest/Makefile              |    8 +
->  drivers/ras/aest/aest-cmn.c            |  330 ++++++++
->  drivers/ras/aest/aest-core.c           | 1054 ++++++++++++++++++++++++
->  drivers/ras/aest/aest-inject.c         |  131 +++
->  drivers/ras/aest/aest-sysfs.c          |  228 +++++
->  drivers/ras/aest/aest.h                |  410 +++++++++
->  drivers/ras/ras.c                      |    3 +
->  include/linux/acpi_aest.h              |   75 ++
->  include/linux/cpuhotplug.h             |    1 +
->  include/linux/ras.h                    |    8 +
->  include/ras/ras_event.h                |   71 ++
->  22 files changed, 2914 insertions(+), 36 deletions(-)
->  create mode 100644 Documentation/ABI/testing/debugfs-aest
->  create mode 100644 arch/arm64/include/asm/arm-cmn.h
->  create mode 100644 arch/arm64/include/asm/ras.h
->  create mode 100644 drivers/acpi/arm64/aest.c
->  create mode 100644 drivers/ras/aest/Kconfig
->  create mode 100644 drivers/ras/aest/Makefile
->  create mode 100644 drivers/ras/aest/aest-cmn.c
->  create mode 100644 drivers/ras/aest/aest-core.c
->  create mode 100644 drivers/ras/aest/aest-inject.c
->  create mode 100644 drivers/ras/aest/aest-sysfs.c
->  create mode 100644 drivers/ras/aest/aest.h
->  create mode 100644 include/linux/acpi_aest.h
-
-
-Thanks,
-Umang
-
 
