@@ -1,198 +1,149 @@
-Return-Path: <linux-acpi+bounces-21516-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21517-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIgBA/L2rWnH+AEAu9opvQ
-	(envelope-from <linux-acpi+bounces-21516-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Sun, 08 Mar 2026 23:23:46 +0100
+	id oI6fHQYPrmn7/AEAu9opvQ
+	(envelope-from <linux-acpi+bounces-21517-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 01:06:30 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A96A2326C3
-	for <lists+linux-acpi@lfdr.de>; Sun, 08 Mar 2026 23:23:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3DA232D73
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 01:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C535C3011BF2
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Mar 2026 22:23:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BC43300613C
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 00:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B0F33345A;
-	Sun,  8 Mar 2026 22:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80ACB13AA2F;
+	Mon,  9 Mar 2026 00:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hTqknhCy"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="q5Mq8Zim"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932FA3254B3;
-	Sun,  8 Mar 2026 22:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369E886329
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 00:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773008610; cv=none; b=stEm8exYdo36K5FTiBEWyYqCpudpgjkZBHXRoC6QXlehoOsESwhCCb/UsvFawd0mHinyAGjpoimxaf0k6CkePGc2IshxOLsQ+RlSI5vS7OSWmvLgSPn4V77Wqwrg1HXdddrINfzyZDwZ+j1axdYOCcVE+DVKLLNzmZ6MmiKGoog=
+	t=1773014786; cv=none; b=T8vUKYlZlE1x5YPtWIjFEYS4M0ZefEHocKHQ9wq4WQmfUjsccDQR18SD/U9+287pB7uuQo7WqceGNCy4czI2S6/mwBtzaL/EZWaOb9CvEpt7taO1ziYk/r3Ry2/Hnwd9P5fkhvHRxhWMO+Vot0U3jY9qQTRWsSUl2opo2KWuShA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773008610; c=relaxed/simple;
-	bh=gnF//M08SIC7eL1RTK/Glm1RPsIHHM2SY6h/IvvpRAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tw7aR7seJvbIIrBb7ze7d+kG7Cme1QxqN+a4Pf7o6U+/Az/wMi/OdTxrJhtXC9jA76WUeip2IjrDObmcOAbLVeQiI3AIao1afp+2j08t0L8eLKAUS8YY9trOuQSgcE94Ov5XtVzobcM66gBSzBiZ++YHl4HvpIcFoxgW7hzbXLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hTqknhCy; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773008608; x=1804544608;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gnF//M08SIC7eL1RTK/Glm1RPsIHHM2SY6h/IvvpRAc=;
-  b=hTqknhCy1Fp0WFPPU/ehcuwQWJ9o0Jydp25CwVBF/q248mGNOr8VJllt
-   d5pQuJ6dLRL0aSXnLjZnoPaaW+qB7Ru4ADfx6RERGBBjMhepfWg5GyoJV
-   TNMnZWI1S9Zv0hm6z836O95W78kfcijYUdpJnUD3KwmNskETLilX+PPVO
-   Os06fnd/MNihZNmTe/+/y1zdqU6Gn6CeCM87OVaLJ9RL8yLjviFJ7znrc
-   1RBSHr3Kdw+Gu0boa5IkMqJR/7nJUG2KSwWpqWSQpuElcbSdPFRnGFWsV
-   PBo0UaitEHiA7Xck7dMMC4EXlfidbs6JCGdNXpzcmy/s3e8VEL/Tknqob
-   Q==;
-X-CSE-ConnectionGUID: TH04yyk6SUCusTdRXbjSQw==
-X-CSE-MsgGUID: 9dh+4zihSh6NeOyZLQQp3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84745098"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="84745098"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2026 15:23:27 -0700
-X-CSE-ConnectionGUID: HL2O/xKqQGOCA3X1NWtN9w==
-X-CSE-MsgGUID: AKTBekdyTgyIsRsACMUzow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="219699674"
-Received: from khuang2-desk.gar.corp.intel.com ([10.124.221.128])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2026 15:23:22 -0700
-From: Kai Huang <kai.huang@intel.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	alison.schofield@intel.com
-Cc: akpm@linux-foundation.org,
-	nunodasneves@linux.microsoft.com,
-	xueshuai@linux.alibaba.com,
-	thorsten.blum@linux.dev,
-	gourry@gourry.net,
-	wangyuquan1236@phytium.com.cn,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kai Huang <kai.huang@intel.com>
-Subject: [PATCH v2] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is on
-Date: Mon,  9 Mar 2026 11:23:13 +1300
-Message-ID: <20260308222313.14014-1-kai.huang@intel.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1773014786; c=relaxed/simple;
+	bh=GWAy4SlMgiiwMcJuaHhTNI8/YoEwWVInasLRrMpru8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kde6Ob/f2abUs/u30evct6uwJ44ao167Cvlrz7e2XSDJkIrHYrG9wglvuuEFZ6oGcv5J/sc2emx6JE0Wi3HyXCjjgTcxI0dLT0dfO6xjtJHHHSSpXyaStGi4iB6x1QEAcKKnZ1tuCQDutng2sRe/ddRk+RU03AkALuRHGi8QG1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=q5Mq8Zim; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-89a1347051aso104061576d6.2
+        for <linux-acpi@vger.kernel.org>; Sun, 08 Mar 2026 17:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1773014784; x=1773619584; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E63/CSKkVqJAC9JwqiUKsNfXHYaOZS6yvHj9VcfqZOQ=;
+        b=q5Mq8ZimzAmQAvCl4LRsYoTfV8vKR4edPgDtkja/uvxinS/YTlrSoXy6ixxBCHJN0e
+         NzJjMTDQty/4gfg4cpWdquehDv45bIs0UYwUFnpm43PIxbCDr3z2i/29fM6uFTro6TqW
+         NRC8dC0A/eeAvX0J8g6v2GV2JpP4jyc3nPluHR9UMt88tFfEbFekp9KroRcaRutDKo3t
+         2UoNEbkhh5Gdf46Ff9trb3uBrH+yRIaK0rEy3eqZf7Wge+Kj8dWcs3TvG2/AikkSrG2t
+         Bv7euFGgUXvxItk3PFESsO0lhhkPj5vDmHt5SWzcR43MJvBiCfq9KseLj4YMswakJ/jE
+         NQCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773014784; x=1773619584;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E63/CSKkVqJAC9JwqiUKsNfXHYaOZS6yvHj9VcfqZOQ=;
+        b=bcC+FIQGJP1TgOCDAsCYitjuhx+Mr5i2rOxzgnKE2MBeD+pDXatflmbkL+jqLgcbGC
+         AnBE0i0FizkrhG4Vv9GGXm3UlwFS4QdNohxwXmANKQql3Efh7e9E3vxO5retzJ9YJia+
+         zXvU7La0hh47K3x7C5EjGFvMkTTyt1yqw2eWiFffXkUAaslyMTC920mT9hBJ6XFf6lju
+         T1ydZnLJdTD83YPwv9/hJ8OBAY2uJoYtuBLVSJYKno6KtwiFvcODY6paSaToHoyfVkwN
+         NPExdZ9NdLHny4JWVEr4y9hg2u2TIktePcsgl3NFgt7KaUmrjGnpNP/D7O5YS6bKw4eJ
+         nXEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxG+eyHr3jCUciTAlfvHyzS5pTnYTAP5Bzg/D8ayr9EDzGaOm1tQ0ZcceXdTYlPxVaCUpD7/BHexPs@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoNexQgeDEnUbswmiOS4ybNVWsXwHDpA5UpsbZH2aWH97qbgP0
+	zFbxD8I90E6WS/XpBHLAo6L+q9rJwuXGc5Tay/f4dap2tgwR9gK5oE7rtZAKignU0IU=
+X-Gm-Gg: ATEYQzwAx+W3U9T1zZvYt7op+hwPn6ScHlLvqJGeM81nd4pxWPJSLoX2dRDVzb5NYEP
+	XyYjlkzuTEp+zJSfvQsJ2kNPOD3yevDKISstNNWGhxPhjAVCs7wcMEodvndYgpLCpNbi92xbNuz
+	b5Gts3bgTZ2gb7zHGstn7MrwanVFsDe3rDaVF3DQ/5pLfL0XqtiZnWGeMS672TenMSO10GnKeDt
+	hmO+mhTauk+FMZ8ynImROHxBbNHboGTykbahOnAW4cTACjgjDPlT0PuKJvWyghO1M7GBTE2NM8U
+	xSaOwzCPZ+62L3X/V4SuBk5BKfTTdxTyQWXjdX7D0vVBxZvO2lPH0sKGi5mjEydt3hId2nFjAOq
+	vLBtwVxPMNnd7vPjBt+ZnzE/9RIeN5knleX2IhHxA3xc9ezquxvqDpsGzkQ4RikYo8T4/sQPObw
+	8KMPit/MsmyhAKxv2lvbcBWZDqsyd7BbCyi+rXNFI8DFeDeQlePHgBGmBVsZWJnDPJRnnMz/X+d
+	UwCQXvPgg==
+X-Received: by 2002:a05:6214:f6a:b0:89a:7d9:34a0 with SMTP id 6a1803df08f44-89a30a8006emr148896126d6.29.1773014784142;
+        Sun, 08 Mar 2026 17:06:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a316ec97dsm66613336d6.42.2026.03.08.17.06.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2026 17:06:23 -0700 (PDT)
+Date: Sun, 8 Mar 2026 20:06:21 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Kai Huang <kai.huang@intel.com>
+Cc: rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+	alison.schofield@intel.com, akpm@linux-foundation.org,
+	nunodasneves@linux.microsoft.com, xueshuai@linux.alibaba.com,
+	thorsten.blum@linux.dev, wangyuquan1236@phytium.com.cn,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI is
+ on
+Message-ID: <aa4O_TC7Kzbov6bv@gourry-fedora-PF4VCD3F>
+References: <20260308222313.14014-1-kai.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5A96A2326C3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260308222313.14014-1-kai.huang@intel.com>
+X-Rspamd-Queue-Id: 1B3DA232D73
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-21516-lists,linux-acpi=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_NEQ_ENVFROM(0.00)[kai.huang@intel.com,linux-acpi@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
+	DMARC_NA(0.00)[gourry.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21517-lists,linux-acpi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gourry.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,linux-acpi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.942];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,gourry.net:dkim,gourry.net:email]
 X-Rspamd-Action: no action
 
-On CXL platforms, the Static Resource Affinity Table (SRAT) may not
-cover memory affinity information for all the CXL memory regions.  Since
-each CXL memory region is enumerated via a CXL Fixed Memory Window
-Structure (CFMWS), during early boot the kernel parses the CFMWS tables
-to find all CXL memory regions and sets a NUMA node for each of them.
-This memory affinity information of CXL memory regions is later used by
-the CXL ACPI driver.
+On Mon, Mar 09, 2026 at 11:23:13AM +1300, Kai Huang wrote:
+> On CXL platforms, the Static Resource Affinity Table (SRAT) may not
+> cover memory affinity information for all the CXL memory regions.  Since
+> each CXL memory region is enumerated via a CXL Fixed Memory Window
+> Structure (CFMWS), during early boot the kernel parses the CFMWS tables
+> to find all CXL memory regions and sets a NUMA node for each of them.
+> This memory affinity information of CXL memory regions is later used by
+> the CXL ACPI driver.
+> 
+... snip ...
+> 
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
 
-The CFMWS table doesn't provide the memory affinity information either.
-Currently the kernel assigns a 'faked' NUMA node for each CXL memory
-region, starting from the next node of the highest node that is
-enumerated via the SRAT.  This can potentially increase the maximum NUMA
-node ID of the platform ('nr_node_ids') a lot.  E.g., on a GNR platform
-with 4 NUMA nodes and 18 CFMWS tables, this bumps the 'nr_node_ids' to
-22.
+lgtm
 
-Increasing the 'nr_node_ids' has side effects.  For instance, it is
-widely used by the kernel for "highest possible NUMA node" based memory
-allocations.  It also impacts userspace ABIs, e.g., some NUMA memory
-related system calls such as 'get_mempolicy' which requires 'maxnode'
-not being smaller than the 'nr_node_ids'.
-
-Currently parsing CFMWS tables and assigning faked NUMA node at boot is
-done unconditionally.  However, if the CXL ACPI driver is not enabled,
-there will be no user of such memory affinity information of CXL memory
-regions.
-
-Change to only parsing the CFMWS tables at boot when CXL_ACPI is enabled
-in Kconfig to avoid the unnecessary cost of bumping up 'nr_node_ids'.
-
-E.g., on the aforementioned GNR platform, the "Slab" in /proc/meminfo is
-reduced with this change (when CXL_ACPI is off):
-
-	w/ this change		w/o
-
-Slab	900488 kB		923660 kB
-
-Signed-off-by: Kai Huang <kai.huang@intel.com>
----
-
-v1 -> v2:
-
- - Use Dan's suggestion to simplify the diff:
-
- https://lore.kernel.org/linux-cxl/69a8dc7ca72c2_2f4a10026@dwillia2-mobl4.notmuch/
-
-Hi Alison, Gregory,
-
-I didn't add your RB since the code now is different from that you
-reviewed.  Appreciate if you can take a look again and provide the tag
-if the patch looks good to you.
-
----
- drivers/acpi/numa/srat.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index aa87ee1583a4..62d4a8df0b8c 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -654,8 +654,11 @@ int __init acpi_numa_init(void)
- 	}
- 	last_real_pxm = fake_pxm;
- 	fake_pxm++;
--	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
--			      &fake_pxm);
-+
-+	/* No need to expand numa nodes if CXL is disabled */
-+	if (IS_ENABLED(CONFIG_CXL_ACPI))
-+		acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
-+				      &fake_pxm);
- 
- 	if (cnt < 0)
- 		return cnt;
-
-base-commit: 084f843093bee5563b179fd4b630122ba820e0c7
--- 
-2.53.0
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
 
