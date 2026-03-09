@@ -1,206 +1,140 @@
-Return-Path: <linux-acpi+bounces-21548-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21549-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOs0Mp3UrmlhJAIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21548-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 15:09:33 +0100
+	id EMmWITvgrmmoJgIAu9opvQ
+	(envelope-from <linux-acpi+bounces-21549-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 15:59:07 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8A123A489
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 15:09:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F5123B22F
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 15:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 171993020D69
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 14:08:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F4DA3019FDE
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 14:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662283A6EE9;
-	Mon,  9 Mar 2026 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492AF3D668B;
+	Mon,  9 Mar 2026 14:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lJMs3SJb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyaSBFDZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0132A39B493;
-	Mon,  9 Mar 2026 14:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B37B640;
+	Mon,  9 Mar 2026 14:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773065307; cv=none; b=UzzYUwhCAN0MGpUKrxmwKxavtlcw5afdz1EeHuvyZRNuDThnGYqZqp1HXfUYM6Q094nFXkZophjG12x050UiMvyfKuDSLVJxAt0lpMagG3p+iTXXZzbEGLAUTKePPmT0XP+xL+tdVKwwCK2QsqtaipUGbVHRTwh3auuBiSx63+A=
+	t=1773068293; cv=none; b=VBjciBc1kV9v1Is9JqX7zIGSdBz6bFSotS0V9dmvTGp2gv2WL7i2l847b/A9BKIdtjtBUzEENlGStufAcKBWSh/GtTFxMMqxskM+a8Rboat08qZJganE3ZBdf0BMgcyEQgRL/WMNvbRzw8k0jYoa4iQTH9DNEp1rD+olu9WWjDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773065307; c=relaxed/simple;
-	bh=nYdlEN0aZwgU87+oBfMS2KH+DLGSurHoixFQS6FgX4Y=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Isv9VMlXxWpqqHfH7dMm2N66h74zK4EA0pCXg3DXci8tRZwAfHXeu1kwgf2unVGXvqKsl7Ov4ggx1TXlKd+GjZ/O7iZF75yL+tQZlRBPq4+vVPJ3UoP16FPWJ4N3SdjIWqvqSKLtGvQCrys3VVdBuRcZTDVT+q/6AejVHuYYmps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lJMs3SJb; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1773068293; c=relaxed/simple;
+	bh=Qx/owJz8d3fobLL6i67Jjz4QpnzQGte9XG0MbYDh31w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tNI0LsUa6ZqhxodLYlroi4S6QyydA4id7nfBpnF5k1KksVGYGZvaOB0BGnPjcD0DqjRJy3yX6CWoWCP6gJnED/Z2eZBHtIliFc3GX4cKjYnStlfDUVWE8ALNOwRIGnyrJVqg9DYSLr6mCksOyuOc+zf6MW9j3z0yRoiJjYQdDzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyaSBFDZ; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773065306; x=1804601306;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=nYdlEN0aZwgU87+oBfMS2KH+DLGSurHoixFQS6FgX4Y=;
-  b=lJMs3SJbDigX3SoWNE/eb75+4tUmpyuDgO3z/wmL+lycZBDzC2xzKyzm
-   paf15Yr276nluJnWottZK4vtdWAj66CMfevJ38EEAXpaqme5mZUU1byqx
-   ZI85HA5PMi4sf/WC2k6YEPEFi6QFPAbJybssVfl8y9DJIHAFCp5D+MjZE
-   lm4s755GrxhxdD88xc0DmH+eOlUF7biaPqey3XjaNNPZbvyo8dbNHmukn
-   dN6IKEoQnMVKhX4ixeA24szHj6ZX9Jyu0GAfrwUM/5KF1W9fIgwQDJcjJ
-   t82eMF7ggnn3ZRFTza++YHpwNs1RfBEGhm+/QXHJ8LWVM68aayKDeO3Qg
-   A==;
-X-CSE-ConnectionGUID: UlztN9jRR1qcCDTBq6qkuw==
-X-CSE-MsgGUID: Q6o4tdgZTVCnpfuhj43fIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="74057937"
+  t=1773068292; x=1804604292;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=Qx/owJz8d3fobLL6i67Jjz4QpnzQGte9XG0MbYDh31w=;
+  b=EyaSBFDZ/FRaWtvMFQr/n1mdSUDvizSR+0QfdKs+T6kWDXy6CII+2k0o
+   cwIxE7M9ickqVQYxavEoX37KUjRCwSC1r0FJGKIrFuSyEC9lUaBBBd49Z
+   KFIfj6tbs2GdavTJpOl+yr8P7P9+/L0L9IPeLH4psdy6jkcAV5cCvR+sQ
+   hKCqjGr4YOgIWzylHG3chH2YHktxZC9EDm68xHnRVuezIurDMs7Lfq7Is
+   46MgPrw+0+WGSQoCWUmDX+t26x6URLjWJ66mQsJ7M0lakPI4ftFeYqvXK
+   isxbVZ0bfVcncNoR4kymBBwAf5ieT40sd/pFLgzHc5z3teRarB8rzGI2I
+   g==;
+X-CSE-ConnectionGUID: uqWtg7GkQPqVN0ZfFZAwrQ==
+X-CSE-MsgGUID: y4VY7u/OQcW+8bnG17dWow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="74202396"
 X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="74057937"
+   d="scan'208";a="74202396"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:08:26 -0700
-X-CSE-ConnectionGUID: Uf0dm8BFTLmL4tDCoLQsJA==
-X-CSE-MsgGUID: AyoCQ/1NT3WDUumDzMKN1A==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:58:11 -0700
+X-CSE-ConnectionGUID: Sp9wPBrrSVKZFIvl7fxYDQ==
+X-CSE-MsgGUID: eiZidno7Q8SCc2aLTmpCSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="218970569"
+   d="scan'208";a="218985715"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.153])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:08:23 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:58:08 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 9 Mar 2026 16:08:19 +0200 (EET)
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-cc: LKML <linux-kernel@vger.kernel.org>, 
-    Linux ACPI <linux-acpi@vger.kernel.org>, Hans de Goede <hansg@kernel.org>, 
-    Maximilian Luz <luzmaximilian@gmail.com>, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v1 2/3] platform/surface: surfacepro3_button: Register
- ACPI notify handler
-In-Reply-To: <461da326-7a86-552e-4d2e-9b7730bc1699@linux.intel.com>
-Message-ID: <25a550e1-bbe9-00b6-a2c6-836d96a9bdc7@linux.intel.com>
-References: <2909929.BEx9A2HvPv@rafael.j.wysocki> <1881356.TLkxdtWsSY@rafael.j.wysocki> <461da326-7a86-552e-4d2e-9b7730bc1699@linux.intel.com>
+Cc: Hans de Goede <hansg@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+ Linux ACPI <linux-acpi@vger.kernel.org>, 
+ platform-driver-x86@vger.kernel.org
+In-Reply-To: <3406021.44csPzL39Z@rafael.j.wysocki>
+References: <3406021.44csPzL39Z@rafael.j.wysocki>
+Subject: Re: [PATCH v1 0/2] platform/x86: acer-wireless: Bind to a platform
+ device instead of an ACPI one
+Message-Id: <177306828103.16654.17935127898460117105.b4-ty@linux.intel.com>
+Date: Mon, 09 Mar 2026 16:58:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1401112567-1773065299=:971"
-X-Rspamd-Queue-Id: AA8A123A489
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: C9F5123B22F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-21548-lists,linux-acpi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21549-lists,linux-acpi=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,linux-acpi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
-	TAGGED_RCPT(0.00)[linux-acpi];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email]
+	NEURAL_HAM(-0.00)[-0.964];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,linux.intel.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Sat, 28 Feb 2026 16:17:06 +0100, Rafael J. Wysocki wrote:
 
---8323328-1401112567-1773065299=:971
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+> This series is part of a larger effort to switch over all drivers using
+> the struct acpi_driver interface to the more common struct platform_driver
+> interface and eliminate the former.  The background is explained in
+> Documentation/driver-api/acpi/acpi-drivers.rst and in the changelog of
+> the patch that introduced the above document:
+> 
+> https://lore.kernel.org/all/2396510.ElGaqSPkdT@rafael.j.wysocki/
+> 
+> [...]
 
-On Mon, 9 Mar 2026, Ilpo J=E4rvinen wrote:
 
-> On Wed, 4 Mar 2026, Rafael J. Wysocki wrote:
->=20
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> >=20
-> > To facilitate subsequent conversion of the driver to a platform one,
-> > make it install an ACPI notify handler directly instead of using
-> > a .notify() callback in struct acpi_driver.
-> >=20
-> > No intentional functional impact.
-> >=20
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/platform/surface/surfacepro3_button.c | 15 +++++++++++++--
-> >  1 file changed, 13 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/platform/surface/surfacepro3_button.c b/drivers/pl=
-atform/surface/surfacepro3_button.c
-> > index a6c9d4d370be..6d394daf5bc4 100644
-> > --- a/drivers/platform/surface/surfacepro3_button.c
-> > +++ b/drivers/platform/surface/surfacepro3_button.c
-> > @@ -72,8 +72,9 @@ struct surface_button {
-> >  =09bool suspended;
-> >  };
-> > =20
-> > -static void surface_button_notify(struct acpi_device *device, u32 even=
-t)
-> > +static void surface_button_notify(acpi_handle handle, u32 event, void =
-*data)
-> >  {
-> > +=09struct acpi_device *device =3D data;
-> >  =09struct surface_button *button =3D acpi_driver_data(device);
-> >  =09struct input_dev *input;
-> >  =09int key_code =3D KEY_RESERVED;
-> > @@ -227,6 +228,15 @@ static int surface_button_add(struct acpi_device *=
-device)
-> >  =09=09goto err_free_input;
-> > =20
-> >  =09device_init_wakeup(&device->dev, true);
-> > +
-> > +=09error =3D acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIF=
-Y,
-> > +=09=09=09=09=09=09surface_button_notify, device);
-> > +=09if (error) {
-> > +=09=09device_init_wakeup(&device->dev, false);
-> > +=09=09input_unregister_device(input);
->=20
-> Add a new label to rollback path instead.
+Thank you for your contribution, it has been applied to my local
+review-ilpo-next branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo-next branch only once I've pushed my
+local branch there, which might take a while.
 
-Nevermind.
+The list of commits applied:
+[1/2] platform/x86: acer-wireless: Register ACPI notify handler directly
+      commit: 6fdc70794cc15b450e3fd750ca048318764a343e
+[2/2] platform/x86: acer-wireless: Convert ACPI driver to a platform one
+      commit: b30a462720ad15613ede9e365938d401ed464095
 
---=20
+--
  i.
 
-> > +=09=09goto err_free_button;
-> > +=09}
-> > +
-> >  =09dev_info(&device->dev, "%s [%s]\n", acpi_device_name(device),
-> >  =09=09 acpi_device_bid(device));
-> >  =09return 0;
-> > @@ -242,6 +252,8 @@ static void surface_button_remove(struct acpi_devic=
-e *device)
-> >  {
-> >  =09struct surface_button *button =3D acpi_driver_data(device);
-> > =20
-> > +=09acpi_dev_remove_notify_handler(device, ACPI_DEVICE_NOTIFY,
-> > +=09=09=09=09       surface_button_notify);
-> >  =09device_init_wakeup(&device->dev, false);
-> >  =09input_unregister_device(button->input);
-> >  =09kfree(button);
-> > @@ -257,7 +269,6 @@ static struct acpi_driver surface_button_driver =3D=
- {
-> >  =09.ops =3D {
-> >  =09=09.add =3D surface_button_add,
-> >  =09=09.remove =3D surface_button_remove,
-> > -=09=09.notify =3D surface_button_notify,
-> >  =09},
-> >  =09.drv.pm =3D &surface_button_pm,
-> >  };
-> >=20
->=20
->=20
---8323328-1401112567-1773065299=:971--
 
