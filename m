@@ -1,144 +1,272 @@
-Return-Path: <linux-acpi+bounces-21533-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21534-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIseK/u0rmkSHwIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21533-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 12:54:35 +0100
+	id 8BOIAD23rmnMIAIAu9opvQ
+	(envelope-from <linux-acpi+bounces-21534-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 13:04:13 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04233238400
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 12:54:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F38223864F
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 13:04:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38E13304CA69
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 11:52:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF205302C5CD
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 11:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665BA1D5147;
-	Mon,  9 Mar 2026 11:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A2D3A6EEA;
+	Mon,  9 Mar 2026 11:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBT5m1gM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5280139903A;
-	Mon,  9 Mar 2026 11:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8653A5E92
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 11:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773057151; cv=none; b=ZEepVM1BrujEOSDqdorFVBqfCDhZQYdZRvV4xswsjklm4rpKHL2P77UelP4ubP6+LIrBX7cmdu+Sd4zY0VluzsNp4liHYL41d97IlF80uF6WF6iwxpmrO0mOmIRVx0SX7sbvFlTY6xRpdLIhXII3BtTwH0T5di+3E9ZEc9ebfFU=
+	t=1773057498; cv=none; b=FrLhFjdqgz4Qf5k438upe2582wEQq3Rg5XyYkVWSlANhtlcNSO1wWB0OVyV+J+CH+tsIYN5d9LNXQkiolhTz+0LfHkDTWA40o8/HV84LmSCJyb/GF24owx64aj+bM1ff/EZHwkSqOv1toOVziT9KFu2xNNPkfr2wO1vOrtZldRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773057151; c=relaxed/simple;
-	bh=ZNOmKkBbFQlb/cZJ5uldSm7yF7puOY4GBaohWuZt/2M=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BybF6nql45x3BY6JtkezURn8uRyUhzMJ5wlnFYcoGV/HcCUAZNqZvct8pFF5OMpRHENqYI5vqrrUYZjlvBNW71ZvbFUOW2SoVBBj3ggN3iy+7Rvg9ha/0xwnH0kdV70EY0bPejuFZ+WtDN1DSYpxpgSfqdlvWo9X1tlGMJGLAtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fTwN00xn5zJ46sw;
-	Mon,  9 Mar 2026 19:51:44 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 041DE4056E;
-	Mon,  9 Mar 2026 19:52:27 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Mar
- 2026 11:52:25 +0000
-Date: Mon, 9 Mar 2026 11:52:24 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Kai Huang <kai.huang@intel.com>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
-	<alison.schofield@intel.com>, <akpm@linux-foundation.org>,
-	<nunodasneves@linux.microsoft.com>, <xueshuai@linux.alibaba.com>,
-	<thorsten.blum@linux.dev>, <gourry@gourry.net>,
-	<wangyuquan1236@phytium.com.cn>, <linux-acpi@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] ACPI: NUMA: Only parse CFMWS at boot when CXL_ACPI
- is on
-Message-ID: <20260309115224.00002a6e@huawei.com>
-In-Reply-To: <20260308222313.14014-1-kai.huang@intel.com>
-References: <20260308222313.14014-1-kai.huang@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1773057498; c=relaxed/simple;
+	bh=2gI7Yjc5NAvinWUylak3mIquzVHXb1csOEJHFOpP6qI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mEYSwAmpzXyRS0R2xXGGA9rZlVd+/IH7c1Wu+wa2cNV0FFOSHEMWTCDBYw6BqLeQjzknzMbm6wXnEciaNGazEFs2kjtxPWfoiu45PW+OxOG4ToxjaLiLnEb1CA+kfKypHf50ZrFhQOP/oNZ3wOlYcopd+h2FE+p6+FjfgkCb9Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBT5m1gM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368F2C2BCB2
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Mar 2026 11:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773057498;
+	bh=2gI7Yjc5NAvinWUylak3mIquzVHXb1csOEJHFOpP6qI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WBT5m1gMEJLrTxF+4rQ1z4cVP5+qoLQD7IxK2PBbQ7vk6Zz0UirR8mMeV2+dGQsqR
+	 OpMqLgA+F3y4DV5YY+5o9ctlTqzyeUzbg/gzPcZC6ugKqb76SwNg0mOk9AHsxHrHoD
+	 kuqYzU4uGIH7BcZazZxnqDbFYkRHsUgSWSAGLANPscxglQ9Rf75P8F0W97HGgz5D+0
+	 yODivjrofGn2AoOa2NZMYmusZWpx8ZHeEFS7Xvwhn+xqG7oO5IJmnyc+r4IibKyfbv
+	 Lvn6SUxqlUdHneUVyVBtvI3wHlLAaEuTk4kt6xJnhTk6+wIxeeGjikqBvNfNsPY8Tq
+	 IAkaQtaYVxOQQ==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-463a0e14abfso8404838b6e.2
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Mar 2026 04:58:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU2qM/giEGCm8CY1FwSItJMUGpLI066FFQsLQOuOH7kQH8gUjZTGO0sOh3JO/lHR6bDhXKrtz1rwufZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQK/IyEqTCTCYFt8rxu+YQwkzwnYOQVEaBGFA/JYLhuVs+Tvs4
+	IcTXA8MZFp089jQw+AzN32XKfaDtbbuPs9TroyNREjgDNQFe3FdwpDBK8E7yBeDlWhNejObHQ+w
+	nNSzq/isGXcpTazRxAc1Lq+dre5nI6NM=
+X-Received: by 2002:a05:6808:3025:b0:45e:d827:2d73 with SMTP id
+ 5614622812f47-466dca38648mr6205531b6e.16.1773057497220; Mon, 09 Mar 2026
+ 04:58:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Rspamd-Queue-Id: 04233238400
+References: <007e3390-6b2b-457e-83c7-c794c5952018@amd.com> <23e8f0df-3eec-46e8-b5f1-5f417460e272@kernel.org>
+ <CAJZ5v0gQK_OPyZGZDPC6WCbVtBuJKggk0Lrscmxxkq1GHiiVRQ@mail.gmail.com>
+ <971fc64d-abef-448a-aa7d-7d4b3391f67e@kernel.org> <44b0ec66-59d0-4c73-807a-790817f22409@amd.com>
+ <20cf0dc1-f1da-464b-9700-e2ce30e438e7@amd.com>
+In-Reply-To: <20cf0dc1-f1da-464b-9700-e2ce30e438e7@amd.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 9 Mar 2026 12:58:04 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iNdTFExoupRmwJmdykdRJa1QUJXzsb+j4M1cpn1qALig@mail.gmail.com>
+X-Gm-Features: AaiRm50iawWOuCu7hmav7E_lB9A1F0LE9lRU-OUy93uItjEVmUhDVKDI8mSanAk
+Message-ID: <CAJZ5v0iNdTFExoupRmwJmdykdRJa1QUJXzsb+j4M1cpn1qALig@mail.gmail.com>
+Subject: Re: [REGRESSION] AMDISP failure with kernel v7.0-rc2 due to Commit: 02c057ddefef5
+To: "Du, Bin" <bin.du@amd.com>
+Cc: "Nirujogi, Pratap" <pnirujog@amd.com>, Mario Limonciello <superm1@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, W_Armin@gmx.de, lenb@kernel.org, benjamin.chan@amd.com, 
+	king.li@amd.com, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4F38223864F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-21533-lists,linux-acpi=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[amd.com,kernel.org,gmx.de,vger.kernel.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-21534-lists,linux-acpi=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[linux-acpi];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.572];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:mid,huawei.com:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-acpi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.982];
+	TAGGED_RCPT(0.00)[linux-acpi];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon,  9 Mar 2026 11:23:13 +1300
-Kai Huang <kai.huang@intel.com> wrote:
+On Mon, Mar 9, 2026 at 9:11=E2=80=AFAM Du, Bin <bin.du@amd.com> wrote:
+>
+>
+>
+> On 3/9/2026 11:52 AM, Nirujogi, Pratap wrote:
+> >
+> >
+> > On 3/6/2026 7:45 AM, Mario Limonciello wrote:
+> >> Caution: This message originated from an External Source. Use proper
+> >> caution when opening attachments, clicking links, or responding.
+> >>
+> >>
+> >> On 3/6/26 6:01 AM, Rafael J. Wysocki wrote:
+> >>> On Fri, Mar 6, 2026 at 1:35=E2=80=AFAM Mario Limonciello (AMD) (kerne=
+l.org)
+> >>> <superm1@kernel.org> wrote:
+> >>>>
+> >>>>
+> >>>>
+> >>>> On 3/5/2026 5:11 PM, Nirujogi, Pratap wrote:
+> >>>>> Hi Rafael,
+> >>>>>
+> >>>>> In kernel version 7.0-rc2, the AMDISP device reports the following
+> >>>>> errors when created via mfd_add_hotplug_devices.
+> >>>>>
+> >>>>> [    5.236645] ACPI: video: Video Device [GFX0] (multi-head: yes  r=
+om:
+> >>>>> no  post: no)
+> >>>>> [    5.236744] input: Video Bus as /devices/
+> >>>>> pci0000:00/0000:00:08.1/0000:c3:00.0/amd_isp_capture.1.auto/input/
+> >>>>> input21
+> >>>>> [    5.236779] acpi device:14: Error installing notify handler
+> >>>>> [    5.236782] acpi device:15: Error installing notify handler
+> >>>>> [    5.236783] acpi device:16: Error installing notify handler
+> >>>>> [    5.236784] acpi device:17: Error installing notify handler
+> >>>>> [    5.236785] acpi device:18: Error installing notify handler
+> >>>>> [    5.236786] acpi device:19: Error installing notify handler
+> >>>>> [    5.236786] acpi device:1a: Error installing notify handler
+> >>>>> [    5.236787] acpi device:1b: Error installing notify handler
+> >>>>> [    5.236788] acpi device:1c: Error installing notify handler
+> >>>>>
+> >>>>> These failures indicate AMDISP device is incorrectly detected as AC=
+PI
+> >>>>> Video device while it is not.
+> >>>>>
+> >>>>> The seems like a regression caused by the change that converts the
+> >>>>> ACPI
+> >>>>> video device to a platform device (commit: 02c057ddefef5).
+> >>>>>
+> >>>>> Issue is not observed in 6.19-rc6, and also when this change is
+> >>>>> reverted
+> >>>>> in 7.0-rc2.
+> >>>>>
+> >>>>> I really appreciate your inputs on addressing this issue and
+> >>>>> helping us
+> >>>>> make progress on 7.0 rc2.
+> >>>>>
+> >>>>> Steps followed to reproduce the issue:
+> >>>>>
+> >>>>> 1. Apply AMDISP v9 patch series [1] on top of kernel v7.0-rc2
+> >>>>> 2. Add NULL check for =E2=80=9Cdev->type=E2=80=9D in isp_genpd_add_=
+device() [2] (to
+> >>>>> avoid kernel panic found in v7.0-rc2)
+> >>>>> 3. Build kernel with:
+> >>>>>       - CONFIG_AMD_ISP_PLATFORM=3Dy
+> >>>>>       - CONFIG_VIDEO_AMD_ISP4_CAPTURE=3Dm
+> >>>>> 4. Install kernel on AMDISP supported system (HP ZBook Ultra G1a)
+> >>>>> 5. Boot system to see the failures
+> >>>>>
+> >>>>> [1] https://lore.kernel.org/all/20260302073020.148277-1-
+> >>>>> Bin.Du@amd.com/
+> >>>>> [2] https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/a=
+md/
+> >>>>> amdgpu/isp_v4_1_1.c#L132
+> >>>>>
+> >>>>> Thanks,
+> >>>>> Pratap
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>
+> >>>> It's a bit weird to see it even probe in this path in the first plac=
+e.
+> >>>> acpi_video_bus_probe() getting called with the mfd device doesn't se=
+em
+> >>>> right to me.
+> >>>>
+> >>>> I wonder if it's because ISP is an MFD device of GPU (and thus LNXVI=
+DEO
+> >>>> ends up matching).
+> >>>>
+> >>>> Would a sensible solution be to reject mfd device types in
+> >>>> acpi_video_bus_probe()?
+> >>>
+> >>> Every platform device with LNXVIDEO in the device ID list will be
+> >>> matched and so probed.
+> >>>
+> >>> I'm wondering how those devices get that ID though.
+> >>
+> >> Yeah me too.  I was surprised an MFD device got it.
+> >>
+> >> Pratap - can you figure this out before we go too far in this path?
+> >>
+> > yes, MFD child devices in this case have the device ID as that of paren=
+t
+> > (GPU) i.e. LNXVIDEO. Its because when no acpi_match is specified, the
+> > MFD child devices are inheriting the parent's ACPI companion device and
+> > this is resulting in having the same parent's ACPI device ID.
+> >
+> > device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
+> > https://github.com/torvalds/linux/blob/master/drivers/mfd/mfd-core.c#L9=
+1
+> >
+> >> If they really shouldn't have LNXVIDEO fixing that may be a better
+> >> solution.
+> >>
+> > AMD ISP related MFD devices are using the same LNXVIDEO device ID even
+> > on 6.19-rc4, no issues observed earlier. I can confirm automatic AMD IS=
+P
+> > device probe works and also camera works on 7.0-rc2 if I avoid
+> > inheriting ACPI companion of the parent (GPU) in the mfd-core.c
+> >
+> > // device_set_node(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
+> > https://github.com/torvalds/linux/blob/master/drivers/mfd/mfd-core.c#L9=
+1
+> >
+> > But why this is an issue on 7.0-rc2 while it works on 6.19-rc4 needs to
+> > be root caused.
+> >
+>
+> Possible cause may be.
+> 1. On 6.x (without commit 02c057ddefef5), the ACPI video driver was
+> registered as an acpi_driver (static struct acpi_driver acpi_video_bus)
+> ,  it lives on the ACPI bus (acpi_bus_type). It only binds to struct
+> acpi_device objects in the ACPI namespace. MFD children of GFX
+> (amd_isp_capture, amd_isp_i2c_designware, amdisp-pinctrl) are platform
+> devices on the platform bus, they are completely invisible to
+> acpi_driver, so there is no chance of the ACPI video driver matching an
+> MFD child.
+> 2. On 7.0 (with commit 02c057ddefef5), the ACPI video driver was
+> converted to a platform_driver (static struct platform_driver
+> acpi_video_bus), it lives on the platform bus. When the kernel registers
+> a new platform device, it checks ALL registered platform drivers to see
+> if any match. The matching logic for acpi_match_table works like this:
+> - Get the platform device's ACPI companion (ACPI_COMPANION(dev))
+> - Check if the companion's HID/CID matches any entry in acpi_match_table
+> - If yes, the driver probes the device
 
-> On CXL platforms, the Static Resource Affinity Table (SRAT) may not
-> cover memory affinity information for all the CXL memory regions.  Since
-> each CXL memory region is enumerated via a CXL Fixed Memory Window
-> Structure (CFMWS), during early boot the kernel parses the CFMWS tables
-> to find all CXL memory regions and sets a NUMA node for each of them.
-> This memory affinity information of CXL memory regions is later used by
-> the CXL ACPI driver.
-> 
-> The CFMWS table doesn't provide the memory affinity information either.
-> Currently the kernel assigns a 'faked' NUMA node for each CXL memory
-> region, starting from the next node of the highest node that is
-> enumerated via the SRAT.  This can potentially increase the maximum NUMA
-> node ID of the platform ('nr_node_ids') a lot.  E.g., on a GNR platform
-> with 4 NUMA nodes and 18 CFMWS tables, this bumps the 'nr_node_ids' to
-> 22.
-> 
-> Increasing the 'nr_node_ids' has side effects.  For instance, it is
-> widely used by the kernel for "highest possible NUMA node" based memory
-> allocations.  It also impacts userspace ABIs, e.g., some NUMA memory
-> related system calls such as 'get_mempolicy' which requires 'maxnode'
-> not being smaller than the 'nr_node_ids'.
-> 
-> Currently parsing CFMWS tables and assigning faked NUMA node at boot is
-> done unconditionally.  However, if the CXL ACPI driver is not enabled,
-> there will be no user of such memory affinity information of CXL memory
-> regions.
-> 
-> Change to only parsing the CFMWS tables at boot when CXL_ACPI is enabled
-> in Kconfig to avoid the unnecessary cost of bumping up 'nr_node_ids'.
-> 
-> E.g., on the aforementioned GNR platform, the "Slab" in /proc/meminfo is
-> reduced with this change (when CXL_ACPI is off):
-> 
-> 	w/ this change		w/o
-> 
-> Slab	900488 kB		923660 kB
-> 
-> Signed-off-by: Kai Huang <kai.huang@intel.com>
-Even without all the reasoning above, I'm keen to remove state that we
-know is pointless!
+It does, but then the probe fails.  This is the problem that has been
+reported to start with.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> amd_isp_capture, amd_isp_i2c_designware, and amdisp-pinctrl are MFD
+> children of GFX and inherit their parent's ACPI companion, which uses
+> the HID "LNXVIDEO". As a result, all these components will match with
+> the ACPI video driver. Consequently, this issue impacts not only
+> amd_isp_capture but also the upstreamed driver amd_isp_i2c_designware
+> (located in drivers/i2c/busses/i2c-designware-amdisp.c under the
+> I2C_DESIGNWARE_AMDISP config) and amdisp-pinctrl (found in
+> drivers/pinctrl/pinctrl-amdisp.c under the PINCTRL_AMDISP config).
+
+Why is inheriting the parent's ACPI node regarded as a good idea?
 
