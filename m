@@ -1,154 +1,165 @@
-Return-Path: <linux-acpi+bounces-21529-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-21530-lists+linux-acpi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CXYOheTrml0GQIAu9opvQ
-	(envelope-from <linux-acpi+bounces-21529-lists+linux-acpi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 10:29:59 +0100
+	id EJxIEByhrmkLHAIAu9opvQ
+	(envelope-from <linux-acpi+bounces-21530-lists+linux-acpi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 11:29:48 +0100
 X-Original-To: lists+linux-acpi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEBD2362D1
-	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 10:29:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9726E23714F
+	for <lists+linux-acpi@lfdr.de>; Mon, 09 Mar 2026 11:29:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BCC7304C623
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 09:25:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1856303D70E
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Mar 2026 10:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C954D36A016;
-	Mon,  9 Mar 2026 09:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502CB38F926;
+	Mon,  9 Mar 2026 10:28:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2AC361664;
-	Mon,  9 Mar 2026 09:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3C34DB44;
+	Mon,  9 Mar 2026 10:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773048348; cv=none; b=VR7n1PJ5zGdNficDrdWnVLwWUzAhCOSQ4I87xrpn4tlxiTJL4YrP9TSLeVUWxMjlBjWopwVgs/Sr5tTUzcwi/nymWAml7bYsG7zXLUEgspfwtugb1gZRPlOKbU7hQnDXg11SlVWfJ94MJFVLziYmi1sg+PJp6Jb4qv+cb6UJ6rA=
+	t=1773052129; cv=none; b=PiWbl6k1DPUEuoxuxCOuQyZ7PF6pPJ/XUD++YqMT6esrKRiuhCu3PMQU/stLsv9YyZTtGIrj+kzrzNaoaBsv7RFutpw7xmC0x7W+Hl09qG3aHkJa8tK5GEM5klaZ8TM/NTFMXoFrIYVFbzIyP98OGMabYkCgqIFjnQxzgN74QRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773048348; c=relaxed/simple;
-	bh=cMzT8cIxJI/GGK2J4aXtAB9E6hwN67XBw1IHL7KFt90=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qa9SLW1FAh9PZrGDylCsa0vejr/IWBeJttO28O4EBAn/k2Dt2QXFop5pYK4b8yfLZ9MU0aPVnHBqClIkaTv3hIs1K7hs/8+wQh1xXLhv+/VR+4RG3vatnJGTVoa+jVIUO/pAkylGT6bY67wWrtJXWOq6Ud9mVroQfoz+nqbEZNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [210.73.43.101])
-	by APP-05 (Coremail) with SMTP id zQCowAC3RgoVkq5pWRzyCQ--.46057S2;
-	Mon, 09 Mar 2026 17:25:41 +0800 (CST)
-From: Pengpeng Hou <pengpeng.hou@isrc.iscas.ac.cn>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Pengpeng Hou <pengpeng.hou@isrc.iscas.ac.cn>
-Subject: [PATCH] ACPICA: scope acpi_ex_trace_point() to ACPI_DEBUG_OUTPUT
-Date: Mon,  9 Mar 2026 09:25:37 +0000
-Message-Id: <20260309092537.721172-1-pengpeng.hou@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1773052129; c=relaxed/simple;
+	bh=oeGbNvYNeLEMdzYsVNQfSow8qwSs7c8u3UPk74uZnmc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ac9e9EZTNreLxnEefPpyjTKS/Kg9257rUvxpAoOdJ7YLbtkvAjJJcqcUezgmBU36babONqqzJItCjEBwmrUH/Fq7DM7ayUkSMVLSM7vGM2nt/mm2f7+50fS909VdS6BsyWlbmmnQXbKKO4sDaILIXMRJNdhvDZouFvlbH36R/H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fTtWG6PDFzJ46vK;
+	Mon,  9 Mar 2026 18:27:54 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id A6E264056E;
+	Mon,  9 Mar 2026 18:28:37 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Mar
+ 2026 10:28:36 +0000
+Date: Mon, 9 Mar 2026 10:28:35 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Chengwen Feng <fengchengwen@huawei.com>
+CC: <linux-pci@vger.kernel.org>, <bhelgaas@google.com>, Paul Walmsley
+	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	<linux-acpi@vger.kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<wei.huang2@amd.com>, <Eric.VanTassell@amd.com>, <wangzhou1@hisilicon.com>,
+	<wanghuiqiang@huawei.com>, <liuyonglong@huawei.com>,
+	<stable@vger.kernel.org>, <jeremy.linton@arm.com>,
+	<sunilvl@ventanamicro.com>, <sunilvl@oss.qualcomm.com>,
+	<chenhuacai@loongson.cn>, <wangliupu@loongson.cn>,
+	<linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH v4 0/2] Fix get cpu steer-tag fail on ARM64 platform
+Message-ID: <20260309102835.000037ad@huawei.com>
+In-Reply-To: <20260309041659.18815-1-fengchengwen@huawei.com>
+References: <20260303003625.39035-1-fengchengwen@huawei.com>
+	<20260309041659.18815-1-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3RgoVkq5pWRzyCQ--.46057S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4UGw45trWfXF13Cr1fCrg_yoW8AryrpF
-	WIyrWjyr17Jw4UKr1UZw4Dur15Ja4FyryUGrW7Gr1rZF4UW3WUArnrtryUXFy5C3srKrWS
-	vr4DZr15WF1UZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjfU82NtDUUUU
-X-CM-SenderInfo: pshqw1hhqjhx1rx6x21ufox2xfdvhtffof0/
-X-Rspamd-Queue-Id: 5CEBD2362D1
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Rspamd-Queue-Id: 9726E23714F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-21529-lists,linux-acpi=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng.hou@isrc.iscas.ac.cn,linux-acpi@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.352];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-21530-lists,linux-acpi=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[linux-acpi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linux-acpi@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.590];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-In current linux.git (1954c4f01220), acpi_ex_trace_point() is
-defined and declared unconditionally. However, its only in-tree caller
-is within the debug tracing path in drivers/acpi/acpica/utdebug.c,
-which is guarded by #ifdef ACPI_DEBUG_OUTPUT.
+On Mon, 9 Mar 2026 12:16:56 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-Match the internal declaration and definition to that scope by wrapping
-them in #ifdef ACPI_DEBUG_OUTPUT. This fixes the debug-scope mismatch
-and avoids including tracing logic when ACPI debug output is disabled.
+> This patchset addresses the issue where retrieving the CPU steer-tag
+> fails on ARM64 platforms. The first commit is a pure renaming of the
+> ACPI CPU ID retrieval interface (no functional changes), which serves
+> as preparation for the second commit that implements the core fix for
+> the steer-tag retrieval logic.
 
-Signed-off-by: Pengpeng Hou <pengpeng.hou@isrc.iscas.ac.cn>
----
-diff --git a/drivers/acpi/acpica/acinterp.h b/drivers/acpi/acpica/acinterp.h
---- a/drivers/acpi/acpica/acinterp.h
-+++ b/drivers/acpi/acpica/acinterp.h
-@@
- void
- acpi_ex_stop_trace_opcode(union acpi_parse_object *op,
- 			  struct acpi_walk_state *walk_state);
- 
-+#ifdef ACPI_DEBUG_OUTPUT
- void
- acpi_ex_trace_point(acpi_trace_event_type type,
- 		    u8 begin, u8 *aml, char *pathname);
-+#endif
- 
- void
- acpi_ex_trace_args(union acpi_operand_object **params, u32 count);
-diff --git a/drivers/acpi/acpica/extrace.c b/drivers/acpi/acpica/extrace.c
---- a/drivers/acpi/acpica/extrace.c
-+++ b/drivers/acpi/acpica/extrace.c
-@@
-  * DESCRIPTION: Internal interpreter execution trace.
-  *
-  ******************************************************************************/
- 
-+#ifdef ACPI_DEBUG_OUTPUT
- void
- acpi_ex_trace_point(acpi_trace_event_type type,
- 		    u8 begin, u8 *aml, char *pathname)
- {
-@@
- 				  acpi_ex_get_trace_event_name(type),
- 				  begin ? "Begin" : "End", aml));
- 	}
- }
-+#endif
- 
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ex_trace_args
+Hi,
+
+For future reference, please keep same lists +CC on every patch
+(for a small series, send everything to everyone who gets any patch).
+For me at least, that led to my filter putting patch 1 in a totally different
+place from the rest and some confusion.
+
+Also, don't send in reply to a previous version. Just start a new email
+thread.  That both avoids deep nesting in email clients and generally
+ensures your series ends up in the right place if people are sorting
+by time of sending.
+
+No need to resend this time unless others ask for it. 
+
+Thanks,
+
+Jonathan
+
+> 
+> ---
+> Changes in v4:
+> - Split the rename into a separate commit.
+> 
+> Changes in v3:
+> - Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() other
+>   than add one new API.
+> 
+> Changes in v2:
+> - Add ECN _DSM reference doc name and its URL.
+> - Separate implement acpi_get_cpu_acpi_id() in each arch which supports
+>   ACPI.
+> - Refine commit-log.
+> 
+> Chengwen Feng (2):
+>   ACPI: Rename get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() on
+>     non-x86
+>   PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+> 
+>  Documentation/PCI/tph.rst          |  4 ++--
+>  arch/arm64/include/asm/acpi.h      |  4 ++--
+>  arch/loongarch/include/asm/acpi.h  |  2 +-
+>  arch/riscv/include/asm/acpi.h      |  2 +-
+>  arch/riscv/kernel/acpi_numa.c      |  2 +-
+>  arch/x86/include/asm/acpi.h        |  2 ++
+>  arch/x86/kernel/cpu/common.c       |  8 ++++++++
+>  drivers/acpi/pptt.c                | 16 ++++++++--------
+>  drivers/acpi/riscv/rhct.c          |  2 +-
+>  drivers/pci/tph.c                  | 11 ++++++-----
+>  drivers/perf/arm_cspmu/arm_cspmu.c |  2 +-
+>  include/linux/pci-tph.h            |  4 ++--
+>  12 files changed, 35 insertions(+), 24 deletions(-)
+> 
 
 
